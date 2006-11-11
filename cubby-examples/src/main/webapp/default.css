@@ -1,0 +1,92 @@
+/*-------------------------------------------------
+COMMON
+-------------------------------------------------*/
+
+h1 {
+font-size: 20px;
+border-left: solid 10px green;
+border-bottom: solid 1px green;
+}
+h2 {
+font-size: 16px;
+border-left: solid 10px green;
+border-bottom: solid 1px green;
+}
+th {
+background: #AFA;
+}
+.odd {
+background: #EFE;
+}
+.even {
+background: #FFF;
+}
+.errors { 
+color: red;
+}
+.fieldError { 
+backgr	ound: pink;
+}
+.notice {
+background: #ff8000;
+}
+
+
+body {
+	margin: 0;
+	padding: 0;
+	color: #111111;
+	background-color: #FFFFFF;
+	position: relative;
+	font-family: sans-serif;
+	font-size: 14px;
+}
+
+/*-------------------------------------------------
+HEADER
+-------------------------------------------------*/
+
+#header {
+	background: #003366;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+
+#header h1 {
+	font-size: 180%;
+	padding: 7px 0 10px 30px;
+	margin: 0 0 0 0;
+	color: #ffcc33;
+	text-align: left;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+
+#header_info {
+	margin-top: 4px;
+	margin-right: 4px;
+	font-size: 90%;
+	text-align: right;
+	position: relative;
+	float: right;
+	color:#fff;
+}
+
+#header_info a:link,
+#header_info a:visited,
+#header_info a:hover,
+#header_info a:active {
+	color:#fff;
+}
+
+/*-------------------------------------------------
+CONTENT
+-------------------------------------------------*/
+
+#content {
+	width: 100%;
+	padding: 0;
+	margin: 0 0 10px 0;
+	clear: both;
+}
