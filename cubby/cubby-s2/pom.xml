@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <artifactId>cubby-all</artifactId>
+    <groupId>org.seasar.cubby</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.seasar.cubby</groupId>
+	<artifactId>s2cubby</artifactId>
+	<name>Maven Quick Start Archetype</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>
+		Cubby 100% Pure JSP Web Application Framework
+	</description>
+	<dependencies>
+	    <dependency>
+	      <groupId>org.seasar.cubby</groupId>
+	      <artifactId>cubby</artifactId>
+	      <version>1.0-SNAPSHOT</version>
+	    </dependency>
+	</dependencies>
+</project>

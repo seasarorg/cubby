@@ -1,0 +1,2 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ attribute name="var" type="java.lang.String" required="true" %><c:if test="${var % 2 == 0}">odd</c:if><c:if test="${var % 2 == 1}">even</c:if>
