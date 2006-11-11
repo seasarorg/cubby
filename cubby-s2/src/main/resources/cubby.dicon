@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="cubby">
+	<include path="dxo.dicon" />
+	<include path="cubby-config.dicon" />
+
+	<!-- Controller -->
+	<component name="actionFactory" class="org.seasar.cubby.controller.impl.ActionFactoryImpl">
+		<initMethod name="addActionFilter"><arg>initializeFilter</arg></initMethod>
+		<initMethod name="addActionFilter"><arg>parameterFilter</arg></initMethod>
+		<initMethod name="addActionFilter"><arg>validationFilter</arg></initMethod>
+		<initMethod name="addActionFilter"><arg>invocationFilter</arg></initMethod>
+	</component>
+	<component name="controllerFactory" class="org.seasar.cubby.seasar.S2ControllerFactory"/>	
+	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl"/>
+	<component name="initializeFilter" class="org.seasar.cubby.controller.filters.InitializeFilter"/>
+	<component name="parameterFilter" class="org.seasar.cubby.controller.filters.ParameterFilter"/>
+	<component name="validationFilter" class="org.seasar.cubby.controller.filters.ValidationFilter"/>
+	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	
+	
+	<!-- Convert -->
+	<component name="populater" class="org.seasar.cubby.convert.impl.PopulaterImpl"/>
+	<component name="valueConverter" class="org.seasar.cubby.seasar.S2DxoValueConverterImpl"/>
+
+	<!-- Validation -->
+	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
+
+	<!-- ServletFilter -->
+	<component class="org.seasar.cubby.seasar.S2CubbyFilter" instance="outer" />
+
+</components>
