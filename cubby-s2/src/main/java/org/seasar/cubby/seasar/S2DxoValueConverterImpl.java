@@ -1,6 +1,7 @@
 package org.seasar.cubby.seasar;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.config.Configration;
@@ -96,6 +97,10 @@ public class S2DxoValueConverterImpl implements ValueConverter {
 			}
 			return (String)S2DxoValueConverterImpl.this.configration
 					.getValue(configKey);
+		}
+
+		public Map getConverters(final Class clazz) {
+			return reader.getConverters(clazz);
 		}
 	}
 }
