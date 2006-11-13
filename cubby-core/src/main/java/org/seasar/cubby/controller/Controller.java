@@ -8,7 +8,7 @@ import org.seasar.cubby.util.ParameterMap;
 
 
 public abstract class Controller {
-	protected Errors errors = new Errors();
+	protected ActionErrors errors;
 	protected Map<String,Object> request;
 	protected Map<String,Object> session;
 	protected ParameterMap params;
@@ -16,11 +16,11 @@ public abstract class Controller {
 
 	public void initalize() {}
 	
-	public Errors getErrors() {
+	public ActionErrors getErrors() {
 		return errors;
 	}
 
-	public void setErrors(Errors errors) {
+	public void setErrors(ActionErrors errors) {
 		this.errors = errors;
 	}
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+	<description>JSP 2.0 tag files</description>
+    <tlib-version>2.0</tlib-version>
+	<short-name>hf</short-name>
+  	<uri>http://www.seasar.org/cubby/helper-functions</uri>
+    <function>
+        <description>cubby function</description>
+        <name>joinPropertyValue</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String joinPropertyValue( java.util.Object[], java.lang.String, java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>toAttr</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String toAttr( java.util.Map)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>checked</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String checked( java.lang.String, java.lang.Object)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>selected</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String selected( java.lang.String, java.lang.Object)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>property</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.Object property( java.lang.Object, java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>convertFieldValue</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String convertFieldValue( java.lang.Object, java.lang.Object, java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>addClassName</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>void addClassName( java.util.Map, java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>cubby function</description>
+        <name>formValue</name>
+        <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
+        <function-signature>java.lang.String formValue( java.lang.Object, java.lang.Object, java.lang.String, javax.servlet.http.HttpServletRequest)</function-signature>
+    </function>
+</taglib>

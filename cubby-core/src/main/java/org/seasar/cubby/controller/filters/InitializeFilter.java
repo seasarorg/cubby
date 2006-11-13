@@ -1,6 +1,7 @@
 package org.seasar.cubby.controller.filters;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_ERRORS;
+import static org.seasar.cubby.CubbyConstants.ATTR_ALL_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTROLLER;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FIELD_ERRORS;
@@ -29,6 +30,7 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.FlashHashMap;
 import org.seasar.cubby.util.LocaleHolder;
@@ -43,6 +45,7 @@ public class InitializeFilter extends AroundFilter {
 	
 	@Override
 	protected void doBeforeFilter(ActionContext action) {
+		setupErrors(action);
 		setupLocale(action);
 		setupImplicitVariable(action);
 		setupParams(action);
@@ -50,6 +53,10 @@ public class InitializeFilter extends AroundFilter {
 		setupSession(action);
 		setupFlash(action);
 		action.getController().initalize();
+	}
+
+	private void setupErrors(ActionContext action) {
+		action.getController().setErrors(new ActionErrorsImpl());
 	}
 
 	private void setupLocale(ActionContext action) {
@@ -142,9 +149,9 @@ public class InitializeFilter extends AroundFilter {
 		request.setAttribute(ATTR_CONTROLLER, controller);
 
 		// set actioneErrors
-		List<String> actionErrors = controller.getErrors().getErrors();
-		request.setAttribute(ATTR_ACTION_ERRORS, actionErrors);
 		request.setAttribute(ATTR_ERRORS, controller.getErrors());
+		request.setAttribute(ATTR_ALL_ERRORS, controller.getErrors().getAllErrors());
+		request.setAttribute(ATTR_ACTION_ERRORS, controller.getErrors().getActionErrors());
 		request.setAttribute(ATTR_FIELD_ERRORS, controller.getErrors().getFieldErrors());
 
 		// set field value

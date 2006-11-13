@@ -1,11 +1,13 @@
-package org.seasar.cubby.controller;
+package org.seasar.cubby.controller.impl;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Errors {
+import org.seasar.cubby.controller.ActionErrors;
+
+public class ActionErrorsImpl implements ActionErrors {
 
 	private List<String> actionErrors = new ArrayList<String>();
 
@@ -15,11 +17,11 @@ public class Errors {
 		return actionErrors.isEmpty() && fieldErrors.isEmpty();
 	}
 
-	public void addActionErrors(String message) {
+	public void addActionError(String message) {
 		actionErrors.add(message);
 	}
 
-	public List<String> getErrors() {
+	public List<String> getAllErrors() {
 		List<String> errors = new ArrayList<String>();
 		errors.addAll(actionErrors);
 		for (List<String> errorList : fieldErrors.values()) {
@@ -41,6 +43,10 @@ public class Errors {
 
 	public boolean hasFieldError(String name) {
 		return fieldErrors.containsKey(name);
+	}
+
+	public List<String> getActionErrors() {
+		return actionErrors;
 	}
 
 }

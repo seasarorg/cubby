@@ -5,10 +5,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTROLLER;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +14,7 @@ import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.convert.ValueConverter;
 
 
-public class CubbyFunction {
+public class CubbyHelperFunctions {
 	
 	private static final Class[] EMPTY_PARAM_TYPES = new Class[0];
 	private static final Object[] EMPTY_ARGS = new Object[0];
@@ -49,28 +46,6 @@ public class CubbyFunction {
 		return sb.toString();
 	}
 	
-	public static Boolean contains(Object c, Object value) {
-		if (c instanceof Collection) {
-			return _contains((Collection)c, value);
-		} else if (c != null && c.getClass().isArray()) {
-			return _contains(Arrays.asList((Object[])c), value);
-		} else {
-			return false;
-		}
-	}
-
-	public static Boolean _contains(Collection c, Object value) {
-		return c.contains(value);
-	}
-
-	public static Boolean containsKey(Map m, Object value) {
-		return m.containsKey(value);
-	}
-
-	public static Boolean containsValue(Map m, Object value) {
-		return m.containsValue(value);
-	}
-
 	public static String toAttr(Map<String, Object> map) {
 		StringBuilder sb = new StringBuilder();
 		for(String key : map.keySet()) {
@@ -123,34 +98,16 @@ public class CubbyFunction {
 		return values.toString().equals(value.toString());
 	}
 
-	public static String odd(Integer index, String classnames) {
-		String[] c = classnames.split(",");
-		return c[index % c.length];
-	}
-
-	public static String out(Object value) {
-		return value == null ? "" : value.toString();
-	}
-
 	public static String convertFieldValue(Object source, Object form, String propertyName) {
 		if (form == null || propertyName == null) {
-			return out(source);
+			return CubbyFunctions.out(source);
 		} else {
 			Method setter = ClassUtils.getSetter(form.getClass(), propertyName);
 			String converted = (String) valueConverter.convert(source, form, setter, String.class);
-			return out(converted);
+			return CubbyFunctions.out(converted);
 		}
 	}
 	
-	public static String dateFormat(Object date, String pattern) {
-		if (date instanceof Date) {
-			SimpleDateFormat format = new SimpleDateFormat(pattern);
-			return format.format(date);
-		} else {
-			return "";
-		}
-	}
-
 	public static Object property(Object bean, String property) {
 		if (StringUtils.isEmpty(property)) {
 			return bean;
@@ -161,13 +118,18 @@ public class CubbyFunction {
 	
 	@SuppressWarnings("unchecked")
 	public static void addClassName(Map dyn, String className) {
-		String classValue = dyn.get("class") + " " + className;
+		String classValue = (String) dyn.get("class");
+		if (StringUtils.isEmpty(classValue)) {
+			classValue = className;
+		} else {
+			classValue = classValue + " " + className;
+		}
 		dyn.put("class", classValue);
 	}
 	
 	public static Object formValue(Object value, Object form, String name, HttpServletRequest request) {
 		if (TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) {
-			if (value == null && !StringUtils.isEmpty(name)) {
+			if (isEmptyValue(value) && !StringUtils.isEmpty(name)) {
 				Controller controller = (Controller) request.getAttribute(ATTR_CONTROLLER);
 				return controller.getParams().get(name);
 			} else {
@@ -179,6 +141,14 @@ public class CubbyFunction {
 			} else {
 				return value;
 			}
+		}
+	}
+
+	private static boolean isEmptyValue(Object value) {
+		if (value instanceof String) {
+			return StringUtils.isEmpty((String) value);
+		} else {
+			return value == null;
 		}
 	}
 }
