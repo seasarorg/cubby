@@ -2,8 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://www.seasar.org/cubby" prefix="f" %>
 <%@ tag dynamic-attributes="dyn" %>
-<%@ attribute name="items" type="java.util.Collection" rtexprvalue="true" required="true" %>
-
+<%@ attribute name="items" type="java.util.Collection" rtexprvalue="true" required=false" %>
 <c:if test="${fn:length(items) > 0}">
   <div class="errors" ${f:toAttr(dyn)}>
     <ul>

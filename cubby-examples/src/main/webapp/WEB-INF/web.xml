@@ -80,10 +80,6 @@
   </servlet-mapping>
 
   <jsp-config>
-   <taglib>
-      <taglib-uri>http://www.seasar.org/cubby</taglib-uri>
-      <taglib-location>cubby.tld</taglib-location>
-    </taglib>
 	<jsp-property-group>
 		<url-pattern>*.jsp</url-pattern>
 		<el-ignored>false</el-ignored>
