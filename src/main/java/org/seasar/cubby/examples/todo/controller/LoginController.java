@@ -36,7 +36,7 @@ public class LoginController extends Controller {
 			user = new User(1, "Cubby");
 			return "@/todo/list";
 		} else {
-			errors.addActionErrors("ユーザIDかパスワードが違います。");
+			errors.addActionError("ユーザIDかパスワードが違います。");
 			return "login.jsp";
 		}
 	}

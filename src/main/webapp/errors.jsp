@@ -1,7 +1,7 @@
-<c:if test="${fn:length(actionErrors) > 0}">
+<c:if test="${fn:length(allErrors) > 0}">
   <div class="errors">
     <ul>
-    <c:forEach var="error" varStatus="s" items="${actionErrors}">
+    <c:forEach var="error" varStatus="s" items="${allErrors}">
       <li>${fn:replace(error, "
 ", "<br/>")}</li>
     </c:forEach>

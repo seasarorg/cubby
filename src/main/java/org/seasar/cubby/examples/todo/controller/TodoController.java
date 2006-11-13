@@ -5,7 +5,6 @@ import java.util.List;
 import org.seasar.cubby.annotation.Filter;
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
-import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.examples.todo.dto.FindTodoDto;
@@ -20,7 +19,6 @@ import org.seasar.cubby.util.StringUtils;
 
 @Form("todo")
 @Filter({AuthActionFilter.class})
-@Url("")
 public class TodoController extends Controller {
 	
 	// ----------------------------------------------[DI Filed]
@@ -37,7 +35,6 @@ public class TodoController extends Controller {
 
 	// ----------------------------------------------[Action Method]
 	
-	@Form("aaa")
 	public String show() {
 		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
