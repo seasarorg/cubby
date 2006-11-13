@@ -3,8 +3,8 @@
 <%@ taglib uri="http://www.seasar.org/cubby/helper-functions" prefix="hf" %>
 <%@ tag dynamic-attributes="dyn" %>
 <%@ attribute name="items" type="java.lang.Object" rtexprvalue="true" required="true" %>
-<%@ attribute name="labelProperty" type="java.lang.String" rtexprvalue="true" required="true" %>
-<%@ attribute name="valueProperty" type="java.lang.String" rtexprvalue="true" required="true" %>
+<%@ attribute name="labelProperty" type="java.lang.String" rtexprvalue="true" required="false" %>
+<%@ attribute name="valueProperty" type="java.lang.String" rtexprvalue="true" required="false" %>
 <%@ attribute name="value" type="java.lang.Object" rtexprvalue="true" required="false" %>
 <%@ attribute name="emptyOption" type="java.lang.Boolean" rtexprvalue="true" required="false" %>
 <%@ attribute name="emptyOptionLabel" type="java.lang.String" rtexprvalue="true" required="false" %>
