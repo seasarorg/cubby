@@ -35,7 +35,7 @@ public class ActionValidatorImpl implements ActionValidator {
 		Object value = controller.getParams().get(propValids.getPropertyName());
 		String error = v.validate(context, value);
 		if (error != null) {
-			controller.getErrors().addFieldError(propValids.getLabelKey(),
+			controller.getErrors().addFieldError(propValids.getPropertyName(),
 					error);
 		}
 	}

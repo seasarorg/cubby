@@ -21,7 +21,7 @@ public class ParameterFilter extends AroundFilter {
 		setupForm(action);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	private void setupForm(ActionContext action) {
 		HttpServletRequest request = action.getRequest();
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);

@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.ParameterMap;
 import org.seasar.cubby.validator.LabelKey;
@@ -26,6 +27,7 @@ public class ActionValidatorImplTest extends TestCase {
 	protected void setUp() throws Exception {
 		controller = new SampleContoroller();
 		controller.setParams(new ParameterMap(new HashMap()));
+		controller.setErrors(new ActionErrorsImpl());
 		validators = new Validators();
 		validators.add("prop1", new Required());
 		validators.add("prop2", new Required());
