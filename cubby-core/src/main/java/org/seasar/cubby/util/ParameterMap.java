@@ -11,6 +11,10 @@ public class ParameterMap implements Map<String, Object> {
 	public ParameterMap(Map parameter) {
 		this.parameter = parameter;
 	}
+	
+	public Map getOriginalParameter() {
+		return parameter;
+	}
 
 	public int toInt(String key) {
 		Object value = parameter.get(key);
@@ -99,5 +103,22 @@ public class ParameterMap implements Map<String, Object> {
 	@SuppressWarnings("unchecked")
 	public Collection<Object> values() {
 		return parameter.values();
+	}
+
+	public Object getValue(String key) {
+		Object value = parameter.get(key);
+		if (value == null) {
+			return null;
+		}
+		if (value.getClass().isArray()) {
+			Object[] values = (Object[])value;
+			if (values.length > 1) {
+				return values;
+			} else {
+				return values[0];
+			}
+		} else {
+			return value;
+		}
 	}
 }

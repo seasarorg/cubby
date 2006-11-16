@@ -3,6 +3,7 @@ package org.seasar.cubby.controller.impl;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.FilterConfig;
@@ -36,7 +37,7 @@ public class ActionFactoryImpl implements ActionFactory {
 
 	private final Map<String, ActionHolder> actionCache = new HashMap<String, ActionHolder>();
 
-	private final Map<Class, ActionFilter> actionFilterRegistory = new HashMap<Class, ActionFilter>();
+	private final Map<Class, ActionFilter> actionFilterRegistory = new LinkedHashMap<Class, ActionFilter>();
 
 	private final ControllerFactory controllerFactory;
 
@@ -104,7 +105,7 @@ public class ActionFactoryImpl implements ActionFactory {
 		chain.add(actionFilterRegistory.get(InitializeFilter.class));
 		addCustomFilters(c, m, chain);
 		chain.add(actionFilterRegistory.get(ValidationFilter.class));
-		chain.add(actionFilterRegistory.get(ParameterFilter.class));
+		//chain.add(actionFilterRegistory.get(ParameterFilter.class));
 		chain.add(actionFilterRegistory.get(InvocationFilter.class));
 		return chain;
 	}

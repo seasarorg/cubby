@@ -11,6 +11,8 @@ import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,17 +187,24 @@ public class InitializeFilter extends AroundFilter {
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		try {
-			Map<String,Object> parameterMap = new LinkedHashMap<String, Object>();
 			String encoding = request.getCharacterEncoding();
 			upload.setHeaderEncoding(encoding);
 			List<FileItem> items = upload.parseRequest(request);
-			for (FileItem item : items) {
-				if (item.getName() == null) {
-					String value = new String(item.getString().getBytes("iso-8859-1"), encoding);
-					parameterMap.put(item.getFieldName(), new String[] {value});
+			
+			// Fieldごとにパラメータを集める
+			Map<String, List<Object>> collectParameterMap = collectParameter(encoding, items);
+			
+			// 配列でパラメータMapを構築
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			for (String key : collectParameterMap.keySet()) {
+				List values = collectParameterMap.get(key);
+				Object[] valueArray = null;
+				if (values.get(0) instanceof String) {
+					valueArray = new String[values.size()];
 				} else {
-					parameterMap.put(item.getFieldName(), new FileItem[] { item });
+					valueArray = new FileItem[values.size()];
 				}
+				parameterMap.put(key, values.toArray(valueArray));
 			}
 			return parameterMap;
 		} catch (FileUploadException e) {
@@ -205,5 +214,28 @@ public class InitializeFilter extends AroundFilter {
 			LOG.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Map<String, List<Object>> collectParameter(String encoding, List<FileItem> items) throws UnsupportedEncodingException {
+		Map<String,List<Object>> parameterMap = new LinkedHashMap<String, List<Object>>();
+		for (FileItem item : items) {
+			Object value = null;
+			if (item.getName() == null) {
+				value = new String(item.getString().getBytes("iso-8859-1"), encoding);
+				//parameterMap.put(item.getFieldName(), new String[] {value});
+			} else {
+				value = item;
+				//parameterMap.put(item.getFieldName(), new FileItem[] { item });
+			}
+			List<Object> values = null;
+			if (parameterMap.containsKey(item.getFieldName())) {
+				values = parameterMap.get(item.getFieldName());
+			} else {
+				values = new ArrayList<Object>();
+				parameterMap.put(item.getFieldName(), values);
+			}
+			values.add(value);
+		}
+		return parameterMap;
 	}
 }
