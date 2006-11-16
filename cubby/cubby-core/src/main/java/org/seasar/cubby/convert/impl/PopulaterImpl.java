@@ -23,7 +23,11 @@ public class PopulaterImpl implements Populater {
 				Class<?> destClass = setter.getParameterTypes()[0];
 				Object converted = convert(values, target, setter, destClass);
 				Object[] args = new Object[] { converted };
-				ClassUtils.invoke(target, setter, args);
+				try {
+					ClassUtils.invoke(target, setter, args);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

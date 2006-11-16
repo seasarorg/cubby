@@ -131,7 +131,7 @@ public class CubbyHelperFunctions {
 		if (TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) {
 			if (isEmptyValue(value) && !StringUtils.isEmpty(name)) {
 				Controller controller = (Controller) request.getAttribute(ATTR_CONTROLLER);
-				return controller.getParams().get(name);
+				return controller.getParams().getValue(name);
 			} else {
 				return value;
 			}

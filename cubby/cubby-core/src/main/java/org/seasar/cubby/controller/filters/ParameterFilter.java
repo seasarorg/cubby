@@ -2,9 +2,6 @@ package org.seasar.cubby.controller.filters;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.convert.Populater;
 
@@ -23,15 +20,7 @@ public class ParameterFilter extends AroundFilter {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private void setupForm(ActionContext action) {
-		HttpServletRequest request = action.getRequest();
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-		Map<String, Object> params = null;
-		if (isMultipart) {
-			params = action.getController().getParams();
-		} else {
-			params = request.getParameterMap();
-		}
-
+		Map<String, Object> params = action.getController().getParams().getOriginalParameter();
 		Object formBean = action.getFormBean();
 		if (formBean != null) {
 			populater.populate(formBean, params);
