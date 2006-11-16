@@ -11,6 +11,8 @@ public class Required extends BaseValidator {
 			if (!StringUtils.isEmpty(str)) {
 				return null;
 			}
+		} else if (value != null) {
+			return null;
 		}
 		return getMessage("valid.required", getPropertyMessage(context
 				.getName()));
