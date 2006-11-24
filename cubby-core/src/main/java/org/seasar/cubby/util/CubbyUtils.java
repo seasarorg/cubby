@@ -1,6 +1,7 @@
 package org.seasar.cubby.util;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import org.seasar.cubby.annotation.Url;
 
@@ -39,5 +40,17 @@ public class CubbyUtils {
 		return m.getReturnType() == String.class
 				&& m.getParameterTypes().length == 0
 				&& !m.getName().equals("toString");
+	}
+
+	public static int getObjectSize(Object value) {
+		if (value == null) {
+			return 0;
+		} else if (value.getClass().isArray()) {
+			return ((Object[])value).length;
+		} else if (value instanceof Collection) {
+			return ((Collection)value).size();
+		} else {
+			return 1;
+		}
 	}
 }
