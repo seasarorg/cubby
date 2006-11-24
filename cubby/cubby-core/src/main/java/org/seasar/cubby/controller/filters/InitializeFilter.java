@@ -40,6 +40,7 @@ import org.seasar.cubby.util.ParameterMap;
 import org.seasar.cubby.util.RequestMap;
 import org.seasar.cubby.util.ResourceBundleUtils;
 import org.seasar.cubby.util.SessionMap;
+import org.seasar.cubby.util.StringUtils;
 
 public class InitializeFilter extends AroundFilter {
 
@@ -222,10 +223,13 @@ public class InitializeFilter extends AroundFilter {
 			Object value = null;
 			if (item.getName() == null) {
 				value = new String(item.getString().getBytes("iso-8859-1"), encoding);
-				//parameterMap.put(item.getFieldName(), new String[] {value});
 			} else {
-				value = item;
-				//parameterMap.put(item.getFieldName(), new FileItem[] { item });
+				if (StringUtils.isEmpty(item.getName()) || item.getSize() == 0) {
+					// ファイル名無し、あるいは０バイトのファイル
+					value = null;
+				} else {
+					value = item;
+				}
 			}
 			List<Object> values = null;
 			if (parameterMap.containsKey(item.getFieldName())) {
