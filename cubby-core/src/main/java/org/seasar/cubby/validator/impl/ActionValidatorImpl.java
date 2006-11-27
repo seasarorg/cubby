@@ -1,5 +1,9 @@
 package org.seasar.cubby.validator.impl;
 
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.validator.ActionValidator;
@@ -32,11 +36,25 @@ public class ActionValidatorImpl implements ActionValidator {
 			PropertyValidators propValids) {
 		ValidContext context = new ValidContext();
 		context.setName(getLabelKey(form, propValids.getLabelKey()));
-		Object value = controller.getParams().get(propValids.getPropertyName());
+		Object value = getPropertyValue(controller.getParams(), propValids.getPropertyName());
 		String error = v.validate(context, value);
 		if (error != null) {
 			controller.getErrors().addFieldError(propValids.getPropertyName(),
 					error);
+		}
+	}
+
+	Object getPropertyValue(Map params, String propertyName) {
+		String[] props = StringUtils.split(propertyName, ".", 2);
+		Object value = params.get(props[0]);
+		if (props.length == 1) {
+			return value;
+		} else {
+			try {
+				return BeanUtils.getNestedProperty(value, props[1]);
+			} catch (Exception e) {
+				return null;
+			}
 		}
 	}
 
