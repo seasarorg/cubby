@@ -10,12 +10,12 @@ public abstract class AroundFilter implements ActionFilter {
 			throws Throwable {
 		doBeforeFilter(action);
 		String result = chain.doFilter(action);
-		doAfterFilter(action);
+		doAfterFilter(action, result);
 		return result;
 	}
 
 	protected void doBeforeFilter(ActionContext action) {}
 
-	protected void doAfterFilter(ActionContext action) {}
+	protected void doAfterFilter(ActionContext action, String result) {}
 
 }
