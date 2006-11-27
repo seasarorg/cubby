@@ -5,4 +5,4 @@
 <%@ attribute name="value" type="java.lang.String" rtexprvalue="true" required="false" %>
 <c:set var="value" value="${hf:formValue(value, __form, dyn['name'], pageContext.request)}"/>
 <c:if test="${fieldErrors[dyn['name']] != null}">${hf:addClassName(dyn, "fieldError")}</c:if>
-<textarea ${hf:toAttr(dyn)}>${value}</textarea>
+<textarea ${hf:toAttr(dyn)}>${f:out(value)}</textarea>
