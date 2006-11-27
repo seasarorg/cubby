@@ -31,4 +31,18 @@ public class CubbyUtilsTest extends TestCase {
 		return list;
 	}
 	
+	public void testIsForwordResult() throws Exception {
+		assertEquals(true, CubbyUtils.isForwardResult("aaa.jsp"));
+		assertEquals(false, CubbyUtils.isForwardResult("@aaa.jsp"));
+		assertEquals(false, CubbyUtils.isForwardResult("/@aaa.jsp"));
+		assertEquals(false, CubbyUtils.isForwardResult(null));
+	}
+
+	public void testIsRedirectResult() throws Exception {
+		assertEquals(false, CubbyUtils.isRedirectResult("aaa.jsp"));
+		assertEquals(true, CubbyUtils.isRedirectResult("@aaa.jsp"));
+		assertEquals(true, CubbyUtils.isRedirectResult("/@aaa.jsp"));
+		assertEquals(false, CubbyUtils.isRedirectResult(null));
+	}
+
 }

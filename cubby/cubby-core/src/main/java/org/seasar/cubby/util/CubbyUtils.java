@@ -53,4 +53,12 @@ public class CubbyUtils {
 			return 1;
 		}
 	}
+
+	public static boolean isForwardResult(String result) {
+		return result != null && (!isRedirectResult(result));
+	}
+
+	public static boolean isRedirectResult(String result) {
+		return result != null && (result.startsWith("@") || result.startsWith("/@"));
+	}
 }
