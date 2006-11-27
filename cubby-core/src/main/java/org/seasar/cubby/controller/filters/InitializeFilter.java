@@ -34,6 +34,7 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.FlashHashMap;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.cubby.util.ParameterMap;
@@ -76,7 +77,10 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	@Override
-	protected void doAfterFilter(ActionContext action) {
+	protected void doAfterFilter(ActionContext action, String result) {
+		if (CubbyUtils.isForwardResult(result)) {
+			action.getController().prerender();
+		}
 		bindAttributes(action);
 	}
 
