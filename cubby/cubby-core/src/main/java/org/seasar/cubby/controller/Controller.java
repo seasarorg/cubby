@@ -15,6 +15,8 @@ public abstract class Controller {
 	protected Map<String,Object> flash;
 
 	public void initalize() {}
+	public void prerender() {}
+	public void postrender() {}
 	
 	public ActionErrors getErrors() {
 		return errors;

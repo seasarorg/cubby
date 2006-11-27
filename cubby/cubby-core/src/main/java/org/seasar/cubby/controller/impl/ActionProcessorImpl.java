@@ -77,6 +77,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 		dispatcher.forward(request, response);
+		action.getController().postrender();
 		controller.getFlash().clear();
 	}
 }
