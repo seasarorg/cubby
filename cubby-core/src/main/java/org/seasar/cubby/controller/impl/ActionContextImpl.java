@@ -93,8 +93,11 @@ public class ActionContextImpl implements ActionContext {
 			return null;
 		}
 		String formFieldName = form.value();
-		Object formBean = ClassUtils.getField(controller, formFieldName);
-		return formBean;
+		if ("this".equals(formFieldName)) {
+			return controller;
+		} else {
+			return ClassUtils.getField(controller, formFieldName);
+		}
 	}
 
 	public String getControllerName() {
