@@ -73,10 +73,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 			path = "/" + cname + "/" + result;
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("forward[path=" + path + "]");
+			LOG.debug("BEGIN forward[path=" + path + "]");
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 		dispatcher.forward(request, response);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("END forward[path=" + path + "]");
+		}
 		action.getController().postrender();
 		controller.getFlash().clear();
 	}
