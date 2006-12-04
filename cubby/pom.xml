@@ -9,7 +9,7 @@
 	<description>
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
-	<url>http://www.nulab.co.jp/</url>
+	<url>http://cubby.sandbox.seasar.org/</url>
 	<developers>
 		<developer>
 			<id>agata</id>
@@ -20,8 +20,8 @@
 		</developer>
 	</developers>
 	<organization>
-		<name>Nulab Inc.</name>
-		<url>http://www.nulab.co.jp</url>
+		<name>The Seasar Foundation</name>
+		<url>http://www.seasar.org/</url>
 	</organization>
 	<build>
 		<plugins>
