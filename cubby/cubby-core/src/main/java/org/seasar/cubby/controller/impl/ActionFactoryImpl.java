@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.annotation.Filter;
+import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFactory;
 import org.seasar.cubby.controller.ActionFilter;
@@ -23,7 +26,6 @@ import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.ControllerFactory;
 import org.seasar.cubby.controller.filters.InitializeFilter;
 import org.seasar.cubby.controller.filters.InvocationFilter;
-import org.seasar.cubby.controller.filters.ParameterFilter;
 import org.seasar.cubby.controller.filters.ValidationFilter;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.CubbyUtils;
@@ -35,7 +37,9 @@ public class ActionFactoryImpl implements ActionFactory {
 	@SuppressWarnings("unchecked")
 	public static final Class<ActionFilter>[] NULL_FILTERS = (Class<ActionFilter>[]) new Class[0];
 
-	private final Map<String, ActionHolder> actionCache = new HashMap<String, ActionHolder>();
+	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
+
+	private final Map<Pattern, ActionHolder> actionCache = new HashMap<Pattern, ActionHolder>();
 
 	private final Map<Class, ActionFilter> actionFilterRegistory = new LinkedHashMap<Class, ActionFilter>();
 
@@ -87,8 +91,14 @@ public class ActionFactoryImpl implements ActionFactory {
 	private void initAction(Class c, Method m) {
 		String actionFullName = CubbyUtils.getActionFullName(c, m);
 		ActionFilterChain chain = createActionFilterChain(c, m);
-		ActionHolder holder = new ActionHolder(m, chain);
-		actionCache.put(actionFullName, holder);
+		Url url = m.getAnnotation(Url.class);
+		String[] uriConvertNames = EMPTY_STRING_ARRAY;
+		if (url != null && url.to() != null) {
+			uriConvertNames = url.to();
+		}
+		ActionHolder holder = new ActionHolder(m, chain, uriConvertNames);
+		Pattern pattern = Pattern.compile("^" + actionFullName + "$");
+		actionCache.put(pattern, holder);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("アクションメソッドを登録[uri=" + actionFullName + ", method=" + m
 					+ "]");
@@ -128,12 +138,26 @@ public class ActionFactoryImpl implements ActionFactory {
 
 	public ActionContext createAction(String appUri,
 			HttpServletRequest request, HttpServletResponse response) {
-		ActionHolder holder = actionCache.get(appUri);
+		ActionHolder holder = null;
+		Map<String, Object> uriParams = new HashMap<String, Object>();
+		for (Pattern p : actionCache.keySet()) {
+			Matcher matcher = p.matcher(appUri);
+			if(matcher.find()) {
+				holder = actionCache.get(p);
+				for (int i = 1; i < matcher.groupCount() + 1; i++) {
+					String group = matcher.group(i);
+					String paramName = holder.getUriConvertNames()[i - 1];
+					uriParams.put(paramName, group);
+				}
+				break;
+			}
+		}
 		if (holder == null) {
 			return null;
 		}
 		Controller controller = controllerFactory.createController(holder
 				.getActionMethod());
-		return new ActionContextImpl(request, response, controller, holder);
+		return new ActionContextImpl(request, response, controller, holder, uriParams);
 	}
+
 }

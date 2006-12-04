@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
@@ -77,7 +78,7 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	@Override
-	protected void doAfterFilter(ActionContext action, String result) {
+	protected void doAfterFilter(ActionContext action, ActionResult result) {
 		if (CubbyUtils.isForwardResult(result)) {
 			action.getController().prerender();
 		}
@@ -87,7 +88,10 @@ public class InitializeFilter extends AroundFilter {
 	private void setupParams(ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
-		ParameterMap params = new ParameterMap(getMultipartSupportParameterMap(request));
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.putAll(action.getUriParams());
+		paramMap.putAll(getMultipartSupportParameterMap(request));
+		ParameterMap params = new ParameterMap(paramMap);
 		controller.setParams(params);
 		request.setAttribute(ATTR_PARAMS, controller.getParams());
 	}

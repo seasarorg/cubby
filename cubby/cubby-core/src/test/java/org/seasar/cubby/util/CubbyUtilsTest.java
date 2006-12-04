@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.controller.results.Redirect;
+
 import junit.framework.TestCase;
 
 public class CubbyUtilsTest extends TestCase {
@@ -32,16 +35,16 @@ public class CubbyUtilsTest extends TestCase {
 	}
 	
 	public void testIsForwordResult() throws Exception {
-		assertEquals(true, CubbyUtils.isForwardResult("aaa.jsp"));
-		assertEquals(false, CubbyUtils.isForwardResult("@aaa.jsp"));
-		assertEquals(false, CubbyUtils.isForwardResult("/@aaa.jsp"));
+		assertEquals(true, CubbyUtils.isForwardResult(new Forward("aaa.jsp")));
+		assertEquals(false, CubbyUtils.isForwardResult(new Redirect("aaa.jsp")));
+		assertEquals(false, CubbyUtils.isForwardResult(new Redirect("/@aaa.jsp")));
 		assertEquals(false, CubbyUtils.isForwardResult(null));
 	}
 
 	public void testIsRedirectResult() throws Exception {
-		assertEquals(false, CubbyUtils.isRedirectResult("aaa.jsp"));
-		assertEquals(true, CubbyUtils.isRedirectResult("@aaa.jsp"));
-		assertEquals(true, CubbyUtils.isRedirectResult("/@aaa.jsp"));
+		assertEquals(false, CubbyUtils.isRedirectResult(new Forward("aaa.jsp")));
+		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("aaa.jsp")));
+		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("/aaa.jsp")));
 		assertEquals(false, CubbyUtils.isRedirectResult(null));
 	}
 

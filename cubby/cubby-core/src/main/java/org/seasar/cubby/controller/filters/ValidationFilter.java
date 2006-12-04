@@ -8,6 +8,8 @@ import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
+import org.seasar.cubby.controller.ActionResult;
+import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.validator.ActionValidator;
 
@@ -20,7 +22,7 @@ public class ValidationFilter implements ActionFilter {
 		this.populater = populater;
 	}
 	
-	public String doFilter(ActionContext action, ActionFilterChain chain)
+	public ActionResult doFilter(ActionContext action, ActionFilterChain chain)
 			throws Throwable {
 		boolean success = actionValidator.processValidation(action
 				.getValidation(), action.getController(), action.getFormBean(),
@@ -32,7 +34,7 @@ public class ValidationFilter implements ActionFilter {
 			action.getRequest().setAttribute(ATTR_VALIDATION_FAIL, true);
 			Validation valid = action.getValidation();
 			setupForm(action);
-			return valid.errorPage();
+			return new Forward(valid.errorPage());
 		}
 	}
 	

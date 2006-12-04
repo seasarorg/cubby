@@ -1,6 +1,7 @@
 package org.seasar.cubby.controller.impl;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +32,16 @@ public class ActionContextImpl implements ActionContext {
 
 	private ActionFilter currentFilter;
 
+	private final Map<String, Object> uriParams;
+
 	@SuppressWarnings("unchecked")
 	public ActionContextImpl(HttpServletRequest request,
-			HttpServletResponse response, Controller controller, ActionHolder holder) {
+			HttpServletResponse response, Controller controller, ActionHolder holder, Map<String, Object> uriParams) {
 		this.request = request;
 		this.response = response;
 		this.controller = controller;
 		this.holder = holder;
+		this.uriParams = uriParams;
 		this.controllerClass = (Class<? extends Controller>) holder.getActionMethod().getDeclaringClass();
 	}
 
@@ -114,5 +118,9 @@ public class ActionContextImpl implements ActionContext {
 
 	public void setCurrentFilter(ActionFilter currentFilter) {
 		this.currentFilter = currentFilter;
+	}
+
+	public Map<String, Object> getUriParams() {
+		return uriParams;
 	}
 }
