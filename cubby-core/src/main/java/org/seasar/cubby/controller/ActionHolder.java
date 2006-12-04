@@ -6,10 +6,12 @@ import java.lang.reflect.Method;
 public class ActionHolder {
 	private final Method actionMethod;
 	private final ActionFilterChain filterChain;
+	private final String[] uriConvertNames;
 	
-	public ActionHolder(Method actionMethod, ActionFilterChain chain) {
+	public ActionHolder(Method actionMethod, ActionFilterChain chain, String[] uriConvertNames) {
 		this.actionMethod = actionMethod;
-		this.filterChain = chain;	
+		this.filterChain = chain;
+		this.uriConvertNames = uriConvertNames;
 	}
 	
 	public Method getActionMethod() {
@@ -18,5 +20,9 @@ public class ActionHolder {
 
 	public ActionFilterChain getFilterChain() {
 		return filterChain;
+	}
+
+	public String[] getUriConvertNames() {
+		return uriConvertNames;
 	}
 }

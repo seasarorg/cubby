@@ -60,7 +60,8 @@ abstract public class AbstractCubbyFilter implements Filter {
 			if (action == null) {
 				chain.doFilter(request, response);
 			} else {
-				actionProcesser.processAction(action);
+				@SuppressWarnings("unused")
+				ActionResult result = actionProcesser.processAction(action);
 			}
 		} catch (Throwable e) {
 			LOG.error(e.getMessage(), e);

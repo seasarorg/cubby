@@ -15,6 +15,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Url {
 	String value() default "";
-	String alias() default "";
 	String[] to() default {};
 }

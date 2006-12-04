@@ -1,6 +1,7 @@
 package org.seasar.cubby.controller;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,4 +23,5 @@ public interface ActionContext {
 	ActionHolder getActionHolder();
 	ActionFilter getCurrentFilter();
 	void setCurrentFilter(ActionFilter filter);
+	Map<String, Object> getUriParams();
 }

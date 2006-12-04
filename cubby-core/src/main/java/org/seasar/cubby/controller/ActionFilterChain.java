@@ -12,11 +12,11 @@ public class ActionFilterChain {
 		interceptors.add(interceptor);
 	}
 
-	public String doFilter(ActionContext context) throws Throwable {
+	public ActionResult doFilter(ActionContext context) throws Throwable {
 		ActionFilter next = findNextFilter(context);
 		System.out.println("filter=" + next);
 		context.setCurrentFilter(next);
-		String result = next.doFilter(context, this);
+		ActionResult result = next.doFilter(context, this);
 		return result;
 	}
 	

@@ -4,6 +4,9 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 import org.seasar.cubby.annotation.Url;
+import org.seasar.cubby.controller.ActionResult;
+import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.controller.results.Redirect;
 
 public class CubbyUtils {
 
@@ -37,9 +40,8 @@ public class CubbyUtils {
 	}
 
 	public static boolean isActionMethod(Method m) {
-		return m.getReturnType() == String.class
-				&& m.getParameterTypes().length == 0
-				&& !m.getName().equals("toString");
+		return m.getReturnType().isAssignableFrom(ActionResult.class)
+				&& m.getParameterTypes().length == 0;
 	}
 
 	public static int getObjectSize(Object value) {
@@ -54,11 +56,11 @@ public class CubbyUtils {
 		}
 	}
 
-	public static boolean isForwardResult(String result) {
-		return result != null && (!isRedirectResult(result));
+	public static boolean isForwardResult(ActionResult result) {
+		return result instanceof Forward;
 	}
 
-	public static boolean isRedirectResult(String result) {
-		return result != null && (result.startsWith("@") || result.startsWith("/@"));
+	public static boolean isRedirectResult(ActionResult result) {
+		return result instanceof Redirect;
 	}
 }
