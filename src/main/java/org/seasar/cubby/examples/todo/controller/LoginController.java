@@ -4,7 +4,10 @@ import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.annotation.Validation;
+import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.controller.results.Redirect;
 import org.seasar.cubby.examples.todo.dto.LoginDto;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.examples.todo.logic.TodoLogic;
@@ -26,24 +29,24 @@ public class LoginController extends Controller {
 	
 	// ----------------------------------------------[Action Method]
 
-	public String login() {
-		return "login.jsp";
+	public ActionResult login() {
+		return new Forward("login.jsp");
 	}
 	
 	@Validation(errorPage = "login.jsp")
-	public String login_process() {
+	public ActionResult login_process() {
 		if(todoLogic.login(loginDto)) {
 			user = new User(1, "Cubby");
-			return "@/todo/list";
+			return new Redirect("/todo/list");
 		} else {
 			errors.addActionError("ユーザIDかパスワードが違います。");
-			return "login.jsp";
+			return new Forward("login.jsp");
 		}
 	}
 
-	public String logout() {
+	public ActionResult logout() {
 		session.clear();
-		return "@login";
+		return new Redirect("/login");
 	}
 	
 	// ----------------------------------------------[Helper Method]

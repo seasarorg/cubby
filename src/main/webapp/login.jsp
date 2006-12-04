@@ -11,15 +11,15 @@
 <h1>Todoログイン</h1>
 <c:import url="errors.jsp" />
 <c:import url="notice.jsp"/>
-<form action="login_process" method="post">
+<t:form action="login_process" method="post" value="${loginDto}">
 <table border="1">
   <tr>
     <th>ユーザID</th>
-    <td><t:input type="text" name="userId" maxlength="20" value="${f:out(loginDto.userId)}"/></td>
+    <td><t:input type="text" name="userId" maxlength="20" /></td>
   </tr>
   <tr>
     <th>パスワード</th>
-    <td><t:input type="password" name="password" maxlength="20" value="${f:out(loginDto.password)}"/></td>
+    <td><t:input type="password" name="password" maxlength="20" /></td>
   </tr>
   <tr>
     <th></th>
@@ -27,6 +27,6 @@
   </tr>
 </table>
 test/testでログインできます。
-</form>
+</t:form>
 </body>
 </html>
