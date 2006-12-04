@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Url;
+import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.results.Forward;
 
 @Url("")
 public class ComponentsController extends Controller {
@@ -21,15 +23,16 @@ public class ComponentsController extends Controller {
 	// ----------------------------------------------[Action Method]
 
 	@Override
-	public void initalize() {
+	public void prerender() {
+		super.prerender();
 		hobbies = getHobbies();
 		colors = getColors();
 	}
 	
 	@Url("components")
 	@Form("form")
-	public String show() {
-		return "/components.jsp";
+	public ActionResult show() {
+		return new Forward("/components.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]

@@ -47,7 +47,7 @@ function doDelete(name, id) {
   </tr>
   	<c:forEach var="todo" items="${todoList}" varStatus="status">
 	    <tr class="<t:odd var="${status.index}"/>">
-	    	 <td><a href="show?id=${f:out(todo.id)}">${f:out(todo.text)}</a></td>
+	    	 <td><a href="${contextPath}/todo/${f:out(todo.id)}">${f:out(todo.text)}</a></td>
 			<td>${f:out(todo.type.name)}</td>
 			<td>${f:dateFormat(todo.limitDate, 'yyyy-MM-dd')}</td>
 			<td>[<a href="javascript:doDelete('${f:out(todo.text)}',${f:out(todo.id)});">削除</a>]</td>

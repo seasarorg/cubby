@@ -5,8 +5,12 @@ import java.util.List;
 import org.seasar.cubby.annotation.Filter;
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
+import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.annotation.Validation;
+import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.controller.results.Redirect;
 import org.seasar.cubby.examples.todo.dto.FindTodoDto;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
@@ -35,34 +39,35 @@ public class TodoController extends Controller {
 
 	// ----------------------------------------------[Action Method]
 	
-	public String show() {
+	@Url(value="([0-9]+)", to={"id"})
+	public ActionResult show() {
 		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
-		return "show.jsp";
+		return new Forward("show.jsp");
 	}
 
-	public String create() {
-		return "edit.jsp";
+	public ActionResult create() {
+		return new Forward("edit.jsp");
 	}
 
-	public String edit() {
+	public ActionResult edit() {
 		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
-		return "edit.jsp";
+		return new Forward("edit.jsp");
 	}
 
 	@Validation(errorPage="edit.jsp")
-	public String confirm() {
+	public ActionResult confirm() {
 		todo.setType(todoTypeLogic.findById(todo.getTypeId()));
-		return "confirm.jsp";
+		return new Forward("confirm.jsp");
 	}
 
-	public String confirm_back() {
-		return "edit.jsp";
+	public ActionResult confirm_back() {
+		return new Forward("edit.jsp");
 	}
 
 	@Validation(errorPage="confirm.jsp")
-	public String save() {
+	public ActionResult save() {
 		if (todo.getId() == null) {
 			todoLogic.addTodo(todo);
 			flash.put("notice", todo.getText() + "を追加しました。");
@@ -70,22 +75,22 @@ public class TodoController extends Controller {
 			todoLogic.updateTodo(todo);
 			flash.put("notice", todo.getText() + "を更新しました。");
 		}
-		return "@list";
+		return new Redirect("list");
 	}
 	
-	public String delete() {
+	public ActionResult delete() {
 		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
 		todoLogic.deleteById(todo.getId());
 		flash.put("notice", todo.getText() + "を削除しました。");
-		return "@list";
+		return new Redirect("list");
 	}
 	
 	@Form("findTodoDto")
-	public String list() {
+	public ActionResult list() {
 		User user = (User) session.get("user");
 		todoList = todoLogic.findAllByUserId(user.getId(), findTodoDto);
-		return "list.jsp";
+		return new Forward("list.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]
