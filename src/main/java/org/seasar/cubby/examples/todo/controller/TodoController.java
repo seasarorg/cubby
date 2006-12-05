@@ -39,7 +39,7 @@ public class TodoController extends Controller {
 
 	// ----------------------------------------------[Action Method]
 	
-	@Url(value="([0-9]+)", to={"id"})
+	@Url("{id,[0-9]+}")
 	public ActionResult show() {
 		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
