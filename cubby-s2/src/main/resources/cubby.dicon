@@ -29,4 +29,9 @@
 	<!-- ServletFilter -->
 	<component class="org.seasar.cubby.seasar.S2CubbyFilter" instance="outer" />
 
+	<!-- FileUpload -->
+	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
+	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
+		<property name="sizeMax">configration.getValue("multipartRequestParser.sizeMax")</property>
+	</component>
 </components>
