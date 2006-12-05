@@ -4,6 +4,9 @@
 	<classpathentry kind="src" path="cubby-core/src/main/resources"/>
 	<classpathentry kind="src" path="cubby-core/src/test/java"/>
 	<classpathentry kind="src" path="cubby-s2/src/main/java"/>
+	<classpathentry kind="src" path="cubby-s2/src/main/resources"/>
+	<classpathentry kind="src" path="cubby-s2/src/test/java"/>
+	<classpathentry kind="src" path="cubby-s2/src/test/resources"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="target/classes"/>

@@ -1,9 +1,11 @@
 package org.seasar.cubby.controller.impl;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,10 +15,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.annotation.Filter;
-import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFactory;
 import org.seasar.cubby.controller.ActionFilter;
@@ -44,6 +46,8 @@ public class ActionFactoryImpl implements ActionFactory {
 	private final Map<Class, ActionFilter> actionFilterRegistory = new LinkedHashMap<Class, ActionFilter>();
 
 	private final ControllerFactory controllerFactory;
+
+	private static Pattern pattern = Pattern.compile("([{]([^}]+)[}])([^{]*)");
 
 	public ActionFactoryImpl(ControllerFactory controllerFactory) {
 		this.controllerFactory = controllerFactory;
@@ -91,20 +95,32 @@ public class ActionFactoryImpl implements ActionFactory {
 	private void initAction(Class c, Method m) {
 		String actionFullName = CubbyUtils.getActionFullName(c, m);
 		ActionFilterChain chain = createActionFilterChain(c, m);
-		Url url = m.getAnnotation(Url.class);
-		String[] uriConvertNames = EMPTY_STRING_ARRAY;
-		if (url != null && url.to() != null) {
-			uriConvertNames = url.to();
+		List<String> uriConvertNames = new ArrayList<String>();
+		Matcher matcher = pattern.matcher(actionFullName);
+		while (matcher.find()) {
+			String name = matcher.group(2);
+			String[] names = name.split(",", 2);
+			if (names.length == 1) {
+				actionFullName = StringUtils.replace(actionFullName, matcher.group(1), "([a-zA-Z0-9]+)");
+				uriConvertNames.add(matcher.group(2));
+			} else {
+				actionFullName = StringUtils.replace(actionFullName, matcher.group(1), "(" + names[1] + ")");
+				uriConvertNames.add(names[0]);
+			}
 		}
-		ActionHolder holder = new ActionHolder(m, chain, uriConvertNames);
+		ActionHolder holder = new ActionHolder(m, chain, uriConvertNames.toArray(new String[uriConvertNames.size()]));
 		Pattern pattern = Pattern.compile("^" + actionFullName + "$");
 		actionCache.put(pattern, holder);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("アクションメソッドを登録[uri=" + actionFullName + ", method=" + m
-					+ "]");
+					+ "uri params=" + StringUtils.join(holder.getUriConvertNames()) + "]");
 		}
 	}
 
+	static String[] getUriConvertNames(String value) {
+		return null;
+	}
+	
 	private boolean isController(Class c) {
 		return ClassUtils.isSubClass(Controller.class, c);
 	}

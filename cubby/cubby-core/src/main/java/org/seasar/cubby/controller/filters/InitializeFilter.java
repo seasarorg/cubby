@@ -9,30 +9,20 @@ import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.CubbyUtils;
@@ -42,11 +32,15 @@ import org.seasar.cubby.util.ParameterMap;
 import org.seasar.cubby.util.RequestMap;
 import org.seasar.cubby.util.ResourceBundleUtils;
 import org.seasar.cubby.util.SessionMap;
-import org.seasar.cubby.util.StringUtils;
 
 public class InitializeFilter extends AroundFilter {
 
-	private static final Log LOG = LogFactory.getLog(InitializeFilter.class);
+	private MultipartRequestParser multipartRequestParser;
+
+	public InitializeFilter(MultipartRequestParser multipartRequestParser) {
+		this.multipartRequestParser = multipartRequestParser;
+	}
+	
 	
 	@Override
 	protected void doBeforeFilter(ActionContext action) {
@@ -183,71 +177,10 @@ public class InitializeFilter extends AroundFilter {
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	private Map<String,Object> getMultipartSupportParameterMap(HttpServletRequest request) {
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-		if (isMultipart) {
-			return getMultipartParameterMap(request);
+		if (multipartRequestParser.isMultipart(request)) {
+			return multipartRequestParser.getMultipartParameterMap(request);
 		} else {
 			return request.getParameterMap();
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private Map<String,Object> getMultipartParameterMap(HttpServletRequest request) {
-		FileItemFactory factory = new DiskFileItemFactory();
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		try {
-			String encoding = request.getCharacterEncoding();
-			upload.setHeaderEncoding(encoding);
-			List<FileItem> items = upload.parseRequest(request);
-			
-			// Fieldごとにパラメータを集める
-			Map<String, List<Object>> collectParameterMap = collectParameter(encoding, items);
-			
-			// 配列でパラメータMapを構築
-			Map<String, Object> parameterMap = new HashMap<String, Object>();
-			for (String key : collectParameterMap.keySet()) {
-				List values = collectParameterMap.get(key);
-				Object[] valueArray = null;
-				if (values.get(0) instanceof String) {
-					valueArray = new String[values.size()];
-				} else {
-					valueArray = new FileItem[values.size()];
-				}
-				parameterMap.put(key, values.toArray(valueArray));
-			}
-			return parameterMap;
-		} catch (FileUploadException e) {
-			LOG.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			LOG.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	private Map<String, List<Object>> collectParameter(String encoding, List<FileItem> items) throws UnsupportedEncodingException {
-		Map<String,List<Object>> parameterMap = new LinkedHashMap<String, List<Object>>();
-		for (FileItem item : items) {
-			Object value = null;
-			if (item.getName() == null) {
-				value = new String(item.getString().getBytes("iso-8859-1"), encoding);
-			} else {
-				if (StringUtils.isEmpty(item.getName()) || item.getSize() == 0) {
-					// ファイル名無し、あるいは０バイトのファイル
-					value = null;
-				} else {
-					value = item;
-				}
-			}
-			List<Object> values = null;
-			if (parameterMap.containsKey(item.getFieldName())) {
-				values = parameterMap.get(item.getFieldName());
-			} else {
-				values = new ArrayList<Object>();
-				parameterMap.put(item.getFieldName(), values);
-			}
-			values.add(value);
-		}
-		return parameterMap;
 	}
 }

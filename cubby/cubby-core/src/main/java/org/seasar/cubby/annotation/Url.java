@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Url {
+	enum Method {GET,POST}
 	String value() default "";
-	String[] to() default {};
+	Method method() default Url.Method.GET;
 }
