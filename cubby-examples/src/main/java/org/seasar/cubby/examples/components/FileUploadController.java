@@ -2,7 +2,9 @@ package org.seasar.cubby.examples.components;
 
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Url;
+import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.controller.results.Forward;
 
 @Url("")
 public class FileUploadController extends Controller {
@@ -20,14 +22,14 @@ public class FileUploadController extends Controller {
 	}
 	
 	@Url("fileupload")
-	public String show() {
-		return "/fileupload.jsp";
+	public ActionResult show() {
+		return new Forward("/fileupload.jsp");
 	}
 
 	@Form("form")
 	@Url("fileupload_upload")
-	public String upload() {
-		return "/fileupload_done.jsp";
+	public ActionResult upload() {
+		return new Forward("/fileupload_done.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]
