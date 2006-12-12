@@ -23,6 +23,8 @@ public class MaxLength extends BaseValidator {
 				return getMessage("valid.maxLength", getPropertyMessage(context
 						.getName()), (Integer) max);
 			}
+		} else if(value == null){
+			return null;
 		} else {
 			return getMessage("valid.maxLength", getPropertyMessage(context
 					.getName()), (Integer) max);

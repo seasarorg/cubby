@@ -15,6 +15,8 @@ public class Number extends BaseValidator {
 				Long.parseLong(str);
 				return null;
 			} catch (NumberFormatException e) {}
+		}else if(value == null){
+			return null;
 		}
 		return getMessage("valid.number", getPropertyMessage(context
 				.getName()));
