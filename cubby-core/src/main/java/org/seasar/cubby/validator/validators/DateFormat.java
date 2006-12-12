@@ -17,7 +17,7 @@ public class DateFormat extends BaseValidator {
 	}
 	
 
-	public String validate(ValidContext context, Object value) {
+	public String validate(ValidContext context, Object value) {		
 		if (value instanceof String) {
 			String str = (String)value;
 			if (StringUtils.isEmpty((String)value)) {
@@ -29,7 +29,9 @@ public class DateFormat extends BaseValidator {
 					return null;
 				}
 			} catch (Exception e) {}
-		}	
+		}else if(value == null){
+			return null;
+		}
 		return getMessage("valid.dateFormat", getPropertyMessage(context.getName()));
 	}
 }

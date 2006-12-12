@@ -24,6 +24,8 @@ public class RangeLengthValidator extends BaseValidator {
 			if (length >= min && length <= max) {
 				return null;
 			}
+		}else if(value == null){
+			return null;
 		}
 		return getMessage("valid.rangeLength", getPropertyMessage(context.getName()), min, max);
 	}

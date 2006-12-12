@@ -25,6 +25,8 @@ public class RangeValidator extends BaseValidator {
 					return null;
 				}
 			} catch (NumberFormatException e) {}
+		}else if(value == null){
+			return null;
 		}
 		return getMessage("valid.range", getPropertyMessage(context
 				.getName()), (Long) min, (Long) max);
