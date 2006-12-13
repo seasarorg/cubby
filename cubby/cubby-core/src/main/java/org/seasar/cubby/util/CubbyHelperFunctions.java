@@ -49,8 +49,12 @@ public class CubbyHelperFunctions {
 	public static String toAttr(Map<String, Object> map) {
 		StringBuilder sb = new StringBuilder();
 		for(String key : map.keySet()) {
+			if (key.equals("value") || key.equals("checkedValue")) {
+				continue;
+			}
 			sb.append(key);
 			sb.append("=\"");
+//			sb.append(CubbyFunctions.escapeHtml(map.get(key)));
 			sb.append(map.get(key));
 			sb.append("\" ");
 		}
@@ -95,7 +99,13 @@ public class CubbyHelperFunctions {
 	}
 	
 	private static boolean equalsValue(Object values, Object value) {
-		return values.toString().equals(value.toString());
+		if (values == value) { 
+			return true; 
+		} else if (values == null) { 
+			return false; 
+		} else {
+			return values.toString().equals(value.toString());
+		}
 	}
 
 	public static String convertFieldValue(Object source, Object form, String propertyName) {
@@ -127,28 +137,22 @@ public class CubbyHelperFunctions {
 		dyn.put("class", classValue);
 	}
 	
-	public static Object formValue(Object value, Object form, String name, HttpServletRequest request) {
+	public static Object formValue(Map dyn, Object form, HttpServletRequest request, String valueParamName) {
+		Object value = dyn.get(valueParamName);
+		String name = (String) dyn.get("name");
 		if (TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) {
-			if (isEmptyValue(value) && !StringUtils.isEmpty(name)) {
+			if (dyn.containsKey(valueParamName)) {
+				return value;
+			} else {
 				Controller controller = (Controller) request.getAttribute(ATTR_CONTROLLER);
 				return controller.getParams().getValue(name);
-			} else {
-				return value;
 			}
 		} else {
-			if (value == null && form != null && !StringUtils.isEmpty(name)) {
+			if (dyn.containsKey(valueParamName) || form == null || StringUtils.isEmpty(name)) {
+				return value;
+			} else {
 				return property(form, name);
-			} else {
-				return value;
 			}
-		}
-	}
-
-	private static boolean isEmptyValue(Object value) {
-		if (value instanceof String) {
-			return StringUtils.isEmpty((String) value);
-		} else {
-			return value == null;
 		}
 	}
 }

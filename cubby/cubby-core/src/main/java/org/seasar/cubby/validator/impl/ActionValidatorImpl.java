@@ -34,14 +34,20 @@ public class ActionValidatorImpl implements ActionValidator {
 
 	void validate(Controller controller, Object form, Validator v,
 			PropertyValidators propValids) {
-		ValidContext context = new ValidContext();
-		context.setName(getLabelKey(form, propValids.getLabelKey()));
+		ValidContext context = createValidContext(controller, form, propValids);
 		Object value = getPropertyValue(controller.getParams(), propValids.getPropertyName());
 		String error = v.validate(context, value);
 		if (error != null) {
 			controller.getErrors().addFieldError(propValids.getPropertyName(),
 					error);
 		}
+	}
+
+	private ValidContext createValidContext(Controller controller, Object form, PropertyValidators propValids) {
+		String name = getLabelKey(form, propValids.getLabelKey());
+		Map params = controller.getParams().getOriginalParameter();
+		ValidContext context = new ValidContext(name, params);
+		return context;
 	}
 
 	Object getPropertyValue(Map params, String propertyName) {
