@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CubbyFunctions {
 	
 	public static Boolean contains(Object c, Object value) {
@@ -38,7 +40,23 @@ public class CubbyFunctions {
 	public static String out(Object value) {
 		return value == null ? "" : value.toString();
 	}
-	
+
+	public static String escapeHtml(Object value) {
+		if (value == null) { return "";}
+		String text;
+		if (value instanceof String) {
+			text = (String) value;
+		} else {
+			text = value.toString();
+		}
+		text = StringUtils.replace(text, "&", "&amp;");
+		text = StringUtils.replace(text, "<", "&lt;");
+		text = StringUtils.replace(text, ">", "&gt;");
+		text = StringUtils.replace(text, "\"", "&quot;");
+		text = StringUtils.replace(text, "'", "&#39;");
+		return text;
+	}
+
 	public static String dateFormat(Object date, String pattern) {
 		if (date instanceof Date) {
 			SimpleDateFormat format = new SimpleDateFormat(pattern);

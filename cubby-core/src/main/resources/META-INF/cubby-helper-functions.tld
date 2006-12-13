@@ -54,6 +54,6 @@
         <description>cubby function</description>
         <name>formValue</name>
         <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
-        <function-signature>java.lang.String formValue( java.lang.Object, java.lang.Object, java.lang.String, javax.servlet.http.HttpServletRequest)</function-signature>
+        <function-signature>java.lang.String formValue( java.util.Map, java.lang.Object, javax.servlet.http.HttpServletRequest, java.lang.String)</function-signature>
     </function>
 </taglib>

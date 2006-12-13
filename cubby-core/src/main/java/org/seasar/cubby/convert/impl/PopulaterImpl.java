@@ -36,10 +36,15 @@ public class PopulaterImpl implements Populater {
 			Class destClass) {
 		if (destClass.isArray()) {
 			if (source.getClass().isArray()) {
-				return valueConverter.convert(StringUtils.removeEmpty((Object[])source),
+//				return valueConverter.convert(StringUtils.removeEmpty((Object[])source),
+//						target, setter, destClass);
+				return valueConverter.convert((Object[])source,
 						target, setter, destClass);
+
 			} else {
-				return valueConverter.convert(StringUtils.removeEmpty(new Object[] {source}),
+//				return valueConverter.convert(StringUtils.removeEmpty(new Object[] {source}),
+//						target, setter, destClass);
+				return valueConverter.convert(new Object[] {source},
 						target, setter, destClass);
 			}
 		} else {
