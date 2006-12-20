@@ -38,7 +38,7 @@ public class CubbyFunctions {
 	}
 
 	public static String out(Object value) {
-		return value == null ? "" : value.toString();
+		return value == null ? "" : escapeHtml(value.toString());
 	}
 
 	public static String escapeHtml(Object value) {

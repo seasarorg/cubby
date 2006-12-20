@@ -54,8 +54,7 @@ public class CubbyHelperFunctions {
 			}
 			sb.append(key);
 			sb.append("=\"");
-//			sb.append(CubbyFunctions.escapeHtml(map.get(key)));
-			sb.append(map.get(key));
+			sb.append(CubbyFunctions.escapeHtml(map.get(key)));
 			sb.append("\" ");
 		}
 		return sb.toString();
