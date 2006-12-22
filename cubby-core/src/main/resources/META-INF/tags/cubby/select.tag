@@ -12,6 +12,6 @@
 <select ${hf:toAttr(dyn)}>
 <c:if test="${emptyOption != false}"><option value="">${f:out(emptyOptionLabel)}</option></c:if>
 <c:forEach items="${items}" var="item">
-<option value="${hf:property(item, valueProperty)}" ${hf:selected(hf:property(item, valueProperty),value)}>${f:out(hf:property(item, labelProperty))}</option>
+<option value="${f:out(hf:property(item, valueProperty))}" ${hf:selected(hf:property(item, valueProperty),value)}>${f:out(hf:property(item, labelProperty))}</option>
 </c:forEach>
 </select>
