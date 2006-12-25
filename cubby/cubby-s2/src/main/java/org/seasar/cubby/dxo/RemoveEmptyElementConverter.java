@@ -1,4 +1,4 @@
-package org.seasar.cubby.seasar.convert;
+package org.seasar.cubby.dxo;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,5 +7,5 @@ import org.seasar.extension.dxo.annotation.DxoConverter;
 
 @Retention(RetentionPolicy.RUNTIME)
 @DxoConverter("removeEmptyValueConverter")
-public @interface RemoveEmptyValueConverter {
+public @interface RemoveEmptyElementConverter {
 }

@@ -4,7 +4,6 @@ import static java.lang.Boolean.TRUE;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTROLLER;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
@@ -15,11 +14,18 @@ import org.seasar.cubby.convert.ValueConverter;
 
 
 public class CubbyHelperFunctions {
-	
+
 	private static final Class[] EMPTY_PARAM_TYPES = new Class[0];
+
 	private static final Object[] EMPTY_ARGS = new Object[0];
-	public static ValueConverter valueConverter;
-	
+
+//	private static ThreadLocal<ValueConverter> VALUE_CONVERTER = new ThreadLocal<ValueConverter>();
+	private static ValueConverter VALUE_CONVERTER;
+
+	public static void setValueConverter(final ValueConverter valueConverter) {
+		VALUE_CONVERTER = valueConverter;
+	}
+
 	public static String joinPropertyValue(Object beans, String propertyName, String delim) {
 		return _joinPropertyValue(toArray(beans), propertyName, delim);
 	}
@@ -111,8 +117,10 @@ public class CubbyHelperFunctions {
 		if (form == null || propertyName == null) {
 			return CubbyFunctions.out(source);
 		} else {
-			Method setter = ClassUtils.getSetter(form.getClass(), propertyName);
-			String converted = (String) valueConverter.convert(source, form, setter, String.class);
+			String converted = null;
+			if (source != null) {
+				converted = (String) VALUE_CONVERTER.convert(source);
+			}
 			return CubbyFunctions.out(converted);
 		}
 	}

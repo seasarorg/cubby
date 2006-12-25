@@ -7,13 +7,9 @@ import java.util.Map;
 
 public class Uri {
 
-	private String path;
 	private Map<String,Object> params = new LinkedHashMap<String, Object>();
-	private String encode = "UTF-8";
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+	private String encode = "UTF-8";
 
 	public void setParam(String name, Object value) {
 		params.put(name, value);

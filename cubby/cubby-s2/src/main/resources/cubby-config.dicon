@@ -6,10 +6,6 @@
 	<component name="configration" class="org.seasar.cubby.config.impl.ConfigrationImpl">
 		<arg>
 #{
-"GLOBAL_DATE_PATTERN":"yyyy-MM-dd",
-"GLOBAL_TIME_PATTERN": null,
-"GLOBAL_TIMESTAMP_PATTERN": null,
-"GLOBAL_CONVERSION_RULE": null,
 "multipartRequestParser.sizeMax": "10000000",
 "__END_OF_CONFIGRATION__": null
 }

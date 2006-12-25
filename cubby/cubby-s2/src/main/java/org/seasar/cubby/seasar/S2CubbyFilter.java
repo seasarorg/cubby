@@ -9,15 +9,16 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 public class S2CubbyFilter extends AbstractCubbyFilter {
 
 	@Override
-	protected void initialize() {
-		synchronized (this) {
-			if (!initiallize) {
-				S2Container container = SingletonS2ContainerFactory.getContainer();
-				container.injectDependency(this);
-				CubbyHelperFunctions.valueConverter = (ValueConverter) container
-						.getComponent(ValueConverter.class);
-				actionFactory.initialize(config);
-			}
-		}
-	}
+    protected void initialize() {
+        synchronized (this) {
+            if (!initiallize) {
+                S2Container container = SingletonS2ContainerFactory.getContainer();
+                container.injectDependency(this);
+                actionFactory.initialize(config);
+                ValueConverter valueConverter = (ValueConverter) container
+					.getComponent(ValueConverter.class);
+                CubbyHelperFunctions.setValueConverter(valueConverter);
+            }
+        }
+    }
 }

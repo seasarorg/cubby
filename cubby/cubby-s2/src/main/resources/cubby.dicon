@@ -18,10 +18,20 @@
 	<component name="parameterFilter" class="org.seasar.cubby.controller.filters.ParameterFilter"/>
 	<component name="validationFilter" class="org.seasar.cubby.controller.filters.ValidationFilter"/>
 	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	
-	
+
+
 	<!-- Convert -->
-	<component name="populater" class="org.seasar.cubby.convert.impl.PopulaterImpl"/>
-	<component name="valueConverter" class="org.seasar.cubby.seasar.S2DxoValueConverterImpl"/>
+	<component name="httpParameterDxo" class="org.seasar.cubby.dxo.HttpParameterDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	<component name="fieldValueDxo" class="org.seasar.cubby.dxo.FieldValueDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
+	<component name="populater" class="org.seasar.cubby.seasar.S2DxoPopulatorImpl">
+		<property name="httpParameterDxo">httpParameterDxo</property>
+	</component>
+
 
 	<!-- Validation -->
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
