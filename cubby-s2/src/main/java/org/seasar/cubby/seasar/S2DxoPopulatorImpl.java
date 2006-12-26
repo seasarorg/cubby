@@ -7,7 +7,6 @@ import java.util.Map;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.dxo.HttpParameterDxo;
 import org.seasar.cubby.util.ClassUtils;
-import org.seasar.cubby.util.StringUtils;
 
 public class S2DxoPopulatorImpl implements Populater {
 
@@ -26,17 +25,7 @@ public class S2DxoPopulatorImpl implements Populater {
                 if (setter.getParameterTypes()[0].isArray()) {
                     normalized.put(name, values);
                 } else {
-                	Object value = values[0];
-                	if (value instanceof String) {
-                        String str = (String) values[0];
-                        if (StringUtils.isNotEmpty(str)) {
-                            normalized.put(name, str);
-                        }
-                	} else {
-                		if (value != null) {
-                			normalized.put(name, value);
-                		}
-                	}
+                    normalized.put(name, values[0]);
                 }
             }
         }
