@@ -6,6 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import org.seasar.extension.dxo.annotation.DxoConverter;
 
 @Retention(RetentionPolicy.RUNTIME)
-@DxoConverter("removeEmptyValueConverter")
+@DxoConverter("removeEmptyElementConverter")
 public @interface RemoveEmptyElementConverter {
 }
