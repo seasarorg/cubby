@@ -26,10 +26,17 @@ public class S2DxoPopulatorImpl implements Populater {
                 if (setter.getParameterTypes()[0].isArray()) {
                     normalized.put(name, values);
                 } else {
-                    String value = (String) values[0];
-                    if (StringUtils.isNotEmpty(value)) {
-                        normalized.put(name, value);
-                    }
+                	Object value = values[0];
+                	if (value instanceof String) {
+                        String str = (String) values[0];
+                        if (StringUtils.isNotEmpty(str)) {
+                            normalized.put(name, str);
+                        }
+                	} else {
+                		if (value != null) {
+                			normalized.put(name, value);
+                		}
+                	}
                 }
             }
         }
