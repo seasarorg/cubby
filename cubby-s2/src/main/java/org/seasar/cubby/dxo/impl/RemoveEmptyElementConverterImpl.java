@@ -27,13 +27,10 @@ public class RemoveEmptyElementConverterImpl extends AbstractConverter {
     public Object convert(final Object source, final Class destClass,
             final ConversionContext context) {
 
-    	if (!destClass.isArray()) {
-    		throw new UnsupportedOperationException();
-    	}
-
     	ConverterFactory converterFactory = context.getConverterFactory();
     	Converter converter = converterFactory.getConverter(source.getClass(), destClass);
     	Object[] converted = (Object[]) converter.convert(source, destClass, context);
+
     	List<Object> removed = new ArrayList<Object>();
     	Class<?> elementType = null;
     	for (Object value : converted) {
@@ -51,7 +48,16 @@ public class RemoveEmptyElementConverterImpl extends AbstractConverter {
     	return removed.toArray(array);
     }
 
-	private static boolean isEmpty(Object value) {
-		return value == null || (value instanceof String && StringUtils.isEmpty((String) value));
+	private static boolean isEmpty(final Object value) {
+		if (value instanceof String) {
+			if (StringUtils.isEmpty((String) value)) {
+				return true;
+			}
+		} else {
+			if (value == null) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
