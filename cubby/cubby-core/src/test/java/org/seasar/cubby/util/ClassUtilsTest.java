@@ -15,6 +15,7 @@ public class ClassUtilsTest extends TestCase {
 
 	class Hoge {
 		private String name;
+		@SuppressWarnings("unused")
 		private Fuga fuga;
 
 		public String getName() {
