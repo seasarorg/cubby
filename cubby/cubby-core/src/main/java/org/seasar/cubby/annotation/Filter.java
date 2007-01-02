@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 
 import org.seasar.cubby.controller.ActionFilter;
 
-
 /**
  * Interceptorを表明します。
  * @author agata
+ * @since 1.0
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

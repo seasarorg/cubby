@@ -33,17 +33,23 @@ import org.seasar.cubby.util.RequestMap;
 import org.seasar.cubby.util.ResourceBundleUtils;
 import org.seasar.cubby.util.SessionMap;
 
+/**
+ * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
+ * {@link Controller#initalize()}、{@link Controller#prerender()}メソッドの実行も、
+ * このフィルターが行います。
+ * @author agata
+ * @since 1.0
+ */
 public class InitializeFilter extends AroundFilter {
 
-	private MultipartRequestParser multipartRequestParser;
+	private final MultipartRequestParser multipartRequestParser;
 
-	public InitializeFilter(MultipartRequestParser multipartRequestParser) {
+	public InitializeFilter(final MultipartRequestParser multipartRequestParser) {
 		this.multipartRequestParser = multipartRequestParser;
 	}
 	
-	
 	@Override
-	protected void doBeforeFilter(ActionContext action) {
+	protected void doBeforeFilter(final ActionContext action) {
 		setupErrors(action);
 		setupLocale(action);
 		setupImplicitVariable(action);
@@ -54,16 +60,24 @@ public class InitializeFilter extends AroundFilter {
 		action.getController().initalize();
 	}
 
-	private void setupErrors(ActionContext action) {
+	@Override
+	protected void doAfterFilter(final ActionContext action, final ActionResult result) {
+		if (CubbyUtils.isForwardResult(result)) {
+			action.getController().prerender();
+		}
+		bindAttributes(action);
+	}
+
+	void setupErrors(final ActionContext action) {
 		action.getController().setErrors(new ActionErrorsImpl());
 	}
 
-	private void setupLocale(ActionContext action) {
+	void setupLocale(final ActionContext action) {
 		HttpServletRequest req = action.getRequest();
 		LocaleHolder.setLocale(req.getLocale());
 	}
 
-	private void setupImplicitVariable(ActionContext action) {
+	void setupImplicitVariable(final ActionContext action) {
 		HttpServletRequest req = action.getRequest();
 		req.setAttribute("contextPath", req.getContextPath());
 		ResourceBundle resource = ResourceBundle.getBundle(RES_MESSAGES, LocaleHolder.getLocale());
@@ -71,15 +85,7 @@ public class InitializeFilter extends AroundFilter {
 		req.setAttribute("messages", messagesMap);
 	}
 
-	@Override
-	protected void doAfterFilter(ActionContext action, ActionResult result) {
-		if (CubbyUtils.isForwardResult(result)) {
-			action.getController().prerender();
-		}
-		bindAttributes(action);
-	}
-
-	private void setupParams(ActionContext action) {
+	void setupParams(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		Map<String,Object> paramMap = new HashMap<String,Object>();
@@ -90,7 +96,7 @@ public class InitializeFilter extends AroundFilter {
 		request.setAttribute(ATTR_PARAMS, controller.getParams());
 	}
 
-	private void setupRequest(ActionContext action) {
+	void setupRequest(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		RequestMap requestMap = new RequestMap(request);
@@ -98,11 +104,11 @@ public class InitializeFilter extends AroundFilter {
 		setupRequestScopeFields(action);
 	}
 
-	private void setupRequestScopeFields(ActionContext action) {
+	private void setupRequestScopeFields(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		for (Field f : controller.getClass().getFields()) {
-			if (isSessionScope(f)) {
+			if (!isSessionScope(f)) {
 				Object value = request.getAttribute(f.getName());
 				if (value != null) {
 					ClassUtils.setFieldValue(f, controller, value);
@@ -111,7 +117,7 @@ public class InitializeFilter extends AroundFilter {
 		}
 	}
 
-	private void setupSession(ActionContext action) {
+	void setupSession(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		SessionMap sessionMap = new SessionMap(request.getSession());
@@ -119,7 +125,7 @@ public class InitializeFilter extends AroundFilter {
 		setupSessionScopeFields(action);
 	}
 
-	private void setupSessionScopeFields(ActionContext action) {
+	private void setupSessionScopeFields(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpSession session = request.getSession();
@@ -134,7 +140,7 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupFlash(ActionContext action) {
+	void setupFlash(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpSession session = request.getSession();
@@ -147,7 +153,7 @@ public class InitializeFilter extends AroundFilter {
 		controller.setFlash(flash);
 	}
 
-	private void bindAttributes(ActionContext action) {
+	void bindAttributes(final ActionContext action) {
 		// set controller
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
@@ -171,12 +177,12 @@ public class InitializeFilter extends AroundFilter {
 		}
 	}
 
-	private boolean isSessionScope(Field f) {
+	static boolean isSessionScope(final Field f) {
 		return f.getAnnotation(Session.class) != null;
 	}
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	private Map<String,Object> getMultipartSupportParameterMap(HttpServletRequest request) {
+	Map<String,Object> getMultipartSupportParameterMap(final HttpServletRequest request) {
 		if (multipartRequestParser.isMultipart(request)) {
 			return multipartRequestParser.getMultipartParameterMap(request);
 		} else {

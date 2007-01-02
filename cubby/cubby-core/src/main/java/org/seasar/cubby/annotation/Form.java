@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  * クラスに指定：全てのアクションで使用するFormを指定します。
  * メソッドに指定：個々のアクションで使用するFormを指定します。
  * @author agata
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})

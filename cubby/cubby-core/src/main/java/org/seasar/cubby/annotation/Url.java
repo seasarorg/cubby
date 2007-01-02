@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
  * クラスに指定：全てのpublicかつ戻り値がStringのメソッドをActionとみなします。
  * メソッドに指定：指定されたpublicかつ戻り値がStringのメソッドをActionとみなします。
  * @author agata
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})

@@ -13,8 +13,9 @@ import org.seasar.cubby.validator.Validatable;
  * 入力検証を行うことを表明します。
  * 入力検証はアクションの実行前に行われます。
  * 検証に成功した場合：アクションメソッドが実行されます。
- * 検証に失敗した場合：valueで指定されたビューへ遷移します。
+ * 検証に失敗した場合：errorPageで指定されたビューへForwardします。
  * @author agata
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
