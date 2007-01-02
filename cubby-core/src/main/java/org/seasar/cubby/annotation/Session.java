@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
  * セッションスコープを表明します。
  * これで指定されたフィールドはセッションスコープとして扱われます。
  * @author agata
+ * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
