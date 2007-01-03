@@ -17,10 +17,6 @@ public class FileUploadController extends Controller {
 
 	// ----------------------------------------------[Action Method]
 
-	@Override
-	public void initalize() {
-	}
-	
 	@Url("fileupload")
 	public ActionResult show() {
 		return new Forward("/fileupload.jsp");
