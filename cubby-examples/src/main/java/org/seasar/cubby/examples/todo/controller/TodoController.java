@@ -2,7 +2,6 @@ package org.seasar.cubby.examples.todo.controller;
 
 import java.util.List;
 
-import org.seasar.cubby.annotation.Filter;
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.annotation.Url;
@@ -17,12 +16,10 @@ import org.seasar.cubby.examples.todo.entity.TodoType;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.examples.todo.logic.TodoLogic;
 import org.seasar.cubby.examples.todo.logic.TodoTypeLogic;
-import org.seasar.cubby.util.Assertion;
 import org.seasar.cubby.util.StringUtils;
 
 
 @Form("todo")
-@Filter({AuthActionFilter.class})
 public class TodoController extends Controller {
 	
 	// ----------------------------------------------[DI Filed]
@@ -41,7 +38,6 @@ public class TodoController extends Controller {
 	
 	@Url("{id,[0-9]+}")
 	public ActionResult show() {
-		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
 		return new Forward("show.jsp");
 	}
@@ -51,7 +47,6 @@ public class TodoController extends Controller {
 	}
 
 	public ActionResult edit() {
-		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
 		return new Forward("edit.jsp");
 	}
@@ -79,7 +74,6 @@ public class TodoController extends Controller {
 	}
 	
 	public ActionResult delete() {
-		Assertion.notNull(todo.getId());
 		todo = todoLogic.findById(todo.getId());
 		todoLogic.deleteById(todo.getId());
 		flash.put("notice", todo.getText() + "を削除しました。");
