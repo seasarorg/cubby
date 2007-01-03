@@ -38,6 +38,8 @@ import org.seasar.cubby.util.SessionMap;
  * {@link Controller#initialize()}、{@link Controller#prerender()}メソッドの実行も、
  * このフィルターが行います。
  * 
+ *　TODO {@link Controller#prerender()}メソッドの実行をInvocationFilterに移動させる
+ * 
  * @author agata
  * @since 1.0
  */
