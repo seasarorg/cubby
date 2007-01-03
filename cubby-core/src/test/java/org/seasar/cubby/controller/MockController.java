@@ -1,6 +1,8 @@
 package org.seasar.cubby.controller;
 
+import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
+import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.controller.results.Redirect;
 
@@ -25,6 +27,8 @@ public class MockController extends Controller {
 		executedPrerenderMethod =  true;
 	}
 	
+	@Validation(errorPage="error.jsp")
+	@Form("this")
 	public ActionResult dummy1() {
 		return new Forward("dummy1.jsp");
 	}

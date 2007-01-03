@@ -16,6 +16,7 @@ import org.seasar.cubby.controller.Controller;
  * 通常{@link InvocationFilter}は{@link ActionFilterChain}のチェインの中で最後に設定します。
  * 
  * @author agata
+ * @since 1.0
  */
 public class InvocationFilter implements ActionFilter {
 	private static final Object[] EMPTY_ARGS = new Object[0];
