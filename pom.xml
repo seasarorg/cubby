@@ -5,7 +5,7 @@
 	<artifactId>cubby-all</artifactId>
 	<packaging>pom</packaging>
 	<name>Maven Quick Start Archetype</name>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.6-SNAPSHOT</version>
 	<description>
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
@@ -109,6 +109,5 @@
 	</distributionManagement>
   <modules>
     <module>cubby-core</module>
-    <module>cubby-s2</module>
   </modules>
 </project>
