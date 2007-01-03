@@ -1,6 +1,8 @@
 package org.seasar.cubby.controller;
 
 import org.seasar.cubby.annotation.Session;
+import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.controller.results.Redirect;
 
 public class MockController extends Controller {
 	
@@ -12,8 +14,8 @@ public class MockController extends Controller {
 	public boolean executedPrerenderMethod = false;
 	
 	@Override
-	public void initalize() {
-		super.initalize();
+	public void initialize() {
+		super.initialize();
 		executedInitalizeMethod = true;
 	}
 	
@@ -24,6 +26,10 @@ public class MockController extends Controller {
 	}
 	
 	public ActionResult dummy1() {
-		return null;
+		return new Forward("dummy1.jsp");
+	}
+
+	public ActionResult dummy2() {
+		return new Redirect("dummy2");
 	}
 }
