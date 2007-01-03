@@ -2,7 +2,6 @@ package org.seasar.cubby.examples.todo.controller;
 
 import java.util.List;
 
-import org.seasar.cubby.annotation.Filter;
 import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.results.Forward;
@@ -10,7 +9,6 @@ import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.examples.todo.logic.UserLogic;
 
 
-@Filter({AuthActionFilter.class})
 public class UserController extends Controller {
 	
 	// ----------------------------------------------[DI Filed]
