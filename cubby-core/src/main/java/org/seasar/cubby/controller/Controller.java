@@ -14,7 +14,7 @@ public abstract class Controller {
 	protected ParameterMap params;
 	protected Map<String,Object> flash;
 
-	public void initalize() {}
+	public void initialize() {}
 	public void prerender() {}
 	public void postrender() {}
 	

@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.seasar.cubby.annotation.Filter;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFactory;
 import org.seasar.cubby.controller.ActionFilter;
@@ -35,9 +34,6 @@ import org.seasar.cubby.util.CubbyUtils;
 public class ActionFactoryImpl implements ActionFactory {
 
 	private static final Log LOG = LogFactory.getLog(ActionFactoryImpl.class);
-
-	@SuppressWarnings("unchecked")
-	public static final Class<ActionFilter>[] NULL_FILTERS = (Class<ActionFilter>[]) new Class[0];
 
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 
@@ -129,27 +125,9 @@ public class ActionFactoryImpl implements ActionFactory {
 	private ActionFilterChain createActionFilterChain(Class c, Method m) {
 		ActionFilterChain chain = new ActionFilterChain();
 		chain.add(actionFilterRegistory.get(InitializeFilter.class));
-		addCustomFilters(c, m, chain);
 		chain.add(actionFilterRegistory.get(ValidationFilter.class));
-		//chain.add(actionFilterRegistory.get(ParameterFilter.class));
 		chain.add(actionFilterRegistory.get(InvocationFilter.class));
 		return chain;
-	}
-
-	private void addCustomFilters(Class<Controller> c, Method m,
-			ActionFilterChain chain) {
-		for (Class<? extends ActionFilter> filterClass : getFilters(c)) {
-			ActionFilter filter = ClassUtils.newInstance(filterClass);
-			chain.add(filter);
-		}
-	}
-
-	private Class<? extends ActionFilter>[] getFilters(Class<Controller> c) {
-		Filter filter = c.getAnnotation(Filter.class);
-		if (filter == null) {
-			return NULL_FILTERS;
-		}
-		return filter.value();
 	}
 
 	public ActionContext createAction(String appUri,

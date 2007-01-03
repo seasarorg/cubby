@@ -2,13 +2,13 @@
   <parent>
     <artifactId>cubby-all</artifactId>
     <groupId>org.seasar.cubby</groupId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby</artifactId>
   <name>Maven Quick Start Archetype</name>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.6-SNAPSHOT</version>
   <description>Cubby 100% Pure JSP Web Application Framework</description>
   <dependencies>
     <dependency>
