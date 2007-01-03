@@ -35,8 +35,9 @@ import org.seasar.cubby.util.SessionMap;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
- * {@link Controller#initalize()}、{@link Controller#prerender()}メソッドの実行も、
+ * {@link Controller#initialize()}、{@link Controller#prerender()}メソッドの実行も、
  * このフィルターが行います。
+ * 
  * @author agata
  * @since 1.0
  */
@@ -47,7 +48,7 @@ public class InitializeFilter extends AroundFilter {
 	public InitializeFilter(final MultipartRequestParser multipartRequestParser) {
 		this.multipartRequestParser = multipartRequestParser;
 	}
-	
+
 	@Override
 	protected void doBeforeFilter(final ActionContext action) {
 		setupErrors(action);
@@ -57,11 +58,12 @@ public class InitializeFilter extends AroundFilter {
 		setupRequest(action);
 		setupSession(action);
 		setupFlash(action);
-		action.getController().initalize();
+		action.getController().initialize();
 	}
 
 	@Override
-	protected void doAfterFilter(final ActionContext action, final ActionResult result) {
+	protected void doAfterFilter(final ActionContext action,
+			final ActionResult result) {
 		if (CubbyUtils.isForwardResult(result)) {
 			action.getController().prerender();
 		}
@@ -80,7 +82,8 @@ public class InitializeFilter extends AroundFilter {
 	void setupImplicitVariable(final ActionContext action) {
 		HttpServletRequest req = action.getRequest();
 		req.setAttribute("contextPath", req.getContextPath());
-		ResourceBundle resource = ResourceBundle.getBundle(RES_MESSAGES, LocaleHolder.getLocale());
+		ResourceBundle resource = ResourceBundle.getBundle(RES_MESSAGES,
+				LocaleHolder.getLocale());
 		Map messagesMap = ResourceBundleUtils.toMap(resource);
 		req.setAttribute("messages", messagesMap);
 	}
@@ -88,7 +91,7 @@ public class InitializeFilter extends AroundFilter {
 	void setupParams(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
-		Map<String,Object> paramMap = new HashMap<String,Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.putAll(action.getUriParams());
 		paramMap.putAll(getMultipartSupportParameterMap(request));
 		ParameterMap params = new ParameterMap(paramMap);
@@ -161,9 +164,12 @@ public class InitializeFilter extends AroundFilter {
 
 		// set actioneErrors
 		request.setAttribute(ATTR_ERRORS, controller.getErrors());
-		request.setAttribute(ATTR_ALL_ERRORS, controller.getErrors().getAllErrors());
-		request.setAttribute(ATTR_ACTION_ERRORS, controller.getErrors().getActionErrors());
-		request.setAttribute(ATTR_FIELD_ERRORS, controller.getErrors().getFieldErrors());
+		request.setAttribute(ATTR_ALL_ERRORS, controller.getErrors()
+				.getAllErrors());
+		request.setAttribute(ATTR_ACTION_ERRORS, controller.getErrors()
+				.getActionErrors());
+		request.setAttribute(ATTR_FIELD_ERRORS, controller.getErrors()
+				.getFieldErrors());
 
 		// set field value
 		HttpSession session = request.getSession();
@@ -180,9 +186,10 @@ public class InitializeFilter extends AroundFilter {
 	static boolean isSessionScope(final Field f) {
 		return f.getAnnotation(Session.class) != null;
 	}
-	
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	Map<String,Object> getMultipartSupportParameterMap(final HttpServletRequest request) {
+
+	@SuppressWarnings( { "unchecked", "deprecation" })
+	Map<String, Object> getMultipartSupportParameterMap(
+			final HttpServletRequest request) {
 		if (multipartRequestParser.isMultipart(request)) {
 			return multipartRequestParser.getMultipartParameterMap(request);
 		} else {
