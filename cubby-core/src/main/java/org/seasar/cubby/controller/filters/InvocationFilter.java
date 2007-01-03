@@ -12,7 +12,8 @@ import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
 
 /**
- * アクションメソッドを実行するフィルターです。
+ * アクションメソッドを実行するフィルターです。 このフィルターは後続のフィルターを実行しません。<br>
+ * 通常{@link InvocationFilter}は{@link ActionFilterChain}のチェインの中で最後に設定します。
  * 
  * @author agata
  */
