@@ -24,7 +24,11 @@ public class Forward implements ActionResult {
 		this.result = result;
 	}
 
-	public void execute(ActionContext action)
+	public String getResult() {
+		return result;
+	}
+
+	public void execute(final ActionContext action)
 			throws ServletException, IOException {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
