@@ -42,7 +42,7 @@
         <description>cubby function</description>
         <name>convertFieldValue</name>
         <function-class>org.seasar.cubby.util.CubbyHelperFunctions</function-class>
-        <function-signature>java.lang.String convertFieldValue( java.lang.Object, java.lang.Object, java.lang.String)</function-signature>
+        <function-signature>java.lang.String convertFieldValue( java.lang.Object, java.lang.Object, javax.servlet.http.HttpServletRequest, java.lang.String)</function-signature>
     </function>
     <function>
         <description>cubby function</description>

@@ -1,8 +1,10 @@
 package org.seasar.cubby.controller.filters;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
+import static org.seasar.cubby.CubbyConstants.*;
 
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.annotation.Validation;
@@ -10,9 +12,11 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionResult;
+import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.validator.ActionValidator;
+import org.seasar.cubby.validator.Validators;
 
 /**
  * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
@@ -39,27 +43,38 @@ public class ValidationFilter implements ActionFilter {
 
 	public ActionResult doFilter(ActionContext action, ActionFilterChain chain)
 			throws Throwable {
-		boolean success = actionValidator.processValidation(action
-				.getValidation(), action.getController(), action.getFormBean(),
-				action.getValidators());
+
+		final ActionResult result;
+
+		final HttpServletRequest request = action.getRequest();
+		final Controller controller = action.getController();
+		final Validation validation = action.getValidation();
+		final Validators validators = action.getValidators();
+
+		boolean success = actionValidator.processValidation(validation,
+				controller, action.getFormBean(), validators);
 		if (success) {
 			setupForm(action);
-			return chain.doFilter(action);
+			result = chain.doFilter(action);
 		} else {
-			action.getRequest().setAttribute(ATTR_VALIDATION_FAIL, true);
-			Validation valid = action.getValidation();
+			request.setAttribute(ATTR_VALIDATION_FAIL, true);
 			setupForm(action);
-			return new Forward(valid.errorPage());
+			result = new Forward(validation.errorPage());
 		}
+
+		Map<String, String> outputValues = populater.describe(action.getFormBean());
+		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
+
+		return result;
 	}
 
-	@SuppressWarnings( { "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	private void setupForm(ActionContext action) {
-		Map<String, Object> params = action.getController().getParams()
-				.getOriginalParameter();
 		Object formBean = action.getFormBean();
 		if (formBean != null) {
-			populater.populate(formBean, params);
+			Map<String, Object> params = action.getController().getParams()
+					.getOriginalParameter();
+			populater.populate(params, formBean);
 		}
 	}
 }
