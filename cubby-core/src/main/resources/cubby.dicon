@@ -2,7 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="cubby">
-	<include path="dxo.dicon" />
 	<include path="cubby-config.dicon" />
 
 	<!-- Controller -->
@@ -18,14 +17,9 @@
 	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	
 
 	<!-- Convert -->
-	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
-		<aspect>dxo.interceptor</aspect>
-	</component>
-	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
 	<component name="populater" class="org.seasar.cubby.convert.impl.PopulatorImpl">
 		<property name="httpRequestDxo">httpRequestDxo</property>
 	</component>
-
 
 	<!-- Validation -->
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
