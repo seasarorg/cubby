@@ -18,15 +18,12 @@
 	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	
 
 	<!-- Convert -->
-	<component name="httpParameterDxo" class="org.seasar.cubby.dxo.HttpParameterDxo">
-		<aspect>dxo.interceptor</aspect>
-	</component>
-	<component name="fieldValueDxo" class="org.seasar.cubby.dxo.FieldValueDxo">
+	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
 		<aspect>dxo.interceptor</aspect>
 	</component>
 	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
 	<component name="populater" class="org.seasar.cubby.convert.impl.PopulatorImpl">
-		<property name="httpParameterDxo">httpParameterDxo</property>
+		<property name="httpRequestDxo">httpRequestDxo</property>
 	</component>
 
 

@@ -19,7 +19,7 @@ public class PopulatorImplTest extends S2TestCase {
 		TestForm form = new TestForm();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("num1", new String[] { "100" });
-		populator.populate(form, params);
+		populator.populate(params, form);
 		assertEquals("文字列から数値に変換", new Integer(100), form.getNum1());
 	}
 
@@ -27,7 +27,7 @@ public class PopulatorImplTest extends S2TestCase {
 		TestForm form = new TestForm();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("num2", null);
-		populator.populate(form, params);
+		populator.populate(params, form);
 		assertNull("値なしの場合", form.getNum2());
 	}
 

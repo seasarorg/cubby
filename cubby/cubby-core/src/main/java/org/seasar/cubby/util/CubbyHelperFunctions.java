@@ -2,6 +2,7 @@ package org.seasar.cubby.util;
 
 import static java.lang.Boolean.TRUE;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTROLLER;
+import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.util.Collection;
@@ -10,21 +11,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.convert.ValueConverter;
-
 
 public class CubbyHelperFunctions {
 
 	private static final Class[] EMPTY_PARAM_TYPES = new Class[0];
 
 	private static final Object[] EMPTY_ARGS = new Object[0];
-
-//	private static ThreadLocal<ValueConverter> VALUE_CONVERTER = new ThreadLocal<ValueConverter>();
-	private static ValueConverter VALUE_CONVERTER;
-
-	public static void setValueConverter(final ValueConverter valueConverter) {
-		VALUE_CONVERTER = valueConverter;
-	}
 
 	public static String joinPropertyValue(Object beans, String propertyName, String delim) {
 		return _joinPropertyValue(toArray(beans), propertyName, delim);
@@ -113,18 +105,24 @@ public class CubbyHelperFunctions {
 		}
 	}
 
-	public static String convertFieldValue(Object source, Object form, String propertyName) {
+	@SuppressWarnings("unchecked")
+	public static String convertFieldValue(Object source, Object form,
+			HttpServletRequest request, String propertyName) {
 		if (form == null || propertyName == null) {
 			return CubbyFunctions.out(source);
 		} else {
 			String converted = null;
 			if (source != null) {
-				converted = (String) VALUE_CONVERTER.convert(source);
+				Map<String, String> outputValues = (Map<String, String>) request
+						.getAttribute(ATTR_OUTPUT_VALUES);
+				if (outputValues != null) {
+					converted = outputValues.get(propertyName);
+				}
 			}
 			return CubbyFunctions.out(converted);
 		}
 	}
-	
+
 	public static Object property(Object bean, String property) {
 		if (StringUtils.isEmpty(property)) {
 			return bean;

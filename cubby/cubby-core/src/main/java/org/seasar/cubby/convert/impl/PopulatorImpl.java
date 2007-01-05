@@ -5,23 +5,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.cubby.convert.Populater;
-import org.seasar.cubby.dxo.HttpParameterDxo;
+import org.seasar.cubby.dxo.HttpRequestDxo;
 import org.seasar.cubby.util.ClassUtils;
 
 public class PopulatorImpl implements Populater {
 
-    private HttpParameterDxo httpParameterDxo;
+    private HttpRequestDxo httpRequestDxo;
 
-    public void setHttpParameterDxo(final HttpParameterDxo httpParameterDxo) {
-        this.httpParameterDxo = httpParameterDxo;
+    public void setHttpRequestDxo(final HttpRequestDxo httpRequestDxo) {
+        this.httpRequestDxo = httpRequestDxo;
     }
 
-    public void populate(final Object target, final Map<String, Object> params) {
-        Map<String, Object> normalized = new HashMap<String, Object>();
-        for (String name : params.keySet()) {
-            Method setter = ClassUtils.getSetter(target.getClass(), name);
+    public void populate(final Map<String, Object> src, final Object dest) {
+    	if (src == null) {
+    		return;
+    	}
+
+    	Map<String, Object> normalized = new HashMap<String, Object>();
+        for (String name : src.keySet()) {
+            Method setter = ClassUtils.getSetter(dest.getClass(), name);
             if (setter != null) {
-                Object[] values = (Object[]) params.get(name);
+                Object[] values = (Object[]) src.get(name);
                 if (setter.getParameterTypes()[0].isArray()) {
                     normalized.put(name, values);
                 } else {
@@ -30,9 +34,18 @@ public class PopulatorImpl implements Populater {
             }
         }
         try {
-        	httpParameterDxo.convert(normalized, target);
+        	httpRequestDxo.convert(normalized, dest);
         } catch (NumberFormatException e) {
         	// do nothing
         }
+    }
+
+    public Map<String, String> describe(final Object src) {
+    	Map<String, String> dest = new HashMap<String, String>();
+    	if (src == null) {
+    		return dest;
+    	}
+    	httpRequestDxo.convert(src, dest);
+    	return dest;
     }
 }

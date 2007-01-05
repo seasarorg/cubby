@@ -13,6 +13,6 @@
 <c:otherwise>
 <c:set var="value" value="${hf:formValue(dyn, __form, pageContext.request, 'value')}"/>
 <c:set var="checkedValue" value="${dyn['checkedValue']}"/>
-<input type="${type}" value="${hf:convertFieldValue(value, __form, dyn['name'])}" ${hf:toAttr(dyn)} />
+<input type="${type}" value="${hf:convertFieldValue(value, __form, pageContext.request, dyn['name'])}" ${hf:toAttr(dyn)} />
 </c:otherwise>
 </c:choose>
