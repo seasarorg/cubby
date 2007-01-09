@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.dxo.HttpRequestDxo;
 import org.seasar.cubby.util.ClassUtils;
@@ -28,6 +29,13 @@ public class PopulatorImpl implements Populater {
                 Object[] values = (Object[]) src.get(name);
                 if (setter.getParameterTypes()[0].isArray()) {
                     normalized.put(name, values);
+                } else if (values[0] instanceof String) {
+                	String value = (String) values[0];
+                	if (StringUtils.isNotEmpty(value)) {
+                		normalized.put(name, value);
+                	} else {
+                		normalized.put(name, null);
+                	}
                 } else {
                     normalized.put(name, values[0]);
                 }
