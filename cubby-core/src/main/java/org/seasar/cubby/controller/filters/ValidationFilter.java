@@ -56,10 +56,8 @@ public class ValidationFilter implements ActionFilter {
 		final Controller controller = action.getController();
 		final Validation validation = action.getActionHolder().getValidation();
 		final Validators validators = getValidators(action);
-		final Object formBean = getFormBean(controller, action.getActionHolder().getForm());
-
 		boolean success = actionValidator.processValidation(validation,
-				controller, formBean, validators);
+				controller, getFormBean(controller, action.getActionHolder().getForm()), validators);
 		if (success) {
 			setupForm(action);
 			result = chain.doFilter(action);
@@ -69,7 +67,7 @@ public class ValidationFilter implements ActionFilter {
 			result = new Forward(validation.errorPage());
 		}
 
-		Map<String, String> outputValues = populater.describe(formBean);
+		Map<String, String> outputValues = populater.describe(getFormBean(controller, action.getActionHolder().getForm()));
 		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
 
 		return result;
