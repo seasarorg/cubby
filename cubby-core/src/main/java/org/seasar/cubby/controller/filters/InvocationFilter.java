@@ -25,7 +25,7 @@ public class InvocationFilter implements ActionFilter {
 
 	public ActionResult doFilter(final ActionContext action,
 			final ActionFilterChain chain) throws Throwable {
-		return invokeActionMethod(action.getController(), action.getMethod());
+		return invokeActionMethod(action.getController(), action.getActionHolder().getActionMethod());
 	}
 
 	ActionResult invokeActionMethod(final Controller controller,
