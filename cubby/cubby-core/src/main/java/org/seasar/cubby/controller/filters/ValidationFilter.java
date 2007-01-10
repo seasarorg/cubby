@@ -1,12 +1,14 @@
 package org.seasar.cubby.controller.filters;
 
-import static org.seasar.cubby.CubbyConstants.*;
+import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
+import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
@@ -15,7 +17,10 @@ import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.convert.Populater;
+import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.ActionValidator;
+import org.seasar.cubby.validator.FormValidator;
+import org.seasar.cubby.validator.Validatable;
 import org.seasar.cubby.validator.Validators;
 
 /**
@@ -32,6 +37,8 @@ import org.seasar.cubby.validator.Validators;
  */
 public class ValidationFilter implements ActionFilter {
 
+	public static final Validators NULL_VALIDATORS = new Validators();
+
 	private ActionValidator actionValidator;
 
 	private final Populater populater;
@@ -43,16 +50,16 @@ public class ValidationFilter implements ActionFilter {
 
 	public ActionResult doFilter(ActionContext action, ActionFilterChain chain)
 			throws Throwable {
-
 		final ActionResult result;
 
 		final HttpServletRequest request = action.getRequest();
 		final Controller controller = action.getController();
-		final Validation validation = action.getValidation();
-		final Validators validators = action.getValidators();
+		final Validation validation = action.getActionHolder().getValidation();
+		final Validators validators = getValidators(action);
+		final Object formBean = getFormBean(controller, action.getActionHolder().getForm());
 
 		boolean success = actionValidator.processValidation(validation,
-				controller, action.getFormBean(), validators);
+				controller, formBean, validators);
 		if (success) {
 			setupForm(action);
 			result = chain.doFilter(action);
@@ -62,7 +69,7 @@ public class ValidationFilter implements ActionFilter {
 			result = new Forward(validation.errorPage());
 		}
 
-		Map<String, String> outputValues = populater.describe(action.getFormBean());
+		Map<String, String> outputValues = populater.describe(formBean);
 		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
 
 		return result;
@@ -70,11 +77,40 @@ public class ValidationFilter implements ActionFilter {
 
 	@SuppressWarnings("unchecked")
 	private void setupForm(ActionContext action) {
-		Object formBean = action.getFormBean();
+		Object formBean = getFormBean(action.getController(), action.getActionHolder().getForm());
 		if (formBean != null) {
 			Map<String, Object> params = action.getController().getParams()
 					.getOriginalParameter();
 			populater.populate(params, formBean);
+		}
+	}
+	
+	private Validators getValidators(ActionContext action) {
+		Validation validation = action.getActionHolder().getValidation();
+		if (validation != null) {
+			Class<? extends Validatable> validatorsClass = validation.validator();
+			if (validatorsClass == FormValidator.class) {
+				if (getFormBean(action.getController(), action.getActionHolder().getForm()) instanceof Validatable) {
+					return ((Validatable) getFormBean(action.getController(), action.getActionHolder().getForm())).getValidators();
+				}
+			} else if (validatorsClass != null) {
+				return ClassUtils.newInstance(validatorsClass).getValidators();
+			} else {
+				throw new RuntimeException("Can't find validators.");
+			}
+		}
+		return NULL_VALIDATORS;
+	}
+	
+	private Object getFormBean(Controller controller, Form form) {
+		if (form == null) {
+			return null;
+		}
+		String formFieldName = form.value();
+		if ("this".equals(formFieldName)) {
+			return controller;
+		} else {
+			return ClassUtils.getField(controller, formFieldName);
 		}
 	}
 }

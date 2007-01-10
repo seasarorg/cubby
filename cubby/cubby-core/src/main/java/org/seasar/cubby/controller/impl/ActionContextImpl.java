@@ -6,23 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.annotation.Form;
-import org.seasar.cubby.annotation.Validation;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionHolder;
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.util.ClassUtils;
-import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.cubby.validator.FormValidator;
-import org.seasar.cubby.validator.Validatable;
-import org.seasar.cubby.validator.Validators;
 
 public class ActionContextImpl implements ActionContext {
-	public static final Validators NULL_VALIDATORS = new Validators();
 	
 	private final Controller controller;
-	private final Class<? extends Controller> controllerClass;
 
 	private final ActionHolder holder;
 
@@ -42,7 +33,6 @@ public class ActionContextImpl implements ActionContext {
 		this.controller = controller;
 		this.holder = holder;
 		this.uriParams = uriParams;
-		this.controllerClass = (Class<? extends Controller>) holder.getActionMethod().getDeclaringClass();
 	}
 
 	public Controller getController() {
@@ -59,53 +49,6 @@ public class ActionContextImpl implements ActionContext {
 
 	public HttpServletResponse getResponse() {
 		return response;
-	}
-
-	public Form getForm() {
-		Form formInfo = (Form) holder.getActionMethod().getAnnotation(Form.class);
-		if (formInfo != null) {
-			return formInfo;
-		}
-		formInfo = (Form) controllerClass.getAnnotation(Form.class);
-		return formInfo;
-	}
-
-	public Validation getValidation() {
-		return holder.getActionMethod().getAnnotation(Validation.class);
-	}
-
-	public Validators getValidators() {
-		Validation validation = getValidation();
-		if (validation != null) {
-			Class<? extends Validatable> validatorsClass = validation.validator();
-			if (validatorsClass == FormValidator.class) {
-				if (getFormBean() instanceof Validatable) {
-					return ((Validatable) getFormBean()).getValidators();
-				}
-			} else if (validatorsClass != null) {
-				return ClassUtils.newInstance(validatorsClass).getValidators();
-			} else {
-				throw new RuntimeException("Can't find validators.");
-			}
-		}
-		return NULL_VALIDATORS;
-	}
-
-	public Object getFormBean() {
-		Form form = getForm();
-		if (form == null) {
-			return null;
-		}
-		String formFieldName = form.value();
-		if ("this".equals(formFieldName)) {
-			return controller;
-		} else {
-			return ClassUtils.getField(controller, formFieldName);
-		}
-	}
-
-	public String getControllerName() {
-		return CubbyUtils.getControllerName(controllerClass);
 	}
 
 	public ActionHolder getActionHolder() {
