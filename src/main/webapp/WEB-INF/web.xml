@@ -26,7 +26,7 @@
   </filter>
   <filter>
     <filter-name>cubbyFilter</filter-name>
-    <filter-class>org.seasar.cubby.controller.CubbyFilter</filter-class>
+    <filter-class>org.seasar.cubby.servlet.CubbyFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>hotdeployfilter</filter-name>
