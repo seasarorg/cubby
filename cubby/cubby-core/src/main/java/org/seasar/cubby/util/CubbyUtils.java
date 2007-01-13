@@ -3,8 +3,11 @@ package org.seasar.cubby.util;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.seasar.cubby.annotation.Url;
 import org.seasar.cubby.controller.ActionResult;
+import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.controller.results.Redirect;
 
@@ -63,4 +66,16 @@ public class CubbyUtils {
 	public static boolean isRedirectResult(ActionResult result) {
 		return result instanceof Redirect;
 	}
+	
+	public static String getPath(HttpServletRequest request) {
+		String uri = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		return uri.substring(contextPath.length());
+	}
+	
+	public static boolean isControllerClass(Class c) {
+		return ClassUtils.isSubClass(Controller.class, c);
+	}
+
+
 }

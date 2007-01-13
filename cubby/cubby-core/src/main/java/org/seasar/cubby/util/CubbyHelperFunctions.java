@@ -1,16 +1,14 @@
 package org.seasar.cubby.util;
 
 import static java.lang.Boolean.TRUE;
-import static org.seasar.cubby.CubbyConstants.ATTR_CONTROLLER;
 import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.seasar.cubby.controller.Controller;
 
 public class CubbyHelperFunctions {
 
@@ -149,8 +147,8 @@ public class CubbyHelperFunctions {
 			if (dyn.containsKey(valueParamName)) {
 				return value;
 			} else {
-				Controller controller = (Controller) request.getAttribute(ATTR_CONTROLLER);
-				return controller.getParams().getValue(name);
+				ParameterMap params = (ParameterMap)request.getAttribute(ATTR_PARAMS);
+				return params.getValue(name);
 			}
 		} else {
 			if (dyn.containsKey(valueParamName) || form == null || StringUtils.isEmpty(name)) {

@@ -28,7 +28,7 @@ public class Redirect implements ActionResult {
 		if (result.charAt(0) == '/') {
 			path = cpath + result;
 		} else {
-			String cname = action.getActionHolder().getControllerName();
+			String cname = action.getActionMethod().getControllerName();
 			if (StringUtils.isEmpty(cname)) {
 				path = cpath + "/" + result;
 			} else {

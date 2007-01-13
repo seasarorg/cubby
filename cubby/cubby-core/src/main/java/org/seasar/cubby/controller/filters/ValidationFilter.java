@@ -54,10 +54,10 @@ public class ValidationFilter implements ActionFilter {
 
 		final HttpServletRequest request = action.getRequest();
 		final Controller controller = action.getController();
-		final Validation validation = action.getActionHolder().getValidation();
+		final Validation validation = action.getActionMethod().getValidation();
 		final Validators validators = getValidators(action);
 		boolean success = actionValidator.processValidation(validation,
-				controller, getFormBean(controller, action.getActionHolder().getForm()), validators);
+				controller, getFormBean(controller, action.getActionMethod().getForm()), validators);
 		if (success) {
 			setupForm(action);
 			result = chain.doFilter(action);
@@ -67,7 +67,7 @@ public class ValidationFilter implements ActionFilter {
 			result = new Forward(validation.errorPage());
 		}
 
-		Map<String, String> outputValues = populater.describe(getFormBean(controller, action.getActionHolder().getForm()));
+		Map<String, String> outputValues = populater.describe(getFormBean(controller, action.getActionMethod().getForm()));
 		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
 
 		return result;
@@ -75,7 +75,7 @@ public class ValidationFilter implements ActionFilter {
 
 	@SuppressWarnings("unchecked")
 	private void setupForm(ActionContext action) {
-		Object formBean = getFormBean(action.getController(), action.getActionHolder().getForm());
+		Object formBean = getFormBean(action.getController(), action.getActionMethod().getForm());
 		if (formBean != null) {
 			Map<String, Object> params = action.getController().getParams()
 					.getOriginalParameter();
@@ -84,12 +84,12 @@ public class ValidationFilter implements ActionFilter {
 	}
 	
 	private Validators getValidators(ActionContext action) {
-		Validation validation = action.getActionHolder().getValidation();
+		Validation validation = action.getActionMethod().getValidation();
 		if (validation != null) {
 			Class<? extends Validatable> validatorsClass = validation.validator();
 			if (validatorsClass == FormValidator.class) {
-				if (getFormBean(action.getController(), action.getActionHolder().getForm()) instanceof Validatable) {
-					return ((Validatable) getFormBean(action.getController(), action.getActionHolder().getForm())).getValidators();
+				if (getFormBean(action.getController(), action.getActionMethod().getForm()) instanceof Validatable) {
+					return ((Validatable) getFormBean(action.getController(), action.getActionMethod().getForm())).getValidators();
 				}
 			} else if (validatorsClass != null) {
 				return ClassUtils.newInstance(validatorsClass).getValidators();
