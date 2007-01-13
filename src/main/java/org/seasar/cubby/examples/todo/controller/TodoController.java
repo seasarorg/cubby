@@ -33,6 +33,8 @@ public class TodoController extends Controller {
 	@Session
 	public FindTodoDto findTodoDto = new FindTodoDto();
 	public List<Todo> todoList;
+	@Session
+	public User user;
 
 	// ----------------------------------------------[Action Method]
 	
@@ -82,7 +84,6 @@ public class TodoController extends Controller {
 	
 	@Form("findTodoDto")
 	public ActionResult list() {
-		User user = (User) session.get("user");
 		todoList = todoLogic.findAllByUserId(user.getId(), findTodoDto);
 		return new Forward("list.jsp");
 	}
