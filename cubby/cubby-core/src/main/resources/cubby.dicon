@@ -2,7 +2,12 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="cubby">
-	<include path="cubby-config.dicon" />
+	<include path="app-cubby.dicon" />
+
+	<!-- Properties -->
+	<component name="config" class="java.util.Properties" >
+		<arg>@org.seasar.framework.util.ResourceUtil@getProperties("cubby.properties")</arg>
+	</component>
 
 	<!-- Controller -->
 	<component name="actionFactory" class="org.seasar.cubby.controller.impl.ActionFactoryImpl">
@@ -30,6 +35,13 @@
 	<!-- FileUpload -->
 	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
 	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
-		<property name="sizeMax">configration.getValue("multipartRequestParser.sizeMax")</property>
+		<property name="sizeMax">config["multipartRequestParser.sizeMax"]</property>
 	</component>
+
+	<!-- Dxo -->
+	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
+
 </components>

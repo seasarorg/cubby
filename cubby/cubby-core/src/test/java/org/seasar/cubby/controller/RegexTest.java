@@ -1,4 +1,4 @@
-package org.seasar.cubby.config.impl;
+package org.seasar.cubby.controller;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
