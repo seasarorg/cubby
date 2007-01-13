@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilterChain;
-import org.seasar.cubby.controller.ActionHolder;
+import org.seasar.cubby.controller.ActionMethod;
 import org.seasar.cubby.controller.MockController;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
@@ -59,13 +59,12 @@ public class ValidationFilterTest extends TestCase {
 		Method actionMethod = ClassUtils.getMethod(MockController.class,
 				"dummy1", new Class[] {});
 		assertNotNull(actionMethod);
-		ActionHolder holder = new ActionHolder(actionMethod, chain,
+		ActionMethod holder = new ActionMethod(actionMethod, chain,
 				uriConvertNames);
 		HashMap<String, Object> uriParams = new LinkedHashMap<String, Object>();
 		uriParams.put("id", "1");
 		uriParams.put("userId", "seasar");
-		action = new ActionContextImpl(request, response, controller, holder,
-				uriParams);
+		action = new ActionContextImpl(request, response, controller, holder);
 		validator = new MockActionValidator();
 		populator = new MockPopulator();
 		f2 = new ValidationFilter(validator, populator);

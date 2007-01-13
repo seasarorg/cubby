@@ -33,7 +33,7 @@ public class Forward implements ActionResult {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpServletResponse response = action.getResponse();
-		String cname = action.getActionHolder().getControllerName();
+		String cname = action.getActionMethod().getControllerName();
 
 		String path = null;
 		if (result.startsWith("/")) {

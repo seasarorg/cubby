@@ -7,18 +7,18 @@ import org.seasar.cubby.annotation.Validation;
 import org.seasar.cubby.util.CubbyUtils;
 
 
-public class ActionHolder {
+public class ActionMethod {
 	private final Method actionMethod;
 	private final ActionFilterChain filterChain;
 	private final String[] uriConvertNames;
 	
-	public ActionHolder(Method actionMethod, ActionFilterChain chain, String[] uriConvertNames) {
-		this.actionMethod = actionMethod;
+	public ActionMethod(Method method, ActionFilterChain chain, String[] uriConvertNames) {
+		this.actionMethod = method;
 		this.filterChain = chain;
 		this.uriConvertNames = uriConvertNames;
 	}
 	
-	public Method getActionMethod() {
+	public Method getMethod() {
 		return actionMethod;
 	}
 
@@ -31,7 +31,7 @@ public class ActionHolder {
 	}
 	
 	public Form getForm() {
-		Form formInfo = (Form) getActionMethod().getAnnotation(Form.class);
+		Form formInfo = (Form) getMethod().getAnnotation(Form.class);
 		if (formInfo != null) {
 			return formInfo;
 		}
@@ -40,11 +40,11 @@ public class ActionHolder {
 	}
 
 	private Class<?> getControllerClass() {
-		return getActionMethod().getDeclaringClass();
+		return getMethod().getDeclaringClass();
 	}
 
 	public Validation getValidation() {
-		return getActionMethod().getAnnotation(Validation.class);
+		return getMethod().getAnnotation(Validation.class);
 	}
 	
 	public String getControllerName() {

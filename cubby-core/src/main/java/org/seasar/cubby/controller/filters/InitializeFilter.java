@@ -29,9 +29,7 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.FlashHashMap;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.cubby.util.ParameterMap;
-import org.seasar.cubby.util.RequestMap;
 import org.seasar.cubby.util.ResourceBundleUtils;
-import org.seasar.cubby.util.SessionMap;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
@@ -57,8 +55,8 @@ public class InitializeFilter extends AroundFilter {
 		setupLocale(action);
 		setupImplicitVariable(action);
 		setupParams(action);
-		setupRequest(action);
-		setupSession(action);
+		setupRequestScopeFields(action);
+		setupSessionScopeFields(action);
 		setupFlash(action);
 		action.getController().initialize();
 	}
@@ -94,22 +92,13 @@ public class InitializeFilter extends AroundFilter {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.putAll(action.getUriParams());
 		paramMap.putAll(getMultipartSupportParameterMap(request));
 		ParameterMap params = new ParameterMap(paramMap);
 		controller.setParams(params);
 		request.setAttribute(ATTR_PARAMS, controller.getParams());
 	}
 
-	void setupRequest(final ActionContext action) {
-		Controller controller = action.getController();
-		HttpServletRequest request = action.getRequest();
-		RequestMap requestMap = new RequestMap(request);
-		controller.setRequest(requestMap);
-		setupRequestScopeFields(action);
-	}
-
-	private void setupRequestScopeFields(final ActionContext action) {
+	void setupRequestScopeFields(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		for (Field f : controller.getClass().getFields()) {
@@ -122,15 +111,7 @@ public class InitializeFilter extends AroundFilter {
 		}
 	}
 
-	void setupSession(final ActionContext action) {
-		Controller controller = action.getController();
-		HttpServletRequest request = action.getRequest();
-		SessionMap sessionMap = new SessionMap(request.getSession());
-		controller.setSession(sessionMap);
-		setupSessionScopeFields(action);
-	}
-
-	private void setupSessionScopeFields(final ActionContext action) {
+	void setupSessionScopeFields(final ActionContext action) {
 		Controller controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpSession session = request.getSession();

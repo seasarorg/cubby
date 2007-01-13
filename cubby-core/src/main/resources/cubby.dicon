@@ -10,13 +10,11 @@
 	</component>
 
 	<!-- Controller -->
-	<component name="actionFactory" class="org.seasar.cubby.controller.impl.ActionFactoryImpl">
+	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl">
 		<initMethod name="addActionFilter"><arg>initializeFilter</arg></initMethod>
 		<initMethod name="addActionFilter"><arg>validationFilter</arg></initMethod>
 		<initMethod name="addActionFilter"><arg>invocationFilter</arg></initMethod>
 	</component>
-	<component name="controllerFactory" class="org.seasar.cubby.controller.impl.ControllerFactoryImpl"/>	
-	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl"/>
 	<component name="initializeFilter" class="org.seasar.cubby.controller.filters.InitializeFilter"/>
 	<component name="validationFilter" class="org.seasar.cubby.controller.filters.ValidationFilter"/>
 	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	
@@ -30,7 +28,7 @@
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
 
 	<!-- ServletFilter -->
-	<component class="org.seasar.cubby.servlet.CubbyFilter" instance="outer" />
+	<component class="org.seasar.cubby.controller.CubbyFilter" instance="outer" />
 
 	<!-- FileUpload -->
 	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>

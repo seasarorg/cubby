@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilterChain;
-import org.seasar.cubby.controller.ActionHolder;
+import org.seasar.cubby.controller.ActionMethod;
 import org.seasar.cubby.controller.MockController;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
@@ -50,11 +50,11 @@ public class InitializeFilterTest extends TestCase {
 		request.addParameter("param2", "value2");
 		Method actionMethod = ClassUtils.getMethod(MockController.class, "dummy1", new Class[]{});
 		assertNotNull(actionMethod);
-		ActionHolder holder = new ActionHolder(actionMethod,  chain, uriConvertNames);
+		ActionMethod holder = new ActionMethod(actionMethod,  chain, uriConvertNames);
 		HashMap<String, Object> uriParams = new LinkedHashMap<String, Object>();
 		uriParams.put("id", "1");
 		uriParams.put("userId", "seasar");
-		action = new ActionContextImpl(request, response, controller, holder, uriParams);
+		action = new ActionContextImpl(request, response, controller, holder);
 	}
 	
 	public void testConstractor() throws Exception {
@@ -119,20 +119,16 @@ public class InitializeFilterTest extends TestCase {
 	}
 	
 	public void testSetupParams() throws Exception {
-		assertNull("実行前はnull", controller.getParams());
+		assertNull("実行前はnull", request.getAttribute(ATTR_PARAMS));
 
 		f.setupParams(action);
-		ParameterMap params =  controller.getParams();
-		assertEquals("コントローラーのParameterMapはリクエストにも格納されている", params, request.getAttribute(ATTR_PARAMS));
-		assertEquals("URIに埋め込まれたパラメータ(id,userId)とリクエストパラメータ(param1,param2)の集合", 4, params.size());
-		assertEquals("1", params.get("id"));
-		assertEquals("seasar", params.get("userId"));
+		ParameterMap params =  (ParameterMap) request.getAttribute(ATTR_PARAMS);
+		assertNotNull("リクエストに格納されている", params);
 		assertEquals("value1", params.get("param1"));
 		assertEquals("value2", params.get("param2"));
 	}
 	
 	public void testSetupRequest() throws Exception {
-		assertNull("実行前はnull", controller.getRequest());
 		assertNull("実行前はnull", controller.attr1);
 		assertNull("実行前はnull", controller.attr2);
 		assertNull("実行前はnull", controller.attr3);
@@ -140,11 +136,7 @@ public class InitializeFilterTest extends TestCase {
 		request.setAttribute("attr1", "v1");
 		request.setAttribute("attr2", "v2");
 		request.setAttribute("attr3", "v3");
-		f.setupRequest(action);
-		assertNotNull("request.attributeをMap化したものがControllerにセット済み", 
-				controller.getRequest());
-		assertEquals("request.attributeをMap化したもの値を取得", 
-				"v1", controller.getRequest().get("attr1"));
+		f.setupRequestScopeFields(action);
 		assertEquals("request.attributeの値はControllerのpublicフィールドにバインド", 
 				"v1", controller.attr1);
 		assertEquals("request.attributeの値はControllerのpublicフィールドにバインド", 
@@ -153,7 +145,6 @@ public class InitializeFilterTest extends TestCase {
 	}
 
 	public void testSetupSession() throws Exception {
-		assertNull("実行前はnull", controller.getSession());
 		assertNull("実行前はnull", controller.attr1);
 		assertNull("実行前はnull", controller.attr2);
 		assertNull("実行前はnull", controller.attr3);
@@ -161,11 +152,7 @@ public class InitializeFilterTest extends TestCase {
 		request.getSession().setAttribute("attr1", "v1");
 		request.getSession().setAttribute("attr2", "v2");
 		request.getSession().setAttribute("attr3", "v3");
-		f.setupSession(action);
-		assertNotNull("session.attributeをMap化したものがControllerにセット済み", 
-				controller.getSession());
-		assertNull("@Session(セッションスコープの指定)が付いていないものはバインド対象外", 
-				controller.attr1);
+		f.setupSessionScopeFields(action);
 		assertNull("@Session(セッションスコープの指定)が付いていないものはバインド対象外", 
 				controller.attr2);
 		assertEquals("@Session(セッションスコープの指定)が付いていたら、session.attributeの値をバインド", 

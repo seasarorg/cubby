@@ -3,6 +3,6 @@
 "http://www.seasar.org/dtd/components.dtd">
 <components>
 	<include path="cubby.dicon" />
-	<component class="org.seasar.cubby.seasar.Sample1Controller"/>
-	<component class="org.seasar.cubby.seasar.Sample2Controller"/>
+	<component name="sample1" class="org.seasar.cubby.seasar.Sample1Controller"/>
+	<component name="sample2" class="org.seasar.cubby.seasar.Sample2Controller"/>
 </components>

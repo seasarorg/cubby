@@ -9,8 +9,6 @@ import org.seasar.cubby.util.ParameterMap;
 
 public abstract class Controller {
 	protected ActionErrors errors;
-	protected Map<String,Object> request;
-	protected Map<String,Object> session;
 	protected ParameterMap params;
 	protected Map<String,Object> flash;
 
@@ -42,22 +40,6 @@ public abstract class Controller {
 		this.params = params;
 	}
 
-	public Map<String, Object> getRequest() {
-		return request;
-	}
-
-	public void setRequest(Map<String, Object> request) {
-		this.request = request;
-	}
-
-	public Map<String, Object> getSession() {
-		return session;
-	}
-
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
-	}
-	
 	public String getText(String key) {
 		return Messages.getString(key);
 	}
