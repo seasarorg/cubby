@@ -1,5 +1,6 @@
 package org.seasar.cubby.dxo;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,10 +43,11 @@ public class HttpRequestDxoTest extends S2TestCase {
 		httpRequestDxo.convert(map, bean);
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
-		assertEquals(cal.getTime(), bean.getDate());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		assertEquals(format.format(cal.getTime()), format.format(bean.getDate()));
 	}
 
-	class TestBean {
+	public class TestBean {
 
 		Date date;
 
