@@ -29,7 +29,7 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.FlashHashMap;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.cubby.util.ParameterMap;
-import org.seasar.cubby.util.ResourceBundleUtils;
+import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
@@ -84,7 +84,7 @@ public class InitializeFilter extends AroundFilter {
 		req.setAttribute("contextPath", req.getContextPath());
 		ResourceBundle resource = ResourceBundle.getBundle(RES_MESSAGES,
 				LocaleHolder.getLocale());
-		Map messagesMap = ResourceBundleUtils.toMap(resource);
+		Map messagesMap = ResourceBundleUtil.convertMap(resource);
 		req.setAttribute("messages", messagesMap);
 	}
 
