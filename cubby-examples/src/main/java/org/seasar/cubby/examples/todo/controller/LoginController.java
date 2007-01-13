@@ -1,5 +1,7 @@
 package org.seasar.cubby.examples.todo.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.seasar.cubby.annotation.Form;
 import org.seasar.cubby.annotation.Session;
 import org.seasar.cubby.annotation.Url;
@@ -20,7 +22,8 @@ public class LoginController extends Controller {
 	// ----------------------------------------------[DI Filed]
 
 	TodoLogic todoLogic;
-
+	HttpServletRequest request;
+	
 	// ----------------------------------------------[Attribute]
 
 	public LoginDto loginDto = new LoginDto();
@@ -45,7 +48,7 @@ public class LoginController extends Controller {
 	}
 
 	public ActionResult logout() {
-		session.clear();
+		request.getSession().invalidate();
 		return new Redirect("/login");
 	}
 	

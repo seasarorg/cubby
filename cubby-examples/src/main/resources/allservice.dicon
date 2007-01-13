@@ -7,9 +7,15 @@
     <include path="allsupport.dicon" />
 
 	<!-- Inrterceptor Chain -->
+	<component name="__authInterceptor" class="org.seasar.cubby.examples.todo.controller.AuthActionInterceptor" instance="prototype" />
+	<component name="authInterceptor" class="org.seasar.framework.aop.interceptors.InterceptorAdapter">
+		<initMethod name="add"><arg>"__authInterceptor"</arg></initMethod>
+	</component>
+
 	<component name="controllerInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">
 		<!-- TODO controllerへのaspect適用テスト。本番コードでは必要なし -->
 	    <initMethod name="add"><arg>aop.traceInterceptor</arg></initMethod>
+	    <initMethod name="add"><arg>authInterceptor</arg></initMethod>
 	</component>
 
 	<!-- logics -->
@@ -63,6 +69,13 @@
 		<initMethod name="addClassPattern">
 			<arg>"org.seasar.cubby.examples.todo.controller"</arg>
 			<arg>".*Controller"</arg>
+		</initMethod>
+	</component>
+	<component class="org.seasar.cubby.seasar.CubbyAspectAutoRegister">
+		<property name="interceptor">controllerInterceptorChain</property>
+		<initMethod name="addClassPattern">
+			<arg>"org.seasar.cubby.examples.todo.controller"</arg>
+			<arg>"((?!Login).*)Controller"</arg>
 		</initMethod>
 	</component>
 	
