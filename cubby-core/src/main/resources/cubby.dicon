@@ -28,7 +28,7 @@
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
 
 	<!-- ServletFilter -->
-	<component class="org.seasar.cubby.controller.CubbyFilter" instance="outer" />
+	<component class="org.seasar.cubby.servlet.CubbyFilter" instance="outer" />
 
 	<!-- FileUpload -->
 	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
