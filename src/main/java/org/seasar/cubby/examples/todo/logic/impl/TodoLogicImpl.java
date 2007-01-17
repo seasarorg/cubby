@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.seasar.cubby.examples.todo.dto.FindTodoDto;
-import org.seasar.cubby.examples.todo.dto.LoginDto;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.logic.TodoLogic;
 import org.seasar.cubby.examples.todo.logic.TodoTypeLogic;
@@ -19,9 +18,6 @@ public class TodoLogicImpl implements TodoLogic {
 	private List<Todo> todoList = null;
 
 	private int id = 6;
-
-	public TodoLogicImpl() {
-	}
 	
 	public void addTodo(Todo todo) {
 		todo.setId(id++);
@@ -89,8 +85,8 @@ public class TodoLogicImpl implements TodoLogic {
 		target.setMemo(todo.getMemo());
 	}
 
-	public boolean login(LoginDto dto) {
-		return "test".equals(dto.getUserId()) && "test".equals(dto.getPassword());
+	public boolean login(String userId, String password) {
+		return "test".equals(userId) && "test".equals(password);
 	}
 
 	

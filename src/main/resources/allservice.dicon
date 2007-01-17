@@ -7,13 +7,13 @@
     <include path="allsupport.dicon" />
 
 	<!-- Inrterceptor Chain -->
-	<component name="__authInterceptor" class="org.seasar.cubby.examples.todo.controller.AuthActionInterceptor" instance="prototype" />
+	<component name="__authInterceptor" class="org.seasar.cubby.examples.todo.action.AuthActionInterceptor" instance="prototype" />
 	<component name="authInterceptor" class="org.seasar.framework.aop.interceptors.InterceptorAdapter">
 		<initMethod name="add"><arg>"__authInterceptor"</arg></initMethod>
 	</component>
 
-	<component name="controllerInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">
-		<!-- TODO controllerへのaspect適用テスト。本番コードでは必要なし -->
+	<component name="actionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">
+		<!-- TODO actionへのaspect適用テスト。本番コードでは必要なし -->
 	    <initMethod name="add"><arg>aop.traceInterceptor</arg></initMethod>
 	    <initMethod name="add"><arg>authInterceptor</arg></initMethod>
 	</component>
@@ -50,7 +50,7 @@
 	</component>
 
 
-	<!-- controllers -->
+	<!-- actions -->
 
 	<component class="org.seasar.framework.container.autoregister.FileSystemComponentAutoRegister">
 		<property name="instanceDef">
@@ -60,36 +60,26 @@
 			<component class="org.seasar.framework.container.autoregister.DefaultAutoNaming"/>
 		</property>
 		<initMethod name="addClassPattern">
-			<arg>"org.seasar.cubby.examples.todo.controller"</arg>
-			<arg>".*Controller"</arg>
+			<arg>"org.seasar.cubby.examples.todo.action"</arg>
+			<arg>".*Action"</arg>
 		</initMethod>
 	</component>
 	<component class="org.seasar.framework.container.autoregister.InterTypeAutoRegister">
 		<property name="interType">aop.propertyInterType</property>
 		<initMethod name="addClassPattern">
-			<arg>"org.seasar.cubby.examples.todo.controller"</arg>
-			<arg>".*Controller"</arg>
+			<arg>"org.seasar.cubby.examples.todo.action"</arg>
+			<arg>".*Action"</arg>
 		</initMethod>
 	</component>
 	<component class="org.seasar.cubby.seasar.CubbyAspectAutoRegister">
-		<property name="interceptor">controllerInterceptorChain</property>
+		<property name="interceptor">actionInterceptorChain</property>
 		<initMethod name="addClassPattern">
-			<arg>"org.seasar.cubby.examples.todo.controller"</arg>
-			<arg>"((?!Login).*)Controller"</arg>
+			<arg>"org.seasar.cubby.examples.todo.action"</arg>
+			<arg>"((?!Login).*)Action"</arg>
 		</initMethod>
 	</component>
 	
-	<component class="org.seasar.cubby.examples.components.ComponentsController" instance="prototype" />
-	<component class="org.seasar.cubby.examples.components.FileUploadController" instance="prototype" />
-
-<!--
-	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
-		<property name="interceptor">actionInterceptorChain</property>
-		<initMethod name="addClassPattern">
-			<arg>"jp.co.seikonet.cpfcscontroller"</arg>
-			<arg>".*Controller"</arg>
-		</initMethod>
-	</component>
--->
+	<component class="org.seasar.cubby.examples.components.ComponentsAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.components.FileUploadAction" instance="prototype" />
 
 </components>
