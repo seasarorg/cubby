@@ -1,24 +1,19 @@
 package org.seasar.cubby.examples.todo.entity;
 
 import org.seasar.cubby.examples.todo.base.TodoBase;
-import org.seasar.cubby.validator.Validatable;
 import org.seasar.cubby.validator.Validators;
-import org.seasar.cubby.validator.validators.DateFormat;
-import org.seasar.cubby.validator.validators.MaxLength;
-import org.seasar.cubby.validator.validators.Required;
+import org.seasar.cubby.validator.validators.DateFormatValidator;
+import org.seasar.cubby.validator.validators.MaxLengthValidator;
+import org.seasar.cubby.validator.validators.RequiredValidator;
 
-public class Todo extends TodoBase implements Validatable {
+public class Todo extends TodoBase {
 	
 	public static Validators VALIDATORS = new Validators();
 	static {
-		VALIDATORS.add("text", new Required(), new MaxLength(10));
-		VALIDATORS.add("memo", new Required(), new MaxLength(100));
-		VALIDATORS.add("typeId", "type",new Required());
-		VALIDATORS.add("limitDate", "type",new DateFormat("yyyy-MM-dd"));
-	}
-	
-	public Validators getValidators() {
-		return VALIDATORS;
+		VALIDATORS.add("text", new RequiredValidator(), new MaxLengthValidator(10));
+		VALIDATORS.add("memo", new RequiredValidator(), new MaxLengthValidator(100));
+		VALIDATORS.add("typeId", "type",new RequiredValidator());
+		VALIDATORS.add("limitDate", new DateFormatValidator("yyyy-MM-dd"));
 	}
 	
 	private TodoType type;
