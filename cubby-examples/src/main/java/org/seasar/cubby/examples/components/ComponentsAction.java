@@ -3,14 +3,14 @@ package org.seasar.cubby.examples.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.cubby.annotation.Form;
-import org.seasar.cubby.annotation.Url;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Url;
 
 @Url("")
-public class ComponentsController extends Controller {
+public class ComponentsAction extends Action {
 
 	// ----------------------------------------------[DI Filed]
 
