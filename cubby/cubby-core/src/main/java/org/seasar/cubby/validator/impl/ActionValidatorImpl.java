@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.seasar.cubby.annotation.Validation;
-import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.LabelKey;
 import org.seasar.cubby.validator.PropertyValidators;
@@ -15,7 +15,7 @@ import org.seasar.cubby.validator.Validators;
 
 public class ActionValidatorImpl implements ActionValidator {
 	
-	public boolean processValidation(Validation valid, Controller controller, Object form, Validators validators) {
+	public boolean processValidation(Validation valid, Action controller, Object form, Validators validators) {
 		if (valid == null) {
 			return true;
 		}
@@ -24,7 +24,7 @@ public class ActionValidatorImpl implements ActionValidator {
 	}
 
 	@SuppressWarnings("unchecked")
-	void validateAction(Controller controller, Object form, Validators validators) {
+	void validateAction(Action controller, Object form, Validators validators) {
 		for (PropertyValidators propValids : validators.getValidators()) {
 			for (Validator v : propValids.getValidators()) {
 				validate(controller, form, v, propValids);
@@ -32,7 +32,7 @@ public class ActionValidatorImpl implements ActionValidator {
 		}
 	}
 
-	void validate(Controller controller, Object form, Validator v,
+	void validate(Action controller, Object form, Validator v,
 			PropertyValidators propValids) {
 		ValidContext context = createValidContext(controller, form, propValids);
 		Object value = getPropertyValue(controller.getParams(), propValids.getPropertyName());
@@ -43,7 +43,7 @@ public class ActionValidatorImpl implements ActionValidator {
 		}
 	}
 
-	private ValidContext createValidContext(Controller controller, Object form, PropertyValidators propValids) {
+	private ValidContext createValidContext(Action controller, Object form, PropertyValidators propValids) {
 		String name = getLabelKey(form, propValids.getLabelKey());
 		Map params = controller.getParams().getOriginalParameter();
 		ValidContext context = new ValidContext(name, params);

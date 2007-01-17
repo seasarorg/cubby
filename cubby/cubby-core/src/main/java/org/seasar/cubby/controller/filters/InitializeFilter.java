@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.annotation.Session;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Session;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
@@ -33,10 +33,10 @@ import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
- * {@link Controller#initialize()}、{@link Controller#prerender()}メソッドの実行も、
+ * {@link Action#initialize()}、{@link Action#prerender()}メソッドの実行も、
  * このフィルターが行います。
  * 
- *　TODO {@link Controller#prerender()}メソッドの実行をInvocationFilterに移動させる
+ *　TODO {@link Action#prerender()}メソッドの実行をInvocationFilterに移動させる
  * 
  * @author agata
  * @since 1.0
@@ -89,7 +89,7 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	void setupParams(final ActionContext action) {
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.putAll(getMultipartSupportParameterMap(request));
@@ -99,7 +99,7 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	void setupRequestScopeFields(final ActionContext action) {
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		for (Field f : controller.getClass().getFields()) {
 			if (!isSessionScope(f)) {
@@ -112,7 +112,7 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	void setupSessionScopeFields(final ActionContext action) {
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpSession session = request.getSession();
 		for (Field f : controller.getClass().getFields()) {
@@ -127,7 +127,7 @@ public class InitializeFilter extends AroundFilter {
 
 	@SuppressWarnings("unchecked")
 	void setupFlash(final ActionContext action) {
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpSession session = request.getSession();
 		Map<String, Object> flash = (Map<String, Object>) session
@@ -141,7 +141,7 @@ public class InitializeFilter extends AroundFilter {
 
 	void bindAttributes(final ActionContext action) {
 		// set controller
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		request.setAttribute(ATTR_CONTROLLER, controller);
 

@@ -16,14 +16,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionMethod;
 import org.seasar.cubby.controller.MockController;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
-import org.seasar.cubby.controller.results.Forward;
-import org.seasar.cubby.controller.results.Redirect;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.cubby.util.ParameterMap;

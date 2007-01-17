@@ -4,10 +4,10 @@ import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidContext;
 
-public class MaxLength extends BaseValidator {
+public class MaxLengthValidator extends BaseValidator {
 	private int max;
 
-	public MaxLength(int max) {
+	public MaxLengthValidator(int max) {
 		this.max = max;
 	}
 

@@ -4,7 +4,7 @@ import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidContext;
 
-public class Required extends BaseValidator {
+public class RequiredValidator extends BaseValidator {
 	public String validate(ValidContext context, Object value) {
 		if (value instanceof String) {
 			String str = (String)value;

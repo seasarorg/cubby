@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.results;
+package org.seasar.cubby.action;
 
 import java.io.IOException;
 
@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.util.StringUtils;
 
 public class Forward implements ActionResult {
@@ -30,7 +28,7 @@ public class Forward implements ActionResult {
 
 	public void execute(final ActionContext action)
 			throws ServletException, IOException {
-		Controller controller = action.getController();
+		Action controller = action.getController();
 		HttpServletRequest request = action.getRequest();
 		HttpServletResponse response = action.getResponse();
 		String cname = action.getActionMethod().getControllerName();

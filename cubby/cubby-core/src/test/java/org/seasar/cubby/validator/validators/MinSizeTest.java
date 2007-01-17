@@ -10,7 +10,7 @@ import org.seasar.cubby.validator.Validator;
 public class MinSizeTest extends TestCase {
 
 	public void testValidation() {
-		Validator validator = new MinSize(3);
+		Validator validator = new MinSizeValidator(3);
 		ValidContext context = new ValidContext("field", new HashMap());
 
 		assertNull(validator.validate(context, null));

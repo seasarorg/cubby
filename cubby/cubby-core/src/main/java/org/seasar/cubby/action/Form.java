@@ -1,4 +1,4 @@
-package org.seasar.cubby.annotation;
+package org.seasar.cubby.action;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,5 +16,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Form {
-	String value();
+	public static final String THIS = "this";
+	String value() default THIS;
 }

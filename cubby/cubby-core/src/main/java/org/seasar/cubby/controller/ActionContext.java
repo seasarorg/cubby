@@ -3,6 +3,8 @@ package org.seasar.cubby.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.Action;
+
 /**
  * アクションメソッドの実行時のコンテキスト情報を保持するインターフェイス
  * 
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0
  */
 public interface ActionContext {
-	Controller getController();
+	Action getController();
 
 	HttpServletRequest getRequest();
 

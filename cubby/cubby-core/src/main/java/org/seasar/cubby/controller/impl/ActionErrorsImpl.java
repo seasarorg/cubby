@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.cubby.controller.ActionErrors;
+import org.seasar.cubby.action.ActionErrors;
 
 public class ActionErrorsImpl implements ActionErrors {
 

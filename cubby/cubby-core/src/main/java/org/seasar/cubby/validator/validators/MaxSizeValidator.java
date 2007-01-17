@@ -4,10 +4,10 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidContext;
 
-public class MaxSize extends BaseValidator {
+public class MaxSizeValidator extends BaseValidator {
 	private int max;
 
-	public MaxSize(int max) {
+	public MaxSizeValidator(int max) {
 		this.max = max;
 	}
 

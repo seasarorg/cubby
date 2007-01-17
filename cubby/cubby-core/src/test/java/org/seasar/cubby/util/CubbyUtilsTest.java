@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.seasar.cubby.controller.results.Forward;
-import org.seasar.cubby.controller.results.Redirect;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
 
 import junit.framework.TestCase;
 

@@ -4,9 +4,9 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.MockController;
-import org.seasar.cubby.controller.results.Forward;
-import org.seasar.cubby.controller.results.Redirect;
 import org.seasar.cubby.util.ClassUtils;
 
 public class InvocationFilterTest extends TestCase {

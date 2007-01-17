@@ -1,12 +1,9 @@
-package org.seasar.cubby.annotation;
+package org.seasar.cubby.action;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.seasar.cubby.validator.FormValidator;
-import org.seasar.cubby.validator.Validatable;
 
 
 /**
@@ -20,12 +17,13 @@ import org.seasar.cubby.validator.Validatable;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Validation {
+	static String DEFAULT_VALIDATORS_FILED = "VALIDATORS";
 	/**
 	 * 検証失敗時の遷移先を指定します。
 	 * @return
 	 */
 	String errorPage();
-	Class<? extends Validatable> validator() default FormValidator.class;
+	String validator() default DEFAULT_VALIDATORS_FILED;
 	/**
 	 * 除外するプロパティ名
 	 * @return

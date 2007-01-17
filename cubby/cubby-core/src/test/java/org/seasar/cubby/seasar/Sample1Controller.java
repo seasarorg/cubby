@@ -1,12 +1,12 @@
 package org.seasar.cubby.seasar;
 
-import org.seasar.cubby.annotation.Url;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.controller.results.Forward;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Url;
 
 @Url("sample1")
-public class Sample1Controller extends Controller {
+public class Sample1Controller extends Action {
 	
 	public ActionResult detail() {
 		return new Forward("detail.jsp");
