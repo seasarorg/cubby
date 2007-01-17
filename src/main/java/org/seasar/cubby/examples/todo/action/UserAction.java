@@ -1,15 +1,15 @@
-package org.seasar.cubby.examples.todo.controller;
+package org.seasar.cubby.examples.todo.action;
 
 import java.util.List;
 
-import org.seasar.cubby.annotation.Filter;
-import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.examples.todo.logic.UserLogic;
 
 
-@Filter({AuthActionFilter.class})
-public class UserController extends Controller {
+public class UserAction extends Action {
 	
 	// ----------------------------------------------[DI Filed]
 
@@ -22,16 +22,16 @@ public class UserController extends Controller {
 
 	// ----------------------------------------------[Action Method]
 
-	public String list() {
+	public ActionResult list() {
 		if (items == null) {
 			items = userLogic.findAll();
 		}
-		return "list.jsp";
+		return new Forward("list.jsp");
 	}
 	
-	public String show() {
+	public ActionResult show() {
 		item = userLogic.findById(params.toInt("id"));
-		return "show.jsp";
+		return new Forward("show.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]
