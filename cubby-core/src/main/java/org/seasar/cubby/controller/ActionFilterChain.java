@@ -3,6 +3,8 @@ package org.seasar.cubby.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.cubby.action.ActionResult;
+
 
 public class ActionFilterChain {
 

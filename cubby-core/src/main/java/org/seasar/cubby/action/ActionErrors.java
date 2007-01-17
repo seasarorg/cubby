@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller;
+package org.seasar.cubby.action;
 
 import java.util.List;
 import java.util.Map;

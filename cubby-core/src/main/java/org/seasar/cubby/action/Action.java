@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller;
+package org.seasar.cubby.action;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -7,7 +7,7 @@ import org.seasar.cubby.util.Messages;
 import org.seasar.cubby.util.ParameterMap;
 
 
-public abstract class Controller {
+public abstract class Action {
 	protected ActionErrors errors;
 	protected ParameterMap params;
 	protected Map<String,Object> flash;

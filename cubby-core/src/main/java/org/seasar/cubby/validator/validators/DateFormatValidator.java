@@ -7,10 +7,10 @@ import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidContext;
 
-public class DateFormat extends BaseValidator {
+public class DateFormatValidator extends BaseValidator {
 	private SimpleDateFormat dateFormat;
 
-	public DateFormat(String dateFormatPattern) {
+	public DateFormatValidator(String dateFormatPattern) {
 		this.dateFormat = new SimpleDateFormat();
 		this.dateFormat.setLenient(false);
 		this.dateFormat.applyPattern(dateFormatPattern);

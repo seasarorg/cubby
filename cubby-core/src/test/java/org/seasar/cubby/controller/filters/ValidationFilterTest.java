@@ -9,13 +9,13 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionMethod;
 import org.seasar.cubby.controller.MockController;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
-import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
 import org.seasar.framework.mock.servlet.MockHttpServletResponseImpl;
@@ -95,5 +95,27 @@ public class ValidationFilterTest extends TestCase {
 		assertNull("入力検証エラーフラグ=null", request.getAttribute(ATTR_VALIDATION_FAIL));
 		assertEquals("errorPageにフォワード", "success.jsp", result.getResult());
 		assertTrue("フォームオブジェクトへのバインドは実行される", populator.populateProcessed);
+	}
+
+	public void testDoFilter_validationNotFound() throws Throwable {
+		Method actionMethod = ClassUtils.getMethod(MockController.class,
+				"dummy3", new Class[] {});
+		assertNotNull(actionMethod);
+		ActionMethod holder = new ActionMethod(actionMethod, chain,
+				uriConvertNames);
+		HashMap<String, Object> uriParams = new LinkedHashMap<String, Object>();
+		uriParams.put("id", "1");
+		uriParams.put("userId", "seasar");
+		action = new ActionContextImpl(request, response, controller, holder);
+
+		f1.doBeforeFilter(action);
+		validator.processValidationResult = true;
+		f3.setResult(new Forward("success.jsp"));
+		try {
+			f2.doFilter(action, chain);
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(RuntimeException.class, e.getClass());
+		}
 	}
 }

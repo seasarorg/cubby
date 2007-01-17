@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionMethod;
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
 import org.seasar.cubby.controller.filters.InitializeFilter;
 import org.seasar.cubby.controller.filters.InvocationFilter;
 import org.seasar.cubby.controller.filters.ValidationFilter;
@@ -34,26 +34,26 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 public class ActionProcessorImpl implements ActionProcessor {
-	
+
 	private static final Log LOG = LogFactory.getLog(ActionProcessorImpl.class);
 
-	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
+	public static final String[] EMPTY_STRING_ARRAY = new String[] {};
 
 	private static final String DISPACHER_PATH_PREFIX = "/cubby-dispacher/";
 
-	private static Pattern pattern = Pattern.compile("([{]([^}]+)[}])([^{]*)");
+	private static Pattern urlRewritePattern = Pattern.compile("([{]([^}]+)[}])([^{]*)");
 
 	private final Map<Pattern, ActionMethod> actionCache = new LinkedHashMap<Pattern, ActionMethod>();
 
 	private final Map<String, ActionMethod> dispatchActionCache = new LinkedHashMap<String, ActionMethod>();
 
-	private final Map<Class, ActionFilter> actionFilterRegistory = new LinkedHashMap<Class, ActionFilter>();
+	private final Map<Class, ActionFilter> actionFilters = new LinkedHashMap<Class, ActionFilter>();
 
 	public void addActionFilter(ActionFilter actionFilter) {
-		if (actionFilterRegistory.containsKey(actionFilter.getClass())) {
+		if (actionFilters.containsKey(actionFilter.getClass())) {
 			throw new RuntimeException("CUB001");
 		}
-		actionFilterRegistory.put(actionFilter.getClass(), actionFilter);
+		actionFilters.put(actionFilter.getClass(), actionFilter);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -62,7 +62,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 			LOG.debug("アクションメソッドを登録します。");
 		}
 		S2Container container = SingletonS2ContainerFactory.getContainer();
-		ComponentDef[] defs = container.findAllComponentDefs(Controller.class);
+		ComponentDef[] defs = container.findAllComponentDefs(Action.class);
 		for (ComponentDef def : defs) {
 			Class concreteClass = def.getComponentClass();
 			if (CubbyUtils.isControllerClass(concreteClass)) {
@@ -86,29 +86,33 @@ public class ActionProcessorImpl implements ActionProcessor {
 		String actionFullName = CubbyUtils.getActionFullName(c, m);
 		ActionFilterChain chain = createActionFilterChain(c, m);
 		List<String> uriConvertNames = new ArrayList<String>();
-		Matcher matcher = pattern.matcher(actionFullName);
+		Matcher matcher = urlRewritePattern.matcher(actionFullName);
 		while (matcher.find()) {
 			String name = matcher.group(2);
 			String[] names = name.split(",", 2);
 			if (names.length == 1) {
-				actionFullName = StringUtils.replace(actionFullName, matcher.group(1), "([a-zA-Z0-9]+)");
+				actionFullName = StringUtils.replace(actionFullName, matcher
+						.group(1), "([a-zA-Z0-9]+)");
 				uriConvertNames.add(matcher.group(2));
 			} else {
-				actionFullName = StringUtils.replace(actionFullName, matcher.group(1), "(" + names[1] + ")");
+				actionFullName = StringUtils.replace(actionFullName, matcher
+						.group(1), "(" + names[1] + ")");
 				uriConvertNames.add(names[0]);
 			}
 		}
-		ActionMethod holder = new ActionMethod(m, chain, uriConvertNames.toArray(new String[uriConvertNames.size()]));
+		ActionMethod holder = new ActionMethod(m, chain, uriConvertNames
+				.toArray(new String[uriConvertNames.size()]));
 		Pattern pattern = Pattern.compile("^" + actionFullName + "$");
 		actionCache.put(pattern, holder);
-		dispatchActionCache.put(getDispacherKey(holder), holder);
+		dispatchActionCache.put(makeDispacherActionCacheKey(holder), holder);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("アクションメソッドを登録[uri=" + actionFullName + ", method=" + m
-					+ "uri params=" + StringUtils.join(holder.getUriConvertNames()) + "]");
+					+ "uri params="
+					+ StringUtils.join(holder.getUriConvertNames()) + "]");
 		}
 	}
 
-	private String getDispacherKey(ActionMethod holder) {
+	private String makeDispacherActionCacheKey(ActionMethod holder) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(holder.getMethod().getDeclaringClass().getName());
 		builder.append("/");
@@ -119,14 +123,15 @@ public class ActionProcessorImpl implements ActionProcessor {
 	@SuppressWarnings("unchecked")
 	private ActionFilterChain createActionFilterChain(Class c, Method m) {
 		ActionFilterChain chain = new ActionFilterChain();
-		chain.add(actionFilterRegistory.get(InitializeFilter.class));
-		chain.add(actionFilterRegistory.get(ValidationFilter.class));
-		chain.add(actionFilterRegistory.get(InvocationFilter.class));
+		chain.add(actionFilters.get(InitializeFilter.class));
+		chain.add(actionFilters.get(ValidationFilter.class));
+		chain.add(actionFilters.get(InvocationFilter.class));
 		return chain;
 	}
 
-	public void execute(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws Throwable {
-		
+	public void execute(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Throwable {
+
 		ActionMethod holder = null;
 		Map<String, String> uriParams = new HashMap<String, String>();
 		String path = CubbyUtils.getPath(request);
@@ -135,12 +140,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 		if (path.startsWith(DISPACHER_PATH_PREFIX)) {
 			// format:/cubby-dispacher/(controllerClassName)/(actionMethod)
-			String dispatchKey = StringUtils.removeStart(path, DISPACHER_PATH_PREFIX);
+			String dispatchKey = StringUtils.removeStart(path,
+					DISPACHER_PATH_PREFIX);
 			holder = dispatchActionCache.get(dispatchKey);
 		} else {
 			for (Pattern p : actionCache.keySet()) {
 				Matcher matcher = p.matcher(path);
-				if(matcher.find()) {
+				if (matcher.find()) {
 					holder = actionCache.get(p);
 					for (int i = 1; i < matcher.groupCount() + 1; i++) {
 						String group = matcher.group(i);
@@ -160,32 +166,36 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 	}
 
-	private void processAction(HttpServletRequest request, HttpServletResponse response, ActionMethod holder) throws Throwable, Exception {
+	private void processAction(HttpServletRequest request,
+			HttpServletResponse response, ActionMethod holder)
+			throws Throwable, Exception {
 		S2Container container = SingletonS2ContainerFactory.getContainer();
 		Class<?> declaringClass = holder.getMethod().getDeclaringClass();
-		Controller controller = (Controller) container.getComponent(declaringClass);
-		ActionContext action = new ActionContextImpl(request, response, controller, holder);
-		ActionFilterChain actionFilterChain = action.getActionMethod().getFilterChain();
+		Action controller = (Action) container
+				.getComponent(declaringClass);
+		ActionContext action = new ActionContextImpl(request, response,
+				controller, holder);
+		ActionFilterChain actionFilterChain = action.getActionMethod()
+				.getFilterChain();
 		ActionResult result = actionFilterChain.doFilter(action);
 		if (result != null) {
 			result.execute(action);
 		}
 	}
 
-	private void forwardRewriteUrl(HttpServletRequest request, HttpServletResponse response, ActionMethod holder, Map<String, String> uriParams) {
+	private void forwardRewriteUrl(HttpServletRequest request,
+			HttpServletResponse response, ActionMethod holder,
+			Map<String, String> uriParams) throws Exception{
 		String path = getUrlRewriteForwardPath(holder.getMethod(), uriParams);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("forward[path=" + path + "]");
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-		try {
-			dispatcher.forward(request, response);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		dispatcher.forward(request, response);
 	}
-	
-	public String getUrlRewriteForwardPath(Method method, Map<String, String> uriParams) {
+
+	public String getUrlRewriteForwardPath(Method method,
+			Map<String, String> uriParams) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(DISPACHER_PATH_PREFIX);
 		builder.append(method.getDeclaringClass().getName());
@@ -202,5 +212,4 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 		return builder.toString();
 	}
-	
 }

@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.results;
+package org.seasar.cubby.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionResult;
 import org.seasar.cubby.util.StringUtils;
 
 public class Redirect implements ActionResult {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.seasar.cubby.controller.Controller;
+import org.seasar.cubby.action.Action;
 
 public class ClassUtils {
 
@@ -16,16 +16,12 @@ public class ClassUtils {
 		try {
 			return obj.getClass().getField(fieldName).get(obj);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (SecurityException e) {
-			e.printStackTrace();
 			throw new RuntimeException();
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -48,19 +44,14 @@ public class ClassUtils {
 			Object result = method.invoke(obj, new Object[0]);
 			return result != null ? result.toString() : null;
 		} catch (SecurityException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -69,7 +60,6 @@ public class ClassUtils {
 		try {
 			return Class.forName(name);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -78,10 +68,8 @@ public class ClassUtils {
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -95,10 +83,8 @@ public class ClassUtils {
 		try {
 			return clazz.getMethod(methodName, parameterTypes);
 		} catch (SecurityException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -126,13 +112,10 @@ public class ClassUtils {
 		try {
 			return method.invoke(instance, args);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -146,22 +129,18 @@ public class ClassUtils {
 		try {
 			f.set(instance, value);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static Object getFieldValue(Field f, Controller instance) {
+	public static Object getFieldValue(Field f, Action instance) {
 		try {
 			return f.get(instance);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

@@ -8,19 +8,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.annotation.Form;
-import org.seasar.cubby.annotation.Validation;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.controller.results.Forward;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.ActionValidator;
-import org.seasar.cubby.validator.FormValidator;
-import org.seasar.cubby.validator.Validatable;
 import org.seasar.cubby.validator.Validators;
 
 /**
@@ -53,7 +51,7 @@ public class ValidationFilter implements ActionFilter {
 		final ActionResult result;
 
 		final HttpServletRequest request = action.getRequest();
-		final Controller controller = action.getController();
+		final Action controller = action.getController();
 		final Validation validation = action.getActionMethod().getValidation();
 		final Validators validators = getValidators(action);
 		boolean success = actionValidator.processValidation(validation,
@@ -86,26 +84,19 @@ public class ValidationFilter implements ActionFilter {
 	private Validators getValidators(ActionContext action) {
 		Validation validation = action.getActionMethod().getValidation();
 		if (validation != null) {
-			Class<? extends Validatable> validatorsClass = validation.validator();
-			if (validatorsClass == FormValidator.class) {
-				if (getFormBean(action.getController(), action.getActionMethod().getForm()) instanceof Validatable) {
-					return ((Validatable) getFormBean(action.getController(), action.getActionMethod().getForm())).getValidators();
-				}
-			} else if (validatorsClass != null) {
-				return ClassUtils.newInstance(validatorsClass).getValidators();
-			} else {
-				throw new RuntimeException("Can't find validators.");
-			}
+			String validatorField = validation.validator();
+			Object form = getFormBean(action.getController(), action.getActionMethod().getForm());
+			return (Validators) ClassUtils.getField(form, validatorField);
 		}
 		return NULL_VALIDATORS;
 	}
 	
-	private Object getFormBean(Controller controller, Form form) {
+	private Object getFormBean(Action controller, Form form) {
 		if (form == null) {
 			return null;
 		}
 		String formFieldName = form.value();
-		if ("this".equals(formFieldName)) {
+		if (Form.THIS.equals(formFieldName)) {
 			return controller;
 		} else {
 			return ClassUtils.getField(controller, formFieldName);

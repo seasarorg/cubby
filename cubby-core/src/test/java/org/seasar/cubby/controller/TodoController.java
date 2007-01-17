@@ -1,8 +1,9 @@
 package org.seasar.cubby.controller;
 
-import org.seasar.cubby.annotation.Url;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Url;
 
-public class TodoController extends Controller {
+public class TodoController extends Action {
 
 	@Url("/{name}/todo/{id}")
 	public String show() {

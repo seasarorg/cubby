@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.results;
+package org.seasar.cubby.action;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,7 +9,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionResult;
 
 public class Direct implements ActionResult {
 

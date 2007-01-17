@@ -10,7 +10,7 @@ import org.seasar.cubby.validator.Validator;
 public class MaxSizeTest extends TestCase {
 
 	public void testValidation() {
-		Validator validator = new MaxSize(3);
+		Validator validator = new MaxSizeValidator(3);
 		ValidContext context = new ValidContext("field", new HashMap());
 
 		assertNull(validator.validate(context, null));

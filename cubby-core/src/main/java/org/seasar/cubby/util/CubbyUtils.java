@@ -5,11 +5,11 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.annotation.Url;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
-import org.seasar.cubby.controller.results.Forward;
-import org.seasar.cubby.controller.results.Redirect;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.Url;
 
 public class CubbyUtils {
 
@@ -74,7 +74,7 @@ public class CubbyUtils {
 	}
 	
 	public static boolean isControllerClass(Class c) {
-		return ClassUtils.isSubClass(Controller.class, c);
+		return ClassUtils.isSubClass(Action.class, c);
 	}
 
 

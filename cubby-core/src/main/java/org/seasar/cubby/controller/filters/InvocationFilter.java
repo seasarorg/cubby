@@ -5,11 +5,11 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
-import org.seasar.cubby.controller.ActionResult;
-import org.seasar.cubby.controller.Controller;
 
 /**
  * アクションメソッドを実行するフィルターです。 このフィルターは後続のフィルターを実行しません。<br>
@@ -28,7 +28,7 @@ public class InvocationFilter implements ActionFilter {
 		return invokeActionMethod(action.getController(), action.getActionMethod().getMethod());
 	}
 
-	ActionResult invokeActionMethod(final Controller controller,
+	ActionResult invokeActionMethod(final Action controller,
 			final Method method) throws Throwable {
 		try {
 			ActionResult result = (ActionResult) method.invoke(controller,

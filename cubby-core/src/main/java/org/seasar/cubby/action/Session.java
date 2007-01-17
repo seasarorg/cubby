@@ -1,4 +1,4 @@
-package org.seasar.cubby.annotation;
+package org.seasar.cubby.action;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

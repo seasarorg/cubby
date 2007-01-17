@@ -4,10 +4,10 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidContext;
 
-public class MinSize extends BaseValidator {
+public class MinSizeValidator extends BaseValidator {
 	private int min;
 
-	public MinSize(int min) {
+	public MinSizeValidator(int min) {
 		this.min = min;
 	}
 
