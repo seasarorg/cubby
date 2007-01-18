@@ -14,14 +14,14 @@ import org.seasar.cubby.action.Url;
 public class CubbyUtils {
 
 	@SuppressWarnings("unchecked")
-	public static String getControllerName(Class c) {
+	public static String getActionName(Class c) {
 		String name = c.getName();
 		name = StringUtils.left(name, "$");
-		String controllerName = StringUtils.toFirstLower(name.replaceAll("(.*[.])([^.]+)(Controller$)", "$2"));
+		String actionName = StringUtils.toFirstLower(name.replaceAll("(.*[.])([^.]+)(Action$)", "$2"));
 		if (c.getAnnotation(Url.class) != null) {
-			controllerName = ((Url)c.getAnnotation(Url.class)).value();
+			actionName = ((Url)c.getAnnotation(Url.class)).value();
 		}
-		return controllerName;
+		return actionName;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -34,11 +34,11 @@ public class CubbyUtils {
 	}
 
 	public static String getActionFullName(Class c, Method m) {
-		String controllerName = CubbyUtils.getControllerName(c);
-		if (StringUtils.isEmpty(controllerName)) {
+		String actionName = CubbyUtils.getActionName(c);
+		if (StringUtils.isEmpty(actionName)) {
 			return "/" + getActionName(m);
 		} else {
-			return "/" + controllerName + "/" + getActionName(m);
+			return "/" + actionName + "/" + getActionName(m);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class CubbyUtils {
 		return uri.substring(contextPath.length());
 	}
 	
-	public static boolean isControllerClass(Class c) {
+	public static boolean isActionClass(Class c) {
 		return ClassUtils.isSubClass(Action.class, c);
 	}
 

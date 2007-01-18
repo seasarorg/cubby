@@ -61,6 +61,6 @@ public class ActionMethod {
 	}
 
 	public String getControllerName() {
-		return CubbyUtils.getControllerName(getControllerClass());
+		return CubbyUtils.getActionName(getControllerClass());
 	}
 }

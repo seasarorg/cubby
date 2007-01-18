@@ -65,8 +65,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 		ComponentDef[] defs = container.findAllComponentDefs(Action.class);
 		for (ComponentDef def : defs) {
 			Class concreteClass = def.getComponentClass();
-			if (CubbyUtils.isControllerClass(concreteClass)) {
-				initController(concreteClass);
+			if (CubbyUtils.isActionClass(concreteClass)) {
+				initAction(concreteClass);
 			}
 		}
 		if (LOG.isDebugEnabled()) {
@@ -74,7 +74,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 	}
 
-	private void initController(Class c) {
+	private void initAction(Class c) {
 		for (Method m : c.getMethods()) {
 			if (CubbyUtils.isActionMethod(m)) {
 				initAction(c, m);
