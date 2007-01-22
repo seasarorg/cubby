@@ -140,6 +140,7 @@ public class CubbyHelperFunctions {
 		dyn.put("class", classValue);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Object formValue(Map dyn, Object form, HttpServletRequest request, String valueParamName) {
 		Object value = dyn.get(valueParamName);
 		String name = (String) dyn.get("name");
@@ -147,8 +148,8 @@ public class CubbyHelperFunctions {
 			if (dyn.containsKey(valueParamName)) {
 				return value;
 			} else {
-				ParameterMap params = (ParameterMap)request.getAttribute(ATTR_PARAMS);
-				return params.getValue(name);
+				Map<String, Object> params = (Map<String,Object>)request.getAttribute(ATTR_PARAMS);
+				return CubbyUtils.getParamsValue(params, name);
 			}
 		} else {
 			if (dyn.containsKey(valueParamName) || form == null || StringUtils.isEmpty(name)) {

@@ -1,10 +1,12 @@
 package org.seasar.cubby.validator;
 
+import java.util.Map;
+
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 
 public interface ActionValidator {
 	
-	boolean processValidation(Validation valid, Action controller, Object form, Validators validators);
+	boolean processValidation(Validation valid, Action action, Map<String,Object> params, Object form, Validators validators);
 
 }

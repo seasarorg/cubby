@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 
 public class ActionMethodTest extends TestCase {
 
-	public void testAA() throws Exception {
+	public void testForm() throws Exception {
 		ActionMethod actionMethod = makeActionMethod("dummy2");
 		assertNull(actionMethod.getForm());
 		actionMethod = makeActionMethod("dummy1");
@@ -17,7 +17,7 @@ public class ActionMethodTest extends TestCase {
 	}
 
 	private ActionMethod makeActionMethod(String methodName) {
-		Method method = ClassUtils.getMethod(MockController.class, methodName, null);
+		Method method = ClassUtils.getMethod(MockAction.class, methodName, null);
 		ActionFilterChain chain = new ActionFilterChain();
 		String[] uriConvationNames = {};
 		ActionMethod actionMethod = new ActionMethod(method, chain, uriConvationNames);

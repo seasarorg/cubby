@@ -6,6 +6,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.LabelKey;
 import org.seasar.cubby.validator.PropertyValidators;
@@ -15,44 +16,43 @@ import org.seasar.cubby.validator.Validators;
 
 public class ActionValidatorImpl implements ActionValidator {
 	
-	public boolean processValidation(Validation valid, Action controller, Object form, Validators validators) {
+	public boolean processValidation(Validation valid, Action action, Map<String,Object> params, Object form, Validators validators) {
 		if (valid == null) {
 			return true;
 		}
-		validateAction(controller, form, validators);
-		return controller.getErrors().isEmpty();
+		validateAction(action, params, form, validators);
+		return action.getErrors().isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")
-	void validateAction(Action controller, Object form, Validators validators) {
+	void validateAction(Action action, Map<String,Object> params, Object form, Validators validators) {
 		for (PropertyValidators propValids : validators.getValidators()) {
 			for (Validator v : propValids.getValidators()) {
-				validate(controller, form, v, propValids);
+				validate(action, params, form, v, propValids);
 			}
 		}
 	}
 
-	void validate(Action controller, Object form, Validator v,
+	void validate(Action action, Map<String, Object> params, Object form, Validator v,
 			PropertyValidators propValids) {
-		ValidContext context = createValidContext(controller, form, propValids);
-		Object value = getPropertyValue(controller.getParams(), propValids.getPropertyName());
+		ValidContext context = createValidContext(action, params, form, propValids);
+		Object value = getPropertyValue(params, propValids.getPropertyName());
 		String error = v.validate(context, value);
 		if (error != null) {
-			controller.getErrors().addFieldError(propValids.getPropertyName(),
+			action.getErrors().addFieldError(propValids.getPropertyName(),
 					error);
 		}
 	}
 
-	private ValidContext createValidContext(Action controller, Object form, PropertyValidators propValids) {
+	private ValidContext createValidContext(Action action, Map<String, Object> params, Object form, PropertyValidators propValids) {
 		String name = getLabelKey(form, propValids.getLabelKey());
-		Map params = controller.getParams().getOriginalParameter();
 		ValidContext context = new ValidContext(name, params);
 		return context;
 	}
 
-	Object getPropertyValue(Map params, String propertyName) {
+	Object getPropertyValue(Map<String, Object> params, String propertyName) {
 		String[] props = StringUtils.split(propertyName, ".", 2);
-		Object value = params.get(props[0]);
+		Object value = CubbyUtils.getParamsValue(params, props[0]);
 		if (props.length == 1) {
 			return value;
 		} else {

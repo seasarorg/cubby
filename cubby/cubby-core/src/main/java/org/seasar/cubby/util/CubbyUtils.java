@@ -2,6 +2,7 @@ package org.seasar.cubby.util;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,5 +78,15 @@ public class CubbyUtils {
 		return ClassUtils.isSubClass(Action.class, c);
 	}
 
-
+	public static Object getParamsValue(Map<String, Object> params, String key) {
+		Object value = params.get(key);
+		if (value == null) {
+			return null;
+		} else if (value.getClass().isArray()) {
+			Object[] values = (Object[])value;
+			return values[0];
+		} else {
+			return value;
+		}
+	}
 }

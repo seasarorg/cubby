@@ -23,9 +23,9 @@ public class InvocationFilter implements ActionFilter {
 
 	private static final Log LOG = LogFactory.getLog(InvocationFilter.class);
 
-	public ActionResult doFilter(final ActionContext action,
+	public ActionResult doFilter(final ActionContext context,
 			final ActionFilterChain chain) throws Throwable {
-		return invokeActionMethod(action.getController(), action.getActionMethod().getMethod());
+		return invokeActionMethod(context.getAction(), context.getActionMethod().getMethod());
 	}
 
 	ActionResult invokeActionMethod(final Action controller,

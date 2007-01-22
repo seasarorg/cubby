@@ -4,6 +4,6 @@ import org.seasar.cubby.action.ActionResult;
 
 
 public interface ActionFilter {
-	ActionResult doFilter(ActionContext action, ActionFilterChain chain)
+	ActionResult doFilter(ActionContext context, ActionFilterChain chain)
 			throws Throwable;
 }

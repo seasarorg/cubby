@@ -60,7 +60,7 @@ public class ActionMethod {
 		return getMethod().getAnnotation(Validation.class);
 	}
 
-	public String getControllerName() {
+	public String getActionName() {
 		return CubbyUtils.getActionName(getControllerClass());
 	}
 }

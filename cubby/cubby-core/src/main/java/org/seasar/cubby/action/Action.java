@@ -4,12 +4,10 @@ import java.text.MessageFormat;
 import java.util.Map;
 
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.util.ParameterMap;
 
 
 public abstract class Action {
 	protected ActionErrors errors;
-	protected ParameterMap params;
 	protected Map<String,Object> flash;
 
 	public void initialize() {}
@@ -30,14 +28,6 @@ public abstract class Action {
 
 	public void setFlash(Map<String, Object> flash) {
 		this.flash = flash;
-	}
-
-	public ParameterMap getParams() {
-		return params;
-	}
-
-	public void setParams(ParameterMap params) {
-		this.params = params;
 	}
 
 	public String getText(String key) {

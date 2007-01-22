@@ -5,8 +5,8 @@
 	<include path="app-cubby.dicon" />
 
 	<!-- Properties -->
-	<component name="config" class="java.util.Properties" >
-		<arg>@org.seasar.framework.util.ResourceUtil@getProperties("cubby.properties")</arg>
+	<component name="config" class="java.util.HashMap" >
+		<arg>@org.seasar.framework.util.ResourceBundleUtil@convertMap("cubby", @java.util.Locale@getDefault())</arg>
 	</component>
 
 	<!-- Controller -->
