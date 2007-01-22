@@ -10,10 +10,10 @@ function doDelete(name, id) {
 }
 -->
 </script>
-<h1>Todo詳細</h1>
+<h2>Todo詳細</h2>
 <div class="menu">
-[<a href="list">一覧に戻る</a>]
-[<a href="edit?id=${f:out(todo.id)}">編集</a>]
+[<a href="${contextPath}/todo/list">一覧に戻る</a>]
+[<a href="${contextPath}/todo/edit?id=${todo.id}">編集</a>]
 [<a href="javascript:doDelete('${f:out(todo.text)}',${f:out(todo.id)})">削除</a>]
 </div>
 <table border="1">

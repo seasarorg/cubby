@@ -1,7 +1,7 @@
 <t:template extend="/todo/template.jsp">
 <jsp:attribute name="title">Todo編集確認</jsp:attribute>
 <jsp:attribute name="content">
-<h1>Todo編集確認</h1>
+<h2>Todo編集確認</h2>
 以下の内容で登録しますがよろしいですか？
 <div class="menu">
 [<a href="javascript:doBack();">戻る</a>]

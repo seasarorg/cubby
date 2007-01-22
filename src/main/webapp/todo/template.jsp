@@ -4,12 +4,12 @@
   <title>${parts['title']}</title>
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
-  <link href="${contextPath}/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
 </head>
 <body>
 <div id="header">
 	<div id="header_info">
-	${user.name}さんこんにちは | <a href="${contextPath}/logout">ログアウト</a>
+	${user.name}さんこんにちは | <a href="${contextPath}/todo/logout">ログアウト</a>
 	</div>
 	<h1>Todo</h1>
 </div>
