@@ -24,8 +24,8 @@ public class Direct implements ActionResult {
 		this.lastModified = lastModified;
 	}
 	
-	public void execute(ActionContext action) throws Exception {
-		HttpServletResponse response = action.getResponse();
+	public void execute(ActionContext context) throws Exception {
+		HttpServletResponse response = context.getResponse();
 		response.setContentType(contentType);
 		response.addDateHeader("Last-Modified", lastModified);
 

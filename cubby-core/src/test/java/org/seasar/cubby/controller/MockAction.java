@@ -9,7 +9,7 @@ import org.seasar.cubby.action.Session;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.Validators;
 
-public class MockController extends Action {
+public class MockAction extends Action {
 	
 	public static final Validators VALIDATORS = new Validators();
 	

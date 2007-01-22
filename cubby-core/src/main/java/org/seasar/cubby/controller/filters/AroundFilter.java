@@ -7,16 +7,16 @@ import org.seasar.cubby.controller.ActionFilterChain;
 
 public abstract class AroundFilter implements ActionFilter {
 
-	public ActionResult doFilter(ActionContext action, ActionFilterChain chain)
+	public ActionResult doFilter(ActionContext context, ActionFilterChain chain)
 			throws Throwable {
-		doBeforeFilter(action);
-		ActionResult result = chain.doFilter(action);
-		doAfterFilter(action, result);
+		doBeforeFilter(context);
+		ActionResult result = chain.doFilter(context);
+		doAfterFilter(context, result);
 		return result;
 	}
 
-	protected void doBeforeFilter(ActionContext action) {}
+	protected void doBeforeFilter(ActionContext context) {}
 
-	protected void doAfterFilter(ActionContext action, ActionResult result) {}
+	protected void doAfterFilter(ActionContext context, ActionResult result) {}
 
 }

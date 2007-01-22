@@ -18,16 +18,16 @@ public class Redirect implements ActionResult {
 		this.result = result;
 	}
 	
-	public void execute(ActionContext action) throws Exception {
+	public void execute(ActionContext context) throws Exception {
 		String path = null;
-		HttpServletRequest request = action.getRequest();
-		HttpServletResponse response = action.getResponse();
+		HttpServletRequest request = context.getRequest();
+		HttpServletResponse response = context.getResponse();
 
 		String cpath = request.getContextPath();
 		if (result.charAt(0) == '/') {
 			path = cpath + result;
 		} else {
-			String cname = action.getActionMethod().getControllerName();
+			String cname = context.getActionMethod().getActionName();
 			if (StringUtils.isEmpty(cname)) {
 				path = cpath + "/" + result;
 			} else {

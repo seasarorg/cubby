@@ -173,13 +173,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 		Class<?> declaringClass = holder.getMethod().getDeclaringClass();
 		Action controller = (Action) container
 				.getComponent(declaringClass);
-		ActionContext action = new ActionContextImpl(request, response,
+		ActionContext context = new ActionContextImpl(request, response,
 				controller, holder);
-		ActionFilterChain actionFilterChain = action.getActionMethod()
+		ActionFilterChain actionFilterChain = context.getActionMethod()
 				.getFilterChain();
-		ActionResult result = actionFilterChain.doFilter(action);
+		ActionResult result = actionFilterChain.doFilter(context);
 		if (result != null) {
-			result.execute(action);
+			result.execute(context);
 		}
 	}
 

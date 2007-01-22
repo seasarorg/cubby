@@ -12,7 +12,7 @@ import org.seasar.cubby.action.Action;
  * @since 1.0
  */
 public interface ActionContext {
-	Action getController();
+	Action getAction();
 
 	HttpServletRequest getRequest();
 

@@ -30,7 +30,7 @@ public class ActionContextImpl implements ActionContext {
 		this.holder = holder;
 	}
 
-	public Action getController() {
+	public Action getAction() {
 		return controller;
 	}
 

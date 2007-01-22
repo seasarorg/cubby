@@ -10,6 +10,8 @@ public class CubbyConstants {
 
 	public static final String ATTR_CONTROLLER = "controller";
 
+	public static final String ATTR_ACTION = "action";
+
 	public static final String ATTR_ACTION_ERRORS = "actionErrors";
 
 	public static final String ATTR_ALL_ERRORS = "allErrors";
@@ -21,12 +23,4 @@ public class CubbyConstants {
 	public static final String ATTR_VALIDATION_FAIL = "validationFail";
 
 	public static final String ATTR_OUTPUT_VALUES = "outputValues";
-
-	public static final String KEY_GLOBAL_CONVERSION_RULE = "GLOBAL_CONVERSION_RULE";
-
-	public static final String KEY_GLOBAL_DATE_PATTERN = "GLOBAL_DATE_PATTERN";
-
-	public static final String KEY_GLOBAL_TIME_PATTERN = "GLOBAL_TIME_PATTERN";
-
-	public static final String KEY_GLOBAL_TIMESTAMP_PATTERN = "GLOBAL_TIMESTAMP_PATTERN";
 }

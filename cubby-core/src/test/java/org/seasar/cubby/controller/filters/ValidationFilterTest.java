@@ -13,7 +13,7 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionMethod;
-import org.seasar.cubby.controller.MockController;
+import org.seasar.cubby.controller.MockAction;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
 import org.seasar.cubby.util.ClassUtils;
@@ -26,21 +26,21 @@ public class ValidationFilterTest extends TestCase {
 
 	InitializeFilter f1 = new InitializeFilter(parser);
 
-	MockServletContextImpl context = new MockServletContextImpl("/cubby");
+	MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
 
 	MockHttpServletRequestImpl request = new MockHttpServletRequestImpl(
-			context, "dummy");
+			servletContext, "dummy");
 
 	MockHttpServletResponseImpl response = new MockHttpServletResponseImpl(
 			request);
 
-	MockController controller = new MockController();
+	MockAction action = new MockAction();
 
 	ActionFilterChain chain = new ActionFilterChain();
 
 	String[] uriConvertNames = new String[] {};
 
-	ActionContext action;
+	ActionContext context;
 
 	private MockInvocationActionFilter f3;
 
@@ -56,7 +56,7 @@ public class ValidationFilterTest extends TestCase {
 		request.setLocale(Locale.JAPANESE);
 		request.addParameter("param1", "value1");
 		request.addParameter("param2", "value2");
-		Method actionMethod = ClassUtils.getMethod(MockController.class,
+		Method actionMethod = ClassUtils.getMethod(MockAction.class,
 				"dummy1", new Class[] {});
 		assertNotNull(actionMethod);
 		ActionMethod holder = new ActionMethod(actionMethod, chain,
@@ -64,7 +64,7 @@ public class ValidationFilterTest extends TestCase {
 		HashMap<String, Object> uriParams = new LinkedHashMap<String, Object>();
 		uriParams.put("id", "1");
 		uriParams.put("userId", "seasar");
-		action = new ActionContextImpl(request, response, controller, holder);
+		context = new ActionContextImpl(request, response, action, holder);
 		validator = new MockActionValidator();
 		populator = new MockPopulator();
 		f2 = new ValidationFilter(validator, populator);
@@ -78,9 +78,9 @@ public class ValidationFilterTest extends TestCase {
 	}
 
 	public void testDoFilter_validationFail() throws Throwable {
-		f1.doBeforeFilter(action);
+		f1.doBeforeFilter(context);
 		validator.processValidationResult = false;
-		Forward result = (Forward) f2.doFilter(action, chain);
+		Forward result = (Forward) f2.doFilter(context, chain);
 		assertTrue("入力検証エラーフラグ=true", (Boolean) request
 				.getAttribute(ATTR_VALIDATION_FAIL));
 		assertEquals("errorPageにフォワード", "error.jsp", result.getResult());
@@ -88,17 +88,17 @@ public class ValidationFilterTest extends TestCase {
 	}
 
 	public void testDoFilter_validationSuccess() throws Throwable {
-		f1.doBeforeFilter(action);
+		f1.doBeforeFilter(context);
 		validator.processValidationResult = true;
 		f3.setResult(new Forward("success.jsp"));
-		Forward result = (Forward) f2.doFilter(action, chain);
+		Forward result = (Forward) f2.doFilter(context, chain);
 		assertNull("入力検証エラーフラグ=null", request.getAttribute(ATTR_VALIDATION_FAIL));
 		assertEquals("errorPageにフォワード", "success.jsp", result.getResult());
 		assertTrue("フォームオブジェクトへのバインドは実行される", populator.populateProcessed);
 	}
 
 	public void testDoFilter_validationNotFound() throws Throwable {
-		Method actionMethod = ClassUtils.getMethod(MockController.class,
+		Method actionMethod = ClassUtils.getMethod(MockAction.class,
 				"dummy3", new Class[] {});
 		assertNotNull(actionMethod);
 		ActionMethod holder = new ActionMethod(actionMethod, chain,
@@ -106,13 +106,13 @@ public class ValidationFilterTest extends TestCase {
 		HashMap<String, Object> uriParams = new LinkedHashMap<String, Object>();
 		uriParams.put("id", "1");
 		uriParams.put("userId", "seasar");
-		action = new ActionContextImpl(request, response, controller, holder);
+		context = new ActionContextImpl(request, response, action, holder);
 
-		f1.doBeforeFilter(action);
+		f1.doBeforeFilter(context);
 		validator.processValidationResult = true;
 		f3.setResult(new Forward("success.jsp"));
 		try {
-			f2.doFilter(action, chain);
+			f2.doFilter(context, chain);
 			fail();
 		} catch (RuntimeException e) {
 			assertEquals(RuntimeException.class, e.getClass());

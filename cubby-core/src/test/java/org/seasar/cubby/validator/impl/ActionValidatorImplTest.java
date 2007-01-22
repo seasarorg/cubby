@@ -2,6 +2,7 @@ package org.seasar.cubby.validator.impl;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -9,7 +10,6 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
 import org.seasar.cubby.util.ClassUtils;
-import org.seasar.cubby.util.ParameterMap;
 import org.seasar.cubby.validator.LabelKey;
 import org.seasar.cubby.validator.PropertyValidators;
 import org.seasar.cubby.validator.Validator;
@@ -19,47 +19,48 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 public class ActionValidatorImplTest extends TestCase {
 
 	ActionValidatorImpl av = new ActionValidatorImpl();
-	Action controller;
+	Action action;
+	Map<String, Object> params;
 	Validators validators = new Validators();
 	Validation validation;
 	
 	@Override
 	protected void setUp() throws Exception {
-		controller = new SampleContoroller();
-		controller.setParams(new ParameterMap(new HashMap()));
-		controller.setErrors(new ActionErrorsImpl());
+		action = new SampleAction();
+		action.setErrors(new ActionErrorsImpl());
+		params = new HashMap<String, Object>();
 		validators = new Validators();
 		validators.add("prop1", new RequiredValidator());
 		validators.add("prop2", new RequiredValidator());
-		Method method = ClassUtils.getMethod(SampleContoroller.class, "test", null);
+		Method method = ClassUtils.getMethod(SampleAction.class, "test", null);
 		validation = method.getAnnotation(Validation.class);
 	}
 	
 	public void testProcessValidation() {
-		controller.getParams().put("prop2", "prop2 value");
-		boolean success = av.processValidation(validation, controller, new Sample1Form(), validators);
+		params.put("prop2", "prop2 value");
+		boolean success = av.processValidation(validation, action, params, new Sample1Form(), validators);
 		assertFalse(success);
 	}
 
 	public void testValidateAction() {
-		controller.getParams().put("prop2", "prop2 value");
-		av.validateAction(controller, new Sample1Form(), validators);
-		assertEquals(1, controller.getErrors().getFieldErrors().get("prop1").size());
-		assertEquals("prop1は必須です。", controller.getErrors().getFieldErrors().get("prop1").get(0));
-		assertNull(controller.getErrors().getFieldErrors().get("prop2"));
+		params.put("prop2", "prop2 value");
+		av.validateAction(action, params, new Sample1Form(), validators);
+		assertEquals(1, action.getErrors().getFieldErrors().get("prop1").size());
+		assertEquals("prop1は必須です。", action.getErrors().getFieldErrors().get("prop1").get(0));
+		assertNull(action.getErrors().getFieldErrors().get("prop2"));
 	}
 
 	public void testValidate() {
-		controller.getParams().put("prop2", "prop2 value");
+		params.put("prop2", "prop2 value");
 		Object form = new Object();
 		Validator req = new RequiredValidator();
 		PropertyValidators propValids1 = new PropertyValidators("prop1");
-		av.validate(controller, form, req, propValids1);
+		av.validate(action, params, form, req, propValids1);
 		PropertyValidators propValids2 = new PropertyValidators("prop2");
-		av.validate(controller, form, req, propValids2);
-		assertEquals(1, controller.getErrors().getFieldErrors().get("prop1").size());
-		assertEquals("prop1は必須です。", controller.getErrors().getFieldErrors().get("prop1").get(0));
-		assertNull(controller.getErrors().getFieldErrors().get("prop2"));
+		av.validate(action, params, form, req, propValids2);
+		assertEquals(1, action.getErrors().getFieldErrors().get("prop1").size());
+		assertEquals("prop1は必須です。", action.getErrors().getFieldErrors().get("prop1").get(0));
+		assertNull(action.getErrors().getFieldErrors().get("prop2"));
 	}
 
 	public void testGetLabelKey() {
@@ -67,7 +68,7 @@ public class ActionValidatorImplTest extends TestCase {
 		assertEquals("sample.prop2", av.getLabelKey(new Sample2Form(), "prop2"));
 	}
 	
-	class SampleContoroller extends Action {
+	class SampleAction extends Action {
 		@Validation(errorPage="error.jsp")
 		public String test() {
 			return null;

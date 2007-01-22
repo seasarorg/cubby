@@ -10,7 +10,6 @@ import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -28,7 +27,6 @@ import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.FlashHashMap;
 import org.seasar.cubby.util.LocaleHolder;
-import org.seasar.cubby.util.ParameterMap;
 import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
@@ -50,37 +48,37 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	@Override
-	protected void doBeforeFilter(final ActionContext action) {
-		setupErrors(action);
-		setupLocale(action);
-		setupImplicitVariable(action);
-		setupParams(action);
-		setupRequestScopeFields(action);
-		setupSessionScopeFields(action);
-		setupFlash(action);
-		action.getController().initialize();
+	protected void doBeforeFilter(final ActionContext context) {
+		setupErrors(context);
+		setupLocale(context);
+		setupImplicitVariable(context);
+		setupParams(context);
+		setupRequestScopeFields(context);
+		setupSessionScopeFields(context);
+		setupFlash(context);
+		context.getAction().initialize();
 	}
 
 	@Override
-	protected void doAfterFilter(final ActionContext action,
+	protected void doAfterFilter(final ActionContext context,
 			final ActionResult result) {
 		if (CubbyUtils.isForwardResult(result)) {
-			action.getController().prerender();
+			context.getAction().prerender();
 		}
-		bindAttributes(action);
+		bindAttributes(context);
 	}
 
-	void setupErrors(final ActionContext action) {
-		action.getController().setErrors(new ActionErrorsImpl());
+	void setupErrors(final ActionContext context) {
+		context.getAction().setErrors(new ActionErrorsImpl());
 	}
 
-	void setupLocale(final ActionContext action) {
-		HttpServletRequest req = action.getRequest();
+	void setupLocale(final ActionContext context) {
+		HttpServletRequest req = context.getRequest();
 		LocaleHolder.setLocale(req.getLocale());
 	}
 
-	void setupImplicitVariable(final ActionContext action) {
-		HttpServletRequest req = action.getRequest();
+	void setupImplicitVariable(final ActionContext context) {
+		HttpServletRequest req = context.getRequest();
 		req.setAttribute("contextPath", req.getContextPath());
 		ResourceBundle resource = ResourceBundle.getBundle(RES_MESSAGES,
 				LocaleHolder.getLocale());
@@ -88,19 +86,14 @@ public class InitializeFilter extends AroundFilter {
 		req.setAttribute("messages", messagesMap);
 	}
 
-	void setupParams(final ActionContext action) {
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.putAll(getMultipartSupportParameterMap(request));
-		ParameterMap params = new ParameterMap(paramMap);
-		controller.setParams(params);
-		request.setAttribute(ATTR_PARAMS, controller.getParams());
+	void setupParams(final ActionContext context) {
+		HttpServletRequest request = context.getRequest();
+		request.setAttribute(ATTR_PARAMS, getMultipartSupportParameterMap(request));
 	}
 
-	void setupRequestScopeFields(final ActionContext action) {
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
+	void setupRequestScopeFields(final ActionContext context) {
+		Action controller = context.getAction();
+		HttpServletRequest request = context.getRequest();
 		for (Field f : controller.getClass().getFields()) {
 			if (!isSessionScope(f)) {
 				Object value = request.getAttribute(f.getName());
@@ -111,9 +104,9 @@ public class InitializeFilter extends AroundFilter {
 		}
 	}
 
-	void setupSessionScopeFields(final ActionContext action) {
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
+	void setupSessionScopeFields(final ActionContext context) {
+		Action controller = context.getAction();
+		HttpServletRequest request = context.getRequest();
 		HttpSession session = request.getSession();
 		for (Field f : controller.getClass().getFields()) {
 			if (isSessionScope(f)) {
@@ -126,9 +119,9 @@ public class InitializeFilter extends AroundFilter {
 	}
 
 	@SuppressWarnings("unchecked")
-	void setupFlash(final ActionContext action) {
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
+	void setupFlash(final ActionContext context) {
+		Action controller = context.getAction();
+		HttpServletRequest request = context.getRequest();
 		HttpSession session = request.getSession();
 		Map<String, Object> flash = (Map<String, Object>) session
 				.getAttribute(ATTR_FLASH);
@@ -139,25 +132,26 @@ public class InitializeFilter extends AroundFilter {
 		controller.setFlash(flash);
 	}
 
-	void bindAttributes(final ActionContext action) {
+	void bindAttributes(final ActionContext context) {
 		// set controller
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
-		request.setAttribute(ATTR_CONTROLLER, controller);
+		Action action = context.getAction();
+		HttpServletRequest request = context.getRequest();
+		request.setAttribute(ATTR_CONTROLLER, action); // support legacy
+		request.setAttribute(CubbyConstants.ATTR_ACTION, action);
 
 		// set actioneErrors
-		request.setAttribute(ATTR_ERRORS, controller.getErrors());
-		request.setAttribute(ATTR_ALL_ERRORS, controller.getErrors()
+		request.setAttribute(ATTR_ERRORS, action.getErrors());
+		request.setAttribute(ATTR_ALL_ERRORS, action.getErrors()
 				.getAllErrors());
-		request.setAttribute(ATTR_ACTION_ERRORS, controller.getErrors()
+		request.setAttribute(ATTR_ACTION_ERRORS, action.getErrors()
 				.getActionErrors());
-		request.setAttribute(ATTR_FIELD_ERRORS, controller.getErrors()
+		request.setAttribute(ATTR_FIELD_ERRORS, action.getErrors()
 				.getFieldErrors());
 
 		// set field value
 		HttpSession session = request.getSession();
-		for (Field f : controller.getClass().getFields()) {
-			Object value = ClassUtils.getFieldValue(f, controller);
+		for (Field f : action.getClass().getFields()) {
+			Object value = ClassUtils.getFieldValue(f, action);
 			if (isSessionScope(f)) {
 				session.setAttribute(f.getName(), value);
 			} else {

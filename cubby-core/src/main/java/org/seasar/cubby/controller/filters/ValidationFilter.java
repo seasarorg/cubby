@@ -1,6 +1,7 @@
 package org.seasar.cubby.controller.filters;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.util.Map;
@@ -46,51 +47,60 @@ public class ValidationFilter implements ActionFilter {
 		this.populater = populater;
 	}
 
-	public ActionResult doFilter(ActionContext action, ActionFilterChain chain)
+	@SuppressWarnings("unchecked")
+	public ActionResult doFilter(ActionContext context, ActionFilterChain chain)
 			throws Throwable {
 		final ActionResult result;
 
-		final HttpServletRequest request = action.getRequest();
-		final Action controller = action.getController();
-		final Validation validation = action.getActionMethod().getValidation();
-		final Validators validators = getValidators(action);
+		final HttpServletRequest request = context.getRequest();
+		final Action controller = context.getAction();
+		final Validation validation = context.getActionMethod().getValidation();
+		final Validators validators = getValidators(context);
+		final Map<String, Object> params = (Map<String, Object>) request
+				.getAttribute(ATTR_PARAMS);
+
 		boolean success = actionValidator.processValidation(validation,
-				controller, getFormBean(controller, action.getActionMethod().getForm()), validators);
+				controller, params, getFormBean(controller, context
+						.getActionMethod().getForm()), validators);
 		if (success) {
-			setupForm(action);
-			result = chain.doFilter(action);
+			setupForm(context);
+			result = chain.doFilter(context);
 		} else {
 			request.setAttribute(ATTR_VALIDATION_FAIL, true);
-			setupForm(action);
-			result = new Forward(validation.errorPage());
+			setupForm(context);
+			String path = validation.errorPage();
+			result = new Forward(path);
 		}
 
-		Map<String, String> outputValues = populater.describe(getFormBean(controller, action.getActionMethod().getForm()));
+		Map<String, String> outputValues = populater.describe(getFormBean(
+				controller, context.getActionMethod().getForm()));
 		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
 
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupForm(ActionContext action) {
-		Object formBean = getFormBean(action.getController(), action.getActionMethod().getForm());
+	private void setupForm(ActionContext context) {
+		Object formBean = getFormBean(context.getAction(), context
+				.getActionMethod().getForm());
 		if (formBean != null) {
-			Map<String, Object> params = action.getController().getParams()
-					.getOriginalParameter();
+			Map<String, Object> params = (Map<String, Object>) context
+					.getRequest().getAttribute(ATTR_PARAMS);
 			populater.populate(params, formBean);
 		}
 	}
-	
-	private Validators getValidators(ActionContext action) {
-		Validation validation = action.getActionMethod().getValidation();
+
+	private Validators getValidators(ActionContext context) {
+		Validation validation = context.getActionMethod().getValidation();
 		if (validation != null) {
 			String validatorField = validation.validator();
-			Object form = getFormBean(action.getController(), action.getActionMethod().getForm());
+			Object form = getFormBean(context.getAction(), context
+					.getActionMethod().getForm());
 			return (Validators) ClassUtils.getField(form, validatorField);
 		}
 		return NULL_VALIDATORS;
 	}
-	
+
 	private Object getFormBean(Action controller, Form form) {
 		if (form == null) {
 			return null;

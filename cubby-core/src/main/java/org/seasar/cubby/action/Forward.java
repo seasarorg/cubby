@@ -26,20 +26,20 @@ public class Forward implements ActionResult {
 		return result;
 	}
 
-	public void execute(final ActionContext action)
+	public void execute(final ActionContext context)
 			throws ServletException, IOException {
-		Action controller = action.getController();
-		HttpServletRequest request = action.getRequest();
-		HttpServletResponse response = action.getResponse();
-		String cname = action.getActionMethod().getControllerName();
+		Action action = context.getAction();
+		HttpServletRequest request = context.getRequest();
+		HttpServletResponse response = context.getResponse();
+		String actionName = context.getActionMethod().getActionName();
 
 		String path = null;
 		if (result.startsWith("/")) {
 			path = result;
-		} else if (StringUtils.isEmpty(cname)) {
+		} else if (StringUtils.isEmpty(actionName)) {
 			path = "/" + result;
 		} else {
-			path = "/" + cname + "/" + result;
+			path = "/" + actionName + "/" + result;
 		}
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("BEGIN forward[path=" + path + "]");
@@ -49,7 +49,7 @@ public class Forward implements ActionResult {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("END forward[path=" + path + "]");
 		}
-		action.getController().postrender();
-		controller.getFlash().clear();
+		context.getAction().postrender();
+		action.getFlash().clear();
 	}
 }
