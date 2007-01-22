@@ -80,6 +80,6 @@
 	</component>
 	
 	<component class="org.seasar.cubby.examples.components.ComponentsAction" instance="prototype" />
-	<component class="org.seasar.cubby.examples.components.FileUploadAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.fileupload.FileUploadAction" instance="prototype" />
 
 </components>

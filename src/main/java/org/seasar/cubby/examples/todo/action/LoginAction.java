@@ -17,7 +17,7 @@ import org.seasar.cubby.validator.Validators;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @LabelKey("login.")
-@Url("")
+@Url("todo")
 public class LoginAction extends Action {
 
 	public static Validators VALIDATORS = new Validators();
@@ -91,7 +91,7 @@ public class LoginAction extends Action {
 	public ActionResult login_process() {
 		if(todoLogic.login(userId, password)) {
 			user = new User(1, "Cubby");
-			return new Redirect("/todo/list");
+			return new Redirect("list");
 		} else {
 			errors.addActionError("ユーザIDかパスワードが違います。");
 			return new Forward("login.jsp");
@@ -100,7 +100,7 @@ public class LoginAction extends Action {
 
 	public ActionResult logout() {
 		request.getSession().invalidate();
-		return new Redirect("/login");
+		return new Redirect("login");
 	}
 	
 	// ----------------------------------------------[Helper Method]
