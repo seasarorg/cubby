@@ -7,9 +7,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Url;
 
-@Url("")
 public class ComponentsAction extends Action {
 
 	// ----------------------------------------------[DI Filed]
@@ -29,10 +27,9 @@ public class ComponentsAction extends Action {
 		colors = getColors();
 	}
 	
-	@Url("components")
 	@Form("form")
 	public ActionResult show() {
-		return new Forward("/components.jsp");
+		return new Forward("components.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]
