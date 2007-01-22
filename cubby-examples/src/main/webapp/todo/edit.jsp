@@ -1,8 +1,8 @@
 <t:template extend="/todo/template.jsp">
 <jsp:attribute name="title">Todo編集</jsp:attribute>
 <jsp:attribute name="content">
-<h1>Todo編集</h1>
-<c:import url="/errors.jsp"/>
+<h2>Todo編集</h2>
+<t:errors />
 [<a href="list">一覧に戻る</a>]
 <t:form action="confirm" method="post" value="${todo}">
 <t:input type="hidden" name="id" />
@@ -16,7 +16,7 @@
     <th>優先度</th>
     <td>
 		<t:select id="typeId" name="typeId"
-			items="${controller.todoTypes}" labelProperty="name" valueProperty="id" emptyOptionLabel="選択してください。" />
+			items="${action.todoTypes}" labelProperty="name" valueProperty="id" emptyOptionLabel="選択してください。" />
     </td>
   </tr>
   <tr>

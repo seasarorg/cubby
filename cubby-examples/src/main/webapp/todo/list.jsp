@@ -10,15 +10,13 @@ function doDelete(name, id) {
 }
 -->
 </script>
-<h1>agataさんのTodoリスト</h1>
-<c:import url="/notice.jsp"/>
+<c:import url="/common/notice.jsp"/>
+<h2>Todoの一覧</h2>
 <div class="menu">
 [<a href="create">新規作成</a>]
-[<a href="../user/list">ユーザ一覧</a>]
-[<a href="../logout">ログアウト</a>]
 </div>
 <t:form action="list" method="post" value="${findTodoDto}">
-<table border="1">
+<table>
   <tr>
   	<th>キーワード</th>
     <td>
@@ -29,16 +27,16 @@ function doDelete(name, id) {
     <th>優先度</th>
     <td>
 	<t:select id="typeId" name="typeId"
-		items="${controller.todoTypes}" labelProperty="name" valueProperty="id"/>
+		items="${action.todoTypes}" labelProperty="name" valueProperty="id"/>
   </tr>
   <tr>
     <th></th>
     <td><input type="submit" value="検索"/></td>
   </tr>
 </table>
-検索条件:${f:out(controller.queryString)}
+検索条件:${f:out(action.queryString)}
 </t:form>
-<table border="1">
+<table>
   <tr>
     <th>内容</th>
     <th>優先度</th>
