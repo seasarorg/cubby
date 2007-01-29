@@ -10,6 +10,7 @@
 <body>
 <h1>Cuuby Exmaples</h1>
 <ul>
+	<li><a href="hello/">Hello World</a></li>
 	<li><a href="todo/login">Todoサンプルアプリケーション</a></li>
 	<li><a href="components/show">コンポーネント一覧</a></li>
 	<li><a href="fileupload/show">ファイルアップロード</a></li>
