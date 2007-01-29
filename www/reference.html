@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="ja" />
+<title>Cubby - リファレンス</title>
+<link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+</head>
+<body>
+<h1>Cubby - リファレンス</h1>
+<h2>アノテーション</h2>
+<h3>@Url</h3>
+アクションメソッドのバインディング用URLをしています。
+対象はアクションクラスかアクションクラスのメソッドです。
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>○</td>
+		<td>-</td>
+		<td>
+			アクションメソッドのバインディング用URLを指定します。<br/>
+			URLはアクションクラスのURL＋アクションメソッドのURLで決定されます。ただし、先頭が『/』の場合コンテキストルートからの絶対パスとして解釈されます。<br/>
+			{パラメータ名,正規表現}でプレースホルダーの指定ができます。正規表現にマッチした場合、マッチした箇所が指定されたパラメータ名に追加され、アクションメソッドが実行されます。<br/>
+			正規表現は省略可能です。省略した場合「0-9a-zA-Z」と同じ意味になります。
+		</td>
+	</tr>
+	<tr>
+		<td>method</td>
+		<td>enum Url.Method</td>
+		<td>×</td>
+		<td>Method.GET</td>
+		<td>
+			あとでかく（この設定はcubby0.8では有効ではない）
+		</td>
+	</tr>
+</table>
+<h4>使用例</h4>
+<pre class="code">
+@Url("fuga")
+public class HogeAction {
+  // -> "/fuga/m1"
+  public ActionResult m1() {
+  }
+
+  @Url("list") // -> "/fuga/list"
+  public ActionResult m2() {
+  }
+
+  @Url("/xxx/yyy") // -> "/xxx/yyy"
+  public ActionResult m3() {
+  }
+
+  @Url("/{id}/edit") // {id}部分をリクエストパラメータに追加
+  public ActionResult m4() {
+  }
+
+  @Url("/{userId,a-z}/edit") // {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
+  public ActionResult m5() {
+  }
+}
+</pre>
+
+<h3>@Form</h3>
+<p>
+アクションメソッドでリクエストパラメータのBeanへのバインディングを指定します。<br/>
+対象はアクションメソッドです。<br/>
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>×</td>
+		<td>this</td>
+		<td>
+			バインディングするBeanのプロパティ名（フィールド名）を指定します。
+			この値が省略された場合、アクションにバインディングされます。
+		</td>
+	</tr>
+</table>
+<pre class="code">
+public class HogeAction {
+  private FugaBean fuga;
+  public FugaBean getFuga() {
+    return this.fuga;
+  }
+
+  // @Formの指定がないため、バインディングされません。
+  public ActionResult m1() {
+  }
+
+  @Form // -> HogeActionにバインディングします。
+  public ActionResult m2() {
+  }
+
+  @Form("fuga") // プロパティfugaにバインディングします。
+  public ActionResult m3() {
+  }
+}
+
+@Form("fuga") // 全アクションメソッドに対して一括でバインディングの指定を行います。
+public class Hoge2Action {
+  private FugaBean fuga;
+  public FugaBean getFuga() {
+    return this.fuga;
+  }
+
+  private ZzzBean zzz;
+  public ZzzBean getZzz() {
+    return this.zzz;
+  }
+
+  // プロパティfugaにバインディングします(クラスでの指定が有効なため)。
+  public ActionResult m1() {
+  }
+
+  @Form("zzz") // プロパティzzzにバインディングします（アクションメソッドでの指定が優先されるため）。
+  public ActionResult m2() {
+  }
+}
+</pre>
+
+<h3>@Validation</h3>
+<p>
+	あとでかく
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>errorPage</td>
+		<td>String</td>
+		<td>○</td>
+		<td>-</td>
+		<td>
+			あとでかく
+		</td>
+	</tr>
+	<tr>
+		<td>validator</td>
+		<td>String</td>
+		<td>×</td>
+		<td>VALIDATORS</td>
+		<td>
+			あとでかく
+		</td>
+	</tr>
+</table>
+
+<h3>@Session</h3>
+<p>
+	あとでかく
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>×</td>
+		<td>フィールド名</td>
+		<td>
+			あとでかく
+		</td>
+	</tr>
+</table>
+
+<h2>バリデーション</h2>
+<h2>カスタムタグ</h2>
+<h2>カスタムファンクション</h2>
+<h2>設定ファイル</h2>
+<hr/>
+<div id="fotter">Copyright &copy; 2007 The Seasar Foundation. All rights reserved.</div>
+</body>
+</html>
