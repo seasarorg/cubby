@@ -30,6 +30,8 @@ public class CubbyUtils {
 		String actionName = m.getName();
 		if (m.getAnnotation(Url.class) != null) {
 			actionName = ((Url)m.getAnnotation(Url.class)).value();
+		} else if ("index".equals(actionName)) {
+			actionName = "";
 		}
 		return actionName;
 	}

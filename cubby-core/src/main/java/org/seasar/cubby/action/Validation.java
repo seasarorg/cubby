@@ -24,9 +24,4 @@ public @interface Validation {
 	 */
 	String errorPage();
 	String validator() default DEFAULT_VALIDATORS_FILED;
-	/**
-	 * 除外するプロパティ名
-	 * @return
-	 */
-	String[] excludes() default {};
 }
