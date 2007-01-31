@@ -38,9 +38,9 @@
 		<td>method</td>
 		<td>enum Url.Method</td>
 		<td>×</td>
-		<td>Method.GET</td>
+		<td>Method.GET_OR_POST</td>
 		<td>
-			あとでかく（この設定はcubby0.8では有効ではない）
+			あとでかく（この設定はcubby0.8では有効ではなく、アクションメソッドはGET、POSTを意識せずに実行されます。）
 		</td>
 	</tr>
 </table>
@@ -154,7 +154,7 @@ public class Hoge2Action {
 		<td>○</td>
 		<td>-</td>
 		<td>
-			あとでかく
+			エラー時にフォワードするページ名を指定します。
 		</td>
 	</tr>
 	<tr>
@@ -163,14 +163,14 @@ public class Hoge2Action {
 		<td>×</td>
 		<td>VALIDATORS</td>
 		<td>
-			あとでかく
+			検証設定がセットされたフィールド名を指定します。
 		</td>
 	</tr>
 </table>
 
 <h3>@Session</h3>
 <p>
-	あとでかく
+	セッション管理されるプロパティに設定します。
 </p>
 <table border="1">
 	<tr>
