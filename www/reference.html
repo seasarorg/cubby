@@ -36,11 +36,13 @@
 	</tr>
 	<tr>
 		<td>method</td>
-		<td>enum Url.Method</td>
+		<td>enum RequestMethod</td>
 		<td>×</td>
-		<td>Method.GET_OR_POST</td>
+		<td>RequestMethod.GET_OR_POST</td>
 		<td>
-			あとでかく（この設定はcubby0.8では有効ではなく、アクションメソッドはGET、POSTを意識せずに実行されます。）
+			アクションメソッドが対応するHTTPのメソッドを指定します。
+			RequestMethod.GET/RequestMethod.POST/RequsetMethod.GET_OR_POSTの３種類を指定できます。
+			（この設定はcubby0.8では未実装。0.8までアクションメソッドはGET、POSTを意識せずに実行されます。）
 		</td>
 	</tr>
 </table>
