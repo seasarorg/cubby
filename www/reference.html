@@ -10,7 +10,11 @@
 </head>
 <body>
 <h1>Cubby - リファレンス</h1>
+
+<a name="annotation"/>
 <h2>アノテーション</h2>
+
+<a name="annotation_url"/>
 <h3>@Url</h3>
 アクションメソッドのバインディング用URLをしています。
 対象はアクションクラスかアクションクラスのメソッドです。
@@ -38,11 +42,11 @@
 		<td>method</td>
 		<td>enum RequestMethod</td>
 		<td>×</td>
-		<td>RequestMethod.GET_OR_POST</td>
+		<td>RequestMethod.ALL</td>
 		<td>
 			アクションメソッドが対応するHTTPのメソッドを指定します。
-			RequestMethod.GET/RequestMethod.POST/RequsetMethod.GET_OR_POSTの３種類を指定できます。
-			（この設定はcubby0.8では未実装。0.8までアクションメソッドはGET、POSTを意識せずに実行されます。）
+			RequestMethod.GET/RequestMethod.POST/RequsetMethod.ALLの３種類を指定できます。
+			（この設定はcubby0.8では未実装。0.8までアクションメソッドはGET、POSTを意識せずに実行されます。つまり、RequestMethod.ALLです。）
 		</td>
 	</tr>
 </table>
@@ -72,6 +76,7 @@ public class HogeAction {
 }
 </pre>
 
+<a name="annotation_form"/>
 <h3>@Form</h3>
 <p>
 アクションメソッドでリクエストパラメータのBeanへのバインディングを指定します。<br/>
@@ -138,9 +143,10 @@ public class Hoge2Action {
 }
 </pre>
 
+<a name="annotation_validation"/>
 <h3>@Validation</h3>
 <p>
-	あとでかく
+	アクションメソッド実行前に入力検証を実行します。
 </p>
 <table border="1">
 	<tr>
@@ -170,9 +176,10 @@ public class Hoge2Action {
 	</tr>
 </table>
 
+<a name="annotation_session"/>
 <h3>@Session</h3>
 <p>
-	セッション管理されるプロパティに設定します。
+	セッション管理されるフィールドに設定します。
 </p>
 <table border="1">
 	<tr>
@@ -186,17 +193,360 @@ public class Hoge2Action {
 		<td>value</td>
 		<td>String</td>
 		<td>×</td>
-		<td>フィールド名</td>
+		<td>属性名</td>
 		<td>
-			あとでかく
+			セッションに格納時の属性名を指定します。指定が無い場合、フィールド名でセッションに格納されます。
 		</td>
 	</tr>
 </table>
 
-<h2>バリデーション</h2>
 <h2>カスタムタグ</h2>
+<p>
+Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています。
+カスタムタグに定義されていない属性はそのまま素直に出力されます。
+</p>
+<h3>カスタムタグ一覧</h3>
+<table border="1">
+	<tr>
+		<th>タグ名</th>
+		<th>説明</th>
+		<th>使用例</th>
+		<th>結果</th>
+	</tr>
+	<tr>
+		<td><a href="#customtag_form">form</a></td>
+		<td>formタグを出力します。</td>
+		<td>&lt;t:form value="${todo}"&gt;...&lt;t:/form&gt;</td>
+		<td>&lt;form&gt;...&lt;/form&gt;</td>
+	</tr>
+	<tr>
+		<td><a href="#customtag_input">input</a></td>
+		<td>inputタグを出力します。</td>
+		<td>&lt;t:input name="title"/&gt;</td>
+		<td>&lt;t:input name="title" value="Todo Title"/&gt;</td>
+	</tr>
+	<tr>
+		<td><a href="#customtag_select">select</a></td>
+		<td>selectタグを出力します。</td>
+		<td>
+			&lt;t:select name="typeId" items="${todoTypes}"<br/>
+				&nbsp;&nbsp;labelProperty="name" valueProperty="id"/&gt;</td>
+		<td>
+			&lt;select name="typeId"&gt;<br/>
+				&nbsp;&nbsp;&lt;option name="1"&gt;TodoType 1&lt;/option&gt;<br/>
+				&nbsp;&nbsp;&lt;option name="1"&gt;TodoType 2&lt;/option&gt;<br/>
+			&lt;/select&gt;
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#customtag_textarea">textarea</a></td>
+		<td>textareaタグを出力します。</td>
+		<td>
+			&lt;t:textarea name="memo"/&gt;</td>
+		<td>
+			&lt;textarea name="memo"&gt;Memo 1&lt;textarea name="memo"&gt;
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#customtag_template">template</a></td>
+		<td>テンプレート用JSPのレイアウトを使用します。</td>
+		<td>
+			&lt;t:template extends="/templates/default.jsp"&gt;<br/>
+				&nbsp;&nbsp;&lt;jsp:attribute name="title"&gt;Todo詳細&lt;/jsp:attribute&gt;<br/>
+				&nbsp;&nbsp;&lt;jsp:attribute name="content"&gt;<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;....<br/>
+				&nbsp;&nbsp;&lt;/jsp:attribute&gt;<br/>
+			&lt;/t:template&gt;
+		</td>
+		<td>
+			レイアウトされたHTMLが出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#customtag_null">null</a></td>
+		<td>何も出力しません。</td>
+		<td>
+			&lt;t:null&gt;Dummy HTML&lt;/t:null&gt;
+		</td>
+		<td>
+			(何も出力されません)
+		</td>
+	</tr>
+</table>
+<a name="customtag_form"/>
+<h3>form</h3>
+<p>
+formを作成します。主にvalue属性でフォーム用オブジェクトを指定ます。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>Object</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			フォームオブジェクトを指定します。この属性が省略された場合、アクションオブジェクトがフォームとして使用されます。
+		</td>
+	</tr>
+	<tr>
+		<td>type</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			text/password/checkbox/radio/hiddenができます。
+		</td>
+	</tr>
+	<tr>
+		<td>checkedValue</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×（type属性がradio/checkboxの場合のみ必須）</td>
+		<td>
+			type属性がradio/checkboxの場合にポストされる値を指定します。
+			この値と、name属性で指定したフィールドから取得した値が一致した場合に、checked属性がtrueになります。
+		</td>
+	</tr>
+</table>
+
+<a name="customtag_input"/>
+<h3>input</h3>
+<p>
+入力フィールドを作成します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>type</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			text/password/checkbox/radio/hiddenができます。
+		</td>
+	</tr>
+	<tr>
+		<td>checkedValue</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×（type属性がradio/checkboxの場合のみ必須）</td>
+		<td>
+			type属性がradio/checkboxの場合にポストされる値を指定します。
+			この値と、name属性で指定したフィールドから取得した値が一致した場合に、checked属性がtrueになります。
+		</td>
+	</tr>
+</table>
+
+<a name="customtag_select"/>
+<h3>select</h3>
+<p>
+HTMLのselectタグを出力します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。
+			上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>items</td>
+		<td>java.util.Collection/配列</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグ用のリストを指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>valueProperty</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグの値として使用するプロパティ名を指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>labelProperty</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグの表示文字列として使用するプロパティ名を指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>emptyOption</td>
+		<td>Boolean</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			空白のoptionを出力するかどうかを指定します。
+			省略された場合、「true」と見なして先頭に空白のoptionが出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>emptyOptionLabel</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			先頭の空白のoptionの表示値を指定します。
+			省略された場合、先頭の空白のoptionには何も表示されません
+		</td>
+	</tr>
+</table>
+
+<a name="customtag_textarea"/>
+<h3>textarea</h3>
+<p>
+HTMLのtextareaタグを出力します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。
+			上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+　</table>
+
+<a name="customtag_template"/>
+<h3>template</h3>
+<p>
+他のJSPをテンプレートとして使用します。レイアウトの継承で使用します。
+バージョン0.8ではこのタグは１段階のレイアウト継承のみ対応しています。
+（今後多段回の継承に対応する予定です）
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>extends</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			テンプレートとして使用するJSPを指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>その他の属性</td>
+		<td>Object</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			テンプレート内で使用するパーツ名を属性名として、
+			表示するHTMLを値として指定します。
+		</td>
+	</tr>
+</table>
+
+<a name="customtag_null"/>
+<h3>null</h3>
+<p>
+このタグで囲まれた領域は出力されません。
+JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲みます。
+このタグに属性はありません。
+</p>
+
 <h2>カスタムファンクション</h2>
+<h3>out</h3>
+<p>
+	HTMLをエスケープします。JSTLのoutタグの代わりに使用します。
+	EL式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこのfunctionを使用します。
+</p>
+<h4>使用例</h4>
+<pre class="code">
+	${f:out(user.name)}さんこんにちは
+</pre>
+
+<h3>dateFormat</h3>
+<p>
+	Date型のオブジェクトをフォーマットして出力します。JSTLのdateFormatタグの代わりに使用します。
+</p>
+<h4>使用例</h4>
+<pre class="code">
+	${f:dateFormat(todo.limitDate, "yyyy-MM-dd")}
+</pre>
+
+<h2>バリデーション</h2>
+Cubbyではコードを使用して、入力検証のルールを記述します。<br/>
+それぞれのアクションメソッドで使用する入力検証ルールは、<a href="#annotation_validation">@Validationアノテーション</a>で指定します。<br/>
+また、クライアントサイドバリデーションはありません。<br/>
+詳細はあとでかく・・・
+<pre class="code">
+public class LoginAction extends Action {
+  public static Validators VALIDATORS = new Validators();
+  static {
+    VALIDATORS.add("userId", new RequiredValidator(), MaxLengthValidator(10));
+    VALIDATORS.add("password", new RequiredValidator(), MaxLengthValidator(10));
+  }
+  ...
+}
+</pre>
+
 <h2>設定ファイル</h2>
+<h3>cubby.properties</h3>
+通常は必要ありません。
+fileuploadの上限などを指定します。
+
+<h3>cubby.dicon</h3>
+通常は必要ありません。
+Cubby本体の動作を変更したいときに使用します。
 <hr/>
 <div id="fotter">Copyright &copy; 2007 The Seasar Foundation. All rights reserved.</div>
 </body>
