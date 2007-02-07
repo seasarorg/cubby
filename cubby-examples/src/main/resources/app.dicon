@@ -4,5 +4,5 @@
 <components namespace="app">
     <include path="hotdeploy.dicon" />
     <include path="cubby.dicon" />
-    <include path="allservice.dicon" />
+    <include path="allaction.dicon" />
 </components>
