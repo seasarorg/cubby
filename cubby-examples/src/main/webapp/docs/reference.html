@@ -1,0 +1,686 @@
+<t:template extend="template.html">
+<jsp:attribute name="title">Cubby - リファレンスマニュアル</jsp:attribute>	
+<jsp:attribute name="sidebar"><c:import url="sidebar.html"/></jsp:attribute>
+<jsp:attribute name="content">
+<h1>Cubby - リファレンスマニュアル</h1>
+<ul>
+	<li><a href="#controller">コントローラー(Action)</a></li>
+	<li><a href="#view">ビュー（JSP）</a></li>
+	<li><a href="#annotation">アノテーション</a></li>
+	<li><a href="#taglib">カスタムタグ</a></li>
+	<li><a href="#function">カスタムファンクション</a></li>
+	<li><a href="#validation">バリデーション</a></li>
+	<li><a href="#configration_file">設定ファイル</a></li>
+</ul>
+
+<a name="#controller"></a>
+<h2>コントローラー（Action）</h2>
+<p>
+コントローラーはorg.seasar.cubby.action.Actionを継承して作成します。
+</p>
+<h3>アクションメソッド</h3>
+<p>
+リクエストされたURLに応じて、アクションメソッドが呼び出され処理を実行します。
+Actionクラスの中でpublicで戻り値がActionResultのメソッドが、アクションメソッドとして認識されます。
+</p>
+
+<a name="view"></a>
+<h2>ビュー(JSP)</h2>
+<p>
+CubbyのビューはJSPで作成します。
+</p>
+<h3>JSPでの暗黙オブジェクト一覧</h3>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>説明</th>
+		<th>型</th>
+		<th>スコープ</th>
+		<th>セットされるタイミング</th>
+	</tr>
+	<tr>
+		<td>action</td>
+		<td>forwardしたアクションのオブジェクト</td>
+		<td>org.seasar.cubby.action.Action</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>actionのプロパティ名</td>
+		<td>
+			Actionでpublicなゲッターがあるプロパティは自動的にリクエストスコープにセットされます。<br/>
+			（例）getXyz -> xyz
+		</td>
+		<td>それぞれのプロパティの型</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>actionErrors</td>
+		<td>
+			エラー保持オブジェクト
+		</td>
+		<td>org.seasar.cubby.action.ActionErrors</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>flash</td>
+		<td>
+			リダイレクト時にメッセージなどを受け渡しするためのMap。
+			このMapは１度getするとMapから自動的に除去(remove)されます。
+		</td>
+		<td>org.seasar.cubby.action.FlashMap</td>
+		<td>session</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+	<tr>
+		<td>contextPath</td>
+		<td>request.getContextPath()の値</td>
+		<td>java.lang.String</td>
+		<td>request</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+	<tr>
+		<td>messages</td>
+		<td>messages.propertiesをMapにしたもの。requestのロケールに対応。</td>
+		<td>java.util.Map</td>
+		<td>request</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+</table>
+
+<a name="annotation"></a>
+<h2>アノテーション</h2>
+<h2>アノテーション一覧</h2>
+<table border="1">
+	<tr>
+		<th>アノテーション名</th>
+		<th>説明</th>
+		<th>書式</th>
+	</tr>
+	<tr>
+		<td><a href="#annotation_url">@Url</a></td>
+		<td>アクションメソッドのURLを指定します。</td>
+		<td>@Url("URL文字列")</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_form">@Form</a></td>
+		<td>リクエストパラメータのオブジェクトへのバインディングを指定します。</td>
+		<td>@Form("バインディングするオブジェクトのプロパティ名")</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_validation">@Validation</a></td>
+		<td>入力検証を指定します</td>
+		<td>@Validation</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_session">@Session</a></td>
+		<td>アクションのフィールドのオブジェクトをセッションスコープとします。</td>
+		<td>@Session</td>
+	</tr>
+</table>
+<a name="annotation_url"></a>
+<h3>@Url</h3>
+<p>
+アクションメソッドのバインディング用URLをしています。
+対象はアクションクラスかアクションクラスのメソッドです。
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>○</td>
+		<td>-</td>
+		<td>
+			アクションメソッドのバインディング用URLを指定します。<br/>
+			URLはアクションクラスのURL＋アクションメソッドのURLで決定されます。ただし、先頭が『/』の場合コンテキストルートからの絶対パスとして解釈されます。<br/>
+			{パラメータ名,正規表現}でプレースホルダーの指定ができます。正規表現にマッチした場合、マッチした箇所が指定されたパラメータ名に追加され、アクションメソッドが実行されます。<br/>
+			正規表現は省略可能です。省略した場合「0-9a-zA-Z」と同じ意味になります。
+		</td>
+	</tr>
+	<tr>
+		<td>method</td>
+		<td>enum RequestMethod</td>
+		<td>×</td>
+		<td>RequestMethod.ALL</td>
+		<td>
+			アクションメソッドが対応するHTTPのメソッドを指定します。
+			RequestMethod.GET/RequestMethod.POST/RequsetMethod.ALLの３種類を指定できます。
+			（この設定はcubby0.8では未実装。0.8までアクションメソッドはGET、POSTを意識せずに実行されます。つまり、RequestMethod.ALLです。）
+		</td>
+	</tr>
+</table>
+<h4>使用例</h4>
+<pre class="code">
+@Url("fuga")
+public class HogeAction {
+  // -> "/fuga/m1"
+  public ActionResult m1() {
+  }
+
+  @Url("list") // -> "/fuga/list"
+  public ActionResult m2() {
+  }
+
+  @Url("/xxx/yyy") // -> "/xxx/yyy"
+  public ActionResult m3() {
+  }
+
+  @Url("/{id}/edit") // {id}部分をリクエストパラメータに追加
+  public ActionResult m4() {
+  }
+
+  @Url("/{userId,a-z}/edit") // {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
+  public ActionResult m5() {
+  }
+}
+</pre>
+
+<a name="annotation_form"/>
+<h3>@Form</h3>
+<p>
+アクションメソッドでリクエストパラメータのBeanへのバインディングを指定します。<br/>
+対象はアクションメソッドです。<br/>
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>×</td>
+		<td>this</td>
+		<td>
+			バインディングするBeanのプロパティ名（フィールド名）を指定します。
+			この値が省略された場合、アクションにバインディングされます。
+		</td>
+	</tr>
+</table>
+<pre class="code">
+public class HogeAction {
+  private FugaBean fuga;
+  public FugaBean getFuga() {
+    return this.fuga;
+  }
+
+  // @Formの指定がないため、バインディングされません。
+  public ActionResult m1() {
+  }
+
+  @Form // -> HogeActionにバインディングします。
+  public ActionResult m2() {
+  }
+
+  @Form("fuga") // プロパティfugaにバインディングします。
+  public ActionResult m3() {
+  }
+}
+
+@Form("fuga") // 全アクションメソッドに対して一括でバインディングの指定を行います。
+public class Hoge2Action {
+  private FugaBean fuga;
+  public FugaBean getFuga() {
+    return this.fuga;
+  }
+
+  private ZzzBean zzz;
+  public ZzzBean getZzz() {
+    return this.zzz;
+  }
+
+  // プロパティfugaにバインディングします(クラスでの指定が有効なため)。
+  public ActionResult m1() {
+  }
+
+  @Form("zzz") // プロパティzzzにバインディングします（アクションメソッドでの指定が優先されるため）。
+  public ActionResult m2() {
+  }
+}
+</pre>
+
+<a name="annotation_validation"></a>
+<p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
+<h3>@Validation</h3>
+<p>
+	アクションメソッド実行前に入力検証を実行します。
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>errorPage</td>
+		<td>String</td>
+		<td>○</td>
+		<td>-</td>
+		<td>
+			エラー時にフォワードするページ名を指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>validator</td>
+		<td>String</td>
+		<td>×</td>
+		<td>VALIDATORS</td>
+		<td>
+			検証設定がセットされたフィールド名を指定します。
+		</td>
+	</tr>
+</table>
+
+<a name="annotation_session"></a>
+<h3>@Session</h3>
+<p>
+	セッション管理されるフィールドに設定します。
+</p>
+<table border="1">
+	<tr>
+		<th>パラメータ名</th>
+		<th>型</th>
+		<th>必須</th>
+		<th>デフォルト</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>String</td>
+		<td>×</td>
+		<td>属性名</td>
+		<td>
+			セッションに格納時の属性名を指定します。指定が無い場合、フィールド名でセッションに格納されます。
+		</td>
+	</tr>
+</table>
+
+<a name="taglib"></a>
+<h2>カスタムタグ</h2>
+<p>
+Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています。
+カスタムタグに定義されていない属性はそのまま素直に出力されます。
+</p>
+<h3>カスタムタグ一覧</h3>
+<table border="1">
+	<tr>
+		<th>タグ名</th>
+		<th>説明</th>
+		<th>使用例</th>
+		<th>結果</th>
+	</tr>
+	<tr>
+		<td><a href="#taglib_form">form</a></td>
+		<td>formタグを出力します。</td>
+		<td>&lt;t:form value="${todo}"&gt;...&lt;t:/form&gt;</td>
+		<td>&lt;form&gt;...&lt;/form&gt;</td>
+	</tr>
+	<tr>
+		<td><a href="#taglib_input">input</a></td>
+		<td>inputタグを出力します。</td>
+		<td>&lt;t:input name="title"/&gt;</td>
+		<td>&lt;t:input name="title" value="Todo Title"/&gt;</td>
+	</tr>
+	<tr>
+		<td><a href="#taglib_select">select</a></td>
+		<td>selectタグを出力します。</td>
+		<td>
+			&lt;t:select name="typeId" items="${todoTypes}"<br/>
+				&nbsp;&nbsp;labelProperty="name" valueProperty="id"/&gt;</td>
+		<td>
+			&lt;select name="typeId"&gt;<br/>
+				&nbsp;&nbsp;&lt;option name="1"&gt;TodoType 1&lt;/option&gt;<br/>
+				&nbsp;&nbsp;&lt;option name="1"&gt;TodoType 2&lt;/option&gt;<br/>
+			&lt;/select&gt;
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#taglib_textarea">textarea</a></td>
+		<td>textareaタグを出力します。</td>
+		<td>
+			&lt;t:textarea name="memo"/&gt;</td>
+		<td>
+			&lt;textarea name="memo"&gt;Memo 1&lt;textarea name="memo"&gt;
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#taglib_template">template</a></td>
+		<td>テンプレート用JSPのレイアウトを使用します。</td>
+		<td>
+			&lt;t:template extends="/templates/default.jsp"&gt;<br/>
+				&nbsp;&nbsp;&lt;jsp:attribute name="title"&gt;Todo詳細&lt;/jsp:attribute&gt;<br/>
+				&nbsp;&nbsp;&lt;jsp:attribute name="content"&gt;<br/>
+					&nbsp;&nbsp;&nbsp;&nbsp;....<br/>
+				&nbsp;&nbsp;&lt;/jsp:attribute&gt;<br/>
+			&lt;/t:template&gt;
+		</td>
+		<td>
+			レイアウトされたHTMLが出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td><a href="#taglib_null">null</a></td>
+		<td>何も出力しません。</td>
+		<td>
+			&lt;t:null&gt;Dummy HTML&lt;/t:null&gt;
+		</td>
+		<td>
+			(何も出力されません)
+		</td>
+	</tr>
+</table>
+<a name="taglib_form"></a>
+<h3>form</h3>
+<p>
+formを作成します。主にvalue属性でフォーム用オブジェクトを指定ます。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>value</td>
+		<td>Object</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			フォームオブジェクトを指定します。この属性が省略された場合、アクションオブジェクトがフォームとして使用されます。
+		</td>
+	</tr>
+	<tr>
+		<td>type</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			text/password/checkbox/radio/hiddenができます。
+		</td>
+	</tr>
+	<tr>
+		<td>checkedValue</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×（type属性がradio/checkboxの場合のみ必須）</td>
+		<td>
+			type属性がradio/checkboxの場合にポストされる値を指定します。
+			この値と、name属性で指定したフィールドから取得した値が一致した場合に、checked属性がtrueになります。
+		</td>
+	</tr>
+</table>
+
+<a name="taglib_input"/>
+<h3>input</h3>
+<p>
+入力フィールドを作成します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>type</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			text/password/checkbox/radio/hiddenができます。
+		</td>
+	</tr>
+	<tr>
+		<td>checkedValue</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×（type属性がradio/checkboxの場合のみ必須）</td>
+		<td>
+			type属性がradio/checkboxの場合にポストされる値を指定します。
+			この値と、name属性で指定したフィールドから取得した値が一致した場合に、checked属性がtrueになります。
+		</td>
+	</tr>
+</table>
+
+<a name="taglib_select"/>
+<h3>select</h3>
+<p>
+HTMLのselectタグを出力します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。
+			上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>items</td>
+		<td>java.util.Collection/配列</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグ用のリストを指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>valueProperty</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグの値として使用するプロパティ名を指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>labelProperty</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			optionタグの表示文字列として使用するプロパティ名を指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>emptyOption</td>
+		<td>Boolean</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			空白のoptionを出力するかどうかを指定します。
+			省略された場合、「true」と見なして先頭に空白のoptionが出力されます。
+		</td>
+	</tr>
+	<tr>
+		<td>emptyOptionLabel</td>
+		<td>String</td>
+		<td>○</td>
+		<td>×</td>
+		<td>
+			先頭の空白のoptionの表示値を指定します。
+			省略された場合、先頭の空白のoptionには何も表示されません
+		</td>
+	</tr>
+</table>
+
+<a name="taglib_textarea"/>
+<h3>textarea</h3>
+<p>
+HTMLのtextareaタグを出力します。
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			値の参照を行うプロパティ名を指定します。
+			上位タグのformで指定されたフォームオブジェクト内のプロパティ名です。
+			この属性の値はname属性としてそのまま出力されます。
+		</td>
+	</tr>
+　</table>
+
+<a name="taglib_template"/>
+<h3>template</h3>
+<p>
+他のJSPをテンプレートとして使用します。レイアウトの継承で使用します。
+バージョン0.8ではこのタグは１段階のレイアウト継承のみ対応しています。
+（今後多段回の継承に対応する予定です）
+</p>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>型</th>
+		<th>EL式の使用</th>
+		<th>必須</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>extends</td>
+		<td>String</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			テンプレートとして使用するJSPを指定します。
+		</td>
+	</tr>
+	<tr>
+		<td>その他の属性</td>
+		<td>Object</td>
+		<td>○</td>
+		<td>○</td>
+		<td>
+			テンプレート内で使用するパーツ名を属性名として、
+			表示するHTMLを値として指定します。
+		</td>
+	</tr>
+</table>
+
+<a name="taglib_null"/>
+<h3>null</h3>
+<p>
+このタグで囲まれた領域は出力されません。
+JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲みます。
+このタグに属性はありません。
+</p>
+
+<a name="function"></a>
+<h2>カスタムファンクション</h2>
+<h3>out</h3>
+<p>
+	HTMLをエスケープします。JSTLのoutタグの代わりに使用します。
+	EL式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこのfunctionを使用します。
+</p>
+<h4>使用例</h4>
+<pre class="code">
+	${f:out(user.name)}さんこんにちは
+</pre>
+
+<h3>dateFormat</h3>
+<p>
+	Date型のオブジェクトをフォーマットして出力します。JSTLのdateFormatタグの代わりに使用します。
+</p>
+<h4>使用例</h4>
+<pre class="code">
+	${f:dateFormat(todo.limitDate, "yyyy-MM-dd")}
+</pre>
+
+<a name="validation"></a>
+<h2>バリデーション</h2>
+<p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
+<p>
+Cubbyではコードを使用して、入力検証のルールを記述します。<br/>
+それぞれのアクションメソッドで使用する入力検証ルールは、<a href="#annotation_validation">@Validationアノテーション</a>で指定します。<br/>
+また、クライアントサイドバリデーションはありません。<br/>
+詳細はあとでかく・・・
+<pre class="code">
+public class LoginAction extends Action {
+  public static Validators VALIDATORS = new Validators();
+  static {
+    VALIDATORS.add("userId", new RequiredValidator(), MaxLengthValidator(10));
+    VALIDATORS.add("password", new RequiredValidator(), MaxLengthValidator(10));
+  }
+  ...
+}
+</pre>
+</p>
+
+<a name="configration_file"></a>
+<h2>設定ファイル</h2>
+<p>
+Cubbyには以下の設定ファイルがあります。
+全てcubby-x.x.x.jarの中に同梱されているので、ファイルを作らなければJARの中のものがデフォルトとして使用されます。
+</p>
+<h3>messages.properties</h3>
+<p>
+アプリケーションで使用するメッセージを定義します。バリデーションのエラーメッセージもこのファイルに記述します。
+以下の方法でメッセージを取得できます。
+<ul>
+<li>org.seasar.cubby.action.Action#getText(キー)</li>
+<li>org.seasar.cubby.util.Messages#getText(キー)（staticメソッド）</li>
+<li>JSP中で&#36;{messages['キー']}</li>
+</ul>
+</p>
+
+<h3>cubby.properties</h3>
+<p>
+通常は必要ありません。
+fileuploadの上限などを指定します。
+</p>
+
+<h3>cubby.dicon</h3>
+<p>
+通常は必要ありません。
+Cubby本体の動作を変更したいときに使用します。
+</p>
+</jsp:attribute>
+</t:template>
