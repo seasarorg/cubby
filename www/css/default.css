@@ -46,3 +46,8 @@ pre.code {
 #fotter {
 	text-align: center;
 }
+
+p.warn {
+	color: red;
+	font-style: italic;
+}

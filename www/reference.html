@@ -145,6 +145,7 @@ public class Hoge2Action {
 
 <a name="annotation_validation"/>
 <h3>@Validation</h3>
+<p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
 <p>
 	アクションメソッド実行前に入力検証を実行します。
 </p>
@@ -524,10 +525,12 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 </pre>
 
 <h2>バリデーション</h2>
+<p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
+<p>
 Cubbyではコードを使用して、入力検証のルールを記述します。<br/>
 それぞれのアクションメソッドで使用する入力検証ルールは、<a href="#annotation_validation">@Validationアノテーション</a>で指定します。<br/>
 また、クライアントサイドバリデーションはありません。<br/>
-詳細はあとでかく・・・
+</p>
 <pre class="code">
 public class LoginAction extends Action {
   public static Validators VALIDATORS = new Validators();
