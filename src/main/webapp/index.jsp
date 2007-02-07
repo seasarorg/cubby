@@ -14,6 +14,7 @@
 	<li><a href="todo/login">Todoサンプルアプリケーション</a></li>
 	<li><a href="components/show">コンポーネント一覧</a></li>
 	<li><a href="fileupload/show">ファイルアップロード</a></li>
+	<li><a href="docs/index.html">ドキュメント</a></li>
 </ul>
 </body>
 </html>
