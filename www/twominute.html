@@ -8,10 +8,38 @@
 <title>Cubby - ２分間チュートリアル(Hello World)</title>
 <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
 </head>
-
 <body>
-
+<div id="sidebar">
+<h2>メイン</h2>
+<ul>
+	<li><a href="index.html">トップ</a></li>
+	<li><a href="download.html">ダウンロード</a></li>
+</ul>
+<h2>ドキュメント</h2>
+<ul>
+	<li><a href="setup.html">セットアップ</a></li>
+	<li><a href="twominute.html">2分間チュートリアル</a></li>
+	<li><!--a href="fiveminute.html"-->5分間チュートリアル(未作成)</a></li>
+	<li><a href="reference.html">リファレンスマニュアル</a></li>
+</ul>
+<h2>リソース</h2>
+<ul>
+	<li><a href="svn.html">ソースコード(SVN)</a></li>
+	<li><a href="https://ml.seasar.org/mailman/listinfo/cubby-user">メーリングリスト</a></li>
+	<li><a href="https://www.seasar.org/issues/browse/CUBBY">トラッキング(JIRA)</a></li>
+</ul>
+</div>
+<div id="content">
 <h1>Cubby - 2分間チュートリアル(Hello World)</h1>
+
+<h2>Helloアプリケーションの概要</h2>
+<p>
+入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
+</p>
+<p>
+<img src="images/hello_input.png" class="box"/><br/>
+<img src="images/hello_result.png" class="box"/><br/>
+</p>
 
 <h2>アクションクラスの作成</h2>
 <p>
@@ -43,6 +71,7 @@ indexは入力画面「input.jsp」の表示用、messageは入力画面から�
 	</tr>
 </table>
 <p>
+<img src="images/hello_diagram.png" class="box"/><br/>
 アクションメソッドの戻り値は「ActionResult」です。
 ここでは、フォワードしてJSPを表示するために、new Forward("input.jsp")となります。
 これにより、「/hello/input.jsp」にフォワードします。
@@ -85,8 +114,12 @@ public class HelloAction extends Action {
 <h2>JSPの作成</h2>
 <p>
 入力画面用の「input.jsp」とメッセージ出力画面用の「result.jsp」を作成します。
-
-input.jspでは、Cubbyのカスタムタグを使って、フォームを作成します。「&lt;form ... value="${action}"&gt;」では、フォームにバインディングするオブジェクトを指定しています。${action}はフォワード時に使用したアクションそのものを意味します。
+input.jspでは、Cubbyのカスタムタグを使って、フォームを作成します。「&lt;form ... value=""&gt;」では、フォームにバインディングするオブジェクトを指定しています。
+はフォワード時に使用したアクションそのものを意味します。アクション自体がフォームのバインディング対象の場合はvalue属性は省略可能です。
+（つまり、この例ではvalue属性を書く必要はありません。）
+</p>
+<p>
+入力フィールドはカスタムタグを使用して出力します。（&lt;t:input type="text" name="name"/&gt;）
 </p>
 <strong>/hello/input.jsp</strong>
 <pre class="code">
@@ -98,7 +131,7 @@ input.jspでは、Cubbyのカスタムタグを使って、フォームを作成
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;Hello World - 入力画面&lt;/h1&gt;
-&lt;t:form action="message" value="${action}"&gt;
+&lt;t:form action="message" value="&#36;{action}"&gt;
 	あなたの名前:
 	&lt;t:input type="text" name="name"/&gt;
 	&lt;input type="submit" value="送信"/&gt;
@@ -116,7 +149,7 @@ input.jspでは、Cubbyのカスタムタグを使って、フォームを作成
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;Hello World - 出力画面&lt;/h1&gt;
-こんにちは、${action.name}さん。
+こんにちは、&#36;{action.name}さん。
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
@@ -124,18 +157,28 @@ input.jspでは、Cubbyのカスタムタグを使って、フォームを作成
 <h2>アクションクラスをdiconファイルへ登録</h2>
 <p>
 HelloActionをSeasar2のdiconファイルへ登録します。instance="prototype"として、リクエストごとにアクションクラスが生成される設定とします。
-AutoRegisterを使用してアクションクラスを一括して登録する場合、個別の登録は作業は必要ありませんのでこの作業は省略可能です。
+AutoRegisterを使用してアクションクラスを一括して登録する場合、アクションをdiconファイルに個別に設定する必要ありません。
 </p>
 <strong>allservice.dicon</strong>
 <pre class="code">
 &lt;component class="org.seasar.cubby.examples.hello.HelloAction" instance="prototype" /&gt;
 </pre>
 
-<h2>JSP共通ヘッダーの設定</h2>
+<h2>入力画面をブラウザで確認する</h2>
+<p>
+ブラウザで<a href="http://localhost:8080/cubby-examples/hello/">http://localhost:8080/cubby-examples/hello/</a>に
+アクセスします。
+</p>
+
+<h2>おまけ：JSP共通ヘッダーの設定</h2>
 <p>
 JSPのページディレクティブやタグリブディレクティブは、各JSPには記述せずにヘッダーファイルをインクルードして設定することを推奨します。
 Servlet2.4のweb.xmlの設定として「include-prelude」タグが用意されていますので、これを使用してヘッダーファイルのインクルードを行います。
 ヘッダーファイル(header.jsp)では、ページ共通のタグリブディレクティブを記述しておきます。
+</p>
+<p>
+上記のサンプルのJSPは、共通ヘッダーを使用しているので、JSPの先頭にタグリブディレクティブの宣言がありません。
+実際は、以下の「header.jsp」の内容がJSPの先頭に自動的に付加されてから、コンパイル・実行されています。
 </p>
 <strong>/common/header.jsp</strong>
 <pre class="code">
@@ -160,8 +203,7 @@ Servlet2.4のweb.xmlの設定として「include-prelude」タグが用意され
     &lt;/jsp-property-group&gt;
   &lt;/jsp-config&gt;
 &lt;/web-app&gt;
-</pre>
-<hr/>
+</pre></div>
 <div id="fotter">Copyright &copy; 2007 The Seasar Foundation. All rights reserved.</div>
 </body>
 </html>

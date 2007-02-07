@@ -43,11 +43,32 @@ pre.code {
 	background: #eee;
 }
 
+#sidebar {
+	float: left;
+	width: 200px;
+	padding: 8px;
+	margin: 0px 0 5px 0;
+	text-align: left;
+	border-right: solid 2px #cccccc;
+	background: #eee;
+}
+
+#content {
+	width: auto;
+	padding-left: 2em;
+	margin: 10px 10px 10px 200px;
+}
+
 #fotter {
+	clear: both;
 	text-align: center;
 }
 
 p.warn {
 	color: red;
 	font-style: italic;
+}
+
+img.box {
+	border: solid 1px #999;
 }

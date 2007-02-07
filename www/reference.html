@@ -5,19 +5,155 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Content-Language" content="ja" />
-<title>Cubby - リファレンス</title>
+<title>Cubby - リファレンスマニュアル</title>
 <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
 </head>
 <body>
-<h1>Cubby - リファレンス</h1>
+<div id="sidebar">
+<h2>メイン</h2>
+<ul>
+	<li><a href="index.html">トップ</a></li>
+	<li><a href="download.html">ダウンロード</a></li>
+</ul>
+<h2>ドキュメント</h2>
+<ul>
+	<li><a href="setup.html">セットアップ</a></li>
+	<li><a href="twominute.html">2分間チュートリアル</a></li>
+	<li><!--a href="fiveminute.html"-->5分間チュートリアル(未作成)</a></li>
+	<li><a href="reference.html">リファレンスマニュアル</a></li>
+</ul>
+<h2>リソース</h2>
+<ul>
+	<li><a href="svn.html">ソースコード(SVN)</a></li>
+	<li><a href="https://ml.seasar.org/mailman/listinfo/cubby-user">メーリングリスト</a></li>
+	<li><a href="https://www.seasar.org/issues/browse/CUBBY">トラッキング(JIRA)</a></li>
+</ul>
+</div>
+<div id="content">
+<h1>Cubby - リファレンスマニュアル</h1>
+<ul>
+	<li><a href="#controller">コントローラー(Action)</a></li>
+	<li><a href="#view">ビュー（JSP）</a></li>
+	<li><a href="#annotation">アノテーション</a></li>
+	<li><a href="#taglib">カスタムタグ</a></li>
+	<li><a href="#function">カスタムファンクション</a></li>
+	<li><a href="#validation">バリデーション</a></li>
+	<li><a href="#configration_file">設定ファイル</a></li>
+</ul>
 
-<a name="annotation"/>
+<a name="#controller"></a>
+<h2>コントローラー（Action）</h2>
+<p>
+コントローラーはorg.seasar.cubby.action.Actionを継承して作成します。
+</p>
+<h3>アクションメソッド</h3>
+<p>
+リクエストされたURLに応じて、アクションメソッドが呼び出され処理を実行します。
+Actionクラスの中でpublicで戻り値がActionResultのメソッドが、アクションメソッドとして認識されます。
+</p>
+
+<a name="view"></a>
+<h2>ビュー(JSP)</h2>
+<p>
+CubbyのビューはJSPで作成します。
+</p>
+<h3>JSPでの暗黙オブジェクト一覧</h3>
+<table border="1">
+	<tr>
+		<th>属性名</th>
+		<th>説明</th>
+		<th>型</th>
+		<th>スコープ</th>
+		<th>セットされるタイミング</th>
+	</tr>
+	<tr>
+		<td>action</td>
+		<td>forwardしたアクションのオブジェクト</td>
+		<td>org.seasar.cubby.action.Action</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>actionのプロパティ名</td>
+		<td>
+			Actionでpublicなゲッターがあるプロパティは自動的にリクエストスコープにセットされます。<br/>
+			（例）getXyz -> xyz
+		</td>
+		<td>それぞれのプロパティの型</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>actionErrors</td>
+		<td>
+			エラー保持オブジェクト
+		</td>
+		<td>org.seasar.cubby.action.ActionErrors</td>
+		<td>request</td>
+		<td>forwardの直前</td>
+	</tr>
+	<tr>
+		<td>flash</td>
+		<td>
+			リダイレクト時にメッセージなどを受け渡しするためのMap。
+			このMapは１度getするとMapから自動的に除去(remove)されます。
+		</td>
+		<td>org.seasar.cubby.action.FlashMap</td>
+		<td>session</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+	<tr>
+		<td>contextPath</td>
+		<td>request.getContextPath()の値</td>
+		<td>java.lang.String</td>
+		<td>request</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+	<tr>
+		<td>messages</td>
+		<td>messages.propertiesをMapにしたもの。requestのロケールに対応。</td>
+		<td>java.util.Map</td>
+		<td>request</td>
+		<td>actionメソッドの実行前(InitializeActionFilter)　</td>
+	</tr>
+</table>
+
+<a name="annotation"></a>
 <h2>アノテーション</h2>
-
-<a name="annotation_url"/>
+<h2>アノテーション一覧</h2>
+<table border="1">
+	<tr>
+		<th>アノテーション名</th>
+		<th>説明</th>
+		<th>書式</th>
+	</tr>
+	<tr>
+		<td><a href="#annotation_url">@Url</a></td>
+		<td>アクションメソッドのURLを指定します。</td>
+		<td>@Url("URL文字列")</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_form">@Form</a></td>
+		<td>リクエストパラメータのオブジェクトへのバインディングを指定します。</td>
+		<td>@Form("バインディングするオブジェクトのプロパティ名")</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_validation">@Validation</a></td>
+		<td>入力検証を指定します</td>
+		<td>@Validation</td>
+	</tr>
+	<tr>
+		<td><a href="#annotation_session">@Session</a></td>
+		<td>アクションのフィールドのオブジェクトをセッションスコープとします。</td>
+		<td>@Session</td>
+	</tr>
+</table>
+<a name="annotation_url"></a>
 <h3>@Url</h3>
+<p>
 アクションメソッドのバインディング用URLをしています。
 対象はアクションクラスかアクションクラスのメソッドです。
+</p>
 <table border="1">
 	<tr>
 		<th>パラメータ名</th>
@@ -143,9 +279,9 @@ public class Hoge2Action {
 }
 </pre>
 
-<a name="annotation_validation"/>
-<h3>@Validation</h3>
+<a name="annotation_validation"></a>
 <p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
+<h3>@Validation</h3>
 <p>
 	アクションメソッド実行前に入力検証を実行します。
 </p>
@@ -177,7 +313,7 @@ public class Hoge2Action {
 	</tr>
 </table>
 
-<a name="annotation_session"/>
+<a name="annotation_session"></a>
 <h3>@Session</h3>
 <p>
 	セッション管理されるフィールドに設定します。
@@ -201,6 +337,7 @@ public class Hoge2Action {
 	</tr>
 </table>
 
+<a name="taglib"></a>
 <h2>カスタムタグ</h2>
 <p>
 Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています。
@@ -215,22 +352,22 @@ Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています�
 		<th>結果</th>
 	</tr>
 	<tr>
-		<td><a href="#customtag_form">form</a></td>
+		<td><a href="#taglib_form">form</a></td>
 		<td>formタグを出力します。</td>
-		<td>&lt;t:form value="${todo}"&gt;...&lt;t:/form&gt;</td>
+		<td>&lt;t:form value=""&gt;...&lt;t:/form&gt;</td>
 		<td>&lt;form&gt;...&lt;/form&gt;</td>
 	</tr>
 	<tr>
-		<td><a href="#customtag_input">input</a></td>
+		<td><a href="#taglib_input">input</a></td>
 		<td>inputタグを出力します。</td>
 		<td>&lt;t:input name="title"/&gt;</td>
 		<td>&lt;t:input name="title" value="Todo Title"/&gt;</td>
 	</tr>
 	<tr>
-		<td><a href="#customtag_select">select</a></td>
+		<td><a href="#taglib_select">select</a></td>
 		<td>selectタグを出力します。</td>
 		<td>
-			&lt;t:select name="typeId" items="${todoTypes}"<br/>
+			&lt;t:select name="typeId" items=""<br/>
 				&nbsp;&nbsp;labelProperty="name" valueProperty="id"/&gt;</td>
 		<td>
 			&lt;select name="typeId"&gt;<br/>
@@ -240,7 +377,7 @@ Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています�
 		</td>
 	</tr>
 	<tr>
-		<td><a href="#customtag_textarea">textarea</a></td>
+		<td><a href="#taglib_textarea">textarea</a></td>
 		<td>textareaタグを出力します。</td>
 		<td>
 			&lt;t:textarea name="memo"/&gt;</td>
@@ -249,7 +386,7 @@ Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています�
 		</td>
 	</tr>
 	<tr>
-		<td><a href="#customtag_template">template</a></td>
+		<td><a href="#taglib_template">template</a></td>
 		<td>テンプレート用JSPのレイアウトを使用します。</td>
 		<td>
 			&lt;t:template extends="/templates/default.jsp"&gt;<br/>
@@ -264,7 +401,7 @@ Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています�
 		</td>
 	</tr>
 	<tr>
-		<td><a href="#customtag_null">null</a></td>
+		<td><a href="#taglib_null">null</a></td>
 		<td>何も出力しません。</td>
 		<td>
 			&lt;t:null&gt;Dummy HTML&lt;/t:null&gt;
@@ -274,7 +411,7 @@ Cubbyのカスタムタグは、全てDynamic-Attributeに対応しています�
 		</td>
 	</tr>
 </table>
-<a name="customtag_form"/>
+<a name="taglib_form"></a>
 <h3>form</h3>
 <p>
 formを作成します。主にvalue属性でフォーム用オブジェクトを指定ます。
@@ -317,7 +454,7 @@ formを作成します。主にvalue属性でフォーム用オブジェクト�
 	</tr>
 </table>
 
-<a name="customtag_input"/>
+<a name="taglib_input"/>
 <h3>input</h3>
 <p>
 入力フィールドを作成します。
@@ -361,7 +498,7 @@ formを作成します。主にvalue属性でフォーム用オブジェクト�
 	</tr>
 </table>
 
-<a name="customtag_select"/>
+<a name="taglib_select"/>
 <h3>select</h3>
 <p>
 HTMLのselectタグを出力します。
@@ -434,7 +571,7 @@ HTMLのselectタグを出力します。
 	</tr>
 </table>
 
-<a name="customtag_textarea"/>
+<a name="taglib_textarea"/>
 <h3>textarea</h3>
 <p>
 HTMLのtextareaタグを出力します。
@@ -460,7 +597,7 @@ HTMLのtextareaタグを出力します。
 	</tr>
 　</table>
 
-<a name="customtag_template"/>
+<a name="taglib_template"/>
 <h3>template</h3>
 <p>
 他のJSPをテンプレートとして使用します。レイアウトの継承で使用します。
@@ -496,7 +633,7 @@ HTMLのtextareaタグを出力します。
 	</tr>
 </table>
 
-<a name="customtag_null"/>
+<a name="taglib_null"/>
 <h3>null</h3>
 <p>
 このタグで囲まれた領域は出力されません。
@@ -504,6 +641,7 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 このタグに属性はありません。
 </p>
 
+<a name="function"></a>
 <h2>カスタムファンクション</h2>
 <h3>out</h3>
 <p>
@@ -512,7 +650,7 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 </p>
 <h4>使用例</h4>
 <pre class="code">
-	${f:out(user.name)}さんこんにちは
+	さんこんにちは
 </pre>
 
 <h3>dateFormat</h3>
@@ -521,16 +659,16 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 </p>
 <h4>使用例</h4>
 <pre class="code">
-	${f:dateFormat(todo.limitDate, "yyyy-MM-dd")}
-</pre>
+	</pre>
 
+<a name="validation"></a>
 <h2>バリデーション</h2>
 <p class="warn">バリデーションの仕様はバージョン0.8現在、実験的な仕様になります。今後のバージョンで大幅に実装が変更になる可能性がありますので、ご注意ください。</p>
 <p>
 Cubbyではコードを使用して、入力検証のルールを記述します。<br/>
 それぞれのアクションメソッドで使用する入力検証ルールは、<a href="#annotation_validation">@Validationアノテーション</a>で指定します。<br/>
 また、クライアントサイドバリデーションはありません。<br/>
-</p>
+詳細はあとでかく・・・
 <pre class="code">
 public class LoginAction extends Action {
   public static Validators VALIDATORS = new Validators();
@@ -541,16 +679,36 @@ public class LoginAction extends Action {
   ...
 }
 </pre>
+</p>
 
+<a name="configration_file"></a>
 <h2>設定ファイル</h2>
+<p>
+Cubbyには以下の設定ファイルがあります。
+全てcubby-x.x.x.jarの中に同梱されているので、ファイルを作らなければJARの中のものがデフォルトとして使用されます。
+</p>
+<h3>messages.properties</h3>
+<p>
+アプリケーションで使用するメッセージを定義します。バリデーションのエラーメッセージもこのファイルに記述します。
+以下の方法でメッセージを取得できます。
+<ul>
+<li>org.seasar.cubby.action.Action#getText(キー)</li>
+<li>org.seasar.cubby.util.Messages#getText(キー)（staticメソッド）</li>
+<li>JSP中で&#36;{messages['キー']}</li>
+</ul>
+</p>
+
 <h3>cubby.properties</h3>
+<p>
 通常は必要ありません。
 fileuploadの上限などを指定します。
+</p>
 
 <h3>cubby.dicon</h3>
+<p>
 通常は必要ありません。
 Cubby本体の動作を変更したいときに使用します。
-<hr/>
+</p></div>
 <div id="fotter">Copyright &copy; 2007 The Seasar Foundation. All rights reserved.</div>
 </body>
 </html>
