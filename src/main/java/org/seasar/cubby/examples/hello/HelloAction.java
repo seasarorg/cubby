@@ -17,11 +17,13 @@ public class HelloAction extends Action {
 	}
 	
 	public ActionResult index() {
+	    System.out.println("call HelloAction#index()");
 		return new Forward("input.jsp");
 	}
 
 	@Form
 	public ActionResult message() {
+	    System.out.println("call HelloAction#message()");
 		return new Forward("result.jsp");
 	}
 }
