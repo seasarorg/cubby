@@ -83,7 +83,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 	}
 
 	private void initAction(Class c, Method m) {
-		String actionFullName = CubbyUtils.getActionFullName(c, m);
+		String actionFullName = CubbyUtils.getActionUrl(c, m);
 		ActionFilterChain chain = createActionFilterChain(c, m);
 		List<String> uriConvertNames = new ArrayList<String>();
 		Matcher matcher = urlRewritePattern.matcher(actionFullName);

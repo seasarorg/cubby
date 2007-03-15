@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
-
-import junit.framework.TestCase;
 
 public class CubbyUtilsTest extends TestCase {
 
@@ -46,6 +46,20 @@ public class CubbyUtilsTest extends TestCase {
 		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("aaa.jsp")));
 		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("/aaa.jsp")));
 		assertEquals(false, CubbyUtils.isRedirectResult(null));
+	}
+	
+	public void testGetActionUrl() {
+		assertEquals("/hoge/m1", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtils.getMethod(Hoge1Action.class, "m1", null)));
+		assertEquals("/hoge/m/m2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtils.getMethod(Hoge1Action.class, "m2", null)));
+		assertEquals("/hoge/", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtils.getMethod(Hoge1Action.class, "index", null)));
+		assertEquals("/hoge/index2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtils.getMethod(Hoge1Action.class, "index2", null)));
+		assertEquals("/hoge2/m1", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtils.getMethod(Hoge2Action.class, "m1", null)));
+		assertEquals("/hoge/m2", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtils.getMethod(Hoge2Action.class, "m2", null)));
+	}
+
+	public void testGetActionClassName() {
+		assertEquals("hoge", CubbyUtils.getActionClassName(Hoge1Action.class));
+		assertEquals("hoge2", CubbyUtils.getActionClassName(Hoge2Action.class));
 	}
 
 }
