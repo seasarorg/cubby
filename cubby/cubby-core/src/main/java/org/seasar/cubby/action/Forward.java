@@ -31,7 +31,7 @@ public class Forward implements ActionResult {
 		Action action = context.getAction();
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
-		String actionName = context.getActionMethod().getActionName();
+		String actionName = context.getActionMethod().getActionClassName();
 
 		String path = null;
 		if (result.startsWith("/")) {

@@ -15,7 +15,7 @@ import org.seasar.cubby.action.Url;
 public class CubbyUtils {
 
 	@SuppressWarnings("unchecked")
-	public static String getActionName(Class c) {
+	public static String getActionClassName(Class c) {
 		String name = c.getName();
 		name = StringUtils.left(name, "$");
 		String actionName = StringUtils.toFirstLower(name.replaceAll("(.*[.])([^.]+)(Action$)", "$2"));
@@ -26,7 +26,7 @@ public class CubbyUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String getActionName(Method m) {
+	static String getActionMethodName(Method m) {
 		String actionName = m.getName();
 		if (m.getAnnotation(Url.class) != null) {
 			actionName = ((Url)m.getAnnotation(Url.class)).value();
@@ -36,12 +36,13 @@ public class CubbyUtils {
 		return actionName;
 	}
 
-	public static String getActionFullName(Class c, Method m) {
-		String actionName = CubbyUtils.getActionName(c);
-		if (StringUtils.isEmpty(actionName)) {
-			return "/" + getActionName(m);
+	public static String getActionUrl(Class c, Method m) {
+		String actionMethodName = getActionMethodName(m);
+		if (actionMethodName.startsWith("/")) {
+			return actionMethodName;
 		} else {
-			return "/" + actionName + "/" + getActionName(m);
+			String actionName = CubbyUtils.getActionClassName(c);
+			return "/" + actionName + "/" + actionMethodName;
 		}
 	}
 
