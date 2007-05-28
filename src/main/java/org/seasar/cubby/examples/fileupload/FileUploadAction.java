@@ -7,17 +7,19 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.validator.Validators;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @Url("fileupload")
 public class FileUploadAction extends Action {
 
-	public static Validators VALIDATORS = new Validators();
-	static {
-		VALIDATORS.add("filename", new RequiredValidator());
-		VALIDATORS.add("file", new RequiredValidator());
-	}
+	public static ValidationRules VALIDATION = new DefaultValidationRules() {
+		public void initialize() {
+			add("filename", new RequiredValidator());
+			add("file", new RequiredValidator());
+		}
+	};
 
 	// ----------------------------------------------[DI Filed]
 

@@ -12,19 +12,19 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.examples.todo.logic.TodoLogic;
-import org.seasar.cubby.validator.LabelKey;
-import org.seasar.cubby.validator.Validators;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
-@LabelKey("login.")
 @Url("todo")
 public class LoginAction extends Action {
 
-	public static Validators VALIDATORS = new Validators();
-	static {
-		VALIDATORS.add("userId", new RequiredValidator());
-		VALIDATORS.add("password", new RequiredValidator());
-	}
+	public static ValidationRules VALIDATION = new DefaultValidationRules("login.") {
+		public void initialize() {
+			add("userId", new RequiredValidator());
+			add("password", new RequiredValidator());
+		}
+	};
 
 	// ----------------------------------------------[DI Filed]
 
