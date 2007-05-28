@@ -5,19 +5,20 @@ import java.util.Date;
 
 import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
-import org.seasar.cubby.validator.ValidContext;
+import org.seasar.cubby.validator.ValidationContext;
 
 public class DateFormatValidator extends BaseValidator {
-	private SimpleDateFormat dateFormat;
+	private final SimpleDateFormat dateFormat;
 
-	public DateFormatValidator(String dateFormatPattern) {
+	public DateFormatValidator(final String dateFormatPattern) {
 		this.dateFormat = new SimpleDateFormat();
 		this.dateFormat.setLenient(false);
 		this.dateFormat.applyPattern(dateFormatPattern);
 	}
 	
 
-	public String validate(ValidContext context, Object value) {		
+	public String validate(final ValidationContext ctx) {
+		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			String str = (String)value;
 			if (StringUtils.isEmpty((String)value)) {
@@ -32,6 +33,6 @@ public class DateFormatValidator extends BaseValidator {
 		}else if(value == null){
 			return null;
 		}
-		return getMessage("valid.dateFormat", getPropertyMessage(context.getName()));
+		return getMessage("valid.dateFormat", getPropertyMessage(ctx.getName()));
 	}
 }

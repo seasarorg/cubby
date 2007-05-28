@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
 import org.seasar.cubby.validator.BaseValidator;
-import org.seasar.cubby.validator.ValidContext;
+import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 指定された正規表現にマッチしない場合にエラーとします。
@@ -19,13 +19,14 @@ public class FileRegexpValidator extends BaseValidator {
 		this.pattern = Pattern.compile(regex);
 	}
 
-	public String validate(ValidContext context, Object value) {
+	public String validate(final ValidationContext ctx) {
+		final Object value = ctx.getValue();
 		if (value instanceof FileItem) {
 			Matcher matcher = pattern.matcher(((FileItem) value).getName());
 			if (matcher.matches()) {
 				return null;
 			}
-			return getMessage("valid.fileRegexp", getPropertyMessage(context.getName()));
+			return getMessage("valid.fileRegexp", getPropertyMessage(ctx.getName()));
 		}
 		return null;
 	}

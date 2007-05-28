@@ -1,0 +1,8 @@
+* 0.7.0
+** バリデーションの仕様変更
+- ValidContext -> ValidationContext
+- Validator#validateの引数変更
+- Validators -> ValidationRules
+- ProperyValidators -> PropertyValidationRule
+- デフォルトの検証設定フィールドの変更VALIDATORS -> VALIDATION
+- @LabelKeyの廃止

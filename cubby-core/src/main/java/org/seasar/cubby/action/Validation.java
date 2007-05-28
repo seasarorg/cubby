@@ -17,11 +17,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Validation {
-	static String DEFAULT_VALIDATORS_FILED = "VALIDATORS";
+	static String DEFAULT_VALIDATION_RULES_FILED = "VALIDATION";
 	/**
 	 * 検証失敗時の遷移先を指定します。
 	 * @return
 	 */
 	String errorPage();
-	String validator() default DEFAULT_VALIDATORS_FILED;
+	String validator() default DEFAULT_VALIDATION_RULES_FILED;
 }

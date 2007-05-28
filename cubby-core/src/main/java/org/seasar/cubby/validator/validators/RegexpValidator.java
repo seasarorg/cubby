@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.validator.BaseValidator;
-import org.seasar.cubby.validator.ValidContext;
+import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 指定された正規表現にマッチしない場合にエラーとします。
@@ -18,13 +18,14 @@ public class RegexpValidator extends BaseValidator {
 		this.pattern = Pattern.compile(regex);
 	}
 
-	public String validate(ValidContext context, Object value) {
+	public String validate(final ValidationContext ctx) {
+		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			Matcher matcher = pattern.matcher((String) value);
 			if (matcher.matches()) {
 				return null;
 			}
 		}
-		return getMessage("valid.regexp", getPropertyMessage(context.getName()));
+		return getMessage("valid.regexp", getPropertyMessage(ctx.getName()));
 	}
 }

@@ -4,6 +4,8 @@ import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,8 @@ import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.convert.Populater;
 import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.ActionValidator;
-import org.seasar.cubby.validator.Validators;
+import org.seasar.cubby.validator.ValidationRule;
+import org.seasar.cubby.validator.ValidationRules;
 
 /**
  * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
@@ -36,7 +39,12 @@ import org.seasar.cubby.validator.Validators;
  */
 public class ValidationFilter implements ActionFilter {
 
-	public static final Validators NULL_VALIDATORS = new Validators();
+	public static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
+		@SuppressWarnings("unchecked")
+		public Collection<ValidationRule> getRules() {
+			return Collections.EMPTY_LIST;
+		}
+	};
 
 	private ActionValidator actionValidator;
 
@@ -55,13 +63,13 @@ public class ValidationFilter implements ActionFilter {
 		final HttpServletRequest request = context.getRequest();
 		final Action controller = context.getAction();
 		final Validation validation = context.getActionMethod().getValidation();
-		final Validators validators = getValidators(context);
+		final ValidationRules rules = getValidationRules(context);
 		final Map<String, Object> params = (Map<String, Object>) request
 				.getAttribute(ATTR_PARAMS);
 
 		boolean success = actionValidator.processValidation(validation,
 				controller, params, getFormBean(controller, context
-						.getActionMethod().getForm()), validators);
+						.getActionMethod().getForm()), rules);
 		if (success) {
 			setupForm(context);
 			result = chain.doFilter(context);
@@ -90,15 +98,15 @@ public class ValidationFilter implements ActionFilter {
 		}
 	}
 
-	private Validators getValidators(ActionContext context) {
+	private ValidationRules getValidationRules(ActionContext context) {
 		Validation validation = context.getActionMethod().getValidation();
 		if (validation != null) {
-			String validatorField = validation.validator();
+			String rulesField = validation.validator();
 			Object form = getFormBean(context.getAction(), context
 					.getActionMethod().getForm());
-			return (Validators) ClassUtils.getField(form, validatorField);
+			return (ValidationRules) ClassUtils.getField(form, rulesField);
 		}
-		return NULL_VALIDATORS;
+		return NULL_VALIDATION_RULES;
 	}
 
 	private Object getFormBean(Action controller, Form form) {
