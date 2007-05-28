@@ -1,7 +1,6 @@
 package org.seasar.cubby.validator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -32,7 +31,7 @@ public class PropertyValidationRule implements ValidationRule {
 		return propertyNameKey;
 	}
 
-	public Collection<Validator> getValidators() {
+	public List<Validator> getValidators() {
 		return validators;
 	}
 
