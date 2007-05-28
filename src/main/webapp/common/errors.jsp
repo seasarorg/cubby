@@ -1,5 +1,5 @@
 <c:if test="${fn:length(allErrors) > 0}">
-  <div class="errors">
+  <div id="errors" class="errors">
     <ul>
     <c:forEach var="error" varStatus="s" items="${allErrors}">
       <li>${fn:replace(error, "
