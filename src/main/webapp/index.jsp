@@ -14,7 +14,15 @@
 	<li><a href="todo/login">Todoサンプルアプリケーション</a></li>
 	<li><a href="components/show">コンポーネント一覧</a></li>
 	<li><a href="fileupload/show">ファイルアップロード</a></li>
-	<li><a href="docs/index.html">ドキュメント</a></li>
+<!--
+	<li><a href="whiteboard/">ホワイトボード</a></li>
+-->
+	<li>
+		<a href="docs/index.html">ドキュメント</a>
+		<ul>
+			<li><a href="docs/cubby-docs.zip">ダウンロード（ZIP形式）</a></li>
+		</ul>
+	</li>
 </ul>
 </body>
 </html>
