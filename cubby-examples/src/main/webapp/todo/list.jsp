@@ -13,9 +13,9 @@ function doDelete(name, id) {
 <c:import url="/common/notice.jsp"/>
 <h2>Todoの一覧</h2>
 <div class="menu">
-[<a href="create">新規作成</a>]
+[<a href="${contextPath}/todo/add">新規作成</a>]
 </div>
-<t:form action="list" method="post" value="${findTodoDto}">
+<t:form action="${contextPath}/todo/list" method="post" value="${findTodoDto}">
 <table>
   <tr>
   	<th>キーワード</th>

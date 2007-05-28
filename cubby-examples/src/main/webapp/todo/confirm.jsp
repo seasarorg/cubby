@@ -1,13 +1,21 @@
 <t:template extend="/todo/template.jsp">
 <jsp:attribute name="title">Todo編集確認</jsp:attribute>
 <jsp:attribute name="content">
+<script language="javascript">
+<!--
+function doBack() {
+	document.forms[0].action='${contextPath}/todo/confirm_back';
+	document.forms[0].submit();
+}
+-->
+</script>
 <h2>Todo編集確認</h2>
 以下の内容で登録しますがよろしいですか？
 <div class="menu">
-[<a href="javascript:doBack();">戻る</a>]
+[<a href="javascript:doBack()">戻る</a>]
 </div>
-<t:form action="save" method="post" value="${todo}">
-<t:input type="hidden" name="id"/>
+<t:form action="${contextPath}/todo/save" method="post" value="${todo}">
+<t:input type="hidden" name="id" />
 <t:input type="hidden" name="text"/>
 <t:input type="hidden" name="typeId"/>
 <t:input type="hidden" name="limitDate"/>
