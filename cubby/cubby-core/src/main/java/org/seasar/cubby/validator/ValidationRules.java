@@ -1,7 +1,7 @@
 package org.seasar.cubby.validator;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface ValidationRules {
-	Collection<ValidationRule> getRules();
+	List<ValidationRule> getRules();
 }

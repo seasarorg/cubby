@@ -1,7 +1,6 @@
 package org.seasar.cubby.validator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -43,7 +42,7 @@ public class DefaultValidationRules implements ValidationRules {
 		}
 	}
 	
-	public Collection<ValidationRule> getRules() {
+	public List<ValidationRule> getRules() {
 		return rules;
 	}
 	
