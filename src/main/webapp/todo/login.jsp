@@ -6,13 +6,15 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <script type="text/javascript" src="${contextPath}/js/prototype.js"></script>
+  <script type="text/javascript" src="${contextPath}/js/scriptaculous.js?Load=effect"></script>
 </head>
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <h1>Todoログイン</h1>
 <t:errors />
 <c:import url="/common/notice.jsp"/>
-<t:form action="login_process" method="post" value="${loginDto}">
+<t:form action="${contextPath}/todo/login_process" method="post" value="${loginDto}">
 <table border="1">
   <tr>
     <th>ユーザID</th>
