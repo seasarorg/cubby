@@ -5,14 +5,14 @@ import java.util.Map;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.ActionValidator;
-import org.seasar.cubby.validator.Validators;
+import org.seasar.cubby.validator.ValidationRules;
 
 public class MockActionValidator implements ActionValidator {
 
 	public boolean processValidationResult = false;
 	
 	public boolean processValidation(Validation valid, Action action, Map<String, Object> params,
-			Object form, Validators validators) {
+			Object form, ValidationRules validators) {
 		return processValidationResult;
 	}
 

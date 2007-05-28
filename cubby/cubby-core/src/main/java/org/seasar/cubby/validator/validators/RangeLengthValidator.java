@@ -2,18 +2,19 @@ package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
-import org.seasar.cubby.validator.ValidContext;
+import org.seasar.cubby.validator.ValidationContext;
 
 public class RangeLengthValidator extends BaseValidator {
-	private int min;
-	private int max;
+	private final int min;
+	private final int max;
 
-	public RangeLengthValidator(int min, int max) {
+	public RangeLengthValidator(final int min, final int max) {
 		this.min = min;
 		this.max = max;
 	}
 
-	public String validate(ValidContext context, Object value) {
+	public String validate(final ValidationContext ctx) {
+		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			String str = (String)value;
 			if (StringUtils.isEmpty(str)) {
@@ -27,6 +28,6 @@ public class RangeLengthValidator extends BaseValidator {
 		}else if(value == null){
 			return null;
 		}
-		return getMessage("valid.rangeLength", getPropertyMessage(context.getName()), min, max);
+		return getMessage("valid.rangeLength", getPropertyMessage(ctx.getName()), min, max);
 	}
 }

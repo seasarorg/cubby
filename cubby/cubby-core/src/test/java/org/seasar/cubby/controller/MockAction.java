@@ -7,11 +7,12 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Session;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.validator.Validators;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
 
 public class MockAction extends Action {
 	
-	public static final Validators VALIDATORS = new Validators();
+	public static final ValidationRules VALIDATORS = new DefaultValidationRules();
 	
 	public String attr1;
 	public String attr2;

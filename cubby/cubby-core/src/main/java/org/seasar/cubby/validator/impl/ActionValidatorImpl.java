@@ -8,49 +8,61 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
-import org.seasar.cubby.validator.LabelKey;
-import org.seasar.cubby.validator.PropertyValidators;
-import org.seasar.cubby.validator.ValidContext;
+import org.seasar.cubby.validator.PropertyValidationRule;
+import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.cubby.validator.ValidationRule;
+import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.Validator;
-import org.seasar.cubby.validator.Validators;
 
 public class ActionValidatorImpl implements ActionValidator {
 	
-	public boolean processValidation(Validation valid, Action action, Map<String,Object> params, Object form, Validators validators) {
+	public boolean processValidation(final Validation valid, 
+			final Action action, final Map<String,Object> params, 
+			final Object form, final ValidationRules rules) 
+	{
 		if (valid == null) {
 			return true;
 		}
-		validateAction(action, params, form, validators);
+		validateAction(action, params, form, rules);
 		return action.getErrors().isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")
-	void validateAction(Action action, Map<String,Object> params, Object form, Validators validators) {
-		for (PropertyValidators propValids : validators.getValidators()) {
-			for (Validator v : propValids.getValidators()) {
-				validate(action, params, form, v, propValids);
+	void validateAction(final Action action, final Map<String,Object> params, 
+			final Object form, final ValidationRules rules) 
+	{
+		for (ValidationRule rule : rules.getRules()) {
+			for (Validator v : rule.getValidators()) {
+				validate(action, params, form, v, rule);
 			}
 		}
 	}
 
-	void validate(Action action, Map<String, Object> params, Object form, Validator v,
-			PropertyValidators propValids) {
-		ValidContext context = createValidContext(action, params, form, propValids);
-		Object value = getPropertyValue(params, propValids.getPropertyName());
-		String error = v.validate(context, value);
+	void validate(final Action action, final Map<String, Object> params, 
+			final Object form, final Validator validator, final ValidationRule rule) 
+	{
+		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
+		PropertyValidationRule propRule = (PropertyValidationRule)rule;
+		Object value = getPropertyValue(params, propRule.getPropertyName());
+		ValidationContext ctx = createValidContext(action, params, form, rule, value);
+		String error = validator.validate(ctx);
 		if (error != null) {
-			action.getErrors().addFieldError(propValids.getPropertyName(),
+			action.getErrors().addFieldError(propRule.getPropertyName(),
 					error);
 		}
 	}
 
-	private ValidContext createValidContext(Action action, Map<String, Object> params, Object form, PropertyValidators propValids) {
-		String name = getLabelKey(form, propValids.getLabelKey());
-		ValidContext context = new ValidContext(name, params);
-		return context;
+	private ValidationContext createValidContext(final Action action, 
+			final Map<String, Object> params, final Object form, final ValidationRule rule, Object value) 
+	{
+		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
+		PropertyValidationRule propRule = (PropertyValidationRule)rule;
+		String name = propRule.getPropertyNameKey();
+		ValidationContext ctx = new ValidationContext(name, value, params);
+		return ctx;
 	}
 
-	Object getPropertyValue(Map<String, Object> params, String propertyName) {
+	Object getPropertyValue(final Map<String, Object> params, final String propertyName) {
 		String[] props = StringUtils.split(propertyName, ".", 2);
 		Object value = CubbyUtils.getParamsValue(params, props[0]);
 		if (props.length == 1) {
@@ -62,20 +74,5 @@ public class ActionValidatorImpl implements ActionValidator {
 				return null;
 			}
 		}
-	}
-
-	String getLabelKey(Object form, String labelKey) {
-		StringBuilder buf = new StringBuilder();
-		LabelKey formResource = form.getClass().getAnnotation(LabelKey.class);
-		String fieldResource = labelKey;
-		if (formResource != null) {
-			buf.append(formResource.value());
-		}
-		if (fieldResource != null) {
-			buf.append(fieldResource);
-		} else {
-			buf.append(labelKey);
-		}
-		return buf.toString();
 	}
 }
