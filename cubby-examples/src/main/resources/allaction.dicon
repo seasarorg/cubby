@@ -50,5 +50,9 @@
 	<component class="org.seasar.cubby.examples.fileupload.FileUploadAction" instance="prototype" />
 	<component class="org.seasar.cubby.examples.hello.HelloAction" instance="prototype" />
 	<component class="org.seasar.cubby.examples.docs.DocsAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.whiteboard.ImageDownloadAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.whiteboard.ImageLineAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.whiteboard.ImageUploadAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.whiteboard.WhiteboardAction" instance="prototype" />
 
 </components>
