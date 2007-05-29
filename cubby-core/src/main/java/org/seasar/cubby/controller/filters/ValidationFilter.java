@@ -4,8 +4,8 @@ import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class ValidationFilter implements ActionFilter {
 
 	public static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
 		@SuppressWarnings("unchecked")
-		public Collection<ValidationRule> getRules() {
+		public List<ValidationRule> getRules() {
 			return Collections.EMPTY_LIST;
 		}
 	};
