@@ -17,6 +17,7 @@ import org.seasar.cubby.controller.MockAction;
 import org.seasar.cubby.controller.MockMultipartRequestParser;
 import org.seasar.cubby.controller.impl.ActionContextImpl;
 import org.seasar.cubby.util.ClassUtils;
+import org.seasar.framework.exception.NoSuchFieldRuntimeException;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
 import org.seasar.framework.mock.servlet.MockHttpServletResponseImpl;
 import org.seasar.framework.mock.servlet.MockServletContextImpl;
@@ -115,7 +116,7 @@ public class ValidationFilterTest extends TestCase {
 			f2.doFilter(context, chain);
 			fail();
 		} catch (RuntimeException e) {
-			assertEquals(RuntimeException.class, e.getClass());
+			assertEquals(NoSuchFieldRuntimeException.class, e.getClass());
 		}
 	}
 }

@@ -13,6 +13,11 @@ import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
 import org.seasar.cubby.examples.todo.logic.TodoLogic;
 import org.seasar.cubby.examples.todo.logic.TodoTypeLogic;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.DateFormatValidator;
+import org.seasar.cubby.validator.validators.MaxLengthValidator;
+import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @Form("todo")
 public class TodoAction extends Action {
@@ -21,6 +26,17 @@ public class TodoAction extends Action {
 
 	TodoLogic todoLogic;
 	TodoTypeLogic todoTypeLogic;;
+	
+	// ----------------------------------------------[Validation]
+	
+	public static ValidationRules VALIDATION = new DefaultValidationRules() {
+		public void initialize() {
+			add("text", new RequiredValidator(), new MaxLengthValidator(10));
+			add("memo", new RequiredValidator(), new MaxLengthValidator(100));
+			add("typeId", "type",new RequiredValidator());
+			add("limitDate", new DateFormatValidator("yyyy-MM-dd"));
+		}
+	};
 	
 	// ----------------------------------------------[Attribute]
 

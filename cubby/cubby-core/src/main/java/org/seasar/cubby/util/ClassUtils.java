@@ -9,19 +9,19 @@ import java.util.Collections;
 import java.util.List;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.framework.util.ClassUtil;
 
 public class ClassUtils {
 
-	public static Object getField(Object obj, String fieldName) {
+	public static Object getFieldValue(Object obj, String fieldName) {
 		try {
-			return obj.getClass().getField(fieldName).get(obj);
+			Field field = ClassUtil.getField(obj.getClass(), fieldName);
+			return field.get(obj);
 		} catch (IllegalArgumentException e) {
 			throw new RuntimeException(e);
 		} catch (SecurityException e) {
 			throw new RuntimeException();
 		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -23,5 +23,5 @@ public @interface Validation {
 	 * @return
 	 */
 	String errorPage();
-	String validator() default DEFAULT_VALIDATION_RULES_FILED;
+	String rulesField() default DEFAULT_VALIDATION_RULES_FILED;
 }
