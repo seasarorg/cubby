@@ -6,3 +6,5 @@
 - ProperyValidators -> PropertyValidationRule
 - デフォルトの検証設定フィールドの変更VALIDATORS -> VALIDATION
 - @LabelKeyの廃止
+- Beanには入力検証をセット不可(全てアクションに定義する仕様とする)
+- UrlResolverインターフェイスの追加。デフォルトでは@Urlアノテーションによる解決とする

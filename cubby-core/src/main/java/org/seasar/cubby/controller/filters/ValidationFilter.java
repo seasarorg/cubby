@@ -24,6 +24,8 @@ import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.framework.exception.NoSuchFieldRuntimeException;
+import org.seasar.framework.unit.Seasar2;
 
 /**
  * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
@@ -101,10 +103,8 @@ public class ValidationFilter implements ActionFilter {
 	private ValidationRules getValidationRules(ActionContext context) {
 		Validation validation = context.getActionMethod().getValidation();
 		if (validation != null) {
-			String rulesField = validation.validator();
-			Object form = getFormBean(context.getAction(), context
-					.getActionMethod().getForm());
-			return (ValidationRules) ClassUtils.getField(form, rulesField);
+			return (ValidationRules) ClassUtils.getFieldValue(
+					context.getAction(), validation.rulesField());
 		}
 		return NULL_VALIDATION_RULES;
 	}
@@ -117,7 +117,7 @@ public class ValidationFilter implements ActionFilter {
 		if (Form.THIS.equals(formFieldName)) {
 			return controller;
 		} else {
-			return ClassUtils.getField(controller, formFieldName);
+			return ClassUtils.getFieldValue(controller, formFieldName);
 		}
 	}
 }

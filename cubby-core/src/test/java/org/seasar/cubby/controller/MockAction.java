@@ -12,7 +12,7 @@ import org.seasar.cubby.validator.ValidationRules;
 
 public class MockAction extends Action {
 	
-	public static final ValidationRules VALIDATORS = new DefaultValidationRules();
+	public static final ValidationRules VALIDATION = new DefaultValidationRules();
 	
 	public String attr1;
 	public String attr2;
@@ -43,7 +43,7 @@ public class MockAction extends Action {
 		return new Redirect("dummy2");
 	}
 
-	@Validation(errorPage="error.jsp", validator="VALIDATOR2")
+	@Validation(errorPage="error.jsp", rulesField="VALIDATOR2")
 	@Form
 	public ActionResult dummy3() {
 		return new Forward("dummy1.jsp");
