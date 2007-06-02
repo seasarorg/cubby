@@ -20,7 +20,7 @@ public class FileUploadAction extends Action {
 			add("file", new RequiredValidator());
 		}
 	};
-
+	
 	// ----------------------------------------------[DI Filed]
 
 	// ----------------------------------------------[Attribute]
