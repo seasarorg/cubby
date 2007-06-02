@@ -10,11 +10,12 @@
 	</component>
 
 	<!-- Controller -->
-	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl">
+	<component name="urlResolver" class="org.seasar.cubby.controller.impl.AnnotationUrlResolver">
 		<initMethod name="addActionFilter"><arg>initializeFilter</arg></initMethod>
 		<initMethod name="addActionFilter"><arg>validationFilter</arg></initMethod>
 		<initMethod name="addActionFilter"><arg>invocationFilter</arg></initMethod>
 	</component>
+	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl"/>
 	<component name="initializeFilter" class="org.seasar.cubby.controller.filters.InitializeFilter"/>
 	<component name="validationFilter" class="org.seasar.cubby.controller.filters.ValidationFilter"/>
 	<component name="invocationFilter" class="org.seasar.cubby.controller.filters.InvocationFilter"/>	

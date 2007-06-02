@@ -1,5 +1,6 @@
 package org.seasar.cubby.controller;
 
 public interface UrlResolver {
-	ActionMethod resolve(String url);
+	void initialize();
+	ResolveResult resolve(String url);
 }
