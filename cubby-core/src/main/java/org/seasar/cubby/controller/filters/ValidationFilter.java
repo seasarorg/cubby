@@ -24,8 +24,6 @@ import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.framework.exception.NoSuchFieldRuntimeException;
-import org.seasar.framework.unit.Seasar2;
 
 /**
  * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
