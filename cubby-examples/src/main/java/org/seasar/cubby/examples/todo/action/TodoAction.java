@@ -50,6 +50,7 @@ public class TodoAction extends Action {
 		return new Forward("show.jsp");
 	}
 
+	@Url("add")
 	public ActionResult create() {
 		return new Forward("edit.jsp");
 	}
