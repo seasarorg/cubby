@@ -16,6 +16,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.ActionFilter;
 import org.seasar.cubby.controller.ActionFilterChain;
 import org.seasar.cubby.controller.ActionMethod;
+import org.seasar.cubby.controller.ResolveResult;
 import org.seasar.cubby.controller.UrlResolver;
 import org.seasar.cubby.controller.filters.InitializeFilter;
 import org.seasar.cubby.controller.filters.InvocationFilter;
@@ -24,7 +25,7 @@ import org.seasar.cubby.util.ClassUtils;
 
 public class DefaultUrlResolver implements UrlResolver {
 	
-	private static final Log LOG = LogFactory.getLog(ActionProcessorImpl.class);
+	private static final Log LOG = LogFactory.getLog(DefaultUrlResolver.class);
 	
 	private static Pattern urlRewritePattern = Pattern.compile("([{]([^}]+)[}])([^{]*)");
 	private final Map<Pattern, ActionMethod> actionCache = new LinkedHashMap<Pattern, ActionMethod>();
@@ -32,6 +33,16 @@ public class DefaultUrlResolver implements UrlResolver {
 	private final Map<String, ActionMethod> dispatchActionCache = new LinkedHashMap<String, ActionMethod>();
 	private static final String DISPACHER_PATH_PREFIX = "/cubby-dispacher/";
 
+	public void addActionFilter(ActionFilter actionFilter) {
+		if (actionFilters.containsKey(actionFilter.getClass())) {
+			throw new RuntimeException("CUB001");
+		}
+		actionFilters.put(actionFilter.getClass(), actionFilter);
+	}
+
+	public void initialize() {
+	}
+	
 	public void add(String patternStr, Class<? extends Action> c, String methodName) {
 		Method m = ClassUtils.getMethod(c, methodName, null);
 		String actionFullName = patternStr;
@@ -80,7 +91,7 @@ public class DefaultUrlResolver implements UrlResolver {
 		return chain;
 	}
 
-	public ActionMethod resolve(String url) {
+	public ResolveResult resolve(String url) {
 		ActionMethod method = null;
 		Map<String, String> uriParams = new HashMap<String, String>();
 		if (LOG.isDebugEnabled()) {
@@ -105,6 +116,10 @@ public class DefaultUrlResolver implements UrlResolver {
 				}
 			}
 		}
-		return method;
+		if (method == null) {
+			return null;
+		} else {
+			return new ResolveResult(method, uriParams);
+		}
 	}
 }
