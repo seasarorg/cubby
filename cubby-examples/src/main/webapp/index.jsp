@@ -13,6 +13,7 @@
 	<li><a href="hello/">Hello World</a></li>
 	<li><a href="todo/login">Todoサンプルアプリケーション</a></li>
 	<li><a href="components/show">コンポーネント一覧</a></li>
+	<li><a href="components/array">配列</a></li>
 	<li><a href="fileupload/show">ファイルアップロード</a></li>
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
