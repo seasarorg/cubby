@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.seasar.extension.unit.S2TestCase;
@@ -47,6 +48,28 @@ public class HttpRequestDxoTest extends S2TestCase {
 		assertEquals(format.format(cal.getTime()), format.format(bean.getDate()));
 	}
 
+	public void testMapToBean_OneValue() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("num1", "1");
+
+		TestBean bean = new TestBean();
+
+		httpRequestDxo.convert(map, bean);
+		assertEquals(new Integer(1), bean.getNum1());
+	}
+
+	public void testMapToBean_MultiValue() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num2", new String[] {"1", "2"});
+
+		TestBean bean = new TestBean();
+
+		httpRequestDxo.convert(map, bean);
+		assertEquals(2, bean.getNum2().length);
+		assertEquals(new Integer(1), bean.getNum2()[0]);
+		assertEquals(new Integer(2), bean.getNum2()[1]);
+	}
+
 	public class TestBean {
 
 		Date date;
@@ -54,6 +77,8 @@ public class HttpRequestDxoTest extends S2TestCase {
 		Integer num1;
 
 		Integer[] num2;
+
+		List<String> num3;
 
 		public Date getDate() {
 			return date;
@@ -78,5 +103,14 @@ public class HttpRequestDxoTest extends S2TestCase {
 		public void setNum2(Integer[] num2) {
 			this.num2 = num2;
 		}
+
+		public List<String> getNum3() {
+			return num3;
+		}
+
+		public void setNum3(List<String> num3) {
+			this.num3 = num3;
+		}
+
 	}
 }
