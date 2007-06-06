@@ -46,6 +46,7 @@
 	</component>
 	
 	<component class="org.seasar.cubby.examples.components.ComponentsAction" instance="prototype" />
+	<component class="org.seasar.cubby.examples.components.ArrayAction" instance="prototype" />
 	<component class="org.seasar.cubby.examples.fileupload.FileUploadAction" instance="prototype" />
 	<component class="org.seasar.cubby.examples.hello.HelloAction" instance="prototype" />
 	<component class="org.seasar.cubby.examples.docs.DocsAction" instance="prototype" />
