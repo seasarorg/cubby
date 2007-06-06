@@ -5,6 +5,18 @@
   <name>Maven Quick Start Archetype</name>
   <version>0.7-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
+  <repositories>
+	<repository>
+		<id>maven.seasar</id>
+		<name>Seasar Repository</name>
+		<url>http://maven.seasar.org/maven2/</url>
+	</repository>
+	<repository>
+		<id>maven.seasar</id>
+		<name>Seasar Repository</name>
+		<url>http://maven.seasar.org/maven2/maven2-snapshot</url>
+	</repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>
