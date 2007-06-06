@@ -87,7 +87,7 @@ public class CubbyUtils {
 			return null;
 		} else if (value.getClass().isArray()) {
 			Object[] values = (Object[])value;
-			return values[0];
+			return values;
 		} else {
 			return value;
 		}
