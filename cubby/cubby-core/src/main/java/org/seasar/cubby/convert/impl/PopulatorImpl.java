@@ -45,6 +45,7 @@ public class PopulatorImpl implements Populater {
         	httpRequestDxo.convert(normalized, dest);
         } catch (NumberFormatException e) {
         	// do nothing
+        	e.printStackTrace();
         }
     }
 

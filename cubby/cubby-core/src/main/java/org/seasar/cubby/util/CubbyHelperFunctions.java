@@ -111,11 +111,13 @@ public class CubbyHelperFunctions {
 		} else {
 			String converted = null;
 			if (source != null) {
+				converted = source.toString();
+			} else {
 				Map<String, String> outputValues = (Map<String, String>) request
-						.getAttribute(ATTR_OUTPUT_VALUES);
+				.getAttribute(ATTR_OUTPUT_VALUES);
 				if (outputValues != null) {
 					converted = outputValues.get(propertyName);
-				}
+				}				
 			}
 			return CubbyFunctions.out(converted);
 		}
