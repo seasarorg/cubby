@@ -3,7 +3,7 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-examples</artifactId>
   <name>Maven Quick Start Archetype</name>
-  <version>0.7-SNAPSHOT</version>
+  <version>0.7.0</version>
   <url>http://maven.apache.org</url>
   <repositories>
 	<repository>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>0.7-SNAPSHOT</version>
+      <version>0.7.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
