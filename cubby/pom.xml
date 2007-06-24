@@ -4,8 +4,8 @@
 	<groupId>org.seasar.cubby</groupId>
 	<artifactId>cubby-all</artifactId>
 	<packaging>pom</packaging>
-	<name>Maven Quick Start Archetype</name>
-	<version>0.7-SNAPSHOT</version>
+	<name>cubby-all</name>
+	<version>0.7.0</version>
 	<description>
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
