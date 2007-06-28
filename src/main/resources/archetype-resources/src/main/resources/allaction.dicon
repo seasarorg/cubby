@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+    "http://www.seasar.org/dtd/components24.dtd">
+<components namespace="allaction">
+    <include path="allservice.dicon" />
+
+	<component name="actionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">
+	    <initMethod name="add"><arg>aop.traceInterceptor</arg></initMethod>
+	</component>
+
+	<!-- actions -->
+
+	<component class="org.seasar.framework.container.autoregister.FileSystemComponentAutoRegister">
+		<property name="instanceDef">
+			@org.seasar.framework.container.deployer.InstanceDefFactory@PROTOTYPE
+		</property>
+		<property name="autoNaming">
+			<component class="org.seasar.framework.container.autoregister.DefaultAutoNaming"/>
+		</property>
+		<initMethod name="addClassPattern">
+			<arg>"${package}.action"</arg>
+			<arg>".*Action"</arg>
+		</initMethod>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.InterTypeAutoRegister">
+		<property name="interType">aop.propertyInterType</property>
+		<initMethod name="addClassPattern">
+			<arg>"${package}.action"</arg>
+			<arg>".*Action"</arg>
+		</initMethod>
+	</component>
+	<component class="org.seasar.cubby.seasar.CubbyAspectAutoRegister">
+		<property name="interceptor">actionInterceptorChain</property>
+		<initMethod name="addClassPattern">
+			<arg>"${package}.action"</arg>
+			<arg>"((?!Login).*)Action"</arg>
+		</initMethod>
+	</component>
+</components>
