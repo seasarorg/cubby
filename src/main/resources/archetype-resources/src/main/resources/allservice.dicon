@@ -19,7 +19,6 @@
 			<arg>".*Impl"</arg>
 		</initMethod>
 	</component>
-<!-- DBを使用するようになったら以下のコメントアウトを外すこと -->
 <!--
 	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
 		<property name="interceptor">j2ee.requiredTx</property>
