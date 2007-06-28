@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4"
+  xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <!-- security ///////////////////////////////////////////////// -->
+
+  <!-- filter /////////////////////////////////////////////////// -->
+<!--
+  <filter>
+    <filter-name>hotdeployfilter</filter-name>
+    <filter-class>org.seasar.framework.container.hotdeploy.HotdeployFilter</filter-class>
+  </filter>
+-->
+  <filter>
+    <filter-name>encodingfilter</filter-name>
+    <filter-class>org.seasar.extension.filter.EncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter>
+    <filter-name>s2filter</filter-name>
+    <filter-class>org.seasar.framework.container.filter.S2ContainerFilter</filter-class>
+  </filter>
+  <filter>
+    <filter-name>cubbyFilter</filter-name>
+    <filter-class>org.seasar.cubby.servlet.CubbyFilter</filter-class>
+  </filter>
+<!--
+  <filter-mapping>
+    <filter-name>hotdeployfilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+-->
+  <filter-mapping>  
+    <filter-name>encodingfilter</filter-name> 
+    <url-pattern>/*</url-pattern>  
+  </filter-mapping> 
+  <filter-mapping>
+    <filter-name>s2filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>cubbyFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>cubbyFilter</filter-name>
+    <url-pattern>/cubby-dispacher/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+      <param-name>fork</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>xpoweredBy</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <!--add parameter -->
+    <init-param>
+      <param-name>trimSpaces</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>s2servlet</servlet-name>
+    <servlet-class>org.seasar.framework.container.servlet.S2ContainerServlet</servlet-class>
+<!--
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+  </servlet-mapping>
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <el-ignored>false</el-ignored>
+      <page-encoding>UTF-8</page-encoding>
+      <scripting-invalid>false</scripting-invalid>
+      <include-prelude>/common/header.jsp</include-prelude>
+    </jsp-property-group>
+  </jsp-config>
+  
+  <session-config>
+    <session-timeout>1440</session-timeout>
+  </session-config>
+</web-app>
