@@ -31,7 +31,7 @@
 	<component class="org.seasar.framework.container.autoregister.InterTypeAutoRegister">
 		<property name="interType">aop.propertyInterType</property>
 		<initMethod name="addClassPattern">
-			<arg>"${package}.impl"</arg>
+			<arg>"${package}.service.impl"</arg>
 			<arg>".*Impl"</arg>
 		</initMethod>
 	</component>
