@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="cubby">
+        <wb-resource deploy-path="/" source-path="/cubby-core/src/main/java"/>
+        <wb-resource deploy-path="/" source-path="/cubby-core/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/cubby-core/src/test/java"/>
+        <wb-resource deploy-path="/" source-path="/cubby-core/src/test/resources"/>
+    </wb-module>
+</project-modules>

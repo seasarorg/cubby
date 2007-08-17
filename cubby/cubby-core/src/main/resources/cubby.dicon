@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="cubby">
+	<include path="app-cubby.dicon" />
+	<include path="convention.dicon" />
+
+	<!-- Properties -->
+	<component name="config" class="java.util.HashMap" >
+		<arg>@org.seasar.framework.util.ResourceBundleUtil@convertMap("cubby", @java.util.Locale@getDefault())</arg>
+	</component>
+
+	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
+
+	<!-- Convert -->
+	<component name="populater" class="org.seasar.cubby.convert.impl.PopulatorImpl">
+		<property name="httpRequestDxo">httpRequestDxo</property>
+	</component>
+
+	<!-- Validation -->
+	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
+
+	<!-- FileUpload -->
+	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
+	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
+		<property name="sizeMax">config["multipartRequestParser.sizeMax"]</property>
+	</component>
+
+	<!-- Dxo -->
+	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
+
+	<!-- ついかぶん -->
+	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
+
+	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
+	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
+
+	<component name="initializeCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+		<property name="interceptorName">"initializeInterceptor"</property>
+		<property name="pointcut">".*"</property>
+		<property name="useLookupAdapter">true</property>
+	</component>
+
+	<component name="validationCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+		<property name="interceptorName">"validationInterceptor"</property>
+		<property name="pointcut">".*"</property>
+		<property name="useLookupAdapter">true</property>
+	</component>
+
+	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
+
+	<component class="org.seasar.cubby.controller.impl.ActionErrorsImpl" instance="request" />
+	<component name="flash" class="org.seasar.cubby.util.FlashHashMap" instance="session" />
+
+</components>

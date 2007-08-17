@@ -1,0 +1,4 @@
+- fileuploadを使用しない場合、commons fileuploadのJARが含まれていないと、以下のエラーがでる
+- org.seasar.framework.exception.ClassNotFoundRuntimeException: [ESSR0044]クラスが見つかりませんでした。詳細はjava.lang.ClassNotFoundException: org.apache.commons.fileupload.disk.DiskFileItemFactory
+- パラメータの直接取得の方法検討
+- AjaxActionResultのサポート
