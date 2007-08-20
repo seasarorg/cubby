@@ -5,7 +5,7 @@
 	<artifactId>cubby-examples-smartdeploy</artifactId>
 	<packaging>war</packaging>
 	<name>cubby-examples-smartdeploy</name>
-	<version>0.0.1</version>
+	<version>0.8</version>
 	<build>
 		<defaultGoal>validate</defaultGoal>
 		<plugins>
