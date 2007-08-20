@@ -10,7 +10,7 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.examples.smartdeploy.dao.TodoDao;
 import org.seasar.cubby.examples.smartdeploy.dao.TodoTypeDao;
 import org.seasar.cubby.examples.smartdeploy.dto.AuthenticationDto;
-import org.seasar.cubby.examples.smartdeploy.dto.TodoCondiitonDto;
+import org.seasar.cubby.examples.smartdeploy.dto.TodoConditionDto;
 import org.seasar.cubby.examples.smartdeploy.entity.Todo;
 import org.seasar.cubby.examples.smartdeploy.entity.TodoType;
 
@@ -25,7 +25,7 @@ public class TodoListAction extends Action {
 
 	// ----------------------------------------------[Attribute]
 
-	public TodoCondiitonDto todoConditionDto;
+	public TodoConditionDto todoConditionDto;
 
 	public List<Todo> todoList;
 
@@ -33,7 +33,7 @@ public class TodoListAction extends Action {
 
 	// ----------------------------------------------[Action Method]
 
-	@Form("findTodoDto")
+	@Form("todoConditionDto")
 	public ActionResult index() {
 		this.todoList = todoDao.selectByCondition(todoConditionDto);
 		return new Forward("list.jsp");

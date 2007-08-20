@@ -6,7 +6,7 @@ import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.container.annotation.tiger.InstanceType;
 
 @Component(instance = InstanceType.SESSION)
-public class TodoCondiitonDto implements Serializable {
+public class TodoConditionDto implements Serializable {
 
 	private static final long serialVersionUID = 1573725383333853270L;
 

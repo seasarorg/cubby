@@ -2,8 +2,10 @@ package org.seasar.cubby.examples.smartdeploy.entity;
 
 import java.io.Serializable;
 
+import org.seasar.dao.annotation.tiger.Bean;
 import org.seasar.dao.annotation.tiger.Id;
 
+@Bean(table = "todotype")
 public class TodoType implements Serializable {
 
 	private static final long serialVersionUID = 7643426554577224817L;

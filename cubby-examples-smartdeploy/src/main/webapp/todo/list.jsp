@@ -16,7 +16,7 @@ function doDelete(name, id) {
 <div class="menu">
 [<a href="${contextPath}/todo/create">新規作成</a>]
 </div>
-<t:form action="${contextPath}/todo/" method="post" value="${findTodoDto}">
+<t:form action="${contextPath}/todo/" method="post" value="${todoConditionDto}">
 <table>
   <tr>
   	<th>キーワード</th>
