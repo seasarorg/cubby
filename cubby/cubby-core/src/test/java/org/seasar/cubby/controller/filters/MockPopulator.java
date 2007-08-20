@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.cubby.convert.Populater;
+import org.seasar.cubby.controller.Populater;
 
 public class MockPopulator implements Populater {
 	private static final Map<String, String> DESCRIBED_MAP = Collections

@@ -17,7 +17,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.convert.Populater;
+import org.seasar.cubby.controller.Populater;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;

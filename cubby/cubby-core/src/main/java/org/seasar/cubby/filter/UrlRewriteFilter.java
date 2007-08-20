@@ -1,4 +1,4 @@
-package org.seasar.cubby.servlet;
+package org.seasar.cubby.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;

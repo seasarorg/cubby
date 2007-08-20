@@ -20,7 +20,7 @@
 	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 
 	<!-- Convert -->
-	<component name="populater" class="org.seasar.cubby.convert.impl.PopulatorImpl">
+	<component name="populater" class="org.seasar.cubby.controller.impl.PopulatorImpl">
 		<property name="httpRequestDxo">httpRequestDxo</property>
 	</component>
 

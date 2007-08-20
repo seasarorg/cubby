@@ -9,7 +9,7 @@
 		<aspect>dxo.interceptor</aspect>
 	</component>
 	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
-	<component name="populater" class="org.seasar.cubby.convert.impl.PopulatorImpl">
+	<component name="populater" class="org.seasar.cubby.controller.impl.PopulatorImpl">
 		<property name="httpRequestDxo">httpRequestDxo</property>
 	</component>
 </components>

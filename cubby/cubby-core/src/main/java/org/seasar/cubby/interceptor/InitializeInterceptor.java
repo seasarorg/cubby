@@ -19,7 +19,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.MultipartRequestParser;
-import org.seasar.cubby.convert.Populater;
+import org.seasar.cubby.controller.Populater;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.framework.util.ResourceBundleUtil;

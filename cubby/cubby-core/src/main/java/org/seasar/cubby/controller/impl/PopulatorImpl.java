@@ -1,9 +1,9 @@
-package org.seasar.cubby.convert.impl;
+package org.seasar.cubby.controller.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.cubby.convert.Populater;
+import org.seasar.cubby.controller.Populater;
 import org.seasar.cubby.dxo.HttpRequestDxo;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;

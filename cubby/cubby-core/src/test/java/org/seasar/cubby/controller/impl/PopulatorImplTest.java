@@ -1,4 +1,4 @@
-package org.seasar.cubby.convert.impl;
+package org.seasar.cubby.controller.impl;
 
 import java.util.Date;
 import java.util.HashMap;
