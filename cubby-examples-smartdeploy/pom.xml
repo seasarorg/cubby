@@ -127,13 +127,11 @@
 			<artifactId>s2-tiger</artifactId>
 			<version>2.4.17</version>
 		</dependency>
-		<!--
 		<dependency>
 			<groupId>org.seasar.cubby</groupId>
 			<artifactId>cubby</artifactId>
-			<version>0.9-SNAPSHOT</version>
+			<version>0.8-SNAPSHOT</version>
 		</dependency>
-		-->
 		<dependency>
 			<groupId>org.seasar.dao</groupId>
 			<artifactId>s2-dao</artifactId>
