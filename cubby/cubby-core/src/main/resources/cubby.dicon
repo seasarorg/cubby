@@ -10,6 +10,13 @@
 		<arg>@org.seasar.framework.util.ResourceBundleUtil@convertMap("cubby", @java.util.Locale@getDefault())</arg>
 	</component>
 
+	<!-- Convention -->
+	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
+
+	<!-- ついかぶん -->
+	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
+	<component class="org.seasar.cubby.controller.impl.ActionErrorsImpl" instance="request" />
+	<component name="flash" class="org.seasar.cubby.util.FlashHashMap" instance="session" />
 	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 
 	<!-- Convert -->
@@ -32,9 +39,7 @@
 	</component>
 	<component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/>
 
-	<!-- ついかぶん -->
-	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
-
+	<!-- インターセプタ -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
 	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
 
@@ -49,10 +54,5 @@
 		<property name="pointcut">".*"</property>
 		<property name="useLookupAdapter">true</property>
 	</component>
-
-	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
-
-	<component class="org.seasar.cubby.controller.impl.ActionErrorsImpl" instance="request" />
-	<component name="flash" class="org.seasar.cubby.util.FlashHashMap" instance="session" />
 
 </components>
