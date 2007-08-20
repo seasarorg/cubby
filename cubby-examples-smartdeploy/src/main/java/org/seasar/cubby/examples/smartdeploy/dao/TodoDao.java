@@ -17,8 +17,6 @@ public interface TodoDao {
 
 	int delete(Todo todo);
 
-	List<Todo> selectAll();
-
 	@Arguments("id")
 	Todo selectById(Integer id);
 
