@@ -5,7 +5,7 @@
 	<artifactId>cubby-project</artifactId>
 	<packaging>pom</packaging>
 	<name>cubby-project</name>
-	<version>0.8-SNAPSHOT</version>
+	<version>0.8</version>
 	<description>
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
