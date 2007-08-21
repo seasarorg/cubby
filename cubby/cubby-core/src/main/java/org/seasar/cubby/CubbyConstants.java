@@ -4,11 +4,11 @@ public class CubbyConstants {
 	
 	public static final String RES_MESSAGES = "messages";
 	
-	public static final String ATTR_FLASH = "flash";
+//	public static final String ATTR_FLASH = "flash";
 
 	public static final String ATTR_PARAMS = "params";
 
-	public static final String ATTR_CONTROLLER = "controller";
+//	public static final String ATTR_CONTROLLER = "controller";
 
 	public static final String ATTR_ACTION = "action";
 

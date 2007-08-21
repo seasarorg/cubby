@@ -70,6 +70,19 @@ public class HttpRequestDxoTest extends S2TestCase {
 		assertEquals(new Integer(2), bean.getNum2()[1]);
 	}
 
+	public void testMapToBean_MultiValueIncludesEmptyValue () {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num2", new String[] {"1", "", "2"});
+
+		TestBean bean = new TestBean();
+
+		httpRequestDxo.convert(map, bean);
+		assertEquals(3, bean.getNum2().length);
+		assertEquals(new Integer(1), bean.getNum2()[0]);
+		assertEquals(null, bean.getNum2()[1]);
+		assertEquals(new Integer(2), bean.getNum2()[2]);
+	}
+
 	public class TestBean {
 
 		Date date;

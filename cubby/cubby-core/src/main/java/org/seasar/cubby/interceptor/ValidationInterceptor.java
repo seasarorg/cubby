@@ -1,0 +1,113 @@
+package org.seasar.cubby.interceptor;
+
+import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.controller.Populator;
+import org.seasar.cubby.validator.ActionValidator;
+import org.seasar.cubby.validator.ValidationRule;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
+
+/**
+ * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
+ * 入力検証が成功した場合：<br>
+ * フォームオブジェクトへのバインドを行い、後のフィルターを実行します。<br>
+ * 入力検証が失敗した場合：<br>
+ * フォームオブジェクトへのバインドを行い、アクションメソッドに設定された{@link Validation#errorPage()}へフォワードします。
+ * またリクエスト中の入力検証エラーフラグがONになります。
+ * 
+ * @see CubbyConstants#ATTR_VALIDATION_FAIL 入力検証エラーフラグの属性名
+ * @author agata
+ * @since 1.0
+ */
+public class ValidationInterceptor implements MethodInterceptor {
+
+	private final ActionValidator validator;
+
+	private final Populator populator;
+
+	private HttpServletRequest request;
+
+	private ActionContext context;
+
+	public ValidationInterceptor(ActionValidator actionValidator,
+			Populator populator) {
+		this.validator = actionValidator;
+		this.populator = populator;
+	}
+
+	public void setRequest(final HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public void setActionContext(final ActionContext context) {
+		this.context = context;
+	}
+
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+
+		final Action controller = context.getAction();
+		final Validation validation = context.getValidation();
+		final ValidationRules rules = getValidationRules(context);
+		final Map<String, Object> params = getParams();
+
+		boolean success = validator.processValidation(validation, controller,
+				params, context.getFormBean(), rules);
+
+		final Object result;
+		if (success) {
+			result = invocation.proceed();
+		} else {
+			request.setAttribute(ATTR_VALIDATION_FAIL, true);
+			String path = validation.errorPage();
+			result = new Forward(path);
+		}
+
+		Map<String, String> outputValues = populator.describe(context
+				.getFormBean());
+		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
+
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> getParams() {
+		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
+	}
+
+	public static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
+		@SuppressWarnings("unchecked")
+		public List<ValidationRule> getRules() {
+			return Collections.EMPTY_LIST;
+		}
+	};
+
+	private ValidationRules getValidationRules(ActionContext context) {
+		Validation validation = context.getValidation();
+		if (validation != null) {
+			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(context.getAction().getClass());
+			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation.rulesField());
+			ValidationRules rules = (ValidationRules) propertyDesc.getValue(context.getAction());
+			return rules;
+		}
+		return NULL_VALIDATION_RULES;
+	}
+
+}

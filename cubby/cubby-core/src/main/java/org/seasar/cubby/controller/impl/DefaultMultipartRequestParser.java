@@ -14,16 +14,14 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.StringUtil;
 
 public class DefaultMultipartRequestParser implements MultipartRequestParser {
 
-	private static final Log LOG = LogFactory
-			.getLog(DefaultMultipartRequestParser.class);
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private FileItemFactory fileItemFactory;
 
@@ -70,10 +68,10 @@ public class DefaultMultipartRequestParser implements MultipartRequestParser {
 					"valid.multipartRequsetParser.sizeLimitExceeded", e
 							.getPermittedSize(), e.getActualSize()), e);
 		} catch (FileUploadException e) {
-			LOG.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		} catch (UnsupportedEncodingException e) {
-			LOG.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -87,7 +85,7 @@ public class DefaultMultipartRequestParser implements MultipartRequestParser {
 				value = new String(item.getString().getBytes("iso-8859-1"),
 						encoding);
 			} else {
-				if (StringUtils.isEmpty(item.getName()) || item.getSize() == 0) {
+				if (StringUtil.isEmpty(item.getName()) || item.getSize() == 0) {
 					// ファイル名無し、あるいは０バイトのファイル
 					value = null;
 				} else {
@@ -106,7 +104,6 @@ public class DefaultMultipartRequestParser implements MultipartRequestParser {
 		return parameterMap;
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean isMultipart(HttpServletRequest request) {
 		return ServletFileUpload.isMultipartContent(request);
 	}

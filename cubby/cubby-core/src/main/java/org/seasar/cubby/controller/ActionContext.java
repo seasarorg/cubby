@@ -1,9 +1,12 @@
 package org.seasar.cubby.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.Validation;
+import org.seasar.framework.container.ComponentDef;
 
 /**
  * アクションメソッドの実行時のコンテキスト情報を保持するインターフェイス
@@ -12,11 +15,21 @@ import org.seasar.cubby.action.Action;
  * @since 1.0
  */
 public interface ActionContext {
+
+	ActionResult invoke() throws Throwable;
+
+	ComponentDef getComponentDef();
+
 	Action getAction();
 
-	HttpServletRequest getRequest();
+	Method getMethod();
 
-	HttpServletResponse getResponse();
+	Form getForm();
 
-	ActionMethod getActionMethod();
+	Validation getValidation();
+
+	Object getFormBean();
+
+	void setActionDef(ActionDef actionDef);
+
 }

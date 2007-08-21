@@ -10,11 +10,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
+
 public class CubbyHelperFunctions {
-
-	private static final Class[] EMPTY_PARAM_TYPES = new Class[0];
-
-	private static final Object[] EMPTY_ARGS = new Object[0];
 
 	public static String joinPropertyValue(Object beans, String propertyName, String delim) {
 		return _joinPropertyValue(toArray(beans), propertyName, delim);
@@ -109,6 +109,7 @@ public class CubbyHelperFunctions {
 		if (form == null || propertyName == null) {
 			return CubbyFunctions.out(source);
 		} else {
+			//TODO ここ、おかしい。confirm.jsp の limitDate がフォーマットされないので value を指定している
 			String converted = null;
 			if (source != null) {
 				converted = source.toString();
@@ -127,10 +128,11 @@ public class CubbyHelperFunctions {
 		if (StringUtils.isEmpty(property)) {
 			return bean;
 		}
-		String methodName = "get" + StringUtils.toFirstUpper(property);
-		return ClassUtils.invoke(bean, methodName, EMPTY_PARAM_TYPES, EMPTY_ARGS);
+		BeanDesc beanDesc = BeanDescFactory.getBeanDesc(bean.getClass());
+		PropertyDesc propertyDesc = beanDesc.getPropertyDesc(property);
+		return propertyDesc.getValue(bean);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static void addClassName(Map dyn, String className) {
 		String classValue = (String) dyn.get("class");

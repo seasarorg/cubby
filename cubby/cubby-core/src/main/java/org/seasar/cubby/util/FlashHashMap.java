@@ -1,5 +1,6 @@
 package org.seasar.cubby.util;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Set;
  * 
  * @author agata
  */
-public class FlashHashMap<K,V> implements Map<K,V> {
+public class FlashHashMap<K,V> implements Flash<K, V>, Map<K,V>, Serializable {
 
 	private static final long serialVersionUID = 8417458542243888272L;
 

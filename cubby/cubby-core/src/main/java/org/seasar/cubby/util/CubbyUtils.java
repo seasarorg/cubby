@@ -36,7 +36,7 @@ public class CubbyUtils {
 		return actionName;
 	}
 
-	public static String getActionUrl(Class c, Method m) {
+	public static String getActionUrl(Class<?> c, Method m) {
 		String actionMethodName = getActionMethodName(m);
 		if (actionMethodName.startsWith("/")) {
 			return actionMethodName;
@@ -57,7 +57,7 @@ public class CubbyUtils {
 		} else if (value.getClass().isArray()) {
 			return ((Object[])value).length;
 		} else if (value instanceof Collection) {
-			return ((Collection)value).size();
+			return ((Collection<?>) value).size();
 		} else {
 			return 1;
 		}
@@ -77,8 +77,8 @@ public class CubbyUtils {
 		return uri.substring(contextPath.length());
 	}
 	
-	public static boolean isActionClass(Class c) {
-		return ClassUtils.isSubClass(Action.class, c);
+	public static boolean isActionClass(Class<?> c) {
+		return Action.class.isAssignableFrom(c);
 	}
 
 	public static Object getParamsValue(Map<String, Object> params, String key) {
