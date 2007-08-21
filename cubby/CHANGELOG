@@ -1,9 +1,8 @@
-* 
-− SMART deploy 対応中
-- S2のバージョンを2.4.17に変更
-
 * 0.8.0
 - artifactIdをcubby-all -> cubby-projectに変更
+− SMART deploy 対応
+- S2のバージョンを2.4.17に変更
+- @Sessionの廃止
 
 * 0.7.0
 ** バリデーションの仕様変更
