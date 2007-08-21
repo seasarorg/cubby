@@ -3,41 +3,42 @@ package org.seasar.cubby.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.StringUtil;
 
 public class Redirect implements ActionResult {
-	
-	private static final Log LOG = LogFactory.getLog(Redirect.class);
-	
+
+	private final Logger logger = Logger.getLogger(this.getClass());
+
 	private final String result;
 
 	public Redirect(String result) {
 		this.result = result;
 	}
-	
-	public void execute(ActionContext context) throws Exception {
+
+	public void execute(ActionContext context, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String path = null;
-		HttpServletRequest request = context.getRequest();
-		HttpServletResponse response = context.getResponse();
 
 		String cpath = request.getContextPath();
 		if (result.charAt(0) == '/') {
 			path = cpath + result;
 		} else {
-			String cname = context.getActionMethod().getActionClassName();
-			if (StringUtils.isEmpty(cname)) {
+			String actionClassName = CubbyUtils.getActionClassName(context
+					.getComponentDef().getComponentClass());
+			if (StringUtil.isEmpty(actionClassName)) {
 				path = cpath + "/" + result;
 			} else {
-				path = cpath + "/" + cname + "/" + result;
+				path = cpath + "/" + actionClassName + "/" + result;
 
 			}
 		}
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("redirect[path=" + path + "]");
+		if (logger.isDebugEnabled()) {
+			logger.debug("redirect[path=" + path + "]");
 		}
 		response.sendRedirect(path);
 	}
+
 }

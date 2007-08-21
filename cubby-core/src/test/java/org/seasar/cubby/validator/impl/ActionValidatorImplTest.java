@@ -9,11 +9,11 @@ import junit.framework.TestCase;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.impl.ActionErrorsImpl;
-import org.seasar.cubby.util.ClassUtils;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.PropertyValidationRule;
 import org.seasar.cubby.validator.Validator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
+import org.seasar.framework.util.ClassUtil;
 
 public class ActionValidatorImplTest extends TestCase {
 
@@ -31,7 +31,7 @@ public class ActionValidatorImplTest extends TestCase {
 		validators = new DefaultValidationRules();
 		validators.add("prop1", new RequiredValidator());
 		validators.add("prop2", new RequiredValidator());
-		Method method = ClassUtils.getMethod(SampleAction.class, "test", null);
+		Method method = ClassUtil.getMethod(SampleAction.class, "test", null);
 		validation = method.getAnnotation(Validation.class);
 	}
 	
