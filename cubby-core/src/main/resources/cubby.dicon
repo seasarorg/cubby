@@ -37,22 +37,9 @@
 	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
 		<aspect>dxo.interceptor</aspect>
 	</component>
-	<!--component name="removeEmptyElementConverter" class="org.seasar.cubby.dxo.impl.RemoveEmptyElementConverterImpl"/-->
 
 	<!-- インターセプタ -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
 	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
-
-	<component name="initializeCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
-		<property name="interceptorName">"initializeInterceptor"</property>
-		<property name="pointcut">".*"</property>
-		<property name="useLookupAdapter">true</property>
-	</component>
-
-	<component name="validationCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
-		<property name="interceptorName">"validationInterceptor"</property>
-		<property name="pointcut">".*"</property>
-		<property name="useLookupAdapter">true</property>
-	</component>
 
 </components>
