@@ -22,11 +22,13 @@ import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.LocaleHolder;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
- * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。
- * {@link Action#initialize()}、{@link Action#prerender()}メソッドの実行も、
+ * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。 {@link Action#initialize()}、{@link Action#prerender()}メソッドの実行も、
  * このフィルターが行います。
  * 
  * TODO {@link Action#prerender()}メソッドの実行をInvocationFilterに移動させる
@@ -124,6 +126,15 @@ public class InitializeInterceptor implements MethodInterceptor {
 				.getActionErrors());
 		request.setAttribute(ATTR_FIELD_ERRORS, action.getErrors()
 				.getFieldErrors());
+
+		final BeanDesc beanDesc = BeanDescFactory
+				.getBeanDesc(action.getClass());
+		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
+			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
+			final String name = propertyDesc.getPropertyName();
+			final Object value = propertyDesc.getValue(action);
+			request.setAttribute(name, value);
+		}
 	}
 
 	Map<String, Object> getMultipartSupportParameterMap(
