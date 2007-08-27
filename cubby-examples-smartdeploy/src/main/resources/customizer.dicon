@@ -3,7 +3,7 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
   <include path="default-customizer.dicon"/>
-  <include path="cubby.dicon"/>
+  <include path="cubby-customizer.dicon"/>
 
   <!--
   <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">

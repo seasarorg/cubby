@@ -7,4 +7,5 @@
 	<include path="dao.dicon"/>
 	<include path="dxo.dicon"/>
 	<include path="urlfilter.dicon"/>
+	<include path="cubby.dicon"/>
 </components>
