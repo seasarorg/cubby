@@ -14,6 +14,7 @@
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -53,6 +54,11 @@
 			<id>maven.seasar.org</id>
 			<name>The Seasar Foundation Maven2 Repository</name>
 			<url>http://maven.seasar.org/maven2</url>
+		</repository>
+		<repository>
+			<id>maven-snapshot.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Snapshot Repository</name>
+			<url>http://maven.seasar.org/maven2-snapshot</url>
 		</repository>
 	</repositories>
 	<dependencies>
