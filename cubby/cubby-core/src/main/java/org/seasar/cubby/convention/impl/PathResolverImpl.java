@@ -14,17 +14,12 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.Uri;
-import org.seasar.framework.container.ComponentCreator;
-import org.seasar.framework.container.ComponentDef;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.TooManyRegistrationComponentDef;
-import org.seasar.framework.container.cooldeploy.CoolComponentAutoRegister;
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
+import org.seasar.framework.util.StringUtil;
 
 public class PathResolverImpl implements PathResolver, Disposable {
 
@@ -33,33 +28,40 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
-	private S2Container container;
-
-	private ComponentCreator[] creators;
+	private boolean initialized;
 
 	private NamingConvention namingConvention;
 
 	private Map<Pattern, RewriteInfo> patternToRewriteInfoMap;
 
-	public PathResolverImpl() {
-		DisposableUtil.add(this);
+	private Map<Pattern, RewriteInfo> customPatternToRewriteInfoMap = new HashMap<Pattern, RewriteInfo>();
+
+	public void initialize() {
+		if (!initialized) {
+			patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
+			ClassCollector classCollector = new ActionClassCollector();
+			classCollector.collect();
+
+			DisposableUtil.add(this);
+			initialized = true;
+		}
 	}
 
 	public void dispose() {
-		patternToRewriteInfoMap = null;
+		patternToRewriteInfoMap.clear();
+		initialized = false;
 	}
 
 	public void add(final String patternStr,
 			final Class<? extends Action> actionClass, final String methodName) {
-		final ComponentDef componentDef = container
-				.getComponentDef(actionClass);
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
-		this.add(patternStr, componentDef, method);
+		this.add(patternStr, actionClass, method, customPatternToRewriteInfoMap);
 	}
 
-	public void add(final String patternStr, final ComponentDef componentDef,
-			final Method method) {
+	private void add(final String patternStr,
+			final Class<? extends Action> actionClass, final Method method,
+			Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
 		String actionFullName = patternStr;
 		final List<String> uriParameterNames = new ArrayList<String>();
 		final Matcher matcher = urlRewritePattern.matcher(actionFullName);
@@ -77,7 +79,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			}
 		}
 
-		final String rewritePath = this.fromComponentNameToPath(componentDef,
+		final String rewritePath = this.fromActionClassToPath(actionClass,
 				method);
 
 		final RewriteInfo rewriteInfo = new RewriteInfo(rewritePath,
@@ -91,13 +93,15 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 	}
 
-	private String fromComponentNameToPath(final ComponentDef componentDef,
+	private String fromActionClassToPath(final Class<? extends Action> actionClass,
 			final Method method) {
+		final String componentName = namingConvention
+				.fromClassNameToComponentName(actionClass.getCanonicalName());
 		final StringBuilder builder = new StringBuilder(100);
 		builder.append('/');
-		builder.append(componentDef.getComponentName().substring(
+		builder.append(componentName.substring(
 				0,
-				componentDef.getComponentName().length()
+				componentName.length()
 						- namingConvention.getActionSuffix().length())
 				.replaceAll("_", "/"));
 		builder.append('/');
@@ -105,60 +109,23 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		return builder.toString();
 	}
 
-	private ComponentDef[] getActionComponentDefs(final S2Container container) {
-		ComponentDef[] componentDefs;
-		if (container.getRoot().hasComponentDef(Action.class)) {
-			final ComponentDef componentDef = container.getRoot()
-					.getComponentDef(Action.class);
-			if (componentDef instanceof TooManyRegistrationComponentDef) {
-				componentDefs = ((TooManyRegistrationComponentDef) componentDef)
-						.getComponentDefs();
-			} else {
-				componentDefs = new ComponentDef[] { componentDef };
-			}
-		} else {
-			componentDefs = new ComponentDef[0];
-		}
-		return componentDefs;
-	}
-
-	private Map<Pattern, RewriteInfo> getPatternToRewriteInfoMap() {
-		if (patternToRewriteInfoMap == null) {
-			synchronized (this) {
-				if (patternToRewriteInfoMap == null) {
-					patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
-
-					if (HotdeployUtil.isHotdeploy()) {
-						registerActions();
-					}
-
-					final ComponentDef[] actionComponentDefs = getActionComponentDefs(container);
-					for (final ComponentDef actionComponentDef : actionComponentDefs) {
-						final Class<?> type = actionComponentDef
-								.getComponentClass();
-						for (final Method method : type.getMethods()) {
-							if (CubbyUtils.isActionMethod(method)) {
-								final String actionFullName = CubbyUtils
-										.getActionUrl(type, method);
-								this.add(actionFullName, actionComponentDef,
-										method);
-							}
-						}
-					}
-				}
-			}
-		}
-		return patternToRewriteInfoMap;
-	}
-
 	public String getRewritePath(final String path) {
-		final Map<String, String> uriParams = new HashMap<String, String>();
 		if (logger.isDebugEnabled()) {
 			logger.debug("request[path=" + path + "]");
 		}
 
-		final Map<Pattern, RewriteInfo> patternToRewriteInfoMap = this
-				.getPatternToRewriteInfoMap();
+		initialize();
+
+		String rewritePath = findRewritePath(path, customPatternToRewriteInfoMap);
+		if (StringUtil.isEmpty(rewritePath)) {
+			rewritePath = findRewritePath(path, patternToRewriteInfoMap);
+		}
+		return rewritePath;
+	}
+
+	private String findRewritePath(final String path,
+			final Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
+		final Map<String, String> uriParams = new HashMap<String, String>();
 		for (final Pattern p : patternToRewriteInfoMap.keySet()) {
 			final Matcher matcher = p.matcher(path);
 			if (matcher.find()) {
@@ -177,28 +144,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		return null;
 	}
 
-	private void registerActions() {
-		final CoolComponentAutoRegister autoRegister = new CoolComponentAutoRegister();
-		autoRegister.setContainer(container);
-		autoRegister.setCreators(creators);
-		autoRegister.setNamingConvention(namingConvention);
-		autoRegister.registerAll();
-	}
-
-	public void setContainer(final S2Container container) {
-		this.container = container;
-	}
-
-	public void setCreators(final ComponentCreator[] creators) {
-		this.creators = creators;
-	}
-
 	public void setNamingConvention(final NamingConvention namingConvention) {
 		this.namingConvention = namingConvention;
 	}
 
 	class RewriteInfo {
+
 		private final String rewritePath;
+
 		private final List<String> uriParameterNames;
 
 		public RewriteInfo(final String rewritePath,
@@ -230,5 +183,39 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		public List<String> getUriParameterNames() {
 			return uriParameterNames;
 		}
+	}
+
+	class ActionClassCollector extends ClassCollector {
+
+		public ActionClassCollector() {
+			super(namingConvention);
+		}
+
+		public void processClass(String packageName, String shortClassName) {
+			if (shortClassName.indexOf('$') != -1) {
+				return;
+			}
+			String className = ClassUtil
+					.concatName(packageName, shortClassName);
+			if (!namingConvention.isTargetClassName(className)) {
+				return;
+			}
+			if (!className.endsWith(namingConvention.getActionSuffix())) {
+				return;
+			}
+			Class<? extends Action> clazz = ClassUtil.forName(className);
+			if (namingConvention.isSkipClass(clazz)) {
+				return;
+			}
+
+			for (final Method method : clazz.getMethods()) {
+				if (CubbyUtils.isActionMethod(method)) {
+					final String actionFullName = CubbyUtils
+							.getActionUrl(clazz, method);
+					add(actionFullName, clazz, method, patternToRewriteInfoMap);
+				}
+			}
+		}
+
 	}
 }

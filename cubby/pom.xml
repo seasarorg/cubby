@@ -5,7 +5,7 @@
 	<artifactId>cubby-project</artifactId>
 	<packaging>pom</packaging>
 	<name>cubby-project</name>
-	<version>0.8.1</version>
+	<version>0.8.2-SNAPSHOT</version>
 	<description>
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
@@ -66,6 +66,16 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav</artifactId>
+			</extension>
+			<extension>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.0.1</version>
+			</extension>
+			<extension>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.0.4</version>
 			</extension>
 		</extensions>
 	</build>

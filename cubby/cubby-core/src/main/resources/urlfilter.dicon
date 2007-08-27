@@ -2,14 +2,8 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="urlfilter">
-	<include path="customizer.dicon"/>
-	<include path="creator.dicon"/>
 	<include path="convention.dicon"/>
 
-	<component class="org.seasar.cubby.convention.impl.PathResolverImpl" instance="request" >
-		<property name="namingConvention">
-			<component class="org.seasar.cubby.convention.impl.PathResolverNamingConventionImpl" />
-		</property>
-	</component>
+	<component class="org.seasar.cubby.convention.impl.PathResolverImpl" />
 
 </components>
