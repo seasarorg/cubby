@@ -2,17 +2,18 @@ package org.seasar.cubby.validator.impl;
 
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
+import ognl.Ognl;
+import ognl.OgnlException;
+
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.PropertyValidationRule;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.Validator;
+import org.seasar.framework.exception.OgnlRuntimeException;
 
 public class ActionValidatorImpl implements ActionValidator {
 	
@@ -63,16 +64,11 @@ public class ActionValidatorImpl implements ActionValidator {
 	}
 
 	Object getPropertyValue(final Map<String, Object> params, final String propertyName) {
-		String[] props = StringUtils.split(propertyName, ".", 2);
-		Object value = CubbyUtils.getParamsValue(params, props[0]);
-		if (props.length == 1) {
+		try {
+			Object value = Ognl.getValue(propertyName, params);
 			return value;
-		} else {
-			try {
-				return BeanUtils.getNestedProperty(value, props[1]);
-			} catch (Exception e) {
-				return null;
-			}
+		} catch (OgnlException e) {
+			throw new OgnlRuntimeException(e);
 		}
 	}
 }

@@ -61,7 +61,28 @@ public class ActionValidatorImplTest extends TestCase {
 		assertEquals("prop1は必須です。", action.getErrors().getFieldErrors().get("prop1").get(0));
 		assertNull(action.getErrors().getFieldErrors().get("prop2"));
 	}
-	
+
+	public static class Foo {
+		public String value1 = "1";
+		private String value2 = "2";
+		public String getValue2() {
+			return value2;
+		}
+	}
+
+	public void testValidateNestedValue() {
+		Foo foo = new Foo();
+		params.put("foo", foo);
+		Object form = new Object();
+		Validator validator = new RequiredValidator();
+		PropertyValidationRule rule1 = new PropertyValidationRule("foo.value1.class");
+		av.validate(action, params, form, validator, rule1);
+		PropertyValidationRule rule2 = new PropertyValidationRule("foo.value2");
+		av.validate(action, params, form, validator, rule2);
+		System.out.println(action.getErrors().getAllErrors());
+		assertTrue(action.getErrors().isEmpty());
+	}
+
 	class SampleAction extends Action {
 		@Validation(errorPage="error.jsp")
 		public String test() {
