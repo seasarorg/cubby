@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="cubby-core/src/main/java"/>
-	<classpathentry kind="src" path="cubby-core/src/main/resources"/>
-	<classpathentry kind="src" path="cubby-core/src/test/java"/>
-	<classpathentry kind="src" path="cubby-core/src/test/resources"/>
+	<classpathentry kind="src" output="cubby-core/target/classes" path="cubby-core/src/main/java"/>
+	<classpathentry kind="src" output="cubby-core/target/classes" path="cubby-core/src/main/resources"/>
+	<classpathentry kind="src" output="cubby-core/target/test-classes" path="cubby-core/src/test/java"/>
+	<classpathentry kind="src" output="cubby-core/target/test-classes" path="cubby-core/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
-	<classpathentry kind="output" path="target"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

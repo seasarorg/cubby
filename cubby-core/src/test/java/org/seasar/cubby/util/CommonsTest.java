@@ -7,11 +7,12 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import junit.framework.TestCase;
+import ognl.Ognl;
+import ognl.OgnlException;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
+import org.seasar.framework.exception.OgnlRuntimeException;
 
 public class CommonsTest extends TestCase {
 	private FileItem item;
@@ -24,22 +25,19 @@ public class CommonsTest extends TestCase {
 		assertEquals("b.c",  StringUtils.split("a.b.c", ".", 2)[1]);
 	}
 	
-	@SuppressWarnings("serial")
 	public void testGetProperty() throws Exception {
 		item = new FileItem() {
 
+			private static final long serialVersionUID = 1L;
+
 			public void delete() {
-				// TODO 自動生成されたメソッド・スタブ
-				
 			}
 
 			public byte[] get() {
-				// TODO 自動生成されたメソッド・スタブ
 				return null;
 			}
 
 			public String getContentType() {
-				// TODO 自動生成されたメソッド・スタブ
 				return null;
 			}
 
@@ -48,7 +46,6 @@ public class CommonsTest extends TestCase {
 			}
 
 			public InputStream getInputStream() throws IOException {
-				// TODO 自動生成されたメソッド・スタブ
 				return null;
 			}
 
@@ -57,58 +54,117 @@ public class CommonsTest extends TestCase {
 			}
 
 			public OutputStream getOutputStream() throws IOException {
-				// TODO 自動生成されたメソッド・スタブ
 				return null;
 			}
 
 			public long getSize() {
-				// TODO 自動生成されたメソッド・スタブ
 				return 0;
 			}
 
 			public String getString() {
-				// TODO 自動生成されたメソッド・スタブ
 				return null;
 			}
 
-			public String getString(String arg0) throws UnsupportedEncodingException {
-				// TODO 自動生成されたメソッド・スタブ
+			public String getString(String arg0)
+					throws UnsupportedEncodingException {
 				return null;
 			}
 
 			public boolean isFormField() {
-				// TODO 自動生成されたメソッド・スタブ
 				return false;
 			}
 
 			public boolean isInMemory() {
-				// TODO 自動生成されたメソッド・スタブ
 				return false;
 			}
 
 			public void setFieldName(String arg0) {
-				// TODO 自動生成されたメソッド・スタブ
-				
 			}
 
 			public void setFormField(boolean arg0) {
-				// TODO 自動生成されたメソッド・スタブ
-				
 			}
 
 			public void write(File arg0) throws Exception {
-				// TODO 自動生成されたメソッド・スタブ
-				
 			}
-			
+
 		};
-		assertEquals("testField", BeanUtils.getNestedProperty(this, "item.fieldName"));
-		assertEquals("testName", BeanUtils.getNestedProperty(this, "item.name"));
+		assertEquals("testField", getNestedProperty("item.fieldName"));
+		assertEquals("testName", getNestedProperty("item.name"));
 		try {
 			item = null;
-			assertEquals("testName", BeanUtils.getNestedProperty(this, "item.name"));
+			assertEquals("testName", getNestedProperty("item.name"));
 			fail();
-		} catch (NestedNullException e) {
+		} catch (OgnlRuntimeException e) {
+		}
+	}
+
+	public static class TestFileItem implements FileItem {
+
+		private static final long serialVersionUID = 1L;
+
+		public void delete() {
+		}
+
+		public byte[] get() {
+			return null;
+		}
+
+		public String getContentType() {
+			return null;
+		}
+
+		public String getFieldName() {
+			return "testField";
+		}
+
+		public InputStream getInputStream() throws IOException {
+			return null;
+		}
+
+		public String getName() {
+			return "testName";
+		}
+
+		public OutputStream getOutputStream() throws IOException {
+			return null;
+		}
+
+		public long getSize() {
+			return 0;
+		}
+
+		public String getString() {
+			return null;
+		}
+
+		public String getString(String arg0) throws UnsupportedEncodingException {
+			return null;
+		}
+
+		public boolean isFormField() {
+			return false;
+		}
+
+		public boolean isInMemory() {
+			return false;
+		}
+
+		public void setFieldName(String arg0) {
+		}
+
+		public void setFormField(boolean arg0) {
+		}
+
+		public void write(File arg0) throws Exception {
+		}
+		
+	}
+
+	private Object getNestedProperty(String propertyName) {
+		try {
+			return Ognl.getValue(propertyName, this);
+		} catch (OgnlException e) {
+			throw new OgnlRuntimeException(e);
 		}
 	}
 }
