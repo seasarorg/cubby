@@ -5,8 +5,10 @@ import java.util.Map;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.PropertyValidationRule;
 import org.seasar.cubby.validator.ValidationContext;
@@ -64,11 +66,17 @@ public class ActionValidatorImpl implements ActionValidator {
 	}
 
 	Object getPropertyValue(final Map<String, Object> params, final String propertyName) {
-		try {
-			Object value = Ognl.getValue(propertyName, params);
+		String[] props = StringUtils.split(propertyName, ".", 2);
+		Object value = CubbyUtils.getParamsValue(params, props[0]);
+		if (props.length == 1) {
 			return value;
-		} catch (OgnlException e) {
-			throw new OgnlRuntimeException(e);
+		} else {
+			try {
+				Object nestedValue = Ognl.getValue(props[0], value);
+				return nestedValue;
+			} catch (OgnlException e) {
+				throw new OgnlRuntimeException(e);
+			}
 		}
 	}
 }
