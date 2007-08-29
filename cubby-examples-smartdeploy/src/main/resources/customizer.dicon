@@ -32,12 +32,12 @@
     </initMethod>
   </component>
   -->
-  <component name="interTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
+  <component name="propertyInterTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
     <property name="interTypeName">"aop.propertyInterType"</property>
   </component>
 
   <component name="actionCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
-    <initMethod name="addCustomizer"><arg>interTypeCustomizer</arg></initMethod>
+    <initMethod name="addCustomizer"><arg>propertyInterTypeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
