@@ -72,7 +72,7 @@ public class ActionValidatorImpl implements ActionValidator {
 			return value;
 		} else {
 			try {
-				Object nestedValue = Ognl.getValue(props[0], value);
+				Object nestedValue = Ognl.getValue(props[1], value);
 				return nestedValue;
 			} catch (OgnlException e) {
 				throw new OgnlRuntimeException(e);
