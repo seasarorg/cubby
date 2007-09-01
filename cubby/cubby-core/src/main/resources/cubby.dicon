@@ -5,11 +5,6 @@
 	<include path="app-cubby.dicon" />
 	<include path="convention.dicon" />
 
-	<!-- Properties -->
-	<component name="config" class="java.util.HashMap" >
-		<arg>@org.seasar.framework.util.ResourceBundleUtil@convertMap("cubby", @java.util.Locale@getDefault())</arg>
-	</component>
-
 	<!-- Convention -->
 	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
 
@@ -30,7 +25,7 @@
 	<!-- FileUpload -->
 	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
 	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
-		<property name="sizeMax">config["multipartRequestParser.sizeMax"]</property>
+		<property name="sizeMax">10000000</property>
 	</component>
 
 	<!-- Dxo -->
