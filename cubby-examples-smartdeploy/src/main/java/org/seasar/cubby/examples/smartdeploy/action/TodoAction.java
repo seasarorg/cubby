@@ -25,7 +25,7 @@ public class TodoAction extends Action {
 
 	// ----------------------------------------------[Validation]
 
-	public static ValidationRules VALIDATION = new DefaultValidationRules() {
+	public ValidationRules validation = new DefaultValidationRules() {
 		public void initialize() {
 			add("text", new RequiredValidator(), new MaxLengthValidator(10));
 			add("memo", new RequiredValidator(), new MaxLengthValidator(100));
@@ -80,7 +80,7 @@ public class TodoAction extends Action {
 	}
 
 	@Form
-	@Validation(errorPage="edit.jsp")
+	@Validation(rulesField = "validation", errorPage = "edit.jsp")
 	public ActionResult confirm() {
 		TodoType todoType = todoTypeDao.selectById(this.typeId);
 		this.todoType = todoType;
@@ -93,7 +93,7 @@ public class TodoAction extends Action {
 	}
 
 	@Form
-	@Validation(errorPage = "confirm.jsp")
+	@Validation(rulesField = "validation", errorPage = "confirm.jsp")
 	public ActionResult save() {
 		if (this.id == null) {
 			Todo todo = todoDxo.convert(this);
