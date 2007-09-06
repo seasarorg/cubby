@@ -66,17 +66,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.3.1</version>
-			<scope>compile</scope>
-		</dependency>
-  		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jsp_2.0_spec</artifactId>
-			<version>1.0</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
@@ -89,12 +79,7 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-ejb_2.1_spec</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>jstl</groupId>
+			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.1.2</version>
 		</dependency>
@@ -104,28 +89,13 @@
 			<version>1.1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.seasar.container</groupId>
-			<artifactId>s2-extension</artifactId>
+			<artifactId>s2-framework</artifactId>
 			<version>2.4.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seasar.container</groupId>
-			<artifactId>s2-framework</artifactId>
+			<artifactId>s2-extension</artifactId>
 			<version>2.4.17</version>
 		</dependency>
 		<dependency>
@@ -148,10 +118,17 @@
 			<artifactId>s2-dao-tiger</artifactId>
 			<version>1.0.46</version>
 		</dependency>
+  		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.13</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.0.20070304</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 </project>
