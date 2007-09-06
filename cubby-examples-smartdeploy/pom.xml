@@ -118,16 +118,15 @@
 			<artifactId>s2-dao-tiger</artifactId>
 			<version>1.0.46</version>
 		</dependency>
-  		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.0.20070304</version>
+		</dependency>
+  		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.13</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
