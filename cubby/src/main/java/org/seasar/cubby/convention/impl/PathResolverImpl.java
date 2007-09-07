@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
@@ -69,11 +68,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			final String name = matcher.group(2);
 			final String[] names = name.split(",", 2);
 			if (names.length == 1) {
-				actionFullName = StringUtils.replace(actionFullName, matcher
+				actionFullName = StringUtil.replace(actionFullName, matcher
 						.group(1), "([a-zA-Z0-9]+)");
 				uriParameterNames.add(matcher.group(2));
 			} else {
-				actionFullName = StringUtils.replace(actionFullName, matcher
+				actionFullName = StringUtil.replace(actionFullName, matcher
 						.group(1), "(" + names[1] + ")");
 				uriParameterNames.add(names[0]);
 			}

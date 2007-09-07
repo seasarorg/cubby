@@ -3,8 +3,6 @@ package org.seasar.cubby.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 public class DefaultValidationRules implements ValidationRules {
 
 	public final List<ValidationRule> rules = new ArrayList<ValidationRule>();
@@ -45,9 +43,5 @@ public class DefaultValidationRules implements ValidationRules {
 	public List<ValidationRule> getRules() {
 		return rules;
 	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+
 }

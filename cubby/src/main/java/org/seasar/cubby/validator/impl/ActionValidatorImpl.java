@@ -2,10 +2,6 @@ package org.seasar.cubby.validator.impl;
 
 import java.util.Map;
 
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.util.CubbyUtils;
@@ -15,7 +11,9 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.Validator;
-import org.seasar.framework.exception.OgnlRuntimeException;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public class ActionValidatorImpl implements ActionValidator {
 	
@@ -66,17 +64,13 @@ public class ActionValidatorImpl implements ActionValidator {
 	}
 
 	Object getPropertyValue(final Map<String, Object> params, final String propertyName) {
-		String[] props = StringUtils.split(propertyName, ".", 2);
+		String[] props = propertyName.split("\\.");
 		Object value = CubbyUtils.getParamsValue(params, props[0]);
-		if (props.length == 1) {
-			return value;
-		} else {
-			try {
-				Object nestedValue = Ognl.getValue(props[1], value);
-				return nestedValue;
-			} catch (OgnlException e) {
-				throw new OgnlRuntimeException(e);
-			}
+		for (int i = 1; i < props.length; i++) {
+			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(value.getClass());
+			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(props[i]);
+			value = propertyDesc.getValue(value);
 		}
+		return value;
 	}
 }

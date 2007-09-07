@@ -3,8 +3,6 @@ package org.seasar.cubby.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 public class PropertyValidationRule implements ValidationRule {
 
 	private final String propertyName;
@@ -35,8 +33,4 @@ public class PropertyValidationRule implements ValidationRule {
 		return validators;
 	}
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 }
