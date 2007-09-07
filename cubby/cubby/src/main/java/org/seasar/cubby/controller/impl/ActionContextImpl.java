@@ -14,6 +14,8 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;
 
 public class ActionContextImpl implements ActionContext, Serializable {
@@ -28,6 +30,7 @@ public class ActionContextImpl implements ActionContext, Serializable {
 
 	private Action action;
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setActionDef(ActionDef actionDef) {
 		this.actionDef = actionDef;
 	}

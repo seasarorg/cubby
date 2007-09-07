@@ -3,7 +3,6 @@ package org.seasar.cubby.validator;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.seasar.cubby.util.Messages;
 
 abstract public class BaseValidator implements Validator {
@@ -20,9 +19,5 @@ abstract public class BaseValidator implements Validator {
 			return key;
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+
 }

@@ -75,7 +75,7 @@ public class ActionValidatorImplTest extends TestCase {
 		params.put("foo", foo);
 		Object form = new Object();
 		Validator validator = new RequiredValidator();
-		PropertyValidationRule rule1 = new PropertyValidationRule("foo.value1.class");
+		PropertyValidationRule rule1 = new PropertyValidationRule("foo.value1.bytes");
 		av.validate(action, params, form, validator, rule1);
 		PropertyValidationRule rule2 = new PropertyValidationRule("foo.value2");
 		av.validate(action, params, form, validator, rule2);

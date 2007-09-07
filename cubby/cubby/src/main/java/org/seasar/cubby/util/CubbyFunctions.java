@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.seasar.framework.util.StringUtil;
 
 public class CubbyFunctions {
 	
@@ -49,11 +49,11 @@ public class CubbyFunctions {
 		} else {
 			text = value.toString();
 		}
-		text = StringUtils.replace(text, "&", "&amp;");
-		text = StringUtils.replace(text, "<", "&lt;");
-		text = StringUtils.replace(text, ">", "&gt;");
-		text = StringUtils.replace(text, "\"", "&quot;");
-		text = StringUtils.replace(text, "'", "&#39;");
+		text = StringUtil.replace(text, "&", "&amp;");
+		text = StringUtil.replace(text, "<", "&lt;");
+		text = StringUtil.replace(text, ">", "&gt;");
+		text = StringUtil.replace(text, "\"", "&quot;");
+		text = StringUtil.replace(text, "'", "&#39;");
 		return text;
 	}
 

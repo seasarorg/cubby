@@ -3,8 +3,6 @@ package org.seasar.cubby.validator;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 public class ValidationContext {
 	private final String name;
 	private final Object value;
@@ -32,8 +30,4 @@ public class ValidationContext {
 		return params;
 	}
 	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 }

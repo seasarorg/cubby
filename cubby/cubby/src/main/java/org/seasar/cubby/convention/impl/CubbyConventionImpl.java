@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.impl.ActionDefImpl;
 import org.seasar.cubby.convention.CubbyConvention;
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.convention.NamingConvention;

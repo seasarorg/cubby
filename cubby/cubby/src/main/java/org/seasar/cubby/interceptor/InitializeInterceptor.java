@@ -131,9 +131,11 @@ public class InitializeInterceptor implements MethodInterceptor {
 				.getBeanDesc(action.getClass());
 		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
 			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
-			final String name = propertyDesc.getPropertyName();
-			final Object value = propertyDesc.getValue(action);
-			request.setAttribute(name, value);
+			if (propertyDesc.isReadable()) {
+				final String name = propertyDesc.getPropertyName();
+				final Object value = propertyDesc.getValue(action);
+				request.setAttribute(name, value);
+			}
 		}
 	}
 
