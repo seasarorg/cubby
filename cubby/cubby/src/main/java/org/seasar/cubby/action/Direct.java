@@ -6,9 +6,9 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.OutputStreamUtil;
 
 public class Direct implements ActionResult {
 
@@ -39,7 +39,7 @@ public class Direct implements ActionResult {
 				logger.info(e);
 			}
 		} finally {
-			IOUtils.closeQuietly(out);
+			OutputStreamUtil.close(out);
 		}
 	}
 }
