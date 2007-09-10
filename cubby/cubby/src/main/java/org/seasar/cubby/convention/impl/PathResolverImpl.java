@@ -87,8 +87,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		patternToRewriteInfoMap.put(pattern, rewriteInfo);
 		if (logger.isDebugEnabled()) {
-			logger.debug("アクションメソッドを登録[uri=" + actionFullName + ", method="
-					+ method + " uri params=" + uriParameterNames + "]");
+			logger.log("DCUB0007", new Object[] { actionFullName, method,
+					uriParameterNames });
 		}
 	}
 
@@ -110,7 +110,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	public String getRewritePath(final String path) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("request[path=" + path + "]");
+			logger.log("DCUB0006", new Object[] { path });
 		}
 
 		initialize();

@@ -36,7 +36,7 @@ public class Redirect extends AbstractActionResult {
 			}
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug("redirect[path=" + path + "]");
+			logger.log("DCUB0003", new String[] { path });
 		}
 		response.sendRedirect(path);
 	}

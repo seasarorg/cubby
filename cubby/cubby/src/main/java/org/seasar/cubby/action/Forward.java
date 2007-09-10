@@ -38,12 +38,12 @@ public class Forward extends AbstractActionResult {
 			path = "/" + actionClassName + "/" + result;
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug("BEGIN forward[path=" + path + "]");
+			logger.log("DCUB0001", new String[] { path });
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 		dispatcher.forward(request, response);
 		if (logger.isDebugEnabled()) {
-			logger.debug("END forward[path=" + path + "]");
+			logger.log("DCUB0002", new String[] { path });
 		}
 		action.postrender();
 

@@ -12,16 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.MultipartRequestParser;
-import org.seasar.cubby.util.Messages;
-import org.seasar.framework.log.Logger;
+import org.seasar.cubby.exception.FileUploadRuntimeException;
+import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.StringUtil;
 
 public class DefaultMultipartRequestParser implements MultipartRequestParser {
-
-	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private FileItemFactory fileItemFactory;
 
@@ -63,16 +60,10 @@ public class DefaultMultipartRequestParser implements MultipartRequestParser {
 				parameterMap.put(key, values.toArray(valueArray));
 			}
 			return parameterMap;
-		} catch (SizeLimitExceededException e) {
-			throw new RuntimeException(Messages.getString(
-					"valid.multipartRequsetParser.sizeLimitExceeded", e
-							.getPermittedSize(), e.getActualSize()), e);
 		} catch (FileUploadException e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
+			throw new FileUploadRuntimeException(e);
 		} catch (UnsupportedEncodingException e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
+			throw new IORuntimeException(e);
 		}
 	}
 

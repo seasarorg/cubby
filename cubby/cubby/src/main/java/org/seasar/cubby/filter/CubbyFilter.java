@@ -34,7 +34,7 @@ public class CubbyFilter implements Filter {
 					.getComponent(ActionProcessor.class);
 			processor.process(request, response, chain);
 		} catch (final Throwable e) {
-			logger.error(e.getMessage(), e);
+			logger.log(e);
 			throw new ServletException(e);
 		}
 	}

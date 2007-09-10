@@ -20,6 +20,9 @@ public class RegexpValidator extends BaseValidator {
 
 	public String validate(final ValidationContext ctx) {
 		final Object value = ctx.getValue();
+		if (value == null) {
+			return null;
+		}
 		if (value instanceof String) {
 			Matcher matcher = pattern.matcher((String) value);
 			if (matcher.matches()) {
