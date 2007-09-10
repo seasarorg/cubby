@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.util.StringUtil;
 
 /**
  * 指定された正規表現にマッチしない場合にエラーとします。
@@ -24,7 +25,11 @@ public class RegexpValidator extends BaseValidator {
 			return null;
 		}
 		if (value instanceof String) {
-			Matcher matcher = pattern.matcher((String) value);
+			String stringValue = (String) value;
+			if (StringUtil.isEmpty(stringValue)) {
+				return null;
+			}
+			Matcher matcher = pattern.matcher(stringValue);
 			if (matcher.matches()) {
 				return null;
 			}
