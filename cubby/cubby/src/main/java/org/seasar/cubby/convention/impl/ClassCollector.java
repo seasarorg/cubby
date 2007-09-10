@@ -92,7 +92,7 @@ abstract class ClassCollector implements ClassHandler {
 		if (rootPackageNames != null) {
 			for (int i = 0; i < rootPackageNames.length; ++i) {
 				final String rootDir = rootPackageNames[i].replace('.', '/');
-				for (final Iterator it = ClassLoaderUtil.getResources(rootDir); it
+				for (final Iterator<?> it = ClassLoaderUtil.getResources(rootDir); it
 						.hasNext();) {
 					final URL url = (URL) it.next();
 					final Strategy strategy = getStrategy(URLUtil

@@ -12,7 +12,7 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
-public class Forward implements ActionResult {
+public class Forward extends AbstractActionResult {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -20,10 +20,6 @@ public class Forward implements ActionResult {
 
 	public Forward(String result) {
 		this.result = result;
-	}
-
-	public String getResult() {
-		return result;
 	}
 
 	public void execute(final ActionContext context,
@@ -53,4 +49,11 @@ public class Forward implements ActionResult {
 
 		action.getFlash().clear();
 	}
+
+	@Override
+	public void prerender(ActionContext context) {
+		final Action action = context.getAction();
+		action.prerender();
+	}
+
 }

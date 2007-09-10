@@ -18,6 +18,11 @@ import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class ActionContextImpl implements ActionContext, Serializable {
 
 	private static final long serialVersionUID = 2416038583405864226L;

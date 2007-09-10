@@ -202,7 +202,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			if (!className.endsWith(namingConvention.getActionSuffix())) {
 				return;
 			}
-			Class<? extends Action> clazz = ClassUtil.forName(className);
+			Class<? extends Action> clazz = classForName(className);
 			if (namingConvention.isSkipClass(clazz)) {
 				return;
 			}
@@ -217,4 +217,10 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 
 	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> Class<T> classForName(String className) {
+		return ClassUtil.forName(className);
+	}
+
 }

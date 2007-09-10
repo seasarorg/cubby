@@ -3,9 +3,9 @@ package org.seasar.cubby.validator.validators;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.util.StringUtil;
 
 public class DateFormatValidator extends BaseValidator {
 	private final SimpleDateFormat dateFormat;
@@ -21,7 +21,7 @@ public class DateFormatValidator extends BaseValidator {
 		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			String str = (String)value;
-			if (StringUtils.isEmpty((String)value)) {
+			if (StringUtil.isEmpty((String)value)) {
 				return null;
 			}
 			try {

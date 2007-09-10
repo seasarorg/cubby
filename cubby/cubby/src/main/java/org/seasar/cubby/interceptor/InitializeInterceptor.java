@@ -1,9 +1,12 @@
 package org.seasar.cubby.interceptor;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_ALL_ERRORS;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FIELD_ERRORS;
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
@@ -14,13 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.Populator;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -69,12 +70,12 @@ public class InitializeInterceptor implements MethodInterceptor {
 		setupParams(context);
 		setupForm(context);
 
-		context.getAction().initialize();
+		final Action action = context.getAction();
+		action.initialize();
 
-		Object result = invocation.proceed();
-		if (CubbyUtils.isForwardResult((ActionResult) result)) {
-			context.getAction().prerender();
-		}
+		ActionResult result = (ActionResult) invocation.proceed();
+
+		result.prerender(context);
 
 		bindAttributes(context);
 
@@ -86,11 +87,11 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	void setupImplicitVariable(final ActionContext context) {
-		request.setAttribute("contextPath", request.getContextPath());
+		request.setAttribute(ATTR_CONTEXT_PATH, request.getContextPath());
 		ResourceBundle resource = ResourceBundleUtil.getBundle(RES_MESSAGES,
 				LocaleHolder.getLocale());
 		Map<?, ?> messagesMap = ResourceBundleUtil.convertMap(resource);
-		request.setAttribute("messages", messagesMap);
+		request.setAttribute(ATTR_MESSAGES, messagesMap);
 	}
 
 	void setupParams(final ActionContext context) {
@@ -115,7 +116,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 		// set controller
 		Action action = context.getAction();
 		// request.setAttribute(ATTR_CONTROLLER, action); // support legacy
-		request.setAttribute(CubbyConstants.ATTR_ACTION, action);
+		request.setAttribute(ATTR_ACTION, action);
 
 		// set actioneErrors
 		request.setAttribute(ATTR_ERRORS, action.getErrors());

@@ -125,5 +125,6 @@
 	</distributionManagement>
 	<modules>
 		<module>cubby</module>
+		<module>cubby-tomcat55-support</module>
 	</modules>
 </project>

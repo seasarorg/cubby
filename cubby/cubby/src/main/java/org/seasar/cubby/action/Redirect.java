@@ -8,7 +8,7 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
-public class Redirect implements ActionResult {
+public class Redirect extends AbstractActionResult {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 

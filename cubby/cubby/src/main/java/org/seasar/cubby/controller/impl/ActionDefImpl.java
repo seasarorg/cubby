@@ -5,6 +5,11 @@ import java.lang.reflect.Method;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.framework.container.ComponentDef;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class ActionDefImpl implements ActionDef {
 
 	private final ComponentDef componentDef;

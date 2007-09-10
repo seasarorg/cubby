@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Deprecated
 public class StringUtils {
 
 	public static boolean isEmpty(final String str) {

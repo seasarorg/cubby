@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.impl.ActionDefImpl;
 import org.seasar.cubby.convention.CubbyConvention;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.convention.NamingConvention;
@@ -42,8 +42,8 @@ public class CubbyConventionImpl implements CubbyConvention {
 
 		String methodName = tokens.remove(tokens.size() - 1);
 
-		StringUtils.join(tokens.iterator(), '_');
-		final String actionName = StringUtils.join(tokens.iterator(), '_')
+		CubbyUtils.join(tokens.iterator(), '_');
+		final String actionName = CubbyUtils.join(tokens.iterator(), '_')
 				+ namingConvention.getActionSuffix();
 
 		if (!container.getRoot().hasComponentDef(actionName)) {

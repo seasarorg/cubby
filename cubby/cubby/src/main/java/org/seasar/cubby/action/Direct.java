@@ -10,7 +10,7 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.OutputStreamUtil;
 
-public class Direct implements ActionResult {
+public class Direct extends AbstractActionResult {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 

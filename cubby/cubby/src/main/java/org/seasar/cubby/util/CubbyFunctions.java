@@ -9,26 +9,26 @@ import java.util.Map;
 import org.seasar.framework.util.StringUtil;
 
 public class CubbyFunctions {
-	
+
 	public static Boolean contains(Object c, Object value) {
 		if (c instanceof Collection) {
-			return _contains((Collection)c, value);
+			return _contains((Collection<?>) c, value);
 		} else if (c != null && c.getClass().isArray()) {
-			return _contains(Arrays.asList((Object[])c), value);
+			return _contains(Arrays.asList((Object[]) c), value);
 		} else {
 			return false;
 		}
 	}
 
-	public static Boolean _contains(Collection c, Object value) {
+	public static Boolean _contains(Collection<?> c, Object value) {
 		return c.contains(value);
 	}
 
-	public static Boolean containsKey(Map m, Object value) {
+	public static Boolean containsKey(Map<?, ?> m, Object value) {
 		return m.containsKey(value);
 	}
 
-	public static Boolean containsValue(Map m, Object value) {
+	public static Boolean containsValue(Map<?, ?> m, Object value) {
 		return m.containsValue(value);
 	}
 
@@ -42,7 +42,9 @@ public class CubbyFunctions {
 	}
 
 	public static String escapeHtml(Object value) {
-		if (value == null) { return "";}
+		if (value == null) {
+			return "";
+		}
 		String text;
 		if (value instanceof String) {
 			text = (String) value;
