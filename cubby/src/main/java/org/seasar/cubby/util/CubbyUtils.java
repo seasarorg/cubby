@@ -2,34 +2,32 @@ package org.seasar.cubby.util;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Url;
+import org.seasar.framework.util.StringUtil;
 
 public class CubbyUtils {
 
-	@SuppressWarnings("unchecked")
-	public static String getActionClassName(Class c) {
-		String name = c.getName();
-		name = StringUtils.left(name, "$");
-		String actionName = StringUtils.toFirstLower(name.replaceAll("(.*[.])([^.]+)(Action$)", "$2"));
+	public static String getActionClassName(Class<?> c) {
+		String name = left(c.getName(), "$");
+		String actionName = toFirstLower(name.replaceAll(
+				"(.*[.])([^.]+)(Action$)", "$2"));
 		if (c.getAnnotation(Url.class) != null) {
-			actionName = ((Url)c.getAnnotation(Url.class)).value();
+			actionName = ((Url) c.getAnnotation(Url.class)).value();
 		}
 		return actionName;
 	}
 
-	@SuppressWarnings("unchecked")
 	static String getActionMethodName(Method m) {
 		String actionName = m.getName();
 		if (m.getAnnotation(Url.class) != null) {
-			actionName = ((Url)m.getAnnotation(Url.class)).value();
+			actionName = ((Url) m.getAnnotation(Url.class)).value();
 		} else if ("index".equals(actionName)) {
 			actionName = "";
 		}
@@ -52,31 +50,27 @@ public class CubbyUtils {
 	}
 
 	public static int getObjectSize(Object value) {
+		final int size;
 		if (value == null) {
-			return 0;
+			size = 0;
 		} else if (value.getClass().isArray()) {
-			return ((Object[])value).length;
+			Object[] array = (Object[]) value;
+			size = array.length;
 		} else if (value instanceof Collection) {
-			return ((Collection<?>) value).size();
+			Collection<?> collection = (Collection<?>) value;
+			size = collection.size();
 		} else {
-			return 1;
+			size = 1;
 		}
+		return size;
 	}
 
-	public static boolean isForwardResult(ActionResult result) {
-		return result instanceof Forward;
-	}
-
-	public static boolean isRedirectResult(ActionResult result) {
-		return result instanceof Redirect;
-	}
-	
 	public static String getPath(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		return uri.substring(contextPath.length());
 	}
-	
+
 	public static boolean isActionClass(Class<?> c) {
 		return Action.class.isAssignableFrom(c);
 	}
@@ -86,10 +80,55 @@ public class CubbyUtils {
 		if (value == null) {
 			return null;
 		} else if (value.getClass().isArray()) {
-			Object[] values = (Object[])value;
+			Object[] values = (Object[]) value;
 			return values[0];
 		} else {
 			return value;
 		}
+	}
+
+	static String toFirstLower(final String propertyName) {
+		if (StringUtil.isEmpty(propertyName)) {
+			throw new IllegalArgumentException("properyName is empty.");
+		}
+		final StringBuilder sb = new StringBuilder();
+		sb.append(propertyName.substring(0, 1).toLowerCase());
+		if (propertyName.length() > 1) {
+			sb.append(propertyName.substring(1));
+		}
+		return sb.toString();
+	}
+
+	static String left(final String str, final String sep) {
+		final int pos = str.indexOf(sep);
+		if (pos != -1) {
+			return str.substring(0, pos);
+		}
+		return str;
+	}
+
+	public static String join(final Iterator<?> iterator, final char separator) {
+		if (iterator == null) {
+			return null;
+		}
+		if (!iterator.hasNext()) {
+			return "";
+		}
+		final Object first = iterator.next();
+		if (!iterator.hasNext()) {
+			return first != null ? first.toString() : "";
+		}
+		final StringBuffer buf = new StringBuffer(256);
+		if (first != null) {
+			buf.append(first);
+		}
+		while (iterator.hasNext()) {
+			buf.append(separator);
+			final Object obj = iterator.next();
+			if (obj != null) {
+				buf.append(obj);
+			}
+		}
+		return buf.toString();
 	}
 }

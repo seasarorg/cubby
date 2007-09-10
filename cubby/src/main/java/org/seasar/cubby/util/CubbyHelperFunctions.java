@@ -13,23 +13,26 @@ import javax.servlet.http.HttpServletRequest;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.util.StringUtil;
 
 public class CubbyHelperFunctions {
 
-	public static String joinPropertyValue(Object beans, String propertyName, String delim) {
+	public static String joinPropertyValue(Object beans, String propertyName,
+			String delim) {
 		return _joinPropertyValue(toArray(beans), propertyName, delim);
 	}
 
 	private static Object[] toArray(Object value) {
 		if (value.getClass().isArray()) {
-			return (Object[])value;
+			return (Object[]) value;
 		} else if (value instanceof Collection) {
-			return ((Collection)value).toArray();
+			return ((Collection<?>) value).toArray();
 		}
 		throw new IllegalArgumentException("not array or collection : " + value);
 	}
 
-	private static String _joinPropertyValue(Object[] beans, String propertyName, String delim) {
+	private static String _joinPropertyValue(Object[] beans,
+			String propertyName, String delim) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < beans.length; i++) {
 			Object bean = beans[i];
@@ -41,10 +44,10 @@ public class CubbyHelperFunctions {
 		}
 		return sb.toString();
 	}
-	
+
 	public static String toAttr(Map<String, Object> map) {
 		StringBuilder sb = new StringBuilder();
-		for(String key : map.keySet()) {
+		for (String key : map.keySet()) {
 			if (key.equals("value") || key.equals("checkedValue")) {
 				continue;
 			}
@@ -55,7 +58,7 @@ public class CubbyHelperFunctions {
 		}
 		return sb.toString();
 	}
-	
+
 	public static String checked(String value, Object values) {
 		if (value == null || values == null) {
 			return "";
@@ -80,9 +83,9 @@ public class CubbyHelperFunctions {
 
 	public static boolean isChecked(String value, Object values) {
 		if (values instanceof Collection) {
-			return ((Collection)values).contains(value);
+			return ((Collection<?>) values).contains(value);
 		} else if (values.getClass().isArray()) {
-			for (Object v : (Object[])values) {
+			for (Object v : (Object[]) values) {
 				if (equalsValue(v, value)) {
 					return true;
 				}
@@ -92,12 +95,12 @@ public class CubbyHelperFunctions {
 			return equalsValue(values, value);
 		}
 	}
-	
+
 	private static boolean equalsValue(Object values, Object value) {
-		if (values == value) { 
-			return true; 
-		} else if (values == null) { 
-			return false; 
+		if (values == value) {
+			return true;
+		} else if (values == null) {
+			return false;
 		} else {
 			return values.toString().equals(value.toString());
 		}
@@ -109,23 +112,23 @@ public class CubbyHelperFunctions {
 		if (form == null || propertyName == null) {
 			return CubbyFunctions.out(source);
 		} else {
-			//TODO ここ、おかしい。confirm.jsp の limitDate がフォーマットされないので value を指定している
+			// TODO ここ、おかしい。confirm.jsp の limitDate がフォーマットされないので value を指定している
 			String converted = null;
 			if (source != null) {
 				converted = source.toString();
 			} else {
 				Map<String, String> outputValues = (Map<String, String>) request
-				.getAttribute(ATTR_OUTPUT_VALUES);
+						.getAttribute(ATTR_OUTPUT_VALUES);
 				if (outputValues != null) {
 					converted = outputValues.get(propertyName);
-				}				
+				}
 			}
 			return CubbyFunctions.out(converted);
 		}
 	}
 
 	public static Object property(Object bean, String property) {
-		if (StringUtils.isEmpty(property)) {
+		if (StringUtil.isEmpty(property)) {
 			return bean;
 		}
 		BeanDesc beanDesc = BeanDescFactory.getBeanDesc(bean.getClass());
@@ -136,27 +139,30 @@ public class CubbyHelperFunctions {
 	@SuppressWarnings("unchecked")
 	public static void addClassName(Map dyn, String className) {
 		String classValue = (String) dyn.get("class");
-		if (StringUtils.isEmpty(classValue)) {
+		if (StringUtil.isEmpty(classValue)) {
 			classValue = className;
 		} else {
 			classValue = classValue + " " + className;
 		}
 		dyn.put("class", classValue);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static Object formValue(Map dyn, Object form, HttpServletRequest request, String valueParamName) {
+	public static Object formValue(Map dyn, Object form,
+			HttpServletRequest request, String valueParamName) {
 		Object value = dyn.get(valueParamName);
 		String name = (String) dyn.get("name");
 		if (TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) {
 			if (dyn.containsKey(valueParamName)) {
 				return value;
 			} else {
-				Map<String, Object> params = (Map<String,Object>)request.getAttribute(ATTR_PARAMS);
+				Map<String, Object> params = (Map<String, Object>) request
+						.getAttribute(ATTR_PARAMS);
 				return CubbyUtils.getParamsValue(params, name);
 			}
 		} else {
-			if (dyn.containsKey(valueParamName) || form == null || StringUtils.isEmpty(name)) {
+			if (dyn.containsKey(valueParamName) || form == null
+					|| StringUtil.isEmpty(name)) {
 				return value;
 			} else {
 				return property(form, name);

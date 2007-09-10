@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.controller.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.PropertyValidationRule;
 import org.seasar.cubby.validator.Validator;

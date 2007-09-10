@@ -10,6 +10,8 @@ import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.convention.CubbyConvention;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;
 
 public class ActionProcessorImpl implements ActionProcessor {
@@ -20,17 +22,19 @@ public class ActionProcessorImpl implements ActionProcessor {
 
 	private CubbyConvention cubbyConvention;
 
+	@Binding(bindingType = BindingType.MUST)
 	public void setActionContext(final ActionContext context) {
 		this.context = context;
 	}
 
+	@Binding(bindingType = BindingType.MUST)
 	public void setCubbyConvention(final CubbyConvention cubbyConvention) {
 		this.cubbyConvention = cubbyConvention;
 	}
 
 	public void process(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Throwable {
-		String path = CubbyUtils.getPath(request);
+		final String path = CubbyUtils.getPath(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug("request path=" + path);
 		}

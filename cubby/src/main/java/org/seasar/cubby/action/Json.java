@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.framework.util.JSONSerializer;
 
-public class Json implements ActionResult {
+public class Json extends AbstractActionResult {
 
 	private Object bean;
 

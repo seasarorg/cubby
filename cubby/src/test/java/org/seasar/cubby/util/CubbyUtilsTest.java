@@ -34,21 +34,7 @@ public class CubbyUtilsTest extends TestCase {
 		}
 		return list;
 	}
-	
-	public void testIsForwordResult() throws Exception {
-		assertEquals(true, CubbyUtils.isForwardResult(new Forward("aaa.jsp")));
-		assertEquals(false, CubbyUtils.isForwardResult(new Redirect("aaa.jsp")));
-		assertEquals(false, CubbyUtils.isForwardResult(new Redirect("/@aaa.jsp")));
-		assertEquals(false, CubbyUtils.isForwardResult(null));
-	}
 
-	public void testIsRedirectResult() throws Exception {
-		assertEquals(false, CubbyUtils.isRedirectResult(new Forward("aaa.jsp")));
-		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("aaa.jsp")));
-		assertEquals(true, CubbyUtils.isRedirectResult(new Redirect("/aaa.jsp")));
-		assertEquals(false, CubbyUtils.isRedirectResult(null));
-	}
-	
 	public void testGetActionUrl() {
 		assertEquals("/hoge/m1", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
 		assertEquals("/hoge/m/m2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m2", null)));

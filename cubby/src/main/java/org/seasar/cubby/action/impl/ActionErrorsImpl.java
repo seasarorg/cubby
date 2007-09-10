@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.impl;
+package org.seasar.cubby.action.impl;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

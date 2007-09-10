@@ -23,4 +23,9 @@ public class CubbyConstants {
 	public static final String ATTR_VALIDATION_FAIL = "validationFail";
 
 	public static final String ATTR_OUTPUT_VALUES = "outputValues";
+
+	public static final String ATTR_MESSAGES = "messages";
+
+	public static final String ATTR_CONTEXT_PATH = "contextPath";
+
 }

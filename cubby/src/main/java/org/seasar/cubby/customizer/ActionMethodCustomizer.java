@@ -34,7 +34,7 @@ import org.seasar.framework.util.StringUtil;
  * これにより、コンポーネントのメソッドが呼び出される度に、コンテナからインターセプタのインスタンスをルックアップするようになります。
  * </p>
  * 
- * @author higa
+ * @author baba
  */
 public class ActionMethodCustomizer extends AspectCustomizer {
 

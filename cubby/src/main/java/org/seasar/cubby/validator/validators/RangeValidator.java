@@ -1,8 +1,8 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.util.StringUtil;
 
 public class RangeValidator extends BaseValidator {
 	private final long min;
@@ -17,7 +17,7 @@ public class RangeValidator extends BaseValidator {
 		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			String str = (String)value;
-			if (StringUtils.isEmpty(str)) {
+			if (StringUtil.isEmpty(str)) {
 				return null;
 			}
 			try {

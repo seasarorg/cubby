@@ -1,8 +1,8 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.util.StringUtil;
 
 public class MaxLengthValidator extends BaseValidator {
 	private final int max;
@@ -15,7 +15,7 @@ public class MaxLengthValidator extends BaseValidator {
 		final Object value = ctx.getValue();
 		if (value instanceof String) {
 			String str = (String)value;
-			if (StringUtils.isEmpty((String)value)) {
+			if (StringUtil.isEmpty((String)value)) {
 				return null;
 			}
 			if (str.length() <= max) {

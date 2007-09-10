@@ -1,15 +1,15 @@
 package org.seasar.cubby.action;
 
 import java.text.MessageFormat;
+import java.util.Map;
 
-import org.seasar.cubby.util.Flash;
 import org.seasar.cubby.util.Messages;
 
 public abstract class Action {
 
 	protected ActionErrors errors;
 
-	protected Flash<String, Object> flash;
+	protected Map<String, Object> flash;
 
 	public void initialize() {
 	}
@@ -28,11 +28,11 @@ public abstract class Action {
 		this.errors = errors;
 	}
 
-	public Flash<String, Object> getFlash() {
+	public Map<String, Object> getFlash() {
 		return flash;
 	}
 
-	public void setFlash(Flash<String, Object> flash) {
+	public void setFlash(Map<String, Object> flash) {
 		this.flash = flash;
 	}
 

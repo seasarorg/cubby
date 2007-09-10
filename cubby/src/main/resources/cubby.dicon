@@ -9,14 +9,15 @@
 	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
 
 	<!-- ActionContext -->
+	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
-	<component class="org.seasar.cubby.controller.impl.ActionErrorsImpl" instance="request" />
-	<component name="flash" class="org.seasar.cubby.util.FlashHashMap" instance="session" />
-	<component name="actionProcessor" class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
+	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="prototype" />
+	<component name="flash" class="java.util.HashMap" instance="session" />
 
 	<!-- Convert -->
-	<component name="populater" class="org.seasar.cubby.controller.impl.PopulatorImpl">
-		<property name="httpRequestDxo">httpRequestDxo</property>
+	<component class="org.seasar.cubby.controller.impl.PopulatorImpl" />
+	<component class="org.seasar.cubby.dxo.HttpRequestDxo">
+		<aspect>dxo.interceptor</aspect>
 	</component>
 
 	<!-- Validation -->
@@ -26,11 +27,6 @@
 	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
 	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
 		<property name="sizeMax">10000000</property>
-	</component>
-
-	<!-- Dxo -->
-	<component name="httpRequestDxo" class="org.seasar.cubby.dxo.HttpRequestDxo">
-		<aspect>dxo.interceptor</aspect>
 	</component>
 
 	<!-- インターセプタ -->
