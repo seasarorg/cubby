@@ -7,15 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.framework.log.Logger;
+import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.OutputStreamUtil;
 
 public class Direct extends AbstractActionResult {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
-
 	private final String contentType;
+
 	private final long lastModified;
+
 	private final byte[] data;
 
 	public Direct(byte[] data, String contentType, long lastModified) {
@@ -33,12 +33,10 @@ public class Direct extends AbstractActionResult {
 		try {
 			out = response.getOutputStream();
 			out.write(data);
-			out.flush();
 		} catch (IOException e) {
-			if (logger.isInfoEnabled()) {
-				logger.info(e);
-			}
+			throw new IORuntimeException(e);
 		} finally {
+			OutputStreamUtil.flush(out);
 			OutputStreamUtil.close(out);
 		}
 	}

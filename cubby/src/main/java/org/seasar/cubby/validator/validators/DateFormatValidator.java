@@ -15,10 +15,12 @@ public class DateFormatValidator extends BaseValidator {
 		this.dateFormat.setLenient(false);
 		this.dateFormat.applyPattern(dateFormatPattern);
 	}
-	
 
 	public String validate(final ValidationContext ctx) {
 		final Object value = ctx.getValue();
+		if (value == null) {
+			return null;
+		}
 		if (value instanceof String) {
 			String str = (String)value;
 			if (StringUtil.isEmpty((String)value)) {
@@ -30,8 +32,6 @@ public class DateFormatValidator extends BaseValidator {
 					return null;
 				}
 			} catch (Exception e) {}
-		}else if(value == null){
-			return null;
 		}
 		return getMessage("valid.dateFormat", getPropertyMessage(ctx.getName()));
 	}

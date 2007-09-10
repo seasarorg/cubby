@@ -69,7 +69,7 @@ public class ActionContextImpl implements ActionContext, Serializable {
 					EMPTY_ARGS);
 			return result;
 		} catch (InvocationTargetException ex) {
-			logger.error(ex.getMessage(), ex);
+			logger.log(ex);
 			throw ex.getCause();
 		}
 	}

@@ -54,7 +54,7 @@ public class UrlRewriteFilter implements Filter {
 				(HttpServletResponse) response);
 		if (!StringUtil.isEmpty(rewritePath)) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("request forward to [" + rewritePath + "]");
+				logger.log("DCUB0001", new Object[] { rewritePath });
 			}
 			final RequestDispatcher requestDispatcher = request
 					.getRequestDispatcher(rewritePath);

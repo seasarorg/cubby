@@ -35,16 +35,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 	public void process(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Throwable {
 		final String path = CubbyUtils.getPath(request);
-		if (logger.isDebugEnabled()) {
-			logger.debug("request path=" + path);
-		}
 		ActionDef actionDef = cubbyConvention.fromPathToActionDef(path);
 		if (actionDef != null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("dispatch to action ["
-						+ actionDef.getComponentDef().getComponentName()
-						+ "], method [" + actionDef.getMethod().getName()
-						+ "]");
+				logger.log("DCUB0004", new Object[] { path });
+				logger.log("DCUB0005", new Object[] {
+						actionDef.getComponentDef().getComponentName(),
+						actionDef.getMethod().getName() });
 			}
 			context.setActionDef(actionDef);
 			ActionResult result = context.invoke();
