@@ -1,5 +1,7 @@
 package org.seasar.cubby.filter;
 
+import static org.seasar.cubby.CubbyConstants.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.SingletonS2Container;
@@ -59,7 +62,6 @@ public class UrlRewriteFilter implements Filter {
 			final RequestDispatcher requestDispatcher = request
 					.getRequestDispatcher(rewritePath);
 			requestDispatcher.forward(request, response);
-
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -77,8 +79,10 @@ public class UrlRewriteFilter implements Filter {
 		final PathResolver pathResolver = SingletonS2Container
 				.getComponent(PathResolver.class);
 
-		final String rewritePath = pathResolver.getRewritePath(path);
-		return rewritePath;
+		final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
+		request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo.getActionClassName());
+		request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
+		return forwardInfo.getRewritePath();
 	}
 
 	private boolean isIgnorePath(final String path) {
