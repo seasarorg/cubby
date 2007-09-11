@@ -22,10 +22,6 @@
 		<resource>src/main/webapp/index.jsp</resource>
 		<resource>src/main/webapp/hello/hello.jsp</resource>
 		<resource>src/main/webapp/WEB-INF/web.xml</resource>
-		<resource>.classpath</resource>
-		<resource>.project</resource>
-		<resource>.tomcatplugin</resource>
-		<resource>.settings/org.eclipse.core.resources.prefs</resource>
 	</resources>
 	<testSources>
 		<source>src/test/java/service/impl/HelloServiceImplTest.java</source>
