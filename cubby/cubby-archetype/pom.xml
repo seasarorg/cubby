@@ -8,9 +8,7 @@
 	<version>0.8.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-archetype</artifactId>
-  <version>0.8.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Maven Archetype for Seasar&amp;Cubby&amp;</name>
 </project>
