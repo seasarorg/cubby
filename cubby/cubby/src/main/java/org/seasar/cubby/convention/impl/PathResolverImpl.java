@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.Uri;
@@ -31,13 +32,13 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	private NamingConvention namingConvention;
 
-	private Map<Pattern, RewriteInfo> patternToRewriteInfoMap;
+	private Map<Pattern, RewriteInfo> patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
 
-	private Map<Pattern, RewriteInfo> customPatternToRewriteInfoMap = new HashMap<Pattern, RewriteInfo>();
+	private Map<Pattern, RewriteInfo> customPatternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
 
 	public void initialize() {
 		if (!initialized) {
-			patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
+			patternToRewriteInfoMap.clear();
 			ClassCollector classCollector = new ActionClassCollector();
 			classCollector.collect();
 
@@ -53,6 +54,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	public void add(final String patternStr,
 			final Class<? extends Action> actionClass, final String methodName) {
+
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
 		this.add(patternStr, actionClass, method, customPatternToRewriteInfoMap);
@@ -61,6 +63,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private void add(final String patternStr,
 			final Class<? extends Action> actionClass, final Method method,
 			Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
+
 		String actionFullName = patternStr;
 		final List<String> uriParameterNames = new ArrayList<String>();
 		final Matcher matcher = urlRewritePattern.matcher(actionFullName);
@@ -81,8 +84,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		final String rewritePath = this.fromActionClassToPath(actionClass,
 				method);
 
-		final RewriteInfo rewriteInfo = new RewriteInfo(rewritePath,
-				uriParameterNames);
+		final RewriteInfo rewriteInfo = new RewriteInfo(actionClass, method,
+				uriParameterNames, rewritePath);
 		final Pattern pattern = Pattern.compile("^" + actionFullName + "$");
 
 		patternToRewriteInfoMap.put(pattern, rewriteInfo);
@@ -108,21 +111,21 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		return builder.toString();
 	}
 
-	public String getRewritePath(final String path) {
+	public ForwardInfo getForwardInfo(final String path) {
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0006", new Object[] { path });
 		}
 
 		initialize();
 
-		String rewritePath = findRewritePath(path, customPatternToRewriteInfoMap);
-		if (StringUtil.isEmpty(rewritePath)) {
-			rewritePath = findRewritePath(path, patternToRewriteInfoMap);
+		ForwardInfo forwardInfo = findForwardInfo(path, customPatternToRewriteInfoMap);
+		if (forwardInfo == null) {
+			forwardInfo = findForwardInfo(path, patternToRewriteInfoMap);
 		}
-		return rewritePath;
+		return forwardInfo;
 	}
 
-	private String findRewritePath(final String path,
+	private ForwardInfo findForwardInfo(final String path,
 			final Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
 		final Map<String, String> uriParams = new HashMap<String, String>();
 		for (final Pattern p : patternToRewriteInfoMap.keySet()) {
@@ -135,9 +138,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 							.get(i - 1);
 					uriParams.put(paramName, group);
 				}
-				final String rewritePath = rewriteInfo
-						.buildRewritePath(uriParams);
-				return rewritePath;
+				final ForwardInfoImpl forwardInfo = new ForwardInfoImpl(
+						rewriteInfo, uriParams);
+				return forwardInfo;
 			}
 		}
 		return null;
@@ -149,15 +152,23 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	class RewriteInfo {
 
-		private final String rewritePath;
+		private final Class<? extends Action> actionClass;
+
+		private final Method method;
 
 		private final List<String> uriParameterNames;
 
-		public RewriteInfo(final String rewritePath,
-				final List<String> uriParameterNames) {
-			super();
-			this.rewritePath = rewritePath;
+		private final String rewritePath;
+
+		public RewriteInfo(
+				final Class<? extends Action> actionClass,
+				final Method method,
+				final List<String> uriParameterNames,
+				final String rewritePath) {
+			this.actionClass = actionClass;
+			this.method = method;
 			this.uriParameterNames = uriParameterNames;
+			this.rewritePath = rewritePath;
 		}
 
 		public String buildRewritePath(final Map<String, String> uriParams) {
@@ -175,13 +186,22 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			return builder.toString();
 		}
 
-		public String getRewritePath() {
-			return rewritePath;
+		public Class<? extends Action> getActionClass() {
+			return actionClass;
+		}
+
+		public Method getMethod() {
+			return method;
 		}
 
 		public List<String> getUriParameterNames() {
 			return uriParameterNames;
 		}
+
+		public String getRewritePath() {
+			return rewritePath;
+		}
+
 	}
 
 	class ActionClassCollector extends ClassCollector {

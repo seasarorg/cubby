@@ -28,4 +28,8 @@ public class CubbyConstants {
 
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
 
+	public static final String ATTR_ACTION_CLASS_NAME = "org.seasar.cubby.actionClassName";
+
+	public static final String ATTR_METHOD_NAME = "org.seasar.cubby.methodName";
+
 }
