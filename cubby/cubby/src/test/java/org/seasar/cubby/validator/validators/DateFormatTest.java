@@ -13,6 +13,6 @@ public class DateFormatTest extends TestCase {
 		assertEquals(null, dateFormat.validate(new ValidationContext("date", "2006-01-01", new HashMap())));
 		assertNotSame(null, dateFormat.validate(new ValidationContext("date", "2006-02-29", new HashMap())));	
 		assertNotSame(null, dateFormat.validate(new ValidationContext("date", "06-02-29", new HashMap())));	
-		assertNotSame(null, dateFormat.validate(new ValidationContext("date", "2006-2-29a", new HashMap())));	
+		assertNotSame(null, dateFormat.validate(new ValidationContext("date", "2006-2-2a", new HashMap())));	
 	}
 }

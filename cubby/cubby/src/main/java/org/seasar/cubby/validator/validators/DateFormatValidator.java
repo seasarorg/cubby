@@ -1,5 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
+import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,12 +10,11 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 public class DateFormatValidator extends BaseValidator {
-	private final SimpleDateFormat dateFormat;
 
-	public DateFormatValidator(final String dateFormatPattern) {
-		this.dateFormat = new SimpleDateFormat();
-		this.dateFormat.setLenient(false);
-		this.dateFormat.applyPattern(dateFormatPattern);
+	private final String pattern;
+
+	public DateFormatValidator(final String pattern) {
+		this.pattern = pattern;
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -22,17 +23,27 @@ public class DateFormatValidator extends BaseValidator {
 			return null;
 		}
 		if (value instanceof String) {
-			String str = (String)value;
-			if (StringUtil.isEmpty((String)value)) {
+			final String stringValue = (String) value;
+			if (StringUtil.isEmpty((String) value)) {
 				return null;
 			}
 			try {
-				Date date = dateFormat.parse(str);
-				if (date != null) {
+				final DateFormat dateFormat = createDateFormat();
+				final ParsePosition parsePosition = new ParsePosition(0);
+				final Date date = dateFormat.parse(stringValue, parsePosition);
+				if (date != null && parsePosition.getIndex() == stringValue.length()) {
 					return null;
 				}
-			} catch (Exception e) {}
+			} catch (final Exception e) {
+			}
 		}
 		return getMessage("valid.dateFormat", getPropertyMessage(ctx.getName()));
+	}
+
+	private DateFormat createDateFormat() {
+		final SimpleDateFormat dateFormat = new SimpleDateFormat();
+		dateFormat.setLenient(false);
+		dateFormat.applyPattern(this.pattern);
+		return dateFormat;
 	}
 }
