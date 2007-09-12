@@ -79,10 +79,16 @@ public class UrlRewriteFilter implements Filter {
 		final PathResolver pathResolver = SingletonS2Container
 				.getComponent(PathResolver.class);
 
+		final String rewritePath;
 		final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
-		request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo.getActionClassName());
-		request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
-		return forwardInfo.getRewritePath();
+		if (forwardInfo != null) {
+			request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo.getActionClassName());
+			request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
+			rewritePath = forwardInfo.getRewritePath();
+		} else {
+			rewritePath = null;
+		}
+		return rewritePath;
 	}
 
 	private boolean isIgnorePath(final String path) {
