@@ -84,14 +84,6 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
-<!--
-    <filter-mapping>
-        <filter-name>cubbyfilter</filter-name>
-        <url-pattern>/cubby-dispacher/*</url-pattern>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
--->
-
     <servlet>
         <servlet-name>s2servlet</servlet-name>
         <servlet-class>org.seasar.framework.container.servlet.S2ContainerServlet</servlet-class>
@@ -137,7 +129,7 @@
     </servlet-mapping>
 
     <listener>
-        <listener-class>org.seasar.cubby.examples.smartdeploy.RunDdlServletRequestListener</listener-class>
+        <listener-class>org.seasar.cubby.examples.RunDdlServletRequestListener</listener-class>
     </listener>
 
     <!--

@@ -4,7 +4,13 @@
 <components>
 	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
 		<initMethod name="addRootPackageName">
-			<arg>"org.seasar.cubby.examples.smartdeploy"</arg>
+			<arg>"org.seasar.cubby.examples.todo"</arg>
+		</initMethod>
+		<initMethod name="addRootPackageName">
+			<arg>"org.seasar.cubby.examples.whiteboard"</arg>
+		</initMethod>
+		<initMethod name="addRootPackageName">
+			<arg>"org.seasar.cubby.examples.other"</arg>
 		</initMethod>
 	</component>
 </components>

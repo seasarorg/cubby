@@ -5,37 +5,15 @@
   <include path="default-customizer.dicon"/>
   <include path="cubby-customizer.dicon"/>
 
-  <!--
-  <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
-    <initMethod name="addCustomizer">
-      <arg>traceCustomizer</arg>
-    </initMethod>
-    <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <initMethod name="addInterceptorName">
-            <arg>"app_aop.appFacesExceptionThrowsInterceptor"</arg>
-          </initMethod>
-          <property name="pointcut">"do.*, initialize, prerender"</property>
-        </component>
-      </arg>
-    </initMethod>
-    <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
-          <initMethod name="addInterceptorName">
-            <arg>"j2ee.requiredTx"</arg>
-          </initMethod>
-          <property name="pointcut">"do.*, initialize, prerender"</property>
-        </component>
-      </arg>
-    </initMethod>
-  </component>
-  -->
   <component name="propertyInterTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
     <property name="interTypeName">"aop.propertyInterType"</property>
   </component>
 
+  <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+    <initMethod name="addCustomizer">
+      <arg>traceCustomizer</arg>
+    </initMethod>
+  </component>
   <component name="actionCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer"><arg>propertyInterTypeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer">
@@ -58,8 +36,12 @@
           <initMethod name="addInterceptorName">
             <arg>"authActionInterceptor"</arg>
           </initMethod>
+          <initMethod name="addClassPattern">
+            <arg>"org.seasar.cubby.examples.todo"</arg>
+            <arg>".*"</arg>
+          </initMethod>
           <initMethod name="addIgnoreClassPattern">
-            <arg>"org.seasar.cubby.examples.smartdeploy.action"</arg>
+            <arg>"org.seasar.cubby.examples.todo"</arg>
             <arg>"^LoginAction$"</arg>
           </initMethod>
           <property name="pointcut">".*"</property>
