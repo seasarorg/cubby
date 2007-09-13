@@ -7,6 +7,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FIELD_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
+import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
@@ -127,6 +128,10 @@ public class InitializeInterceptor implements MethodInterceptor {
 				.getActionErrors());
 		request.setAttribute(ATTR_FIELD_ERRORS, action.getErrors()
 				.getFieldErrors());
+
+		final Map<String, String> outputValues = populator.describe(context
+				.getFormBean());
+		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
 
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());
