@@ -6,7 +6,7 @@
 </head>
 <body>
 [<a href="${contextPath}/">戻る</a>]
-<t:form method="post" action="${contextPath}/components/show" value="${form}">
+<t:form method="post" action="${contextPath}/components/" value="${form}">
 <h1>コンポーネント一覧</h1>
 <h2>Input Text</h2>
 <label for="userName">Name:</label><t:input type="text" name="userName" id="userName"><input type="text"/></t:input>
