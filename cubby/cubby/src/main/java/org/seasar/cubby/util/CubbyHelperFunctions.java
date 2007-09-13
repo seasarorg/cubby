@@ -112,16 +112,20 @@ public class CubbyHelperFunctions {
 		if (form == null || propertyName == null) {
 			return CubbyFunctions.out(source);
 		} else {
-			// TODO ここ、おかしい。confirm.jsp の limitDate がフォーマットされないので value を指定している
-			String converted = null;
-			if (source != null) {
-				converted = source.toString();
-			} else {
-				Map<String, String> outputValues = (Map<String, String>) request
-						.getAttribute(ATTR_OUTPUT_VALUES);
-				if (outputValues != null) {
+			final Map<String, String> outputValues = (Map<String, String>) request
+					.getAttribute(ATTR_OUTPUT_VALUES);
+			final String converted;
+			if (outputValues != null) {
+				final String outputValue = outputValues.get(propertyName);
+				if (outputValue == null && source != null) {
+					converted = source.toString();
+				} else {
 					converted = outputValues.get(propertyName);
 				}
+			} else if (source == null) {
+				converted = "";
+			} else {
+				converted = source.toString();
 			}
 			return CubbyFunctions.out(converted);
 		}

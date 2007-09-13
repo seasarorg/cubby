@@ -1,6 +1,5 @@
 package org.seasar.cubby.interceptor;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
@@ -17,7 +16,6 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
@@ -39,18 +37,19 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  */
 public class ValidationInterceptor implements MethodInterceptor {
 
-	private final ActionValidator validator;
-
-	private final Populator populator;
+	private static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
+		public List<ValidationRule> getRules() {
+			return Collections.emptyList();
+		}
+	};
 
 	private HttpServletRequest request;
 
+	private ActionValidator validator;
+
 	private ActionContext context;
 
-	public ValidationInterceptor(ActionValidator actionValidator,
-			Populator populator) {
-		this.validator = actionValidator;
-		this.populator = populator;
+	public ValidationInterceptor() {
 	}
 
 	public void setRequest(final HttpServletRequest request) {
@@ -61,6 +60,10 @@ public class ValidationInterceptor implements MethodInterceptor {
 		this.context = context;
 	}
 
+	public void setActionValidatior(final ActionValidator actionValidator) {
+		this.validator = actionValidator;
+	}
+
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 
 		final Action controller = context.getAction();
@@ -68,8 +71,8 @@ public class ValidationInterceptor implements MethodInterceptor {
 		final ValidationRules rules = getValidationRules(context);
 		final Map<String, Object> params = getParams();
 
-		boolean success = validator.processValidation(validation, controller,
-				params, context.getFormBean(), rules);
+		final boolean success = validator.processValidation(validation,
+				controller, params, context.getFormBean(), rules);
 
 		final Object result;
 		if (success) {
@@ -80,10 +83,6 @@ public class ValidationInterceptor implements MethodInterceptor {
 			result = new Forward(path);
 		}
 
-		Map<String, String> outputValues = populator.describe(context
-				.getFormBean());
-		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
-
 		return result;
 	}
 
@@ -92,22 +91,19 @@ public class ValidationInterceptor implements MethodInterceptor {
 		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
 	}
 
-	public static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
-		@SuppressWarnings("unchecked")
-		public List<ValidationRule> getRules() {
-			return Collections.EMPTY_LIST;
-		}
-	};
-
 	private ValidationRules getValidationRules(ActionContext context) {
-		Validation validation = context.getValidation();
-		if (validation != null) {
-			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(context.getAction().getClass());
-			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation.rulesField());
-			ValidationRules rules = (ValidationRules) propertyDesc.getValue(context.getAction());
-			return rules;
+		final Validation validation = context.getValidation();
+		final ValidationRules validationRules;
+		if (validation == null) {
+			validationRules = NULL_VALIDATION_RULES;
+		} else {
+			final Action action = context.getAction();
+			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action.getClass());
+			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
+					.rulesField());
+			validationRules = (ValidationRules) propertyDesc.getValue(action);
 		}
-		return NULL_VALIDATION_RULES;
+		return validationRules;
 	}
 
 }
