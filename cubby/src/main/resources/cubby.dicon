@@ -12,16 +12,9 @@
 	<!-- ActionContext -->
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
+	<component class="org.seasar.cubby.controller.impl.PopulatorImpl" />
 	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="prototype" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
-
-	<!-- Convert -->
-	<component class="org.seasar.cubby.controller.impl.PopulatorImpl" />
-	<component class="org.seasar.cubby.dxo.HttpRequestDxo">
-		<aspect>
-			<component class="org.seasar.extension.dxo.DxoInterceptor"/>
-		</aspect>
-	</component>
 
 	<!-- Validation -->
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
