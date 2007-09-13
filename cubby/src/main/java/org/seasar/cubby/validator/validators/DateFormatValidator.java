@@ -5,6 +5,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
@@ -13,8 +14,17 @@ public class DateFormatValidator extends BaseValidator {
 
 	private final String pattern;
 
+	public DateFormatValidator() {
+		this(null);
+	}
+
 	public DateFormatValidator(final String pattern) {
+		this(pattern, "valid.dateFormat");
+	}
+
+	public DateFormatValidator(final String pattern, final String messageKey) {
 		this.pattern = pattern;
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -28,7 +38,7 @@ public class DateFormatValidator extends BaseValidator {
 				return null;
 			}
 			try {
-				final DateFormat dateFormat = createDateFormat();
+				final DateFormat dateFormat = createDateFormat(ctx);
 				final ParsePosition parsePosition = new ParsePosition(0);
 				final Date date = dateFormat.parse(stringValue, parsePosition);
 				if (date != null && parsePosition.getIndex() == stringValue.length()) {
@@ -37,13 +47,23 @@ public class DateFormatValidator extends BaseValidator {
 			} catch (final Exception e) {
 			}
 		}
-		return getMessage("valid.dateFormat", getPropertyMessage(ctx.getName()));
+		return getMessage(getPropertyMessage(ctx.getName()));
 	}
 
-	private DateFormat createDateFormat() {
+	private DateFormat createDateFormat(final ValidationContext context) {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
+		final String pattern;
+		if (StringUtil.isEmpty(this.pattern)) {
+			FormatPattern formatPattern = context.getFormatPattern();
+			if (formatPattern == null) {
+				throw new RuntimeException("フォーマットが指定されていません");
+			}
+			pattern = formatPattern.getDatePattern();
+		} else {
+			pattern = this.pattern;
+		}
+		dateFormat.applyPattern(pattern);
 		dateFormat.setLenient(false);
-		dateFormat.applyPattern(this.pattern);
 		return dateFormat;
 	}
 }

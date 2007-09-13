@@ -5,6 +5,15 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 public class RequiredValidator extends BaseValidator {
+
+	public RequiredValidator() {
+		this("valid.required");
+	}
+
+	public RequiredValidator(final String messageKey) {
+		this.setMessageKey(messageKey);
+	}
+
 	public String validate(final ValidationContext ctx) {
 		final Object value = ctx.getValue();
 		if (value instanceof String) {
@@ -15,7 +24,8 @@ public class RequiredValidator extends BaseValidator {
 		} else if (value != null) {
 			return null;
 		}
-		return getMessage("valid.required", getPropertyMessage(ctx
+		return getMessage(getPropertyMessage(ctx
 				.getName()));
 	}
+
 }

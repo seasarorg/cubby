@@ -16,7 +16,12 @@ public class FileRegexpValidator extends BaseValidator {
 	private final Pattern pattern;
 
 	public FileRegexpValidator(final String regex) {
+		this(regex, "valid.fileRegexp");
+	}
+
+	public FileRegexpValidator(final String regex, final String messageKey) {
 		this.pattern = Pattern.compile(regex);
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -26,7 +31,7 @@ public class FileRegexpValidator extends BaseValidator {
 			if (matcher.matches()) {
 				return null;
 			}
-			return getMessage("valid.fileRegexp", getPropertyMessage(ctx.getName()));
+			return getMessage(getPropertyMessage(ctx.getName()));
 		}
 		return null;
 	}

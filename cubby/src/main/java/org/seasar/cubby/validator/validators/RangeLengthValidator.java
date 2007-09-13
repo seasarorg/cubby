@@ -5,12 +5,19 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 public class RangeLengthValidator extends BaseValidator {
+
 	private final int min;
+
 	private final int max;
 
 	public RangeLengthValidator(final int min, final int max) {
+		this(min, max, "valid.rangeLength");
+	}
+
+	public RangeLengthValidator(final int min, final int max, final String messageKey) {
 		this.min = min;
 		this.max = max;
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -28,6 +35,7 @@ public class RangeLengthValidator extends BaseValidator {
 		}else if(value == null){
 			return null;
 		}
-		return getMessage("valid.rangeLength", getPropertyMessage(ctx.getName()), min, max);
+		return getMessage(getPropertyMessage(ctx.getName()), min, max);
 	}
+
 }

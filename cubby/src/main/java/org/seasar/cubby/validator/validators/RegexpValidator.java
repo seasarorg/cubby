@@ -13,10 +13,16 @@ import org.seasar.framework.util.StringUtil;
  * @see Matcher
  */
 public class RegexpValidator extends BaseValidator {
+
 	private final Pattern pattern;
 
 	public RegexpValidator(final String regex) {
+		this(regex, "valid.regexp");
+	}
+
+	public RegexpValidator(final String regex, final String messageKey) {
 		this.pattern = Pattern.compile(regex);
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -34,6 +40,7 @@ public class RegexpValidator extends BaseValidator {
 				return null;
 			}
 		}
-		return getMessage("valid.regexp", getPropertyMessage(ctx.getName()));
+		return getMessage(getPropertyMessage(ctx.getName()));
 	}
+
 }
