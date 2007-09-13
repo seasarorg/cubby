@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<t:template extend="/template.jsp">
+<t:template extend="template.jsp">
 <jsp:attribute name="title">Todoリスト</jsp:attribute>
 <jsp:attribute name="content">
 <script language="javascript">

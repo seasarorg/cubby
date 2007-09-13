@@ -25,7 +25,7 @@ public class AuthActionInterceptor implements MethodInterceptor {
 
 			final Action action = (Action) invocation.getThis();
 			action.getFlash().put("notice", "ログインしていません。");
-			return new Redirect("/login/");
+			return new Redirect("/todo/login/");
 		}
 		return invocation.proceed();
 	}

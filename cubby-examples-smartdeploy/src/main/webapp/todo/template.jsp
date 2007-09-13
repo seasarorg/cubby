@@ -12,7 +12,7 @@
 <body>
 <div id="header">
 	<div id="header_info">
-	${authenticationDto.user.name}さんこんにちは | <a href="${contextPath}/login/logout">ログアウト</a>
+	${authenticationDto.user.name}さんこんにちは | <a href="${contextPath}/todo/logout">ログアウト</a>
 	</div>
 	<h1>Todo</h1>
 </div>
