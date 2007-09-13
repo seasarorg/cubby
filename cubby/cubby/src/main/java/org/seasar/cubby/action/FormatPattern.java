@@ -1,5 +1,7 @@
 package org.seasar.cubby.action;
 
+import java.text.DateFormat;
+
 public interface FormatPattern {
 
 	String getDatePattern();
@@ -7,5 +9,11 @@ public interface FormatPattern {
 	String getTimePattern();
 
 	String getTimestampPattern();
+
+	DateFormat getDateFormat();
+
+	DateFormat getTimeFormat();
+
+	DateFormat getTimestampFormat();
 
 }

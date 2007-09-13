@@ -5,10 +5,16 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 public class MaxSizeValidator extends BaseValidator {
+
 	private final int max;
 
 	public MaxSizeValidator(final int max) {
+		this(max, "valid.maxSize");
+	}
+
+	public MaxSizeValidator(final int max, final String messageKey) {
 		this.max = max;
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -20,8 +26,7 @@ public class MaxSizeValidator extends BaseValidator {
 		if (size <= max) {
 			return null;
 		} else {
-			return getMessage("valid.maxSize", getPropertyMessage(ctx
-					.getName()), (Integer) max);
+			return getMessage(getPropertyMessage(ctx.getName()), max);
 		}
 	}
 }

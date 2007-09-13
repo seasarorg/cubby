@@ -7,16 +7,21 @@ public class EqualsValidator extends BaseValidator {
 
 	private final String value;
 
-	public EqualsValidator(String value) {
-		this.value = value;
+	public EqualsValidator(final String value) {
+		this(value, "valid.equals");
 	}
-	
+
+	public EqualsValidator(final String value, final String messageKey) {
+		this.value = value;
+		this.setMessageKey(messageKey);
+	}
+
 	public String validate(final ValidationContext ctx) {
 		final Object value = ctx.getValue();
 		if (this.value.equals(value)) {
 			return null;
 		} else {
-			return getMessage("valid.equals", getPropertyMessage(ctx.getName()), this.value);
+			return getMessage(getPropertyMessage(ctx.getName()), this.value);
 		}
 	}
 

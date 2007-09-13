@@ -5,6 +5,15 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 public class NumberValidator extends BaseValidator {
+
+	public NumberValidator() {
+		this("valid.number");
+	}
+
+	public NumberValidator(final String messageKey) {
+		this.setMessageKey(messageKey);
+	}
+
 	public String validate(final ValidationContext ctx) {
 		final Object value = ctx.getValue();
 		if (value instanceof String) {
@@ -19,7 +28,6 @@ public class NumberValidator extends BaseValidator {
 		}else if(value == null){
 			return null;
 		}
-		return getMessage("valid.number", getPropertyMessage(ctx
-				.getName()));
+		return getMessage(getPropertyMessage(ctx.getName()));
 	}
 }

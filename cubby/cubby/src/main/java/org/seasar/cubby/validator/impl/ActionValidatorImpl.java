@@ -3,6 +3,7 @@ package org.seasar.cubby.validator.impl;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
@@ -16,7 +17,13 @@ import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public class ActionValidatorImpl implements ActionValidator {
-	
+
+	private FormatPattern formatPattern;
+
+	public void setFormatPattern(final FormatPattern formatPattern) {
+		this.formatPattern = formatPattern;
+	}
+
 	public boolean processValidation(final Validation valid, 
 			final Action action, final Map<String,Object> params, 
 			final Object form, final ValidationRules rules) 
@@ -59,7 +66,7 @@ public class ActionValidatorImpl implements ActionValidator {
 		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
 		PropertyValidationRule propRule = (PropertyValidationRule)rule;
 		String name = propRule.getPropertyNameKey();
-		ValidationContext ctx = new ValidationContext(name, value, params);
+		ValidationContext ctx = new ValidationContext(name, value, params, formatPattern);
 		return ctx;
 	}
 

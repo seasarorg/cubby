@@ -1,21 +1,25 @@
 package org.seasar.cubby.validator;
 
-import java.util.Collections;
 import java.util.Map;
 
-public class ValidationContext {
-	private final String name;
-	private final Object value;
-	private final Map params;
-	
-	public ValidationContext(final String name, final Object value) {
-		this(name, value, Collections.EMPTY_MAP);
-	}
+import org.seasar.cubby.action.FormatPattern;
 
-	public ValidationContext(final String name, final Object value, final Map params) {
+public class ValidationContext {
+
+	private final String name;
+
+	private final Object value;
+
+	private final Map<String, Object> params;
+
+	private final FormatPattern formatPattern;
+
+	public ValidationContext(final String name, final Object value,
+			final Map<String, Object> params, final FormatPattern formatPattern) {
 		this.name = name;
 		this.value = value;
 		this.params = params;
+		this.formatPattern = formatPattern;
 	}
 
 	public String getName() {
@@ -26,8 +30,12 @@ public class ValidationContext {
 		return value;
 	}
 
-	public Map getParams() {
+	public Map<String, Object> getParams() {
 		return params;
 	}
-	
+
+	public FormatPattern getFormatPattern() {
+		return formatPattern;
+	}
+
 }

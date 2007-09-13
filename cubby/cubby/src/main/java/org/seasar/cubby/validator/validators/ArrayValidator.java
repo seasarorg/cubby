@@ -18,7 +18,8 @@ public class ArrayValidator implements Validator {
 		}
 		Object[] values = (Object[])value;
 		for (Object currentValue : values) {
-			ValidationContext currentCtx = new ValidationContext(ctx.getName(), currentValue, ctx.getParams());
+			ValidationContext currentCtx = new ValidationContext(ctx.getName(),
+					currentValue, ctx.getParams(), ctx.getFormatPattern());
 			String error = validateAll(currentCtx);
 			if (error != null) {
 				return error;

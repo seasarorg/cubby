@@ -1,5 +1,8 @@
 package org.seasar.cubby.action.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.seasar.cubby.action.FormatPattern;
 
 public class FormatPatternImpl implements FormatPattern {
@@ -32,6 +35,18 @@ public class FormatPatternImpl implements FormatPattern {
 
 	public void setTimestampPattern(String timestampPattern) {
 		this.timestampPattern = timestampPattern;
+	}
+
+	public DateFormat getDateFormat() {
+		return new SimpleDateFormat(this.datePattern);
+	}
+
+	public DateFormat getTimeFormat() {
+		return new SimpleDateFormat(this.timePattern);
+	}
+
+	public DateFormat getTimestampFormat() {
+		return new SimpleDateFormat(this.timestampPattern);
 	}
 
 }

@@ -5,10 +5,16 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 public class MinSizeValidator extends BaseValidator {
+
 	private final int min;
 
 	public MinSizeValidator(final int min) {
+		this(min, "valid.minSize");
+	}
+
+	public MinSizeValidator(final int min, final String messageKey) {
 		this.min = min;
+		this.setMessageKey(messageKey);
 	}
 
 	public String validate(final ValidationContext ctx) {
@@ -20,8 +26,7 @@ public class MinSizeValidator extends BaseValidator {
 		if (size >= min) {
 			return null;
 		} else {
-			return getMessage("valid.minSize", getPropertyMessage(ctx
-					.getName()), (Integer) min);
+			return getMessage(getPropertyMessage(ctx.getName()), min);
 		}
 	}
 }
