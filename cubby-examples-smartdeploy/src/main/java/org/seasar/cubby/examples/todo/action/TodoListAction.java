@@ -7,15 +7,27 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.TodoDao;
 import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
 import org.seasar.cubby.examples.todo.dto.AuthenticationDto;
 import org.seasar.cubby.examples.todo.dto.TodoConditionDto;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.DateFormatValidator;
 
 @Url("todo")
 public class TodoListAction extends Action {
+
+	// ----------------------------------------------[Validation]
+
+	public ValidationRules validation = new DefaultValidationRules() {
+		public void initialize() {
+			add("limitDate", new DateFormatValidator("yyyy-MM-dd"));
+		}
+	};
 
 	// ----------------------------------------------[DI Filed]
 
@@ -34,6 +46,7 @@ public class TodoListAction extends Action {
 	// ----------------------------------------------[Action Method]
 
 	@Form("todoConditionDto")
+	@Validation(rulesField="validation", errorPage="list.jsp")
 	public ActionResult index() {
 		this.todoList = todoDao.selectByCondition(todoConditionDto);
 		return new Forward("list.jsp");
@@ -56,6 +69,9 @@ public class TodoListAction extends Action {
 			sb.append("種別=").append(
 					todoTypeDao.selectById(todoConditionDto.getTypeId())
 							.getName()).append(" ");
+		}
+		if (todoConditionDto.hasLimitDate()) {
+			sb.append("期限日<=").append(todoConditionDto.getLimitDate());
 		}
 		return sb.toString();
 	}

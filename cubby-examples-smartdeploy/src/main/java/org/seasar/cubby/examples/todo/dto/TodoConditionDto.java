@@ -1,6 +1,7 @@
 package org.seasar.cubby.examples.todo.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.container.annotation.tiger.InstanceType;
@@ -13,6 +14,8 @@ public class TodoConditionDto implements Serializable {
 	public String keyword;
 
 	public Integer typeId;
+
+	public Date limitDate;
 
 	public String getKeyword() {
 		return keyword;
@@ -30,6 +33,14 @@ public class TodoConditionDto implements Serializable {
 		this.typeId = typeId;
 	}
 
+	public Date getLimitDate() {
+		return limitDate;
+	}
+
+	public void setLimitDate(Date limitDate) {
+		this.limitDate = limitDate;
+	}
+
 	public String getWildcardKeyword() {
 		return '%' + keyword + '%';
 	}
@@ -42,4 +53,7 @@ public class TodoConditionDto implements Serializable {
 		return keyword != null && !"".equals(keyword);
 	}
 
+	public boolean hasLimitDate() {
+		return limitDate != null;
+	}
 }

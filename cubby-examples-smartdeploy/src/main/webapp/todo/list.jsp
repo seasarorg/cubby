@@ -13,6 +13,7 @@ function doDelete(name, id) {
 </script>
 <c:import url="/common/notice.jsp"/>
 <h2>Todoの一覧</h2>
+<t:errors />
 <div class="menu">
 [<a href="${contextPath}/todo/create">新規作成</a>]
 </div>
@@ -29,6 +30,12 @@ function doDelete(name, id) {
     <td>
 	<t:select id="typeId" name="typeId"
 		items="${action.todoTypes}" labelProperty="name" valueProperty="id"/>
+  </tr>
+  <tr>
+    <th>期限日</th>
+    <td>
+      <t:input type="text" id="limitDate" name="limitDate" size="10" maxsize="10"/>
+    </td>
   </tr>
   <tr>
     <th></th>

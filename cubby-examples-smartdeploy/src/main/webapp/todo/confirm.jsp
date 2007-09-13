@@ -24,19 +24,19 @@ function doBack() {
 <table border="1">
   <tr>
     <th>内容</th>
-    <td>${f:out(action.text)}</td>
+    <td>${f:out(text)}</td>
   </tr>
   <tr>
     <th>優先度</th>
-    <td>${f:out(action.todoType.name)}</td>
+    <td>${f:out(todoType.name)}</td>
   </tr>
   <tr>
     <th>期限日</th>
-    <td>${f:out(action.limitDate)}</td>
+    <td>${f:out(limitDate)}</td>
   </tr>
   <tr>
     <th>メモ</th>
-    <td>${f:out(action.memo)}</td>
+    <td>${f:out(memo)}</td>
   </tr>
   <tr>
     <th></th>

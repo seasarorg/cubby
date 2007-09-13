@@ -29,6 +29,9 @@ public interface TodoDao {
 			"/*IF condition.hasKeyword()*/" +
 			"AND text like /*condition.wildcardKeyword*/'%type%' " +
 			"AND memo like /*condition.wildcardKeyword*/'%type%'" +
+			"/*END*/" +
+			"/*IF condition.hasLimitDate()*/" +
+			"AND limitdate <= /*condition.limitDate*/'2007-08-05'" +
 			"/*END*/")
 	List<Todo> selectByCondition(TodoConditionDto TodoConditionDto);
 

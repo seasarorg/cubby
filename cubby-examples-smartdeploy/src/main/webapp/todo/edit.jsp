@@ -17,7 +17,7 @@
     <th>優先度</th>
     <td>
 		<t:select id="typeId" name="typeId"
-			items="${action.todoTypes}" labelProperty="name" valueProperty="id" emptyOptionLabel="選択してください。" />
+			items="${todoTypes}" labelProperty="name" valueProperty="id" emptyOptionLabel="選択してください。" />
     </td>
   </tr>
   <tr>
@@ -28,7 +28,7 @@
   <tr>
     <th>メモ</th>
   <td>
-    <t:textarea name="memo" value="${f:out(action.memo)}"/>
+    <t:textarea name="memo" value="${f:out(memo)}"/>
   </td>
   </tr>
   <tr>
