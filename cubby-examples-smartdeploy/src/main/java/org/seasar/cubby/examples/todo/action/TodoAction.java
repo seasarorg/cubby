@@ -26,11 +26,12 @@ public class TodoAction extends Action {
 	// ----------------------------------------------[Validation]
 
 	public ValidationRules validation = new DefaultValidationRules() {
+		@Override
 		public void initialize() {
 			add("text", new RequiredValidator(), new MaxLengthValidator(10));
 			add("memo", new RequiredValidator(), new MaxLengthValidator(100));
-			add("typeId", "todoType",new RequiredValidator());
-			add("limitDate", new DateFormatValidator("yyyy-MM-dd"));
+			add("typeId", "todoType", new RequiredValidator());
+			add("limitDate", new DateFormatValidator());
 		}
 	};
 

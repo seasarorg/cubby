@@ -1,10 +1,12 @@
 package org.seasar.cubby.examples.todo.action;
 
+import java.text.DateFormat;
 import java.util.List;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
@@ -24,12 +26,15 @@ public class TodoListAction extends Action {
 	// ----------------------------------------------[Validation]
 
 	public ValidationRules validation = new DefaultValidationRules() {
+		@Override
 		public void initialize() {
-			add("limitDate", new DateFormatValidator("yyyy-MM-dd"));
+			add("limitDate", new DateFormatValidator());
 		}
 	};
 
 	// ----------------------------------------------[DI Filed]
+
+	public FormatPattern formatPattern;
 
 	public TodoDao todoDao;
 
@@ -62,16 +67,18 @@ public class TodoListAction extends Action {
 	public String getQueryString() {
 		StringBuilder sb = new StringBuilder();
 		if (todoConditionDto.hasKeyword()) {
-			sb.append("キーワード=").append(todoConditionDto.getKeyword()).append(
+			sb.append("キーワード:").append(todoConditionDto.getKeyword()).append(
 					" ");
 		}
 		if (todoConditionDto.hasTypeId()) {
-			sb.append("種別=").append(
+			sb.append("種別:").append(
 					todoTypeDao.selectById(todoConditionDto.getTypeId())
 							.getName()).append(" ");
 		}
 		if (todoConditionDto.hasLimitDate()) {
-			sb.append("期限日<=").append(todoConditionDto.getLimitDate());
+			DateFormat dateFormat = formatPattern.getDateFormat();
+			sb.append("期限日<=").append(
+					dateFormat.format(todoConditionDto.getLimitDate()));
 		}
 		return sb.toString();
 	}

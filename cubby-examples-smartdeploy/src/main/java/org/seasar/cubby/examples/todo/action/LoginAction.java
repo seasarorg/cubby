@@ -21,6 +21,7 @@ public class LoginAction extends Action {
 
 	public ValidationRules loginValidation = new DefaultValidationRules(
 			"login.") {
+		@Override
 		public void initialize() {
 			add("userId", new RequiredValidator());
 			add("password", new RequiredValidator());
