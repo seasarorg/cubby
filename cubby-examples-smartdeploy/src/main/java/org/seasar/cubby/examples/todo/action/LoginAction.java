@@ -48,7 +48,7 @@ public class LoginAction extends Action {
 	}
 
 	@Form
-	@Validation(rulesField="loginValidation", errorPage = "login.jsp")
+	@Validation(rulesField="loginValidation", errorPage = "/todo/login.jsp")
 	public ActionResult process() {
 		User user = login(userId, password);
 		if (user != null) {
