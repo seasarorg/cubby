@@ -8,6 +8,7 @@ import java.util.Date;
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.exception.SRuntimeException;
 import org.seasar.framework.util.StringUtil;
 
 public class DateFormatValidator extends BaseValidator {
@@ -56,7 +57,8 @@ public class DateFormatValidator extends BaseValidator {
 		if (StringUtil.isEmpty(this.pattern)) {
 			FormatPattern formatPattern = context.getFormatPattern();
 			if (formatPattern == null) {
-				throw new RuntimeException("フォーマットが指定されていません");
+				throw new SRuntimeException("ECUB0003", new Object[] { this,
+						context.getValue() });
 			}
 			pattern = formatPattern.getDatePattern();
 		} else {
