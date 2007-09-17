@@ -180,3 +180,8 @@ b.btop, b.btop b, b.bbot, b.bbot b{
 b.btop b{background-position: 100% -10px}
 b.bbot{background-position: 0 -20px}
 b.bbot b{background-position: 100% -30px}
+
+img.box-image {
+	border: solid 1px #DDD;
+	margin: 5px 0px;
+}
