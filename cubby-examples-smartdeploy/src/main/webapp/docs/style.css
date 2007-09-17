@@ -14,28 +14,30 @@ CSS Document For Leaves v1.0 - Anthonyy @ OSWD.org
 
 /* GENERAL MOJO AND MULA */
 h1 {
-	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-	font-weight: normal;
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	font-weight: bold;
 	font-size: 2.4em;
-	color: #CC6633;
+	color: #6BBD19;
 	margin-bottom: 30px;
 	background-color: #FFF;
 }
 
 h2 {
-	color: #666666;
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	color: #6BBD19;
 	font-size: 1.5em;
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #FFF;
+	border-bottom: solid 3px #6BBD19;
+	padding-bottom: 2px;
 }
 
 a {
-	color: #CC6714;
+	color: #6BBD19;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #CC6714;
 	background-color: #F5F5F5;
 }
 
@@ -59,7 +61,7 @@ input {
 
 /* HEADER ELEMENTS */
 #header {
-	border-bottom: 4px solid #948979;
+	border-bottom: 2px solid #DDD;
 	padding-top: 10px;
 	clear: both;
 	margin-bottom: 10px;
@@ -89,14 +91,13 @@ input {
 }
 
 #navigation a:link,#navlist a:visited {
-	color: #CC6714;
+	color: #6BBD19;
 	text-decoration: none;
 }
 
 #navigation a:hover {
-	background: #000000 url(arrow.gif) 96% 50% no-repeat;
 	background-color: #F5F5F5;
-	color: #CC6714;
+	color: #6BBD19;
 }
 
 /* THE SMALL BOX BELOW NAV */
@@ -115,7 +116,6 @@ input {
 
 #content p {
 	padding-bottom: 10px;
-	border-bottom: 1px solid #DDDDDD;
 	/* A faint grey line below the text */
 }
 
@@ -134,22 +134,22 @@ input {
 #footer {
 	margin-top: 20px;
 	clear: both;
-	background-color: #575352;
+	background-color: #AAA;
 	padding: 0px 5px 0px 5px;
 }
 
 #footer p {
-	color: #89817f;
+	color: #FFF;
 	padding: 5px;
 }
 
 #footer p a {
-	color: #89817f;
+	color: #FFF;
 	border-bottom: 1px dotted #89817f;
 }
 
 #footer p a:hover {
-	color: #FFFFFF;
+	color: #FFF;
 	background-color: #575352;
 }
 /* And they lived happily ever after. The End. */
