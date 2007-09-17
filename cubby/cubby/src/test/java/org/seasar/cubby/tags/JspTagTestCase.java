@@ -1,5 +1,6 @@
 package org.seasar.cubby.tags;
 
+import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 
 import junit.framework.TestCase;
@@ -19,6 +20,10 @@ abstract public class JspTagTestCase extends TestCase {
 	protected void setupSimpleTag(SimpleTag tag) {
 		tag.setJspBody(jspBody);
 		tag.setJspContext(context);
+	}
+
+	protected void setupBodyTag(BodyTag tag) {
+		tag.setPageContext(context);
 	}
 
 }
