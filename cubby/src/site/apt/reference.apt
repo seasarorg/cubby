@@ -1,0 +1,128 @@
+		------
+		Cubbyリファレンス
+		------
+		Toshitaka Agata(agata@nulab.co.jp)
+		------
+		Date
+		------
+
+タグリファレンス
+
+
+* HTMLコンポーネント
+
+** <t:form>
+
+*** 属性
+
+      * value - 必須。フォーム用のオブジェクトを指定します。
+
+*** 説明
+
+     フォームを作成します。
+     value属性で指定したオブジェクトをフォーム用のフォームオブジェクトとしてバインディングします。
+     フォームオブジェクトはinput, selectなど他のカスタムタグで値の取得に使用されます。
+
+*** 使用例
+
++-----+
+[Controller class]
+public class EmployeeController extends Controller {
+  public EmployeeForm employeeForm = new EmployeeForm();
+  ...
+}
++-----+
+
++-----+
+[JSP]
+<t:form action="save" method="post" value="${employeeForm}">
+  name : <t:input type="text" name="name"/>
+  dept : <t:select type="text" name="deptId" 
+            items="${controller.deptItems}" labelProperty="deptName" valueProperty="id"/>
+  ...
+</t:form>
++-----+
+
+** <t:input>
+
+*** 属性
+
+      * name - 任意。フィールド名、フォームのプロパティを指定します。
+
+      * value - 任意。入力フィールドの設定する値を指定します。
+
+      * ckeckedValue - 任意。checkbox、radioを作成する際に、チェックされる値をしています。TODO 仕様ゆらぎ
+
+*** 説明
+
+     入力フィールドを作成します。
+     t:formタグの内部で使用される場合、name属性のみで、フォームオブジェクトから値が設定されます。
+     value属性が指定された場合は、value属性が優先的に使用されます。
+
+*** 使用例
+
++-----+
+[JSP]
+フォーム内
+<t:form action="save" method="post" value="${employeeForm}">
+  id : ${employeeForm.id}<t:input type="hidden" name="name"/>
+  name : <t:input type="text" name="name"/>
+  sex : 
+    <t:input type="radio" name="sex" value="1"/ >male
+    <t:input type="radio" name="sex" value="2"/> famele
+</t:form>
+
+フォーム外、あるいはvalue値を直接指定した場合
+amount : <t:input type="text" name="amount" value="${amountDto.amount}"/>
+sex : <t:input type="radio" name="amount" value="1" checkedValue="${employeeForm.sex}"/>
++-----+
+
+** <t:select>
+
+*** 属性
+
+      * items - 必須。選択肢オブジェクトのリストを指定します。
+
+      * valueProperty - 任意。option要素のvalue属性に設定する、選択肢オブジェクトのプロパティ名を指定します。デフォルトは"id"です。TODOデフォルト値未実装、よって必須
+
+      * labelProperty - 任意。option要素の表示ラベルに設定する、選択肢オブジェクトのプロパティ名を指定します。デフォルトは"label"です。TODOデフォルト値未実装、よって必須
+
+      * value - 任意。入力フィールドの設定する値を指定します。値、コレクション、配列が指定できます。
+
+      * emptyOption - 任意。true/false。trueを設定することで空の選択肢を表示します。デフォルトはtrueです。
+
+      * emptyOptionLabel - 任意。空の選択肢のラベルを設定します。
+
+*** 説明
+
+     セレクトフィールドを作成します。
+
+*** 使用例
+
++-----+
+[Controller class]
+public class EmployeeController extends Controller {
+  public EmployeeForm employeeForm = new EmployeeForm();
+  ...
+  
+  public List<Dept> getDeptItems() {
+  	return deptLogic.findAll();
+  }  
+}
+
+[Item class]
+public class Dept {
+  private Integer id;
+  private String deptName;
+  ... setter and getter
+}
++-----+
+
++-----+
+[JSP]
+<t:form action="save" method="post" value="${employeeForm}">
+  dept : <t:select type="text" name="deptId" 
+            items="${controller.deptItems}" labelProperty="deptName" valueProperty="id"/>
+  ...
+</t:form>
++-----+
