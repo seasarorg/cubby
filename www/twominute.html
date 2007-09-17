@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="ja" />
+<title>Cubby - ２分間チュートリアル(Hello World)</title>
+<link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+</head>
+<body>
+<div id="sidebar">
+<h2>メイン</h2>
+<ul>
+	<li><a href="index.html">トップ</a></li>
+	<li><a href="download.html">ダウンロード</a></li>
+</ul>
+<h2>ドキュメント</h2>
+<ul>
+	<li><a href="setup.html">セットアップ</a></li>
+	<li><a href="twominute.html">2分間チュートリアル</a></li>
+	<li><!--a href="fiveminute.html"-->5分間チュートリアル(未作成)</a></li>
+	<li><a href="reference.html">リファレンスマニュアル</a></li>
+</ul>
+<h2>リソース</h2>
+<ul>
+	<li><a href="svn.html">ソースコード(SVN)</a></li>
+	<li><a href="https://ml.seasar.org/mailman/listinfo/cubby-user">メーリングリスト</a></li>
+	<li><a href="https://www.seasar.org/issues/browse/CUBBY">トラッキング(JIRA)</a></li>
+</ul>
+</div>
+<div id="content">
+<h1>Cubby - 2分間チュートリアル(Hello World)</h1>
+
+<h2>Helloアプリケーションの概要</h2>
+<p>
+入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
+</p>
+<p>
+<img src="images/hello_input.png" class="box"/><br/>
+<img src="images/hello_result.png" class="box"/><br/>
+</p>
+
+<h2>アクションクラスの作成</h2>
+<p>
+アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
+ここではHelloActionクラスを作成します。
+このクラスには２つのアクションメソッド(index,message)があります。
+indexは入力画面「input.jsp」の表示用、messageは入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。
+１アクションメソッドは１リクエスト（URL）に対応します。URLは特に指定がない場合「アクションクラス名からActionを取って小文字にしたもの+メソッド名」となります。
+以下にアクションメソッドとURLの対応表を示します。
+</p>
+<table border="1">
+	<tr>
+		<th>メソッド</th>
+		<th>URL</th>
+		<th>説明</th>
+	</tr>
+	<tr>
+		<td>HelloAction#index</td>
+		<td>/hello/</td>
+		<td>
+			"/" + "hello" + "/" + ""<br/>
+			メソッド名indexだけは特別な意味で「URLなし」という意味になります。
+		</td>
+	</tr>
+	<tr>
+		<td>HelloAction#message</td>
+		<td>/hello/message</td>
+		<td>"/" + "hello" + "/" + "message"</td>
+	</tr>
+</table>
+<p>
+<img src="images/hello_diagram.png" class="box"/><br/>
+アクションメソッドの戻り値は「ActionResult」です。
+ここでは、フォワードしてJSPを表示するために、new Forward("input.jsp")となります。
+これにより、「/hello/input.jsp」にフォワードします。
+</p>
+<p>
+@Formアノテーションをアクションメソッドに指定することで、リクエストパラメータとBeanの自動バインディングが行われます。
+この場合、リクエストパラメータ「name」がHelloActionのプロパティ「name」にバインディングされます。
+</p>
+<strong>HelloAction.java</strong>
+<pre class="code">
+package org.seasar.cubby.examples.hello;
+
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.Forward;
+
+public class HelloAction extends Action {
+
+  private String name;
+
+  public void setName(String name) {
+    this.name = name;
+  }
+	
+  public String getName() {
+    return this.name;
+  }
+	
+  public ActionResult index() {
+    return new Forward("input.jsp");
+  }
+
+  @Form
+  public ActionResult message() {
+    return new Forward("result.jsp");
+  }
+}
+</pre>
+<h2>JSPの作成</h2>
+<p>
+入力画面用の「input.jsp」とメッセージ出力画面用の「result.jsp」を作成します。
+input.jspでは、Cubbyのカスタムタグを使って、フォームを作成します。「&lt;form ... value=""&gt;」では、フォームにバインディングするオブジェクトを指定しています。
+はフォワード時に使用したアクションそのものを意味します。アクション自体がフォームのバインディング対象の場合はvalue属性は省略可能です。
+（つまり、この例ではvalue属性を書く必要はありません。）
+</p>
+<p>
+入力フィールドはカスタムタグを使用して出力します。（&lt;t:input type="text" name="name"/&gt;）
+</p>
+<strong>/hello/input.jsp</strong>
+<pre class="code">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"&gt;
+&lt;head&gt;
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+  &lt;title&gt;Hello World - 入力画面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello World - 入力画面&lt;/h1&gt;
+&lt;t:form action="message" value="&#36;{action}"&gt;
+	あなたの名前:
+	&lt;t:input type="text" name="name"/&gt;
+	&lt;input type="submit" value="送信"/&gt;
+&lt;/t:form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<strong>/hello/result.jsp</strong>
+<pre class="code">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"&gt;
+&lt;head&gt;
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+  &lt;title&gt;Hello World - 出力画面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello World - 出力画面&lt;/h1&gt;
+こんにちは、&#36;{action.name}さん。
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h2>アクションクラスをdiconファイルへ登録</h2>
+<p>
+HelloActionをSeasar2のdiconファイルへ登録します。instance="prototype"として、リクエストごとにアクションクラスが生成される設定とします。
+AutoRegisterを使用してアクションクラスを一括して登録する場合、アクションをdiconファイルに個別に設定する必要ありません。
+</p>
+<strong>allservice.dicon</strong>
+<pre class="code">
+&lt;component class="org.seasar.cubby.examples.hello.HelloAction" instance="prototype" /&gt;
+</pre>
+
+<h2>入力画面をブラウザで確認する</h2>
+<p>
+ブラウザで<a href="http://localhost:8080/cubby-examples/hello/">http://localhost:8080/cubby-examples/hello/</a>に
+アクセスします。
+</p>
+
+<h2>おまけ：JSP共通ヘッダーの設定</h2>
+<p>
+JSPのページディレクティブやタグリブディレクティブは、各JSPには記述せずにヘッダーファイルをインクルードして設定することを推奨します。
+Servlet2.4のweb.xmlの設定として「include-prelude」タグが用意されていますので、これを使用してヘッダーファイルのインクルードを行います。
+ヘッダーファイル(header.jsp)では、ページ共通のタグリブディレクティブを記述しておきます。
+</p>
+<p>
+上記のサンプルのJSPは、共通ヘッダーを使用しているので、JSPの先頭にタグリブディレクティブの宣言がありません。
+実際は、以下の「header.jsp」の内容がJSPの先頭に自動的に付加されてから、コンパイル・実行されています。
+</p>
+<strong>/common/header.jsp</strong>
+<pre class="code">
+&lt;%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+&lt;%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %&gt;
+&lt;%@ taglib uri="http://www.seasar.org/cubby/tags" prefix="t" %&gt;
+&lt;%@ taglib uri="http://www.seasar.org/cubby/functions" prefix="f" %&gt;
+</pre>
+<strong>web.xml</strong>
+<pre class="code">
+&lt;/web-app&gt;
+  ...
+  &lt;jsp-config&gt;
+    &lt;jsp-property-group&gt;
+      &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
+      &lt;el-ignored&gt;false&lt;/el-ignored&gt;
+      &lt;page-encoding&gt;UTF-8&lt;/page-encoding&gt;
+      &lt;scripting-invalid&gt;false&lt;/scripting-invalid&gt;
+      &lt;include-prelude&gt;/common/header.jsp&lt;/include-prelude&gt;
+    &lt;/jsp-property-group&gt;
+  &lt;/jsp-config&gt;
+&lt;/web-app&gt;
+</pre></div>
+<div id="fotter">Copyright &copy; 2007 The Seasar Foundation. All rights reserved.</div>
+</body>
+</html>
