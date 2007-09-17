@@ -17,9 +17,9 @@ h1 {
 	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
 	font-weight: bold;
 	font-size: 2.4em;
-	color: #6BBD19;
+	color: #FFF;
 	margin-bottom: 30px;
-	background-color: #FFF;
+	background-color: #6BBD19;
 }
 
 h2 {
@@ -34,7 +34,7 @@ h2 {
 
 a {
 	color: #6BBD19;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 a:hover {
@@ -61,17 +61,20 @@ input {
 
 /* HEADER ELEMENTS */
 #header {
-	border-bottom: 2px solid #DDD;
-	padding-top: 10px;
+	padding-top: 0px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 	clear: both;
-	margin-bottom: 10px;
+	background-color: #6BBD19;
 }
 
 /* the slogan */
 #header p {
 	margin-top: -20px;
 	margin-left: 30px;
-	color: #999999;
+	color: #DDD;
 }
 
 /* NAVIGATION ELEMENTS */
@@ -88,6 +91,7 @@ input {
 	padding: 5px;
 	width: 140px;
 	border-bottom: 1px solid #CCC;
+	font-size: 0.9em;
 }
 
 #navigation a:link,#navlist a:visited {
@@ -167,3 +171,12 @@ pre.code {
 	background: #eee;
 	line-height: 1.4em;
 }
+
+div#box{margin: 0;background: #6BBD19}
+b.btop, b.btop b, b.bbot, b.bbot b{
+    display: block;height: 10px;font-size: 1px;
+    background-image:url(rc.png);
+    background-repeat: no-repeat}
+b.btop b{background-position: 100% -10px}
+b.bbot{background-position: 0 -20px}
+b.bbot b{background-position: 100% -30px}
