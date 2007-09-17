@@ -1,0 +1,87 @@
+<t:template extend="template.html">
+<jsp:attribute name="title">Cubby - Simple JSP based Web Application Framework</jsp:attribute>	
+<jsp:attribute name="sidebar"><c:import url="sidebar.html"/></jsp:attribute>
+<jsp:attribute name="content">
+<h1>Cubbyのセットアップ</h1>
+<h2>動作環境</h2>
+<ul>
+	<li>Java5以上</li>
+	<li>Servlet2.4/JSP2.0以上</li>
+	<li>Seasar2.4.8以上</li>
+</ul>
+
+<h2>セットアップ</h2>
+<ol>
+	<li>cubby-x.x.x.jarと依存ライブラリをクラスパスに追加します。<br/>
+<strong>依存ライブラリ</strong>
+<ul>
+	<li>commons-beanutils1.7.0.jar</li>
+	<li>commons-fileupload1.1.1.jar</li>
+	<li>commons-io-1.1.jar</li>
+	<li>commons-lang-2.2.jar</li>
+	<li>commons-logging-1.1.jar</li>
+	<li>jstl-1.1.2.jar</li>
+	<li>s2-extension-2.4.8.jar
+		<ul>
+			<li>s2-framework-2.4.8.jar</li>
+			<li>aopalliance-1.0.jar</li>
+			<li>log4j-1.2.8.jar</li>
+			<li>javassist-3.4.ga.jar</li>
+			<li>ognl-2.6.7.jar</li>
+		</ul>
+	</li>
+</ul>
+	</li>
+	<li>web.xmlにcubbyとseasar2とServletFilterの設定を追加します。<br/>
+<strong>web.xml</strong>
+<pre class="code">
+  &lt;filter&gt;
+    &lt;filter-name&gt;encodingfilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.seasar.extension.filter.EncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;encoding&lt;/param-name&gt;
+      &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+  &lt;/filter&gt;
+  &lt;filter&gt;
+    &lt;filter-name&gt;s2filter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.seasar.framework.container.filter.S2ContainerFilter&lt;/filter-class&gt;
+  &lt;/filter&gt;
+  &lt;filter&gt;
+    &lt;filter-name&gt;cubbyFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.seasar.cubby.servlet.CubbyFilter&lt;/filter-class&gt;
+  &lt;/filter&gt;
+  &lt;filter-mapping&gt;  
+    &lt;filter-name&gt;encodingfilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;  
+  &lt;/filter-mapping&gt; 
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;s2filter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;cubbyFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;cubbyFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/cubby-dispacher/*&lt;/url-pattern&gt;
+    &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+  &lt;/filter-mapping&gt;
+</pre>	
+	</li>
+	<li>app.diconでcubby.diconをincludeします。<br/>
+<strong>app.dicon</strong>
+<pre class="code">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd"&gt;
+&lt;components namespace="app"&gt;
+    &lt;include path="cubby.dicon" /&gt;
+    &lt;include path="allservice.dicon" /&gt;
+&lt;/components&gt;
+</pre>
+	</li>
+</ol>
+</jsp:attribute>
+</t:template>
