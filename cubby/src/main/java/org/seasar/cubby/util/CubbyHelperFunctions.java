@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -22,7 +24,7 @@ public class CubbyHelperFunctions {
 		return _joinPropertyValue(toArray(beans), propertyName, delim);
 	}
 
-	private static Object[] toArray(Object value) {
+	public static Object[] toArray(Object value) {
 		if (value.getClass().isArray()) {
 			return (Object[]) value;
 		} else if (value instanceof Collection) {
@@ -162,6 +164,29 @@ public class CubbyHelperFunctions {
 			} else {
 				Map<String, Object> params = (Map<String, Object>) request
 						.getAttribute(ATTR_PARAMS);
+				return CubbyUtils.getParamsValue(params, name);
+			}
+		} else {
+			if (dyn.containsKey(valueParamName) || form == null
+					|| StringUtil.isEmpty(name)) {
+				return value;
+			} else {
+				return property(form, name);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Object formValue2(Map dyn, Object form,
+			JspContext context, String valueParamName) {
+		Object value = dyn.get(valueParamName);
+		String name = (String) dyn.get("name");
+		if (TRUE.equals(context.getAttribute(ATTR_VALIDATION_FAIL, PageContext.REQUEST_SCOPE))) {
+			if (dyn.containsKey(valueParamName)) {
+				return value;
+			} else {
+				Map<String, Object> params = (Map<String, Object>) context
+						.getAttribute(ATTR_PARAMS, PageContext.REQUEST_SCOPE);
 				return CubbyUtils.getParamsValue(params, name);
 			}
 		} else {
