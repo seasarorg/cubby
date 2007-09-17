@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2004-2007 the Seasar Foundation and the Others.
  *
@@ -24,8 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javassist.compiler.ast.InstanceOfExpr;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -82,7 +79,7 @@ public class JspProcessor extends TemplateProcessorSupport
 
     private static final PageContext _pageContext = new PageContextImpl();
 
-    // TODO TagPool縺ｮ菫晄戟譛滄俣縺ｪ縺ｩ繝代ヵ繧ｩ繝ｼ繝槭Φ繧ｹ縺ｮ隱ｿ謨ｴ
+    // TODO TagPoolの保持期間などパフォーマンスの調整
     private static final Map _tagPools =
         new ReferenceMap(AbstractReferenceMap.SOFT, AbstractReferenceMap.SOFT, true);
 
@@ -236,7 +233,7 @@ public class JspProcessor extends TemplateProcessorSupport
         clearLoadedTag();
         Tag customTag = getLoadedTag();
 
-        // javax.servlet.jsp.tagext.SimpleTag蟇ｾ蠢�
+        // javax.servlet.jsp.tagext.SimpleTag対応
         Object targetTag = customTag;
         if (customTag instanceof SimpleTagWrapper) {
             targetTag = ((SimpleTagWrapper) customTag).getSimpleTag();
@@ -248,7 +245,7 @@ public class JspProcessor extends TemplateProcessorSupport
                     property.getValue().execute(null));
         }
 
-        // javax.servlet.jsp.tagext.DynamicAttributes蟇ｾ蠢�
+        // javax.servlet.jsp.tagext.DynamicAttributes対応
         if (TLDProcessorDefinition.class.isAssignableFrom(
                 getProcessorDefinition().getClass())) {
             TLDProcessorDefinition tldDef =
@@ -301,7 +298,7 @@ public class JspProcessor extends TemplateProcessorSupport
             throw new IllegalArgumentException(message);
         }
 
-        // 譏守､ｺ逧�縺ｫ謖�螳壹＆繧後※縺�繧句ｱ樊�ｧ繧貞�玲嫌
+        // 明示的に指定されている属性を列挙
         Set definedQNames = new HashSet();
         for (Iterator it = iterateProperties(); it.hasNext();) {
             ProcessorProperty property = (ProcessorProperty) it.next();
@@ -312,14 +309,14 @@ public class JspProcessor extends TemplateProcessorSupport
             NodeAttribute attr = (NodeAttribute) it.next();
             QName qName = attr.getQName();
 
-            // 譏守､ｺ縺輔ｌ縺ｦ縺�繧句ｱ樊�ｧ縲√ロ繝ｼ繝�繧ｹ繝壹�ｼ繧ｹ縺勲ayaa縺ｮ螻樊�ｧ縺ｯ蜃ｦ逅�縺梧ｱｺ縺ｾ縺｣縺ｦ縺�繧九◆繧∝虚逧�螻樊�ｧ縺ｨ縺励※謇ｱ繧上↑縺�
+            // 明示されている属性、ネームスペースがMayaaの属性は処理が決まっているため動的属性として扱わない
             if (definedQNames.contains(qName)
                     || CONST_IMPL.URI_MAYAA.equals(qName.getNamespaceURI())) {
                 continue;
             }
 
             try {
-                // 蠑上ｒ螳溯｡後＠縺ｦ縺九ｉsetDynamicAttribute
+                // 式を実行してからsetDynamicAttribute
                 CompiledScript script =
                     ScriptUtil.compile(attr.getValue(), Object.class);
                 Object execValue = script.execute(null);
