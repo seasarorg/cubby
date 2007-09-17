@@ -20,7 +20,7 @@
 	<li><a href="reference.html#configration_file">設定ファイル</a></li>
 </ul>
 
-<a name="#controller"></a>
+<a name="controller"></a>
 <h2>コントローラー（Action）</h2>
 <p>
 コントローラーはorg.seasar.cubby.action.Actionを継承して作成します。
@@ -29,7 +29,51 @@
 <p>
 リクエストされたURLに応じて、アクションメソッドが呼び出され処理を実行します。
 Actionクラスの中でpublicで戻り値がActionResultのメソッドが、アクションメソッドとして認識されます。
+
+<h4>ActionResultの種類</h4>
+以下のクラスはActionResultを実装するクラスで、アクションメソッドの戻り値として使用できます。
+<table border="1">
+	<tr>
+		<th>クラス名</th>
+		<th>説明</th>
+		<th>使用例</th>
+	</tr>
+	<tr>
+		<td>org.seasar.cubby.action.Forward</td>
+		<td>フォワードを実行するActionResultです。</td>
+		<td>
+			return new Forward("list.jsp"); // 相対パス<br/>
+			return new Forward("/todo/list.jsp"); // 絶対パス<br/>
+		</td>
+	</tr>
+	<tr>
+		<td>org.seasar.cubby.action.Redirect</td>
+		<td>リダイレクトを実行するActionResultです。</td>
+		<td>
+			return new Redirect("list"); // 相対パス<br/>
+			return new Redirect("/todo/list"); // 絶対パス<br/>
+		</td>
+	</tr>
+	<tr>
+		<td>org.seasar.cubby.action.Direct</td>
+		<td>ファイルダウンロードを実行するActionResultです。</td>
+		<td>
+			byte[] image = ...;<br/>
+			return new Direct(image, "image/jpeg", new Date().getTime());<br/>
+		</td>
+	</tr>
+	<tr>
+		<td>org.seasar.cubby.action.Json</td>
+		<td>Json形式で結果を返すActionResultです。</td>
+		<td>
+			MyBean bean = ...;<br/>
+			return new Json(bean);<br/>
+		</td>
+	</tr>
+</table>
 </p>
+
+
 
 <a name="view"></a>
 <h2>ビュー(JSP)</h2>
