@@ -1,22 +1,27 @@
-<t:template extend="template.html">
-<jsp:attribute name="title">Cubby - Simple JSP based Web Application Framework</jsp:attribute>	
-<jsp:attribute name="sidebar"><c:import url="sidebar.html"/></jsp:attribute>
-<jsp:attribute name="content">
-<img src="images/logo.png" 
-	alt="Cubby - Simple JSP based Web Application Framework" 
-	title="Cubby - Simple JSP based Web Application Framework" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title id="title">Cubby</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+<div id="header">
+<h1>Cubby</h1>
+</div>
+<div id="navigation"></div>
+<div id="content">
 <h2>What's Cubby?</h2>
-<p>
-Cubby(カビー)はJSPをベースにしたシンプルなWebアプリケーションフレームワークです。
-以下の特徴があります。
-</p>
+Cubby(カビー)はJSPをベースにしたシンプルなWebアプリケーションフレームワークです。 以下の特徴があります。
 <ul>
 	<li>100% Pure JSP Web Application Framework</li>
 	<li>One Configuration</li>
 	<li>シンプル＆スモール</li>
-	<li>RESTっぽいURIをサポート(/agata/todo/1001,拡張子が付かないURIなど)</li>
+	<li>RESTっぽいURIをサポート(/username/todo/1001,拡張子が付かないURIなど)</li>
 	<li>直感的な名前のタグライブラリ</li>
 </ul>
+
 <h2>マイルストーン</h2>
 <table border="1">
 	<tr>
@@ -31,20 +36,21 @@ Cubby(カビー)はJSPをベースにしたシンプルなWebアプリケーシ�
 	</tr>
 	<tr>
 		<td>0.8</td>
-		<td>2007-06-30</td>
-		<td>APIフィックス、タグライブラリの整理（タグファイルの廃止）、Ajax対応、テストケケースの充実</td>
+		<td>2007-08-31</td>
+		<td>内部バージョン。未リリース</td>
 	</tr>
 	<tr>
 		<td>0.9</td>
-		<td>2007-07-31</td>
-		<td>HotDeploy対応、Mayaa連携、サンプル整備、ドキュメントの充実</td>
+		<td>2007-09-30</td>
+		<td>HotDeploy対応、Mayaa連携、サンプル整備、ドキュメントの充実、APIフィックス、タグライブラリの整理（タグファイルの廃止）</td>
 	</tr>
 	<tr>
 		<td>1.0</td>
-		<td>2007-08-31</td>
+		<td>2007-10-31</td>
 		<td>バグフィックス、正式リリース</td>
 	</tr>
 </table>
-</jsp:attribute>
-</t:template>
-
+<div id="footer"></div>
+</div>
+</body>
+</html>

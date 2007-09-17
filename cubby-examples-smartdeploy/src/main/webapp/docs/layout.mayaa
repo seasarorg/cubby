@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org">
+
+	<m:insert m:id="content" name="content" />
+	<m:insert m:id="title" name="title" replace="false"/>
+	<m:insert m:id="headerTitle" name="title" replace="false"/>
+	<m:insert m:id="navigation" path="sidebar.html" />
+	
+</m:mayaa>

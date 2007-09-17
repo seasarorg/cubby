@@ -1,16 +1,23 @@
-<t:template extend="template.html">
-<jsp:attribute name="title">Cubby - リファレンスマニュアル</jsp:attribute>	
-<jsp:attribute name="sidebar"><c:import url="sidebar.html"/></jsp:attribute>
-<jsp:attribute name="content">
-<h1>Cubby - リファレンスマニュアル</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title id="title">Cubby - リファレンスマニュアル</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+<div id="header"></div>
+<div id="navigation"></div>
+<div id="content">
 <ul>
-	<li><a href="#controller">コントローラー(Action)</a></li>
-	<li><a href="#view">ビュー（JSP）</a></li>
-	<li><a href="#annotation">アノテーション</a></li>
-	<li><a href="#taglib">カスタムタグ</a></li>
-	<li><a href="#function">カスタムファンクション</a></li>
-	<li><a href="#validation">バリデーション</a></li>
-	<li><a href="#configration_file">設定ファイル</a></li>
+	<li><a href="reference.html#controller">コントローラー(Action)</a></li>
+	<li><a href="reference.html#view">ビュー（JSP）</a></li>
+	<li><a href="reference.html#annotation">アノテーション</a></li>
+	<li><a href="reference.html#taglib">カスタムタグ</a></li>
+	<li><a href="reference.html#function">カスタムファンクション</a></li>
+	<li><a href="reference.html#validation">バリデーション</a></li>
+	<li><a href="reference.html#configration_file">設定ファイル</a></li>
 </ul>
 
 <a name="#controller"></a>
@@ -621,7 +628,7 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 </p>
 <h4>使用例</h4>
 <pre class="code">
-	${f:out(user.name)}さんこんにちは
+	${"$"}{f:out(user.name)}さんこんにちは
 </pre>
 
 <h3>dateFormat</h3>
@@ -630,7 +637,7 @@ JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲み�
 </p>
 <h4>使用例</h4>
 <pre class="code">
-	${f:dateFormat(todo.limitDate, "yyyy-MM-dd")}
+	${"$"}{f:dateFormat(todo.limitDate, "yyyy-MM-dd")}
 </pre>
 
 <a name="validation"></a>
@@ -681,5 +688,8 @@ fileuploadの上限などを指定します。
 通常は必要ありません。
 Cubby本体の動作を変更したいときに使用します。
 </p>
-</jsp:attribute>
-</t:template>
+<div id="footer"></div>
+</div>
+</body>
+</html>
+

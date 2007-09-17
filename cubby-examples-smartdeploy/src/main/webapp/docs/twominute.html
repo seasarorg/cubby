@@ -1,9 +1,15 @@
-<t:template extend="template.html">
-<jsp:attribute name="title">Cubby - ２分間チュートリアル(Hello World)</jsp:attribute>	
-<jsp:attribute name="sidebar"><c:import url="sidebar.html"/></jsp:attribute>
-<jsp:attribute name="content">
-<h1>Cubby - 2分間チュートリアル(Hello World)</h1>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title id="title">Cubby - 2分間チュートリアル(Hello World)</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+<div id="header"></div>
+<div id="navigation"></div>
+<div id="content">
 <h2>Helloアプリケーションの概要</h2>
 <p>
 入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
@@ -176,6 +182,7 @@ Servlet2.4のweb.xmlの設定として「include-prelude」タグが用意され
   &lt;/jsp-config&gt;
 &lt;/web-app&gt;
 </pre>
-
-</jsp:attribute>
-</t:template>
+</div>
+<div id="footer"></div>
+</body>
+</html>
