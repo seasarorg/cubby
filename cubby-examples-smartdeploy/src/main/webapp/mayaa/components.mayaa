@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+	xmlns:t="http://www.seasar.org/cubby/tags"
+	xmlns:f="http://www.seasar.org/cubby/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<t:form m:id="form" method="post" action="${contextPath}/mayaa/components" value="${form}" />
+	<t:input m:id="userName" type="text" name="userName" id="userName"/>
+	<t:select m:id="color" name="color" size="3" 
+		items="${colors}" labelProperty="name" valueProperty="value"/>
+	<t:textarea m:id="memo" name="memo" rows="5" cols="50"/>
+	<t:input m:id="check1" type="checkbox" name="check1" value="true"/>
+	<t:input m:id="check2-1" type="checkbox" name="check2" value="1"/>
+	<t:input m:id="check2-2" type="checkbox" name="check2" value="2"/>
+	<t:input m:id="check2-3" type="checkbox" name="check2" value="3"/>
+
+</m:mayaa>
