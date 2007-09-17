@@ -33,7 +33,7 @@ public class TextareaTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.doTag();
 		assertEquals("フォームオブジェクトとname指定の場合",
-				"<textarea name=\"stringField\" >value1</textarea>", context.getResult());
+				"<textarea name=\"stringField\" >value1</textarea>\n", context.getResult());
 	}
 
 	public void testDoTag3() throws Exception {
@@ -42,6 +42,6 @@ public class TextareaTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.doTag();
 		assertEquals("フォームオブジェクトが空でとnameが指定されている場合",
-				"<textarea name=\"stringField\" ></textarea>", context.getResult());
+				"<textarea name=\"stringField\" ></textarea>\n", context.getResult());
 	}
 }
