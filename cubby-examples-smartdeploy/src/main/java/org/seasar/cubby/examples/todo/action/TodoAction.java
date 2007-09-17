@@ -30,7 +30,7 @@ public class TodoAction extends Action {
 		public void initialize() {
 			add("text", new RequiredValidator(), new MaxLengthValidator(10));
 			add("memo", new RequiredValidator(), new MaxLengthValidator(100));
-			add("typeId", "todoType", new RequiredValidator());
+			add("typeId", "type", new RequiredValidator());
 			add("limitDate", new DateFormatValidator());
 		}
 	};
