@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import javax.servlet.jsp.PageContext;
 
+import org.jdom.Element;
+import org.seasar.framework.util.StringUtil;
+
 public class InputTagTest extends JspTagTestCase {
 
 	InputTag tag;
@@ -22,8 +25,17 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "checkedValue", "value1");
 		tag.setType("checkbox");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  checked=\"true\"/>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 4, element.getAttributes().size());
+		assertEquals(message, "checkbox", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+		assertEquals(message, "true", element.getAttributeValue("checked"));
+//		assertEquals("valueが指定",
+//				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  checked=\"true\"/>\n", context.getResult());
 	}
 
 	public void testDoTagCheckbox2() throws Exception {
@@ -32,8 +44,16 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "checkedValue", "value2");
 		tag.setType("checkbox");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  />\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 3, element.getAttributes().size());
+		assertEquals(message, "checkbox", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+//		assertEquals("valueが指定",
+//				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  />\n", context.getResult());
 	}
 
 	public void testDoTagCheckbox3() throws Exception {
@@ -44,8 +64,17 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "value", "value1");
 		tag.setType("checkbox");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  checked=\"true\"/>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 4, element.getAttributes().size());
+		assertEquals(message, "checkbox", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+		assertEquals(message, "true", element.getAttributeValue("checked"));
+//		assertEquals("valueが指定",
+//				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  checked=\"true\"/>\n", context.getResult());
 	}
 
 	public void testDoTagCheckbox4() throws Exception {
@@ -56,8 +85,16 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "value", "value1");
 		tag.setType("checkbox");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  />\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 3, element.getAttributes().size());
+		assertEquals(message, "checkbox", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+//		assertEquals("valueが指定",
+//				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  />\n", context.getResult());
 	}
 
 	public void testDoTagText1() throws Exception {
@@ -65,8 +102,16 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "value", "value1");
 		tag.setType("text");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 3, element.getAttributes().size());
+		assertEquals(message, "text", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+//		assertEquals("valueが指定",
+//				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
 	}
 
 	public void testDoTagText2() throws Exception {
@@ -77,7 +122,15 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "value", "value1");
 		tag.setType("text");
 		tag.doTag();
-		assertEquals("valueが指定",
-				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 3, element.getAttributes().size());
+		assertEquals(message, "text", element.getAttributeValue("type"));
+		assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+//		assertEquals("valueが指定",
+//				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
 	}
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.servlet.jsp.PageContext;
 
+import org.jdom.Element;
+
 public class FormTagTest extends JspTagTestCase {
 
 	FormTag tag;
@@ -23,9 +25,14 @@ public class FormTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.doStartTag();
 		tag.doEndTag();
+
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが指定";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
-		assertEquals("フォームオブジェクトが指定",
-				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
+//		assertEquals("フォームオブジェクトが指定",
+//				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
 	}
 
 	public void testDoTag2() throws Exception {
@@ -40,8 +47,20 @@ public class FormTagTest extends JspTagTestCase {
 		tag.doStartTag();
 		textareaTag.doTag();
 		tag.doEndTag();
-		assertEquals("フォームオブジェクトが指定、子要素がある場合",
-				"<form action=\"/todo/save\" >\n<textarea name=\"stringField\" >value1</textarea>\n</form>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが指定、子要素がある場合";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
+		assertEquals(message, 1, element.getChildren().size());
+		Element child = element.getChild("textarea");
+		assertEquals(message, 1, child.getAttributes().size());
+		assertEquals(message, "stringField", child.getAttributeValue("name"));
+		assertEquals(message, "value1", child.getValue());
+//		assertEquals("フォームオブジェクトが指定、子要素がある場合",
+//				"<form action=\"/todo/save\" >\n" +
+//				"<textarea name=\"stringField\" >value1</textarea>\n" +
+//				"</form>\n", context.getResult());
 	}
 	public void testDoTagEmptyBody() throws Exception {
 		FormDto form = new FormDto();
@@ -50,7 +69,12 @@ public class FormTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.doStartTag();
 		tag.doEndTag();
-		assertEquals("Bodyが空の場合",
-				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "Bodyが空の場合";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
+//		assertEquals("Bodyが空の場合",
+//				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
 	}
 }

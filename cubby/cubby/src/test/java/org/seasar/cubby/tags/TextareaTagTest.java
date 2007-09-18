@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import javax.servlet.jsp.PageContext;
 
+import org.jdom.Element;
+import org.seasar.framework.util.StringUtil;
+
 public class TextareaTagTest extends JspTagTestCase {
 
 	TextareaTag tag;
@@ -22,8 +25,12 @@ public class TextareaTagTest extends JspTagTestCase {
 		tag.setDynamicAttribute(null, "value", "value1");
 		tag.setDynamicAttribute(null, "id", "content");
 		tag.doTag();
-		assertEquals("フォームオブジェクトが空でvalueが指定されている場合", 
-				"<textarea name=\"content\" id=\"content\" >value1</textarea>\n", context.getResult());
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが空でvalueが指定されている場合";
+		assertEquals(message, "value1", element.getValue());
+		assertEquals(message, 2, element.getAttributes().size());
+		assertEquals(message, "content", element.getAttributeValue("id"));
+		assertEquals(message, "content", element.getAttributeValue("name"));
 	}
 
 	public void testDoTag2() throws Exception {
@@ -32,8 +39,11 @@ public class TextareaTagTest extends JspTagTestCase {
 		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
 		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.doTag();
-		assertEquals("フォームオブジェクトとname指定の場合",
-				"<textarea name=\"stringField\" >value1</textarea>\n", context.getResult());
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトとname指定の場合";
+		assertEquals(message, "value1", element.getValue());
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
 	}
 
 	public void testDoTag3() throws Exception {
@@ -41,7 +51,11 @@ public class TextareaTagTest extends JspTagTestCase {
 		form.setStringField("value1");
 		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.doTag();
-		assertEquals("フォームオブジェクトが空でとnameが指定されている場合",
-				"<textarea name=\"stringField\" ></textarea>\n", context.getResult());
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが空でとnameが指定されている場合";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
 	}
+
 }
