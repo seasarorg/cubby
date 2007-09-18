@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <m:mayaa xmlns:m="http://mayaa.seasar.org"
 	xmlns:t="http://www.seasar.org/cubby/tags"
-	xmlns:f="http://www.seasar.org/cubby/functions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<!-- form -->
