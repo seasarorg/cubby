@@ -13,8 +13,14 @@
 <a name="controller"></a>
 <h2>Mayaaとの連携</h2>
 <p>
-Cubbyでデザイナーが作成したHTMLをテンプレートとしてビューを作成したい場合、JavaテンプレートエンジンであるMayaaと連携することができます。以下、Mayaaとの連携方法を示します。(Cubby-0.9/Mayaa-1.1.14で確認)。<br/>
-サンプルWarに「Mayaaとの連携サンプル」がありますのでそちらも参照ください。
+Cubbyでデザイナーが作成したHTMLをテンプレートとしてビューを作成したい場合、Javaテンプレートエンジンである<a href="http://mayaa.seasar.org/index.html">Mayaa</a>と連携することができます。
+<br/>
+<br/>
+<a href="http://mayaa.seasar.org/index.html">Mayaaの公式サイト</a>
+<br/>
+<br/>
+以下、Mayaaとの連携方法を示します。動作はCubby0.9.0、Mayaa-1.1.14で確認しています。<br/>
+また、CubbyのサンプルWarに「Mayaaとの連携のサンプル」がありますのでそちらも参照ください。
 </p>
 <a name="view"></a>
 <h2>Mayaaとの連携設定</h2>
@@ -142,39 +148,38 @@ Cubbyのカスタムタグは主に入力フォームの生成に使用します
 <pre class="code">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;m:mayaa xmlns:m="http://mayaa.seasar.org"
-	xmlns:t="http://www.seasar.org/cubby/tags"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"&gt;
+  xmlns:t="http://www.seasar.org/cubby/tags"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"&gt;
 
-	&lt;!-- form --&gt;
-	&lt;t:form m:id="form" method="post" action="${contextPath}/mayaa/components" value="${form}" /&gt;
+  &lt;!-- form --&gt;
+  &lt;t:form m:id="form" method="post" action="${contextPath}/mayaa/components" value="${form}" /&gt;
 
-	&lt;!-- text --&gt;
-	&lt;t:input m:id="userName" type="text" name="userName" id="userName" /&gt;
+  &lt;!-- text --&gt;
+  &lt;t:input m:id="userName" type="text" name="userName" id="userName" /&gt;
 
-	&lt;!-- select --&gt;
-	&lt;t:select m:id="color" name="color" size="3" 
-		items="${colors}" labelProperty="name" valueProperty="value" /&gt;
+  &lt;!-- select --&gt;
+  &lt;t:select m:id="color" name="color" size="3" 
+    items="${colors}" labelProperty="name" valueProperty="value" /&gt;
+  &lt;!-- textarea --&gt;
+  &lt;t:textarea m:id="memo" name="memo" rows="5" cols="50" /&gt;
 
-	&lt;!-- textarea --&gt;
-	&lt;t:textarea m:id="memo" name="memo" rows="5" cols="50" /&gt;
+  &lt;!-- checkbox(multi) --&gt;
+  &lt;t:input m:id="check1" type="checkbox" name="check1" value="true" /&gt;
+
+  &lt;!-- checkbox(single) --&gt;
+  &lt;t:input m:id="check2-1" type="checkbox" name="check2" value="1" /&gt;
+  &lt;t:input m:id="check2-2" type="checkbox" name="check2" value="2" /&gt;
+  &lt;t:input m:id="check2-3" type="checkbox" name="check2" value="3" /&gt;
 	
-	&lt;!-- checkbox(multi) --&gt;
-	&lt;t:input m:id="check1" type="checkbox" name="check1" value="true" /&gt;
+  &lt;!-- forEach and odd,even --&gt;
+  &lt;m:forEach m:id="loop" var="item" index="s" items="${colors}" replace="false"&gt;
+  &lt;m:attribute name="class" value="${"$"}{s % 2 ? 'odd' : 'even'}" /&gt;
+  &lt;/m:forEach&gt;
+  &lt;m:write m:id="item-value" value="${"$"}{item.value}" /&gt;
+  &lt;m:write m:id="item-name" value="${"$"}{item.name}" /&gt;
 
-	&lt;!-- checkbox(single) --&gt;
-	&lt;t:input m:id="check2-1" type="checkbox" name="check2" value="1" /&gt;
-	&lt;t:input m:id="check2-2" type="checkbox" name="check2" value="2" /&gt;
-	&lt;t:input m:id="check2-3" type="checkbox" name="check2" value="3" /&gt;
-	
-	&lt;!-- forEach and odd,even --&gt;
-	&lt;m:forEach m:id="loop" var="item" index="s" items="${colors}" replace="false"&gt;
-		&lt;m:attribute name="class" value="${"$"}{s % 2 ? 'odd' : 'even'}" /&gt;
-	&lt;/m:forEach&gt;
-	&lt;m:write m:id="item-value" value="${"$"}{item.value}" /&gt;
-	&lt;m:write m:id="item-name" value="${"$"}{item.name}" /&gt;
-
-	&lt;!-- remove dummy --&gt;
-	&lt;m:null m:id="dummy" /&gt;
+  &lt;!-- remove dummy --&gt;
+  &lt;m:null m:id="dummy" /&gt;
 &lt;/m:mayaa&gt;
 </pre>
 <div id="footer"></div>
