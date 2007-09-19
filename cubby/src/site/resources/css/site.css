@@ -1,0 +1,250 @@
+/* --------------------------------------------------
+CSS Document For Leaves v1.0 - Anthonyy @ OSWD.org
+-------------------------------------------------- */ /* CONTAINER */
+body {
+	width: 90%;
+	margin: 0 auto;
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	/* Lucida Grande for the Macs, Tahoma for the PCs */
+	font-size: 1em;
+/*	line-height: 1.6em;*/
+	color: #666;
+	background-color: #FFF;
+	padding: inherit;
+}
+
+/* GENERAL MOJO AND MULA */
+h1 {
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	font-size: 2.4em;
+	color: #FFF;
+	margin-bottom: 30px;
+	background-color: #6BBD19;
+}
+
+h2 {
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	color: #6BBD19;
+	font-size: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #FFF;
+	border: none;
+	border-bottom: solid 3px #6BBD19;
+	padding-bottom: 2px;
+}
+
+h3 {
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	color: #6BBD19;
+	font-size: 1.2em;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #FFF;
+	border: none;
+	border-bottom: solid 2px #6BBD19;
+	padding-bottom: 2px;
+}
+
+p {
+	font-size: 1em;
+	line-height: 1.3em;
+}
+
+a {
+	color: #6BBD19;
+	text-decoration: underline;
+}
+
+a:hover {
+	background-color: #F5F5F5;
+}
+
+form {
+	float: right;
+	margin-top: -45px;
+	font-size: 9px;
+}
+
+input {
+	background-color: #FFF;
+	color: #999999;
+	border: 1px solid #CCC;
+	font-size: 11px;
+	padding: 3px;
+}
+
+.button {
+	padding: 2px;
+}
+
+/* HEADER ELEMENTS */
+#banner {
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	clear: both;
+	background-color: #6BBD19;
+	border: none;
+}
+
+/* the slogan */
+#banner p {
+	margin-top: -20px;
+	margin-left: 30px;
+	color: #DDD;
+}
+
+#banner a {
+	font-family:"‚l‚r ‚oƒSƒVƒbƒN",Osaka,"ƒqƒ‰ƒMƒmŠpƒS Pro W3",Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	font-size: 2.4em;
+	color: #FFF;
+	margin-bottom: 30px;
+	background-color: #6BBD19;
+	text-decoration: none;
+}
+
+
+
+#leftColumn {
+	background-color: inherit;
+	border: none;
+	float: left;
+	overflow: hidden;
+	width: 170px;
+	margin: 0;
+}
+
+#navcolumn {
+	width: 166px;
+}
+
+#navcolumn ul {
+	font-size: inherit;
+	margin-left: 0;
+	padding: 0px 0px 10px;
+	list-style-type: none;
+}
+
+#navcolumn li {
+	background-image: none;
+	background-position: 6px 10px;
+	background-repeat: no-repeat;
+	font-size: inherit;
+	line-height: inherit;
+	list-style-position: inherit;
+	list-style-type: inherit;
+	padding-left: 16px;
+}
+
+#navcolumn h5 {
+	color: inherit;
+	display: block;
+	padding: 5px;
+	border-bottom: 1px solid #CCC;
+	font-size: 0.9em;
+}
+
+#navcolumn a, #navcolumn strong {
+	display: block;
+	padding: 5px;
+	width: 140px;
+	border-bottom: 1px solid #CCC;
+	font-size: 0.9em;
+}
+
+#navcolumn a:link, #navcolumn a:visited {
+	color: #6BBD19;
+	text-decoration: none;
+}
+
+#navcolumn a:hover {
+	background-color: #F5F5F5;
+	color: #6BBD19;
+}
+
+#navcolumn a {
+	display: block;
+	width: 140px;
+}
+
+#poweredBy img {
+	display: inline;
+}
+
+/* CONTENT ELEMENTS */
+#content {
+	margin-left: 180px;
+	margin-right: 25px;
+}
+
+#content p {
+	padding-bottom: 10px;
+	/* A faint grey line below the text */
+}
+
+/* SIDEBAR ELEMENTS */
+#sidebar {
+	float: right;
+	width: 175px;
+}
+
+#sidebar p {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+/* FOOTER ELEMENTS */
+#footer {
+	margin-top: 20px;
+	clear: both;
+	background-color: #AAA;
+	padding: 0px 5px 0px 5px;
+}
+
+#footer p {
+	color: #FFF;
+	padding: 5px;
+}
+
+#footer p a {
+	color: #FFF;
+	border-bottom: 1px dotted #89817f;
+}
+
+#footer p a:hover {
+	color: #FFF;
+	background-color: #575352;
+}
+/* And they lived happily ever after. The End. */
+
+th {
+	background: #eee;
+	text-align: center;
+	font-weight: bold;
+}
+
+.source {
+	padding: 1em;
+	border: solid 1px #999;
+	font-size: small;
+	background: #eee;
+	line-height: 1.4em;
+}
+
+div#box{margin: 0;background: #6BBD19}
+b.btop, b.btop b, b.bbot, b.bbot b{
+    display: block;height: 10px;font-size: 1px;
+    background-image:url(rc.png);
+    background-repeat: no-repeat}
+b.btop b{background-position: 100% -10px}
+b.bbot{background-position: 0 -20px}
+b.bbot b{background-position: 100% -30px}
+
+img.box-image {
+	border: solid 1px #DDD;
+	margin: 5px 0px;
+}
