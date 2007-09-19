@@ -1,5 +1,7 @@
-<?xml version="1.0"?>
-<project>
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.seasar.cubby</groupId>
 	<artifactId>cubby-project</artifactId>
@@ -10,6 +12,18 @@
 		Cubby 100% Pure JSP Web Application Framework
 	</description>
 	<url>http://cubby.sandbox.seasar.org/</url>
+	<inceptionYear>2006</inceptionYear>
+	<organization>
+		<name>The Seasar Foundation and the others. All rights reserved.</name>
+		<url>http://www.seasar.org/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<developers>
 		<developer>
 			<id>agata</id>
@@ -18,11 +32,38 @@
 			<organization>Nulab Inc.</organization>
 			<timezone>+9</timezone>
 		</developer>
+		<developer>
+			<id>inumaru</id>
+			<name>INUMARU Sachie</name>
+			<email>inumaru@nulab.co.jp</email>
+			<organization>Nulab Inc.</organization>
+			<timezone>+9</timezone>
+		</developer>
+		<developer>
+			<id>baba</id>
+			<name>BABA Yasuyuki</name>
+			<email>baba@nulab.co.jp</email>
+			<organization>Nulab Inc.</organization>
+			<timezone>+9</timezone>
+		</developer>
 	</developers>
-	<organization>
-		<name>The Seasar Foundation</name>
-		<url>http://www.seasar.org/</url>
-	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>cubby-user</name>
+			<subscribe>https://ml.seasar.org/mailman/listinfo/cubby-user</subscribe>
+			<unsubscribe>https://ml.seasar.org/mailman/listinfo/cubby-user</unsubscribe>
+			<post>cubby-user@ml.seasar.org</post>
+			<archive>http://ml.seasar.org/archives/cubby-user/</archive>
+		</mailingList>
+	</mailingLists>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>https://www.seasar.org/issues/browse/CUBBY</url>
+	</issueManagement>
+	<scm>
+		<connection>scm:svn:https://www.seasar.org/svn/sandbox/cubby/trunk/cubby/</connection>
+		<url>https://www.seasar.org/svn/sandbox/cubby/trunk/cubby/</url>
+	</scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -49,6 +90,8 @@
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
+					<locales>ja</locales>
+					<encoding>UTF-8</encoding>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
@@ -86,8 +129,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>changelog-maven-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+					<charset>UTF-8</charset>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-changelog-plugin</artifactId>
 				<configuration>
 					<type>range</type>
 					<range>30</range>
@@ -96,16 +146,22 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>surefire-report-maven-plugin</artifactId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<configuration>
+					<!--encoding>UTF-8</encoding-->
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
+				<artifactId>maven-jxr-plugin</artifactId>
 				<configuration>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</reporting>
