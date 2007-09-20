@@ -13,7 +13,10 @@ import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
 /**
+ * 指定されたパスにフォワードする {@link ActionResult} です。
+ * <p>
  * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定されたパスにフォワードします。
+ * </p>
  * <p>
  * 使用例1 : フォワード先を相対パスで指定
  * 

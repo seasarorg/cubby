@@ -8,12 +8,42 @@ import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * 指定されたパスにリダイレクトする {@link ActionResult} です。
+ * <p>
+ * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定されたパスにリダイレクトします。
+ * </p>
+ * <p>
+ * 使用例1 : リダイレクト先を相対パスで指定
+ * 
+ * <pre>
+ * return new Redirect(&quot;list&quot;);
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * 使用例2 : リダイレクト先を絶対パスで指定
+ * 
+ * <pre>
+ * return new Redirect(&quot;/todo/list&quot;);
+ * </pre>
+ * 
+ * </p>
+ * 
+ * @author baba
+ */
 public class Redirect extends AbstractActionResult {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final String result;
 
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param path
+	 *            リダイレクト先のパス
+	 */
 	public Redirect(String result) {
 		this.result = result;
 	}
