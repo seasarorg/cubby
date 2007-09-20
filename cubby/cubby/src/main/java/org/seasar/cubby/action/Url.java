@@ -6,7 +6,43 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * アクションメソッドの URL を指定します。
+ * アクションメソッドの URL。
+ * <p>
+ * アクションメソッドを起動するための URL を指定するアノテーションです。
+ * </p>
+ * <p>
+ * 使用例
+ * 
+ * <pre>
+ * &#64;Url(&quot;fuga&quot;)
+ * public class HogeAction {
+ * 	// -&gt; &quot;/fuga/m1&quot;
+ * 	public ActionResult m1() {
+ * 	}
+ * 
+ * 	&#64;Url(&quot;list&quot;)
+ * 	// -&gt; &quot;/fuga/list&quot;
+ * 	public ActionResult m2() {
+ * 	}
+ * 
+ * 	&#64;Url(&quot;/xxx/yyy&quot;)
+ * 	// -&gt; &quot;/xxx/yyy&quot;
+ * 	public ActionResult m3() {
+ * 	}
+ * 
+ * 	&#64;Url(&quot;/{id}/edit&quot;)
+ * 	// {id}部分をリクエストパラメータに追加
+ * 	public ActionResult m4() {
+ * 	}
+ * 
+ * 	&#64;Url(&quot;/{userId,a-z}/edit&quot;)
+ * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
+ * 	public ActionResult m5() {
+ * 	}
+ * }
+ * </pre>
+ * 
+ * </p>
  * 
  * @author agata
  * @since 1.0
@@ -14,6 +50,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
 public @interface Url {
+
+	/**
+	 * アクションメソッドを起動する対象となる HTTP メソッド。
+	 * 
+	 * @author agata
+	 * @since 1.0
+	 */
 	enum Method {
 		/** HTTP GET */
 		GET,
