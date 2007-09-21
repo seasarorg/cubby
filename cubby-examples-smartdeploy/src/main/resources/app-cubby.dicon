@@ -5,8 +5,8 @@
 
 	<component class="org.seasar.cubby.action.impl.FormatPatternImpl">
 		<property name="datePattern">"yyyy-MM-dd"</property>
-		<property name="timePattern">"hh:MM:ss.SSS"</property>
-		<property name="timestampPattern">"yyyy-MM-dd hh:MM:ss.SSS"</property>
+		<property name="timePattern">"HH:mm:ss"</property>
+		<property name="timestampPattern">"yyyy-MM-dd HH:mm:ss"</property>
 	</component>
 
 </components>
