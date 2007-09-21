@@ -9,9 +9,9 @@ public class FormatPatternImpl implements FormatPattern {
 
 	private String datePattern = "yyyy-MM-dd";
 
-	private String timePattern = "HH:mm:ss.SSS";
+	private String timePattern = "HH:mm:ss";
 
-	private String timestampPattern = "yyyy-MM-dd HH:mm:ss.SSS";
+	private String timestampPattern = "yyyy-MM-dd HH:mm:ss";
 
 	public String getDatePattern() {
 		return datePattern;
