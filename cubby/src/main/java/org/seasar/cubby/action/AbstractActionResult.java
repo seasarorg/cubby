@@ -4,7 +4,10 @@ import org.seasar.cubby.controller.ActionContext;
 
 abstract class AbstractActionResult implements ActionResult {
 
-	public void prerender(ActionContext context) {
+	/**
+	 * 何も行いません。
+	 */
+	public void prerender(final ActionContext context) {
 	}
 
 }

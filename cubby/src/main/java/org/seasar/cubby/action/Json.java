@@ -25,7 +25,7 @@ import org.seasar.framework.util.StringUtil;
  * 
  * </p>
  * <p>
- * 使用例2 : JSONP 形式のレスポンスを返す
+ * 使用例2 : コールバック関数名を指定して JSONP 形式のレスポンスを返す
  * 
  * <pre>
  * MyBean bean = ...;
