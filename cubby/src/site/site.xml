@@ -14,8 +14,13 @@
 			<item name="セットアップ" href="/setup.html" />
 			<item name="2分間チュートリアル" href="/twominute.html" />
 			<item name="5分間チュートリアル" href="/fiveminute.html" />
-			<item name="リファレンスマニュアル" href="/reference.html" />
 			<item name="ダウンロード" href="/download.html" />
+		</menu>
+
+		<menu name="リファレンス">
+			<item name="アクション" href="/action.html" />
+			<item name="JSP" href="/jsp.html" />
+			<item name="Mayaa との連携" href="/mayaa.html" />
 		</menu>
 
 		${reports}

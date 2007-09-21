@@ -1,0 +1,181 @@
+                                    ------
+                                Mayaa との連携
+                                    ------
+                                    agata
+                                    ------
+                                  2007-09-21
+
+Mayaa との連携
+
+ Cubby でデザイナーが作成した HTML をテンプレートとしてビューを作成したい場合、Java テンプレートエンジンである{{{http://mayaa.seasar.org}Mayaa}}と連携することができます。
+
+ 以下、Mayaaとの連携方法を示します。\
+ 動作は Cubby 0.9.0、Mayaa-1.1.14で確認しています。\
+ また、Cubby のサンプル war に「Mayaa との連携のサンプル」がありますのでそちらも参照ください。
+
+Mayaa との連携設定
+
+ [[1]]Mayaa の依存 jar ファイルを追加する
+
+      Mayaa が依存する jar ファイルを全て追加します。Maven2 を使用している場合は dependencies ディレクティブに Mayaa を追加するだけでOKです。
+
+ [[2]]web.xml へ MayaaServlet を追加する
+
+      web.xml に MayaaServlet を定義し、*.html を処理するように設定します。
+
++------------------------------------------------------+
+<webapp>
+...
+  <servlet>
+    <servlet-name>MayaaServlet</servlet-name>
+    <servlet-class>org.seasar.mayaa.impl.MayaaServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+...
+  <servlet-mapping>
+    <servlet-name>MayaaServlet</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+...
+</webapp>
++------------------------------------------------------+
+
+ [[3]]アクションメソッドのフォワード先を「*.html」にする
+
+      アクションクラスはJSPの時と作り方は変わりません。\
+      アクションメソッドのフォワード先を「*.html」にして、ビューが Mayaa で実行されるようにします。
+
++------------------------------------------------------+
+public class MayaaComponentsAction extends Action {
+...
+  @Override
+  public void prerender() {
+    super.prerender();
+    hobbies = getHobbies();
+    colors = getColors();
+  }
+
+  @Form("form")
+  public ActionResult components() {
+    return new Forward("components.html");
+  }
+...
+}
++------------------------------------------------------+
+
+ [[4]]HTML テンプレートと Mayaa ファイルを作成する
+
+ HTML テンプレートと Mayaa ファイルを作成します。\
+ これは Mayaa のルールで作成します。Cubby のカスタムタグを Mayaa ファイルに記述することで、Cubby の機能を Mayaa から利用できます。
+
+CubbyとMayaaの使い分け
+
+ CubbyとMayaaは機能が一部重複しています。\
+ レイアウト共有やコンポーネント(HTML 部品)、JavaScript(Rhino)による強力なスクリプト機能は Mayaa のほうが優れているので、そのまま使用することをおすすめします。
+ 例えば下記の例では、テーブルの行毎の色づけ（odd/even）を Mayaa の forEach プロセッサと JavaScript で実現しています。
+ Cubby のカスタムタグは主に入力フォームの生成に使用してください。
+
+ <<mayaa/components.html>>
+
++------------------------------------------------------+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <title>components.html</title>
+  <link href="./../css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+</head>
+<body>
+[<a href="./../">戻る</a>]
+<form id="form" method="post" action="./components">
+<h1>コンポーネント一覧</h1>
+<h2>Input Text</h2>
+<label for="userName">Name:</label><input id="userName" type="text" name="userName"/>
+
+<h2>Select</h2>
+<label for="color">Color:</label>
+<select id="color" name="color" size="3">
+  <option value="red">赤</option>
+  <option value="blue">青</option>
+  <option value="yellow" selected="selected">黄色</option>
+</select>
+
+<h2>TextArea</h2> 
+<label for="memo">memo:</label><br/>
+<textarea id="memo" name="memo" rows="5" cols="50"></textarea>
+
+<h2>Checkbox</h2> 
+<label for="check1">Check1:</label><br/>
+<input id="check1" type="checkbox" name="check1" value="true"/>
+
+<h2>Checkbox(Array)</h2> 
+<label for="check2">Check2:</label><br/>
+<input id="check2-1" type="checkbox" name="check2" value="1"/>
+<input id="check2-2" type="checkbox" name="check2" value="2"/>
+<input id="check2-3" type="checkbox" name="check2" value="3"/>
+
+<h2>Odd & Null</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>LABEL</th>
+  </tr>
+  <tr id="loop">
+    <td><span id="item-value"></span></td>
+    <td><span id="item-name"></span></td>
+  </tr>
+  <tr id="dummy">
+    <td>dummy1</td>
+    <td>dummy1 name</td>
+  </tr>
+  <tr id="dummy">
+    <td>dummy2</td>
+    <td>dummy2 name</td>
+  </tr>
+</table>
+<br/>
+<input type="submit" value="登録"/>
+</form>
+</body>
+</html>
++------------------------------------------------------+
+
+ <<mayaa/components.mayaa>>
+
++------------------------------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+  xmlns:t="http://www.seasar.org/cubby/tags"
+  xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+  <!-- form -->
+  <t:form m:id="form" method="post" action="$\{contextPath\}/mayaa/components" value="$\{form\}" />
+
+  <!-- text -->
+  <t:input m:id="userName" type="text" name="userName" id="userName" />
+
+  <!-- select -->
+  <t:select m:id="color" name="color" size="3" 
+    items="$\{colors\}" labelProperty="name" valueProperty="value" />
+  <!-- textarea -->
+  <t:textarea m:id="memo" name="memo" rows="5" cols="50" />
+
+  <!-- checkbox(multi) -->
+  <t:input m:id="check1" type="checkbox" name="check1" value="true" />
+
+  <!-- checkbox(single) -->
+  <t:input m:id="check2-1" type="checkbox" name="check2" value="1" />
+  <t:input m:id="check2-2" type="checkbox" name="check2" value="2" />
+  <t:input m:id="check2-3" type="checkbox" name="check2" value="3" />
+	
+  <!-- forEach and odd,even -->
+  <m:forEach m:id="loop" var="item" index="s" items="$\{colors\}" replace="false">
+  <m:attribute name="class" value="$\{"$"\}\{s % 2 ? 'odd' : 'even'\}" />
+  </m:forEach>
+  <m:write m:id="item-value" value="$\{"$"\}{item.value}" />
+  <m:write m:id="item-name" value="$\{"$"\}{item.name}" />
+
+  <!-- remove dummy -->
+  <m:null m:id="dummy" />
+</m:mayaa>
++------------------------------------------------------+
+ 

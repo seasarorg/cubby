@@ -9,6 +9,10 @@ Hello アプリケーションの概要
 
  入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
 
+[images/hello_input.png]入力画面
+
+[images/hello_result.png]出力画面
+
 アクションクラスの作成
 
  アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
@@ -37,7 +41,7 @@ Hello アプリケーションの概要
  @Formアノテーションをアクションメソッドに指定することで、リクエストパラメータと Bean の自動バインディングが行われます。\
  この場合、リクエストパラメータ「name」が HelloAction のプロパティ「name」にバインディングされます。
 
- HelloAction.java のソースコードは以下のようになります。
+ <<HelloAction.java>>
 
 +------------------------------------------------------+
 package org.seasar.cubby.examples.hello;
@@ -81,7 +85,7 @@ JSP の作成
  入力フィールドはカスタムタグを使用して出力します。
  （\<t:input type="text" name="name"/\>）
 
- /hello/input.jsp は以下のようになります。
+ <</hello/input.jsp>>
 
 +------------------------------------------------------+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -101,7 +105,7 @@ JSP の作成
 </html>
 +------------------------------------------------------+
 
- /hello/result.jsp は以下のようになります。
+ <</hello/result.jsp>>
 
 +------------------------------------------------------+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -128,7 +132,9 @@ JSP の作成
  ヘッダーファイル(header.jsp)では、ページ共通の taglib ディレクティブを記述しておきます。
 
  上記サンプルの JSP は、共通ヘッダーを使用しているので、JSP の先頭に taglib ディレクティブの宣言がありません。\
- 実際は、以下の「/common/header.jsp」の内容が JSP の先頭に自動的に付加されてから、コンパイル・実行されています。
+ 実際は、以下の「header.jsp」の内容が JSP の先頭に自動的に付加されてから、コンパイル・実行されています。
+
+ <</common/header.jsp>>
 
 +------------------------------------------------------+
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
@@ -139,7 +145,7 @@ JSP の作成
 <%@ taglib uri="http://www.seasar.org/cubby/functions" prefix="f" %>
 +------------------------------------------------------+
 
- web.xml は以下のようになります。
+ <<web.xml>>
 
 +------------------------------------------------------+
 </web-app>

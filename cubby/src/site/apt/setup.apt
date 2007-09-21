@@ -40,30 +40,34 @@ mvn eclipse:eclipse
  ディレクトリに配備する必要があるファイルを説明します。
  Maven2 を使わずにプロジェクトを作成するときも参考にしてください。
 
- [[1]]必要なライブラリ (WEB-INF/lib)
+*必要なライブラリ (WEB-INF/lib)
 
-      {{{cubby/dependencies.html}依存関係}}を参照してください。
-      WEB-INF/lib 以下に配備します。
+ {{{cubby/dependencies.html}依存関係}}を参照してください。
+ WEB-INF/lib 以下に配備します。
 
-      主な依存ライブラリを以下にあげます。
+ 主な依存ライブラリを以下にあげます。
 
-      * s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar
+ * cubby-*.jar
 
-        Seasar2 です。
+   Cubby 本体です。
 
-      * commons-fileupload-*.jar、commons-io-*.jar
+ * s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar
 
-        ファイルアップロード機能で使用されます。
+   Seasar2 です。
 
- [[2]]デプロイメント記述子 (WEB-INF/web.xml)
+ * commons-fileupload-*.jar、commons-io-*.jar
 
-      Cubby はサーブレットフィルタとして動作します。
-      web.xml にサーブレットフィルタとフィルタマッピングを追加します。
-      登録する際は以下の順序で登録してください。
+   ファイルアップロード機能で使用されます。
 
-      [[a]]S2ContainerFilter (必須)
+*デプロイメント記述子 (WEB-INF/web.xml)
 
-           Cubby 内部では{{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
+ Cubby はサーブレットフィルタとして動作します。
+ web.xml にサーブレットフィルタとフィルタマッピングを追加します。
+ 登録する際は以下の順序で登録してください。
+
+ [[1]]S2ContainerFilter (必須)
+
+      Cubby 内部では{{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
 
 +------------------------------------------------------+
 <web-app>
@@ -81,9 +85,9 @@ mvn eclipse:eclipse
 </web-app>
 +------------------------------------------------------+
 
-      [[b]]HotdeployFilter
+ [[2]]HotdeployFilter
 
-           {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy}Hot deploy}} を使用する場合は HotdeployFilter を定義します。
+      {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy}Hot deploy}} を使用する場合は HotdeployFilter を定義します。
 
 +------------------------------------------------------+
 <web-app>
@@ -101,14 +105,14 @@ mvn eclipse:eclipse
 </web-app>
 +------------------------------------------------------+
 
-      [[c]]UrlRewriteFilter
+ [[3]]UrlRewriteFilter
 
-           リクエストされた URL を、以下で述べる CubbyFilter が処理できるデフォルトの URL に変換して FORWARD します。
-           このマッピングはアクションクラスに @URL アノテーションをつけることで変更できます。
+      リクエストされた URL を、以下で述べる CubbyFilter が処理できるデフォルトの URL に変換して FORWARD します。
+      このマッピングはアクションクラスに @URL アノテーションをつけることで変更できます。
 
-           また、処理の対象外とする URL を ignorePathPattern で指定できます。
-           Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
-           対象外にするパスを正規表現のカンマ区切りで指定してください。
+      また、処理の対象外とする URL を ignorePathPattern で指定できます。
+      Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
+      対象外にするパスを正規表現のカンマ区切りで指定してください。
 
 +------------------------------------------------------+
 <web-app>
@@ -129,18 +133,18 @@ mvn eclipse:eclipse
 </web-app>
 +------------------------------------------------------+
 
-      [[d]]CubbyFilter (必須)
+ [[4]]CubbyFilter (必須)
 
-           Cubby の主な処理を行うフィルタです。
-           リクエストされた URL をパースしてアクションメソッドを起動します。
+      Cubby の主な処理を行うフィルタです。
+      リクエストされた URL をパースしてアクションメソッドを起動します。
 
-           たとえば、以下のURLならば
-           > http://(ホスト)/(コンテキストパス)/aaa/bbb/ccc
-           *アクションクラスのコンポーネント名 : aaa_bbb
-           *メソッド名 : ccc
-           となります。
+      たとえば、以下のURLならば
+      > http://(ホスト)/(コンテキストパス)/aaa/bbb/ccc
+      *アクションクラスのコンポーネント名 : aaa_bbb
+      *メソッド名 : ccc
+      となります。
 
-           対象のコンポーネントが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
+      対象のコンポーネントが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
 
 +------------------------------------------------------+
 <web-app>
@@ -157,17 +161,17 @@ mvn eclipse:eclipse
 </web-app>
 +------------------------------------------------------+
 
- [[3]]diconファイル (WEB-INF/classes)
+*diconファイル (WEB-INF/classes)
 
-      [[a]]app.dicon
+ [[1]]app.dicon
 
-           以下の dicon ファイルをインクルードしてください。
+      以下の dicon ファイルをインクルードしてください。
 
-           * dxo.dicon (S2Extension の jar ファイルに含まれます)
+      * dxo.dicon (S2Extension の jar ファイルに含まれます)
 
-           * cubby.dicon (Cubby の jar ファイルに含まれます)
+      * cubby.dicon (Cubby の jar ファイルに含まれます)
 
-           * app-cubby.dicon (必要な場合に作成してください。必須ではありません)
+      * app-cubby.dicon (必要な場合に作成してください。必須ではありません)
 
 +------------------------------------------------------+
 <?xml version="1.0" encoding="UTF-8"?>
@@ -183,23 +187,23 @@ mvn eclipse:eclipse
 </components>
 +------------------------------------------------------+
 
-      [[c]]convention.dicon
+ [[2]]convention.dicon
       
-           {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample}dicon ファイルの設定例}}を参考に、ルートパッケージを設定してください。
+      {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample}dicon ファイルの設定例}}を参考に、ルートパッケージを設定してください。
 
-      [[d]]creator.dicon
+ [[3]]creator.dicon
       
-           {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample}dicon ファイルの設定例}}を参考に、ActionCreator を設定してください。
+      {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample}dicon ファイルの設定例}}を参考に、ActionCreator を設定してください。
 
-      [[e]]customizer.dicon
+ [[4]]customizer.dicon
 
-           Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。
-           cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。
+      Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。
+      cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。
 
-           アクションメソッドでトランザクションの制御が必要な場合もここで定義してください。
-           org.seasar.cubby.customizer.ActionMethodCustomizer は、アクションメソッドのみが対象になるカスタマイザです。
+      アクションメソッドでトランザクションの制御が必要な場合もここで定義してください。
+      org.seasar.cubby.customizer.ActionMethodCustomizer は、アクションメソッドのみが対象になるカスタマイザです。
 
-           JSP の ELでは public フィールドをアクセスできないので、プロパティを public フィールドにしているばあいは PropertyInterType を適用してアクセサメソッドが生成されるようにしてください。
+      JSP の ELでは public フィールドをアクセスできないので、プロパティを public フィールドにしているばあいは PropertyInterType を適用してアクセサメソッドが生成されるようにしてください。
 
 +------------------------------------------------------+
 <?xml version="1.0" encoding="UTF-8"?>
@@ -244,11 +248,11 @@ mvn eclipse:eclipse
 </components>
 +------------------------------------------------------+
 
-      [[f]]app-cubby.dicon
+ [[5]]app-cubby.dicon
 
-           Cubby アプリケーション全体の設定です。
-           任意で作成して、app.dicon からインクルードしてください。
-           現在はデフォルトの日付フォーマットを指定できます。
+      Cubby アプリケーション全体の設定です。
+      任意で作成して、app.dicon からインクルードしてください。
+      現在はデフォルトの日付フォーマットを指定できます。
 
 +------------------------------------------------------+
 <?xml version="1.0" encoding="UTF-8"?>
@@ -258,21 +262,21 @@ mvn eclipse:eclipse
 
 	<component class="org.seasar.cubby.action.impl.FormatPatternImpl">
 		<property name="datePattern">"yyyy-MM-dd"</property>
-		<property name="timePattern">"hh:MM:ss.SSS"</property>
-		<property name="timestampPattern">"yyyy-MM-dd hh:MM:ss.SSS"</property>
+		<property name="timePattern">"HH:mm:ss"</property>
+		<property name="timestampPattern">"yyyy-MM-dd HH:mm:ss"</property>
 	</component>
 
 </components>
 +------------------------------------------------------+
 
- [[4]]プロパティファイル (WEB-INF/classes)
+*プロパティファイル (WEB-INF/classes)
 
-      [[a]]messages.properties
+ [[1]]messages.properties
 
-           org.seasar.cubby.util.Messagesで使用する、アプリケーションで表示するメッセージを定義します。
-           Cubby のバリデータが出力するメッセージもここに定義します。
+      org.seasar.cubby.util.Messagesで使用する、アプリケーションで表示するメッセージを定義します。
+      Cubby のバリデータが出力するメッセージもここに定義します。
 
-           デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。
+      デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。
 
 +------------------------------------------------------+
 valid.required={0}は必須です。
