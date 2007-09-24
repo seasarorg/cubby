@@ -12,7 +12,7 @@
 <h1>Cuuby Exmaples</h1>
 <ul>
 	<li><a href="hello/">Hello World</a></li>
-	<li><a href="login/">Todoサンプルアプリケーション</a></li>
+	<li><a href="todo/">Todoサンプルアプリケーション</a></li>
 	<li><a href="components/">コンポーネント一覧</a></li>
 	<li><a href="mayaa/components">コンポーネント一覧(Mayaa版)</a></li>
 	<li><a href="components/array">配列</a></li>
