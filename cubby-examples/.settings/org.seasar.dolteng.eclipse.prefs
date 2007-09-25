@@ -1,9 +1,9 @@
 #Fri Jul 27 22:15:51 JST 2007
 DaoType=S2Dao
-DefaultResourcePath=/cubby-examples-smartdeploy/src/main/resources
-DefaultRootPackage=org.seasar.cubby.examples.smartdeploy
-DefaultSrcPath=/cubby-examples-smartdeploy/src/main/java
-ServletPath=/cubby-examples-smartdeploy
+DefaultResourcePath=/cubby-examples/src/main/resources
+DefaultRootPackage=org.seasar.cubby.examples
+DefaultSrcPath=/cubby-examples/src/main/java
+ServletPath=/cubby-examples
 WebContentsRoot=src/main/webapp/
 eclipse.preferences.version=1
 instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
