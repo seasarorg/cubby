@@ -15,9 +15,9 @@ public class FileUploadRuntimeException extends SRuntimeException {
 	private static String messageCode(FileUploadException cause) {
 		final String messageCode;
 		if (cause instanceof SizeLimitExceededException) {
-			messageCode = "ECUB0002";
+			messageCode = "ECUB0202";
 		} else {
-			messageCode = "ECUB0001";
+			messageCode = "ECUB0201";
 		}
 		return messageCode;
 	}

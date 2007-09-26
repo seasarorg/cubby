@@ -36,7 +36,7 @@ public class Redirect extends AbstractActionResult {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
-	private final String result;
+	private final String path;
 
 	/**
 	 * インスタンスを生成します。
@@ -44,31 +44,33 @@ public class Redirect extends AbstractActionResult {
 	 * @param path
 	 *            リダイレクト先のパス
 	 */
-	public Redirect(String result) {
-		this.result = result;
+	public Redirect(final String path) {
+		this.path = path;
 	}
 
-	public void execute(ActionContext context, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String path = null;
+	public void execute(final ActionContext context,
+			final HttpServletRequest request, final HttpServletResponse response)
+			throws Exception {
 
-		String cpath = request.getContextPath();
-		if (result.charAt(0) == '/') {
-			path = cpath + result;
+		final String absolutePath;
+		final String contextPath = request.getContextPath();
+		if (this.path.charAt(0) == '/') {
+			absolutePath = contextPath + this.path;
 		} else {
-			String actionClassName = CubbyUtils.getActionClassName(context
-					.getComponentDef().getComponentClass());
+			final String actionClassName = CubbyUtils
+					.getActionClassName(context.getComponentDef()
+							.getComponentClass());
 			if (StringUtil.isEmpty(actionClassName)) {
-				path = cpath + "/" + result;
+				absolutePath = contextPath + "/" + this.path;
 			} else {
-				path = cpath + "/" + actionClassName + "/" + result;
-
+				absolutePath = contextPath + "/" + actionClassName + "/"
+						+ this.path;
 			}
 		}
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0003", new String[] { path });
+			logger.log("DCUB0003", new String[] { absolutePath });
 		}
-		response.sendRedirect(path);
+		response.sendRedirect(absolutePath);
 	}
 
 }
