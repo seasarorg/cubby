@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.Action;
@@ -18,6 +19,8 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.helper.impl.DirectDownloadHelperImpl;
 
 public class ImageAction extends Action {
+
+	public HttpServletRequest request;
 
 	public HttpServletResponse response;
 
@@ -37,12 +40,13 @@ public class ImageAction extends Action {
 		graphics.setColor(Color.GREEN);
 		graphics.drawRoundRect(200, 5, 50, 40, 10, 5);
 
-		ImageIO.write(image, "png", response.getOutputStream());
-
 		DirectDownloadHelperImpl downloadHelper = new DirectDownloadHelperImpl();
 		downloadHelper.setAutoDownload(true);
 		downloadHelper.setContentType("image/png");
 		downloadHelper.setLastModified(new Date().getTime());
+		downloadHelper.setupHeader(request, response);
+
+		ImageIO.write(image, "png", response.getOutputStream());
 
 		return new Direct(downloadHelper);
 	}
