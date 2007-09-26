@@ -1,0 +1,264 @@
+body {
+	width: 90%;
+	margin: 0 auto;
+	padding: 0px 0px 10px 10px;
+	font-family: Lucida Grande, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	color: #666;
+	background-color: #FFF;
+	padding: inherit;
+}
+
+body,td,select,input,li {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	/*	font-size: 13px;*/
+}
+
+code {
+	font-family: Courier, monospace;
+	font-size: 0.8em;
+	/*  font-size: 13px;*/
+}
+
+a {
+/*	color: #6BBD19;*/
+	text-decoration: underline;
+}
+
+a:link {
+	color: #36a;
+}
+
+a:visited {
+	color: #47a;
+}
+
+a:active {
+	color: #69c;
+}
+
+a:hover {
+	color: #69c;
+/*	background-color: #F5F5F5;*/
+}
+
+#legend li.externalLink {
+	background: url(../images/external.png) left top no-repeat;
+	padding-left: 18px;
+}
+
+a.externalLink,a.externalLink:link,a.externalLink:visited,a.externalLink:active,a.externalLink:hover
+	{
+	background: url(../images/external.png) right center no-repeat;
+	padding-right: 18px;
+}
+
+#legend li.newWindow {
+	background: url(../images/newwindow.png) left top no-repeat;
+	padding-left: 18px;
+}
+
+a.newWindow,a.newWindow:link,a.newWindow:visited,a.newWindow:active,a.newWindow:hover
+	{
+	background: url(../images/newwindow.png) right center no-repeat;
+	padding-right: 18px;
+}
+
+h1 {
+	font-family: "‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3", Arial, Helvetica,
+		sans-serif;
+	font-weight: bold;
+	font-size: 2.4em;
+	color: #FFF;
+	margin-bottom: 30px;
+	background-color: #6BBD19;
+}
+
+h2 {
+	font-family: "‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3", Arial, Helvetica,
+		sans-serif;
+	color: #6BBD19;
+	font-size: 1.5em;
+	background-color: #FFF;
+	border: none;
+	border-bottom: solid 3px #6BBD19;
+	padding-bottom: 2px;
+}
+
+h3 {
+	font-family: "‚l‚r ‚oƒSƒVƒbƒN", Osaka, "ƒqƒ‰ƒMƒmŠpƒS Pro W3", Arial, Helvetica,
+		sans-serif;
+	color: #6BBD19;
+	font-size: 1.2em;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #FFF;
+	border: none;
+	border-bottom: solid 2px #6BBD19;
+	padding-bottom: 2px;
+}
+
+h4 {
+	padding: 4px 4px 4px 6px;
+	border: 1px solid #bbb;
+	color: #6BBD19;
+	background-color: #fff;
+	font-weight: normal;
+	font-size: large;
+}
+
+h5 {
+	padding: 4px 4px 4px 6px;
+	color: #6BBD19;
+	font-size: medium;
+}
+
+p {
+	font-size: 1em;
+	line-height: 1.3em;
+}
+
+#breadcrumbs {
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	background-color: #ccc;
+}
+
+#leftColumn {
+	bgcolor: #fff;
+	border: none;
+	float: left;
+	overflow: hidden;
+	width: 170px;
+	margin: 0;
+}
+
+#navcolumn {
+	width: 166px;
+	font-size: 0.9em;
+}
+
+#navcolumn ul {
+	margin: 0;
+	padding: 0px 0px 10px;
+	list-style-type: none;
+	font-size: inherit;
+}
+
+#navcolumn li {
+	font-size: 1em;
+	background-image: none;
+	background-position: 6px 10px;
+	background-repeat: no-repeat;
+	padding-left: 16px;
+}
+
+#navcolumn a, #navcolumn strong {
+	display: block;
+	padding: 5px;
+	width: 140px;
+	border-bottom: 1px solid #CCC;
+}
+
+#navcolumn a:link, #navcolumn a:visited {
+	color: #6BBD19;
+	text-decoration: none;
+}
+
+#navcolumn a:hover {
+	background-color: #F5F5F5;
+	color: #6BBD19;
+}
+
+#navcolumn a {
+	display: block;
+	width: 140px;
+}
+
+#navcolumn h5 {
+	display: block;
+	padding: 5px;
+	border-bottom: 1px solid #CCC;
+	font-size: inherit;
+}
+
+#poweredBy img {
+	display: inline;
+}
+
+table.bodyTable th {
+	color: white;
+	background-color: #bbb;
+	text-align: left;
+	font-weight: bold;
+}
+
+table.bodyTable th, table.bodyTable td {
+	font-size: 1em;
+}
+
+table.bodyTable tr.a {
+	background-color: #ddd;
+}
+
+table.bodyTable tr.b {
+	background-color: #eee;
+}
+
+.source {
+	padding: 1em;
+	border: solid 1px #999;
+	font-size: small;
+	background: #eee;
+	line-height: 1.4em;
+}
+
+dl {
+	padding: 4px 4px 4px 6px;
+	border: 1px solid #aaa;
+	background-color: #ffc;
+}
+
+dt {
+	color: #900;
+}
+
+#organizationLogo img, #projectLogo img, #projectLogo span {
+	margin: 8px;
+}
+
+#banner {
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	clear: both;
+	background-color: #6BBD19;
+	border: none;
+}
+
+#banner a {
+	font-weight: bold;
+	font-size: 2.4em;
+	color: #FFF;
+	margin-bottom: 30px;
+	background-color: #6BBD19;
+	text-decoration: none;
+}
+
+.errormark, .warningmark, .donemark, .infomark {
+	background: url(../images/icon_error_sml.gif) no-repeat;
+}
+
+.warningmark {
+	background-image: url(../images/icon_warning_sml.gif);
+}
+
+.donemark {
+	background-image: url(../images/icon_success_sml.gif);
+}
+
+.infomark {
+	background-image: url(../images/icon_info_sml.gif);
+}
