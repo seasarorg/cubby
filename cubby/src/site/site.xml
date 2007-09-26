@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Cubby">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
+	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
 		<href>http://cubby.sandbox.seasar.org/</href>
