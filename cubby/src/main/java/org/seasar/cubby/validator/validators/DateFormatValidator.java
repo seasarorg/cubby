@@ -57,7 +57,7 @@ public class DateFormatValidator extends BaseValidator {
 		if (StringUtil.isEmpty(this.pattern)) {
 			FormatPattern formatPattern = context.getFormatPattern();
 			if (formatPattern == null) {
-				throw new SRuntimeException("ECUB0003", new Object[] { this,
+				throw new SRuntimeException("ECUB0301", new Object[] { this,
 						context.getValue() });
 			}
 			pattern = formatPattern.getDatePattern();

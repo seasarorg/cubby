@@ -1,7 +1,6 @@
 package org.seasar.cubby.action.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,44 +8,57 @@ import org.seasar.cubby.action.ActionErrors;
 
 public class ActionErrorsImpl implements ActionErrors {
 
-	private List<String> actionErrors = new ArrayList<String>();
+	private List<String> actionErrors;
 
-	private Map<String, List<String>> fieldErrors = new LinkedHashMap<String, List<String>>();
+	private Map<String, List<String>> fieldErrors;
 
-	public boolean isEmpty() {
-		return actionErrors.isEmpty() && fieldErrors.isEmpty();
+	private List<String> allErrors;
+
+	public List<String> getActionErrors() {
+		return actionErrors;
 	}
 
-	public void addActionError(String message) {
-		actionErrors.add(message);
-	}
-
-	public List<String> getAllErrors() {
-		List<String> errors = new ArrayList<String>();
-		errors.addAll(actionErrors);
-		for (List<String> errorList : fieldErrors.values()) {
-			errors.addAll(errorList);
-		}
-		return errors;
+	public void setActionErrors(final List<String> actionErrors) {
+		this.actionErrors = actionErrors;
 	}
 
 	public Map<String, List<String>> getFieldErrors() {
 		return fieldErrors;
 	}
 
-	public void addFieldError(String name, String message) {
+	public void setFieldErrors(final Map<String, List<String>> fieldErrors) {
+		this.fieldErrors = fieldErrors;
+	}
+
+	public List<String> getAllErrors() {
+		return allErrors;
+	}
+
+	public void setAllErrors(final List<String> allErrors) {
+		this.allErrors = allErrors;
+	}
+
+	public boolean isEmpty() {
+		return actionErrors.isEmpty() && fieldErrors.isEmpty();
+	}
+
+	public void addActionError(final String message) {
+		actionErrors.add(message);
+
+		allErrors.add(message);
+	}
+
+	public void addFieldError(final String name, final String message) {
 		if (!fieldErrors.containsKey(name)) {
 			fieldErrors.put(name, new ArrayList<String>());
 		}
 		fieldErrors.get(name).add(message);
+
+		allErrors.add(message);
 	}
 
-	public boolean hasFieldError(String name) {
+	public boolean hasFieldError(final String name) {
 		return fieldErrors.containsKey(name);
-	}
-
-	public List<String> getActionErrors() {
-		return actionErrors;
 	}
 
 }

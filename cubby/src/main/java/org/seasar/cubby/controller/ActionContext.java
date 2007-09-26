@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Validation;
 import org.seasar.framework.container.ComponentDef;
 
@@ -16,6 +15,8 @@ import org.seasar.framework.container.ComponentDef;
  */
 public interface ActionContext {
 
+	void setActionDef(ActionDef actionDef);
+
 	ActionResult invoke() throws Throwable;
 
 	ComponentDef getComponentDef();
@@ -24,12 +25,10 @@ public interface ActionContext {
 
 	Method getMethod();
 
-	Form getForm();
-
 	Validation getValidation();
 
 	Object getFormBean();
 
-	void setActionDef(ActionDef actionDef);
+	Populator getPopulator();
 
 }

@@ -1,13 +1,7 @@
 package org.seasar.cubby.interceptor;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_ERRORS;
-import static org.seasar.cubby.CubbyConstants.ATTR_ALL_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
-import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
-import static org.seasar.cubby.CubbyConstants.ATTR_FIELD_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
-import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
@@ -24,25 +18,19 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.util.LocaleHolder;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
- * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うフィルターです。 {@link Action#initialize()}、{@link Action#prerender()}メソッドの実行も、
- * このフィルターが行います。
- * 
- * TODO {@link Action#prerender()}メソッドの実行をInvocationFilterに移動させる
+ * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
+ * {@link Action#initialize()}、{@link Action#prerender()} の実行を行います。
  * 
  * @author agata
+ * @author baba
  * @since 1.0
  */
 public class InitializeInterceptor implements MethodInterceptor {
 
 	private MultipartRequestParser multipartRequestParser;
-
-	private Populator populator;
 
 	private ActionContext context;
 
@@ -51,10 +39,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	public void setMultipartRequestParser(
 			final MultipartRequestParser multipartRequestParser) {
 		this.multipartRequestParser = multipartRequestParser;
-	}
-
-	public void setPopulator(final Populator populator) {
-		this.populator = populator;
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -74,11 +58,10 @@ public class InitializeInterceptor implements MethodInterceptor {
 		final Action action = context.getAction();
 		action.initialize();
 
-		ActionResult result = (ActionResult) invocation.proceed();
-
-		result.prerender(context);
-
-		bindAttributes(context);
+		final ActionResult result = (ActionResult) invocation.proceed();
+		if (result != null) {
+			result.prerender(context, request);
+		}
 
 		return result;
 	}
@@ -89,21 +72,22 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	void setupImplicitVariable(final ActionContext context) {
 		request.setAttribute(ATTR_CONTEXT_PATH, request.getContextPath());
-		ResourceBundle resource = ResourceBundleUtil.getBundle(RES_MESSAGES,
-				LocaleHolder.getLocale());
-		Map<?, ?> messagesMap = ResourceBundleUtil.convertMap(resource);
+		final ResourceBundle resource = ResourceBundleUtil.getBundle(
+				RES_MESSAGES, LocaleHolder.getLocale());
+		final Map<?, ?> messagesMap = ResourceBundleUtil.convertMap(resource);
 		request.setAttribute(ATTR_MESSAGES, messagesMap);
 	}
 
 	void setupParams(final ActionContext context) {
-		Map<String, Object> parameterMap = getMultipartSupportParameterMap(request);
+		final Map<String, Object> parameterMap = getMultipartSupportParameterMap(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
 
-	private void setupForm(ActionContext context) {
-		Object formBean = context.getFormBean();
+	private void setupForm(final ActionContext context) {
+		final Object formBean = context.getFormBean();
 		if (formBean != null) {
-			Map<String, Object> params = getParams();
+			final Populator populator = context.getPopulator();
+			final Map<String, Object> params = getParams();
 			populator.populate(params, formBean);
 		}
 	}
@@ -111,38 +95,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> getParams() {
 		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
-	}
-
-	void bindAttributes(final ActionContext context) {
-		// set controller
-		Action action = context.getAction();
-		// request.setAttribute(ATTR_CONTROLLER, action); // support legacy
-		request.setAttribute(ATTR_ACTION, action);
-
-		// set actioneErrors
-		request.setAttribute(ATTR_ERRORS, action.getErrors());
-		request
-				.setAttribute(ATTR_ALL_ERRORS, action.getErrors()
-						.getAllErrors());
-		request.setAttribute(ATTR_ACTION_ERRORS, action.getErrors()
-				.getActionErrors());
-		request.setAttribute(ATTR_FIELD_ERRORS, action.getErrors()
-				.getFieldErrors());
-
-		final Map<String, String> outputValues = populator.describe(context
-				.getFormBean());
-		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
-
-		final BeanDesc beanDesc = BeanDescFactory
-				.getBeanDesc(action.getClass());
-		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
-			if (propertyDesc.isReadable()) {
-				final String name = propertyDesc.getPropertyName();
-				final Object value = propertyDesc.getValue(action);
-				request.setAttribute(name, value);
-			}
-		}
 	}
 
 	Map<String, Object> getMultipartSupportParameterMap(

@@ -10,6 +10,6 @@ public interface ActionResult {
 	void execute(ActionContext context, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
-	void prerender(ActionContext context);
+	void prerender(ActionContext context, HttpServletRequest request);
 
 }

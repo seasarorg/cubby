@@ -1,43 +1,82 @@
 package org.seasar.cubby.action;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.util.OutputStreamUtil;
+import org.seasar.cubby.helper.DownloadHelper;
+import org.seasar.cubby.helper.impl.ByteArrayDownloadHelperImpl;
 
+/**
+ * アクションメソッドから直接レスポンスを返すことを示す {@link ActionResult} です。
+ * <p>
+ * アクションメソッドの戻り値としてこのインスタンスを指定すると、以下のような動作になります。
+ * <ul>
+ * <li> コンストラクタに何も指定しない場合
+ * <p>
+ * 後続の処理はレスポンスに何も出力しません。
+ * アクションメソッド中でレスポンスを出力してください。
+ * </p>
+ * </li>
+ * <li> コンストラクタに {@link DownloadHelper} を指定した場合
+ * <p>
+ * {@link DownloadHelper#download(HttpServletRequest, HttpServletResponse)}
+ * によるダウンロード処理をレスポンスとします。
+ * </p>
+ * </li>
+ * </ul>
+ * <p>
+ * また、指定したデータをダウンロードさせるためのコンストラクタも用意されています。
+ * </p>
+ * 
+ * @author baba
+ */
 public class Direct extends AbstractActionResult {
 
-	private final String contentType;
+	private DownloadHelper downloadHelper;
 
-	private final long lastModified;
-
-	private final byte[] data;
-
-	public Direct(byte[] data, String contentType, long lastModified) {
-		this.data = data;
-		this.contentType = contentType;
-		this.lastModified = lastModified;
+	/**
+	 * インスタンスを生成します。
+	 */
+	public Direct() {
+		this.downloadHelper = null;
 	}
 
-	public void execute(ActionContext context, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		response.setContentType(contentType);
-		response.addDateHeader("Last-Modified", lastModified);
+	/**
+	 * アクションメソッド終了後に、指定された {@link DownloadHelper} によってデータをダウンロードさせるコンストラクタです。
+	 * 
+	 * @param downloadHelper
+	 *            ダウンロードヘルパ
+	 */
+	public Direct(final DownloadHelper downloadHelper) {
+		this.downloadHelper = downloadHelper;
+	}
 
-		OutputStream out = null;
-		try {
-			out = response.getOutputStream();
-			out.write(data);
-		} catch (IOException e) {
-			throw new IORuntimeException(e);
-		} finally {
-			OutputStreamUtil.flush(out);
-			OutputStreamUtil.close(out);
+	/**
+	 * アクションメソッド終了後に、指定されたデータをダウンロードさせるコンビニエンスコンストラクタです。
+	 * 
+	 * @param data
+	 *            ダウンロードさせるデータ
+	 * @param contentType
+	 *            ダウンロードさせるデータのコンテントタイプ
+	 * @param lastModified
+	 *            ダウンロードさせるデータの最終更新時刻
+	 */
+	public Direct(final byte[] data, final String contentType,
+			final long lastModified) {
+		final ByteArrayDownloadHelperImpl downloadHelper = new ByteArrayDownloadHelperImpl();
+		downloadHelper.setData(data);
+		downloadHelper.setContentType(contentType);
+		downloadHelper.setLastModified(lastModified);
+		this.downloadHelper = downloadHelper;
+	}
+
+	public void execute(final ActionContext context,
+			final HttpServletRequest request, final HttpServletResponse response)
+			throws Exception {
+		if (this.downloadHelper != null) {
+			this.downloadHelper.download(request, response);
 		}
 	}
+
 }

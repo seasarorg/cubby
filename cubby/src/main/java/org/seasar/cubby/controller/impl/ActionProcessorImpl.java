@@ -9,9 +9,8 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.convention.CubbyConvention;
+import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.container.annotation.tiger.Binding;
-import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;
 
 public class ActionProcessorImpl implements ActionProcessor {
@@ -22,32 +21,33 @@ public class ActionProcessorImpl implements ActionProcessor {
 
 	private CubbyConvention cubbyConvention;
 
-	@Binding(bindingType = BindingType.MUST)
 	public void setActionContext(final ActionContext context) {
 		this.context = context;
 	}
 
-	@Binding(bindingType = BindingType.MUST)
 	public void setCubbyConvention(final CubbyConvention cubbyConvention) {
 		this.cubbyConvention = cubbyConvention;
 	}
 
-	public void process(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Throwable {
+	public void process(final HttpServletRequest request,
+			final HttpServletResponse response, final FilterChain chain)
+			throws Throwable {
 		final String path = CubbyUtils.getPath(request);
-		
+
 		final ActionDef actionDef = cubbyConvention.fromPathToActionDef(
 				request, path);
 		if (actionDef != null) {
+			context.setActionDef(actionDef);
 			if (logger.isDebugEnabled()) {
 				logger.log("DCUB0004", new Object[] { path });
-				logger.log("DCUB0005", new Object[] { actionDef.getMethod() });
+				logger.log("DCUB0005", new Object[] { context.getMethod() });
 			}
-			context.setActionDef(actionDef);
-			ActionResult result = context.invoke();
-			if (result != null) {
-				result.execute(context, request, response);
+			final ActionResult result = context.invoke();
+			if (result == null) {
+				throw new ActionRuntimeException("ECUB0001",
+						new Object[] { context.getMethod() });
 			}
+			result.execute(context, request, response);
 		} else {
 			chain.doFilter(request, response);
 		}
