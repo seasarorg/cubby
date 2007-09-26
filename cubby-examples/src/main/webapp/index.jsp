@@ -17,6 +17,7 @@
 	<li><a href="mayaa/components">コンポーネント一覧(Mayaa版)</a></li>
 	<li><a href="components/array">配列</a></li>
 	<li><a href="fileupload/">ファイルアップロード</a></li>
+	<li><a href="image/">画像ダウンロード</a></li>
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
 -->
