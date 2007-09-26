@@ -13,7 +13,11 @@
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
 	<component class="org.seasar.cubby.controller.impl.PopulatorImpl" />
-	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="prototype" />
+
+	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
+	<component name="actionErrors" class="java.util.ArrayList" instance="request" />
+	<component name="fieldErrors" class="java.util.LinkedHashMap" instance="request" />
+	<component name="allErrors" class="java.util.ArrayList" instance="request" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
 
 	<!-- Validation -->
