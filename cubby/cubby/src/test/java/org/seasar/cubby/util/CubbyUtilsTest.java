@@ -6,8 +6,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
 import org.seasar.framework.util.ClassUtil;
 
 public class CubbyUtilsTest extends TestCase {
