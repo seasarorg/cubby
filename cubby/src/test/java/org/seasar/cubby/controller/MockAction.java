@@ -5,7 +5,6 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.action.Session;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
@@ -16,7 +15,6 @@ public class MockAction extends Action {
 	
 	public String attr1;
 	public String attr2;
-	@Session
 	public String attr3;
 	public boolean executedInitalizeMethod = false;
 	public boolean executedPrerenderMethod = false;
