@@ -9,7 +9,6 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.examples.todo.dto.AuthenticationDto;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
@@ -39,8 +38,6 @@ public class LoginAction extends Action {
 
 	public String password;
 
-	public AuthenticationDto authenticationDto;
-
 	// ----------------------------------------------[Action Method]
 
 	public ActionResult index() {
@@ -52,7 +49,7 @@ public class LoginAction extends Action {
 	public ActionResult process() {
 		User user = login(userId, password);
 		if (user != null) {
-			authenticationDto.setUser(user);
+			request.getSession().setAttribute("user", user);
 			return new Redirect("/todo/");
 		} else {
 			errors.addActionError("ユーザIDかパスワードが違います。");

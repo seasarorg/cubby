@@ -12,7 +12,6 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.TodoDao;
 import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
-import org.seasar.cubby.examples.todo.dto.AuthenticationDto;
 import org.seasar.cubby.examples.todo.dto.TodoConditionDto;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
@@ -45,8 +44,6 @@ public class TodoListAction extends Action {
 	public TodoConditionDto todoConditionDto;
 
 	public List<Todo> todoList;
-
-	public AuthenticationDto authenticationDto;
 
 	// ----------------------------------------------[Action Method]
 
