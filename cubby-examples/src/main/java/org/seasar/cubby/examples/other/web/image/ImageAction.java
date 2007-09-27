@@ -1,7 +1,6 @@
 package org.seasar.cubby.examples.other.web.image;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class ImageAction extends Action {
 	public HttpServletResponse response;
 
 	public ActionResult index() {
-		return new Forward("image.jsp");
+		return new Forward("index.jsp");
 	}
 
 	@Url("pangram.png")
@@ -33,7 +32,6 @@ public class ImageAction extends Action {
 		Graphics graphics = image.getGraphics();
 		
 		graphics.setColor(Color.ORANGE);
-		graphics.setFont(Font.getFont(Font.DIALOG));
 		graphics.drawString("The quick brown fox jumps over the lazy dog", 5, 20);
 
 		graphics.setColor(Color.GREEN);
