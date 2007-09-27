@@ -25,6 +25,7 @@ public class CubbyUtilsTest extends TestCase {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private Collection toCollection(Object[] objects) {
 		List<Object> list = new ArrayList<Object>();
 		for (Object o : objects) {

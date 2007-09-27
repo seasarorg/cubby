@@ -33,7 +33,8 @@ import javax.servlet.http.HttpSession;
  */
 public class RequestDumpUtil {
 
-    public static void dumpRequestHeaders(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpRequestHeaders(final StringBuffer sb,
             final HttpServletRequest request, final String lf,
             final String indent) {
         for (final Iterator it = toSortedSet(request.getHeaderNames())
@@ -47,7 +48,8 @@ public class RequestDumpUtil {
         }
     }
 
-    public static void dumpContextAttributes(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpContextAttributes(final StringBuffer sb,
             final ServletContext context, final String lf, final String indent) {
         if (context == null) {
             return;
@@ -77,7 +79,8 @@ public class RequestDumpUtil {
         }
     }
 
-    public static void dumpRequestAttributes(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpRequestAttributes(final StringBuffer sb,
             final HttpServletRequest request, final String lf,
             final String indent) {
         for (final Iterator it = toSortedSet(request.getAttributeNames())
@@ -90,7 +93,8 @@ public class RequestDumpUtil {
         }
     }
 
-    public static void dumpSessionAttributes(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpSessionAttributes(final StringBuffer sb,
             final HttpServletRequest request, final String lf,
             final String indent) {
         final HttpSession session = request.getSession(false);
@@ -107,13 +111,15 @@ public class RequestDumpUtil {
         }
     }
 
-    private static SortedSet toSortedSet(final Enumeration<?> enu) {
+    @SuppressWarnings("unchecked")
+	private static SortedSet toSortedSet(final Enumeration<?> enu) {
         final SortedSet set = new TreeSet();
         set.addAll(Collections.list(enu));
         return set;
     }
 
-    public static void dumpRequestParameters(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpRequestParameters(final StringBuffer sb,
             final HttpServletRequest request, final String lf,
             final String indent) {
         for (final Iterator it = toSortedSet(request.getParameterNames())
@@ -132,7 +138,8 @@ public class RequestDumpUtil {
         }
     }
 
-    public static void dumpRequestProperties(final StringBuffer sb,
+    @SuppressWarnings("unchecked")
+	public static void dumpRequestProperties(final StringBuffer sb,
             final HttpServletRequest request, final String lf,
             final String indent) {
 
