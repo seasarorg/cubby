@@ -33,6 +33,7 @@ public class CubbyAnnotationReaderWrapper implements AnnotationReader {
 		this.formatPattern = formatPattern;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getDatePattern(Class dxoClass, Method method) {
 		String datePattern = annotationReader.getDatePattern(dxoClass, method);
 		if (StringUtil.isEmpty(datePattern) && formatPattern != null) {
@@ -41,6 +42,7 @@ public class CubbyAnnotationReaderWrapper implements AnnotationReader {
 		return datePattern;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getTimePattern(Class dxoClass, Method method) {
 		String timePattern = annotationReader.getTimePattern(dxoClass, method);
 		if (StringUtil.isEmpty(timePattern) && formatPattern != null) {
@@ -49,6 +51,7 @@ public class CubbyAnnotationReaderWrapper implements AnnotationReader {
 		return timePattern;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getTimestampPattern(Class dxoClass, Method method) {
 		String timestampPattern = annotationReader.getTimestampPattern(dxoClass, method);
 		if (StringUtil.isEmpty(timestampPattern) && formatPattern != null) {
@@ -57,18 +60,22 @@ public class CubbyAnnotationReaderWrapper implements AnnotationReader {
 		return timestampPattern;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getConversionRule(Class dxoClass, Method method) {
 		return annotationReader.getConversionRule(dxoClass, method);
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean isExcludeNull(Class dxoClass, Method method) {
 		return annotationReader.isExcludeNull(dxoClass, method);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map getConverters(Class destClass) {
 		return annotationReader.getConverters(destClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getSourcePrefix(Class dxoClass, Method method) {
 		return annotationReader.getSourcePrefix(dxoClass, method);
 	}
