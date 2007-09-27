@@ -16,7 +16,6 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Url;
-import org.seasar.cubby.helper.impl.DirectDownloadHelperImpl;
 
 public class ImageAction extends Action {
 
@@ -40,15 +39,12 @@ public class ImageAction extends Action {
 		graphics.setColor(Color.GREEN);
 		graphics.drawRoundRect(200, 5, 50, 40, 10, 5);
 
-		DirectDownloadHelperImpl downloadHelper = new DirectDownloadHelperImpl();
-		downloadHelper.setAutoDownload(true);
-		downloadHelper.setContentType("image/png");
-		downloadHelper.setLastModified(new Date().getTime());
-		downloadHelper.setupHeader(request, response);
+		response.setContentType("image/png");
+		response.setDateHeader("Last-Modified", new Date().getTime());
 
 		ImageIO.write(image, "png", response.getOutputStream());
 
-		return new Direct(downloadHelper);
+		return new Direct();
 	}
 
 }

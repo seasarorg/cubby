@@ -3,6 +3,7 @@
 	<name>cubby-examples</name>
 	<comment></comment>
 	<projects>
+		<project>cubby</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
