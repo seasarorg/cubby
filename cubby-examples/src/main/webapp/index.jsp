@@ -21,12 +21,6 @@
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
 -->
-	<li>
-		<a href="docs/index.html">ドキュメント</a>
-		<ul>
-			<li><a href="docs/cubby-docs.zip">ダウンロード（ZIP形式）</a></li>
-		</ul>
-	</li>
 </ul>
 </body>
 </html>
