@@ -251,7 +251,7 @@ mvn eclipse:eclipse
 
       Cubby アプリケーション全体の設定です。
       任意で作成して、app.dicon からインクルードしてください。
-      現在はデフォルトの日付フォーマットを指定できます。
+      現在はデフォルトの日付フォーマットとファイルアップロード用の設定を指定できます。
 
 +------------------------------------------------------+
 <?xml version="1.0" encoding="UTF-8"?>
@@ -259,10 +259,28 @@ mvn eclipse:eclipse
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="app-cubby">
 
+	<!-- 日付フォーマットの設定 -->
 	<component class="org.seasar.cubby.action.impl.FormatPatternImpl">
 		<property name="datePattern">"yyyy-MM-dd"</property>
 		<property name="timePattern">"HH:mm:ss"</property>
 		<property name="timestampPattern">"yyyy-MM-dd HH:mm:ss"</property>
+	</component>
+
+	<!-- ファイルアップロードの設定 -->
+	<component class="org.seasar.cubby.controller.impl.MultipartRequestParserImpl" instance="prototype">
+		<property name="fileUpload">
+			<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
+				<property name="fileItemFactory">
+					<component class="org.apache.commons.fileupload.disk.DiskFileItemFactory">
+						<property name="sizeThreshold">4096</property>
+					</component>
+				</property>
+				<property name="fileSizeMax">10000000</property>
+			</component>
+		</property>
+		<property name="requestContext">
+			<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
+		</property>
 	</component>
 
 </components>

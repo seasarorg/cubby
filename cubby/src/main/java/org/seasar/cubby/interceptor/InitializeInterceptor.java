@@ -15,8 +15,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.MultipartRequestParser;
 import org.seasar.cubby.controller.Populator;
+import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.framework.util.ResourceBundleUtil;
 
@@ -30,15 +30,14 @@ import org.seasar.framework.util.ResourceBundleUtil;
  */
 public class InitializeInterceptor implements MethodInterceptor {
 
-	private MultipartRequestParser multipartRequestParser;
+	private RequestParser requestParser;
 
 	private ActionContext context;
 
 	private HttpServletRequest request;
 
-	public void setMultipartRequestParser(
-			final MultipartRequestParser multipartRequestParser) {
-		this.multipartRequestParser = multipartRequestParser;
+	public void setRequestParser(final RequestParser requestParser) {
+		this.requestParser = requestParser;
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -79,7 +78,12 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	void setupParams(final ActionContext context) {
-		final Map<String, Object> parameterMap = getMultipartSupportParameterMap(request);
+		final Map<String, Object> parameterMap;
+		if (requestParser == null) {
+			parameterMap = this.getParameterMap(request);
+		} else {
+			parameterMap = requestParser.getParameterMap(request);
+		}
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
 
@@ -95,15 +99,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> getParams() {
 		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
-	}
-
-	Map<String, Object> getMultipartSupportParameterMap(
-			final HttpServletRequest request) {
-		if (multipartRequestParser.isMultipart(request)) {
-			return multipartRequestParser.getMultipartParameterMap(request);
-		} else {
-			return getParameterMap(request);
-		}
 	}
 
 	@SuppressWarnings("unchecked")

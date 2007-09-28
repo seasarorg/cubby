@@ -15,7 +15,7 @@ import org.seasar.framework.container.ComponentDef;
  */
 public interface ActionContext {
 
-	void setActionDef(ActionDef actionDef);
+	void initialize(ActionDef actionDef);
 
 	ActionResult invoke() throws Throwable;
 

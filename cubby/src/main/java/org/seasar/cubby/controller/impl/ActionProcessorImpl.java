@@ -37,7 +37,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final ActionDef actionDef = cubbyConvention.fromPathToActionDef(
 				request, path);
 		if (actionDef != null) {
-			context.setActionDef(actionDef);
+			context.initialize(actionDef);
 			if (logger.isDebugEnabled()) {
 				logger.log("DCUB0004", new Object[] { path });
 				logger.log("DCUB0005", new Object[] { context.getMethod() });

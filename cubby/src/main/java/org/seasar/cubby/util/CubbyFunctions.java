@@ -34,7 +34,7 @@ public class CubbyFunctions {
 
 	public static String odd(Integer index, String classnames) {
 		String[] c = classnames.split(",");
-		return c[index % c.length];
+		return c[index + 1 % c.length];
 	}
 
 	public static String out(Object value) {
