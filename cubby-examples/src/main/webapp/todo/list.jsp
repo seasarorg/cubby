@@ -13,7 +13,7 @@ function doDelete(name, id) {
 </script>
 <c:import url="/common/notice.jsp"/>
 <h2>Todoの一覧</h2>
-<t:errors />
+<c:import url="/common/errors.jsp"/>
 <div class="menu">
 [<a href="${contextPath}/todo/create">新規作成</a>]
 </div>
@@ -52,8 +52,8 @@ function doDelete(name, id) {
     <th>アクション</th>
   </tr>
   	<c:forEach var="todo" items="${action.todoList}" varStatus="status">
-	    <tr class="<t:odd var="${status.index}"/>">
-	    	 <td><a href="${contextPath}/todo/${f:out(todo.id)}">${f:out(todo.text)}</a></td>
+		<tr class="${f:odd(s.index, 'odd,even')}">
+			<td><a href="${contextPath}/todo/${f:out(todo.id)}">${f:out(todo.text)}</a></td>
 			<td>${f:out(todo.todoType.name)}</td>
 			<td>${f:dateFormat(todo.limitDate, 'yyyy-MM-dd')}</td>
 			<td>[<a href="javascript:doDelete('${f:out(todo.text)}',${f:out(todo.id)});">削除</a>]</td>

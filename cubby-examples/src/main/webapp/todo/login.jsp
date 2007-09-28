@@ -13,7 +13,7 @@
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <h1>Todoログイン</h1>
-<t:errors />
+<c:import url="/common/errors.jsp"/>
 <c:import url="/common/notice.jsp"/>
 <t:form action="${contextPath}/todo/login/process" method="post" value="${action}">
 <table border="1">

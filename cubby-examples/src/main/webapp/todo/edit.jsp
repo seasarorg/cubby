@@ -3,7 +3,7 @@
 <jsp:attribute name="title">Todo編集</jsp:attribute>
 <jsp:attribute name="content">
 <h2>Todo編集</h2>
-<t:errors />
+<c:import url="/common/errors.jsp"/>
 [<a href="${contextPath}/todo/">一覧に戻る</a>]
 <t:form action="confirm" method="post" value="${action}">
 <t:input type="hidden" name="id" />
