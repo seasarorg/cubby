@@ -79,8 +79,6 @@ mvn eclipse:eclipse
     <filter-mapping>
         <filter-name>s2Filter</filter-name>
         <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 </web-app>
 +------------------------------------------------------+
@@ -101,6 +99,7 @@ mvn eclipse:eclipse
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 </web-app>
 +------------------------------------------------------+
