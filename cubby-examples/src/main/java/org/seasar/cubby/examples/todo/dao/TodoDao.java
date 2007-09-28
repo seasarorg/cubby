@@ -27,8 +27,8 @@ public interface TodoDao {
 			"AND typeid = /*condition.typeId*/1 " +
 			"/*END*/ " +
 			"/*IF condition.hasKeyword()*/" +
-			"AND text like /*condition.wildcardKeyword*/'%type%' " +
-			"AND memo like /*condition.wildcardKeyword*/'%type%'" +
+			"AND (text like /*condition.wildcardKeyword*/'%type%' " +
+			"OR memo like /*condition.wildcardKeyword*/'%type%')" +
 			"/*END*/" +
 			"/*IF condition.hasLimitDate()*/" +
 			"AND limitdate <= /*condition.limitDate*/'2007-08-05'" +
