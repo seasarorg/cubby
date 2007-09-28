@@ -36,16 +36,16 @@ public class ActionContextImpl implements ActionContext, Serializable {
 
 	private Populator populator;
 
+	public void initialize(final ActionDef actionDef) {
+		this.actionDef = actionDef;
+	}
+
 	public Populator getPopulator() {
 		return populator;
 	}
 
 	public void setPopulator(final Populator populator) {
 		this.populator = populator;
-	}
-
-	public void setActionDef(final ActionDef actionDef) {
-		this.actionDef = actionDef;
 	}
 
 	public ComponentDef getComponentDef() {

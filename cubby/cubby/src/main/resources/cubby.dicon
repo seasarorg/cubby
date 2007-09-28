@@ -23,12 +23,6 @@
 	<!-- Validation -->
 	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
 
-	<!-- FileUpload -->
-	<component name="fileItemFactory" class="org.apache.commons.fileupload.disk.DiskFileItemFactory"/>
-	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.DefaultMultipartRequestParser">
-		<property name="sizeMax">10000000</property>
-	</component>
-
 	<!-- インターセプタ -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
 	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
