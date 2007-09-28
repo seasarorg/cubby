@@ -52,9 +52,6 @@
     <filter-mapping>
         <filter-name>s2Filter</filter-name>
         <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 
     <filter-mapping>
@@ -71,6 +68,7 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
     -->
 
@@ -85,14 +83,6 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
-
-<!--
-    <filter-mapping>
-        <filter-name>cubbyfilter</filter-name>
-        <url-pattern>/cubby-dispacher/*</url-pattern>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
--->
 
     <servlet>
         <servlet-name>s2servlet</servlet-name>
