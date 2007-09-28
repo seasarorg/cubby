@@ -112,40 +112,6 @@
   </tag>
   <tag>
    	<description>
-   	  エラーメッセージを出力します。
-   	</description>
-    <name>errors</name>
-    <tag-class>org.seasar.cubby.tags.ErrorsTag</tag-class>
-    <body-content>empty</body-content>
-    <attribute>
-      <description>
-		エラーメッセージの一覧を指定します。
-      </description>
-      <name>type</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-      <type>java.util.Collection</type>
-    </attribute>
-  </tag>
-  <tag>
-   	<description>
-   	  odd/evenを出力します。
-   	</description>
-    <name>odd</name>
-    <tag-class>org.seasar.cubby.tags.OddTag</tag-class>
-    <body-content>empty</body-content>
-    <attribute>
-      <description>
-		インデックス番号を指定します。
-      </description>
-      <name>var</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-      <type>java.lang.Integer</type>
-    </attribute>
-  </tag>
-  <tag>
-   	<description>
    	  テンプレートに部品をはめ込みます。
    	</description>
     <name>template</name>
