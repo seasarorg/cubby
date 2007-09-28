@@ -1,10 +1,6 @@
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
-import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
-
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,11 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
@@ -79,12 +71,14 @@ public class Forward extends AbstractActionResult {
 		} else {
 			absolutePath = "/" + actionClassName + "/" + this.path;
 		}
+		final HttpServletRequest wrappedRequest = new ForwardHttpServletRequestWrapper(
+				request, context);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0001", new String[] { absolutePath });
 		}
 		final RequestDispatcher dispatcher = request
 				.getRequestDispatcher(absolutePath);
-		dispatcher.forward(request, response);
+		dispatcher.forward(wrappedRequest, response);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0002", new String[] { absolutePath });
 		}
@@ -113,31 +107,6 @@ public class Forward extends AbstractActionResult {
 
 		final Action action = context.getAction();
 		action.prerender();
-
-		bindAttributes(context, request);
-	}
-
-	private void bindAttributes(final ActionContext context,
-			final HttpServletRequest request) {
-
-		final Action action = context.getAction();
-		request.setAttribute(ATTR_ACTION, action);
-
-		final Populator populator = context.getPopulator();
-		final Map<String, String> outputValues = populator.describe(context
-				.getFormBean());
-		request.setAttribute(ATTR_OUTPUT_VALUES, outputValues);
-
-		final BeanDesc beanDesc = BeanDescFactory
-				.getBeanDesc(action.getClass());
-		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
-			if (propertyDesc.isReadable()) {
-				final String name = propertyDesc.getPropertyName();
-				final Object value = propertyDesc.getValue(action);
-				request.setAttribute(name, value);
-			}
-		}
 	}
 
 }
