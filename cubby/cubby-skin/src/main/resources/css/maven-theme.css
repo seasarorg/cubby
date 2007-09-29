@@ -182,9 +182,17 @@ p {
 	font-size: inherit;
 }
 
-#poweredBy img {
-	display: inline;
+a#poweredBy:link, a#poweredBy:visited, a#poweredBy:active, a#poweredBy:hover {
+	background-color: #fff;
+	border: none;
 }
+
+#poweredBy img {
+	padding: 0;
+	margin: 0;
+}
+
+#section
 
 table.bodyTable th {
 	color: white;
@@ -262,4 +270,8 @@ dt {
 
 .infomark {
 	background-image: url(../images/icon_info_sml.gif);
+}
+
+.section img {
+	border: solid 1px;
 }
