@@ -37,7 +37,7 @@ public abstract class Action {
 	}
 
 	public String getText(String key) {
-		return Messages.getString(key);
+		return Messages.getText(key);
 	}
 
 	public String getText(String key, Object... args) {

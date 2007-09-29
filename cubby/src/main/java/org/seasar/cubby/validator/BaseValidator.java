@@ -14,13 +14,13 @@ abstract public class BaseValidator implements Validator {
 	}
 
 	protected String getMessage(final Object... args) {
-		String message = Messages.getString(messageKey);
+		String message = Messages.getText(messageKey);
 		return MessageFormat.format(message, args);
 	}
 
 	protected String getPropertyMessage(final String key) {
 		try {
-			return Messages.getString(key);
+			return Messages.getText(key);
 		} catch (MissingResourceException ex) {
 			return key;
 		}
