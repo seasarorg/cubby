@@ -1,22 +1,28 @@
 package org.seasar.cubby.action;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
+import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Populator;
+import org.seasar.cubby.util.LocaleHolder;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.util.ResourceBundleUtil;
 
 /**
  * 
@@ -28,6 +34,8 @@ public class ForwardHttpServletRequestWrapper extends HttpServletRequestWrapper 
 
 	private final Map<String, String> outputValues;
 
+	private final Map<?, ?> messages;
+
 	public ForwardHttpServletRequestWrapper(final HttpServletRequest request,
 			final ActionContext context) {
 		super(request);
@@ -36,15 +44,23 @@ public class ForwardHttpServletRequestWrapper extends HttpServletRequestWrapper 
 
 		final Populator populator = context.getPopulator();
 		this.outputValues = populator.describe(context.getFormBean());
+
+		final ResourceBundle resource = ResourceBundleUtil.getBundle(
+				RES_MESSAGES, LocaleHolder.getLocale());
+		this.messages = ResourceBundleUtil.convertMap(resource);
 	}
 
 	@Override
 	public Object getAttribute(final String name) {
 		final Object attribute;
-		if (ATTR_ACTION.equals(name)) {
+		if (ATTR_CONTEXT_PATH.equals(name)) {
+			attribute = this.getContextPath();
+		} else if (ATTR_ACTION.equals(name)) {
 			attribute = context.getAction();
 		} else if (ATTR_OUTPUT_VALUES.equals(name)) {
 			attribute = outputValues;
+		} else if (ATTR_MESSAGES.equals(name)) {
+			attribute = messages;
 		} else {
 			final Class<?> concreteClass = context.getComponentDef().getConcreteClass();
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(concreteClass);
