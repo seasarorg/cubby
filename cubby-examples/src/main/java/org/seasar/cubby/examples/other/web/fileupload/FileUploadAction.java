@@ -9,6 +9,7 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.FileRegexpValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @Url("fileupload")
@@ -18,6 +19,7 @@ public class FileUploadAction extends Action {
 		public void initialize() {
 			add("filename", new RequiredValidator());
 			add("file", new RequiredValidator());
+			add("file", new FileRegexpValidator(".+\\.(png|jpg)"));
 		}
 	};
 	

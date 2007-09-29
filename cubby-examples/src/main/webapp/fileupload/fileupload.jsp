@@ -11,6 +11,7 @@
 	value="${form}">
 
 <h1>ファイルアップロード</h1>
+拡張子が「png」「jpg」のファイルのみアップロードできます。
 <c:import url="/common/errors.jsp"/>
 <label for="filename">ファイル名:</label>
 <t:input type="text" name="filename" id="filename"/><br/>
