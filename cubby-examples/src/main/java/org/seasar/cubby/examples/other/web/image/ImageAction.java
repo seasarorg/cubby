@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
+import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Url;
 
@@ -22,17 +23,21 @@ public class ImageAction extends Action {
 
 	public HttpServletResponse response;
 
+	public String message = "The quick brown fox jumps over the lazy dog";
+
+	@Form
 	public ActionResult index() {
-		return new Forward("index.jsp");
+		return new Forward("image.jsp");
 	}
 
-	@Url("pangram.png")
+	@Url("{message,.*}.png")
+	@Form
 	public ActionResult download() throws IOException {
 		BufferedImage image = new BufferedImage(300, 50, BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = image.getGraphics();
-		
+
 		graphics.setColor(Color.ORANGE);
-		graphics.drawString("The quick brown fox jumps over the lazy dog", 5, 20);
+		graphics.drawString(message, 5, 20);
 
 		graphics.setColor(Color.GREEN);
 		graphics.drawRoundRect(200, 5, 50, 40, 10, 5);

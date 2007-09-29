@@ -9,7 +9,10 @@
 <body>
 	[<a href="${contextPath}/">戻る</a>]
 	<h1>direct response</h1>
-	<img src="pangram.png" style="border: solid 1px"/>
-	<p>This image drawn by Cubby.</p>
+	<t:form value="${action}" method="post">
+		<t:input type="text" name="message" />
+		<input type="submit" />
+	</t:form>
+	<img src="${message}.png" style="border: solid 1px"/>
 </body>
 </html>
