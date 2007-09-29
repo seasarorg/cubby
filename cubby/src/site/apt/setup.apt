@@ -267,21 +267,18 @@ mvn eclipse:eclipse
 	</component>
 
 	<!-- ファイルアップロードの設定 -->
-	<component class="org.seasar.cubby.controller.impl.MultipartRequestParserImpl" instance="prototype">
-		<property name="fileUpload">
-			<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
-				<property name="fileItemFactory">
-					<component class="org.apache.commons.fileupload.disk.DiskFileItemFactory">
-						<property name="sizeThreshold">4096</property>
-					</component>
-				</property>
-				<property name="fileSizeMax">10000000</property>
+	<component class="org.seasar.cubby.controller.impl.MultipartRequestParserImpl" />
+
+	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
+		<property name="fileItemFactory">
+			<component class="org.apache.commons.fileupload.disk.DiskFileItemFactory">
+				<property name="sizeThreshold">4096</property>
 			</component>
 		</property>
-		<property name="requestContext">
-			<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
-		</property>
+		<property name="fileSizeMax">10000000</property>
 	</component>
+
+	<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
 
 </components>
 +------------------------------------------------------+
