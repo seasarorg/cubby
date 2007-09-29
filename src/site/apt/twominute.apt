@@ -9,9 +9,13 @@ Hello アプリケーションの概要
 
  入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
 
+ <<入力画面>>
+
 [images/hello_input.png]入力画面
 
-[images/hello_result.png]出力画面
+ <<結果画面>>
+
+[images/hello_result.png]結果画面
 
 アクションクラスの作成
 
@@ -53,16 +57,8 @@ import org.seasar.cubby.action.Forward;
 
 public class HelloAction extends Action {
 
-  private String name;
+  public String name;
 
-  public void setName(String name) {
-    this.name = name;
-  }
-	
-  public String getName() {
-    return this.name;
-  }
-	
   public ActionResult index() {
     return new Forward("input.jsp");
   }
