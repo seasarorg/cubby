@@ -1,7 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<t:template extend="template.jsp">
-<jsp:attribute name="title">Todoリスト</jsp:attribute>
-<jsp:attribute name="content">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Todoリスト</title>
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
+  <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <script type="text/javascript" src="${contextPath}/js/prototype.js"></script>
+  <script type="text/javascript" src="${contextPath}/js/scriptaculous.js?Load=effect"></script>
+</head>
+<body>
+<c:import url="header.jsp"/>
+<div id="content">
 <script language="javascript">
 <!--
 function doDelete(name, id) {
@@ -60,5 +70,7 @@ function doDelete(name, id) {
 	    </tr>
   	</c:forEach>
 </table>
-</jsp:attribute>
-</t:template>
+</div><!-- End of id="content" -->
+<c:import url="fotter.jsp" />
+</body>
+</html>
