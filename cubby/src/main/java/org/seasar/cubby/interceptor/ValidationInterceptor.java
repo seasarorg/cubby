@@ -16,6 +16,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.util.RequestHolder;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
@@ -43,17 +44,11 @@ public class ValidationInterceptor implements MethodInterceptor {
 		}
 	};
 
-	private HttpServletRequest request;
-
 	private ActionValidator validator;
 
 	private ActionContext context;
 
 	public ValidationInterceptor() {
-	}
-
-	public void setRequest(final HttpServletRequest request) {
-		this.request = request;
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -64,12 +59,13 @@ public class ValidationInterceptor implements MethodInterceptor {
 		this.validator = actionValidator;
 	}
 
-	public Object invoke(MethodInvocation invocation) throws Throwable {
+	public Object invoke(final MethodInvocation invocation) throws Throwable {
+		final HttpServletRequest request = RequestHolder.getRequest();
 
 		final Action controller = context.getAction();
 		final Validation validation = context.getValidation();
 		final ValidationRules rules = getValidationRules(context);
-		final Map<String, Object> params = getParams();
+		final Map<String, Object> params = getParams(request);
 
 		final boolean success = validator.processValidation(validation,
 				controller, params, context.getFormBean(), rules);
@@ -86,11 +82,6 @@ public class ValidationInterceptor implements MethodInterceptor {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> getParams() {
-		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
-	}
-
 	private ValidationRules getValidationRules(ActionContext context) {
 		final Validation validation = context.getValidation();
 		final ValidationRules validationRules;
@@ -104,6 +95,12 @@ public class ValidationInterceptor implements MethodInterceptor {
 			validationRules = (ValidationRules) propertyDesc.getValue(action);
 		}
 		return validationRules;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Map<String, Object> getParams(
+			final HttpServletRequest request) {
+		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
 	}
 
 }

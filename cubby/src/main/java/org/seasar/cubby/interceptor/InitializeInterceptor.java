@@ -1,12 +1,8 @@
 package org.seasar.cubby.interceptor;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
-import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
-import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,8 +13,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.util.LocaleHolder;
-import org.seasar.framework.util.ResourceBundleUtil;
+import org.seasar.cubby.util.RequestHolder;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -34,8 +29,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	private ActionContext context;
 
-	private HttpServletRequest request;
-
 	public void setRequestParser(final RequestParser requestParser) {
 		this.requestParser = requestParser;
 	}
@@ -44,15 +37,10 @@ public class InitializeInterceptor implements MethodInterceptor {
 		this.context = context;
 	}
 
-	public void setRequest(final HttpServletRequest request) {
-		this.request = request;
-	}
-
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		setupLocale(context);
-		setupImplicitVariable(context);
-		setupParams(context);
-		setupForm(context);
+		final HttpServletRequest request = RequestHolder.getRequest();
+		setupParams(context, request);
+		setupForm(context, request);
 
 		final Action action = context.getAction();
 		action.initialize();
@@ -65,44 +53,36 @@ public class InitializeInterceptor implements MethodInterceptor {
 		return result;
 	}
 
-	void setupLocale(final ActionContext context) {
-		LocaleHolder.setLocale(request.getLocale());
-	}
-
-	void setupImplicitVariable(final ActionContext context) {
-		request.setAttribute(ATTR_CONTEXT_PATH, request.getContextPath());
-		final ResourceBundle resource = ResourceBundleUtil.getBundle(
-				RES_MESSAGES, LocaleHolder.getLocale());
-		final Map<?, ?> messagesMap = ResourceBundleUtil.convertMap(resource);
-		request.setAttribute(ATTR_MESSAGES, messagesMap);
-	}
-
-	void setupParams(final ActionContext context) {
+	void setupParams(final ActionContext context,
+			final HttpServletRequest request) {
 		final Map<String, Object> parameterMap;
 		if (requestParser == null) {
-			parameterMap = this.getParameterMap(request);
+			parameterMap = getParameterMap(request);
 		} else {
 			parameterMap = requestParser.getParameterMap(request);
 		}
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
 
-	private void setupForm(final ActionContext context) {
+	private void setupForm(final ActionContext context,
+			final HttpServletRequest request) {
 		final Object formBean = context.getFormBean();
 		if (formBean != null) {
 			final Populator populator = context.getPopulator();
-			final Map<String, Object> params = getParams();
+			final Map<String, Object> params = getParams(request);
 			populator.populate(params, formBean);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getParams() {
+	private static Map<String, Object> getParams(
+			final HttpServletRequest request) {
 		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getParameterMap(final HttpServletRequest request) {
+	private static Map<String, Object> getParameterMap(
+			final HttpServletRequest request) {
 		return request.getParameterMap();
 	}
 

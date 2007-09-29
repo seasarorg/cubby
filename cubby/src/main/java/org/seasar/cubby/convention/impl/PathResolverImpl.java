@@ -1,6 +1,8 @@
 package org.seasar.cubby.convention.impl;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,6 +17,7 @@ import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.Uri;
 import org.seasar.framework.convention.NamingConvention;
+import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
@@ -35,6 +38,12 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private Map<Pattern, RewriteInfo> patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
 
 	private Map<Pattern, RewriteInfo> customPatternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
+
+	private String uriEncoding;
+
+	public void setUriEncoding(final String uriEncoding) {
+		this.uriEncoding = uriEncoding;
+	}
 
 	public void initialize() {
 		if (!initialized) {
@@ -133,10 +142,15 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			if (matcher.find()) {
 				final RewriteInfo rewriteInfo = patternToRewriteInfoMap.get(p);
 				for (int i = 1; i < matcher.groupCount() + 1; i++) {
-					final String group = matcher.group(i);
-					final String paramName = rewriteInfo.getUriParameterNames()
+					final String name = rewriteInfo.getUriParameterNames()
 							.get(i - 1);
-					uriParams.put(paramName, group);
+					final String value;
+					try {
+						value = URLDecoder.decode(matcher.group(i), uriEncoding);
+					} catch (final IOException e) {
+						throw new IORuntimeException(e);
+					}
+					uriParams.put(name, value);
 				}
 				final ForwardInfoImpl forwardInfo = new ForwardInfoImpl(
 						rewriteInfo, uriParams);
