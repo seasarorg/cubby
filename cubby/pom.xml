@@ -196,5 +196,6 @@
     <module>cubby-archetype</module>
     <module>cubby-tomcat55-support</module>
     <module>cubby-skin</module>
+    <module>cubby-dist</module>
   </modules>
 </project>
