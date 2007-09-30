@@ -1,0 +1,35 @@
+-classpath '/Users/agata/Documents/workspace/cubby/cubby/cubby-tomcat55-support/target/classes:/Users/agata/.m2/repository/commons-modeler/commons-modeler/1.1/commons-modeler-1.1.jar:/Users/agata/.m2/repository/commons-logging/commons-logging-api/1.0.4/commons-logging-api-1.0.4.jar:/Users/agata/.m2/repository/tomcat/catalina/5.5.15/catalina-5.5.15.jar:/Users/agata/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar:/Users/agata/.m2/repository/tomcat/servlet-api/5.5.15/servlet-api-5.5.15.jar:/Users/agata/.m2/repository/commons-digester/commons-digester/1.2/commons-digester-1.2.jar:/Users/agata/.m2/repository/mx4j/mx4j-jmx/1.1/mx4j-jmx-1.1.jar'
+ -encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/agata/Documents/workspace/cubby/cubby/cubby-tomcat55-support/src/main/java'
+-author
+-bottom
+'Copyright © 2006-2007 <a href="http://www.seasar.org/">The Seasar Foundation and the others. All rights reserved.</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/agata/Documents/workspace/cubby/cubby/cubby-tomcat55-support/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'cubby-tomcat55-support 0.9.0 API'
+-link
+'http://java.sun.com/javaee/5/docs/api'
+-link
+'http://java.sun.com/j2se/1.5.0/ja/docs/ja/api'
+-link
+'http://aopalliance.sourceforge.net/doc'
+-link
+'http://www.junit.org/junit/javadoc/4.3'
+-link
+'http://s2container.seasar.org/2.4/s2-framework/ja/apidocs'
+-link
+'http://s2container.seasar.org/2.4/s2-extension/ja/apidocs'
+-link
+'http://s2container.seasar.org/2.4/s2-tiger/ja/apidocs'
+-use
+-version
+-windowtitle
+'cubby-tomcat55-support 0.9.0 API'
