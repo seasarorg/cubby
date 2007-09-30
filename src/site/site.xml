@@ -3,11 +3,11 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.9.0</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
-		<href>http://cubby.sandbox.seasar.org/</href>
+		<href>/index.html</href>
 	</bannerLeft>
 	<body>
    		<links>
@@ -26,8 +26,10 @@
 			<item name="アクション" href="/action.html" />
 			<item name="バリデーション" href="/validation.html" />
 			<item name="JSP" href="/jsp.html" />
+			<item name="カスタムタグ" href="/tags.html" />
+			<item name="ファンクション" href="/functions.html" />
 			<item name="メッセージリソース" href="/messages.html" />
-			<item name="Mayaa との連携" href="/mayaa.html" />
+			<item name="Cubby&amp;Mayaa" href="/mayaa.html" />
 		</menu>
 
 		${reports}
