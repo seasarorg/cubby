@@ -1,15 +1,10 @@
 <project name="cubby-dist" default="dist" basedir=".">
-	<tstamp>
-		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
-	</tstamp>
-	<property name="zipDir" value="target/site/download/${releaseDate}"/>
+
+	<property name="zipDir" value="target"/>
 
 	<target name="dist">
-		<ant antfile="../build.xml" target="fix-site">
-			<property name="site" value="${basedir}/target/site"/>
-		</ant>
 		<mkdir dir="${zipDir}"/>
-		<zip zipfile="${zipDir}/S${ver}.zip">
+		<zip zipfile="${zipDir}/cubby-${ver}.zip">
 			<zipfileset prefix="cubby" dir="..">
 				<exclude name="**/build/**"/>
 				<exclude name="**/target/**"/>
@@ -51,6 +46,7 @@
 			<zipfileset prefix="cubby/doc/cubby-archetype" dir="../cubby-archetype/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-tomcat55-support" dir="../cubby-tomcat55-support/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-skin" dir="../cubby-skin/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-dist" dir="../cubby-dist/target/site"/>
 		</zip>
 	</target>
 </project>

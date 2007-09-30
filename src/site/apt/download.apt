@@ -3,15 +3,15 @@
                                     ------
                                     agata
                                     ------
-                                  2007-09-20
+                                  2007-09-30
 
 ダウンロード
 
 * Cubby 0.9.0 (2007-09-30)
 
- * Cubby 本体とドキュメント {{{http://}ダウンロード}}
+ * Cubby 本体とドキュメント {{{http://cubby.sandbox.seasar.org/download/cubby-0.9.0.zip}ダウンロード}}
 
- * サンプル war {{{http://}ダウンロード}}
+ * サンプル war {{{http://cubby.sandbox.seasar.org/download/cubby-examples-0.9.0.war}ダウンロード}}
 
- * Eclipse プロジェクト {{{http://}ダウンロード}}
+ * Eclipse プロジェクト {{{https://www.seasar.org/svn/sandbox/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
 
