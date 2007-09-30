@@ -1,0 +1,171 @@
+                                    ------
+                                  バリデーション
+                                    ------
+                                    agata
+                                    ------
+                                  2007-09-30
+
+バリデーション
+
+ Cubby ではプログラム中に入力検証のルールを記述します。
+
+ それぞれのアクションメソッドで使用する入力検証ルールは、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}アノテーションで指定します。
+ 検証エラーメッセージはActionの{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}フィールドにセットされます。
+ 検証エラー発生時は、errorPageで指定されたページに遷移します。
+ 検証ルールのフィールドはデフォルトで「VALIDATION」が使用されます。別のフィールドに定義されたルールを使用する場合、rulesFieldにフィールド名を指定します。
+ 
+ また、Cubbyにクライアントサイドバリデーションはありません。
+
++------------------------------------------------------+
+  // 検証ルールのフィールドとしてデフォルトの「VALIDATION」が使用されます。
+  // 検証エラー発生時は「confirm.jsp」に遷移します。
+  @Form
+  @Validation(errorPage = "confirm.jsp")
+  public ActionResult save1() {
+    ... 
+  }
+
+  // 検証ルールのフィールドとして「validation2」が使用されます。
+  // 検証エラー発生時は「confirm.jsp」に遷移します。
+  @Validation(rulesField="validation2", errorPage = "confirm.jsp")
+  public ActionResult save2() {
+    ... 
+  }
++------------------------------------------------------+
+
+ バリデーションの定義はJavaコードで記述します。以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRule}}を継承して、
+ {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッド内で
+ {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドで
+ フィールドごとにバリデーションのルールを追加します。
+
++------------------------------------------------------+
+public class LoginAction extends Action {
+  public static ValidationRules VALIDATION = new DefaultValidationRule() {
+    public void initialize() {
+      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+      add("password", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+  ...
+}
++------------------------------------------------------+
+
+*バリデーションのエラーメッセージ
+
+ バリデーションのエラーメッセージは以下のルールで作成されます。
+
+ * メッセージキーを指定しない場合、パラメータ名がエラーメッセージ中の項目名のメッセージキーとして使用されます。
+
+ * メッセージキーを指定する場合、指定されたメッセージキーがエラーメッセージ中の項目名のメッセージキーとして使用されます。
+
+ * DefaultValidationRuleのコンストラクタでキーの項目名のメッセージキーのプリフィックスを指定することができます。
+
+ * 各バリデーションのコンストラクタでメッセージキーを指定することで検証時のエラーメッセージを切り替えることもできます。
+
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // 項目のメッセージキーを指定
+  public static ValidationRules VALIDATION = new DefaultValidationRule() {
+    public void initialize() {
+      // メッセージキー"userId"の値がエラーメッセージ中の項目名として使用されます。
+      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+      // メッセージキー"login.password"の値がエラーメッセージ中の項目名として使用されます。
+      add("password", "login.password", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+
+  // 項目名のメッセージキーのプリフィックスを指定
+  public static ValidationRules VALIDATION2 = new DefaultValidationRule("login.") {
+    public void initialize() {
+      // メッセージキー"login.userId"の値がエラーメッセージ中の項目名として使用されます。
+      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+
+  // 各バリデーションにメッセージキーを指定
+  public static ValidationRules VALIDATION2 = new DefaultValidationRule() {
+    public void initialize() {
+      // メッセージキー"err.myrequired"がエラーメッセージとして使用されます。
+      add("password", new RequiredValidator("err.myrequired"));
+    }
+  };
+
+  ...
+}
++------------------------------------------------------+
+ 
+*バリデーションルールのコピー
+
+ ほとんどが同じでいくつかの項目が異なる複数のルールを作りたい場合、以下のように他のルールをコピーして使用することができます。
+ 
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // ベースのルール
+  public static ValidationRules BASE_VALIDATION = new DefaultValidationRule() {
+    public void initialize() {
+      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+      add("password", "login.password", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+
+  // ベースのルールに「nickname」の検証を追加
+  public static ValidationRules VALIDATION1 = new DefaultValidationRule() {
+    public void initialize() {
+      // BASE_VALIDATIONのルールをコピーして追加
+      getRules().addAll(BASE_VALIDATION.getRules());
+      add("nickname", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+
+  // ベースのルールに「password2」の検証を追加
+  public static ValidationRules VALIDATION2 = new DefaultValidationRule() {
+    public void initialize() {
+      // BASE_VALIDATIONのルールをコピーして追加
+      getRules().addAll(BASE_VALIDATION.getRules());
+      add("password2", new RequiredValidator(), MaxLengthValidator(10));
+    }
+  };
+  ...
+}
++------------------------------------------------------+
+
+独自バリデーションの定義
+
+ 独自のバリデーションは{{{cubby/apidocs/org/seasar/cubby/validator/Validator.html}Validator}}を実装して作成します。
+ 通常は{{{cubby/apidocs/org/seasar/cubby/validator/BaseValidator.html}BaseValidator}}を継承して作成します。
+ 
++------------------------------------------------------+
+public class MaxLengthValidator extends BaseValidator {
+
+  private final int max;
+
+  public MaxLengthValidator(final int max) {
+    this(max, "valid.maxLength");
+  }
+
+  public MaxLengthValidator(final int max, final String messageKey) {
+    this.max = max;
+    this.setMessageKey(messageKey);
+  }
+
+  // 検証メソッド、戻り値はエラーメッセージ。戻り値がnullなら検証エラーなし。
+  public String validate(final ValidationContext ctx) {
+    final Object value = ctx.getValue();
+    if (value instanceof String) {
+      String str = (String) value;
+      if (StringUtil.isEmpty((String) value)) {
+        return null;
+      }
+      if (str.length() <= max) {
+        return null;
+      }
+    } else if (value == null) {
+      return null;
+    }
+    return getMessage(getPropertyMessage(ctx.getName()), max);
+  }
+}
++------------------------------------------------------+
+ 

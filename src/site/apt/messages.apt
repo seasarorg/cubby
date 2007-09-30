@@ -30,7 +30,7 @@ limitDate=期限日
 
 Javaコード中でメッセージを取得する
 
- Messages#getTextメソッドでメッセージを取得することができます。
+ {{{cubby/apidocs/org/seasar/cubby/util/Messages.html#getText(java.lang.String)}Messages#getText}}メソッドでメッセージを取得することができます。
 
 +------------------------------------------------------+
 import org.seasar.cubby.util.Messages;
@@ -50,7 +50,7 @@ public class MessageTestServiceImpl implments MessageTestService {
 
 Action中でメッセージを取得する
 
- Messages#getTextのラッパーメソッド、Action#getTextメソッドでメッセージを取得することができます。
+ {{{cubby/apidocs/org/seasar/cubby/util/Messages.html#getText(java.lang.String)}Messages#getText}}のラッパーメソッド、{{{cubby/apidocs/org/seasar/cubby/action/Action.html#getText(java.lang.String)}Action#getText}}メソッドでメッセージを取得することができます。
 
 +------------------------------------------------------+
 public class MessageTestAction extends Action {
