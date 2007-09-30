@@ -1,11 +1,11 @@
                                     ------
-                                Mayaa との連携
+                                Cubby&Mayaa
                                     ------
                                     agata
                                     ------
                                   2007-09-21
 
-Mayaa との連携
+Mayaa連携
 
  Cubby HTML をテンプレートとしてビューを作成したい場合、Java テンプレートエンジンである{{{http://mayaa.seasar.org}Mayaa}}と連携することができます。
 
@@ -169,10 +169,10 @@ CubbyとMayaaの使い分け
 	
   <!-- forEach and odd,even -->
   <m:forEach m:id="loop" var="item" index="s" items="${colors}" replace="false">
-  <m:attribute name="class" value="${"$"}{s % 2 ? 'odd' : 'even'}" />
+  <m:attribute name="class" value="${s % 2 ? 'odd' : 'even'}" />
   </m:forEach>
-  <m:write m:id="item-value" value="${"$"}{item.value}" />
-  <m:write m:id="item-name" value="${"$"}{item.name}" />
+  <m:write m:id="item-value" value="${item.value}" />
+  <m:write m:id="item-name" value="${item.name}" />
 
   <!-- remove dummy -->
   <m:null m:id="dummy" />
