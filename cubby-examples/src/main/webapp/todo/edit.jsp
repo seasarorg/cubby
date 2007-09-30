@@ -23,7 +23,7 @@
 	<t:input type="text" maxlength="50" name="text"  /></td>
   </tr>
   <tr>
-    <th>優先度</th>
+    <th>種別</th>
     <td>
 		<t:select id="typeId" name="typeId"
 			items="${todoTypes}" labelProperty="name" valueProperty="id" emptyOptionLabel="選択してください。" />

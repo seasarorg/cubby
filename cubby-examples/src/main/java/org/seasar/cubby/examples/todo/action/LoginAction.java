@@ -14,6 +14,11 @@ import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
+/**
+ * ログイン画面
+ * @author agata
+ * @author baba
+ */
 @Url("todo/login")
 public class LoginAction extends Action {
 
@@ -40,10 +45,16 @@ public class LoginAction extends Action {
 
 	// ----------------------------------------------[Action Method]
 
+	/**
+	 * ログイン画面表示処理(/todo/login/)
+	 */
 	public ActionResult index() {
 		return new Forward("/todo/login.jsp");
 	}
 
+	/**
+	 * ログイン処理(/todo/login/process)
+	 */
 	@Form
 	@Validation(rulesField="loginValidation", errorPage = "/todo/login.jsp")
 	public ActionResult process() {

@@ -20,7 +20,10 @@ import org.seasar.cubby.validator.validators.DateFormatValidator;
 import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
-//@Form("todo")
+/**
+ * 詳細・追加・編集・確認・保存
+ * @author agata
+ */
 public class TodoAction extends Action {
 
 	// ----------------------------------------------[Validation]
@@ -59,20 +62,28 @@ public class TodoAction extends Action {
 
 	// ----------------------------------------------[Action Method]
 
+	/**
+	 * 詳細表示処理(/todo/{id})
+	 */
 	@Url("{id,[0-9]+}")
-	@Form("this")
+	@Form
 	public ActionResult show() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDxo.convert(todo, this);
 		return new Forward("show.jsp");
 	}
 
-//	@Url("add")
+	/**
+	 * 追加表示処理(/todo/create)
+	 */
 	@Form
 	public ActionResult create() {
 		return new Forward("edit.jsp");
 	}
 
+	/**
+	 * 編集表示処理(/todo/edit)
+	 */
 	@Form
 	public ActionResult edit() {
 		Todo todo = todoDao.selectById(this.id);
@@ -80,6 +91,9 @@ public class TodoAction extends Action {
 		return new Forward("edit.jsp");
 	}
 
+	/**
+	 * 確認表示処理(/todo/confirm)
+	 */
 	@Form
 	@Validation(rulesField = "validation", errorPage = "edit.jsp")
 	public ActionResult confirm() {
@@ -88,11 +102,17 @@ public class TodoAction extends Action {
 		return new Forward("confirm.jsp");
 	}
 
+	/**
+	 * 編集画面に戻る処理(/todo/confirm_back)
+	 */
 	@Form
 	public ActionResult confirm_back() {
 		return new Forward("edit.jsp");
 	}
 
+	/**
+	 * 保存処理(/todo/save)
+	 */
 	@Form
 	@Validation(rulesField = "validation", errorPage = "confirm.jsp")
 	public ActionResult save() {
@@ -108,6 +128,9 @@ public class TodoAction extends Action {
 		return new Redirect("/todo/");
 	}
 	
+	/**
+	 * 削除処理(/todo/delete)
+	 */
 	@Form
 	public ActionResult delete() {
 		Todo todo = todoDao.selectById(this.id);
@@ -118,6 +141,9 @@ public class TodoAction extends Action {
 
 	// ----------------------------------------------[Helper Method]
 
+	/**
+	 * 種別一覧の取得
+	 */
 	public List<TodoType> getTodoTypes() {
 		List<TodoType> todoTypes = todoTypeDao.seletAll();
 		return todoTypes;

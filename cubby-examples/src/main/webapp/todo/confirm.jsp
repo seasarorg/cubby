@@ -29,7 +29,7 @@
     <td>${f:out(text)}</td>
   </tr>
   <tr>
-    <th>優先度</th>
+    <th>種別</th>
     <td>${f:out(todoType.name)}</td>
   </tr>
   <tr>

@@ -19,6 +19,11 @@ import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.DateFormatValidator;
 
+/**
+ * 一覧画面
+ * @author agata
+ * @author baba
+ */
 @Url("todo")
 public class TodoListAction extends Action {
 
@@ -47,6 +52,9 @@ public class TodoListAction extends Action {
 
 	// ----------------------------------------------[Action Method]
 
+	/**
+	 * 一覧の表示(/todo/)
+	 */
 	@Form("todoConditionDto")
 	@Validation(rulesField="validation", errorPage="list.jsp")
 	public ActionResult index() {
@@ -56,11 +64,19 @@ public class TodoListAction extends Action {
 
 	// ----------------------------------------------[Helper Method]
 
+	/**
+	 * 種別一覧の取得
+	 */
 	public List<TodoType> getTodoTypes() {
 		List<TodoType> todoTypes = todoTypeDao.seletAll();
 		return todoTypes;
 	}
 
+	// ----------------------------------------------[Helper Method]
+
+	/**
+	 * 検索条件の文字列を取得
+	 */
 	public String getQueryString() {
 		StringBuilder sb = new StringBuilder();
 		if (todoConditionDto.hasKeyword()) {
@@ -79,7 +95,5 @@ public class TodoListAction extends Action {
 		}
 		return sb.toString();
 	}
-
-	// ----------------------------------------------[Helper Method]
 
 }

@@ -36,7 +36,7 @@ function doDelete(name, id) {
     </td>
   </tr>
   <tr>
-    <th>優先度</th>
+    <th>種別</th>
     <td>
 	<t:select id="typeId" name="typeId"
 		items="${action.todoTypes}" labelProperty="name" valueProperty="id"/>
@@ -57,12 +57,12 @@ function doDelete(name, id) {
 <table>
   <tr>
     <th>内容</th>
-    <th>優先度</th>
+    <th>種別</th>
     <th>期限日</th>
     <th>アクション</th>
   </tr>
   	<c:forEach var="todo" items="${action.todoList}" varStatus="status">
-		<tr class="${f:odd(s.index, 'odd,even')}">
+		<tr class="${f:odd(status.index, 'odd,even')}">
 			<td><a href="${contextPath}/todo/${f:out(todo.id)}">${f:out(todo.text)}</a></td>
 			<td>${f:out(todo.todoType.name)}</td>
 			<td>${f:dateFormat(todo.limitDate, 'yyyy-MM-dd')}</td>
