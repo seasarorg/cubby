@@ -24,6 +24,7 @@
 
 		<menu name="リファレンス">
 			<item name="アクション" href="/action.html" />
+			<item name="バリデーション" href="/validation.html" />
 			<item name="JSP" href="/jsp.html" />
 			<item name="メッセージリソース" href="/messages.html" />
 			<item name="Mayaa との連携" href="/mayaa.html" />

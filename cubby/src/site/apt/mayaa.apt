@@ -7,7 +7,7 @@
 
 Mayaa との連携
 
- Cubby でデザイナーが作成した HTML をテンプレートとしてビューを作成したい場合、Java テンプレートエンジンである{{{http://mayaa.seasar.org}Mayaa}}と連携することができます。
+ Cubby HTML をテンプレートとしてビューを作成したい場合、Java テンプレートエンジンである{{{http://mayaa.seasar.org}Mayaa}}と連携することができます。
 
  以下、Mayaaとの連携方法を示します。\
  動作は Cubby 0.9.0、Mayaa-1.1.14で確認しています。\
