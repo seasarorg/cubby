@@ -64,7 +64,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 			final List<FileItem> items) throws UnsupportedEncodingException {
 		final Map<String, List<Object>> valueListParameterMap = new LinkedHashMap<String, List<Object>>();
 		for (final FileItem item : items) {
-			Object value = null;
+			final Object value;
 			if (item.isFormField()) {
 				value = item.getString(encoding);
 			} else {
@@ -75,7 +75,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 					value = item;
 				}
 			}
-			List<Object> values = null;
+			final List<Object> values;
 			if (valueListParameterMap.containsKey(item.getFieldName())) {
 				values = valueListParameterMap.get(item.getFieldName());
 			} else {
@@ -95,7 +95,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 		final Map<String, Object> parameterMap = new HashMap<String, Object>();
 		for (final String key : collectParameterMap.keySet()) {
 			final List<?> values = collectParameterMap.get(key);
-			Object[] valueArray = null;
+			final Object[] valueArray;
 			if (values.get(0) instanceof String) {
 				valueArray = new String[values.size()];
 			} else {
