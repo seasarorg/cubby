@@ -66,7 +66,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
-		this.add(patternStr, actionClass, method, customPatternToRewriteInfoMap);
+		this
+				.add(patternStr, actionClass, method,
+						customPatternToRewriteInfoMap);
 	}
 
 	private void add(final String patternStr,
@@ -104,8 +106,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 	}
 
-	private String fromActionClassToPath(final Class<? extends Action> actionClass,
-			final Method method) {
+	private String fromActionClassToPath(
+			final Class<? extends Action> actionClass, final Method method) {
 		final String componentName = namingConvention
 				.fromClassNameToComponentName(actionClass.getCanonicalName());
 		final StringBuilder builder = new StringBuilder(100);
@@ -127,9 +129,17 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		initialize();
 
-		ForwardInfo forwardInfo = findForwardInfo(path, customPatternToRewriteInfoMap);
+		final String decodedPath;
+		try {
+			decodedPath = URLDecoder.decode(path, uriEncoding);
+		} catch (final IOException e) {
+			throw new IORuntimeException(e);
+		}
+
+		ForwardInfo forwardInfo = findForwardInfo(decodedPath,
+				customPatternToRewriteInfoMap);
 		if (forwardInfo == null) {
-			forwardInfo = findForwardInfo(path, patternToRewriteInfoMap);
+			forwardInfo = findForwardInfo(decodedPath, patternToRewriteInfoMap);
 		}
 		return forwardInfo;
 	}
@@ -142,14 +152,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			if (matcher.find()) {
 				final RewriteInfo rewriteInfo = patternToRewriteInfoMap.get(p);
 				for (int i = 1; i < matcher.groupCount() + 1; i++) {
-					final String name = rewriteInfo.getUriParameterNames()
-							.get(i - 1);
-					final String value;
-					try {
-						value = URLDecoder.decode(matcher.group(i), uriEncoding);
-					} catch (final IOException e) {
-						throw new IORuntimeException(e);
-					}
+					final String name = rewriteInfo.getUriParameterNames().get(
+							i - 1);
+					final String value = matcher.group(i);
 					uriParams.put(name, value);
 				}
 				final ForwardInfoImpl forwardInfo = new ForwardInfoImpl(
@@ -174,10 +179,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		private final String rewritePath;
 
-		public RewriteInfo(
-				final Class<? extends Action> actionClass,
-				final Method method,
-				final List<String> uriParameterNames,
+		public RewriteInfo(final Class<? extends Action> actionClass,
+				final Method method, final List<String> uriParameterNames,
 				final String rewritePath) {
 			this.actionClass = actionClass;
 			this.method = method;
@@ -243,8 +246,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 			for (final Method method : clazz.getMethods()) {
 				if (CubbyUtils.isActionMethod(method)) {
-					final String actionFullName = CubbyUtils
-							.getActionUrl(clazz, method);
+					final String actionFullName = CubbyUtils.getActionUrl(
+							clazz, method);
 					add(actionFullName, clazz, method, patternToRewriteInfoMap);
 				}
 			}
