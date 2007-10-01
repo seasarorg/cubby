@@ -23,22 +23,19 @@
 	</component>
 
 	<!-- for HSQLDB -->
+	<!--
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"org.hsqldb.jdbcDriver"
 		</property>
 		<property name="URL">
-			<!--
 			"jdbc:hsqldb:hsql://localhost:9001"
-			-->
-			"jdbc:hsqldb:file:"
-				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.extension.dbcp.impl.ConnectionPoolImplTest@class).getCanonicalPath()
-				+ "/data/demo"
 		</property>
 		<property name="user">"sa"</property>
 		<property name="password">""</property>
 	</component>
+	-->
 
 	<!-- for H2 -->
 	<!--
