@@ -75,7 +75,7 @@
 		optionタグの値として使用するプロパティ名を指定します。
       </description>
       <name>valueProperty</name>
-      <required>true</required>
+      <required>false</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
     </attribute>
