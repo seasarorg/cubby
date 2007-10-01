@@ -128,10 +128,6 @@
         <url-pattern>*.jsp</url-pattern>
     </servlet-mapping>
 
-    <listener>
-        <listener-class>org.seasar.cubby.examples.smartdeploy.RunDdlServletRequestListener</listener-class>
-    </listener>
-
     <!--
     <session-config>
         <session-timeout>1</session-timeout>
