@@ -28,6 +28,10 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * TODO
+ * @author baba
+ */
 public class UrlRewriteFilter implements Filter {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
