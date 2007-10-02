@@ -10,17 +10,33 @@ import javax.servlet.jsp.SkipPageException;
 import org.apache.taglibs.standard.tag.rt.core.ImportTag;
 
 /**
+ * レイアウト継承を実現するテンプレートタグ
+ * <p>
+ * この機能は今後変更になる可能性があります。
+ * </p>
  * 
  * @author agata
  */
 public class TemplateTag extends DynamicAttributesTagSupport {
 
+	/**
+	 * 継承元のJSPパス
+	 */
 	private String extend;
 
+	/**
+	 * 継承元のJSPパスをセットします。
+	 * 
+	 * @param extend 継承元のJSPパス
+	 */
 	public void setExtend(final String extend) {
 		this.extend = extend;
 	}
 
+	/**
+	 * タグの処理。
+	 * （Japserによるタグファイルのコンパイル結果から移植しています）
+	 */
 	@Override
 	public void doTag() throws JspException, IOException {
 		getJspContext().setAttribute("parts", getDynamicAttribute(),
