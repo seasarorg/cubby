@@ -15,60 +15,94 @@ import org.seasar.cubby.util.CubbyHelperFunctions;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.message.MessageFormatter;
 
+/**
+ * selectを出力するタグ
+ * 
+ * @author agata
+ * 
+ */
 public class SelectTag extends DynamicAttributesTagSupport {
 
 	final Logger logger = Logger.getLogger(this.getClass());
 
+	/**
+	 * option要素リスト
+	 */
 	private Object items;
-
+	/**
+	 * optionのラベルのプロパティ名
+	 */
 	private String labelProperty;
-
+	/**
+	 * optionの値のプロパティ名
+	 */
 	private String valueProperty;
-
+	/**
+	 * 空のoption要素を出力するかどうか。
+	 */
 	private boolean emptyOption = true;
-
+	/**
+	 * 空のoption要素を出力した場合のラベル文字列
+	 */
 	private String emptyOptionLabel;
 
 	public Object getItems() {
 		return items;
 	}
 
+	/**
+	 * option要素リストをセットします。
+	 * 
+	 * @param items
+	 *            option要素リスト
+	 */
 	public void setItems(final Object items) {
 		this.items = items;
 	}
 
-	public String getLabelProperty() {
-		return labelProperty;
-	}
-
+	/**
+	 * optionのラベルのプロパティ名をセットします。
+	 * 
+	 * @param labelProperty
+	 *            optionのラベルのプロパティ名
+	 */
 	public void setLabelProperty(final String labelProperty) {
 		this.labelProperty = labelProperty;
 	}
 
-	public String getValueProperty() {
-		return valueProperty;
-	}
-
+	/**
+	 * optionのラベルのプロパティ名をセットします。
+	 * 
+	 * @param valueProperty
+	 *            optionのラベルのプロパティ名
+	 */
 	public void setValueProperty(final String valueProperty) {
 		this.valueProperty = valueProperty;
 	}
 
-	public boolean isEmptyOption() {
-		return emptyOption;
-	}
-
+	/**
+	 * 空のoption要素を出力するかどうかをセットします。
+	 * 
+	 * @param emptyOption
+	 *            空のoption要素を出力するかどうか
+	 */
 	public void setEmptyOption(final boolean emptyOption) {
 		this.emptyOption = emptyOption;
 	}
 
-	public String getEmptyOptionLabel() {
-		return emptyOptionLabel;
-	}
-
+	/**
+	 * 空のoption要素を出力した場合のラベル文字列をセットします。
+	 * 
+	 * @param emptyOptionLabel
+	 *            空のoption要素を出力した場合のラベル文字列
+	 */
 	public void setEmptyOptionLabel(final String emptyOptionLabel) {
 		this.emptyOptionLabel = emptyOptionLabel;
 	}
-
+	/**
+	 * タグの処理
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doTag() throws JspException, IOException {
 		final Object form = getJspContext().getAttribute("__form",
