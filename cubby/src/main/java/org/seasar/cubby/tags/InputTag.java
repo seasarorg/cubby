@@ -9,6 +9,19 @@ import javax.servlet.jsp.PageContext;
 
 import org.seasar.cubby.util.CubbyHelperFunctions;
 
+/**
+ * inputを出力するタグ。
+ * <p>
+ * 入力検証にエラーがある場合、class属性に「fieldError」を追加します。
+ * なおこのタグはtype属性により挙動が変わります。
+ * </p>
+ * <ul>
+ * <li>type値がcheckbox - checkedValue値をvalue属性の値として出力します。value値とcheckedValueが一致した場合checked="checked"を出力します。</li>
+ * <li>type値がradio - checkedValue値をvalue属性の値として出力します。value値とcheckedValueが一致した場合checked="checked"を出力します。</li>
+ * <li>その他 - value値をvalue属性の値として出力します。</li>
+ * </ul>
+ * @author agata
+ */
 public class InputTag extends DynamicAttributesTagSupport {
 	
 	private String type;
@@ -31,7 +44,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 
 		final JspWriter out = getJspContext().getOut();
 		final Object form = getJspContext().getAttribute("__form", PageContext.REQUEST_SCOPE);
-		if ("checkbox".equals(type)) {
+		if ("checkbox".equals(type) || "radio".equals(type)) {
 			final String value = toString(getDynamicAttribute().get("value"));
 			final Object checkedValue = CubbyHelperFunctions.formValue2(getDynamicAttribute(), form, getJspContext(), "checkedValue");
 			getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
@@ -47,9 +60,9 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write("/>\n");
 		} else {
 			final Object value = CubbyHelperFunctions.formValue2(getDynamicAttribute(), form, getJspContext(), "value");
-			final Object checkedValue = getDynamicAttribute().get("checkedValue");
-			getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
-			getJspContext().setAttribute("checkedValue", checkedValue, PageContext.PAGE_SCOPE);
+			//final Object checkedValue = getDynamicAttribute().get("checkedValue");
+			//getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
+			//getJspContext().setAttribute("checkedValue", checkedValue, PageContext.PAGE_SCOPE);
 			out.write("<input type=\"");
 			out.write(type);
 			out.write("\" value=\"");
