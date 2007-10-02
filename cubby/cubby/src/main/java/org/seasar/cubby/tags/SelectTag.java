@@ -165,10 +165,10 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		public void write(final JspWriter out, final Object item,
 				final Object value) throws IOException {
 			out.write("<option value=\"");
-			final String itemValue = SelectTag.this.toString(itemAdaptor
-					.getItemValue(item));
-			final String labelValue = SelectTag.this.toString(itemAdaptor
-					.getLabelValue(item));
+			final String itemValue = DynamicAttributesTagSupport
+					.toString(itemAdaptor.getItemValue(item));
+			final String labelValue = DynamicAttributesTagSupport
+					.toString(itemAdaptor.getLabelValue(item));
 			out.write(CubbyFunctions.out(itemValue));
 			out.write("\" ");
 			out.write(selected(itemValue, value));
