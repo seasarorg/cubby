@@ -13,7 +13,7 @@ import org.seasar.extension.unit.S2TestCase;
 
 public class FormatPatternImplTest extends S2TestCase {
 
-	private FormatPattern formatPattern;
+	public FormatPattern formatPattern;
 
 	@Override
 	protected void setUp() throws Exception {

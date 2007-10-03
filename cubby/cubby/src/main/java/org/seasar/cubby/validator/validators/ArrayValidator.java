@@ -2,12 +2,16 @@ package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.Validator;
+import org.seasar.framework.exception.EmptyRuntimeException;
 
 public class ArrayValidator implements Validator {
 
 	private final Validator[] validators;
 
 	public ArrayValidator(final Validator... validators) {
+		if (validators == null) {
+			throw new EmptyRuntimeException("validators");
+		}
 		this.validators = validators.clone();
 	}
 
