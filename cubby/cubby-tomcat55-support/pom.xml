@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby-tomcat55-support</artifactId>
-  <name>cubby-tomcat55-support</name>
+  <name>Cubby Tomcat5.5 Support</name>
   <build>
     <pluginManagement>
       <plugins>

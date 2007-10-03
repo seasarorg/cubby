@@ -6,7 +6,7 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-project</artifactId>
   <packaging>pom</packaging>
-  <name>cubby-project</name>
+  <name>Cubby Project</name>
   <version>0.9.1-SNAPSHOT</version>
   <description>Cubby Simple JSP based Web Application Framework</description>
   <url>http://cubby.sandbox.seasar.org/</url>
