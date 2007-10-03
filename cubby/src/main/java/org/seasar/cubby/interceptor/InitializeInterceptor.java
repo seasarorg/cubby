@@ -36,10 +36,10 @@ public class InitializeInterceptor implements MethodInterceptor {
 	public InitializeInterceptor(final S2Container container) {
 		final S2Container root = container.getRoot();
 		if (root.hasComponentDef(RequestParser.class)) {
-			this.requestParser = DEFAULT_REQUEST_PARSER;
-		} else {
 			this.requestParser = (RequestParser) root
 					.getComponent(RequestParser.class);
+		} else {
+			this.requestParser = DEFAULT_REQUEST_PARSER;
 		}
 	}
 
