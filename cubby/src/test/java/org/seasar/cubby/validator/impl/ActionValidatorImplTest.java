@@ -16,9 +16,9 @@ import org.seasar.framework.util.ClassUtil;
 
 public class ActionValidatorImplTest extends S2TestCase {
 
-	ActionValidatorImpl actionValidator;
-	ActionErrors actionErrors;
-	Action action;
+	public ActionValidatorImpl actionValidator;
+	public ActionErrors actionErrors;
+	public Action action;
 	Map<String, Object> params;
 	DefaultValidationRules validators = new DefaultValidationRules();
 	Validation validation;
@@ -90,7 +90,7 @@ public class ActionValidatorImplTest extends S2TestCase {
 		}
 	}
 
-	class Sample1Form {
+	static class Sample1Form {
 		private String prop1;
 		private Integer prop2;
 		public String getProp1() {
@@ -108,6 +108,6 @@ public class ActionValidatorImplTest extends S2TestCase {
 		
 	}
 	
-	class Sample2Form {}
+	static class Sample2Form {}
 
 }

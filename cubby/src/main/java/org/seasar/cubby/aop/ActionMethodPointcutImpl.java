@@ -73,6 +73,9 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 	 * @return 対象になったメソッド名の配列
 	 */
 	public String[] getMethodNames() {
+		if (methodNames == null) {
+			return null;
+		}
 		return methodNames.clone();
 	}
 

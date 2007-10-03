@@ -7,7 +7,7 @@ import org.seasar.extension.unit.S2TestCase;
 
 public class ActionErrorsImplTest extends S2TestCase {
 
-	private ActionErrors actionErrors;
+	public ActionErrors actionErrors;
 
 	@Override
 	protected void setUp() throws Exception {

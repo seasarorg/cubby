@@ -24,9 +24,9 @@ public class FormDto {
 		this.booleanField = booleanField;
 	}
 	public Integer[] getIntegerArrayField() {
-		return integerArrayField;
+		return integerArrayField.clone();
 	}
 	public void setIntegerArrayField(Integer[] integerArrayField) {
-		this.integerArrayField = integerArrayField;
+		this.integerArrayField = integerArrayField.clone();
 	}
 }

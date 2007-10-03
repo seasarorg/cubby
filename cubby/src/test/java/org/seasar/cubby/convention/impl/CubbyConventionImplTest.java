@@ -8,7 +8,7 @@ import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
 public class CubbyConventionImplTest extends S2TestCase {
 
-	private CubbyConvention cubbyConvention;
+	public CubbyConvention cubbyConvention;
 
 	@Override
 	protected void setUp() throws Exception {
