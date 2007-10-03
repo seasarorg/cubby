@@ -8,7 +8,7 @@ public class ArrayValidator implements Validator {
 	private final Validator[] validators;
 
 	public ArrayValidator(final Validator... validators) {
-		this.validators = validators;
+		this.validators = validators.clone();
 	}
 
 	public String validate(final ValidationContext ctx) {

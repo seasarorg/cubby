@@ -12,15 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.util.RequestHolder;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
+import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.log.Logger;
 
 /**
- * Cubby用のフィルター
+ * Cubby用のフィルター。
  * リクエストの処理をActionProcesserに委譲します。
+ * 
  * @author agata
+ * @author baba
  */
 public class CubbyFilter implements Filter {
 
@@ -52,18 +53,16 @@ public class CubbyFilter implements Filter {
 		try {
 			final HttpServletRequest request = (HttpServletRequest) req;
 			final HttpServletResponse response = (HttpServletResponse) res;
-			RequestHolder.setRequest(request);
+			ThreadContext.setRequest(request);
 
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final ActionProcessor processor = (ActionProcessor) container
+			final ActionProcessor processor = SingletonS2Container
 					.getComponent(ActionProcessor.class);
 			processor.process(request, response, chain);
 		} catch (final Throwable e) {
 			logger.log(e);
 			throw new ServletException(e);
 		} finally {
-			RequestHolder.remove();
+			ThreadContext.remove();
 		}
 	}
 

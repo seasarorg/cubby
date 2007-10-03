@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -93,15 +94,16 @@ public class MultipartRequestParserImpl implements RequestParser {
 			final Map<String, List<Object>> collectParameterMap) {
 		// 配列でパラメータMapを構築
 		final Map<String, Object> parameterMap = new HashMap<String, Object>();
-		for (final String key : collectParameterMap.keySet()) {
-			final List<?> values = collectParameterMap.get(key);
+		for (final Entry<String, List<Object>> entry : collectParameterMap
+				.entrySet()) {
+			final List<Object> values = entry.getValue();
 			final Object[] valueArray;
 			if (values.get(0) instanceof String) {
 				valueArray = new String[values.size()];
 			} else {
 				valueArray = new FileItem[values.size()];
 			}
-			parameterMap.put(key, values.toArray(valueArray));
+			parameterMap.put(entry.getKey(), values.toArray(valueArray));
 		}
 		return parameterMap;
 	}

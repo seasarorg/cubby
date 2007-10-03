@@ -16,7 +16,6 @@
 package org.seasar.cubby.dxo;
 
 import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.action.impl.FormatPatternImpl;
 import org.seasar.extension.dxo.annotation.AnnotationReader;
 import org.seasar.extension.dxo.annotation.AnnotationReaderFactory;
 import org.seasar.framework.container.S2Container;
@@ -29,10 +28,12 @@ public class CubbyAnnotationReaderFactoryImpl implements
 	private final FormatPattern formatPattern;
 
 	public CubbyAnnotationReaderFactoryImpl(final S2Container container) {
-		if (container.getRoot().hasComponentDef(FormatPattern.class)) {
-			this.formatPattern = (FormatPattern) container.getRoot().getComponent(FormatPattern.class);
+		final S2Container root = container.getRoot();
+		if (root.hasComponentDef(FormatPattern.class)) {
+			this.formatPattern = (FormatPattern) container.getRoot().getComponent(
+					FormatPattern.class);
 		} else {
-			this.formatPattern = new FormatPatternImpl();
+			this.formatPattern = null;
 		}
 	}
 

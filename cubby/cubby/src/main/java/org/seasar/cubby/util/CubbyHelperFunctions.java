@@ -7,6 +7,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspContext;
@@ -49,13 +50,14 @@ public class CubbyHelperFunctions {
 
 	public static String toAttr(Map<String, Object> map) {
 		StringBuilder sb = new StringBuilder();
-		for (String key : map.keySet()) {
-			if (key.equals("value") || key.equals("checkedValue")) {
+		for (Entry<String, Object> entry : map.entrySet()) {
+			final String key = entry.getKey();
+			if ("value".equals(key) || "checkedValue".equals(key)) {
 				continue;
 			}
 			sb.append(key);
 			sb.append("=\"");
-			sb.append(CubbyFunctions.escapeHtml(map.get(key)));
+			sb.append(CubbyFunctions.escapeHtml(entry.getValue()));
 			sb.append("\" ");
 		}
 		return sb.toString();

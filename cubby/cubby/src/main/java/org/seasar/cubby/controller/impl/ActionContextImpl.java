@@ -1,6 +1,5 @@
 package org.seasar.cubby.controller.impl;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,7 +21,7 @@ import org.seasar.framework.log.Logger;
  * @author baba
  *
  */
-public class ActionContextImpl implements ActionContext, Serializable {
+public class ActionContextImpl implements ActionContext {
 
 	private static final long serialVersionUID = 2416038583405864226L;
 
@@ -38,6 +37,10 @@ public class ActionContextImpl implements ActionContext, Serializable {
 
 	public void initialize(final ActionDef actionDef) {
 		this.actionDef = actionDef;
+	}
+
+	public boolean isInitialized() {
+		return this.actionDef != null;
 	}
 
 	public Populator getPopulator() {

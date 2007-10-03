@@ -1,7 +1,5 @@
 package org.seasar.cubby.customizer;
 
-import java.lang.reflect.Method;
-
 import org.seasar.cubby.aop.ActionMethodPointcutImpl;
 import org.seasar.framework.aop.Pointcut;
 import org.seasar.framework.util.StringUtil;
@@ -38,21 +36,6 @@ class PointcutFactory {
      */
     public static Pointcut createPointcut(final Class<?> clazz) {
         return new ActionMethodPointcutImpl(clazz);
-    }
-
-    /**
-     * 指定された{@link java.lang.reflect.Method メソッド}から、
-     * {@link org.seasar.framework.aop.Pointcut ポイントカット}を構築して返します。
-     * 
-     * @param method
-     *            メソッド
-     * @return ポイントカット
-     */
-    public static Pointcut createPointcut(final Method method) {
-        if (method != null) {
-            return new ActionMethodPointcutImpl(method);
-        }
-        return null;
     }
 
 }
