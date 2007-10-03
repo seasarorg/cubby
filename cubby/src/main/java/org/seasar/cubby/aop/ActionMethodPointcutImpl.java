@@ -2,6 +2,8 @@ package org.seasar.cubby.aop;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -22,8 +24,6 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 	private String[] methodNames;
 
 	private Pattern[] patterns;
-
-	private Method method;
 
 	/**
 	 * {@link ActionMethodPointcutImpl}を作成します。
@@ -55,21 +55,7 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 		setMethodNames(methodNames);
 	}
 
-	/**
-	 * {@link ActionMethodPointcutImpl}を作成します。
-	 * 
-	 * @param method
-	 *            メソッド
-	 */
-	public ActionMethodPointcutImpl(final Method method) {
-		this.method = method;
-	}
-
 	public boolean isApplied(final Method targetMethod) {
-		if (method != null) {
-			return method.equals(targetMethod);
-		}
-
 		if (!CubbyUtils.isActionMethod(targetMethod)) {
 			return false;
 		}
@@ -89,7 +75,7 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 	 * @return 対象になったメソッド名の配列
 	 */
 	public String[] getMethodNames() {
-		return methodNames;
+		return methodNames.clone();
 	}
 
 	private void setMethodNames(final String[] methodNames) {

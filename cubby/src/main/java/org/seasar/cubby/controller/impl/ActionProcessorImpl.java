@@ -10,6 +10,7 @@ import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.convention.CubbyConvention;
 import org.seasar.cubby.exception.ActionRuntimeException;
+import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 
@@ -47,9 +48,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 				throw new ActionRuntimeException("ECUB0001",
 						new Object[] { context.getMethod() });
 			}
-			result.execute(context, request, response);
+			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+					request, context);
+			result.execute(context, wrappedRequest, response);
 		} else {
-			chain.doFilter(request, response);
+			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+					request, context);
+			chain.doFilter(wrappedRequest, response);
 		}
 	}
 

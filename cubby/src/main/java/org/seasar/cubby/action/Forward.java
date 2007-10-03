@@ -71,14 +71,12 @@ public class Forward extends AbstractActionResult {
 		} else {
 			absolutePath = "/" + actionClassName + "/" + this.path;
 		}
-		final HttpServletRequest wrappedRequest = new ForwardHttpServletRequestWrapper(
-				request, context);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0001", new String[] { absolutePath });
 		}
 		final RequestDispatcher dispatcher = request
 				.getRequestDispatcher(absolutePath);
-		dispatcher.forward(wrappedRequest, response);
+		dispatcher.forward(request, response);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0002", new String[] { absolutePath });
 		}

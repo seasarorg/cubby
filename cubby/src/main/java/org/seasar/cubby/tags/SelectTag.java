@@ -154,7 +154,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		out.write("</select>\n");
 	}
 
-	class OptionWriter {
+	static class OptionWriter {
 
 		private final ItemAdaptor itemAdaptor;
 

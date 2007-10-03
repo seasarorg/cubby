@@ -169,7 +169,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		this.namingConvention = namingConvention;
 	}
 
-	class RewriteInfo {
+	static class RewriteInfo {
 
 		private final Class<? extends Action> actionClass;
 

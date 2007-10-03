@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.seasar.framework.exception.IORuntimeException;
+
 public class Uri {
 
 	private Map<String,Object> params = new LinkedHashMap<String, Object>();
@@ -24,9 +26,7 @@ public class Uri {
 		if (!params.isEmpty()) {
 			for (String name : params.keySet()) {
 				Object value = params.get(name);
-				if (value == null) {
-					appendParams(sb, name, value);
-				} else if (value.getClass().isArray()) {
+				if (value != null && value.getClass().isArray()) {
 					Object[] values = (Object[])value;
 					for (Object v : values) {
 						appendParams(sb, name, v);
@@ -50,7 +50,7 @@ public class Uri {
 				sb.append(URLEncoder.encode(value.toString(), encode));
 			}
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e.getMessage(), e);
+			throw new IORuntimeException(e);
 		}
 	}
 

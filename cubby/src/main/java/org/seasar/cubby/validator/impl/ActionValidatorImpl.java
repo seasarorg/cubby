@@ -15,13 +15,20 @@ import org.seasar.cubby.validator.Validator;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.container.S2Container;
 
 public class ActionValidatorImpl implements ActionValidator {
 
-	private FormatPattern formatPattern;
+	private final FormatPattern formatPattern;
 
-	public void setFormatPattern(final FormatPattern formatPattern) {
-		this.formatPattern = formatPattern;
+	public ActionValidatorImpl(final S2Container container) {
+		final S2Container root = container.getRoot();
+		if (root.hasComponentDef(FormatPattern.class)) {
+			this.formatPattern = (FormatPattern) root
+					.getComponent(FormatPattern.class);
+		} else {
+			this.formatPattern = null;
+		}
 	}
 
 	public boolean processValidation(final Validation valid, 

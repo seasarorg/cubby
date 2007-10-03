@@ -13,7 +13,9 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.util.RequestHolder;
+import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
+import org.seasar.framework.container.S2Container;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -25,12 +27,20 @@ import org.seasar.cubby.util.RequestHolder;
  */
 public class InitializeInterceptor implements MethodInterceptor {
 
-	private RequestParser requestParser;
+	private static final RequestParser DEFAULT_REQUEST_PARSER = new DefaultRequestParserImpl();
+
+	private final RequestParser requestParser;
 
 	private ActionContext context;
 
-	public void setRequestParser(final RequestParser requestParser) {
-		this.requestParser = requestParser;
+	public InitializeInterceptor(final S2Container container) {
+		final S2Container root = container.getRoot();
+		if (root.hasComponentDef(RequestParser.class)) {
+			this.requestParser = (RequestParser) root
+					.getComponent(RequestParser.class);
+		} else {
+			this.requestParser = DEFAULT_REQUEST_PARSER;
+		}
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -38,7 +48,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final HttpServletRequest request = RequestHolder.getRequest();
+		final HttpServletRequest request = ThreadContext.getRequest();
 		setupParams(context, request);
 		setupForm(context, request);
 
@@ -55,12 +65,8 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	void setupParams(final ActionContext context,
 			final HttpServletRequest request) {
-		final Map<String, Object> parameterMap;
-		if (requestParser == null) {
-			parameterMap = getParameterMap(request);
-		} else {
-			parameterMap = requestParser.getParameterMap(request);
-		}
+		final Map<String, Object> parameterMap = requestParser
+				.getParameterMap(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
 
@@ -78,12 +84,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	private static Map<String, Object> getParams(
 			final HttpServletRequest request) {
 		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static Map<String, Object> getParameterMap(
-			final HttpServletRequest request) {
-		return request.getParameterMap();
 	}
 
 }
