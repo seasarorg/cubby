@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,10 +148,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private ForwardInfo findForwardInfo(final String path,
 			final Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
 		final Map<String, String> uriParams = new HashMap<String, String>();
-		for (final Pattern p : patternToRewriteInfoMap.keySet()) {
-			final Matcher matcher = p.matcher(path);
+		for (final Entry<Pattern, RewriteInfo> entry : patternToRewriteInfoMap
+				.entrySet()) {
+			final Matcher matcher = entry.getKey().matcher(path);
 			if (matcher.find()) {
-				final RewriteInfo rewriteInfo = patternToRewriteInfoMap.get(p);
+				final RewriteInfo rewriteInfo = entry.getValue();
 				for (int i = 1; i < matcher.groupCount() + 1; i++) {
 					final String name = rewriteInfo.getUriParameterNames().get(
 							i - 1);
@@ -194,9 +196,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			if (!uriParams.isEmpty()) {
 				builder.append("?");
 				final Uri uri = new Uri();
-				for (final String key : uriParams.keySet()) {
-					final String value = uriParams.get(key);
-					uri.setParam(key, value);
+				for (final Entry<String, String> entry : uriParams.entrySet()) {
+					uri.setParam(entry.getKey(), entry.getValue());
 				}
 				builder.append(uri.getQueryString());
 			}

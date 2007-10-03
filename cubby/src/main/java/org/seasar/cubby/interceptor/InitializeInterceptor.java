@@ -75,15 +75,15 @@ public class InitializeInterceptor implements MethodInterceptor {
 		final Object formBean = context.getFormBean();
 		if (formBean != null) {
 			final Populator populator = context.getPopulator();
-			final Map<String, Object> params = getParams(request);
+			final Map<String, Object[]> params = getParams(request);
 			populator.populate(params, formBean);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, Object> getParams(
+	private static Map<String, Object[]> getParams(
 			final HttpServletRequest request) {
-		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
+		return (Map<String, Object[]>) request.getAttribute(ATTR_PARAMS);
 	}
 
 }

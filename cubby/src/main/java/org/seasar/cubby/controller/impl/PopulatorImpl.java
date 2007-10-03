@@ -2,6 +2,7 @@ package org.seasar.cubby.controller.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.dxo.HttpRequestDxo;
@@ -19,22 +20,23 @@ public class PopulatorImpl implements Populator {
         this.httpRequestDxo = httpRequestDxo;
     }
 
-    public void populate(final Map<String, Object> src, final Object dest) {
+    public void populate(final Map<String, Object[]> src, final Object dest) {
     	if (src == null) {
     		return;
     	}
 
-    	Map<String, Object> normalized = new HashMap<String, Object>();
-    	BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
-    	for (String name : src.keySet()) {
+    	final Map<String, Object> normalized = new HashMap<String, Object>();
+    	final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
+    	for (final Entry<String, Object[]> entry : src.entrySet()) {
     		try {
-    			Object[] values = (Object[]) src.get(name);
-    			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(name);
-    			Class<?> propertyType = propertyDesc.getPropertyType();
+    			final String name = entry.getKey();
+    			final Object[] values = entry.getValue();
+    			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(name);
+    			final Class<?> propertyType = propertyDesc.getPropertyType();
 				if (propertyType.isArray()) {
     				normalized.put(name, values);
     			} else if (String.class.isAssignableFrom(propertyType)) {
-                	String value = (String) values[0];
+                	final String value = (String) values[0];
                 	if (!StringUtil.isEmpty(value)) {
                 		normalized.put(name, value);
                 	} else {
@@ -43,20 +45,20 @@ public class PopulatorImpl implements Populator {
     			} else {
     				normalized.put(name, values[0]);
     			}
-    		} catch (PropertyNotFoundRuntimeException e) {
+    		} catch (final PropertyNotFoundRuntimeException e) {
     			
     		}
         }
         try {
         	httpRequestDxo.convert(normalized, dest);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
         	// do nothing
         	e.printStackTrace();
         }
     }
 
     public Map<String, String> describe(final Object src) {
-    	Map<String, String> dest = new HashMap<String, String>();
+    	final Map<String, String> dest = new HashMap<String, String>();
     	if (src == null) {
     		return dest;
     	}
