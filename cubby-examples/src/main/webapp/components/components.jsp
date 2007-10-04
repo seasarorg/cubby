@@ -12,6 +12,9 @@
 <h2>Input Text</h2>
 <label for="userName">Name:</label><t:input type="text" name="userName" id="userName"><input type="text"/></t:input>
 
+<h2>Input Text(date)</h2>
+<label for="date">Date:</label><t:input type="text" name="date" id="date"><input type="text"/></t:input>
+
 <h2>Select</h2>
 <label for="color">Color:</label>
 <t:select name="color" size="3" 

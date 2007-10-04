@@ -1,6 +1,7 @@
 package org.seasar.cubby.examples.other.web.components;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserForm {
@@ -14,6 +15,7 @@ public class UserForm {
 	private String memo;
 	private Boolean check1;
 	private Integer[] check2;
+	private Date date;
 	public Boolean getCheck1() {
 		return check1;
 	}
@@ -87,6 +89,12 @@ public class UserForm {
 	}
 	public void setCheck2(Integer[] check2) {
 		this.check2 = check2;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }
