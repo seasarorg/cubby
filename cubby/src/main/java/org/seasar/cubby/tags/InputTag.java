@@ -66,7 +66,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write("<input type=\"");
 			out.write(type);
 			out.write("\" value=\"");
-			out.write(CubbyHelperFunctions.convertFieldValue(value, form, getRequest(), toString(getDynamicAttribute().get("value"))));// TODO
+			out.write(CubbyHelperFunctions.convertFieldValue(value, form, getRequest(), toString(getDynamicAttribute().get("name"))));// TODO
 			out.write("\" ");
 			out.write(CubbyHelperFunctions.toAttr(getDynamicAttribute()));
 			out.write("/>\n");
