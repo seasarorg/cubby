@@ -1,6 +1,6 @@
 package org.seasar.cubby.examples.todo.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -10,14 +10,10 @@ import org.seasar.cubby.examples.todo.entity.User;
 
 public class AuthActionInterceptor implements MethodInterceptor {
 
-	private HttpServletRequest request;
-
-	public void setHttpServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
+	public Map<String, Object> sessionScope;
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		final User user = (User) request.getSession().getAttribute("user");
+		final User user = (User) sessionScope.get("user");
 		if (user == null) {
 			final Action action = (Action) invocation.getThis();
 			action.getFlash().put("notice", "ログインしていません。");

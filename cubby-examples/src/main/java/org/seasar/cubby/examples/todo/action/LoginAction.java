@@ -1,6 +1,8 @@
 package org.seasar.cubby.examples.todo.action;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
@@ -35,7 +37,9 @@ public class LoginAction extends Action {
 
 	// ----------------------------------------------[DI Filed]
 
-	public HttpServletRequest request;
+	public HttpSession session;
+
+	public Map<String, Object> sessionScope;
 
 	// ----------------------------------------------[Attribute]
 
@@ -60,7 +64,7 @@ public class LoginAction extends Action {
 	public ActionResult process() {
 		User user = login(userId, password);
 		if (user != null) {
-			request.getSession().setAttribute("user", user);
+			sessionScope.put("user", user);
 			return new Redirect("/todo/");
 		} else {
 			errors.addActionError("ユーザIDかパスワードが違います。");
@@ -81,8 +85,9 @@ public class LoginAction extends Action {
 	}
 
 	@Url("/todo/logout")
+	// @InvalidateSession : s2-framework 2.4.18 から
 	public ActionResult logout() {
-		request.getSession().invalidate();
+		session.invalidate();	// s2-framework 2.4.17 まで
 		return new Redirect("/todo/login/");
 	}
 
