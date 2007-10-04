@@ -41,7 +41,7 @@ public class LoginAction extends Action {
   // フィールドにはアクセサメソッドが必要。
   // サンプルではPropertyInterTypeを使用しているのでアクセサメソッドは自動生成されます。
 
-  public HttpServletRequest request;
+  public Map<String, Object> sessionScope;
   public String userId;
   public String password;
 
@@ -61,7 +61,7 @@ public class LoginAction extends Action {
   public ActionResult process() {
     User user = login(userId, password);
     if (user != null) {
-      request.getSession().setAttribute("user", user);
+      sessionScope.put("user", user);
       return new Redirect("/todo/");
     } else {
       errors.addActionError("ユーザIDかパスワードが違います。");
