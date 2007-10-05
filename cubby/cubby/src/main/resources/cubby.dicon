@@ -2,7 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="cubby">
-	<include path="cubby-dxo.dicon" />
 	<include path="convention.dicon" />
 
 	<!-- Convention -->
@@ -12,6 +11,7 @@
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
 	<component class="org.seasar.cubby.controller.impl.PopulatorImpl" />
+	<component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" />
 
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
 	<component name="actionErrors" class="java.util.ArrayList" instance="request" />
@@ -25,5 +25,25 @@
 	<!-- インターセプタ -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
 	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
+
+	<!-- dxo -->
+	<component name="interceptor" class="org.seasar.extension.dxo.DxoInterceptor"/>
+
+	<component class="org.seasar.cubby.dxo.HttpRequestDxo">
+		<aspect>
+			<component class="org.seasar.extension.dxo.DxoInterceptor"/>
+		</aspect>
+	</component>
+
+	<component class="org.seasar.extension.dxo.meta.impl.DxoMetadataFactoryImpl"/>
+	<component class="org.seasar.extension.dxo.converter.impl.ConverterFactoryImpl"/>
+	<component class="org.seasar.cubby.dxo.CubbyAnnotationReaderFactoryImpl">
+		<property name="annotationReaderFactory">
+			<component class="org.seasar.extension.dxo.annotation.impl.AnnotationReaderFactoryImpl"/>
+		</property>
+	</component>
+
+	<component class="org.seasar.extension.dxo.builder.impl.MapToBeanDxoCommandBuilder"/>
+	<component class="org.seasar.extension.dxo.builder.impl.BeanToMapDxoCommandBuilder"/>
 
 </components>

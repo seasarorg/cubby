@@ -92,4 +92,18 @@ public class FormatPatternImpl implements FormatPattern {
 		return new SimpleDateFormat(this.timestampPattern);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(super.toString());
+		builder.append("[datePattern=");
+		builder.append(datePattern);
+		builder.append(",timePattern=");
+		builder.append(timePattern);
+		builder.append(",timestampPattern=");
+		builder.append(timestampPattern);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

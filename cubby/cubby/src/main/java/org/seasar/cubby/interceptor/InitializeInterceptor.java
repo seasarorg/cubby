@@ -11,11 +11,10 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
-import org.seasar.framework.container.S2Container;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -27,20 +26,12 @@ import org.seasar.framework.container.S2Container;
  */
 public class InitializeInterceptor implements MethodInterceptor {
 
-	private static final RequestParser DEFAULT_REQUEST_PARSER = new DefaultRequestParserImpl();
-
-	private final RequestParser requestParser;
+	private CubbyConfiguration cubbyConfiguration;
 
 	private ActionContext context;
 
-	public InitializeInterceptor(final S2Container container) {
-		final S2Container root = container.getRoot();
-		if (root.hasComponentDef(RequestParser.class)) {
-			this.requestParser = (RequestParser) root
-					.getComponent(RequestParser.class);
-		} else {
-			this.requestParser = DEFAULT_REQUEST_PARSER;
-		}
+	public void setCubbyConfiguration(final CubbyConfiguration cubbyConfiguration) {
+		this.cubbyConfiguration = cubbyConfiguration;
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -65,6 +56,8 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	void setupParams(final ActionContext context,
 			final HttpServletRequest request) {
+		final RequestParser requestParser = cubbyConfiguration
+				.getRequestParser();
 		final Map<String, Object> parameterMap = requestParser
 				.getParameterMap(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
