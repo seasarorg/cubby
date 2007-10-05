@@ -117,9 +117,9 @@ public class CubbyHelperFunctions {
 			return CubbyFunctions.out(source);
 		} else {
 			final Map<String, String> outputValues = (Map<String, String>) request
-					.getAttribute(ATTR_OUTPUT_VALUES);
+			.getAttribute(ATTR_OUTPUT_VALUES);
 			final String converted;
-			if (outputValues != null) {
+			if (!(TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) && outputValues != null) {
 				final String outputValue = outputValues.get(propertyName);
 				if (outputValue == null && source != null) {
 					converted = source.toString();
@@ -154,32 +154,8 @@ public class CubbyHelperFunctions {
 		}
 		dyn.put("class", classValue);
 	}
-
 	@SuppressWarnings("unchecked")
 	public static Object formValue(Map dyn, Object form,
-			HttpServletRequest request, String valueParamName) {
-		Object value = dyn.get(valueParamName);
-		String name = (String) dyn.get("name");
-		if (TRUE.equals(request.getAttribute(ATTR_VALIDATION_FAIL))) {
-			if (dyn.containsKey(valueParamName)) {
-				return value;
-			} else {
-				Map<String, Object> params = (Map<String, Object>) request
-						.getAttribute(ATTR_PARAMS);
-				return CubbyUtils.getParamsValue(params, name);
-			}
-		} else {
-			if (dyn.containsKey(valueParamName) || form == null
-					|| StringUtil.isEmpty(name)) {
-				return value;
-			} else {
-				return property(form, name);
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static Object formValue2(Map dyn, Object form,
 			JspContext context, String valueParamName) {
 		Object value = dyn.get(valueParamName);
 		String name = (String) dyn.get("name");
@@ -200,4 +176,28 @@ public class CubbyHelperFunctions {
 			}
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public static Object formMultiValue(Map dyn, Object form,
+			JspContext context, String valueParamName) {
+		Object value = dyn.get(valueParamName);
+		String name = (String) dyn.get("name");
+		if (TRUE.equals(context.getAttribute(ATTR_VALIDATION_FAIL, PageContext.REQUEST_SCOPE))) {
+			if (dyn.containsKey(valueParamName)) {
+				return value;
+			} else {
+				Map<String, Object> params = (Map<String, Object>) context
+						.getAttribute(ATTR_PARAMS, PageContext.REQUEST_SCOPE);
+				return params.get(name);
+			}
+		} else {
+			if (dyn.containsKey(valueParamName) || form == null
+					|| StringUtil.isEmpty(name)) {
+				return value;
+			} else {
+				return property(form, name);
+			}
+		}
+	}
+
 }
