@@ -1,10 +1,13 @@
 package org.seasar.cubby.tags;
 
+import java.util.Date;
+
 public class FormDto {
 	private String stringField;
 	private Integer integerField;
 	private Integer[] integerArrayField;
 	private Boolean booleanField;
+	private Date dateField;
 	public String getStringField() {
 		return stringField;
 	}
@@ -28,5 +31,11 @@ public class FormDto {
 	}
 	public void setIntegerArrayField(Integer[] integerArrayField) {
 		this.integerArrayField = integerArrayField.clone();
+	}
+	public Date getDateField() {
+		return dateField;
+	}
+	public void setDateField(Date dateField) {
+		this.dateField = dateField;
 	}
 }
