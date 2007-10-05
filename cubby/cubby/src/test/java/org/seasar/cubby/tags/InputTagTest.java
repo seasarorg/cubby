@@ -1,5 +1,6 @@
 package org.seasar.cubby.tags;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.jsp.PageContext;
@@ -211,4 +212,25 @@ public class InputTagTest extends JspTagTestCase {
 //		assertEquals("valueが指定",
 //				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
 	}
+
+	public void testDoTagTextDate() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
+		tag.setDynamicAttribute(null, "name", "dateField");
+		tag.setDynamicAttribute(null, "value", new Date());
+		tag.setType("text");
+		tag.doTag();
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 3, element.getAttributes().size());
+		assertEquals(message, "text", element.getAttributeValue("type"));
+		//assertEquals(message, "value1", element.getAttributeValue("value"));
+		assertEquals(message, "dateField", element.getAttributeValue("name"));
+//		assertEquals("valueが指定",
+//				"<input type=\"text\" value=\"value1\" name=\"stringField\" />\n", context.getResult());
+	}
+
 }
