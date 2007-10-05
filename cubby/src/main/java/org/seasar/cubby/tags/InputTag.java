@@ -46,7 +46,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 		final Object form = getJspContext().getAttribute("__form", PageContext.REQUEST_SCOPE);
 		if ("checkbox".equals(type) || "radio".equals(type)) {
 			final String value = toString(getDynamicAttribute().get("value"));
-			final Object checkedValue = CubbyHelperFunctions.formValue2(getDynamicAttribute(), form, getJspContext(), "checkedValue");
+			final Object checkedValue = CubbyHelperFunctions.formMultiValue(getDynamicAttribute(), form, getJspContext(), "checkedValue");
 			getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
 			getJspContext().setAttribute("checkedValue", checkedValue, PageContext.PAGE_SCOPE);
 			out.write("<input type=\"");
@@ -59,7 +59,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write(CubbyHelperFunctions.checked(value, checkedValue));
 			out.write("/>\n");
 		} else {
-			final Object value = CubbyHelperFunctions.formValue2(getDynamicAttribute(), form, getJspContext(), "value");
+			final Object value = CubbyHelperFunctions.formValue(getDynamicAttribute(), form, getJspContext(), "value");
 			//final Object checkedValue = getDynamicAttribute().get("checkedValue");
 			//getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
 			//getJspContext().setAttribute("checkedValue", checkedValue, PageContext.PAGE_SCOPE);

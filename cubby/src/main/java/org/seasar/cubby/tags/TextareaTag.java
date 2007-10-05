@@ -25,7 +25,7 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 	public void doTag() throws JspException, IOException {
 		final Object form = getJspContext().getAttribute("__form",
 				PageContext.REQUEST_SCOPE);
-		final Object value = CubbyHelperFunctions.formValue2(
+		final Object value = CubbyHelperFunctions.formValue(
 				getDynamicAttribute(), form, getJspContext(), "value");
 		getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
 		final Map fieldErros = (Map) getJspContext().getAttribute(
