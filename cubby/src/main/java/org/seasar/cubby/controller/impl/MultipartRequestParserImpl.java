@@ -18,19 +18,26 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.exception.FileUploadRuntimeException;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.StringUtil;
 
 public class MultipartRequestParserImpl implements RequestParser {
 
+	private final S2Container container;
+
+	public MultipartRequestParserImpl(final S2Container container) {
+		this.container = container;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getParameterMap(final HttpServletRequest request) {
 		Map<String, Object> parameterMap;
 		if (ServletFileUpload.isMultipartContent(request)) {
-			final FileUpload fileUpload = SingletonS2Container
+			final S2Container root = container.getRoot();
+			final FileUpload fileUpload = (FileUpload) root
 					.getComponent(FileUpload.class);
-			final RequestContext requestContext = SingletonS2Container
+			final RequestContext requestContext = (RequestContext) root
 					.getComponent(RequestContext.class);
 			parameterMap = this.getMultipartParameterMap(fileUpload,
 					requestContext);

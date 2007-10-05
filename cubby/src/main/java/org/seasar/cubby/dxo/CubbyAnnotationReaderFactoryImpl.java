@@ -15,36 +15,30 @@
  */
 package org.seasar.cubby.dxo;
 
-import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.extension.dxo.annotation.AnnotationReader;
 import org.seasar.extension.dxo.annotation.AnnotationReaderFactory;
-import org.seasar.framework.container.S2Container;
 
 public class CubbyAnnotationReaderFactoryImpl implements
 		AnnotationReaderFactory {
 
 	private AnnotationReaderFactory annotationReaderFactory;
 
-	private final FormatPattern formatPattern;
-
-	public CubbyAnnotationReaderFactoryImpl(final S2Container container) {
-		final S2Container root = container.getRoot();
-		if (root.hasComponentDef(FormatPattern.class)) {
-			this.formatPattern = (FormatPattern) container.getRoot().getComponent(
-					FormatPattern.class);
-		} else {
-			this.formatPattern = null;
-		}
-	}
+	private CubbyConfiguration cubbyConfiguration;
 
 	public void setAnnotationReaderFactory(final AnnotationReaderFactory annotationReaderFactory) {
 		this.annotationReaderFactory = annotationReaderFactory;
 	}
 
+	public void setCubbyConfiguration(final CubbyConfiguration cubbyConfiguration) {
+		this.cubbyConfiguration = cubbyConfiguration;
+	}
+
 	public AnnotationReader getAnnotationReader() {
 		final AnnotationReader annotationReader = annotationReaderFactory
 				.getAnnotationReader();
-		return new CubbyAnnotationReaderWrapper(annotationReader, formatPattern);
+		return new CubbyAnnotationReaderWrapper(annotationReader,
+				cubbyConfiguration.getFormatPattern());
 	}
 
 }

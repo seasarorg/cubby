@@ -3,8 +3,8 @@ package org.seasar.cubby.validator.impl;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.PropertyValidationRule;
@@ -15,26 +15,19 @@ import org.seasar.cubby.validator.Validator;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.container.S2Container;
 
 public class ActionValidatorImpl implements ActionValidator {
 
-	private final FormatPattern formatPattern;
+	private CubbyConfiguration cubbyConfiguration;
 
-	public ActionValidatorImpl(final S2Container container) {
-		final S2Container root = container.getRoot();
-		if (root.hasComponentDef(FormatPattern.class)) {
-			this.formatPattern = (FormatPattern) root
-					.getComponent(FormatPattern.class);
-		} else {
-			this.formatPattern = null;
-		}
+	public void setCubbyConfiguration(
+			final CubbyConfiguration cubbyConfiguration) {
+		this.cubbyConfiguration = cubbyConfiguration;
 	}
 
-	public boolean processValidation(final Validation valid, 
-			final Action action, final Map<String,Object> params, 
-			final Object form, final ValidationRules rules) 
-	{
+	public boolean processValidation(final Validation valid,
+			final Action action, final Map<String, Object> params,
+			final Object form, final ValidationRules rules) {
 		if (valid == null) {
 			return true;
 		}
@@ -43,9 +36,8 @@ public class ActionValidatorImpl implements ActionValidator {
 	}
 
 	@SuppressWarnings("unchecked")
-	void validateAction(final Action action, final Map<String,Object> params, 
-			final Object form, final ValidationRules rules) 
-	{
+	void validateAction(final Action action, final Map<String, Object> params,
+			final Object form, final ValidationRules rules) {
 		for (ValidationRule rule : rules.getRules()) {
 			for (Validator v : rule.getValidators()) {
 				validate(action, params, form, v, rule);
@@ -53,31 +45,33 @@ public class ActionValidatorImpl implements ActionValidator {
 		}
 	}
 
-	void validate(final Action action, final Map<String, Object> params, 
-			final Object form, final Validator validator, final ValidationRule rule) 
-	{
+	void validate(final Action action, final Map<String, Object> params,
+			final Object form, final Validator validator,
+			final ValidationRule rule) {
 		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
-		PropertyValidationRule propRule = (PropertyValidationRule)rule;
+		PropertyValidationRule propRule = (PropertyValidationRule) rule;
 		Object value = getPropertyValue(params, propRule.getPropertyName());
-		ValidationContext ctx = createValidContext(action, params, form, rule, value);
+		ValidationContext ctx = createValidContext(action, params, form, rule,
+				value);
 		String error = validator.validate(ctx);
 		if (error != null) {
-			action.getErrors().addFieldError(propRule.getPropertyName(),
-					error);
+			action.getErrors().addFieldError(propRule.getPropertyName(), error);
 		}
 	}
 
-	private ValidationContext createValidContext(final Action action, 
-			final Map<String, Object> params, final Object form, final ValidationRule rule, Object value) 
-	{
+	private ValidationContext createValidContext(final Action action,
+			final Map<String, Object> params, final Object form,
+			final ValidationRule rule, Object value) {
 		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
-		PropertyValidationRule propRule = (PropertyValidationRule)rule;
+		PropertyValidationRule propRule = (PropertyValidationRule) rule;
 		String name = propRule.getPropertyNameKey();
-		ValidationContext ctx = new ValidationContext(name, value, params, formatPattern);
+		ValidationContext ctx = new ValidationContext(name, value, params,
+				cubbyConfiguration.getFormatPattern());
 		return ctx;
 	}
 
-	Object getPropertyValue(final Map<String, Object> params, final String propertyName) {
+	Object getPropertyValue(final Map<String, Object> params,
+			final String propertyName) {
 		String[] props = propertyName.split("\\.");
 		Object value = CubbyUtils.getParamsValue(params, props[0]);
 		for (int i = 1; i < props.length; i++) {
