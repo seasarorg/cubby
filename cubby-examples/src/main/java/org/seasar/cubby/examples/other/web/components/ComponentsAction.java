@@ -7,11 +7,25 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.DateFormatValidator;
+import org.seasar.cubby.validator.validators.NumberValidator;
+import org.seasar.cubby.validator.validators.RangeValidator;
 
 public class ComponentsAction extends Action {
 
+	public ValidationRules validation = new DefaultValidationRules() {
+		@Override
+		public void initialize() {
+			add("date", new DateFormatValidator("yyyy-MM-dd"));
+			add("intValue", new RangeValidator(1, 10));
+		}
+	};
+	
 	// ----------------------------------------------[DI Filed]
-
+	
 	// ----------------------------------------------[Attribute]
 
 	public UserForm form = new UserForm();
@@ -30,6 +44,7 @@ public class ComponentsAction extends Action {
 	}
 	
 	@Form("form")
+	@Validation(rulesField="validation", errorPage="components.jsp")
 	public ActionResult index() {
 		return new Forward("components.jsp");
 	}

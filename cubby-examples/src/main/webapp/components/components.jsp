@@ -7,6 +7,7 @@
 </head>
 <body>
 [<a href="${contextPath}/">戻る</a>]
+<c:import url="/common/errors.jsp"/>
 <t:form method="post" action="${contextPath}/components/" value="${form}">
 <h1>コンポーネント一覧</h1>
 <h2>Input Text</h2>
@@ -14,6 +15,9 @@
 
 <h2>Input Text(date)</h2>
 <label for="date">Date:</label><t:input type="text" name="date" id="date"><input type="text"/></t:input>
+
+<h2>Input Text(int)</h2>
+<label for="intValue">Int(1-10):</label><t:input type="text" name="intValue" id="intValue"><input type="text"/></t:input>
 
 <h2>Select</h2>
 <label for="color">Color:</label>

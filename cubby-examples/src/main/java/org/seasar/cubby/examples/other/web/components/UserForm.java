@@ -16,6 +16,13 @@ public class UserForm {
 	private Boolean check1;
 	private Integer[] check2;
 	private Date date;
+	private Integer intValue;
+	public Integer getIntValue() {
+		return intValue;
+	}
+	public void setIntValue(Integer intValue) {
+		this.intValue = intValue;
+	}
 	public Boolean getCheck1() {
 		return check1;
 	}
