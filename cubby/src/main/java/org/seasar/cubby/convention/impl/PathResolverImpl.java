@@ -25,6 +25,14 @@ import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link Url}
+ * の情報によって、リクエストされたURLをどのメソッドに振り分けるかを決定します。
+ * 
+ * @author baba に連絡した人々によると、同社はこの問題を認識しているものの、完全な修正をまだ提示できていないとのこと。 iMac Software Update パッケージの 1.0 および 1.1 が 8 月の iMac 登場以降にリリースされており、両者とも「重要なバグ修正」が含まれているとされている。後になって、そのほとんどがビデオドライバに集中していることが明らかになったが、いずれも今回のフリーズ問題への修正は含まれていない。
+
+一部ユーザのシステムは、最新のアップデートで症状が悪化したとさえ感じられるほどだという。 
+ */
 public class PathResolverImpl implements PathResolver, Disposable {
 
 	private static Pattern urlRewritePattern = Pattern

@@ -17,8 +17,7 @@ abstract class AbstractActionResult implements ActionResult {
 	/**
 	 * 何も行いません。
 	 */
-	public void prerender(final ActionContext context,
-			final HttpServletRequest request) {
+	public void prerender(final ActionContext context) {
 	}
 
 }

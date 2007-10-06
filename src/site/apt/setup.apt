@@ -85,6 +85,9 @@ mvn tomcat:run
     <filter-mapping>
         <filter-name>s2Filter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 </web-app>
 +------------------------------------------------------+
@@ -110,9 +113,9 @@ mvn tomcat:run
 </web-app>
 +------------------------------------------------------+
 
- [[3]]UrlRewriteFilter
+ [[3]]RequestRoutingFilter
 
-      リクエストされた URL を、以下で述べる CubbyFilter が処理できるデフォルトの URL に変換して FORWARD します。
+      リクエストされた URL から、以下で述べる CubbyFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。
       このマッピングはアクションクラスに @URL アノテーションをつけることで変更できます。
 
       また、処理の対象外とする URL を ignorePathPattern で指定できます。
@@ -122,8 +125,8 @@ mvn tomcat:run
 +------------------------------------------------------+
 <web-app>
 	<filter>
-		<filter-name>urlRewriteFilter</filter-name>
-		<filter-class>org.seasar.cubby.filter.UrlRewriteFilter</filter-class>
+		<filter-name>requestRoutingFilter</filter-name>
+		<filter-class>org.seasar.cubby.filter.RequestRoutingFilter</filter-class>
         <init-param>
             <param-name>ignorePathPattern</param-name>
             <param-value>/css/.*,/js/.*,/img/.*</param-value>
@@ -131,7 +134,7 @@ mvn tomcat:run
 	</filter>
 
     <filter-mapping>
-        <filter-name>urlRewriteFilter</filter-name>
+        <filter-name>requestRoutingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>

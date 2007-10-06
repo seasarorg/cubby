@@ -14,7 +14,6 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.ThreadContext;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -28,10 +27,16 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	private CubbyConfiguration cubbyConfiguration;
 
+	private HttpServletRequest request;
+
 	private ActionContext context;
 
 	public void setCubbyConfiguration(final CubbyConfiguration cubbyConfiguration) {
 		this.cubbyConfiguration = cubbyConfiguration;
+	}
+
+	public void setRequest(final HttpServletRequest request) {
+		this.request = request;
 	}
 
 	public void setActionContext(final ActionContext context) {
@@ -39,7 +44,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final HttpServletRequest request = ThreadContext.getRequest();
 		setupParams(context, request);
 		setupForm(context, request);
 
@@ -48,7 +52,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 		final ActionResult result = (ActionResult) invocation.proceed();
 		if (result != null) {
-			result.prerender(context, request);
+			result.prerender(context);
 		}
 
 		return result;

@@ -26,6 +26,6 @@ public interface ActionResult {
 	 * @param context アクションコンテキスト
 	 * @param request リクエスト
 	 */
-	void prerender(ActionContext context, HttpServletRequest request);
+	void prerender(ActionContext context);
 
 }

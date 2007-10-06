@@ -16,7 +16,6 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.validator.ActionValidator;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
@@ -46,21 +45,27 @@ public class ValidationInterceptor implements MethodInterceptor {
 
 	private ActionValidator validator;
 
+	private HttpServletRequest request;
+
 	private ActionContext context;
 
 	public ValidationInterceptor() {
-	}
-
-	public void setActionContext(final ActionContext context) {
-		this.context = context;
 	}
 
 	public void setActionValidatior(final ActionValidator actionValidator) {
 		this.validator = actionValidator;
 	}
 
+	public void setRequest(final HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public void setActionContext(final ActionContext context) {
+		this.context = context;
+	}
+
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final HttpServletRequest request = ThreadContext.getRequest();
+//		final HttpServletRequest request = ThreadContext.getRequest();
 
 		final Action controller = context.getAction();
 		final Validation validation = context.getValidation();
