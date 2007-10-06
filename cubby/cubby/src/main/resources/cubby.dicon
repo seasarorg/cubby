@@ -36,8 +36,12 @@
 	</component>
 
 	<component class="org.seasar.extension.dxo.meta.impl.DxoMetadataFactoryImpl"/>
-	<component class="org.seasar.extension.dxo.converter.impl.ConverterFactoryImpl"/>
-	<component class="org.seasar.cubby.dxo.CubbyAnnotationReaderFactoryImpl">
+	<component class="org.seasar.cubby.dxo.impl.RequestParameterConverterFactoryWrapper">
+		<property name="converterFactory">
+			<component class="org.seasar.extension.dxo.converter.impl.ConverterFactoryImpl"/>
+		</property>
+	</component>
+	<component class="org.seasar.cubby.dxo.impl.RequestParameterAnnotationReaderFactoryWrapper">
 		<property name="annotationReaderFactory">
 			<component class="org.seasar.extension.dxo.annotation.impl.AnnotationReaderFactoryImpl"/>
 		</property>
@@ -45,5 +49,6 @@
 
 	<component class="org.seasar.extension.dxo.builder.impl.MapToBeanDxoCommandBuilder"/>
 	<component class="org.seasar.extension.dxo.builder.impl.BeanToMapDxoCommandBuilder"/>
+	<component class="org.seasar.extension.dxo.builder.impl.BeanToBeanDxoCommandBuilder"/>
 
 </components>

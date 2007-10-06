@@ -29,10 +29,14 @@ import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * TODO
+ * リクエストされたURLを適切なアクションに振り分けるフィルタ。
+ * <p>
+ * {@link PathResolver} によって {@link ForwardInfo} を抽出し、そこに保持された情報をもとにフォワードします。
+ * </p>
+ * 
  * @author baba
  */
-public class UrlRewriteFilter implements Filter {
+public class RequestRoutingFilter implements Filter {
 
 	private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -90,7 +94,8 @@ public class UrlRewriteFilter implements Filter {
 		final String rewritePath;
 		final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
 		if (forwardInfo != null) {
-			request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo.getActionClassName());
+			request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo
+					.getActionClassName());
 			request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
 			rewritePath = forwardInfo.getRewritePath();
 		} else {
@@ -108,4 +113,5 @@ public class UrlRewriteFilter implements Filter {
 		}
 		return false;
 	}
+
 }

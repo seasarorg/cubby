@@ -100,9 +100,7 @@ public class Forward extends AbstractActionResult {
 	 * </p>
 	 */
 	@Override
-	public void prerender(final ActionContext context,
-			final HttpServletRequest request) {
-
+	public void prerender(final ActionContext context) {
 		final Action action = context.getAction();
 		action.prerender();
 	}
