@@ -4,7 +4,6 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
         version="2.4">
 
-
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.seasar.extension.filter.EncodingFilter</filter-class>
@@ -32,8 +31,8 @@
     -->
 
 	<filter>
-		<filter-name>urlRewriteFilter</filter-name>
-		<filter-class>org.seasar.cubby.filter.UrlRewriteFilter</filter-class>
+		<filter-name>requestRoutingFilter</filter-name>
+		<filter-class>org.seasar.cubby.filter.RequestRoutingFilter</filter-class>
         <init-param>
             <param-name>ignorePathPattern</param-name>
             <param-value>/css/.*,/js/.*,/img/.*</param-value>
@@ -53,6 +52,9 @@
     <filter-mapping>
         <filter-name>s2Filter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 
     <filter-mapping>
@@ -74,7 +76,7 @@
     -->
 
     <filter-mapping>
-        <filter-name>urlRewriteFilter</filter-name>
+        <filter-name>requestRoutingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
