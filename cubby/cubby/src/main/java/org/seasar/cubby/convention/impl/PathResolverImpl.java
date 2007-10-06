@@ -16,7 +16,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.cubby.util.Uri;
+import org.seasar.cubby.util.QueryStringBuilder;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
@@ -171,7 +171,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		this.namingConvention = namingConvention;
 	}
 
-	static class RewriteInfo {
+	class RewriteInfo {
 
 		private final Class<? extends Action> actionClass;
 
@@ -195,11 +195,15 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			builder.append(rewritePath);
 			if (!uriParams.isEmpty()) {
 				builder.append("?");
-				final Uri uri = new Uri();
-				for (final Entry<String, String> entry : uriParams.entrySet()) {
-					uri.setParam(entry.getKey(), entry.getValue());
+				final QueryStringBuilder query = new QueryStringBuilder();
+				final String encoding = PathResolverImpl.this.uriEncoding;
+				if (!StringUtil.isEmpty(encoding)) {
+					query.setEncode(encoding);
 				}
-				builder.append(uri.getQueryString());
+				for (final Entry<String, String> entry : uriParams.entrySet()) {
+					query.addParam(entry.getKey(), entry.getValue());
+				}
+				builder.append(query.toString());
 			}
 			return builder.toString();
 		}
