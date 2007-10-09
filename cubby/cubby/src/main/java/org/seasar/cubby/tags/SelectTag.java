@@ -23,7 +23,7 @@ import org.seasar.framework.message.MessageFormatter;
  */
 public class SelectTag extends DynamicAttributesTagSupport {
 
-	final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger(SelectTag.class);
 
 	/**
 	 * option要素リスト

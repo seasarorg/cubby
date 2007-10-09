@@ -16,7 +16,8 @@ import org.seasar.framework.log.Logger;
 
 public class ActionProcessorImpl implements ActionProcessor {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger
+			.getLogger(ActionProcessorImpl.class);
 
 	private ActionContext context;
 

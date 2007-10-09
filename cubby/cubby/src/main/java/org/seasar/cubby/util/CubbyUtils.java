@@ -15,9 +15,9 @@ import org.seasar.framework.util.StringUtil;
 public class CubbyUtils {
 
 	public static String getActionClassName(Class<?> c) {
-		String name = left(c.getName(), "$");
+		String name = left(c.getSimpleName(), "$");
 		String actionName = toFirstLower(name.replaceAll(
-				"(.*[.])([^.]+)(Action$)", "$2"));
+				"(.*[.])*([^.]+)(Action$)", "$2"));
 		if (c.getAnnotation(Url.class) != null) {
 			actionName = ((Url) c.getAnnotation(Url.class)).value();
 		}

@@ -13,12 +13,12 @@ import org.seasar.framework.log.Logger;
  * @author baba
  * 
  */
-// TODO ログを出す
 public class CubbyConfigurationImpl implements CubbyConfiguration {
 
-	private static final RequestParser DEFAULT_REQUEST_PARSER = new DefaultRequestParserImpl();
+	private static final Logger logger = Logger
+			.getLogger(CubbyConfiguration.class);
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final RequestParser DEFAULT_REQUEST_PARSER = new DefaultRequestParserImpl();
 
 	private final RequestParser requestParser;
 

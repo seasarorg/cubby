@@ -34,7 +34,7 @@ import org.seasar.framework.util.StringUtil;
  */
 public class Redirect extends AbstractActionResult {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger(Redirect.class);
 
 	private final String path;
 
@@ -53,8 +53,13 @@ public class Redirect extends AbstractActionResult {
 			throws Exception {
 
 		final String absolutePath;
-		final String contextPath = request.getContextPath();
-		if (this.path.charAt(0) == '/') {
+		final String contextPath;
+		if ("/".equals(request.getContextPath())) {
+			contextPath = "";
+		} else {
+			contextPath = request.getContextPath();
+		}
+		if (this.path.startsWith("/")) {
 			absolutePath = contextPath + this.path;
 		} else {
 			final String actionClassName = CubbyUtils

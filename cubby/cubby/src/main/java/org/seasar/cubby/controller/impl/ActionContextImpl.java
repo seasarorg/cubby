@@ -23,11 +23,10 @@ import org.seasar.framework.log.Logger;
  */
 public class ActionContextImpl implements ActionContext {
 
-	private static final long serialVersionUID = 2416038583405864226L;
+	private static final Logger logger = Logger
+			.getLogger(ActionContextImpl.class);
 
 	private static final Object[] EMPTY_ARGS = new Object[0];
-
-	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private ActionDef actionDef;
 
