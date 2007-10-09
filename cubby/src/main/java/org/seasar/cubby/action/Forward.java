@@ -33,10 +33,6 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
- * <p>
- * また、フォワードの前処理として {@link #prerender(ActionContext, HttpServletRequest)}
- * によって、リクエストにいくつかの属性が設定されます。
- * </p>
  * 
  * @author baba
  */
