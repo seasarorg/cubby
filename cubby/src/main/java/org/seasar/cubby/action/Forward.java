@@ -88,15 +88,7 @@ public class Forward extends AbstractActionResult {
 	/**
 	 * フォワード前の処理を行います。
 	 * <p>
-	 * 以下の処理を行います。
-	 * <ul>
-	 * <li>{@link Action#prerender()} を実行します。</li>
-	 * <li>リクエストのアトリビュートに {@value org.seasar.cubby.CubbyConstants#ATTR_ACTION}
-	 * を設定します。</li>
-	 * <li>リクエストのアトリビュートに
-	 * {@value org.seasar.cubby.CubbyConstants#ATTR_OUTPUT_VALUES} を設定します。</li>
-	 * <li>リクエストのアトリビュートに、アクションのプロパティを設定します。</li>
-	 * </ul>
+	 * {@link Action#prerender()} を実行します。
 	 * </p>
 	 */
 	@Override
