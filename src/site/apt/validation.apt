@@ -40,10 +40,10 @@
 
 +------------------------------------------------------+
 public class LoginAction extends Action {
-  public static ValidationRules VALIDATION = new DefaultValidationRule() {
+  public static ValidationRules VALIDATION = new DefaultValidationRules() {
     public void initialize() {
-      add("userId", new RequiredValidator(), MaxLengthValidator(10));
-      add("password", new RequiredValidator(), MaxLengthValidator(10));
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+      add("password", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
   ...
@@ -66,7 +66,7 @@ public class LoginAction extends Action {
 public class LoginAction extends Action {
 
   // 項目のメッセージキーを指定
-  public static ValidationRules VALIDATION = new DefaultValidationRule() {
+  public static ValidationRules VALIDATION = new DefaultValidationRules() {
     public void initialize() {
       // メッセージキー"userId"の値がエラーメッセージ中の項目名として使用されます。
       add("userId", new RequiredValidator(), MaxLengthValidator(10));
@@ -76,7 +76,7 @@ public class LoginAction extends Action {
   };
 
   // 項目名のメッセージキーのプリフィックスを指定
-  public static ValidationRules VALIDATION2 = new DefaultValidationRule("login.") {
+  public static ValidationRules VALIDATION2 = new DefaultValidationRules("login.") {
     public void initialize() {
       // メッセージキー"login.userId"の値がエラーメッセージ中の項目名として使用されます。
       add("userId", new RequiredValidator(), MaxLengthValidator(10));
@@ -84,7 +84,7 @@ public class LoginAction extends Action {
   };
 
   // 各バリデーションにメッセージキーを指定
-  public static ValidationRules VALIDATION2 = new DefaultValidationRule() {
+  public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
     public void initialize() {
       // メッセージキー"err.myrequired"がエラーメッセージとして使用されます。
       add("password", new RequiredValidator("err.myrequired"));
@@ -103,28 +103,28 @@ public class LoginAction extends Action {
 public class LoginAction extends Action {
 
   // ベースのルール
-  public static ValidationRules BASE_VALIDATION = new DefaultValidationRule() {
+  public static ValidationRules BASE_VALIDATION = new DefaultValidationRules() {
     public void initialize() {
-      add("userId", new RequiredValidator(), MaxLengthValidator(10));
-      add("password", "login.password", new RequiredValidator(), MaxLengthValidator(10));
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+      add("password", "login.password", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
 
   // ベースのルールに「nickname」の検証を追加
-  public static ValidationRules VALIDATION1 = new DefaultValidationRule() {
+  public static ValidationRules VALIDATION1 = new DefaultValidationRules() {
     public void initialize() {
       // BASE_VALIDATIONのルールをコピーして追加
       getRules().addAll(BASE_VALIDATION.getRules());
-      add("nickname", new RequiredValidator(), MaxLengthValidator(10));
+      add("nickname", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
 
   // ベースのルールに「password2」の検証を追加
-  public static ValidationRules VALIDATION2 = new DefaultValidationRule() {
+  public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
     public void initialize() {
       // BASE_VALIDATIONのルールをコピーして追加
       getRules().addAll(BASE_VALIDATION.getRules());
-      add("password2", new RequiredValidator(), MaxLengthValidator(10));
+      add("password2", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
   ...
