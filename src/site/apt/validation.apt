@@ -7,17 +7,22 @@
 
 バリデーション
 
- Cubby ではプログラム中に入力検証のルールを記述します。
+ Cubby では以下のように、アクションメソッドに対して入力検証のルールを定義します。
 
- それぞれのアクションメソッドで使用する入力検証ルールは、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}アノテーションで指定します。
- 検証エラーメッセージはActionの{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}フィールドにセットされます。
- 検証エラー発生時は、errorPageで指定されたページに遷移します。
- 検証ルールのフィールドはデフォルトで「VALIDATION」が使用されます。別のフィールドに定義されたルールを使用する場合、rulesFieldにフィールド名を指定します。
- 
+ [[1]]インターフェイス{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}ValidationRules}}のインスタンスとして入力検証のルールを定義します。
+
+ [[2]]それをアクションクラスのプロパティとして取得できるようにします。
+
+ [[3]]アクションメソッドにアノテーション{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}を定義し、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#rulesField()}rulesField}}でアクションメソッドと入力検証プロパティを関連付けます。(指定しなかった場合は「VALIDATION」が使用されます)
+
+ []
+
+ 入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたページに遷移します。
+
  また、Cubbyにクライアントサイドバリデーションはありません。
 
 +------------------------------------------------------+
-  // 検証ルールのフィールドとしてデフォルトの「VALIDATION」が使用されます。
+  // 検証ルールのプロパティとしてデフォルトの「VALIDATION」が使用されます。
   // 検証エラー発生時は「confirm.jsp」に遷移します。
   @Form
   @Validation(errorPage = "confirm.jsp")
@@ -25,7 +30,7 @@
     ... 
   }
 
-  // 検証ルールのフィールドとして「validation2」が使用されます。
+  // 検証ルールのプロパティとして「validation2」が使用されます。
   // 検証エラー発生時は「confirm.jsp」に遷移します。
   @Validation(rulesField="validation2", errorPage = "confirm.jsp")
   public ActionResult save2() {
@@ -33,14 +38,17 @@
   }
 +------------------------------------------------------+
 
- バリデーションの定義はJavaコードで記述します。以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRule}}を継承して、
+ バリデーションの定義はJavaコードで記述します。以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
  {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッド内で
  {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドで
  フィールドごとにバリデーションのルールを追加します。
 
+ バリデーションの一覧は{{{cubby/apidocs/org/seasar/cubby/validator/validators/package-summary.html}org.seasar.cubby.validator.validators}}を参照してください。
+
 +------------------------------------------------------+
 public class LoginAction extends Action {
   public static ValidationRules VALIDATION = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       add("userId", new RequiredValidator(), new MaxLengthValidator(10));
       add("password", new RequiredValidator(), new MaxLengthValidator(10));
@@ -58,7 +66,7 @@ public class LoginAction extends Action {
 
  * メッセージキーを指定する場合、指定されたメッセージキーがエラーメッセージ中の項目名のメッセージキーとして使用されます。
 
- * DefaultValidationRuleのコンストラクタでキーの項目名のメッセージキーのプリフィックスを指定することができます。
+ * DefaultValidationRules のコンストラクタでキーの項目名のメッセージキーのプリフィックスを指定することができます。
 
  * 各バリデーションのコンストラクタでメッセージキーを指定することで検証時のエラーメッセージを切り替えることもできます。
 
@@ -67,24 +75,27 @@ public class LoginAction extends Action {
 
   // 項目のメッセージキーを指定
   public static ValidationRules VALIDATION = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       // メッセージキー"userId"の値がエラーメッセージ中の項目名として使用されます。
-      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
       // メッセージキー"login.password"の値がエラーメッセージ中の項目名として使用されます。
-      add("password", "login.password", new RequiredValidator(), MaxLengthValidator(10));
+      add("password", "login.password", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
 
   // 項目名のメッセージキーのプリフィックスを指定
   public static ValidationRules VALIDATION2 = new DefaultValidationRules("login.") {
+    @Override
     public void initialize() {
       // メッセージキー"login.userId"の値がエラーメッセージ中の項目名として使用されます。
-      add("userId", new RequiredValidator(), MaxLengthValidator(10));
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
 
   // 各バリデーションにメッセージキーを指定
-  public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
+  public static ValidationRules VALIDATION3 = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       // メッセージキー"err.myrequired"がエラーメッセージとして使用されます。
       add("password", new RequiredValidator("err.myrequired"));
@@ -94,7 +105,7 @@ public class LoginAction extends Action {
   ...
 }
 +------------------------------------------------------+
- 
+
 *バリデーションルールのコピー
 
  ほとんどが同じでいくつかの項目が異なる複数のルールを作りたい場合、以下のように他のルールをコピーして使用することができます。
@@ -104,6 +115,7 @@ public class LoginAction extends Action {
 
   // ベースのルール
   public static ValidationRules BASE_VALIDATION = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       add("userId", new RequiredValidator(), new MaxLengthValidator(10));
       add("password", "login.password", new RequiredValidator(), new MaxLengthValidator(10));
@@ -112,6 +124,7 @@ public class LoginAction extends Action {
 
   // ベースのルールに「nickname」の検証を追加
   public static ValidationRules VALIDATION1 = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       // BASE_VALIDATIONのルールをコピーして追加
       getRules().addAll(BASE_VALIDATION.getRules());
@@ -121,6 +134,7 @@ public class LoginAction extends Action {
 
   // ベースのルールに「password2」の検証を追加
   public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
+    @Override
     public void initialize() {
       // BASE_VALIDATIONのルールをコピーして追加
       getRules().addAll(BASE_VALIDATION.getRules());

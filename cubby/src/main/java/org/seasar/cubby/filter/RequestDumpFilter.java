@@ -36,7 +36,8 @@ import org.seasar.framework.util.BooleanConversionUtil;
  */
 public class RequestDumpFilter implements Filter {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private static final Logger logger = Logger
+			.getLogger(RequestDumpFilter.class);
 
     private FilterConfig config = null;
 

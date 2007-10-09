@@ -42,7 +42,7 @@ import org.seasar.framework.util.StringUtil;
  */
 public class Forward extends AbstractActionResult {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger(Forward.class);
 
 	private final String path;
 

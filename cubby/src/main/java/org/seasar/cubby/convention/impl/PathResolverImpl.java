@@ -26,29 +26,31 @@ import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link Url}
+ * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasae.cubby.action.Url}
  * の情報によって、リクエストされたURLをどのメソッドに振り分けるかを決定します。
  * 
- * @author baba に連絡した人々によると、同社はこの問題を認識しているものの、完全な修正をまだ提示できていないとのこと。 iMac Software Update パッケージの 1.0 および 1.1 が 8 月の iMac 登場以降にリリースされており、両者とも「重要なバグ修正」が含まれているとされている。後になって、そのほとんどがビデオドライバに集中していることが明らかになったが、いずれも今回のフリーズ問題への修正は含まれていない。
-
-一部ユーザのシステムは、最新のアップデートで症状が悪化したとさえ感じられるほどだという。 
+ * @author baba
  */
 public class PathResolverImpl implements PathResolver, Disposable {
 
 	private static Pattern urlRewritePattern = Pattern
 			.compile("([{]([^}]+)[}])([^{]*)");
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger
+			.getLogger(PathResolverImpl.class);
 
 	private boolean initialized;
 
 	private NamingConvention namingConvention;
 
-	private Map<Pattern, RewriteInfo> patternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
+	private final Map<Pattern, RoutingInfo> routingPatterns = new LinkedHashMap<Pattern, RoutingInfo>();
 
-	private Map<Pattern, RewriteInfo> customPatternToRewriteInfoMap = new LinkedHashMap<Pattern, RewriteInfo>();
+	private final Map<Pattern, RoutingInfo> customRoutingPatterns = new LinkedHashMap<Pattern, RoutingInfo>();
 
 	private String uriEncoding;
+
+	public PathResolverImpl() {
+	}
 
 	public void setUriEncoding(final String uriEncoding) {
 		this.uriEncoding = uriEncoding;
@@ -56,8 +58,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	public void initialize() {
 		if (!initialized) {
-			patternToRewriteInfoMap.clear();
-			ClassCollector classCollector = new ActionClassCollector();
+			routingPatterns.clear();
+			final ClassCollector classCollector = new ActionClassCollector();
 			classCollector.collect();
 
 			DisposableUtil.add(this);
@@ -66,7 +68,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	public void dispose() {
-		patternToRewriteInfoMap.clear();
+		routingPatterns.clear();
 		initialized = false;
 	}
 
@@ -75,14 +77,12 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
-		this
-				.add(patternStr, actionClass, method,
-						customPatternToRewriteInfoMap);
+		this.add(patternStr, actionClass, method, customRoutingPatterns);
 	}
 
 	private void add(final String patternStr,
 			final Class<? extends Action> actionClass, final Method method,
-			Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
+			final Map<Pattern, RoutingInfo> patternToRewriteInfoMap) {
 
 		String actionFullName = patternStr;
 		final List<String> uriParameterNames = new ArrayList<String>();
@@ -104,7 +104,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		final String rewritePath = this.fromActionClassToPath(actionClass,
 				method);
 
-		final RewriteInfo rewriteInfo = new RewriteInfo(actionClass, method,
+		final RoutingInfo rewriteInfo = new RoutingInfo(actionClass, method,
 				uriParameterNames, rewritePath);
 		final Pattern pattern = Pattern.compile("^" + actionFullName + "$");
 
@@ -146,21 +146,21 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 
 		ForwardInfo forwardInfo = findForwardInfo(decodedPath,
-				customPatternToRewriteInfoMap);
+				customRoutingPatterns);
 		if (forwardInfo == null) {
-			forwardInfo = findForwardInfo(decodedPath, patternToRewriteInfoMap);
+			forwardInfo = findForwardInfo(decodedPath, routingPatterns);
 		}
 		return forwardInfo;
 	}
 
 	private ForwardInfo findForwardInfo(final String path,
-			final Map<Pattern, RewriteInfo> patternToRewriteInfoMap) {
+			final Map<Pattern, RoutingInfo> routingPatterns) {
 		final Map<String, String> uriParams = new HashMap<String, String>();
-		for (final Entry<Pattern, RewriteInfo> entry : patternToRewriteInfoMap
+		for (final Entry<Pattern, RoutingInfo> entry : routingPatterns
 				.entrySet()) {
 			final Matcher matcher = entry.getKey().matcher(path);
 			if (matcher.find()) {
-				final RewriteInfo rewriteInfo = entry.getValue();
+				final RoutingInfo rewriteInfo = entry.getValue();
 				for (int i = 1; i < matcher.groupCount() + 1; i++) {
 					final String name = rewriteInfo.getUriParameterNames().get(
 							i - 1);
@@ -179,7 +179,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		this.namingConvention = namingConvention;
 	}
 
-	class RewriteInfo {
+	class RoutingInfo {
 
 		private final Class<? extends Action> actionClass;
 
@@ -189,7 +189,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		private final String rewritePath;
 
-		public RewriteInfo(final Class<? extends Action> actionClass,
+		public RoutingInfo(final Class<? extends Action> actionClass,
 				final Method method, final List<String> uriParameterNames,
 				final String rewritePath) {
 			this.actionClass = actionClass;
@@ -240,19 +240,20 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			super(namingConvention);
 		}
 
-		public void processClass(String packageName, String shortClassName) {
+		public void processClass(final String packageName,
+				final String shortClassName) {
 			if (shortClassName.indexOf('$') != -1) {
 				return;
 			}
-			String className = ClassUtil
-					.concatName(packageName, shortClassName);
+			final String className = ClassUtil.concatName(packageName,
+					shortClassName);
 			if (!namingConvention.isTargetClassName(className)) {
 				return;
 			}
 			if (!className.endsWith(namingConvention.getActionSuffix())) {
 				return;
 			}
-			Class<? extends Action> clazz = classForName(className);
+			final Class<? extends Action> clazz = classForName(className);
 			if (namingConvention.isSkipClass(clazz)) {
 				return;
 			}
@@ -261,7 +262,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 				if (CubbyUtils.isActionMethod(method)) {
 					final String actionFullName = CubbyUtils.getActionUrl(
 							clazz, method);
-					add(actionFullName, clazz, method, patternToRewriteInfoMap);
+					add(actionFullName, clazz, method, routingPatterns);
 				}
 			}
 		}
@@ -269,7 +270,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> Class<T> classForName(String className) {
+	private static <T> Class<T> classForName(final String className) {
 		return ClassUtil.forName(className);
 	}
 

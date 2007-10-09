@@ -65,8 +65,6 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-//		final HttpServletRequest request = ThreadContext.getRequest();
-
 		final Action controller = context.getAction();
 		final Validation validation = context.getValidation();
 		final ValidationRules rules = getValidationRules(context);

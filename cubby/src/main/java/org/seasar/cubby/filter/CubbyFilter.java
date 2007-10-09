@@ -28,7 +28,7 @@ public class CubbyFilter implements Filter {
 	/**
 	 * ログ 
 	 */
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger(CubbyFilter.class);
 
 	/**
 	 * 初期化処理。

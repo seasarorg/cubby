@@ -3,7 +3,7 @@ package org.seasar.cubby.convention.impl;
 import java.util.Map;
 
 import org.seasar.cubby.convention.ForwardInfo;
-import org.seasar.cubby.convention.impl.PathResolverImpl.RewriteInfo;
+import org.seasar.cubby.convention.impl.PathResolverImpl.RoutingInfo;
 
 class ForwardInfoImpl implements ForwardInfo {
 
@@ -13,7 +13,7 @@ class ForwardInfoImpl implements ForwardInfo {
 
 	private final String methodName;
 
-	public ForwardInfoImpl(RewriteInfo rewriteInfo, Map<String, String> uriParams) {
+	public ForwardInfoImpl(RoutingInfo rewriteInfo, Map<String, String> uriParams) {
 		this.rewritePath = rewriteInfo.buildRewritePath(uriParams);
 		this.actionClassName = rewriteInfo.getActionClass().getCanonicalName();
 		this.methodName = rewriteInfo.getMethod().getName();;

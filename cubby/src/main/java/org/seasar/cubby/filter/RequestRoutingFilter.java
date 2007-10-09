@@ -38,7 +38,8 @@ import org.seasar.framework.util.StringUtil;
  */
 public class RequestRoutingFilter implements Filter {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger
+			.getLogger(RequestRoutingFilter.class);
 
 	private final List<Pattern> ignorePathPatterns = new ArrayList<Pattern>();
 
