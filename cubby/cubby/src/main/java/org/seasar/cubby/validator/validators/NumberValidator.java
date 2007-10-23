@@ -1,5 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
+import java.math.BigDecimal;
+
 import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
@@ -22,7 +24,7 @@ public class NumberValidator extends BaseValidator {
 				return null;
 			}
 			try {
-				Long.parseLong(str);
+				new BigDecimal(str);
 				return null;
 			} catch (NumberFormatException e) {}
 		}else if(value == null){
