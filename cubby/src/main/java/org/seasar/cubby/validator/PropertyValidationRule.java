@@ -13,9 +13,9 @@ public class PropertyValidationRule implements ValidationRule {
 		this(propertyName, propertyName, validators);
 	}
 
-	public PropertyValidationRule(final String propertyName, final String properyNameKey, final Validator... validators) {
+	public PropertyValidationRule(final String propertyName, final String propertyNameKey, final Validator... validators) {
 		this.propertyName = propertyName;
-		this.propertyNameKey = properyNameKey;
+		this.propertyNameKey = propertyNameKey;
 		for (Validator v : validators) {
 			this.validators.add(v);
 		}
