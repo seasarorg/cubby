@@ -4,10 +4,18 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.Validator;
 import org.seasar.framework.exception.EmptyRuntimeException;
 
+/**
+ * 配列のパラメータに対して入力検証を行います。
+ * @author agata
+ */
 public class ArrayValidator implements Validator {
 
 	private final Validator[] validators;
 
+	/**
+	 * 配列に適用するバリデーション一覧を指定します。
+	 * @param validators バリデーション
+	 */
 	public ArrayValidator(final Validator... validators) {
 		if (validators == null) {
 			throw new EmptyRuntimeException("validators");
