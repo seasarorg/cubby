@@ -10,7 +10,7 @@ import org.seasar.framework.util.StringUtil;
  * 数値かどうかを検証します。<p>
  * 数値かどうかの検証は「new BigDecimal(str);」で行っています。
  * @author agata
- *
+ * @see BigDecimal
  */
 public class NumberValidator extends BaseValidator {
 

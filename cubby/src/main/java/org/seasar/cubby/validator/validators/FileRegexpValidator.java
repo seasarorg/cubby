@@ -21,7 +21,7 @@ public class FileRegexpValidator extends BaseValidator {
 
 	/**
 	 * コンストラクタ
-	 * @param regex 正規表現
+	 * @param regex 正規表現（例：".+\\.(png|jpg)"）
 	 */
 	public FileRegexpValidator(final String regex) {
 		this(regex, "valid.fileRegexp");
@@ -29,7 +29,7 @@ public class FileRegexpValidator extends BaseValidator {
 
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
-	 * @param regex 正規表現
+	 * @param regex 正規表現（例：".+\\.(png|jpg)"）
 	 * @param messageKey エラーメッセージキー
 	 */
 	public FileRegexpValidator(final String regex, final String messageKey) {
