@@ -6,12 +6,25 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * 数値かどうかを検証します。<p>
+ * 数値かどうかの検証は「new BigDecimal(str);」で行っています。
+ * @author agata
+ *
+ */
 public class NumberValidator extends BaseValidator {
 
+	/**
+	 * コンストラクタ
+	 */
 	public NumberValidator() {
 		this("valid.number");
 	}
 
+	/**
+	 * エラーメッセージキーを指定するコンストラクタ
+	 * @param messageKey エラーメッセージキー
+	 */
 	public NumberValidator(final String messageKey) {
 		this.setMessageKey(messageKey);
 	}

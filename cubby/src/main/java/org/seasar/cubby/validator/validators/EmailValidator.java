@@ -9,6 +9,11 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * Eメールアドレスに対する検証を行います。
+ * @author agata
+ *
+ */
 public class EmailValidator extends BaseValidator {
 
     private static final String SPECIAL_CHARS = "\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
@@ -26,10 +31,17 @@ public class EmailValidator extends BaseValidator {
     private static final String DOMAIN_PATTERN = "^" + ATOM + "(\\." + ATOM + ")*$";
     private static final String ATOM_PATTERN = "(" + ATOM + ")";
 
+    /**
+     * コンストラクタ
+     */
 	public EmailValidator() {
 		this("valid.email");
 	}
 
+	/**
+	 * メッセージキーを指定するコンストラクタ
+	 * @param messageKey
+	 */
 	public EmailValidator(final String messageKey) {
 		this.setMessageKey(messageKey);
 	}

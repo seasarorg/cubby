@@ -8,17 +8,30 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 指定された正規表現にマッチしない場合にエラーとします。
+ * ファイル名が指定された正規表現にマッチするか検証します。
  * @see Pattern
  * @see Matcher
  */
 public class FileRegexpValidator extends BaseValidator {
+	
+	/**
+	 * 正規表現パターン
+	 */
 	private final Pattern pattern;
 
+	/**
+	 * コンストラクタ
+	 * @param regex 正規表現
+	 */
 	public FileRegexpValidator(final String regex) {
 		this(regex, "valid.fileRegexp");
 	}
 
+	/**
+	 * エラーメッセージキーを指定するコンストラクタ
+	 * @param regex 正規表現
+	 * @param messageKey エラーメッセージキー
+	 */
 	public FileRegexpValidator(final String regex, final String messageKey) {
 		this.pattern = Pattern.compile(regex);
 		this.setMessageKey(messageKey);
