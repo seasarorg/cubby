@@ -15,7 +15,7 @@ import org.seasar.framework.util.StringUtil;
  * 日付に対する検証を行います。<p>
  * 日付パターンを指定しない場合、「app-cubby.dicon」で指定した日付パターンが使用されます。
  * @author agata
- *
+ * @see SimpleDateFormat
  */
 public class DateFormatValidator extends BaseValidator {
 
@@ -33,7 +33,7 @@ public class DateFormatValidator extends BaseValidator {
 
 	/**
 	 * 日付パターンを指定するコンストラクタ
-	 * @param pattern 日付パターン
+	 * @param pattern 日付パターン（例："yyyy/MM/dd"）
 	 */
 	public DateFormatValidator(final String pattern) {
 		this(pattern, "valid.dateFormat");
@@ -41,7 +41,7 @@ public class DateFormatValidator extends BaseValidator {
 
 	/**
 	 * 日付パターンとエラーメッセージキーを指定したコンストラクタ
-	 * @param pattern 日付パターン
+	 * @param pattern 日付パターン（例："yyyy/MM/dd"）
 	 * @param messageKey エラーメッセージキー
 	 */
 	public DateFormatValidator(final String pattern, final String messageKey) {

@@ -8,7 +8,7 @@ import org.seasar.framework.util.StringUtil;
  * 最大文字数を検証します。<p>
  * String#length()メソッドで文字列の長さを求めます。文字列のバイト数でないこと、半角全角も1文字としてカウントされることに注意してください。
  * @author agata
- *
+ * @see String#length()
  */
 public class MaxLengthValidator extends BaseValidator {
 
