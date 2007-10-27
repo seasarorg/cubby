@@ -8,7 +8,7 @@ import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * ファイル名が指定された正規表現にマッチするか検証します。
+ * 指定された正規表現にマッチするか検証します。
  * @see Pattern
  * @see Matcher
  */
