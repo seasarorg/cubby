@@ -8,8 +8,8 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * ファイル名が指定された正規表現にマッチするか検証します。
- * @see Pattern
+ * ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。
+ * @see Pattern 
  * @see Matcher
  */
 public class FileRegexpValidator extends BaseValidator {
