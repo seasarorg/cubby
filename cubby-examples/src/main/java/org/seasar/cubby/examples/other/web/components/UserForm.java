@@ -15,6 +15,7 @@ public class UserForm {
 	private String memo;
 	private Boolean check1;
 	private Integer[] check2;
+	private Integer radio1;
 	private Date date;
 	private Integer intValue;
 	public Integer getIntValue() {
@@ -102,6 +103,12 @@ public class UserForm {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public Integer getRadio1() {
+		return radio1;
+	}
+	public void setRadio1(Integer radio1) {
+		this.radio1 = radio1;
 	}
 	
 }

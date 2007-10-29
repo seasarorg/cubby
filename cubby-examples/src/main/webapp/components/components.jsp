@@ -40,9 +40,15 @@
 
 <h2>Checkbox(Array)</h2> 
 <label for="check2">Check2:</label><br/>
-<t:input type="checkbox" name="check2" value="1"/>
-<t:input type="checkbox" name="check2" value="2"/>
-<t:input type="checkbox" name="check2" value="3"/>
+<t:input type="checkbox" name="check2" value="1"/>1
+<t:input type="checkbox" name="check2" value="2"/>2
+<t:input type="checkbox" name="check2" value="3"/>3
+
+<h2>Radio</h2> 
+<label for="radio">Radio:</label><br/>
+<t:input type="radio" name="radio1" value="1"/>1
+<t:input type="radio" name="radio1" value="2"/>2
+<t:input type="radio" name="radio1" value="3"/>3
 
 <h2>Odd & Null</h2>
 <table border="1">
