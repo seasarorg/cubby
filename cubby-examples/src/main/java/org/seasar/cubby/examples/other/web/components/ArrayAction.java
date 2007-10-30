@@ -32,6 +32,8 @@ public class ArrayAction extends Action {
 
 	public String value[];
 
+	public String[] check;
+	
 	// ----------------------------------------------[Action Method]
 
 	@Override
@@ -57,6 +59,7 @@ public class ArrayAction extends Action {
 	@Url("array_save")
 	@Validation(rulesField="validation", errorPage="array.jsp")
 	public ActionResult array_save() {
+		System.out.println(check);
 		return new Forward("array.jsp");
 	}
 

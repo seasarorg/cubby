@@ -8,7 +8,7 @@
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <c:import url="/common/errors.jsp"/>
-<t:form method="post" action="${contextPath}/components/array_save" value="${null}">
+<t:form method="post" action="${contextPath}/components/array_save" value="${action}">
 <h1>配列</h1>
 <table>
 <tr>
@@ -26,6 +26,10 @@
 </tr>
 </c:forEach>
 </table>
+<t:input type="checkbox" name="check" value="1"/>1
+<t:input type="checkbox" name="check" value="2"/>2
+<t:input type="checkbox" name="check" value="3"/>3
+<br/>
 <input type="submit" value="登録"/>
 </t:form>
 </body>
