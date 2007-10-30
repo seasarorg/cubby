@@ -3,6 +3,7 @@ package org.seasar.cubby.tags;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
 import org.jdom.Element;
@@ -20,6 +21,18 @@ public class InputTagTest extends JspTagTestCase {
 		context.setAttribute("fieldErrors", new HashMap<String, String>(), PageContext.REQUEST_SCOPE);
 	}
 
+	public void testDoTagCheckboxValueRequred() throws Exception {
+		tag.setDynamicAttribute(null, "name", "stringField");
+		tag.setDynamicAttribute(null, "checkedValue", "value1");
+		tag.setType("checkbox");
+		try {
+			tag.doTag();
+			fail("checkboxではvalue属性は必須");
+		} catch (JspException ex) {
+			assertTrue(true);
+		}
+	}
+	
 	public void testDoTagCheckbox1() throws Exception {
 		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.setDynamicAttribute(null, "value", "value1");
@@ -96,6 +109,18 @@ public class InputTagTest extends JspTagTestCase {
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
 //		assertEquals("valueが指定",
 //				"<input type=\"checkbox\" value=\"value1\" name=\"stringField\"  />\n", context.getResult());
+	}
+
+	public void testDoTagRadioValueRequred() throws Exception {
+		tag.setDynamicAttribute(null, "name", "stringField");
+		tag.setDynamicAttribute(null, "checkedValue", "value1");
+		tag.setType("radio");
+		try {
+			tag.doTag();
+			fail("checkboxではvalue属性は必須");
+		} catch (JspException ex) {
+			assertTrue(true);
+		}
 	}
 
 	public void testDoTagRadio1() throws Exception {

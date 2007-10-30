@@ -7,6 +7,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
+import org.seasar.cubby.util.CubbyFunctions;
 import org.seasar.cubby.util.CubbyHelperFunctions;
 
 /**
@@ -45,6 +46,9 @@ public class InputTag extends DynamicAttributesTagSupport {
 		final JspWriter out = getJspContext().getOut();
 		final Object form = getJspContext().getAttribute("__form", PageContext.REQUEST_SCOPE);
 		if ("checkbox".equals(type) || "radio".equals(type)) {
+			if (!getDynamicAttribute().containsKey("value")) {
+				throw new JspException("'value' attribute required.");
+			}
 			final String value = toString(getDynamicAttribute().get("value"));
 			final Object checkedValue = CubbyHelperFunctions.formMultiValue(getDynamicAttribute(), form, getJspContext(), "checkedValue");
 			getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
@@ -52,7 +56,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write("<input type=\"");
 			out.write(type);
 			out.write("\" value=\"");
-			out.write(value);// TODO
+			out.write(CubbyFunctions.out(value));// TODO
 			out.write("\" ");
 			out.write(CubbyHelperFunctions.toAttr(getDynamicAttribute()));
 			out.write(" ");
@@ -61,12 +65,16 @@ public class InputTag extends DynamicAttributesTagSupport {
 		} else {
 			final Object value = CubbyHelperFunctions.formValue(getDynamicAttribute(), form, getJspContext(), "value");
 			//final Object checkedValue = getDynamicAttribute().get("checkedValue");
-			//getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
+			getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
 			//getJspContext().setAttribute("checkedValue", checkedValue, PageContext.PAGE_SCOPE);
 			out.write("<input type=\"");
 			out.write(type);
 			out.write("\" value=\"");
-			out.write(CubbyHelperFunctions.convertFieldValue(value, form, getRequest(), toString(getDynamicAttribute().get("name"))));// TODO
+			if (getDynamicAttribute().containsKey("value")) {
+				out.write(CubbyFunctions.out(value));
+			} else {
+				out.write(CubbyHelperFunctions.convertFieldValue(value, form, getRequest(), toString(getDynamicAttribute().get("name"))));// TODO
+			}
 			out.write("\" ");
 			out.write(CubbyHelperFunctions.toAttr(getDynamicAttribute()));
 			out.write("/>\n");
