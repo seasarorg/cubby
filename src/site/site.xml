@@ -30,6 +30,7 @@
 			<item name="ファンクション" href="/functions.html" />
 			<item name="メッセージリソース" href="/messages.html" />
 			<item name="Cubby&amp;Mayaa" href="/mayaa.html" />
+			<item name="JavaDoc" href="/apidocs/index.html" />
 		</menu>
 
 		${reports}
