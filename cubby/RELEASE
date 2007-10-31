@@ -1,0 +1,19 @@
+#リリース手順
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/cubby/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/cubby-examples/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/www/
+
+cd cubby-examples
+mvn clean package
+cp target/*.war ../cubby-www/download
+
+cd ../cubby
+mvn clean package site
+cp cubby-dist/target/*.zip ../cubby-www/download
+cp -pR target/site/* ../cubby-www/
+cp -pR cubby/target/site ../cubby-www/cubby
+cp -pR cubby-archetype/target/site ../cubby-www/cubby-archetype
+cp -pR cubby-tomcat55-support/target/site ../cubby-www/cubby-tomcat55-support
+cp -pR cubby-skin/target/site ../cubby-www/cubby-skin
+cp -pR cubby-dist/target/site ../cubby-www/cubby-dist
+
