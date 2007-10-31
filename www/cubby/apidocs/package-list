@@ -8,6 +8,7 @@ org.seasar.cubby.convention
 org.seasar.cubby.convention.impl
 org.seasar.cubby.customizer
 org.seasar.cubby.dxo
+org.seasar.cubby.dxo.impl
 org.seasar.cubby.exception
 org.seasar.cubby.filter
 org.seasar.cubby.interceptor
