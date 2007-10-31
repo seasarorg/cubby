@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cubby">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+		<version>0.9.1-SNAPSHOT</version>
+	</skin>
+	<bannerLeft>
+		<name>Cubby</name>
+		<href>/index.html</href>
+	</bannerLeft>
+	<body>
+   		<links>
+			<item name="seasar.org" href="http://www.seasar.org/" />
+		</links>
+
+		<menu name="ドキュメント">
+			<item name="Cubbyについて" href="/index.html" />
+			<item name="セットアップ" href="/setup.html" />
+			<item name="2分間チュートリアル" href="/twominute.html" />
+			<item name="5分間チュートリアル" href="/fiveminute.html" />
+			<item name="ダウンロード" href="/download.html" />
+		</menu>
+
+		<menu name="リファレンス">
+			<item name="アクション" href="/action.html" />
+			<item name="バリデーション" href="/validation.html" />
+			<item name="JSP" href="/jsp.html" />
+			<item name="カスタムタグ" href="/tags.html" />
+			<item name="ファンクション" href="/functions.html" />
+			<item name="メッセージリソース" href="/messages.html" />
+			<item name="Cubby&amp;Mayaa" href="/mayaa.html" />
+			<item name="JavaDoc" href="/apidocs/index.html" />
+		</menu>
+
+		${reports}
+
+		${modules}
+
+	</body>
+</project>
