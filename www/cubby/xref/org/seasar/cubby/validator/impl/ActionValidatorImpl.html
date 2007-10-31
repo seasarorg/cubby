@@ -13,8 +13,8 @@
 <a name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> java.util.Map;
 <a name="4" href="#4">4</a>   
 <a name="5" href="#5">5</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Action;
-<a name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.FormatPattern;
-<a name="7" href="#7">7</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Validation;
+<a name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Validation;
+<a name="7" href="#7">7</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.controller.CubbyConfiguration;
 <a name="8" href="#8">8</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.util.CubbyUtils;
 <a name="9" href="#9">9</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.ActionValidator;
 <a name="10" href="#10">10</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.PropertyValidationRule;
@@ -28,16 +28,16 @@
 <a name="18" href="#18">18</a>  
 <a name="19" href="#19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/validator/impl/ActionValidatorImpl.html">ActionValidatorImpl</a> implements <a href="../../../../../org/seasar/cubby/validator/ActionValidator.html">ActionValidator</a> {
 <a name="20" href="#20">20</a>  
-<a name="21" href="#21">21</a>  	<strong class="jxr_keyword">private</strong> <a href="../../../../../org/seasar/cubby/action/FormatPattern.html">FormatPattern</a> formatPattern;
+<a name="21" href="#21">21</a>  	<strong class="jxr_keyword">private</strong> <a href="../../../../../org/seasar/cubby/controller/CubbyConfiguration.html">CubbyConfiguration</a> cubbyConfiguration;
 <a name="22" href="#22">22</a>  
-<a name="23" href="#23">23</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setFormatPattern(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/FormatPattern.html">FormatPattern</a> formatPattern) {
-<a name="24" href="#24">24</a>  		<strong class="jxr_keyword">this</strong>.formatPattern = formatPattern;
-<a name="25" href="#25">25</a>  	}
-<a name="26" href="#26">26</a>  
-<a name="27" href="#27">27</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> processValidation(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Validation.html">Validation</a> valid, 
-<a name="28" href="#28">28</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String,Object&gt; params, 
-<a name="29" href="#29">29</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRules.html">ValidationRules</a> rules) 
-<a name="30" href="#30">30</a>  	{
+<a name="23" href="#23">23</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setCubbyConfiguration(
+<a name="24" href="#24">24</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/controller/CubbyConfiguration.html">CubbyConfiguration</a> cubbyConfiguration) {
+<a name="25" href="#25">25</a>  		<strong class="jxr_keyword">this</strong>.cubbyConfiguration = cubbyConfiguration;
+<a name="26" href="#26">26</a>  	}
+<a name="27" href="#27">27</a>  
+<a name="28" href="#28">28</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> processValidation(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Validation.html">Validation</a> valid,
+<a name="29" href="#29">29</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params,
+<a name="30" href="#30">30</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRules.html">ValidationRules</a> rules) {
 <a name="31" href="#31">31</a>  		<strong class="jxr_keyword">if</strong> (valid == <strong class="jxr_keyword">null</strong>) {
 <a name="32" href="#32">32</a>  			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a name="33" href="#33">33</a>  		}
@@ -46,51 +46,52 @@
 <a name="36" href="#36">36</a>  	}
 <a name="37" href="#37">37</a>  
 <a name="38" href="#38">38</a>  	@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="39" href="#39">39</a>  	<strong class="jxr_keyword">void</strong> validateAction(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String,Object&gt; params, 
-<a name="40" href="#40">40</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRules.html">ValidationRules</a> rules) 
-<a name="41" href="#41">41</a>  	{
-<a name="42" href="#42">42</a>  		<strong class="jxr_keyword">for</strong> (ValidationRule rule : rules.getRules()) {
-<a name="43" href="#43">43</a>  			<strong class="jxr_keyword">for</strong> (Validator v : rule.getValidators()) {
-<a name="44" href="#44">44</a>  				validate(action, params, form, v, rule);
-<a name="45" href="#45">45</a>  			}
-<a name="46" href="#46">46</a>  		}
-<a name="47" href="#47">47</a>  	}
-<a name="48" href="#48">48</a>  
-<a name="49" href="#49">49</a>  	<strong class="jxr_keyword">void</strong> validate(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params, 
-<a name="50" href="#50">50</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/Validator.html">Validator</a> validator, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a> rule) 
-<a name="51" href="#51">51</a>  	{
-<a name="52" href="#52">52</a>  		<em class="jxr_comment">// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正</em>
-<a name="53" href="#53">53</a>  		PropertyValidationRule propRule = (PropertyValidationRule)rule;
-<a name="54" href="#54">54</a>  		Object value = getPropertyValue(params, propRule.getPropertyName());
-<a name="55" href="#55">55</a>  		ValidationContext ctx = createValidContext(action, params, form, rule, value);
+<a name="39" href="#39">39</a>  	<strong class="jxr_keyword">void</strong> validateAction(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params,
+<a name="40" href="#40">40</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRules.html">ValidationRules</a> rules) {
+<a name="41" href="#41">41</a>  		<strong class="jxr_keyword">for</strong> (ValidationRule rule : rules.getRules()) {
+<a name="42" href="#42">42</a>  			<strong class="jxr_keyword">for</strong> (Validator v : rule.getValidators()) {
+<a name="43" href="#43">43</a>  				validate(action, params, form, v, rule);
+<a name="44" href="#44">44</a>  			}
+<a name="45" href="#45">45</a>  		}
+<a name="46" href="#46">46</a>  	}
+<a name="47" href="#47">47</a>  
+<a name="48" href="#48">48</a>  	<strong class="jxr_keyword">void</strong> validate(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, <strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params,
+<a name="49" href="#49">49</a>  			<strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/Validator.html">Validator</a> validator,
+<a name="50" href="#50">50</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a> rule) {
+<a name="51" href="#51">51</a>  		<em class="jxr_comment">// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正</em>
+<a name="52" href="#52">52</a>  		PropertyValidationRule propRule = (PropertyValidationRule) rule;
+<a name="53" href="#53">53</a>  		Object value = getPropertyValue(params, propRule.getPropertyName());
+<a name="54" href="#54">54</a>  		ValidationContext ctx = createValidContext(action, params, form, rule,
+<a name="55" href="#55">55</a>  				value);
 <a name="56" href="#56">56</a>  		String error = validator.validate(ctx);
 <a name="57" href="#57">57</a>  		<strong class="jxr_keyword">if</strong> (error != <strong class="jxr_keyword">null</strong>) {
-<a name="58" href="#58">58</a>  			action.getErrors().addFieldError(propRule.getPropertyName(),
-<a name="59" href="#59">59</a>  					error);
-<a name="60" href="#60">60</a>  		}
-<a name="61" href="#61">61</a>  	}
-<a name="62" href="#62">62</a>  
-<a name="63" href="#63">63</a>  	<strong class="jxr_keyword">private</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationContext.html">ValidationContext</a> createValidContext(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action, 
-<a name="64" href="#64">64</a>  			<strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params, <strong class="jxr_keyword">final</strong> Object form, <strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a> rule, Object value) 
-<a name="65" href="#65">65</a>  	{
-<a name="66" href="#66">66</a>  		<em class="jxr_comment">// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正</em>
-<a name="67" href="#67">67</a>  		PropertyValidationRule propRule = (PropertyValidationRule)rule;
-<a name="68" href="#68">68</a>  		String name = propRule.getPropertyNameKey();
-<a name="69" href="#69">69</a>  		ValidationContext ctx = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationContext.html">ValidationContext</a>(name, value, params, formatPattern);
+<a name="58" href="#58">58</a>  			action.getErrors().addFieldError(propRule.getPropertyName(), error);
+<a name="59" href="#59">59</a>  		}
+<a name="60" href="#60">60</a>  	}
+<a name="61" href="#61">61</a>  
+<a name="62" href="#62">62</a>  	<strong class="jxr_keyword">private</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationContext.html">ValidationContext</a> createValidContext(<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Action.html">Action</a> action,
+<a name="63" href="#63">63</a>  			<strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params, <strong class="jxr_keyword">final</strong> Object form,
+<a name="64" href="#64">64</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a> rule, Object value) {
+<a name="65" href="#65">65</a>  		<em class="jxr_comment">// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正</em>
+<a name="66" href="#66">66</a>  		PropertyValidationRule propRule = (PropertyValidationRule) rule;
+<a name="67" href="#67">67</a>  		String name = propRule.getPropertyNameKey();
+<a name="68" href="#68">68</a>  		ValidationContext ctx = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/seasar/cubby/validator/ValidationContext.html">ValidationContext</a>(name, value, params,
+<a name="69" href="#69">69</a>  				cubbyConfiguration.getFormatPattern());
 <a name="70" href="#70">70</a>  		<strong class="jxr_keyword">return</strong> ctx;
 <a name="71" href="#71">71</a>  	}
 <a name="72" href="#72">72</a>  
-<a name="73" href="#73">73</a>  	Object getPropertyValue(<strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params, <strong class="jxr_keyword">final</strong> String propertyName) {
-<a name="74" href="#74">74</a>  		String[] props = propertyName.split(<span class="jxr_string">"&#92;&#92;."</span>);
-<a name="75" href="#75">75</a>  		Object value = CubbyUtils.getParamsValue(params, props[0]);
-<a name="76" href="#76">76</a>  		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 1; i &lt; props.length; i++) {
-<a name="77" href="#77">77</a>  			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(value.getClass());
-<a name="78" href="#78">78</a>  			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(props[i]);
-<a name="79" href="#79">79</a>  			value = propertyDesc.getValue(value);
-<a name="80" href="#80">80</a>  		}
-<a name="81" href="#81">81</a>  		<strong class="jxr_keyword">return</strong> value;
-<a name="82" href="#82">82</a>  	}
-<a name="83" href="#83">83</a>  }
+<a name="73" href="#73">73</a>  	Object getPropertyValue(<strong class="jxr_keyword">final</strong> Map&lt;String, Object&gt; params,
+<a name="74" href="#74">74</a>  			<strong class="jxr_keyword">final</strong> String propertyName) {
+<a name="75" href="#75">75</a>  		String[] props = propertyName.split(<span class="jxr_string">"&#92;&#92;."</span>);
+<a name="76" href="#76">76</a>  		Object value = CubbyUtils.getParamsValue(params, props[0]);
+<a name="77" href="#77">77</a>  		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 1; i &lt; props.length; i++) {
+<a name="78" href="#78">78</a>  			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(value.getClass());
+<a name="79" href="#79">79</a>  			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(props[i]);
+<a name="80" href="#80">80</a>  			value = propertyDesc.getValue(value);
+<a name="81" href="#81">81</a>  		}
+<a name="82" href="#82">82</a>  		<strong class="jxr_keyword">return</strong> value;
+<a name="83" href="#83">83</a>  	}
+<a name="84" href="#84">84</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

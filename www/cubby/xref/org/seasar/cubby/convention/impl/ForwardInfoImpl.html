@@ -13,7 +13,7 @@
 <a name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> java.util.Map;
 <a name="4" href="#4">4</a>   
 <a name="5" href="#5">5</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.convention.ForwardInfo;
-<a name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.convention.impl.PathResolverImpl.RewriteInfo;
+<a name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.seasar.cubby.convention.impl.PathResolverImpl.RoutingInfo;
 <a name="7" href="#7">7</a>   
 <a name="8" href="#8">8</a>   <strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/convention/impl/ForwardInfoImpl.html">ForwardInfoImpl</a> implements <a href="../../../../../org/seasar/cubby/convention/ForwardInfo.html">ForwardInfo</a> {
 <a name="9" href="#9">9</a>   
@@ -23,7 +23,7 @@
 <a name="13" href="#13">13</a>  
 <a name="14" href="#14">14</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String methodName;
 <a name="15" href="#15">15</a>  
-<a name="16" href="#16">16</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../../org/seasar/cubby/convention/impl/ForwardInfoImpl.html">ForwardInfoImpl</a>(<a href="../../../../../org/seasar/cubby/convention/impl/PathResolverImpl.html">RewriteInfo</a> rewriteInfo, Map&lt;String, String&gt; uriParams) {
+<a name="16" href="#16">16</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../../org/seasar/cubby/convention/impl/ForwardInfoImpl.html">ForwardInfoImpl</a>(<a href="../../../../../org/seasar/cubby/convention/impl/PathResolverImpl.html">RoutingInfo</a> rewriteInfo, Map&lt;String, String&gt; uriParams) {
 <a name="17" href="#17">17</a>  		<strong class="jxr_keyword">this</strong>.rewritePath = rewriteInfo.buildRewritePath(uriParams);
 <a name="18" href="#18">18</a>  		<strong class="jxr_keyword">this</strong>.actionClassName = rewriteInfo.getActionClass().getCanonicalName();
 <a name="19" href="#19">19</a>  		<strong class="jxr_keyword">this</strong>.methodName = rewriteInfo.getMethod().getName();;

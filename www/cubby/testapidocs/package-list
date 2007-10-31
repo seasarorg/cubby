@@ -1,3 +1,4 @@
+org.seasar.cubby.action
 org.seasar.cubby.action.impl
 org.seasar.cubby.controller
 org.seasar.cubby.convention.impl

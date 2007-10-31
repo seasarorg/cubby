@@ -41,7 +41,7 @@
   
   
             <div class="xleft">
-        最終更新: 10/31/2007
+        最終更新: 11/01/2007
                       </div>
             <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
           
@@ -205,7 +205,7 @@
 -Dversion=(作成するプロジェクトのバージョン 例:1.0-SNAPSHOT) \
 -DarchetypeGroupId=org.seasar.cubby \
 -DarchetypeArtifactId=cubby-archetype \
--DarchetypeVersion=0.9.0 \
+-DarchetypeVersion=0.9.1 \
 -DremoteRepositories=http://maven.seasar.org/maven2/
 (実際には1行で入力してください)</pre></div><p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p><div class="source"><pre>mvn eclipse:eclipse</pre></div><p>Eclipseを使用せずにTomcatを直接起動して動作確認するには、プロジェクトのディレクトリで以下のコマンドを実行します。</p><div class="source"><pre>mvn tomcat:run</pre></div></div><div class="section"><h2>各種ファイル</h2><p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p><div class="section"><h3>必要なライブラリ (WEB-INF/lib)</h3><p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p><p>主な依存ライブラリを以下にあげます。</p><ul><li>cubby-*.jar<p>Cubby 本体です。</p></li><li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。</p></li><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p></li></ul></div><div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3><p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p><ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
