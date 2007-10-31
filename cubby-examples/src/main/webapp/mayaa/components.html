@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+	<title>components.html</title>
+	<link href="./../css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+</head>
+<body>
+[<a href="./../">戻る</a>]
+<form id="form" method="post" action="./components">
+<h1>コンポーネント一覧</h1>
+<h2>Input Text</h2>
+<label for="userName">Name:</label><input id="userName" type="text" name="userName"/>
+
+<h2>Select</h2>
+<label for="color">Color:</label>
+<select id="color" name="color" size="3">
+  <option value="red">赤</option>
+  <option value="blue">青</option>
+  <option value="yellow" selected="selected">黄色</option>
+</select>
+
+<h2>TextArea</h2> 
+<label for="memo">memo:</label><br/>
+<textarea id="memo" name="memo" rows="5" cols="50"></textarea>
+
+<h2>Checkbox</h2> 
+<label for="check1">Check1:</label><br/>
+<input id="check1" type="checkbox" name="check1" value="true"/>
+
+<h2>Checkbox(Array)</h2> 
+<label for="check2">Check2:</label><br/>
+<input id="check2-1" type="checkbox" name="check2" value="1"/>
+<input id="check2-2" type="checkbox" name="check2" value="2"/>
+<input id="check2-3" type="checkbox" name="check2" value="3"/>
+
+<h2>Odd & Null</h2>
+<table border="1">
+	<tr>
+		<th>ID</th>
+		<th>LABEL</th>
+	</tr>
+	<tr id="loop">
+		<td><span id="item-value"></span></td>
+		<td><span id="item-name"></span></td>
+	</tr>
+	<tr id="dummy">
+		<td>dummy1</td>
+		<td>dummy1 name</td>
+	</tr>
+	<tr id="dummy">
+		<td>dummy2</td>
+		<td>dummy2 name</td>
+	</tr>
+</table>
+
+
+<br/>
+<input type="submit" value="登録"/>
+</form>
+</body>
+</html>
+
+
