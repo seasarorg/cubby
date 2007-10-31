@@ -6,8 +6,9 @@
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
   <packaging>war</packaging>
-  <version>${pom.version}</version>
+  <version>${version}</version>
   <build>
+    <finalName>${artifactId}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>

@@ -24,7 +24,7 @@ mvn archetype:create \
 -Dversion=(作成するプロジェクトのバージョン 例:1.0-SNAPSHOT) \
 -DarchetypeGroupId=org.seasar.cubby \
 -DarchetypeArtifactId=cubby-archetype \
--DarchetypeVersion=0.9.0 \
+-DarchetypeVersion=0.9.1 \
 -DremoteRepositories=http://maven.seasar.org/maven2/
 (実際には1行で入力してください)
 +------------------------------------------------------+
