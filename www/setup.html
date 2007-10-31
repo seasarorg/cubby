@@ -41,7 +41,7 @@
   
   
             <div class="xleft">
-        最終更新: 10/01/2007
+        最終更新: 10/31/2007
                       </div>
             <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
           
@@ -118,6 +118,10 @@
     <li class="none">
               <a href="mayaa.html">Cubby&Mayaa</a>
         </li>
+              
+    <li class="none">
+              <a href="apidocs/index.html">JavaDoc</a>
+        </li>
           </ul>
           <h5>プロジェクト文書</h5>
         <ul>
@@ -162,19 +166,19 @@
         <ul>
               
     <li class="none">
-              <a href="cubby/index.html">cubby</a>
+              <a href="cubby/index.html">Cubby</a>
         </li>
               
     <li class="none">
-              <a href="cubby-archetype/index.html">cubby-archetype</a>
+              <a href="cubby-archetype/index.html">Cubby Archetype</a>
         </li>
               
     <li class="none">
-              <a href="cubby-tomcat55-support/index.html">cubby-tomcat55-support</a>
+              <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
         </li>
               
     <li class="none">
-              <a href="cubby-skin/index.html">cubby-skin</a>
+              <a href="cubby-skin/index.html">Cubby Skin</a>
         </li>
               
     <li class="none">
@@ -203,7 +207,7 @@
 -DarchetypeArtifactId=cubby-archetype \
 -DarchetypeVersion=0.9.0 \
 -DremoteRepositories=http://maven.seasar.org/maven2/
-(実際には1行で入力してください)</pre></div><p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p><div class="source"><pre>mvn eclipse:eclipse</pre></div></div><div class="section"><h2>各種ファイル</h2><p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p><div class="section"><h3>必要なライブラリ (WEB-INF/lib)</h3><p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p><p>主な依存ライブラリを以下にあげます。</p><ul><li>cubby-*.jar<p>Cubby 本体です。</p></li><li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。</p></li><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p></li></ul></div><div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3><p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p><ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
+(実際には1行で入力してください)</pre></div><p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p><div class="source"><pre>mvn eclipse:eclipse</pre></div><p>Eclipseを使用せずにTomcatを直接起動して動作確認するには、プロジェクトのディレクトリで以下のコマンドを実行します。</p><div class="source"><pre>mvn tomcat:run</pre></div></div><div class="section"><h2>各種ファイル</h2><p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p><div class="section"><h3>必要なライブラリ (WEB-INF/lib)</h3><p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p><p>主な依存ライブラリを以下にあげます。</p><ul><li>cubby-*.jar<p>Cubby 本体です。</p></li><li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。</p></li><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p></li></ul></div><div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3><p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p><ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
         &lt;filter-name&gt;s2Filter&lt;/filter-name&gt;
         &lt;filter-class&gt;org.seasar.framework.container.filter.S2ContainerFilter&lt;/filter-class&gt;
@@ -212,6 +216,9 @@
     &lt;filter-mapping&gt;
         &lt;filter-name&gt;s2Filter&lt;/filter-name&gt;
         &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
     &lt;/filter-mapping&gt;
 &lt;/web-app&gt;</pre></div></li><li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy">Hot deploy</a> を使用する場合は HotdeployFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -226,10 +233,10 @@
         &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
         &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
     &lt;/filter-mapping&gt;
-&lt;/web-app&gt;</pre></div></li><li>UrlRewriteFilter<p>リクエストされた URL を、以下で述べる CubbyFilter が処理できるデフォルトの URL に変換して FORWARD します。 このマッピングはアクションクラスに @URL アノテーションをつけることで変更できます。</p><p>また、処理の対象外とする URL を ignorePathPattern で指定できます。 Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。 対象外にするパスを正規表現のカンマ区切りで指定してください。</p><div class="source"><pre>&lt;web-app&gt;
+&lt;/web-app&gt;</pre></div></li><li>RequestRoutingFilter<p>リクエストされた URL から、以下で述べる CubbyFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。 このマッピングはアクションクラスに @URL アノテーションをつけることで変更できます。</p><p>また、処理の対象外とする URL を ignorePathPattern で指定できます。 Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。 対象外にするパスを正規表現のカンマ区切りで指定してください。</p><div class="source"><pre>&lt;web-app&gt;
         &lt;filter&gt;
-                &lt;filter-name&gt;urlRewriteFilter&lt;/filter-name&gt;
-                &lt;filter-class&gt;org.seasar.cubby.filter.UrlRewriteFilter&lt;/filter-class&gt;
+                &lt;filter-name&gt;requestRoutingFilter&lt;/filter-name&gt;
+                &lt;filter-class&gt;org.seasar.cubby.filter.RequestRoutingFilter&lt;/filter-class&gt;
         &lt;init-param&gt;
             &lt;param-name&gt;ignorePathPattern&lt;/param-name&gt;
             &lt;param-value&gt;/css/.*,/js/.*,/img/.*&lt;/param-value&gt;
@@ -237,7 +244,7 @@
         &lt;/filter&gt;
 
     &lt;filter-mapping&gt;
-        &lt;filter-name&gt;urlRewriteFilter&lt;/filter-name&gt;
+        &lt;filter-name&gt;requestRoutingFilter&lt;/filter-name&gt;
         &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
         &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
     &lt;/filter-mapping&gt;
