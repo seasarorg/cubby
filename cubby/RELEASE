@@ -1,4 +1,8 @@
 #リリース手順
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/cubby/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/cubby-examples/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1/www/
+
 cd cubby-examples
 mvn clean package
 cp target/*.war ../cubby-www/download
