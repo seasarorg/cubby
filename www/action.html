@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>Cubby - アクション</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="agata" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="index.html" id="bannerLeft">
+    
+            Cubby
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+            <div class="xleft">
+        最終更新: 10/01/2007
+                      </div>
+            <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+                   <h5>ドキュメント</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">Cubbyについて</a>
+        </li>
+              
+    <li class="none">
+              <a href="setup.html">セットアップ</a>
+        </li>
+              
+    <li class="none">
+              <a href="twominute.html">2分間チュートリアル</a>
+        </li>
+              
+    <li class="none">
+              <a href="fiveminute.html">5分間チュートリアル</a>
+        </li>
+              
+    <li class="none">
+              <a href="download.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h5>リファレンス</h5>
+        <ul>
+              
+    <li class="none">
+              <strong>アクション</strong>
+        </li>
+              
+    <li class="none">
+              <a href="validation.html">バリデーション</a>
+        </li>
+              
+    <li class="none">
+              <a href="jsp.html">JSP</a>
+        </li>
+              
+    <li class="none">
+              <a href="tags.html">カスタムタグ</a>
+        </li>
+              
+    <li class="none">
+              <a href="functions.html">ファンクション</a>
+        </li>
+              
+    <li class="none">
+              <a href="messages.html">メッセージリソース</a>
+        </li>
+              
+    <li class="none">
+              <a href="mayaa.html">Cubby&Mayaa</a>
+        </li>
+          </ul>
+          <h5>プロジェクト文書</h5>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-reports.html">プロジェクトレポート</a>
+              </li>
+          </ul>
+          <h5>モジュール</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="cubby/index.html">cubby</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-archetype/index.html">cubby-archetype</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-tomcat55-support/index.html">cubby-tomcat55-support</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-skin/index.html">cubby-skin</a>
+        </li>
+              
+    <li class="none">
+              <a href="index.html">Cubby Distribution</a>
+        </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>アクション</h2><p>アクションは<a href="cubby/apidocs/org/seasar/cubby/action/Action.html">Action</a>を継承して作成します。</p></div><div class="section"><h2>アクションメソッド</h2><p>リクエストされた URL に応じて、アクションメソッドが呼び出され処理を実行します。<br />Action クラスの中で public で戻り値が ActionResult のメソッドが、アクションメソッドとして認識されます。</p></div><div class="section"><h2>ActionResult の種類</h2><p>以下のクラスはActionResultを実装するクラスで、アクションメソッドの戻り値として使用できます。</p><table class="bodyTable"><tbody><tr class="a"><td align="left"><b>クラス名</b></td><td align="left"><b>説明</b></td></tr><tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Forward.html">Forward</a></td><td align="left">指定されたパスにフォワードします。</td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Redirect.html">Redirect</a></td><td align="left">指定されたパスにリダイレクトします。</td></tr><tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Direct.html">Direct</a></td><td align="left">何も処理を行いません。アクションメソッド中でレスポンスに直接書き込みます。ファイルや画像をブラウザに返す時に使用します。</td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Json.html">Json</a></td><td align="left">指定されたオブジェクトを Json 形式に変換してレスポンスを返します。</td></tr></tbody></table></div><div class="section"><h2>アノテーション</h2><table class="bodyTable"><tbody><tr class="b"><td align="left"><b>アノテーション名</b></td><td align="left"><b>説明</b></td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Url.html">@Url</a></td><td align="left">アクションメソッドのURLを指定します。</td></tr><tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Form.html">@Form</a></td><td align="left">リクエストパラメータのオブジェクトへのバインディングを指定します。</td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Validation.html">@Validation</a></td><td align="left">入力検証を指定します。</td></tr></tbody></table></div><div class="section"><h2>事前処理・事後処理</h2><p>Actionクラスにある以下のメソッドをオーバーライドすることで、Action実行時の前後にフック処理を記述することができます。<br />またActionメソッド実行の前後に処理を組み込みたい場合は、SeasarのAOPを使用して処理をフックします。</p><table class="bodyTable"><tbody><tr class="b"><td align="left"><b>メソッド名</b></td><td align="left"><b>説明</b></td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()">Action#initialize</a></td><td align="left">Actionの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。</td></tr><tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()">Action#prerender</a></td><td align="left">フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。</td></tr><tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()">Action#postrender</a></td><td align="left">フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。</td></tr></tbody></table></div>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2006-2007
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
