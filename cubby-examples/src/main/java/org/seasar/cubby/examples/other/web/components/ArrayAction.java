@@ -11,7 +11,6 @@ import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.cubby.validator.validators.ArrayValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @Url("components")
@@ -21,8 +20,8 @@ public class ArrayAction extends Action {
 
 	public final ValidationRules validation = new DefaultValidationRules("color.") {
 		public void initialize() {
-			add("name", new ArrayValidator(new RequiredValidator()));
-			add("value", new ArrayValidator(new RequiredValidator()));
+			add("name", new RequiredValidator());
+			add("value", new RequiredValidator());
 		}
 	};
 	

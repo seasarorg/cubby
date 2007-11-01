@@ -18,10 +18,10 @@
 <c:forEach var="name" items="${action.name}" varStatus="s">
 <tr>
 	<td class="${f:odd(s.index, 'odd,even')}">
-		<t:input name="name" type="text" value="${name}" size="5"/>
+		<t:input name="name" type="text" index="${s.index}" size="5"/>
 	</td>
 	<td>
-		<t:input name="value" type="text" value="${action.value[s.index]}" size="5"/>
+		<t:input name="value" type="text" index="${s.index}" size="5"/>
 	</td>
 </tr>
 </c:forEach>
