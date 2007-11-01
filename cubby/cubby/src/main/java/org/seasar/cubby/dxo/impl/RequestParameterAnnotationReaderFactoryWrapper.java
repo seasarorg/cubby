@@ -24,6 +24,11 @@ import org.seasar.extension.dxo.annotation.AnnotationReader;
 import org.seasar.extension.dxo.annotation.AnnotationReaderFactory;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class RequestParameterAnnotationReaderFactoryWrapper implements
 		AnnotationReaderFactory {
 

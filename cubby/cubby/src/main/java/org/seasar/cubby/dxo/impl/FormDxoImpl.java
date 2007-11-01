@@ -11,6 +11,11 @@ import org.seasar.extension.dxo.converter.ConverterFactory;
 import org.seasar.framework.container.annotation.tiger.InitMethod;
 import org.seasar.framework.util.ClassUtil;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class FormDxoImpl implements FormDxo {
 
 	private ConverterFactory converterFactory;

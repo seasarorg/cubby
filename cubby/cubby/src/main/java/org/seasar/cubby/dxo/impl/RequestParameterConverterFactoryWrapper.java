@@ -19,6 +19,11 @@ import org.seasar.extension.dxo.converter.ConversionContext;
 import org.seasar.extension.dxo.converter.Converter;
 import org.seasar.extension.dxo.converter.ConverterFactory;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class RequestParameterConverterFactoryWrapper implements
 		ConverterFactory {
 
