@@ -9,7 +9,7 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.Populator;
+import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -19,7 +19,7 @@ import org.seasar.framework.log.Logger;
 /**
  * 
  * @author baba
- *
+ * 
  */
 public class ActionContextImpl implements ActionContext {
 
@@ -32,7 +32,7 @@ public class ActionContextImpl implements ActionContext {
 
 	private Action action;
 
-	private Populator populator;
+	private FormDxo formDxo;
 
 	public void initialize(final ActionDef actionDef) {
 		this.actionDef = actionDef;
@@ -42,12 +42,12 @@ public class ActionContextImpl implements ActionContext {
 		return this.actionDef != null;
 	}
 
-	public Populator getPopulator() {
-		return populator;
+	public FormDxo getFormDxo() {
+		return formDxo;
 	}
 
-	public void setPopulator(final Populator populator) {
-		this.populator = populator;
+	public void setFormDxo(final FormDxo formDxo) {
+		this.formDxo = formDxo;
 	}
 
 	public ComponentDef getComponentDef() {
@@ -71,8 +71,8 @@ public class ActionContextImpl implements ActionContext {
 
 	public ActionResult invoke() throws Throwable {
 		try {
-			final ActionResult result = (ActionResult) actionDef.getMethod().invoke(getAction(),
-					EMPTY_ARGS);
+			final ActionResult result = (ActionResult) actionDef.getMethod()
+					.invoke(getAction(), EMPTY_ARGS);
 			return result;
 		} catch (final InvocationTargetException ex) {
 			logger.log(ex);
@@ -81,7 +81,7 @@ public class ActionContextImpl implements ActionContext {
 	}
 
 	public Object getFormBean() {
-		final Form form = getForm();
+		final Form form = actionDef.getMethod().getAnnotation(Form.class);
 		if (form == null) {
 			return null;
 		}
@@ -90,15 +90,13 @@ public class ActionContextImpl implements ActionContext {
 		if (Form.THIS.equals(formName)) {
 			return action;
 		} else {
-			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action.getClass());
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(formName);
+			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+					.getClass());
+			final PropertyDesc propertyDesc = beanDesc
+					.getPropertyDesc(formName);
 			final Object value = propertyDesc.getValue(action);
 			return value;
 		}
-	}
-
-	private Form getForm() {
-		return actionDef.getMethod().getAnnotation(Form.class);
 	}
 
 }

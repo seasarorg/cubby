@@ -12,8 +12,8 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.controller.Populator;
 import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.dxo.FormDxo;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -31,7 +31,8 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	private ActionContext context;
 
-	public void setCubbyConfiguration(final CubbyConfiguration cubbyConfiguration) {
+	public void setCubbyConfiguration(
+			final CubbyConfiguration cubbyConfiguration) {
 		this.cubbyConfiguration = cubbyConfiguration;
 	}
 
@@ -62,7 +63,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 			final HttpServletRequest request) {
 		final RequestParser requestParser = cubbyConfiguration
 				.getRequestParser();
-		final Map<String, Object> parameterMap = requestParser
+		final Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
@@ -71,9 +72,9 @@ public class InitializeInterceptor implements MethodInterceptor {
 			final HttpServletRequest request) {
 		final Object formBean = context.getFormBean();
 		if (formBean != null) {
-			final Populator populator = context.getPopulator();
+			final FormDxo formDxo = context.getFormDxo();
 			final Map<String, Object[]> params = getParams(request);
-			populator.populate(params, formBean);
+			formDxo.convert(params, formBean);
 		}
 	}
 

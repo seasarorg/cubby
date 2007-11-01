@@ -33,6 +33,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  * 
  * @see CubbyConstants#ATTR_VALIDATION_FAIL 入力検証エラーフラグの属性名
  * @author agata
+ * @author baba
  * @since 1.0
  */
 public class ValidationInterceptor implements MethodInterceptor {
@@ -68,7 +69,7 @@ public class ValidationInterceptor implements MethodInterceptor {
 		final Action controller = context.getAction();
 		final Validation validation = context.getValidation();
 		final ValidationRules rules = getValidationRules(context);
-		final Map<String, Object> params = getParams(request);
+		final Map<String, Object[]> params = getParams(request);
 
 		final boolean success = validator.processValidation(validation,
 				controller, params, context.getFormBean(), rules);
@@ -101,9 +102,9 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, Object> getParams(
+	private static Map<String, Object[]> getParams(
 			final HttpServletRequest request) {
-		return (Map<String, Object>) request.getAttribute(ATTR_PARAMS);
+		return (Map<String, Object[]>) request.getAttribute(ATTR_PARAMS);
 	}
 
 }

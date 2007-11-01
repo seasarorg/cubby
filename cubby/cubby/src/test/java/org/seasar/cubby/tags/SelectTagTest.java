@@ -3,11 +3,13 @@ package org.seasar.cubby.tags;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 
 import org.jdom.Element;
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
 public class SelectTagTest extends JspTagTestCase {
@@ -20,22 +22,24 @@ public class SelectTagTest extends JspTagTestCase {
 		super.setUp();
 		tag = new SelectTag();
 		setupSimpleTag(tag);
-		context.setAttribute("fieldErrors", new HashMap<String, String>(), PageContext.REQUEST_SCOPE);
+		setupErrors(context);
 		items.add(new ItemBean(1, "name1"));
 		items.add(new ItemBean(2, "name2"));
 		items.add(new ItemBean(3, "name3"));
 	}
 
 	public void testDoTag1() throws Exception {
-		FormDto form = new FormDto();
-		form.setStringField("1");
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "stringField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "1" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);
 		tag.setValueProperty("id");
 		tag.setLabelProperty("name");
 		tag.doTag();
+
+		System.out.println(context.getResult());
 
 		Element element = getResultAsElementFromContext();
 		String message = "基本";
@@ -73,15 +77,17 @@ public class SelectTagTest extends JspTagTestCase {
 	}
 
 	public void testDoTag2() throws Exception {
-		FormDto form = new FormDto();
-		form.setIntegerArrayField(new Integer[] {1, 3});
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "integerArrayField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("integerArrayField", new String[] { "1", "3" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("integerArrayField");
 		tag.setDynamicAttribute(null, "size", "5");
 		tag.setItems(items);
 		tag.setValueProperty("id");
 		tag.setLabelProperty("name");
 		tag.doTag();
+
+		System.out.println(context.getResult());
 
 		Element element = getResultAsElementFromContext();
 		String message = "selectedの対象が2つ";
@@ -120,10 +126,10 @@ public class SelectTagTest extends JspTagTestCase {
 	}
 
 	public void testDoTag3() throws Exception {
-		FormDto form = new FormDto();
-		form.setStringField("1");
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "stringField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "1" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);
 		tag.setValueProperty("id");
@@ -165,10 +171,10 @@ public class SelectTagTest extends JspTagTestCase {
 	}
 
 	public void testDoTag4() throws Exception {
-		FormDto form = new FormDto();
-		form.setStringField("1");
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "stringField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "1" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("stringField");
 		tag.setItems(items);
 		tag.setValueProperty("id");
 		tag.setLabelProperty("name");
@@ -206,10 +212,10 @@ public class SelectTagTest extends JspTagTestCase {
 	}
 
 	public void testDoTag5() throws Exception {
-		FormDto form = new FormDto();
-		form.setStringField("1");
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "stringField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "1" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("stringField");
 		tag.setItems(items);
 		tag.setValueProperty("id");
 		tag.setLabelProperty("name");
@@ -251,10 +257,10 @@ public class SelectTagTest extends JspTagTestCase {
 	}
 
 	public void testDoTagNotSetValueProperty() throws Exception {
-		FormDto form = new FormDto();
-		form.setStringField("1");
-		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
-		tag.setDynamicAttribute(null, "name", "stringField");
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "1" });
+		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setName("stringField");
 		tag.setItems(items);
 		tag.setEmptyOptionLabel("empty label");
 		try {
