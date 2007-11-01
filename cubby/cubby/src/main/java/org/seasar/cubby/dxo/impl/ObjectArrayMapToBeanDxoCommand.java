@@ -34,7 +34,7 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  *
  */
-public class ObjectArrayMapToBeanDxoCommand extends MapToBeanDxoCommand {
+class ObjectArrayMapToBeanDxoCommand extends MapToBeanDxoCommand {
 
 	@SuppressWarnings("unchecked")
 	public ObjectArrayMapToBeanDxoCommand(final Class dxoClass, final Method method,

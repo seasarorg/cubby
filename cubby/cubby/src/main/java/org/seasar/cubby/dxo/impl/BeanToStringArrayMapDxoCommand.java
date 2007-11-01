@@ -32,7 +32,7 @@ import org.seasar.extension.dxo.converter.ConverterFactory;
  * @author baba
  *
  */
-public class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
+class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 
 	/**
 	 * インスタンスを構築します。
