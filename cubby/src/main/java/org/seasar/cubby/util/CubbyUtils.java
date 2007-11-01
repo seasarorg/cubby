@@ -3,7 +3,6 @@ package org.seasar.cubby.util;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,18 +72,6 @@ public class CubbyUtils {
 
 	public static boolean isActionClass(Class<?> c) {
 		return Action.class.isAssignableFrom(c);
-	}
-
-	public static Object getParamsValue(Map<String, Object> params, String key) {
-		Object value = params.get(key);
-		if (value == null) {
-			return null;
-		} else if (value.getClass().isArray()) {
-			Object[] values = (Object[]) value;
-			return values[0];
-		} else {
-			return value;
-		}
 	}
 
 	static String toFirstLower(final String propertyName) {

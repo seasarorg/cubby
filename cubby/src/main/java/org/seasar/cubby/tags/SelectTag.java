@@ -1,17 +1,27 @@
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.tags.TagUtils.addClassName;
+import static org.seasar.cubby.tags.TagUtils.errors;
+import static org.seasar.cubby.tags.TagUtils.isChecked;
+import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
+import static org.seasar.cubby.tags.TagUtils.outputValues;
+import static org.seasar.cubby.tags.TagUtils.toAttr;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.util.CubbyFunctions;
-import org.seasar.cubby.util.CubbyHelperFunctions;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.message.MessageFormatter;
 
@@ -19,28 +29,34 @@ import org.seasar.framework.message.MessageFormatter;
  * selectを出力するタグ
  * 
  * @author agata
- * 
+ * @author baba
  */
 public class SelectTag extends DynamicAttributesTagSupport {
 
 	private static final Logger logger = Logger.getLogger(SelectTag.class);
 
+	private String name;
+
 	/**
 	 * option要素リスト
 	 */
 	private Object items;
+
 	/**
 	 * optionのラベルのプロパティ名
 	 */
 	private String labelProperty;
+
 	/**
 	 * optionの値のプロパティ名
 	 */
 	private String valueProperty;
+
 	/**
 	 * 空のoption要素を出力するかどうか。
 	 */
 	private boolean emptyOption = true;
+
 	/**
 	 * 空のoption要素を出力した場合のラベル文字列
 	 */
@@ -99,26 +115,34 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	public void setEmptyOptionLabel(final String emptyOptionLabel) {
 		this.emptyOptionLabel = emptyOptionLabel;
 	}
+
+	public void setName(final String name) {
+		this.name = name;
+	}
+
 	/**
 	 * タグの処理
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void doTag() throws JspException, IOException {
-		final Object form = getJspContext().getAttribute("__form",
-				PageContext.REQUEST_SCOPE);
-		final Object value = CubbyHelperFunctions.formValue(
-				getDynamicAttribute(), form, getJspContext(), "value");
-		getJspContext().setAttribute("value", value, PageContext.PAGE_SCOPE);
-		final Map<?, ?> fieldErros = (Map<?, ?>) getJspContext().getAttribute(
-				"fieldErrors", PageContext.REQUEST_SCOPE);
-		if (fieldErros.get(getDynamicAttribute().get("name")) != null) {
-			CubbyHelperFunctions.addClassName(getDynamicAttribute(),
-					"fieldError");
+		final JspContext context = this.getJspContext();
+		final JspWriter out = context.getOut();
+		final ActionErrors errors = errors(context);
+		final Map<String, Object> dyn = this.getDynamicAttribute();
+		final Map<String, String[]> outputValues = outputValues(context);
+
+		if (errors.hasFieldError(this.name)) {
+			addClassName(dyn, "fieldError");
 		}
-		final JspWriter out = getJspContext().getOut();
-		out.write("<select ");
-		out.write(CubbyHelperFunctions.toAttr(getDynamicAttribute()));
+
+		final Object[] value = multipleFormValues(context, outputValues,
+				this.name);
+
+		out.write("<select name=\"");
+		out.write(this.name);
+		out.write("\" ");
+		out.write(toAttr(dyn));
 		out.write(">\n");
 
 		if (emptyOption) {
@@ -181,7 +205,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			if (value == null || values == null) {
 				return "";
 			}
-			if (CubbyHelperFunctions.isChecked(value, values)) {
+			if (isChecked(value, values)) {
 				return "selected=\"true\"";
 			} else {
 				return "";
@@ -207,7 +231,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		}
 
 		public Object getItemValue(final Object item) {
-			return CubbyHelperFunctions.property(item, valueProperty);
+			return property(item, valueProperty);
 		}
 
 		public Object getLabelValue(final Object item) {
@@ -215,9 +239,17 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			if (labelProperty == null) {
 				labelValue = getItemValue(item);
 			} else {
-				labelValue = CubbyHelperFunctions.property(item, labelProperty);
+				labelValue = property(item, labelProperty);
 			}
 			return labelValue;
+		}
+
+		private Object property(final Object bean, final String propertyName) {
+			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(bean
+					.getClass());
+			final PropertyDesc propertyDesc = beanDesc
+					.getPropertyDesc(propertyName);
+			return propertyDesc.getValue(bean);
 		}
 
 	}

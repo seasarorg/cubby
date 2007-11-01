@@ -13,6 +13,7 @@ import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.mock.servlet.MockServletContext;
+import org.seasar.framework.util.ClassUtil;
 
 public class ForwardTest extends S2TestCase {
 
@@ -113,7 +114,9 @@ public class ForwardTest extends S2TestCase {
 		}
 
 		public Method getMethod() {
-			return null;
+			Class<?> clazz = componentDef.getComponentClass();
+			Method method = ClassUtil.getMethod(clazz, "dummy", null);
+			return method;
 		}
 
 	}
@@ -144,6 +147,9 @@ public class ForwardTest extends S2TestCase {
 			return postrendered;
 		}
 
+		public ActionResult dummy() {
+			return null;
+		}
 	}
 
 }

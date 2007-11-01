@@ -27,10 +27,10 @@ public class FormDto {
 		this.booleanField = booleanField;
 	}
 	public Integer[] getIntegerArrayField() {
-		return integerArrayField.clone();
+		return integerArrayField == null ? null : integerArrayField.clone();
 	}
 	public void setIntegerArrayField(Integer[] integerArrayField) {
-		this.integerArrayField = integerArrayField.clone();
+		this.integerArrayField = integerArrayField == null ? null : integerArrayField.clone();
 	}
 	public Date getDateField() {
 		return dateField;

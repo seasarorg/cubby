@@ -10,7 +10,7 @@ import org.seasar.cubby.validator.Validator;
 
 public class MinSizeTest extends TestCase {
 
-	final static Map<String, Object> emptyMap = Collections.emptyMap();
+	final static Map<String, Object[]> emptyMap = Collections.emptyMap();
 
 	public void testValidation() {
 

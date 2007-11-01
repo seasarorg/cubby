@@ -6,7 +6,9 @@ import org.seasar.cubby.action.FormatPattern;
 
 /**
  * 入力値のコンテキストオブジェクト
+ * 
  * @author agata
+ * @author baba
  */
 public class ValidationContext {
 
@@ -23,7 +25,7 @@ public class ValidationContext {
 	/**
 	 * 入力パラメータの一覧
 	 */
-	private final Map<String, Object> params;
+	private final Map<String, Object[]> params;
 
 	/**
 	 * 日付フォーマットパターン
@@ -32,13 +34,19 @@ public class ValidationContext {
 
 	/**
 	 * コンストラクタ
-	 * @param name パラメータ名
-	 * @param value 入力値
-	 * @param params 入力パラメータの一覧
-	 * @param formatPattern 日付フォーマットパターン
+	 * 
+	 * @param name
+	 *            パラメータ名
+	 * @param value
+	 *            入力値
+	 * @param params
+	 *            入力パラメータの一覧
+	 * @param formatPattern
+	 *            日付フォーマットパターン
 	 */
 	public ValidationContext(final String name, final Object value,
-			final Map<String, Object> params, final FormatPattern formatPattern) {
+			final Map<String, Object[]> params,
+			final FormatPattern formatPattern) {
 		this.name = name;
 		this.value = value;
 		this.params = params;
@@ -47,6 +55,7 @@ public class ValidationContext {
 
 	/**
 	 * パラメータ名を取得します。
+	 * 
 	 * @return パラメータ名
 	 */
 	public String getName() {
@@ -55,6 +64,7 @@ public class ValidationContext {
 
 	/**
 	 * 入力値を取得します。
+	 * 
 	 * @return 入力値
 	 */
 	public Object getValue() {
@@ -63,14 +73,16 @@ public class ValidationContext {
 
 	/**
 	 * 入力パラメータの一覧を取得します。
-	 * @return　入力パラメータの一覧
+	 * 
+	 * @return 入力パラメータの一覧
 	 */
-	public Map<String, Object> getParams() {
+	public Map<String, Object[]> getParams() {
 		return params;
 	}
 
 	/**
 	 * 日付フォーマットパターンを取得します。
+	 * 
 	 * @return 日付フォーマットパターン
 	 */
 	public FormatPattern getFormatPattern() {

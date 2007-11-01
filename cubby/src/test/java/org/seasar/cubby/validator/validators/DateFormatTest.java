@@ -9,7 +9,7 @@ import org.seasar.cubby.validator.ValidationContext;
 
 public class DateFormatTest extends TestCase {
 
-	final static Map<String, Object> emptyMap = Collections.emptyMap();
+	final static Map<String, Object[]> emptyMap = Collections.emptyMap();
 
 	public void testValidate() {
 		DateFormatValidator dateFormat = new DateFormatValidator("yyyy-MM-dd");

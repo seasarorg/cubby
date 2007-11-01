@@ -4,8 +4,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public interface RequestParser {
 
-	Map<String, Object> getParameterMap(HttpServletRequest request);
+	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 
 }

@@ -22,6 +22,11 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.StringUtil;
 
+/**
+ * 
+ * @author baba
+ *
+ */
 public class MultipartRequestParserImpl implements RequestParser {
 
 	private final S2Container container;
@@ -31,8 +36,8 @@ public class MultipartRequestParserImpl implements RequestParser {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> getParameterMap(final HttpServletRequest request) {
-		Map<String, Object> parameterMap;
+	public Map<String, Object[]> getParameterMap(final HttpServletRequest request) {
+		final Map<String, Object[]> parameterMap;
 		if (ServletFileUpload.isMultipartContent(request)) {
 			final S2Container root = container.getRoot();
 			final FileUpload fileUpload = (FileUpload) root
@@ -48,7 +53,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getMultipartParameterMap(
+	Map<String, Object[]> getMultipartParameterMap(
 			final FileUpload fileUpload, final RequestContext requestContext) {
 		try {
 			final String encoding = requestContext.getCharacterEncoding();
@@ -57,7 +62,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 					.parseRequest(requestContext);
 
 			// Fieldごとにパラメータを集める
-			final Map<String, Object> parameterMap = toParameterMap(encoding,
+			final Map<String, Object[]> parameterMap = toParameterMap(encoding,
 					items);
 
 			return parameterMap;
@@ -68,7 +73,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 		}
 	}
 
-	private Map<String, Object> toParameterMap(final String encoding,
+	Map<String, Object[]> toParameterMap(final String encoding,
 			final List<FileItem> items) throws UnsupportedEncodingException {
 		final Map<String, List<Object>> valueListParameterMap = new LinkedHashMap<String, List<Object>>();
 		for (final FileItem item : items) {
@@ -93,14 +98,14 @@ public class MultipartRequestParserImpl implements RequestParser {
 			values.add(value);
 		}
 
-		final Map<String, Object> parameterMap = fromValueListToValueArray(valueListParameterMap);
+		final Map<String, Object[]> parameterMap = fromValueListToValueArray(valueListParameterMap);
 		return parameterMap;
 	}
 
-	private Map<String, Object> fromValueListToValueArray(
+	Map<String, Object[]> fromValueListToValueArray(
 			final Map<String, List<Object>> collectParameterMap) {
 		// 配列でパラメータMapを構築
-		final Map<String, Object> parameterMap = new HashMap<String, Object>();
+		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
 		for (final Entry<String, List<Object>> entry : collectParameterMap
 				.entrySet()) {
 			final List<Object> values = entry.getValue();

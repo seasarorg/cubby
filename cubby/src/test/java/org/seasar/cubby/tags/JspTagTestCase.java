@@ -2,7 +2,11 @@ package org.seasar.cubby.tags;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 
@@ -12,6 +16,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 
 abstract public class JspTagTestCase extends TestCase {
 	protected MockJspFragment jspBody;
@@ -40,6 +45,13 @@ abstract public class JspTagTestCase extends TestCase {
 		Document document = new SAXBuilder().build(new StringReader(result));
 		Element element = document.getRootElement();
 		return element;
+	}
+
+	public void setupErrors(JspContext context) {
+		ActionErrorsImpl errors = new ActionErrorsImpl();
+		errors.setFieldErrors(new HashMap<String, List<String>>());
+		context.setAttribute("errors", errors, PageContext.REQUEST_SCOPE);
+		context.setAttribute("fieldErrors", errors.getFieldErrors(), PageContext.REQUEST_SCOPE);
 	}
 
 }

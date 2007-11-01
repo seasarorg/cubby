@@ -5,12 +5,14 @@ import java.lang.reflect.Method;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.container.ComponentDef;
 
 /**
- * アクションメソッドの実行時のコンテキスト情報を保持するインターフェイス
+ * アクションメソッドの実行時のコンテキスト情報を保持するインターフェイス。
  * 
  * @author agata
+ * @author baba
  * @since 1.0
  */
 public interface ActionContext {
@@ -31,6 +33,6 @@ public interface ActionContext {
 
 	Object getFormBean();
 
-	Populator getPopulator();
+	FormDxo getFormDxo();
 
 }
