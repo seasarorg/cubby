@@ -73,11 +73,20 @@ public class FormDxoImplTest extends S2TestCase {
 	public void testMapToBean_OneValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num1", new Object[] { "1" });
+		map.put("num2", new Object[] { "2" });
+		map.put("num3", new Object[] { "def" });
 
 		TestBean bean = new TestBean();
 
 		formDxo.convert(map, bean);
+		assertNotNull(bean.getNum1());
 		assertEquals(Integer.valueOf(1), bean.getNum1());
+		assertNotNull(bean.getNum2());
+		assertEquals(1, bean.getNum2().length);
+		assertEquals(Integer.valueOf(2), bean.getNum2()[0]);
+		assertNotNull(bean.getNum3());
+		assertEquals(1, bean.getNum3().size());
+		assertEquals("def", bean.getNum3().get(0));
 	}
 
 	public void testMapToBean_MultiValue() {
