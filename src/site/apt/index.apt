@@ -3,30 +3,40 @@
                                     ------
                                     agata
                                     ------
-                                  2007-09-20
+                                  2007-11-30
 
 What's Cubby ?
 
- Cubby(カビー)は Java/JSP をベースにしたシンプルな Web アプリケーションフレームワークです。\
+ Cubby(カビー)は Java/Servlet2.4/JSP.2.0 をベースにしたシンプルな Web アプリケーションフレームワークです。\
  以下の特徴があります。
 
- *100% Pure JSP Web Application Framework
+ *シンプルで小さい（薄い）フレームワークです。
 
- *One Configuration
+ *設定ファイルはほとんど使用しません。
 
- *シンプル＆スモール
-
- *REST っぽい URI をサポート (/username/todo/1001、拡張子が付かない URI など)
+ *REST っぽい URI をサポートします。 (/username/todo/1001、拡張子が付かない URI など)
 
  *直感的な名前のタグライブラリ
 
+ *HTMLテンプレートエンジン「{{{http://mayaa.seasar.org}Mayaa}}」と連携することができます。
+
+Cubbyのゴール
+
+ *Servlet/JSPとJava5とSeasar2を知っていれば、その他あまりたくさんのことを覚えなくても使いこなせる。
+
+ *美しいURLを持つWebアプリケーションをさくさく作成できる。
+
+ *アクションクラスを見れば何をやっているのかわかる。
+
+ *トラブルに遭遇したときに、わかりやすいメッセージで原因解決がすぐにできる
+ 
 動作環境
 
- * Java5以上
+ *Java5以上
 
- * Servlet2.4/JSP2.0以上
+ *Servlet2.4/JSP2.0以上
 
- * Seasar2.4.17以上
+ *Seasar2.4.17以上
 
 News
 
