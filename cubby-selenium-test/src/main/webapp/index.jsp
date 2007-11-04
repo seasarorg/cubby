@@ -11,6 +11,7 @@
 <h1>Cuuby Selenium Test</h1>
 	<ul>
 	<li><a href="hello/hello">Hello World</a></li>
+	<li><a href="inputTagText/">InputTagText</a></li>
 </ul>
 </body>
 </html>
