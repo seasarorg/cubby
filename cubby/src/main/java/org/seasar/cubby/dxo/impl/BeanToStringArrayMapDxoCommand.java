@@ -30,7 +30,7 @@ import org.seasar.extension.dxo.converter.ConverterFactory;
 /**
  * 
  * @author baba
- *
+ * 
  */
 class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 
@@ -77,10 +77,10 @@ class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 				} else {
 					final Converter converter = converterFactory.getConverter(
 							value.getClass(), String.class);
-					String[] array = (String[]) Array.newInstance(
+					final String[] array = (String[]) Array.newInstance(
 							String.class, 1);
-					Array.set(array, 0, converter.convert(value,
-							String.class, context));
+					Array.set(array, 0, converter.convert(value, String.class,
+							context));
 					to.put(key, array);
 				}
 			}
@@ -90,7 +90,7 @@ class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> castToObjectMap(final Map from) {
-		return ((Map<String, Object>) from);
+		return from;
 	}
 
 }
