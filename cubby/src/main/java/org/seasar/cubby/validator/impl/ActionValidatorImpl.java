@@ -3,6 +3,7 @@ package org.seasar.cubby.validator.impl;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.validator.ActionValidator;
@@ -50,22 +51,21 @@ public class ActionValidatorImpl implements ActionValidator {
 		if (values == null) {
 			values = new Object[] { "" };
 		}
-		if (values != null) {
-			for (Object value : values) {
-				ValidationContext context = createValidContext(action, params,
-						form, rule, value);
-				String error = validator.validate(context);
-				if (error != null) {
-					action.getErrors().addFieldError(
-							propRule.getPropertyName(), error);
-				}
+		ValidationContext context = createValidContext(action, params, form,
+				rule, values);
+
+		validator.validate(context);
+		if (context.hasError()) {
+			final ActionErrors errors = action.getErrors();
+			for (final String message : context.getMessages()) {
+				errors.addFieldError(propRule.getPropertyName(), message);
 			}
 		}
 	}
 
 	private ValidationContext createValidContext(final Action action,
 			final Map<String, Object[]> params, final Object form,
-			final ValidationRule rule, Object value) {
+			final ValidationRule rule, Object[] value) {
 		// TODO PropertyValidationRule以外の実装を認めていないので、そのうち修正
 		PropertyValidationRule propRule = (PropertyValidationRule) rule;
 		String name = propRule.getPropertyNameKey();
@@ -73,22 +73,5 @@ public class ActionValidatorImpl implements ActionValidator {
 				cubbyConfiguration.getFormatPattern());
 		return ctx;
 	}
-
-//	String[] names(final Map<String, Object[]> params, final String name) {
-//		String[] names = name.split("\\.");
-//		return names;
-//	}
-//
-//	Object getPropertyValue(final Map<String, Object[]> params,
-//			final String propertyName) {
-//		String[] props = propertyName.split("\\.");
-//		Object[] values = params.get(props[0]);
-//		for (int i = 1; i < props.length; i++) {
-//			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(value.getClass());
-//			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(props[i]);
-//			value = propertyDesc.getValue(value);
-//		}
-//		return value;
-//	}
 
 }

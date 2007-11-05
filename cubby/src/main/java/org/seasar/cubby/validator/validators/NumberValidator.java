@@ -2,17 +2,20 @@ package org.seasar.cubby.validator.validators;
 
 import java.math.BigDecimal;
 
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.BaseScalarValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * 数値かどうかを検証します。<p>
- * 数値かどうかの検証は「new BigDecimal(str);」で行っています。
+ * 数値かどうかを検証します。
+ * <p>
+ * 数値かどうかの検証は {@link BigDecimal#BigDecimal(String)} で行っています。
+ * 
  * @author agata
- * @see BigDecimal
+ * @author baba
+ * @see BigDecimal#BigDecimal(String)
  */
-public class NumberValidator extends BaseValidator {
+public class NumberValidator extends BaseScalarValidator {
 
 	/**
 	 * コンストラクタ
@@ -23,26 +26,30 @@ public class NumberValidator extends BaseValidator {
 
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
-	 * @param messageKey エラーメッセージキー
+	 * 
+	 * @param messageKey
+	 *            エラーメッセージキー
 	 */
 	public NumberValidator(final String messageKey) {
 		this.setMessageKey(messageKey);
 	}
 
-	public String validate(final ValidationContext ctx) {
-		final Object value = ctx.getValue();
+	@Override
+	protected void validate(final Object value, final ValidationContext context) {
 		if (value instanceof String) {
-			String str = (String)value;
+			final String str = (String) value;
 			if (StringUtil.isEmpty(str)) {
-				return null;
+				return;
 			}
 			try {
 				new BigDecimal(str);
-				return null;
-			} catch (NumberFormatException e) {}
-		}else if(value == null){
-			return null;
+				return;
+			} catch (final NumberFormatException e) {
+			}
+		} else if (value == null) {
+			return;
 		}
-		return getMessage(getPropertyMessage(ctx.getName()));
+		context.addMessage(getMessage(getPropertyMessage(context.getName())));
 	}
+
 }

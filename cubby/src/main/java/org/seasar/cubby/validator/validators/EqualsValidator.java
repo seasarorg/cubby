@@ -1,14 +1,15 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.BaseScalarValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 指定した文字列と等しいかどうかを検証します。
+ * 
  * @author agata
- *
+ * @author baba
  */
-public class EqualsValidator extends BaseValidator {
+public class EqualsValidator extends BaseScalarValidator {
 
 	/**
 	 * 対象文字列
@@ -17,7 +18,9 @@ public class EqualsValidator extends BaseValidator {
 
 	/**
 	 * コンストラクタ
-	 * @param value 対象文字列
+	 * 
+	 * @param value
+	 *            対象文字列
 	 */
 	public EqualsValidator(final String value) {
 		this(value, "valid.equals");
@@ -25,6 +28,7 @@ public class EqualsValidator extends BaseValidator {
 
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
+	 * 
 	 * @param value
 	 * @param messageKey
 	 */
@@ -33,12 +37,11 @@ public class EqualsValidator extends BaseValidator {
 		this.setMessageKey(messageKey);
 	}
 
-	public String validate(final ValidationContext ctx) {
-		final Object value = ctx.getValue();
-		if (this.value.equals(value)) {
-			return null;
-		} else {
-			return getMessage(getPropertyMessage(ctx.getName()), this.value);
+	@Override
+	protected void validate(final Object value, final ValidationContext ctx) {
+		if (!this.value.equals(value)) {
+			ctx.addMessage(getMessage(getPropertyMessage(ctx.getName()),
+					this.value));
 		}
 	}
 
