@@ -12,15 +12,28 @@ public class RegexpValidatorTest extends TestCase {
 
 	final static Map<String, Object[]> emptyMap = Collections.emptyMap();
 
-	public void testValidation() {
+	public void testValidation1() {
 		Validator validator = new RegexpValidator("a.*34");
-		assertNull(validator.validate(new ValidationContext("field", null,
-				emptyMap, null)));
-		assertNull(validator.validate(new ValidationContext("field", "",
-				emptyMap, null)));
-		assertNull(validator.validate(new ValidationContext("field", "a5634",
-				emptyMap, null)));
-		assertNotNull(validator.validate(new ValidationContext("field",
-				"b5634", emptyMap, null)));
+		ValidationContext[] contexts = new ValidationContext[] {
+				new ValidationContext("field", new Object[] { null }, emptyMap,
+						null),
+				new ValidationContext("field", new Object[] { "" }, emptyMap,
+						null),
+				new ValidationContext("field", new Object[] { "a5634" },
+						emptyMap, null) };
+		for (ValidationContext context : contexts) {
+			validator.validate(context);
+			assertFalse(String.valueOf(context.getValues()), context.hasError());
+		}
+	}
+
+	public void testValidation2() {
+		Validator validator = new RegexpValidator("a.*34");
+		ValidationContext[] contexts = new ValidationContext[] { new ValidationContext(
+				"field", new Object[] { "b5634" }, emptyMap, null) };
+		for (ValidationContext context : contexts) {
+			validator.validate(context);
+			assertTrue(String.valueOf(context.getValues()), context.hasError());
+		}
 	}
 }

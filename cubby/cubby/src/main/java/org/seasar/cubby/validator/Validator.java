@@ -2,15 +2,23 @@ package org.seasar.cubby.validator;
 
 /**
  * 入力検証を行うクラスのインターフェイスです。
+ * 
  * @author agata
+ * @author baba
  */
 public interface Validator {
+
 	/**
 	 * 入力検証を行います。
-	 * 検証エラーがある場合、エラーメッセージを返します。
-	 * 検証エラーがない場合、nullを返します。
-	 * @param ctx 入力値
-	 * @return エラーメッセージ。nullなら検証エラーなし。
+	 * <p>
+	 * 検証エラーがある場合、コンテキストにエラーメッセージを追加します。これは、
+	 * {@link ValidationContext#hasError()} で確認できます。
+	 * </p>
+	 * 
+	 * @param context
+	 *            入力検証コンテキスト
+	 * @see ValidationContext#hasError()
 	 */
-	String validate(ValidationContext ctx);
+	void validate(ValidationContext context);
+
 }

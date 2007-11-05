@@ -7,11 +7,15 @@ import org.seasar.cubby.util.Messages;
 
 /**
  * 入力検証の基底クラスです。
+ * <p>
  * エラーメッセージのリソースからの取得・作成をサポートします。
+ * </p>
+ * 
  * @author agata
+ * @author baba
  */
-abstract public class BaseValidator implements Validator {
-	
+public abstract class BaseValidator implements Validator {
+
 	/**
 	 * エラーメッセージのキー
 	 */
@@ -19,7 +23,9 @@ abstract public class BaseValidator implements Validator {
 
 	/**
 	 * エラーメッセージのキーをセットします。
-	 * @param messageKey エラーメッセージのキー
+	 * 
+	 * @param messageKey
+	 *            エラーメッセージのキー
 	 */
 	protected void setMessageKey(final String messageKey) {
 		this.messageKey = messageKey;
@@ -27,7 +33,9 @@ abstract public class BaseValidator implements Validator {
 
 	/**
 	 * エラーメッセージのキーを元に、メッセージを作成して取得します。
-	 * @param args 置換文字列
+	 * 
+	 * @param args
+	 *            置換文字列
 	 * @return 置換後のエラーメッセージ
 	 */
 	protected String getMessage(final Object... args) {
@@ -37,7 +45,9 @@ abstract public class BaseValidator implements Validator {
 
 	/**
 	 * 項目名をメッセージリソースから取得します。
-	 * @param key 項目名のメッセージキー
+	 * 
+	 * @param key
+	 *            項目名のメッセージキー
 	 * @return 項目名の文字列
 	 */
 	protected String getPropertyMessage(final String key) {

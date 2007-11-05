@@ -12,16 +12,27 @@ public class MinSizeTest extends TestCase {
 
 	final static Map<String, Object[]> emptyMap = Collections.emptyMap();
 
-	public void testValidation() {
-
+	public void testValidation1() {
 		Validator validator = new MinSizeValidator(3);
-		assertNull(validator.validate(new ValidationContext("field", null,
-				emptyMap, null)));
-		assertNotNull(validator.validate(new ValidationContext("field",
-				new Object[] { "1", "2" }, emptyMap, null)));
-		assertNull(validator.validate(new ValidationContext("field",
-				new Object[] { "1", "2", "3" }, emptyMap, null)));
-		assertNull(validator.validate(new ValidationContext("field",
-				new Object[] { "1", "2", "3", "4" }, emptyMap, null)));
+		ValidationContext[] contexts = new ValidationContext[] {
+				new ValidationContext("field", null, emptyMap, null),
+				new ValidationContext("field", new Object[] { "1", "2", "3" },
+						emptyMap, null),
+				new ValidationContext("field", new Object[] { "1", "2", "3",
+						"4" }, emptyMap, null) };
+		for (ValidationContext context : contexts) {
+			validator.validate(context);
+			assertFalse(context.hasError());
+		}
+	}
+
+	public void testValidation2() {
+		Validator validator = new MinSizeValidator(3);
+		ValidationContext[] contexts = new ValidationContext[] { new ValidationContext(
+				"field", new Object[] { "1", "2" }, emptyMap, null) };
+		for (ValidationContext context : contexts) {
+			validator.validate(context);
+			assertTrue(context.hasError());
+		}
 	}
 }
