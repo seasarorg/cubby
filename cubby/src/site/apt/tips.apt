@@ -1,0 +1,73 @@
+                                    ------
+                                 Tips集
+                                    ------
+                                     agata
+                                    ------
+                                  2007-11-30
+
+画面部品のインポートについて
+
+ Cubby では 共通の画面部品（他のフレームワークではコンポーネントなどと呼ばれます）を何もサポートしませんが、
+ 画面部品が必要な場合、以下のように「JSTLのc:importタグ」+「JSP標準のスクリプトレット」＋「Seasar2 の SingletonS2Container」を使って
+ 画面部品を作成することを推奨します。
+
+ 画面部品では、引数を元にデータベースへの検索などを行いたい場合があります。
+ その場合、画面部品のJSPページの先頭に画面描画に必要な情報取得のスクリプトレットを記述します。
+ 通常はSeasar2を使用する場合、スクリプトレット中でLogicクラスやDaoのメソッドを実行すれば良いでしょう。
+ スクリプトレットは多用するとメンテナンス性が落ちますので、画面部品の先頭でのみで限定的に使用することをおすすめします。
+
+ なお、Eclipseの{{{http://www.eclipse.org/webtools/}WTP(Web Tools Platform)}}プラグインを使用するとスクリプトレット中の「Javaコードの補完」「import文の自動設定」「コンパイルエラーの表示」などほぼ完璧に行ってくれます。
+ スクリプトレットでも通常のJavaコード同様にさくさく開発できるのでぜひ導入してみてください。
+
+ <<import(単純な場合)：メイン画面>>
+ 
++------------------------------------------------------+
+<h2>1.c:importを使用したサンプル<br/>
+（S2やDBデータと絡まない単純なパターン）</h2>
+<c:import url="img.jsp">
+	<c:param name="x" value="100"/>
+	<c:param name="y" value="100"/>
+	<c:param name="imageUrl" value="http://www.seasar.org/images/seasar_logo_blue.gif"/>
+</c:import>
+<c:import url="img.jsp">
+	<c:param name="x" value="200"/>
+	<c:param name="y" value="200"/>
+	<c:param name="imageUrl" value="http://www.seasar.org/images/seasar_banner.gif"/>
+</c:import>
++------------------------------------------------------+
+
+ <<import（単純な場合）：画面部品(img.jsp)>>
+
++------------------------------------------------------+
+${param.imageUrl}:<br/>
+<img src="${param.imageUrl}" width="${param.x}" height="${param.y}"/><br/>
+<hr/>
++------------------------------------------------------+
+
+ <<import（Seasar2のDaoを利用)：メイン画面>>
+
++------------------------------------------------------+
+<h2>2.c:importを使用したサンプル<br/>
+（S2やDBデータを読み込み先のJSPのスクリプトレットで直接使用(WTPの使用をおすすめ)）</h2>
+<c:import url="import_scriptlet.jsp"/>
++------------------------------------------------------+
+
+ <<import（Seasar2のDaoを利用)：画面部品(import_scriptlet.jsp)>>
+
++------------------------------------------------------+
+<%@page import="java.util.List"%>
+<%@page import="org.seasar.framework.container.SingletonS2Container"%>
+<%@page import="org.seasar.cubby.examples.todo.dao.TodoTypeDao"%>
+<%@page import="org.seasar.cubby.examples.todo.entity.TodoType"%>
+<%
+	TodoTypeDao todoTypeDao = SingletonS2Container
+			.getComponent(TodoTypeDao.class);
+	List<TodoType> types = todoTypeDao.seletAll();
+	pageContext.setAttribute("types", types);
+%>
+<br />
+<c:forEach var="type" items="${types}">
+	<li>${type.name}</li>
+</c:forEach>
+<hr />
++------------------------------------------------------+
