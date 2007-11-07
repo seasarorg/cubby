@@ -84,7 +84,9 @@ public class ActionContextImpl implements ActionContext {
 		final Object formBean;
 		final Action action = getAction();
 		final Form form = actionDef.getMethod().getAnnotation(Form.class);
-		if (form == null || Form.THIS.equals(form.value())) {
+		if (form != null && form.binding() == false) {
+			formBean = null;
+		} else if (form == null || Form.THIS.equals(form.value())) {
 			formBean = action;
 		} else {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
