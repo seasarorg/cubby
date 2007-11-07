@@ -177,7 +177,7 @@ mvn tomcat:run
 
       * dxo.dicon (S2Extension の jar ファイルに含まれます)
 
-      * cubby.dicon (Cubby の jar ファイルに含まれます)
+      * routing.dicon、cubby.dicon (Cubby の jar ファイルに含まれます)
 
       * app-cubby.dicon (必要な場合に作成してください。必須ではありません)
 
@@ -189,7 +189,7 @@ mvn tomcat:run
 	<include path="convention.dicon"/>
 	<include path="aop.dicon"/>
 	<include path="dxo.dicon"/>
-	<include path="urlfilter.dicon"/>
+	<include path="routing.dicon"/>
 	<include path="cubby.dicon"/>
 	<include path="app-cubby.dicon"/>
 </components>

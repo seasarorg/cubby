@@ -81,22 +81,19 @@ public class ActionContextImpl implements ActionContext {
 	}
 
 	public Object getFormBean() {
-		final Form form = actionDef.getMethod().getAnnotation(Form.class);
-		if (form == null) {
-			return null;
-		}
+		final Object formBean;
 		final Action action = getAction();
-		final String formName = form.value();
-		if (Form.THIS.equals(formName)) {
-			return action;
+		final Form form = actionDef.getMethod().getAnnotation(Form.class);
+		if (form == null || Form.THIS.equals(form.value())) {
+			formBean = action;
 		} else {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(formName);
-			final Object value = propertyDesc.getValue(action);
-			return value;
+			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(form
+					.value());
+			formBean = propertyDesc.getValue(action);
 		}
+		return formBean;
 	}
 
 }

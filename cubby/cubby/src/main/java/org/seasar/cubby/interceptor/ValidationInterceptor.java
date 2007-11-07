@@ -95,7 +95,7 @@ public class ValidationInterceptor implements MethodInterceptor {
 			final Action action = context.getAction();
 			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action.getClass());
 			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
-					.rulesField());
+					.rules());
 			validationRules = (ValidationRules) propertyDesc.getValue(action);
 		}
 		return validationRules;
