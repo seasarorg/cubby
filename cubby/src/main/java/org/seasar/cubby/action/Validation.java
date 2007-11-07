@@ -17,12 +17,12 @@ import java.lang.annotation.Target;
  * </p>
  * 
  * @author agata
+ * @author baba
  * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Validation {
-	static String DEFAULT_VALIDATION_RULES_FILED = "VALIDATION";
 
 	/**
 	 * 入力検証でエラーがあった場合にフォワードするパスを指定します。
@@ -32,5 +32,5 @@ public @interface Validation {
 	/**
 	 * 入力検証の定義を取得するプロパティ名を指定します。
 	 */
-	String rulesField() default DEFAULT_VALIDATION_RULES_FILED;
+	String rules();
 }

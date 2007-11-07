@@ -84,7 +84,7 @@ public class ActionValidatorImplTest extends S2TestCase {
 //	}
 
 	public static class SampleAction extends Action {
-		@Validation(errorPage="error.jsp")
+		@Validation(rules="validation", errorPage="error.jsp")
 		public String test() {
 			return null;
 		}

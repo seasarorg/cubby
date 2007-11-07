@@ -29,7 +29,7 @@
 				<include name="cubby-customizer.dicon"/>
 				<include name="cubby-dxo.dicon"/>
 				<include name="messages.properties"/>
-				<include name="urlfilter.dicon"/>
+				<include name="routing.dicon"/>
 			</zipfileset>
 			<zipfileset prefix="cubby/resources" dir="../cubby/src/test/resources">
 				<include name="app.dicon"/>

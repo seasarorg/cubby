@@ -188,24 +188,6 @@
   </tag>
   <tag>
    	<description>
-   	  テンプレートに部品をはめ込みます。
-   	</description>
-    <name>template</name>
-    <tag-class>org.seasar.cubby.tags.TemplateTag</tag-class>
-    <body-content>scriptless</body-content>
-    <attribute>
-      <description>
-		テンプレートを指定します。
-      </description>
-      <name>extend</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-      <type>java.lang.String</type>
-    </attribute>
-    <dynamic-attributes>true</dynamic-attributes>
-  </tag>
-  <tag>
-   	<description>
       このタグで囲まれた領域は出力されません。 JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲みます。 このタグに属性はありません。
     </description>
     <name>null</name>
