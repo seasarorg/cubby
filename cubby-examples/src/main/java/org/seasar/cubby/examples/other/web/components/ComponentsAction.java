@@ -20,7 +20,7 @@ public class ComponentsAction extends Action {
 		@Override
 		public void initialize() {
 			add("date", new DateFormatValidator("yyyy-MM-dd"));
-			add("intValue", new RangeValidator(1, 10));
+			add("intValue", new NumberValidator(), new RangeValidator(1, 10));
 		}
 	};
 	
