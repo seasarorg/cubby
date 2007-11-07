@@ -38,7 +38,7 @@ public class FileUploadAction extends Action {
 	}
 
 	@Form
-	@Validation(rulesField = "validation", errorPage = "fileupload.jsp")
+	@Validation(rules = "validation", errorPage = "fileupload.jsp")
 	public ActionResult upload() {
 		return new Forward("fileupload_done.jsp");
 	}

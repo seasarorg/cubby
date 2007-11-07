@@ -56,7 +56,7 @@ public class TodoListAction extends Action {
 	 * 一覧の表示(/todo/)
 	 */
 	@Form("todoConditionDto")
-	@Validation(rulesField="validation", errorPage="list.jsp")
+	@Validation(rules="validation", errorPage="list.jsp")
 	public ActionResult index() {
 		this.todoList = todoDao.selectByCondition(todoConditionDto);
 		return new Forward("list.jsp");

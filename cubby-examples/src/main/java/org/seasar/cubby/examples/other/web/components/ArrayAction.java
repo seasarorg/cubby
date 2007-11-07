@@ -56,7 +56,7 @@ public class ArrayAction extends Action {
 	
 	@Form()
 	@Url("array_save")
-	@Validation(rulesField="validation", errorPage="array.jsp")
+	@Validation(rules="validation", errorPage="array.jsp")
 	public ActionResult array_save() {
 		System.out.println(check);
 		return new Forward("array.jsp");

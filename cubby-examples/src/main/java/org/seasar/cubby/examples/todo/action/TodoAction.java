@@ -95,7 +95,7 @@ public class TodoAction extends Action {
 	 * 確認表示処理(/todo/confirm)
 	 */
 	@Form
-	@Validation(rulesField = "validation", errorPage = "edit.jsp")
+	@Validation(rules = "validation", errorPage = "edit.jsp")
 	public ActionResult confirm() {
 		TodoType todoType = todoTypeDao.selectById(this.typeId);
 		this.todoType = todoType;
@@ -114,7 +114,7 @@ public class TodoAction extends Action {
 	 * 保存処理(/todo/save)
 	 */
 	@Form
-	@Validation(rulesField = "validation", errorPage = "confirm.jsp")
+	@Validation(rules = "validation", errorPage = "confirm.jsp")
 	public ActionResult save() {
 		if (this.id == null) {
 			Todo todo = todoDxo.convert(this);

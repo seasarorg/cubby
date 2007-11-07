@@ -44,7 +44,7 @@ public class ComponentsAction extends Action {
 	}
 	
 	@Form("form")
-	@Validation(rulesField="validation", errorPage="components.jsp")
+	@Validation(rules="validation", errorPage="components.jsp")
 	public ActionResult index() {
 		return new Forward("components.jsp");
 	}
