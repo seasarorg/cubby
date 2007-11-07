@@ -10,43 +10,50 @@ import java.lang.annotation.Target;
  * 
  * <pre>
  * public class HogeAction {
- *   private FugaBean fuga;
- *   public FugaBean getFuga() {
- *     return this.fuga;
- *   }
+ * 	private FugaBean fuga;
  * 
- *   // &#64;Formの指定がないため、バインディングされません。
- *   public ActionResult m1() {
- *   }
+ * 	public FugaBean getFuga() {
+ * 		return this.fuga;
+ * 	}
  * 
- *   &#64;Form // -&gt; HogeActionにバインディングします。
- *   public ActionResult m2() {
- *   }
+ * 	// @Formの指定がないため、バインディングされません。
+ * 	public ActionResult m1() {
+ * 	}
  * 
- *   &#64;Form(&quot;fuga&quot;) // プロパティfugaにバインディングします。
- *   public ActionResult m3() {
- *   }
+ * 	&#064;Form
+ * 	// -&gt; HogeActionにバインディングします。
+ * 	public ActionResult m2() {
+ * 	}
+ * 
+ * 	&#064;Form(&quot;fuga&quot;)
+ * 	// プロパティfugaにバインディングします。
+ * 	public ActionResult m3() {
+ * 	}
  * }
  * 
- * &#64;Form(&quot;fuga&quot;) // 全アクションメソッドに対して一括でバインディングの指定を行います。
+ * &#064;Form(&quot;fuga&quot;)
+ * // 全アクションメソッドに対して一括でバインディングの指定を行います。
  * public class Hoge2Action {
- *   private FugaBean fuga;
- *   public FugaBean getFuga() {
- *     return this.fuga;
- *   }
+ * 	private FugaBean fuga;
  * 
- *   private ZzzBean zzz;
- *   public ZzzBean getZzz() {
- *     return this.zzz;
- *   }
+ * 	public FugaBean getFuga() {
+ * 		return this.fuga;
+ * 	}
  * 
- *   // プロパティfugaにバインディングします(クラスでの指定が有効なため)。
- *   public ActionResult m1() {
- *   }
+ * 	private ZzzBean zzz;
  * 
- *   &#64;Form(&quot;zzz&quot;) // プロパティzzzにバインディングします（アクションメソッドでの指定が優先されるため）。
- *   public ActionResult m2() {
- *   }
+ * 	public ZzzBean getZzz() {
+ * 		return this.zzz;
+ * 	}
+ * 
+ * 	// プロパティfugaにバインディングします(クラスでの指定が有効なため)。
+ * 	public ActionResult m1() {
+ * 	}
+ * 
+ * 	&#064;Form(&quot;zzz&quot;)
+ * 	// プロパティzzzにバインディングします（アクションメソッドでの指定が優先されるため）。
+ * 	public ActionResult m2() {
+ * 	}
  * }
  * </pre>
  * 
@@ -66,4 +73,13 @@ public @interface Form {
 	 * </p>
 	 */
 	String value() default THIS;
+
+	/**
+	 * リクエストパラメータからフォームオブジェクトへのバインディングするかを示します。
+	 * <p>
+	 * <code>false</code> が指定された場合はフォームオブジェクトへのバインディングを行いません。
+	 * </p>
+	 */
+	boolean binding() default true;
+
 }
