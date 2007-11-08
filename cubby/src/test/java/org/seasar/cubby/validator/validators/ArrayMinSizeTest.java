@@ -8,12 +8,12 @@ import junit.framework.TestCase;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.Validator;
 
-public class MinSizeTest extends TestCase {
+public class ArrayMinSizeTest extends TestCase {
 
 	final static Map<String, Object[]> emptyMap = Collections.emptyMap();
 
 	public void testValidation1() {
-		Validator validator = new MinSizeValidator(3);
+		Validator validator = new ArrayMinSizeValidator(3);
 		ValidationContext[] contexts = new ValidationContext[] {
 				new ValidationContext("field", null, emptyMap, null),
 				new ValidationContext("field", new Object[] { "1", "2", "3" },
@@ -27,7 +27,7 @@ public class MinSizeTest extends TestCase {
 	}
 
 	public void testValidation2() {
-		Validator validator = new MinSizeValidator(3);
+		Validator validator = new ArrayMinSizeValidator(3);
 		ValidationContext[] contexts = new ValidationContext[] { new ValidationContext(
 				"field", new Object[] { "1", "2" }, emptyMap, null) };
 		for (ValidationContext context : contexts) {

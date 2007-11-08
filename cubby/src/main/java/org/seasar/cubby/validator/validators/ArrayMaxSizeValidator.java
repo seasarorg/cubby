@@ -4,38 +4,38 @@ import org.seasar.cubby.validator.BaseValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 配列の最小サイズを検証します。
+ * 配列の最大サイズを検証します。
  * 
  * @author agata
  * @author baba
  */
-public class MinSizeValidator extends BaseValidator {
+public class ArrayMaxSizeValidator extends BaseValidator {
 
 	/**
-	 * 配列の最小サイズ
+	 * 配列の最大サイズ
 	 */
-	private final int min;
+	private final int max;
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param min
-	 *            配列の最小サイズ
+	 * @param max
+	 *            配列の最大サイズ
 	 */
-	public MinSizeValidator(final int min) {
-		this(min, "valid.minSize");
+	public ArrayMaxSizeValidator(final int max) {
+		this(max, "valid.maxSize");
 	}
 
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
 	 * 
-	 * @param min
-	 *            配列の最小サイズ
+	 * @param max
+	 *            配列の最大サイズ
 	 * @param messageKey
 	 *            エラーメッセージキー
 	 */
-	public MinSizeValidator(final int min, final String messageKey) {
-		this.min = min;
+	public ArrayMaxSizeValidator(final int max, final String messageKey) {
+		this.max = max;
 		this.setMessageKey(messageKey);
 	}
 
@@ -44,9 +44,9 @@ public class MinSizeValidator extends BaseValidator {
 		if (values == null) {
 			return;
 		}
-		if (values.length < min) {
+		if (values.length > max) {
 			context.addMessage(getMessage(
-					getPropertyMessage(context.getName()), min));
+					getPropertyMessage(context.getName()), max));
 		}
 	}
 }
