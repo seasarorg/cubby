@@ -68,7 +68,9 @@ public class LoginAction extends Action {
 *----------------------+--------------------------------------+
 | <<クラス名>>          | <<説明>>                              |
 *----------------------+--------------------------------------+
-|{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayValidator.html}ArrayValidator}}        |配列のパラメータに対して入力検証を行います。|
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMaxSizeValidator.html}ArrayMaxSizeValidator}}      |配列の最大サイズを検証します。            |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMinSizeValidator.html}ArrayMinSizeValidator}}      |配列の最小サイズを検証します。            |
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/DateFormatValidator.html}DateFormatValidator}}   |日付に対する検証を行います。              | 
 *----------------------+--------------------------------------+
@@ -79,10 +81,6 @@ public class LoginAction extends Action {
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/FileRegexpValidator.html}FileRegexpValidator}}   |ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。|
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/MaxLengthValidator.html}MaxLengthValidator}}    |最大文字数を検証します。                 |
-*----------------------+--------------------------------------+
-|{{{cubby/apidocs/org/seasar/cubby/validator/validators/MaxSizeValidator.html}MaxSizeValidator}}      |配列の最大サイズを検証します。            |
-*----------------------+--------------------------------------+
-|{{{cubby/apidocs/org/seasar/cubby/validator/validators/MinSizeValidator.html}MinSizeValidator}}      |配列の最小サイズを検証します。            |
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/NumberValidator.html}NumberValidator}}       |数値かどうかを検証します。                |
 *----------------------+--------------------------------------+
