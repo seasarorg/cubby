@@ -14,6 +14,8 @@ public class NullTagTest extends JspTagTestCase {
 
 	public void testDoTag() throws Exception {
 		tag.doTag();
+		tag.setDynamicAttribute(null, "id", "token");
+
 		assertEquals("", context.getResult());
 	}
 }
