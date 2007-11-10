@@ -12,6 +12,7 @@
 	<ul>
 	<li><a href="hello/hello">Hello World</a></li>
 	<li><a href="inputTagText/">InputTagText</a></li>
+	<li><a href="token/">token</a></li>
 </ul>
 </body>
 </html>

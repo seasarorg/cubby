@@ -6,7 +6,7 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 
 public class InputTagTextAction extends Action {
 
-	public ValidationRules VALIDATION = new DefaultValidationRules() {
+	public ValidationRules validation = new DefaultValidationRules() {
 		public void initialize() {
 			add("integerValue", new RequiredValidator());
 			add("byteValue", new RequiredValidator());
@@ -33,7 +33,7 @@ public class InputTagTextAction extends Action {
 	}
 
 	@Form
-	@Validation(errorPage="index.jsp")
+	@Validation(errorPage="index.jsp", rules="validation")
 	public ActionResult post() {
 		return new Forward("index.jsp");
 	}
