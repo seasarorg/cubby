@@ -11,7 +11,9 @@ import org.seasar.framework.util.StringUtil;
 
 /**
  * Eメールアドレスに対する検証を行います。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.email
+ * </p>
  * @author agata
  * @author baba
  */

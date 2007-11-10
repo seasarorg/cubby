@@ -9,7 +9,9 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * String#length()メソッドで文字列の長さを求めます。文字列のバイト数でないこと、半角全角も1文字としてカウントされることに注意してください。
  * </p>
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.maxLength
+ * </p>
  * @author agata
  * @author baba
  * @see String#length()

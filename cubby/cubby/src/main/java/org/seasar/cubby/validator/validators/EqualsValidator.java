@@ -5,7 +5,9 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 指定した文字列と等しいかどうかを検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.equals
+ * </p>
  * @author agata
  * @author baba
  */

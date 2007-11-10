@@ -15,7 +15,10 @@ import org.seasar.framework.util.StringUtil;
  * 日付に対する検証を行います。
  * <p>
  * 日付パターンを指定しない場合、「app-cubby.dicon」で指定した日付パターンが使用されます。
- * 
+ * </p>
+ * <p>
+ * デフォルトエラーメッセージキー:valid.dateFormat
+ * </p>
  * @author agata
  * @author baba
  * @see SimpleDateFormat

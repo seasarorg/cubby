@@ -10,7 +10,9 @@ import org.seasar.framework.util.StringUtil;
  * 数値かどうかを検証します。
  * <p>
  * 数値かどうかの検証は {@link BigDecimal#BigDecimal(String)} で行っています。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.number
+ * </p>
  * @author agata
  * @author baba
  * @see BigDecimal#BigDecimal(String)
