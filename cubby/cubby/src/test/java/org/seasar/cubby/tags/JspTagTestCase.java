@@ -10,20 +10,20 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 
-import junit.framework.TestCase;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.extension.unit.S2TestCase;
 
-abstract public class JspTagTestCase extends TestCase {
+abstract public class JspTagTestCase extends S2TestCase {
 	protected MockJspFragment jspBody;
 	protected MockJspContext context;
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		jspBody = new MockJspFragment();
 		context = new MockJspContext();
 		jspBody.setJspContext(context);

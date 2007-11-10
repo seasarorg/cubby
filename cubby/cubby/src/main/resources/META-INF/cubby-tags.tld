@@ -188,6 +188,26 @@
   </tag>
   <tag>
    	<description>
+      2重サブミット防止用の&lt;input type=&quot;hidden&quot; /&gt;を出力します。 このタグに属性はありません。
+    </description>
+    <name>token</name>
+    <tag-class>org.seasar.cubby.tags.TokenTag</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <description>
+		name 属性として出力する値を取得するプロパティ名を指定します。
+		この属性の値は name 属性としてそのまま出力されます。
+		name 属性が省略された場合の初期値は「cubby.token」です。
+      </description>
+      <name>name</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <dynamic-attributes>true</dynamic-attributes>
+  </tag>
+  <tag>
+   	<description>
       このタグで囲まれた領域は出力されません。 JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲みます。 このタグに属性はありません。
     </description>
     <name>null</name>

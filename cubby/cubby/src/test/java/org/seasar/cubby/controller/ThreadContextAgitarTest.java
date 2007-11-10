@@ -22,8 +22,8 @@ public class ThreadContextAgitarTest extends S2TestCase {
 
     public void testGetMessagesMap() throws Throwable {
         Map<?, ?> result = ThreadContext.getMessagesMap();
-        assertEquals("result.size()", 12, result.size());
-        assertEquals("(HashMap) result.get(\"valid.maxSize\")", "{0}は{1}以下選択してください。", result.get("valid.maxSize"));
+        assertEquals("result.size()", 13, result.size());
+        assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")", "{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
     }
     
     public void testGetMessagesResourceBundle() throws Throwable {

@@ -51,4 +51,8 @@ public class CubbyConstants {
 	 */
 	public static final String ATTR_METHOD_NAME = "org.seasar.cubby.methodName";
 
+	/**
+	 * TODO
+	 */
+	public static final String ATTR_TOKEN = "org.seasar.cubby.token";
 }
