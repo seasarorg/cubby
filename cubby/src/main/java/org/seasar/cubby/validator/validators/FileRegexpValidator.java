@@ -9,7 +9,9 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.fileRegexp
+ * </p>
  * @see Pattern
  * @see Matcher
  * @author baba

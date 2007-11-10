@@ -9,7 +9,9 @@ import org.seasar.framework.util.StringUtil;
 
 /**
  * 指定された正規表現にマッチするか検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.regexp
+ * </p>
  * @author baba
  * @see Pattern
  * @see Matcher

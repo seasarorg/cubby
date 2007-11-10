@@ -8,6 +8,10 @@ import org.seasar.framework.util.StringUtil;
  * 必須検証します。
  * <p>
  * 文字列の長さが0の場合、検証エラーとなります。
+ * </p>
+ * <p>
+ * デフォルトエラーメッセージキー:valid.required
+ * </p>
  * 
  * @author agata
  * @author baba

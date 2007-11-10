@@ -5,7 +5,9 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 配列の最大サイズを検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.arrayMaxSize
+ * </p>
  * @author agata
  * @author baba
  */
@@ -23,7 +25,7 @@ public class ArrayMaxSizeValidator extends BaseValidator {
 	 *            配列の最大サイズ
 	 */
 	public ArrayMaxSizeValidator(final int max) {
-		this(max, "valid.maxSize");
+		this(max, "valid.arrayMaxSize");
 	}
 
 	/**

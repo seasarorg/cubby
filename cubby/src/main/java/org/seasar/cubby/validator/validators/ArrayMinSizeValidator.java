@@ -5,7 +5,9 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 配列の最小サイズを検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.arrayMinSize
+ * </p>
  * @author agata
  * @author baba
  */
@@ -23,7 +25,7 @@ public class ArrayMinSizeValidator extends BaseValidator {
 	 *            配列の最小サイズ
 	 */
 	public ArrayMinSizeValidator(final int min) {
-		this(min, "valid.minSize");
+		this(min, "valid.arrayMinSize");
 	}
 
 	/**

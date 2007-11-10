@@ -8,7 +8,10 @@ import org.seasar.framework.util.StringUtil;
  * 文字列の長さの範囲を指定して検証します。
  * <p>
  * String#length()メソッドで文字列の長さを求めます。文字列のバイト数でないこと、半角全角も1文字としてカウントされることに注意してください。
- * 
+ * </p>
+ * <p>
+ * デフォルトエラーメッセージキー:valid.rangeLength
+ * </p>
  * @author agata
  * @author baba
  */

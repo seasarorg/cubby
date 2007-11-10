@@ -6,7 +6,9 @@ import org.seasar.framework.util.StringUtil;
 
 /**
  * 数値の範囲を指定して検証します。
- * 
+ * <p>
+ * デフォルトエラーメッセージキー:valid.range
+ * </p>
  * @author agata
  * @author baba
  */
