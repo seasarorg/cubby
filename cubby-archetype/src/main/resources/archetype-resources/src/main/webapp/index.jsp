@@ -8,7 +8,7 @@
   <title>Cuuby archetype sample app : index</title>
 </head>
 <body>
-<h1>Cuuby archetype sample app</h1>
+<h1>Cuuby archetype sample app : index</h1>
 <c:import url="/commons/errors.jsp"/>
 <c:import url="/commons/notice.jsp"/>
 <t:form action="message" value="${action}" method="post">
