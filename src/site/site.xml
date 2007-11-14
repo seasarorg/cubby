@@ -34,6 +34,12 @@
 			<item name="JavaDoc" href="/apidocs/index.html" />
 		</menu>
 
+		<menu name="リソース">
+			<item name="メーリングリスト" href="/mail-lists.html" />
+			<item name="課題(JIRA)" href="/issue-tracking.html" />
+			<item name="SVNリポジトリ" href="/source-repository.html" />
+		</menu>
+
 		${reports}
 
 		${modules}
