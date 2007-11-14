@@ -26,6 +26,7 @@ public class HelloAction extends Action {
 	@Validation(rulesField = "validation", errorPage = "/index.jsp")
 	public ActionResult hello() {
 		this.message = helloService.getMessage();
+		flash.put("notice", getText("msg.dummy"));
 		return new Forward("hello.jsp");
 	}
 }

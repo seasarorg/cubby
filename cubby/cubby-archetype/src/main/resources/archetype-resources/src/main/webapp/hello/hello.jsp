@@ -8,7 +8,9 @@
   <title>Cuuby archetype sample app : result</title>
 </head>
 <body>
-	<h1>Hello</h1>
-	message : [${message}]
+<h1>Cuuby archetype sample app : result</h1>
+<c:import url="/commons/errors.jsp"/>
+<c:import url="/commons/notice.jsp"/>
+post message : [${message}]
 </body>
 </html>
