@@ -9,6 +9,7 @@
 </head>
 <body>
 <h1>Cuuby archetype sample app : result</h1>
+${messages['msg.dummy']}<br/>
 <c:import url="/commons/errors.jsp"/>
 <c:import url="/commons/notice.jsp"/>
 post message : [${message}]
