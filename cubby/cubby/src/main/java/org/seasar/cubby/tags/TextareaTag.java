@@ -53,8 +53,15 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 		final Map<String, Object> dyn = this.getDynamicAttribute();
 		final Map<String, String[]> outputValues = outputValues(context);
 
-		if (errors.hasFieldError(this.name)) {
-			addClassName(dyn, "fieldError");
+		if (this.index == null) {
+			if (!errors.getFields().get(this.name).isEmpty()) {
+				addClassName(dyn, "fieldError");
+			}
+		} else {
+			if (!errors.getIndexedFields().get(this.name).get(this.index)
+					.isEmpty()) {
+				addClassName(dyn, "fieldError");
+			}
 		}
 		final Object value = formValue(context, outputValues, this.name,
 				this.index, this.value);

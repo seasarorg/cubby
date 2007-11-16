@@ -1,6 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.ArrayFieldValidator;
+import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
@@ -8,10 +9,16 @@ import org.seasar.cubby.validator.ValidationContext;
  * <p>
  * デフォルトエラーメッセージキー:valid.arrayMaxSize
  * </p>
+ * 
  * @author agata
  * @author baba
  */
-public class ArrayMaxSizeValidator extends BaseValidator {
+public class ArrayMaxSizeValidator implements ArrayFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 配列の最大サイズ
@@ -25,7 +32,7 @@ public class ArrayMaxSizeValidator extends BaseValidator {
 	 *            配列の最大サイズ
 	 */
 	public ArrayMaxSizeValidator(final int max) {
-		this(max, "valid.arrayMaxSize");
+		this(max, "valid.maxSize");
 	}
 
 	/**
@@ -38,17 +45,15 @@ public class ArrayMaxSizeValidator extends BaseValidator {
 	 */
 	public ArrayMaxSizeValidator(final int max, final String messageKey) {
 		this.max = max;
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	public void validate(ValidationContext context) {
-		final Object[] values = context.getValues();
+	public void validate(final ValidationContext context, final Object[] values) {
 		if (values == null) {
 			return;
 		}
 		if (values.length > max) {
-			context.addMessage(getMessage(
-					getPropertyMessage(context.getName()), max));
+			context.addMessageInfo(this.messageHelper.createMessageInfo(max));
 		}
 	}
 }

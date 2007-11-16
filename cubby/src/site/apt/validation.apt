@@ -7,61 +7,67 @@
 
 バリデーション
 
- Cubby では以下のように、アクションメソッドに対して入力検証のルールを定義します。
+ Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。
 
- [[1]]インターフェイス{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}ValidationRules}}のインスタンスとして入力検証のルールを定義します。
+ フォームから入力された値は HttpServletRequest#getParameterValues で返される値が String の配列であることからもわかるように、
+ 全ての値は配列として取得できます。この配列に対してバリデーションを行います。
 
- [[2]]それをアクションクラスのプロパティとして取得できるようにします。
+ また、それ以外にもフォームオブジェクトやデータベースを参照したバリデーションをプログラム上に定義することができます。
 
- [[3]]アクションメソッドにアノテーション{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}を定義し、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#rulesField()}rulesField}}でアクションメソッドと入力検証プロパティを関連付けます。(指定しなかった場合は「VALIDATION」が使用されます)
+バリデーションの定義
 
- []
+ バリデーションの定義は Java コードで記述します。以下のように、アクションメソッドに対してバリデーションのルールを定義します。
 
- 入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたページに遷移します。
+ [[1]]アクションに{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}ValidationRules}}型のプロパティを用意し、
+      定義したバリデーションのルールを取得できるようにします。
 
- また、Cubbyにクライアントサイドバリデーションはありません。
+      以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
+      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッドをオーバーライドし、そのメソッドの中で
+      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドを用いて
+      フォームのフィールドごとにバリデーションのルールを追加します。
 
-+------------------------------------------------------+
-  // 検証ルールのプロパティとしてデフォルトの「VALIDATION」が使用されます。
-  // 検証エラー発生時は「confirm.jsp」に遷移します。
-  @Form
-  @Validation(errorPage = "confirm.jsp")
-  public ActionResult save1() {
-    ... 
-  }
-
-  // 検証ルールのプロパティとして「validation2」が使用されます。
-  // 検証エラー発生時は「confirm.jsp」に遷移します。
-  @Validation(rulesField="validation2", errorPage = "confirm.jsp")
-  public ActionResult save2() {
-    ... 
-  }
-+------------------------------------------------------+
-
- バリデーションの定義はJavaコードで記述します。以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
- {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッド内で
- {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドで
- フィールドごとにバリデーションのルールを追加します。
-
- バリデーションの一覧は{{{cubby/apidocs/org/seasar/cubby/validator/validators/package-summary.html}org.seasar.cubby.validator.validators}}を参照してください。
 
 +------------------------------------------------------+
 public class LoginAction extends Action {
-  public static ValidationRules VALIDATION = new DefaultValidationRules() {
+
+  // バリデーションのルール
+  public ValidationRules validationRules = new DefaultValidationRules() {
     @Override
     public void initialize() {
+      // フィールド "userId" は必須入力で最大10文字まで
       add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+
+      // フィールド "password" は必須入力で最大10文字まで
       add("password", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
   ...
++------------------------------------------------------+
+
+ [[2]]アクションメソッドにアノテーション{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}を定義し、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#rules()}rules}}でアクションメソッドと[[1]]で定義したバリデーションルールのプロパティを関連付けます。
+
+      入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたページに遷移します。
+
++------------------------------------------------------+
+  // プロパティ「validationRules」をバリデーションのルールとして使用します。
+  // 検証エラー発生時は「confirm.jsp」に遷移します。
+  @Form
+  @Validation(rules = "validationRules", errorPage = "confirm.jsp")
+  public ActionResult save1() {
+    ... 
+  }
+
 }
 +------------------------------------------------------+
+
+[]
 
 *定義済みバリデーション
 
  Cubbyで定義済みのバリデーションクラスは以下のものがあります。
- 詳細は定義済みバリデーションの{{{cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html}APIドキュメント}}をご覧下さい。
+
+ {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}} を実装しているクラスがひとつの要素を検証するバリデータ、
+ {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}} を実装しているクラスが配列全体を検証するバリデータとなっています。
 
  <<定義済みバリデーションクラス一覧>>
 
@@ -92,6 +98,8 @@ public class LoginAction extends Action {
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html}RequiredValidator}}     |必須検証します。                         |
 *----------------------+--------------------------------------+
+
+ 詳細は{{{cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html}APIドキュメント}}をご覧下さい。
 
 *バリデーションのエラーメッセージ
 
@@ -182,11 +190,20 @@ public class LoginAction extends Action {
 
 独自バリデーションの定義
 
- 独自のバリデーションは{{{cubby/apidocs/org/seasar/cubby/validator/Validator.html}Validator}}を実装して作成します。
- 通常は{{{cubby/apidocs/org/seasar/cubby/validator/BaseValidator.html}BaseValidator}}を継承して作成します。
- 
+ 独自のバリデーションクラスは{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}}
+ または{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ArrayFieldValidator}}を実装して作成します。
+
+ <<ひとつの要素を検証するバリデーションクラス>>
+
 +------------------------------------------------------+
-public class MaxLengthValidator extends BaseValidator {
++------------------------------------------------------+
+
+ <<配列全体を検証するバリデーションクラス>>
+
++------------------------------------------------------+
+public class MaxLengthValidator implements ArrayFieldValidator {
+
+  private final MessageHelper messageHelper;
 
   private final int max;
 
@@ -196,24 +213,24 @@ public class MaxLengthValidator extends BaseValidator {
 
   public MaxLengthValidator(final int max, final String messageKey) {
     this.max = max;
-    this.setMessageKey(messageKey);
+    this.messageHelper = new MessageHelper(messageKey);
   }
 
-  // 検証メソッド、戻り値はエラーメッセージ。戻り値がnullなら検証エラーなし。
-  public String validate(final ValidationContext ctx) {
-    final Object value = ctx.getValue();
+  // 検証メソッド
+  public void validate(final ValidationContext context, final Object value) {
     if (value instanceof String) {
-      String str = (String) value;
+      final String str = (String) value;
       if (StringUtil.isEmpty((String) value)) {
-        return null;
+        return;
       }
       if (str.length() <= max) {
-        return null;
+        return;
       }
     } else if (value == null) {
-      return null;
+      return;
     }
-    return getMessage(getPropertyMessage(ctx.getName()), max);
+    // エラーの場合は ValidationContext#addMessageInfo(MessageInfo) で、コンテキストにエラーメッセージを設定します。
+    context.addMessageInfo(this.messageHelper.createMessageInfo(max));
   }
 }
 +------------------------------------------------------+

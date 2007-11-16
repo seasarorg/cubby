@@ -123,7 +123,6 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	/**
 	 * タグの処理
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doTag() throws JspException, IOException {
 		final JspContext context = this.getJspContext();
@@ -132,7 +131,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		final Map<String, Object> dyn = this.getDynamicAttribute();
 		final Map<String, String[]> outputValues = outputValues(context);
 
-		if (errors.hasFieldError(this.name)) {
+		if (!errors.getFields().get(this.name).isEmpty()) {
 			addClassName(dyn, "fieldError");
 		}
 

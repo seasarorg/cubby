@@ -33,13 +33,12 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		this.name = name;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doTag() throws JspException, IOException {
-		PageContext context = (PageContext) getJspContext();
-		JspWriter out = context.getOut();
+		final PageContext context = (PageContext) getJspContext();
+		final JspWriter out = context.getOut();
 
-		String token = TokenHelper.generateGUID();
+		final String token = TokenHelper.generateGUID();
 		out.append("<input type=\"hidden\" name=\"");
 		if (StringUtil.isEmpty(name)) {
 			out.append(TokenHelper.DEFAULT_TOKEN_NAME);
@@ -51,7 +50,7 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		out.append("\" ");
 		out.write(toAttr(getDynamicAttribute()));
 		out.append("/>");
-		HttpSession session = ThreadContext.getRequest().getSession();
+		final HttpSession session = ThreadContext.getRequest().getSession();
 		TokenHelper.setToken(session, token);
 	}
 }

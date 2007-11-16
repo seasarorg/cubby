@@ -1,6 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
@@ -9,10 +10,16 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * デフォルトエラーメッセージキー:valid.range
  * </p>
+ * 
  * @author agata
  * @author baba
  */
-public class RangeValidator extends BaseScalarValidator {
+public class RangeValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 最小値
@@ -50,26 +57,25 @@ public class RangeValidator extends BaseScalarValidator {
 			final String messageKey) {
 		this.min = min;
 		this.max = max;
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext ctx) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
-			String str = (String) value;
+			final String str = (String) value;
 			if (StringUtil.isEmpty(str)) {
 				return;
 			}
 			try {
-				long longValue = Long.parseLong(str);
+				final long longValue = Long.parseLong(str);
 				if (longValue >= min && longValue <= max) {
 					return;
 				}
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 			}
 		} else if (value == null) {
 			return;
 		}
-		ctx.addMessage(getMessage(getPropertyMessage(ctx.getName()), min, max));
+		context.addMessageInfo(this.messageHelper.createMessageInfo(min, max));
 	}
 }

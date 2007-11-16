@@ -33,7 +33,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 
 	public void process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)
-			throws Throwable {
+			throws Exception {
 		final String path = CubbyUtils.getPath(request);
 
 		final ActionDef actionDef = cubbyConvention.fromPathToActionDef(

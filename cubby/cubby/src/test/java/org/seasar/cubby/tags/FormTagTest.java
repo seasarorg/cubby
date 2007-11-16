@@ -2,8 +2,6 @@ package org.seasar.cubby.tags;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspContext;
@@ -62,9 +60,7 @@ public class FormTagTest extends S2TestCase {
 
 	public void setupErrors(JspContext context) {
 		ActionErrorsImpl errors = new ActionErrorsImpl();
-		errors.setFieldErrors(new HashMap<String, List<String>>());
 		context.setAttribute("errors", errors, PageContext.REQUEST_SCOPE);
-		context.setAttribute("fieldErrors", errors.getFieldErrors(), PageContext.REQUEST_SCOPE);
 	}
 
 	public void testDoTag1() throws Exception {

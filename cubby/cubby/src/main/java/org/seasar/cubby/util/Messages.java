@@ -1,6 +1,7 @@
 package org.seasar.cubby.util;
 
 import java.text.MessageFormat;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.seasar.cubby.controller.ThreadContext;
@@ -25,7 +26,12 @@ public class Messages {
 	 */
 	public static String getText(final ResourceBundle resource,
 			final String key, final Object... args) {
-		return MessageFormat.format(resource.getString(key), args);
+		try {
+			final String text = resource.getString(key);
+			return MessageFormat.format(text, args);
+		} catch (final MissingResourceException e) {
+			return key;
+		}
 	}
 
 	/**

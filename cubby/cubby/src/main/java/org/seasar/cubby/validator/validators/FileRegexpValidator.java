@@ -4,7 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
@@ -12,11 +13,17 @@ import org.seasar.cubby.validator.ValidationContext;
  * <p>
  * デフォルトエラーメッセージキー:valid.fileRegexp
  * </p>
+ * 
  * @see Pattern
  * @see Matcher
  * @author baba
  */
-public class FileRegexpValidator extends BaseScalarValidator {
+public class FileRegexpValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 正規表現パターン
@@ -43,17 +50,15 @@ public class FileRegexpValidator extends BaseScalarValidator {
 	 */
 	public FileRegexpValidator(final String regex, final String messageKey) {
 		this.pattern = Pattern.compile(regex);
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext context) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof FileItem) {
 			final FileItem fileItem = (FileItem) value;
 			final Matcher matcher = pattern.matcher(fileItem.getName());
 			if (!matcher.matches()) {
-				context.addMessage(getMessage(getPropertyMessage(context
-						.getName())));
+				context.addMessageInfo(this.messageHelper.createMessageInfo());
 			}
 		}
 	}

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface ActionProcessor {
 
-	void process(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Throwable;
+	void process(HttpServletRequest request, HttpServletResponse response,
+			FilterChain chain) throws Exception;
 
 }

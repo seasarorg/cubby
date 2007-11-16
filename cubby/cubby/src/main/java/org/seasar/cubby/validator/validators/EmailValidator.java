@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
@@ -14,10 +15,11 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * デフォルトエラーメッセージキー:valid.email
  * </p>
+ * 
  * @author agata
  * @author baba
  */
-public class EmailValidator extends BaseScalarValidator {
+public class EmailValidator implements ScalarFieldValidator {
 
 	private static final String SPECIAL_CHARS = "\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
 	private static final String VALID_CHARS = "[^\\s" + SPECIAL_CHARS + "]";
@@ -36,6 +38,11 @@ public class EmailValidator extends BaseScalarValidator {
 	private static final String ATOM_PATTERN = "(" + ATOM + ")";
 
 	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
+
+	/**
 	 * コンストラクタ
 	 */
 	public EmailValidator() {
@@ -48,11 +55,10 @@ public class EmailValidator extends BaseScalarValidator {
 	 * @param messageKey
 	 */
 	public EmailValidator(final String messageKey) {
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext context) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value == null) {
 			return;
 		}
@@ -64,14 +70,14 @@ public class EmailValidator extends BaseScalarValidator {
 
 			boolean match = !email.endsWith(".");
 			if (match) {
-				Pattern pattern = Pattern.compile(LEGAL_ASCII_PATTERN);
-				Matcher matchAsciiPat = pattern.matcher(email);
+				final Pattern pattern = Pattern.compile(LEGAL_ASCII_PATTERN);
+				final Matcher matchAsciiPat = pattern.matcher(email);
 				match = matchAsciiPat.matches();
 			}
 
 			if (match) {
-				Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-				Matcher matcher = pattern.matcher(email);
+				final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+				final Matcher matcher = pattern.matcher(email);
 				match = matcher.find();
 				if (match) {
 					if (isValidUser(matcher.group(1))
@@ -81,12 +87,13 @@ public class EmailValidator extends BaseScalarValidator {
 				}
 			}
 		}
-		context.addMessage(getMessage(getPropertyMessage(context.getName())));
+
+		context.addMessageInfo(this.messageHelper.createMessageInfo());
 	}
 
-	private boolean isValidDomain(String domain) {
+	private boolean isValidDomain(final String domain) {
 		Pattern pattern = Pattern.compile(IP_DOMAIN_PATTERN);
-		Matcher ipAddressMatcher = pattern.matcher(domain);
+		final Matcher ipAddressMatcher = pattern.matcher(domain);
 
 		if (ipAddressMatcher.find()) {
 			if (isValidIpAddress(ipAddressMatcher)) {
@@ -94,7 +101,7 @@ public class EmailValidator extends BaseScalarValidator {
 			}
 		} else {
 			pattern = Pattern.compile(DOMAIN_PATTERN);
-			Matcher domainMatcher = pattern.matcher(domain);
+			final Matcher domainMatcher = pattern.matcher(domain);
 			if (domainMatcher.matches()) {
 				if (isValidSymbolicDomain(domain)) {
 					return true;
@@ -104,15 +111,15 @@ public class EmailValidator extends BaseScalarValidator {
 		return false;
 	}
 
-	private boolean isValidUser(String user) {
-		Pattern pattern = Pattern.compile(USER_PATTERN);
-		Matcher userMatcher = pattern.matcher(user);
+	private boolean isValidUser(final String user) {
+		final Pattern pattern = Pattern.compile(USER_PATTERN);
+		final Matcher userMatcher = pattern.matcher(user);
 		return userMatcher.matches();
 	}
 
-	private boolean isValidIpAddress(Matcher ipAddressMatcher) {
+	private boolean isValidIpAddress(final Matcher ipAddressMatcher) {
 		for (int i = 1; i <= 4; i++) {
-			String ipSegment = ipAddressMatcher.group(i);
+			final String ipSegment = ipAddressMatcher.group(i);
 			if (ipSegment == null || ipSegment.length() <= 0) {
 				return false;
 			}
@@ -121,7 +128,7 @@ public class EmailValidator extends BaseScalarValidator {
 
 			try {
 				iIpSegment = Integer.parseInt(ipSegment);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				return false;
 			}
 
@@ -134,11 +141,11 @@ public class EmailValidator extends BaseScalarValidator {
 	}
 
 	private boolean isValidSymbolicDomain(String domain) {
-		List<String> domainSegments = new ArrayList<String>();
+		final List<String> domainSegments = new ArrayList<String>();
 		boolean match = true;
 		int i = 0;
 
-		Pattern pattern = Pattern.compile(ATOM_PATTERN);
+		final Pattern pattern = Pattern.compile(ATOM_PATTERN);
 		Matcher atomMatcher;
 		String ds;
 		while (match) {
@@ -147,16 +154,16 @@ public class EmailValidator extends BaseScalarValidator {
 			if (match) {
 				ds = atomMatcher.group(1);
 				domainSegments.add(ds);
-				int l = ds.length() + 1;
-				domain = (l >= domain.length()) ? "" : domain.substring(l);
+				final int l = ds.length() + 1;
+				domain = l >= domain.length() ? "" : domain.substring(l);
 
 				i++;
 			}
 		}
 
-		int size = domainSegments.size();
+		final int size = domainSegments.size();
 		if (size > 0) {
-			String end = domainSegments.get(size - 1);
+			final String end = domainSegments.get(size - 1);
 			if (end.length() < 2 || end.length() > 4) {
 				return false;
 			}
@@ -168,4 +175,5 @@ public class EmailValidator extends BaseScalarValidator {
 
 		return true;
 	}
+
 }

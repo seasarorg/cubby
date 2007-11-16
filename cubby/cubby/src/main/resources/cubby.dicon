@@ -13,13 +13,10 @@
 	<component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" />
 
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
-	<component name="actionErrors" class="java.util.ArrayList" instance="request" />
-	<component name="fieldErrors" class="java.util.LinkedHashMap" instance="request" />
-	<component name="allErrors" class="java.util.ArrayList" instance="request" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
 
 	<!-- Validation -->
-	<component name="actionValidator" class="org.seasar.cubby.validator.impl.ActionValidatorImpl"/>
+	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/>
 
 	<!-- インターセプタ -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />

@@ -21,7 +21,7 @@ public interface ActionContext {
 
 	boolean isInitialized();
 
-	ActionResult invoke() throws Throwable;
+	ActionResult invoke() throws Exception;
 
 	ComponentDef getComponentDef();
 

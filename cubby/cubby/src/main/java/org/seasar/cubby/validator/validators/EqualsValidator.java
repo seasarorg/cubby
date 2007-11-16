@@ -1,6 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
@@ -8,10 +9,16 @@ import org.seasar.cubby.validator.ValidationContext;
  * <p>
  * デフォルトエラーメッセージキー:valid.equals
  * </p>
+ * 
  * @author agata
  * @author baba
  */
-public class EqualsValidator extends BaseScalarValidator {
+public class EqualsValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 対象文字列
@@ -36,14 +43,12 @@ public class EqualsValidator extends BaseScalarValidator {
 	 */
 	public EqualsValidator(final String value, final String messageKey) {
 		this.value = value;
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext ctx) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (!this.value.equals(value)) {
-			ctx.addMessage(getMessage(getPropertyMessage(ctx.getName()),
-					this.value));
+			context.addMessageInfo(this.messageHelper.createMessageInfo());
 		}
 	}
 

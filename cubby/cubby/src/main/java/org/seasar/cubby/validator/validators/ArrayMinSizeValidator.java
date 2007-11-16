@@ -1,6 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.ArrayFieldValidator;
+import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
@@ -8,10 +9,16 @@ import org.seasar.cubby.validator.ValidationContext;
  * <p>
  * デフォルトエラーメッセージキー:valid.arrayMinSize
  * </p>
+ * 
  * @author agata
  * @author baba
  */
-public class ArrayMinSizeValidator extends BaseValidator {
+public class ArrayMinSizeValidator implements ArrayFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 配列の最小サイズ
@@ -25,7 +32,7 @@ public class ArrayMinSizeValidator extends BaseValidator {
 	 *            配列の最小サイズ
 	 */
 	public ArrayMinSizeValidator(final int min) {
-		this(min, "valid.arrayMinSize");
+		this(min, "valid.minSize");
 	}
 
 	/**
@@ -38,17 +45,15 @@ public class ArrayMinSizeValidator extends BaseValidator {
 	 */
 	public ArrayMinSizeValidator(final int min, final String messageKey) {
 		this.min = min;
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	public void validate(ValidationContext context) {
-		final Object[] values = context.getValues();
+	public void validate(final ValidationContext context, final Object[] values) {
 		if (values == null) {
 			return;
 		}
 		if (values.length < min) {
-			context.addMessage(getMessage(
-					getPropertyMessage(context.getName()), min));
+			context.addMessageInfo(this.messageHelper.createMessageInfo(min));
 		}
 	}
 }

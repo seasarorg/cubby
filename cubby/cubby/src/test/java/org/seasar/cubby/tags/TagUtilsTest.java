@@ -15,13 +15,15 @@ public class TagUtilsTest extends TestCase {
         assertTrue("Test call resulted in expected outcome", true);
     }
     
-    public void testAddClassName() throws Throwable {
+    @SuppressWarnings("unchecked")
+	public void testAddClassName() throws Throwable {
         Map dyn = new HashMap(100, 100.0F);
         dyn.put("class", "testString");
         TagUtils.addClassName(dyn, "testTagUtilsClassName");
         assertEquals("(HashMap) dyn.get(\"class\")", "testString testTagUtilsClassName", dyn.get("class"));
     }
     
+    @SuppressWarnings("unchecked")
     public void testAddClassName1() throws Throwable {
         Map dyn = new HashMap(100, 100.0F);
         TagUtils.addClassName(dyn, "testTagUtilsClassName");
@@ -34,12 +36,14 @@ public class TagUtilsTest extends TestCase {
         assertNull("result", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue() throws Throwable {
         Integer specifiedValue = new Integer(-2);
         Integer result = (Integer) TagUtils.formValue(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", new Integer(2), specifiedValue);
         assertSame("result", specifiedValue, result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue1() throws Throwable {
         String[] strings = new String[3];
         strings[0] = "testString";
@@ -49,28 +53,33 @@ public class TagUtilsTest extends TestCase {
         assertEquals("result", "testString", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue2() throws Throwable {
         Integer specifiedValue = new Integer(0);
         Integer result = (Integer) TagUtils.formValue(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", new Integer(0), specifiedValue);
         assertSame("result", specifiedValue, result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue3() throws Throwable {
         String result = (String) TagUtils.formValue(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", new Integer(1), null);
         assertEquals("result", "", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue4() throws Throwable {
         String result = (String) TagUtils.formValue(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", null, null);
         assertEquals("result", "", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue5() throws Throwable {
         Boolean specifiedValue = Boolean.FALSE;
         Boolean result = (Boolean) TagUtils.formValue(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", new Integer(-1), specifiedValue);
         assertSame("result", specifiedValue, result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testFormValue6() throws Throwable {
         String[] strings = new String[3];
         Map outputValuesMap = new HashMap(100, 100.0F);
@@ -86,6 +95,7 @@ public class TagUtilsTest extends TestCase {
         assertFalse("result", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testIsChecked1() throws Throwable {
         boolean result = TagUtils.isChecked("testTagUtilsValue", new ArrayList(100));
         assertFalse("result", result);
@@ -149,6 +159,7 @@ public class TagUtilsTest extends TestCase {
         assertTrue("result", result);
     }
 
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues() throws Throwable {
         String[] strings = new String[2];
         Map outputValuesMap = new HashMap(100, 100.0F);
@@ -158,11 +169,13 @@ public class TagUtilsTest extends TestCase {
         assertNull("strings[0]", strings[0]);
     }
     
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues1() throws Throwable {
         Object[] result = TagUtils.multipleFormValues(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", null);
         assertEquals("result.length", 0, result.length);
     }
     
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues2() throws Throwable {
         Object[] result = TagUtils.multipleFormValues(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName", "testTagUtilsCheckedValue");
         assertEquals("result.length", 1, result.length);
@@ -179,6 +192,7 @@ public class TagUtilsTest extends TestCase {
         assertEquals("result.length", 0, result.length);
     }
     
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues5() throws Throwable {
         Map outputValuesMap = new HashMap(100, 100.0F);
         String[] strings = new String[0];
@@ -187,11 +201,13 @@ public class TagUtilsTest extends TestCase {
         assertSame("result", strings, result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues6() throws Throwable {
         Object[] result = TagUtils.multipleFormValues(new MockJspContext(), new HashMap(100, 100.0F), "testTagUtilsName");
         assertEquals("result.length", 0, result.length);
     }
     
+    @SuppressWarnings("unchecked")
     public void testMultipleFormValues7() throws Throwable {
         Map outputValuesMap = new HashMap(100, 100.0F);
         String[] strings = new String[3];
@@ -201,16 +217,19 @@ public class TagUtilsTest extends TestCase {
         assertNull("strings[0]", strings[0]);
     }
     
+    @SuppressWarnings("unchecked")
     public void testOutputValues() throws Throwable {
         Map result = TagUtils.outputValues(new MockJspContext());
         assertNull("result", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testToAttr() throws Throwable {
         String result = TagUtils.toAttr(new HashMap(100, 100.0F));
         assertEquals("result", "", result);
     }
     
+    @SuppressWarnings("unchecked")
     public void testToAttr1() throws Throwable {
         Map map = new HashMap(100, 100.0F);
         map.put("testString", new Integer(-32));

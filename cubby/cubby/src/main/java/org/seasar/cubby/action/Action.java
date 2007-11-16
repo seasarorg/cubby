@@ -1,23 +1,25 @@
 package org.seasar.cubby.action;
 
-import java.text.MessageFormat;
 import java.util.Map;
 
-import org.seasar.cubby.util.Messages;
-
 /**
- * アクションの基底クラスです。アクションはビューのコントローラーの役割を果たします。
+ * アクションの基底クラスです。
+ * <p>
+ * アクションはビューのコントローラーの役割を果たします。
+ * </p>
+ * 
  * @author agata
+ * @author baba
  */
 public abstract class Action {
 
 	/**
-	 * アクションエラーオブジェクト
+	 * アクションエラーオブジェクト。
 	 */
 	protected ActionErrors errors;
 
 	/**
-	 * 揮発性メッセージ
+	 * 揮発性メッセージ。
 	 */
 	protected Map<String, Object> flash;
 
@@ -41,6 +43,7 @@ public abstract class Action {
 
 	/**
 	 * アクションエラーオブジェクトを取得します。
+	 * 
 	 * @return アクションエラーオブジェクト
 	 */
 	public ActionErrors getErrors() {
@@ -49,14 +52,17 @@ public abstract class Action {
 
 	/**
 	 * アクションエラーオブジェクトをセットします。
-	 * @param errors アクションエラーオブジェクト
+	 * 
+	 * @param errors
+	 *            アクションエラーオブジェクト
 	 */
-	public void setErrors(ActionErrors errors) {
+	public void setErrors(final ActionErrors errors) {
 		this.errors = errors;
 	}
 
 	/**
 	 * 揮発性メッセージを取得します。
+	 * 
 	 * @return 揮発性メッセージ
 	 */
 	public Map<String, Object> getFlash() {
@@ -65,39 +71,12 @@ public abstract class Action {
 
 	/**
 	 * 揮発性メッセージをセットします。
-	 * @param flash 揮発性メッセージ
-	 */
-	public void setFlash(Map<String, Object> flash) {
-		this.flash = flash;
-	}
-
-	/**
-	 * メッセージリソースから指定されたキーのメッセージを取得します。
-	 * @see Messages#getText(String, Object...)
-	 * @param key メッセージキー
-	 * @return メッセージ
-	 */
-	public String getText(String key) {
-		return Messages.getText(key);
-	}
-
-	/**
-	 * メッセージリソースから指定されたキーの値を取得し、置換処理を行ったメッセージを取得します。
-	 * <pre>
-	 * msg.sample2=メッセージ中に置換文字列を使用できます（引数1={0}, 引数2={1}）。
 	 * 
-	 * // 「メッセージ中に置換文字列を使用できます（引数1=foo, 引数2=bar）。」
-	 * String message = getText("msg.sample2", "foo", "bar");
-	 * </pre>
-	 * @see Messages#getText(String, Object...)
-	 * @param key メッセージキー
-	 * @param args 置換文字列
-	 * @return 置換処理後のメッセージ
+	 * @param flash
+	 *            揮発性メッセージ
 	 */
-	public String getText(String key, Object... args) {
-		String text = getText(key);
-		MessageFormat format = new MessageFormat(text);
-		return format.format(args);
+	public void setFlash(final Map<String, Object> flash) {
+		this.flash = flash;
 	}
 
 }

@@ -2,7 +2,8 @@ package org.seasar.cubby.validator.validators;
 
 import java.math.BigDecimal;
 
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
@@ -13,11 +14,17 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * デフォルトエラーメッセージキー:valid.number
  * </p>
+ * 
  * @author agata
  * @author baba
  * @see BigDecimal#BigDecimal(String)
  */
-public class NumberValidator extends BaseScalarValidator {
+public class NumberValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * コンストラクタ
@@ -33,11 +40,10 @@ public class NumberValidator extends BaseScalarValidator {
 	 *            エラーメッセージキー
 	 */
 	public NumberValidator(final String messageKey) {
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext context) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;
 			if (StringUtil.isEmpty(str)) {
@@ -51,7 +57,7 @@ public class NumberValidator extends BaseScalarValidator {
 		} else if (value == null) {
 			return;
 		}
-		context.addMessage(getMessage(getPropertyMessage(context.getName())));
+		context.addMessageInfo(this.messageHelper.createMessageInfo());
 	}
 
 }
