@@ -12,7 +12,6 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRule;
@@ -73,7 +72,7 @@ public class LoginAction extends Action {
 	private class UserValidationRule implements ValidationRule {
 
 		public void apply(Map<String, Object[]> params, Object form,
-				ActionErrors errors, CubbyConfiguration cubbyConfiguration) {
+				ActionErrors errors) {
 			if (userId == null || password == null) {
 				return;
 			}
