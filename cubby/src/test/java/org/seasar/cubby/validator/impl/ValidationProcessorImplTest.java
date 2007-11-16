@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.FieldValidationRule;
 import org.seasar.cubby.validator.ValidationRule;
@@ -14,7 +13,6 @@ import org.seasar.extension.unit.S2TestCase;
 
 public class ValidationProcessorImplTest extends S2TestCase {
 
-	public CubbyConfiguration cubbyConfiguration;
 	public ValidationProcessorImpl processor;
 	Map<String, Object[]> params;
 	ActionErrors errors = new ActionErrorsImpl();
@@ -40,7 +38,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 	public void testValidateAction() {
 		params.put("prop2", new Object[] { "prop2 value" });
 		for (ValidationRule rule : validators.getRules()) {
-			rule.apply(params, new Sample1Form(), errors, cubbyConfiguration);
+			rule.apply(params, new Sample1Form(), errors);
 		}
 		assertEquals(1, errors.getFields().get("prop1").size());
 		assertEquals("prop1は必須です。", errors.getFields().get("prop1").get(0));
@@ -54,7 +52,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 				new FieldValidationRule("prop1", new RequiredValidator()),
 				new FieldValidationRule("prop2", new RequiredValidator()), };
 		for (final ValidationRule rule : rules) {
-			rule.apply(params, form, errors, cubbyConfiguration);
+			rule.apply(params, form, errors);
 		}
 		assertEquals(1, errors.getFields().get("prop1").size());
 		assertEquals("prop1は必須です。", errors.getFields().get("prop1").get(0));

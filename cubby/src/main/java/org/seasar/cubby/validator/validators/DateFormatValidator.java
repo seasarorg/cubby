@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.CubbyConfiguration;
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
@@ -96,7 +98,10 @@ public class DateFormatValidator implements ScalarFieldValidator {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
 		final String pattern;
 		if (StringUtil.isEmpty(this.pattern)) {
-			final FormatPattern formatPattern = context.getFormatPattern();
+			final CubbyConfiguration configuration = ThreadContext
+					.getConfiguration();
+			final FormatPattern formatPattern = configuration
+					.getFormatPattern();
 			if (formatPattern == null) {
 				throw new SRuntimeException("ECUB0301", new Object[] { this,
 						value });

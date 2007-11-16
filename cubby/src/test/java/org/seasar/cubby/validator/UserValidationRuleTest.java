@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.extension.unit.S2TestCase;
 
 public class UserValidationRuleTest extends S2TestCase {
@@ -49,7 +48,7 @@ public class UserValidationRuleTest extends S2TestCase {
 		class UserValidationRule implements ValidationRule {
 
 			public void apply(Map<String, Object[]> params, Object form,
-					ActionErrors errors, CubbyConfiguration cubbyConfiguration) {
+					ActionErrors errors) {
 				if ("ng".equals(value1) || "ng".equals(value2)) {
 					errors.add("validation fail", "value1", "value2");
 				}
