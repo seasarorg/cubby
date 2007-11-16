@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.util.ResourceBundleUtil;
 
 public class ThreadContext {
@@ -31,6 +32,10 @@ public class ThreadContext {
 
 	public static void setRequest(final HttpServletRequest request) {
 		CONTEXT.get().request = request;
+	}
+
+	public static CubbyConfiguration getConfiguration() {
+		return SingletonS2Container.getComponent(CubbyConfiguration.class);
 	}
 
 	public static ResourceBundle getMessagesResourceBundle() {

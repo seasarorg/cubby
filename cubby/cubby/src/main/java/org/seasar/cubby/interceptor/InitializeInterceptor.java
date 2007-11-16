@@ -13,6 +13,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.dxo.FormDxo;
 
 /**
@@ -25,16 +26,9 @@ import org.seasar.cubby.dxo.FormDxo;
  */
 public class InitializeInterceptor implements MethodInterceptor {
 
-	private CubbyConfiguration cubbyConfiguration;
-
 	private HttpServletRequest request;
 
 	private ActionContext context;
-
-	public void setCubbyConfiguration(
-			final CubbyConfiguration cubbyConfiguration) {
-		this.cubbyConfiguration = cubbyConfiguration;
-	}
 
 	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
@@ -61,8 +55,9 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	void setupParams(final ActionContext context,
 			final HttpServletRequest request) {
-		final RequestParser requestParser = cubbyConfiguration
-				.getRequestParser();
+		final CubbyConfiguration configuration = ThreadContext
+				.getConfiguration();
+		final RequestParser requestParser = configuration.getRequestParser();
 		final Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);

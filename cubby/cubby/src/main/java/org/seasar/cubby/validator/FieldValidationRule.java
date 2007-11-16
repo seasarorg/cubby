@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FieldInfo;
-import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.controller.CubbyConfiguration;
 
 public class FieldValidationRule implements ValidationRule {
 
@@ -35,11 +33,10 @@ public class FieldValidationRule implements ValidationRule {
 	}
 
 	public void apply(final Map<String, Object[]> params, final Object form,
-			final ActionErrors errors,
-			final CubbyConfiguration cubbyConfiguration) {
+			final ActionErrors errors) {
 		final Object[] values = getValues(params, this.fieldName);
 		for (final ValidationInvoker invoker : this.invokers) {
-			invoker.invoke(values, errors, cubbyConfiguration);
+			invoker.invoke(values, errors);
 		}
 	}
 
@@ -64,16 +61,8 @@ public class FieldValidationRule implements ValidationRule {
 
 		protected final ActionErrors errors;
 
-		protected final FormatPattern formatPattern;
-
-		public AbstractValidationContext(final ActionErrors errors,
-				final FormatPattern formatPattern) {
+		public AbstractValidationContext(final ActionErrors errors) {
 			this.errors = errors;
-			this.formatPattern = formatPattern;
-		}
-
-		public FormatPattern getFormatPattern() {
-			return formatPattern;
 		}
 
 	}
@@ -94,8 +83,7 @@ public class FieldValidationRule implements ValidationRule {
 
 	interface ValidationInvoker {
 
-		void invoke(Object[] values, ActionErrors errors,
-				CubbyConfiguration cubbyConfiguration);
+		void invoke(Object[] values, ActionErrors errors);
 
 	}
 
@@ -107,18 +95,16 @@ public class FieldValidationRule implements ValidationRule {
 			this.validator = validator;
 		}
 
-		public void invoke(final Object[] values, final ActionErrors errors,
-				final CubbyConfiguration cubbyConfiguration) {
+		public void invoke(final Object[] values, final ActionErrors errors) {
 			final ArrayFieldValidationContext context = new ArrayFieldValidationContext(
-					errors, cubbyConfiguration.getFormatPattern());
+					errors);
 			this.validator.validate(context, values);
 		}
 
 		class ArrayFieldValidationContext extends AbstractValidationContext {
 
-			public ArrayFieldValidationContext(final ActionErrors errors,
-					final FormatPattern formatPattern) {
-				super(errors, formatPattern);
+			public ArrayFieldValidationContext(final ActionErrors errors) {
+				super(errors);
 			}
 
 			public void addMessageInfo(final MessageInfo messageInfo) {
@@ -140,10 +126,9 @@ public class FieldValidationRule implements ValidationRule {
 			this.validator = validator;
 		}
 
-		public void invoke(final Object[] values, final ActionErrors errors,
-				final CubbyConfiguration cubbyConfiguration) {
+		public void invoke(final Object[] values, final ActionErrors errors) {
 			final ScalarFieldValidationContext context = new ScalarFieldValidationContext(
-					errors, cubbyConfiguration.getFormatPattern());
+					errors);
 			for (int i = 0; i < values.length; i++) {
 				context.setIndex(i);
 				this.validator.validate(context, values[i]);
@@ -154,9 +139,8 @@ public class FieldValidationRule implements ValidationRule {
 
 			private int index;
 
-			public ScalarFieldValidationContext(final ActionErrors errors,
-					final FormatPattern formatPattern) {
-				super(errors, formatPattern);
+			public ScalarFieldValidationContext(final ActionErrors errors) {
+				super(errors);
 			}
 
 			public void setIndex(final int index) {

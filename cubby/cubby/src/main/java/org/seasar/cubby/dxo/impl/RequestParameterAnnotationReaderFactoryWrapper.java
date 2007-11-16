@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.controller.CubbyConfiguration;
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.extension.dxo.annotation.AnnotationReader;
 import org.seasar.extension.dxo.annotation.AnnotationReaderFactory;
 import org.seasar.framework.util.StringUtil;
@@ -27,28 +28,25 @@ import org.seasar.framework.util.StringUtil;
 /**
  * 
  * @author baba
- *
+ * 
  */
 public class RequestParameterAnnotationReaderFactoryWrapper implements
 		AnnotationReaderFactory {
 
 	private AnnotationReaderFactory annotationReaderFactory;
 
-	private CubbyConfiguration cubbyConfiguration;
-
-	public void setAnnotationReaderFactory(final AnnotationReaderFactory annotationReaderFactory) {
+	public void setAnnotationReaderFactory(
+			final AnnotationReaderFactory annotationReaderFactory) {
 		this.annotationReaderFactory = annotationReaderFactory;
-	}
-
-	public void setCubbyConfiguration(final CubbyConfiguration cubbyConfiguration) {
-		this.cubbyConfiguration = cubbyConfiguration;
 	}
 
 	public AnnotationReader getAnnotationReader() {
 		final AnnotationReader annotationReader = annotationReaderFactory
 				.getAnnotationReader();
-		return new CubbyAnnotationReaderWrapper(annotationReader,
-				cubbyConfiguration.getFormatPattern());
+		final CubbyConfiguration configuration = ThreadContext
+				.getConfiguration();
+		return new CubbyAnnotationReaderWrapper(annotationReader, configuration
+				.getFormatPattern());
 	}
 
 	static class CubbyAnnotationReaderWrapper implements AnnotationReader {
@@ -57,14 +55,17 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 
 		private final FormatPattern formatPattern;
 
-		public CubbyAnnotationReaderWrapper(final AnnotationReader annotationReader, final FormatPattern formatPattern) {
+		public CubbyAnnotationReaderWrapper(
+				final AnnotationReader annotationReader,
+				final FormatPattern formatPattern) {
 			this.annotationReader = annotationReader;
 			this.formatPattern = formatPattern;
 		}
 
 		@SuppressWarnings("unchecked")
 		public String getDatePattern(final Class dxoClass, final Method method) {
-			String datePattern = annotationReader.getDatePattern(dxoClass, method);
+			String datePattern = annotationReader.getDatePattern(dxoClass,
+					method);
 			if (StringUtil.isEmpty(datePattern) && formatPattern != null) {
 				datePattern = formatPattern.getDatePattern();
 			}
@@ -73,7 +74,8 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 
 		@SuppressWarnings("unchecked")
 		public String getTimePattern(final Class dxoClass, final Method method) {
-			String timePattern = annotationReader.getTimePattern(dxoClass, method);
+			String timePattern = annotationReader.getTimePattern(dxoClass,
+					method);
 			if (StringUtil.isEmpty(timePattern) && formatPattern != null) {
 				timePattern = formatPattern.getTimePattern();
 			}
@@ -81,8 +83,10 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 		}
 
 		@SuppressWarnings("unchecked")
-		public String getTimestampPattern(final Class dxoClass, final Method method) {
-			String timestampPattern = annotationReader.getTimestampPattern(dxoClass, method);
+		public String getTimestampPattern(final Class dxoClass,
+				final Method method) {
+			String timestampPattern = annotationReader.getTimestampPattern(
+					dxoClass, method);
 			if (StringUtil.isEmpty(timestampPattern) && formatPattern != null) {
 				timestampPattern = formatPattern.getTimestampPattern();
 			}
@@ -90,7 +94,8 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 		}
 
 		@SuppressWarnings("unchecked")
-		public String getConversionRule(final Class dxoClass, final Method method) {
+		public String getConversionRule(final Class dxoClass,
+				final Method method) {
 			return annotationReader.getConversionRule(dxoClass, method);
 		}
 

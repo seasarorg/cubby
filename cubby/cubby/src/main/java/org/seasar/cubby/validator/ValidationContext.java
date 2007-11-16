@@ -1,7 +1,5 @@
 package org.seasar.cubby.validator;
 
-import org.seasar.cubby.action.FormatPattern;
-
 /**
  * 入力値検証のコンテキスト。
  * 
@@ -9,13 +7,6 @@ import org.seasar.cubby.action.FormatPattern;
  * @author baba
  */
 public interface ValidationContext {
-
-	/**
-	 * フォーマットパターンを取得します。
-	 * 
-	 * @return フォーマットパターン
-	 */
-	FormatPattern getFormatPattern();
 
 	/**
 	 * メッセージ情報を追加します。
