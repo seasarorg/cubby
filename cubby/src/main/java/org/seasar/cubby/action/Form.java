@@ -16,19 +16,24 @@ import java.lang.annotation.Target;
  * 		return this.fuga;
  * 	}
  * 
- * 	// @Formの指定がないため、バインディングされません。
+ * 	// -&gt; HogeActionにバインディングします。
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	&#064;Form
  * 	// -&gt; HogeActionにバインディングします。
+ * 	&#064;Form
  * 	public ActionResult m2() {
  * 	}
  * 
- * 	&#064;Form(&quot;fuga&quot;)
  * 	// プロパティfugaにバインディングします。
+ * 	&#064;Form(&quot;fuga&quot;)
  * 	public ActionResult m3() {
  * 	}
+ * 
+ *  // バインディングしません。
+ * 	&#064;Form(binding = false)
+ *  public ActionResult m4() {
+ *  }
  * }
  * 
  * &#064;Form(&quot;fuga&quot;)

@@ -69,14 +69,21 @@ public class ActionContextImpl implements ActionContext {
 		return actionDef.getMethod().getAnnotation(Validation.class);
 	}
 
-	public ActionResult invoke() throws Throwable {
+	public ActionResult invoke() throws Exception {
 		try {
 			final ActionResult result = (ActionResult) actionDef.getMethod()
 					.invoke(getAction(), EMPTY_ARGS);
 			return result;
 		} catch (final InvocationTargetException ex) {
 			logger.log(ex);
-			throw ex.getCause();
+			Throwable target = ex.getTargetException();
+			if (target instanceof Error) {
+				throw (Error) target;
+			} else if (target instanceof RuntimeException) {
+				throw (RuntimeException) target;
+			} else {
+				throw (Exception) target;
+			}
 		}
 	}
 

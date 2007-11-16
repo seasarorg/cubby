@@ -48,24 +48,6 @@ public class MessageTestServiceImpl implments MessageTestService {
 }
 +------------------------------------------------------+
 
-Action中でメッセージを取得する
-
- {{{cubby/apidocs/org/seasar/cubby/util/Messages.html#getText(java.lang.String)}Messages#getText}}のラッパーメソッド、{{{cubby/apidocs/org/seasar/cubby/action/Action.html#getText(java.lang.String)}Action#getText}}メソッドでメッセージを取得することができます。
-
-+------------------------------------------------------+
-public class MessageTestAction extends Action {
-...
-  public ActionResult message() {
-    // 置換文字なし
-    String message1 = getText("msg.sample1");
-    // 置換文字なし
-    String message2 = getText("msg.sample2", "foo", "bar");
-    ...
-  }
-...
-}
-+------------------------------------------------------+
-
 JSP中でメッセージを取得する
 
  プロパティファイルをMapに変換した暗黙オブジェクト「messages」リクエストスコープの属性にセットされています。

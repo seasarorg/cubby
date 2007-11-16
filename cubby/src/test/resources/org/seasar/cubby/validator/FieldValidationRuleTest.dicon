@@ -4,6 +4,6 @@
 <components>
 	<include path="cubby.dicon"/>
 
-	<component name="action" class="org.seasar.cubby.validator.impl.ActionValidatorImplTest$SampleAction" />
+	<component name="action" class="org.seasar.cubby.validator.FieldValidationRuleTest$MockAction" />
 
 </components>

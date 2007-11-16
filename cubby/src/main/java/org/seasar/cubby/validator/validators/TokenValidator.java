@@ -5,7 +5,8 @@ import javax.servlet.http.HttpSession;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.tags.TokenTag;
 import org.seasar.cubby.util.TokenHelper;
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.ArrayFieldValidator;
+import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
@@ -19,9 +20,11 @@ import org.seasar.cubby.validator.ValidationContext;
  * </p>
  * 
  * @author agata
- * 
+ * @author baba
  */
-public class TokenValidator extends BaseValidator {
+public class TokenValidator implements ArrayFieldValidator {
+
+	private final MessageHelper messageHelper;
 
 	/**
 	 * コンストラクタ
@@ -37,19 +40,17 @@ public class TokenValidator extends BaseValidator {
 	 *            エラーメッセージキー
 	 */
 	public TokenValidator(final String messageKey) {
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void validate(ValidationContext context) {
-		final Object[] values = context.getValues();
+	public void validate(final ValidationContext context, final Object[] values) {
 		if (values != null && values.length != 1) {
-			context.addMessage(getMessage());
+			context.addMessageInfo(this.messageHelper.createMessageInfo());
 		} else {
-			String token = (String) values[0];
-			HttpSession session = ThreadContext.getRequest().getSession();
+			final String token = (String) values[0];
+			final HttpSession session = ThreadContext.getRequest().getSession();
 			if (!TokenHelper.validateToken(session, token)) {
-				context.addMessage(getMessage());
+				context.addMessageInfo(this.messageHelper.createMessageInfo());
 			}
 		}
 	}

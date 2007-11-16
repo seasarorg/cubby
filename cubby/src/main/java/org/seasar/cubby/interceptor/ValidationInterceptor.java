@@ -13,10 +13,11 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.validator.ActionValidator;
+import org.seasar.cubby.validator.ValidationProcessor;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.framework.beans.BeanDesc;
@@ -24,12 +25,14 @@ import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 
 /**
- * 入力検証とフォームオブジェクトへの値のバインディングを行います。<br>
- * 入力検証が成功した場合：<br>
- * フォームオブジェクトへのバインドを行い、後のフィルターを実行します。<br>
- * 入力検証が失敗した場合：<br>
- * フォームオブジェクトへのバインドを行い、アクションメソッドに設定された{@link Validation#errorPage()}へフォワードします。
- * またリクエスト中の入力検証エラーフラグがONになります。
+ * 入力検証を行います。
+ * <p>
+ * 入力検証が失敗した場合
+ * <ul>
+ * <li>またリクエスト中の入力検証エラーフラグを <code>true</code> に設定します。</li>
+ * <li>アクションメソッドに設定された{@link Validation#errorPage()}へフォワードします。</li>
+ * </ul>
+ * </p>
  * 
  * @see CubbyConstants#ATTR_VALIDATION_FAIL 入力検証エラーフラグの属性名
  * @author agata
@@ -44,7 +47,7 @@ public class ValidationInterceptor implements MethodInterceptor {
 		}
 	};
 
-	private ActionValidator validator;
+	private ValidationProcessor validationProcessor;
 
 	private HttpServletRequest request;
 
@@ -53,8 +56,9 @@ public class ValidationInterceptor implements MethodInterceptor {
 	public ValidationInterceptor() {
 	}
 
-	public void setActionValidatior(final ActionValidator actionValidator) {
-		this.validator = actionValidator;
+	public void setValidationProcessor(
+			final ValidationProcessor validationProcessor) {
+		this.validationProcessor = validationProcessor;
 	}
 
 	public void setRequest(final HttpServletRequest request) {
@@ -66,39 +70,45 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final Action controller = context.getAction();
 		final Validation validation = context.getValidation();
-		final ValidationRules rules = getValidationRules(context);
-		final Map<String, Object[]> params = getParams(request);
 
-		final boolean success = validator.processValidation(validation,
-				controller, params, context.getFormBean(), rules);
+		final boolean success;
+		if (validation == null) {
+			success = true;
+		} else {
+			final Map<String, Object[]> params = getParams(request);
+			final Object form = context.getFormBean();
+			final ActionErrors errors = context.getAction().getErrors();
+			final ValidationRules rules = getValidationRules(context);
+			success = validationProcessor.process(errors, params, form, rules);
+		}
 
 		final Object result;
 		if (success) {
 			result = invocation.proceed();
 		} else {
 			request.setAttribute(ATTR_VALIDATION_FAIL, true);
-			String path = validation.errorPage();
+			final String path = validation.errorPage();
 			result = new Forward(path);
 		}
 
 		return result;
 	}
 
-	private ValidationRules getValidationRules(ActionContext context) {
+	private ValidationRules getValidationRules(final ActionContext context) {
 		final Validation validation = context.getValidation();
-		final ValidationRules validationRules;
+		final ValidationRules rules;
 		if (validation == null) {
-			validationRules = NULL_VALIDATION_RULES;
+			rules = NULL_VALIDATION_RULES;
 		} else {
 			final Action action = context.getAction();
-			BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action.getClass());
-			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
-					.rules());
-			validationRules = (ValidationRules) propertyDesc.getValue(action);
+			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+					.getClass());
+			final PropertyDesc propertyDesc = beanDesc
+					.getPropertyDesc(validation.rules());
+			rules = (ValidationRules) propertyDesc.getValue(action);
 		}
-		return validationRules;
+		return rules;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,116 +1,199 @@
 package org.seasar.cubby.action.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.FieldInfo;
 
 /**
  * アクションエラーの実装クラス
+ * 
  * @author agata
- *
+ * @author baba
  */
 public class ActionErrorsImpl implements ActionErrors {
 
 	/**
-	 * アクションで発生したエラーの一覧
+	 * 全てのエラーの一覧。
 	 */
-	private List<String> actionErrors;
+	private final List<String> all = new ArrayList<String>();
 
 	/**
-	 * フィールドで発生したエラーの一覧
+	 * フィールドで発生したエラーの一覧。
 	 */
-	private Map<String, List<String>> fieldErrors;
+	private final Map<String, List<String>> fields = new NotNullHashMap<String, List<String>>(
+			new MessageListEmptyValueFactory());
 
 	/**
-	 * アクションとフィールドのエラーを合わせた全てのエラーの一覧
+	 * インデックス付きフィールドで発生したエラーの一覧。
 	 */
-	private List<String> allErrors;
-
-	public List<String> getActionErrors() {
-		return actionErrors;
-	}
+	private final Map<String, Map<Integer, List<String>>> indexedFields = new NotNullHashMap<String, Map<Integer, List<String>>>(
+			new IndexMapEmptyValueFactory());
 
 	/**
-	 * アクションで発生したエラーの一覧をセットします。
-	 * @param actionErrors アクションで発生したエラーの一覧
+	 * フィールド以外で発生したエラーの一覧。
 	 */
-	public void setActionErrors(final List<String> actionErrors) {
-		this.actionErrors = actionErrors;
+	private final List<String> others = new ArrayList<String>();
+
+	/**
+	 * アクションで発生した全てのエラーの一覧を取得します。
+	 * 
+	 * @return アクションで発生した全てエラーの一覧
+	 */
+	public List<String> getAll() {
+		return all;
 	}
 
 	/**
 	 * フィールドで発生したエラーの一覧を取得します。
+	 * 
 	 * @return フィールドで発生したエラーの一覧
 	 */
-	public Map<String, List<String>> getFieldErrors() {
-		return fieldErrors;
+	public Map<String, List<String>> getFields() {
+		return fields;
 	}
 
 	/**
-	 * フィールドで発生したエラーの一覧をセットします。
-	 * @param fieldErrors アクションで発生したエラーの一覧
+	 * インデックス付きフィールドで発生したエラーの一覧を取得します。
+	 * 
+	 * @return インデックス付きフィールドで発生したエラーの一覧
 	 */
-	public void setFieldErrors(final Map<String, List<String>> fieldErrors) {
-		this.fieldErrors = fieldErrors;
+	public Map<String, Map<Integer, List<String>>> getIndexedFields() {
+		return indexedFields;
 	}
 
 	/**
-	 * アクションで発生したエラーの一覧を取得します。
-	 * @return アクションで発生したエラーの一覧
+	 * フィールド以外で発生したエラーの一覧を取得します。
+	 * 
+	 * @return フィールド以外で発生したエラーの一覧
 	 */
-	public List<String> getAllErrors() {
-		return allErrors;
-	}
-
-	/**
-	 * 全てのエラーをセットします。
-	 * @param allErrors 全てのエラー
-	 */
-	public void setAllErrors(final List<String> allErrors) {
-		this.allErrors = allErrors;
+	public List<String> getOthers() {
+		return others;
 	}
 
 	/**
 	 * エラーが存在しないかどうかを判定します。
+	 * 
 	 * @return エラーが存在しなければtrue
 	 */
 	public boolean isEmpty() {
-		return actionErrors.isEmpty() && fieldErrors.isEmpty();
+		return all.isEmpty();
 	}
 
 	/**
-	 * アクションエラーを追加します。
-	 * @param エラーメッセージ
+	 * エラーメッセージを追加します。
+	 * 
+	 * @param message
+	 *            メッセージ
 	 */
-	public void addActionError(final String message) {
-		actionErrors.add(message);
-
-		allErrors.add(message);
+	public void add(final String message) {
+		this.add(message, new FieldInfo[0]);
 	}
 
 	/**
-	 * フィールドエラーを追加します。
-	 * @param name フィールド名
-	 * @param message エラーメッセージ
+	 * エラーメッセージを追加します。
+	 * 
+	 * @param message
+	 *            メッセージ
+	 * @param fieldInfos
+	 *            フィールド情報
 	 */
-	public void addFieldError(final String name, final String message) {
-		if (!fieldErrors.containsKey(name)) {
-			fieldErrors.put(name, new ArrayList<String>());
+	public void add(final String message, final String... fieldNames) {
+		final FieldInfo[] fieldInfos = new FieldInfo[fieldNames.length];
+		for (int i = 0 ; i < fieldNames.length; i++) {
+			fieldInfos[i] = new FieldInfo(fieldNames[i]);
 		}
-		fieldErrors.get(name).add(message);
-
-		allErrors.add(message);
+		this.add(message, fieldInfos);
 	}
 
 	/**
-	 * 指定されたフィールドのエラーが存在するかどうかを判定します。
-	 * @param name フィールド名
-	 * @return エラーが存在すればtrue
+	 * エラーメッセージを追加します。
+	 * 
+	 * @param message
+	 *            メッセージ
+	 * @param fieldInfos
+	 *            フィールド情報
 	 */
-	public boolean hasFieldError(final String name) {
-		return fieldErrors.containsKey(name);
+	public void add(final String message, final FieldInfo... fieldInfos) {
+		if (fieldInfos == null || fieldInfos.length == 0) {
+			others.add(message);
+		} else {
+			for (final FieldInfo fieldInfo : fieldInfos) {
+				addFields(message, fieldInfo);
+			}
+		}
+		this.all.add(message);
+	}
+
+	private void addFields(final String message, final FieldInfo fieldInfo) {
+		final String name = fieldInfo == null ? null : fieldInfo.getName();
+		final Integer index = fieldInfo == null ? null : fieldInfo.getIndex();
+
+		final List<String> messages = this.fields.get(name);
+		messages.add(message);
+
+		final List<String> indexedMessages = this.indexedFields.get(name).get(
+				index);
+		indexedMessages.add(message);
+	}
+
+	class NotNullHashMap<K, V> extends HashMap<K, V> {
+
+		private static final long serialVersionUID = 1L;
+
+		private final EmptyValueFactory<V> emptyValueFactory;
+
+		public NotNullHashMap(EmptyValueFactory<V> emptyValueFactory) {
+			this.emptyValueFactory = emptyValueFactory;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public V get(final Object key) {
+			final V value = super.get(key);
+			if (value != null) {
+				return value;
+			}
+
+			final V emptyValue = emptyValueFactory.create();
+			this.put((K) key, emptyValue);
+			return emptyValue;
+		}
+
+	}
+
+	interface EmptyValueFactory<T> {
+		T create();
+	}
+
+	class MessageListEmptyValueFactory implements EmptyValueFactory<List<String>> {
+
+		public List<String> create() {
+			return new ArrayList<String>();
+		}
+		
+	}
+
+	class IndexMapEmptyValueFactory implements EmptyValueFactory<Map<Integer, List<String>>> {
+
+		public Map<Integer, List<String>> create() {
+			return new NotNullHashMap<Integer, List<String>>(
+					new MessageListEmptyValueFactory());
+		}
+
+	}
+
+	/**
+	 * エラーをクリアします。
+	 */
+	public void clear() {
+		this.all.clear();
+		this.fields.clear();
+		this.indexedFields.clear();
+		this.others.clear();
 	}
 
 }

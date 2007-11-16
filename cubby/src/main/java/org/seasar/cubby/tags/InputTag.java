@@ -71,7 +71,6 @@ public class InputTag extends DynamicAttributesTagSupport {
 		this.index = index;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doTag() throws JspException, IOException {
 		final JspContext context = this.getJspContext();
@@ -80,8 +79,14 @@ public class InputTag extends DynamicAttributesTagSupport {
 		final Map<String, Object> dyn = this.getDynamicAttribute();
 		final Map<String, String[]> outputValues = outputValues(context);
 
-		if (errors.hasFieldError(this.name)) {
-			addClassName(dyn, "fieldError");
+		if (this.index == null) {
+			if (!errors.getFields().get(this.name).isEmpty()) {
+				addClassName(dyn, "fieldError");
+			}
+		} else {
+			if (!errors.getIndexedFields().get(this.name).get(index).isEmpty()) {
+				addClassName(dyn, "fieldError");
+			}
 		}
 
 		if (ArrayUtil.contains(MULTIPLE_VALUE_TYPES, this.type)) {

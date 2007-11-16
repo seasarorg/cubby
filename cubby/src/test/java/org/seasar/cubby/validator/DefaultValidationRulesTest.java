@@ -13,7 +13,8 @@ public class DefaultValidationRulesTest extends TestCase {
 
 	public void testAddAndGetRules() throws Exception {
 		DefaultValidationRules rules = new DefaultValidationRules();
-		rules.add(new PropertyValidationRule("name", new RequiredValidator(), new MaxLengthValidator(10)));
+		rules.add(new FieldValidationRule("name", new RequiredValidator(),
+				new MaxLengthValidator(10)));
 		assertEquals(1, rules.getRules().size());
 	}
 
@@ -36,12 +37,12 @@ public class DefaultValidationRulesTest extends TestCase {
 		};
 		assertEquals(2, rules.getRules().size());
 		Iterator<ValidationRule> iter = rules.getRules().iterator();
-		PropertyValidationRule rule = (PropertyValidationRule)iter.next();
-		assertEquals("name", rule.getPropertyName());
-		assertEquals("name", rule.getPropertyNameKey());
-		rule = (PropertyValidationRule)iter.next();
-		assertEquals("age", rule.getPropertyName());
-		assertEquals("age", rule.getPropertyNameKey());
+		FieldValidationRule rule = (FieldValidationRule) iter.next();
+		assertEquals("name", rule.getFieldName());
+		assertEquals("name", rule.getFieldNameKey());
+		rule = (FieldValidationRule) iter.next();
+		assertEquals("age", rule.getFieldName());
+		assertEquals("age", rule.getFieldNameKey());
 	}
 
 	public void testConstractor2() throws Exception {
@@ -53,11 +54,11 @@ public class DefaultValidationRulesTest extends TestCase {
 		};
 		assertEquals(2, rules.getRules().size());
 		Iterator<ValidationRule> iter = rules.getRules().iterator();
-		PropertyValidationRule rule = (PropertyValidationRule)iter.next();
-		assertEquals("name", rule.getPropertyName());
-		assertEquals("userProfile.name", rule.getPropertyNameKey());
-		rule = (PropertyValidationRule)iter.next();
-		assertEquals("age", rule.getPropertyName());
-		assertEquals("userProfile.age", rule.getPropertyNameKey());
+		FieldValidationRule rule = (FieldValidationRule) iter.next();
+		assertEquals("name", rule.getFieldName());
+		assertEquals("userProfile.name", rule.getFieldNameKey());
+		rule = (FieldValidationRule) iter.next();
+		assertEquals("age", rule.getFieldName());
+		assertEquals("userProfile.age", rule.getFieldNameKey());
 	}
 }

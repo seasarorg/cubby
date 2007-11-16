@@ -66,7 +66,7 @@ public class DefaultValidationRules implements ValidationRules {
 	 * @param validators 入力検証ルールリスト
 	 */
 	public void add(final String paramName, final String paramNameMessageKey, final Validator... validators) {
-		add(new PropertyValidationRule(paramName, makePropertyNameKey(paramNameMessageKey), validators));
+		add(new FieldValidationRule(paramName, makePropertyNameKey(paramNameMessageKey), validators));
 	}
 
 	/**

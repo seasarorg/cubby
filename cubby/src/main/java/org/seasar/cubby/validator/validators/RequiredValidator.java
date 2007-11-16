@@ -1,6 +1,7 @@
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.BaseValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.util.StringUtil;
 
@@ -16,7 +17,12 @@ import org.seasar.framework.util.StringUtil;
  * @author agata
  * @author baba
  */
-public class RequiredValidator extends BaseValidator {
+public class RequiredValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * コンストラクタ
@@ -32,22 +38,10 @@ public class RequiredValidator extends BaseValidator {
 	 *            エラーメッセージキー
 	 */
 	public RequiredValidator(final String messageKey) {
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	public void validate(final ValidationContext context) {
-		final Object[] values = context.getValues();
-		if (values == null || values.length == 0) {
-			context
-					.addMessage(getMessage(getPropertyMessage(context.getName())));
-		} else {
-			for (final Object value : values) {
-				validate(value, context);
-			}
-		}
-	}
-
-	private void validate(final Object value, final ValidationContext context) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;
 			if (!StringUtil.isEmpty(str)) {
@@ -56,7 +50,7 @@ public class RequiredValidator extends BaseValidator {
 		} else if (value != null) {
 			return;
 		}
-		context.addMessage(getMessage(getPropertyMessage(context.getName())));
+		context.addMessageInfo(this.messageHelper.createMessageInfo());
 	}
 
 }

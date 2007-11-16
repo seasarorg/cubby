@@ -42,7 +42,6 @@ class TagUtils {
 		return values;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static Object[] formValues(final Map<String, String[]> valuesMap,
 			final String name) {
 		final Object[] values;
@@ -171,8 +170,7 @@ class TagUtils {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void addClassName(final Map dyn, final String className) {
+	public static void addClassName(final Map<String, Object> dyn, final String className) {
 		String classValue = (String) dyn.get("class");
 		if (StringUtil.isEmpty(classValue)) {
 			classValue = className;

@@ -6,7 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.validator.BaseScalarValidator;
+import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.framework.exception.SRuntimeException;
 import org.seasar.framework.util.StringUtil;
@@ -19,11 +20,17 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * デフォルトエラーメッセージキー:valid.dateFormat
  * </p>
+ * 
  * @author agata
  * @author baba
  * @see SimpleDateFormat
  */
-public class DateFormatValidator extends BaseScalarValidator {
+public class DateFormatValidator implements ScalarFieldValidator {
+
+	/**
+	 * メッセージヘルパ。
+	 */
+	private final MessageHelper messageHelper;
 
 	/**
 	 * 日付パターン
@@ -57,11 +64,10 @@ public class DateFormatValidator extends BaseScalarValidator {
 	 */
 	public DateFormatValidator(final String pattern, final String messageKey) {
 		this.pattern = pattern;
-		this.setMessageKey(messageKey);
+		this.messageHelper = new MessageHelper(messageKey);
 	}
 
-	@Override
-	protected void validate(final Object value, final ValidationContext ctx) {
+	public void validate(final ValidationContext context, final Object value) {
 		if (value == null) {
 			return;
 		}
@@ -71,7 +77,7 @@ public class DateFormatValidator extends BaseScalarValidator {
 				return;
 			}
 			try {
-				final DateFormat dateFormat = createDateFormat(ctx);
+				final DateFormat dateFormat = createDateFormat(context, value);
 				final ParsePosition parsePosition = new ParsePosition(0);
 				final Date date = dateFormat.parse(stringValue, parsePosition);
 				if (date != null
@@ -81,17 +87,19 @@ public class DateFormatValidator extends BaseScalarValidator {
 			} catch (final Exception e) {
 			}
 		}
-		ctx.addMessage(getMessage(getPropertyMessage(ctx.getName())));
+
+		context.addMessageInfo(this.messageHelper.createMessageInfo());
 	}
 
-	private DateFormat createDateFormat(final ValidationContext context) {
+	private DateFormat createDateFormat(final ValidationContext context,
+			final Object value) {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
 		final String pattern;
 		if (StringUtil.isEmpty(this.pattern)) {
-			FormatPattern formatPattern = context.getFormatPattern();
+			final FormatPattern formatPattern = context.getFormatPattern();
 			if (formatPattern == null) {
 				throw new SRuntimeException("ECUB0301", new Object[] { this,
-						context.getValues() });
+						value });
 			}
 			pattern = formatPattern.getDatePattern();
 		} else {
@@ -101,4 +109,5 @@ public class DateFormatValidator extends BaseScalarValidator {
 		dateFormat.setLenient(false);
 		return dateFormat;
 	}
+
 }

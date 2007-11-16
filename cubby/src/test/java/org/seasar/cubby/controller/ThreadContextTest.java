@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.extension.unit.S2TestCase;
 
-public class ThreadContextAgitarTest extends S2TestCase {
+public class ThreadContextTest extends S2TestCase {
 
 	public HttpServletRequest request;
 
