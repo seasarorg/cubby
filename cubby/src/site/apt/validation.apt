@@ -98,6 +98,8 @@ public class LoginAction extends Action {
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html}RequiredValidator}}     |必須検証します。                         |
 *----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/TokenValidator.html}TokenValidator}}     |2重サブミットを検証します。                         |
+*----------------------+--------------------------------------+
 
  詳細は{{{cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html}APIドキュメント}}をご覧下さい。
 
