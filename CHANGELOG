@@ -1,5 +1,6 @@
-* 0.9.0
-- タグファイルを全てJavaコードに置き換え
+* 0.9.0以降
+- 以下のURLを参照
+  https://www.seasar.org/issues/browse/CUBBY?report=com.atlassian.jira.plugin.system.project:changelog-panel
 
 * 0.8.1
 - Actionのプロパティがrequestに設定されていなかったのを修正
