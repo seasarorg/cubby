@@ -55,7 +55,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	/**
 	 * 空のoption要素を出力するかどうか。
 	 */
-	private boolean emptyOption = true;
+	private Boolean emptyOption = Boolean.TRUE;
 
 	/**
 	 * 空のoption要素を出力した場合のラベル文字列
@@ -102,7 +102,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	 * @param emptyOption
 	 *            空のoption要素を出力するかどうか
 	 */
-	public void setEmptyOption(final boolean emptyOption) {
+	public void setEmptyOption(final Boolean emptyOption) {
 		this.emptyOption = emptyOption;
 	}
 
