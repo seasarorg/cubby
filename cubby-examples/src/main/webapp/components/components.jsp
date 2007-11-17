@@ -62,16 +62,6 @@
 			<td>${item.name}</td>
 		</tr>
 	</c:forEach>
-	<t:null>
-		<tr>
-			<td>dummy1</td>
-			<td>dummy1 name</td>
-		</tr>
-		<tr>
-			<td>dummy2</td>
-			<td>dummy2 name</td>
-		</tr>
-	</t:null>
 </table>
 
 <h2>messages</h2>
