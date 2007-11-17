@@ -206,12 +206,4 @@
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
   </tag>
-  <tag>
-   	<description>
-      このタグで囲まれた領域は出力されません。 JSPの段階でプレビュー用のダミーHTMLなどをこのタグで囲みます。 このタグに属性はありません。
-    </description>
-    <name>null</name>
-    <tag-class>org.seasar.cubby.tags.NullTag</tag-class>
-    <body-content>scriptless</body-content>
-  </tag>
 </taglib>
