@@ -1,12 +1,17 @@
 package org.seasar.cubby.validator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 入力値検証のコンテキスト。
  * 
  * @author agata
  * @author baba
  */
-public interface ValidationContext {
+public class ValidationContext {
+
+	private List<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
 
 	/**
 	 * メッセージ情報を追加します。
@@ -14,6 +19,12 @@ public interface ValidationContext {
 	 * @param messageInfo
 	 *            メッセージ情報
 	 */
-	void addMessageInfo(MessageInfo messageInfo);
+	public void addMessageInfo(MessageInfo messageInfo) {
+		messageInfos.add(messageInfo);
+	}
+
+	public List<MessageInfo> getMessageInfos() {
+		return messageInfos;
+	}
 
 }

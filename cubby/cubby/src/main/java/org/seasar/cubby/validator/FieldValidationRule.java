@@ -57,16 +57,6 @@ public class FieldValidationRule implements ValidationRule {
 		return fieldNameKey;
 	}
 
-	abstract class AbstractValidationContext implements ValidationContext {
-
-		protected final ActionErrors errors;
-
-		public AbstractValidationContext(final ActionErrors errors) {
-			this.errors = errors;
-		}
-
-	}
-
 	private ValidationInvoker createInvoker(final Validator validator) {
 		final ValidationInvoker invoker;
 		if (validator instanceof ArrayFieldValidator) {
@@ -96,24 +86,13 @@ public class FieldValidationRule implements ValidationRule {
 		}
 
 		public void invoke(final Object[] values, final ActionErrors errors) {
-			final ArrayFieldValidationContext context = new ArrayFieldValidationContext(
-					errors);
+			final FieldInfo fieldInfo = new FieldInfo(fieldName);
+			final ValidationContext context = new ValidationContext();
 			this.validator.validate(context, values);
-		}
-
-		class ArrayFieldValidationContext extends AbstractValidationContext {
-
-			public ArrayFieldValidationContext(final ActionErrors errors) {
-				super(errors);
+			for (MessageInfo message : context.getMessageInfos()) {
+				errors.add(message.builder().fieldNameKey(fieldNameKey)
+						.toString(), fieldInfo);
 			}
-
-			public void addMessageInfo(final MessageInfo messageInfo) {
-				final String message = messageInfo.builder().fieldNameKey(
-						fieldNameKey).toString();
-				final FieldInfo fieldInfo = new FieldInfo(fieldName);
-				this.errors.add(message, fieldInfo);
-			}
-
 		}
 
 	}
@@ -127,33 +106,16 @@ public class FieldValidationRule implements ValidationRule {
 		}
 
 		public void invoke(final Object[] values, final ActionErrors errors) {
-			final ScalarFieldValidationContext context = new ScalarFieldValidationContext(
-					errors);
+			final ValidationContext context = new ValidationContext();
 			for (int i = 0; i < values.length; i++) {
-				context.setIndex(i);
+				final FieldInfo fieldInfo = new FieldInfo(fieldName, i);
 				this.validator.validate(context, values[i]);
+				for (final MessageInfo messageInfo : context.getMessageInfos()) {
+					final String message = messageInfo.builder().fieldNameKey(
+							fieldNameKey).toString();
+					errors.add(message, fieldInfo);
+				}
 			}
-		}
-
-		class ScalarFieldValidationContext extends AbstractValidationContext {
-
-			private int index;
-
-			public ScalarFieldValidationContext(final ActionErrors errors) {
-				super(errors);
-			}
-
-			public void setIndex(final int index) {
-				this.index = index;
-			}
-
-			public void addMessageInfo(final MessageInfo messageInfo) {
-				final String message = messageInfo.builder().fieldNameKey(
-						fieldNameKey).toString();
-				final FieldInfo fieldInfo = new FieldInfo(fieldName, index);
-				this.errors.add(message, fieldInfo);
-			}
-
 		}
 
 	}
