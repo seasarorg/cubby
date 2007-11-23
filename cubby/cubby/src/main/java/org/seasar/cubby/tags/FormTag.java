@@ -97,7 +97,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 					.getComponent(ActionContext.class);
 			final FormDxo formDxo = context.getFormDxo();
 			final Map<String, String[]> map = new HashMap<String, String[]>();
-			formDxo.convert(this.value, map);
+			formDxo.convert(value, map);
 			outputValues = map;
 		}
 		return outputValues;
