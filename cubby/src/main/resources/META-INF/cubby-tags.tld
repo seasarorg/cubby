@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
-    version="2.0">
-  <description>JSP 2.0 tag files</description>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+
+  <description>Cubby tag library</description>
+  <display-name>Cubby tags</display-name>
   <tlib-version>1.0</tlib-version>
   <short-name>t</short-name>
   <uri>http://www.seasar.org/cubby/tags</uri>
+
   <tag>
-   	<description>
-   	  formを作成します。
-   	  主にvalue属性でフォーム用オブジェクトを指定ます。
-   	</description>
+    <description>
+      HTML の form タグを出力します。
+input/select/textarea タグで参照するフォームオブジェクトを指定します。
+    </description>
     <name>form</name>
     <tag-class>org.seasar.cubby.tags.FormTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>
-		フォームオブジェクトを指定します。この属性が省略された場合、
-		アクションオブジェクトがフォームとして使用されます。    	
+        フォームオブジェクトを指定します。
       </description>
       <name>value</name>
       <required>true</required>
@@ -26,18 +29,29 @@
       <type>java.lang.Object</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
+    <example>
+(JSP)
+&lt;t:form value="${action}"&gt;
+  ...
+&lt;/t:form&gt;
+
+(実行結果)
+&lt;form&gt;
+  ...
+&lt;/form&gt;
+    </example>
   </tag>
+
   <tag>
-   	<description>
-   	  入力フィールドを作成します。
-   	</description>
+    <description>
+      HTML の input タグを出力します。
+    </description>
     <name>input</name>
     <tag-class>org.seasar.cubby.tags.InputTag</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <description>
-		text/password/checkbox/radio/hiddenができます。
-		この属性の値は type 属性としてそのまま出力されます。
+        この属性の値は type 属性としてそのまま出力されます。
       </description>
       <name>type</name>
       <required>true</required>
@@ -46,8 +60,8 @@
     </attribute>
     <attribute>
       <description>
-		name 属性として出力する値を取得するプロパティ名を指定します。
-		この属性の値は name 属性としてそのまま出力されます。
+        value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
+この属性の値は name 属性としてそのまま出力されます。
       </description>
       <name>name</name>
       <required>true</required>
@@ -56,7 +70,9 @@
     </attribute>
     <attribute>
       <description>
-		この属性の値は value 属性としてそのまま出力されます。
+        この属性の値は value 属性としてそのまま出力されます。
+指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
+type 属性が radio/checkbox の場合は、この値と name 属性で指定したフォームオブジェクトのプロパティから取得した値(もしくは checkedValue で指定した値)が一致した場合には checked 属性が true になりますので、必ず指定するようにしてください。
       </description>
       <name>value</name>
       <required>false</required>
@@ -65,7 +81,8 @@
     </attribute>
     <attribute>
       <description>
-		この属性の値は value 属性としてそのまま出力されます。
+        type 属性が radio/checkbox の場合に、フォームオブジェクトの値よりも優先的に比較対象となる値を指定します。
+この値と value 属性の値が一致した場合には checked 属性が true になります。
       </description>
       <name>checkedValue</name>
       <required>false</required>
@@ -74,7 +91,7 @@
     </attribute>
     <attribute>
       <description>
-		指定されたnameが複数の値をもつ場合に、そのインデックスを指定します。
+        name 属性で指定したフォームオブジェクトのプロパティに複数の値がある場合に、何番目の要素なのかを指定します。
       </description>
       <name>index</name>
       <required>false</required>
@@ -82,18 +99,26 @@
       <type>java.lang.Integer</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
+    <example>
+(JSP)
+&lt;t:input name="title"/&gt;
+
+(実行結果)
+&lt;input name="title" value="Todo Title"/&gt;
+    </example>
   </tag>
+
   <tag>
-   	<description>
-   	  HTMLのselectタグを出力します。
-   	</description>
+    <description>
+      HTML の select タグと option タグを出力します。
+    </description>
     <name>select</name>
     <tag-class>org.seasar.cubby.tags.SelectTag</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <description>
-		value 属性として出力する値を取得するプロパティ名を指定します。
-		この属性の値は name 属性としてそのまま出力されます。
+        selected 属性を付加する option タグを決めるための値を取得するプロパティ名を指定します。
+この属性の値は name 属性としてそのまま出力されます。
       </description>
       <name>name</name>
       <required>true</required>
@@ -102,7 +127,8 @@
     </attribute>
     <attribute>
       <description>
-		optionタグ用のリストを指定します。
+        option タグの内容を表すリストを指定します。
+配列や java.util.Collection、java.util.Map 型が指定できます。
       </description>
       <name>items</name>
       <required>true</required>
@@ -111,7 +137,8 @@
     </attribute>
     <attribute>
       <description>
-		optionタグの表示文字列として使用するプロパティ名を指定します。
+        items 属性で指定したリストの要素から、option タグの表示文字列として使用するプロパティ名を指定します。
+items 属性で指定した型が java.util.Map の場合は無視されます。
       </description>
       <name>labelProperty</name>
       <required>false</required>
@@ -120,7 +147,8 @@
     </attribute>
     <attribute>
       <description>
-		optionタグの値として使用するプロパティ名を指定します。
+        items 属性で指定したリストの要素から、option タグの値として使用するプロパティ名を指定します。
+items 属性で指定した型が java.util.Map の場合は無視されます。
       </description>
       <name>valueProperty</name>
       <required>false</required>
@@ -129,8 +157,8 @@
     </attribute>
     <attribute>
       <description>
-		空白のoptionを出力するかどうかを指定します。 
-		省略された場合、「true」と見なして先頭に空白のoptionが出力されます。
+        空白の option タグを出力するかどうかを指定します。
+省略した場合は true と見なして先頭に空白の option タグが出力されます。
       </description>
       <name>emptyOption</name>
       <required>false</required>
@@ -139,8 +167,8 @@
     </attribute>
     <attribute>
       <description>
-		先頭の空白のoptionの表示値を指定します。
-		省略された場合、先頭の空白のoptionには何も表示されません
+        空白の option タグの表示文字列を指定します。
+省略した場合は何も表示されません。
       </description>
       <name>emptyOptionLabel</name>
       <required>false</required>
@@ -148,18 +176,29 @@
       <type>java.lang.String</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
+    <example>
+(JSP)
+&lt;t:select name="typeId" items="${todoTypes}" labelProperty="name" valueProperty="id"/&gt;
+
+(実行結果)
+&lt;select name="typeId"&gt;
+  &lt;option name="1"&gt;TodoType 1&lt;/option&gt;
+  &lt;option name="2"&gt;TodoType 2&lt;/option&gt;
+&lt;/select&gt;
+    </example>
   </tag>
+
   <tag>
-   	<description>
-   	  HTMLのtextareaタグを出力します。
-   	</description>
+    <description>
+      HTML の textarea タグを出力します。
+    </description>
     <name>textarea</name>
     <tag-class>org.seasar.cubby.tags.TextareaTag</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <description>
-		value 属性として出力する値を取得するプロパティ名を指定します。
-		この属性の値は name 属性としてそのまま出力されます。
+        value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
+この属性の値は name 属性としてそのまま出力されます。
       </description>
       <name>name</name>
       <required>true</required>
@@ -168,7 +207,8 @@
     </attribute>
     <attribute>
       <description>
-		この属性の値は value 属性としてそのまま出力されます。
+        この属性の値は value 属性としてそのまま出力されます。
+指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
       </description>
       <name>value</name>
       <required>false</required>
@@ -177,7 +217,7 @@
     </attribute>
     <attribute>
       <description>
-		指定されたnameが複数の値をもつ場合に、そのインデックスを指定します。
+        name 属性で指定したフォームオブジェクトのプロパティに複数の値がある場合に、何番目の要素なのかを指定します。
       </description>
       <name>index</name>
       <required>false</required>
@@ -185,19 +225,27 @@
       <type>java.lang.Integer</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
+    <example>
+(JSP)
+&lt;t:textarea name="memo"/&gt;
+
+(実行結果)
+&lt;textarea name="memo"&gt;Memo 1&lt;/textarea&gt;
+    </example>
   </tag>
+
   <tag>
-   	<description>
-      2重サブミット防止用の&lt;input type=&quot;hidden&quot; /&gt;を出力します。 このタグに属性はありません。
+    <description>
+      2重サブミット防止用の input タグ(type="hidden")を出力します。
     </description>
     <name>token</name>
     <tag-class>org.seasar.cubby.tags.TokenTag</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <description>
-		name 属性として出力する値を取得するプロパティ名を指定します。
-		この属性の値は name 属性としてそのまま出力されます。
-		name 属性が省略された場合の初期値は「cubby.token」です。
+        value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
+この属性の値は name 属性としてそのまま出力されます。
+name 属性が省略された場合の初期値は「cubby.token」です。
       </description>
       <name>name</name>
       <required>false</required>
@@ -205,5 +253,35 @@
       <type>java.lang.String</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
+    <example>
+(JSP)
+&lt;t:form value="${action}"&gt;
+  &lt;t:token / &gt;
+&lt;t:/form&gt;
+
+(実行結果)
+&lt;form&gt;
+  &lt;input type="hidden" name="cubby.token" value="ランダムな文字列..."&gt;
+&lt;/form&gt;
+
+(アクション)
+public class TokenAction extends Action {
+  ...
+  public ValidationRules validation = new DefaultValidationRules() {
+  @Override
+    public void initialize() {
+      add("cubby.token", new TokenValidator());
+    }
+  };
+  ...
+  @Form
+  @Validation(errorPage="token.jsp", rules = "validation")
+  public ActionResult message() {
+    return new Forward("result.jsp");
+  }
+        
+}
+    </example>
   </tag>
+
 </taglib>
