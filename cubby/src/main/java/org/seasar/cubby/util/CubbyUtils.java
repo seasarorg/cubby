@@ -13,50 +13,79 @@ import org.seasar.framework.util.StringUtil;
 
 public class CubbyUtils {
 
-	public static String getActionClassName(Class<?> c) {
-		String name = left(c.getSimpleName(), "$");
-		String actionName = toFirstLower(name.replaceAll(
-				"(.*[.])*([^.]+)(Action$)", "$2"));
-		if (c.getAnnotation(Url.class) != null) {
-			actionName = ((Url) c.getAnnotation(Url.class)).value();
+	private static Url DEFAULT_URL_ANNOTATION;
+	static {
+		@Url
+		class UrlDummy {
+		}
+		DEFAULT_URL_ANNOTATION = UrlDummy.class.getAnnotation(Url.class);
+	}
+
+	public static String getActionClassName(final Class<?> c) {
+		final String actionName;
+		final Url url = c.getAnnotation(Url.class);
+		if (url != null && !StringUtil.isEmpty(url.value())) {
+			actionName = url.value();
+		} else {
+			final String name = left(c.getSimpleName(), "$");
+			actionName = toFirstLower(name.replaceAll(
+					"(.*[.])*([^.]+)(Action$)", "$2"));
 		}
 		return actionName;
 	}
 
-	static String getActionMethodName(Method m) {
-		String actionName = m.getName();
-		if (m.getAnnotation(Url.class) != null) {
-			actionName = ((Url) m.getAnnotation(Url.class)).value();
-		} else if ("index".equals(actionName)) {
-			actionName = "";
+	static String getActionMethodName(final Method m) {
+		final String actionName;
+		final Url url = m.getAnnotation(Url.class);
+		if (url != null && !StringUtil.isEmpty(url.value())) {
+			actionName = url.value();
+		} else {
+			final String methodName = m.getName();
+			if ("index".equals(methodName)) {
+				actionName = "";
+			} else {
+				actionName = methodName;
+			}
 		}
 		return actionName;
 	}
 
-	public static String getActionUrl(Class<?> c, Method m) {
-		String actionMethodName = getActionMethodName(m);
+	public static String getActionUrl(final Class<?> c, final Method m) {
+		final String actionMethodName = getActionMethodName(m);
 		if (actionMethodName.startsWith("/")) {
 			return actionMethodName;
 		} else {
-			String actionName = CubbyUtils.getActionClassName(c);
+			final String actionName = CubbyUtils.getActionClassName(c);
 			return "/" + actionName + "/" + actionMethodName;
 		}
 	}
 
-	public static boolean isActionMethod(Method m) {
+	public static Url.RequestMethod[] getAcceptableRequestMethods(
+			final Class<?> c, final Method m) {
+		Url url = m.getAnnotation(Url.class);
+		if (url == null) {
+			url = c.getAnnotation(Url.class);
+			if (url == null) {
+				url = DEFAULT_URL_ANNOTATION;
+			}
+		}
+		return url.accept();
+	}
+
+	public static boolean isActionMethod(final Method m) {
 		return m.getReturnType().isAssignableFrom(ActionResult.class)
 				&& m.getParameterTypes().length == 0;
 	}
 
-	public static int getObjectSize(Object value) {
+	public static int getObjectSize(final Object value) {
 		final int size;
 		if (value == null) {
 			size = 0;
 		} else if (value.getClass().isArray()) {
-			Object[] array = (Object[]) value;
+			final Object[] array = (Object[]) value;
 			size = array.length;
 		} else if (value instanceof Collection) {
-			Collection<?> collection = (Collection<?>) value;
+			final Collection<?> collection = (Collection<?>) value;
 			size = collection.size();
 		} else {
 			size = 1;
@@ -64,13 +93,13 @@ public class CubbyUtils {
 		return size;
 	}
 
-	public static String getPath(HttpServletRequest request) {
-		String uri = request.getRequestURI();
-		String contextPath = request.getContextPath();
+	public static String getPath(final HttpServletRequest request) {
+		final String uri = request.getRequestURI();
+		final String contextPath = request.getContextPath();
 		return uri.substring(contextPath.length());
 	}
 
-	public static boolean isActionClass(Class<?> c) {
+	public static boolean isActionClass(final Class<?> c) {
 		return Action.class.isAssignableFrom(c);
 	}
 

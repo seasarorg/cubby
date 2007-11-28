@@ -36,7 +36,7 @@ public class CubbyConventionImpl implements CubbyConvention {
 	public ActionDef fromPathToActionDef(final HttpServletRequest request,
 			final String path) {
 		final List<String> tokens = new ArrayList<String>();
-		for (StringTokenizer tokenizer = new StringTokenizer(path, "/"); tokenizer
+		for (final StringTokenizer tokenizer = new StringTokenizer(path, "/"); tokenizer
 				.hasMoreTokens();) {
 			final String token = tokenizer.nextToken();
 			tokens.add(token);
@@ -50,16 +50,17 @@ public class CubbyConventionImpl implements CubbyConvention {
 		CubbyUtils.join(tokens.iterator(), '_');
 		final String actionName = CubbyUtils.join(tokens.iterator(), '_')
 				+ namingConvention.getActionSuffix();
-		final ComponentDef componentDef = fromRequestOrActionNameToComponentDef(request, actionName);
+		final ComponentDef componentDef = fromRequestOrActionNameToComponentDef(
+				request, actionName);
 		if (componentDef == null) {
 			return null;
 		}
 
 		final Method method;
 		try {
-			method = ClassUtil.getMethod(componentDef
-					.getComponentClass(), methodName, new Class[0]);
-		} catch (NoSuchMethodRuntimeException e) {
+			method = ClassUtil.getMethod(componentDef.getComponentClass(),
+					methodName, new Class[0]);
+		} catch (final NoSuchMethodRuntimeException e) {
 			return null;
 		}
 
@@ -68,7 +69,8 @@ public class CubbyConventionImpl implements CubbyConvention {
 		return actionDef;
 	}
 
-	private ComponentDef fromRequestOrActionNameToComponentDef(final HttpServletRequest request, final String actionName) {
+	private ComponentDef fromRequestOrActionNameToComponentDef(
+			final HttpServletRequest request, final String actionName) {
 		ComponentDef componentDef = fromRequestToComponentDef(request);
 		if (componentDef == null) {
 			componentDef = fromActionNameToComponentDef(actionName);
@@ -76,8 +78,10 @@ public class CubbyConventionImpl implements CubbyConvention {
 		return componentDef;
 	}
 
-	private ComponentDef fromRequestToComponentDef(final HttpServletRequest request) {
-		final String actionClassName = (String) request.getAttribute(ATTR_ACTION_CLASS_NAME);
+	private ComponentDef fromRequestToComponentDef(
+			final HttpServletRequest request) {
+		final String actionClassName = (String) request
+				.getAttribute(ATTR_ACTION_CLASS_NAME);
 		if (actionClassName == null) {
 			return null;
 		}
@@ -85,7 +89,8 @@ public class CubbyConventionImpl implements CubbyConvention {
 		if (!container.getRoot().hasComponentDef(actionClass)) {
 			return null;
 		}
-		final ComponentDef componentDef = container.getRoot().getComponentDef(actionClass);
+		final ComponentDef componentDef = container.getRoot().getComponentDef(
+				actionClass);
 		return componentDef;
 	}
 

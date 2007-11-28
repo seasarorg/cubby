@@ -14,12 +14,12 @@ class ForwardInfoImpl implements ForwardInfo {
 	private final String methodName;
 
 	public ForwardInfoImpl(RoutingInfo rewriteInfo, Map<String, String> uriParams) {
-		this.rewritePath = rewriteInfo.buildRewritePath(uriParams);
+		this.rewritePath = rewriteInfo.buildForwardPath(uriParams);
 		this.actionClassName = rewriteInfo.getActionClass().getCanonicalName();
 		this.methodName = rewriteInfo.getMethod().getName();;
 	}
 
-	public String getRewritePath() {
+	public String getForwardPath() {
 		return rewritePath;
 	}
 

@@ -86,8 +86,8 @@ public class FieldValidationRule implements ValidationRule {
 		}
 
 		public void invoke(final Object[] values, final ActionErrors errors) {
-			final FieldInfo fieldInfo = new FieldInfo(fieldName);
 			final ValidationContext context = new ValidationContext();
+			final FieldInfo fieldInfo = new FieldInfo(fieldName);
 			this.validator.validate(context, values);
 			for (MessageInfo message : context.getMessageInfos()) {
 				errors.add(message.builder().fieldNameKey(fieldNameKey)
@@ -106,8 +106,8 @@ public class FieldValidationRule implements ValidationRule {
 		}
 
 		public void invoke(final Object[] values, final ActionErrors errors) {
-			final ValidationContext context = new ValidationContext();
 			for (int i = 0; i < values.length; i++) {
+				final ValidationContext context = new ValidationContext();
 				final FieldInfo fieldInfo = new FieldInfo(fieldName, i);
 				this.validator.validate(context, values[i]);
 				for (final MessageInfo messageInfo : context.getMessageInfos()) {
