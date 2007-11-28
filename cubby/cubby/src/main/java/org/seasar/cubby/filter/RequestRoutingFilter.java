@@ -64,21 +64,21 @@ public class RequestRoutingFilter implements Filter {
 			final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
 
-		final String rewritePath = rewrite((HttpServletRequest) request,
+		final String forwardPath = routing((HttpServletRequest) request,
 				(HttpServletResponse) response);
-		if (!StringUtil.isEmpty(rewritePath)) {
+		if (!StringUtil.isEmpty(forwardPath)) {
 			if (logger.isDebugEnabled()) {
-				logger.log("DCUB0001", new Object[] { rewritePath });
+				logger.log("DCUB0001", new Object[] { forwardPath });
 			}
 			final RequestDispatcher requestDispatcher = request
-					.getRequestDispatcher(rewritePath);
+					.getRequestDispatcher(forwardPath);
 			requestDispatcher.forward(request, response);
 		} else {
 			chain.doFilter(request, response);
 		}
 	}
 
-	private String rewrite(final HttpServletRequest request,
+	private String routing(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
 		final String path = CubbyUtils.getPath(request);
@@ -92,17 +92,17 @@ public class RequestRoutingFilter implements Filter {
 		final PathResolver pathResolver = (PathResolver) container
 				.getComponent(PathResolver.class);
 
-		final String rewritePath;
+		final String forwardPath;
 		final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
 		if (forwardInfo != null) {
 			request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo
 					.getActionClassName());
 			request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
-			rewritePath = forwardInfo.getRewritePath();
+			forwardPath = forwardInfo.getForwardPath();
 		} else {
-			rewritePath = null;
+			forwardPath = null;
 		}
-		return rewritePath;
+		return forwardPath;
 	}
 
 	private boolean isIgnorePath(final String path) {

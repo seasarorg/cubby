@@ -14,28 +14,28 @@ import java.lang.annotation.Target;
  * 使用例
  * 
  * <pre>
- * &#64;Url(&quot;fuga&quot;)
+ * &#064;Url(&quot;fuga&quot;)
  * public class HogeAction {
  * 	// -&gt; &quot;/fuga/m1&quot;
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	&#64;Url(&quot;list&quot;)
+ * 	&#064;Url(&quot;list&quot;)
  * 	// -&gt; &quot;/fuga/list&quot;
  * 	public ActionResult m2() {
  * 	}
  * 
- * 	&#64;Url(&quot;/xxx/yyy&quot;)
+ * 	&#064;Url(&quot;/xxx/yyy&quot;)
  * 	// -&gt; &quot;/xxx/yyy&quot;
  * 	public ActionResult m3() {
  * 	}
  * 
- * 	&#64;Url(&quot;/{id}/edit&quot;)
+ * 	&#064;Url(&quot;/{id}/edit&quot;)
  * 	// {id}部分をリクエストパラメータに追加
  * 	public ActionResult m4() {
  * 	}
  * 
- * 	&#64;Url(&quot;/{userId,a-z}/edit&quot;)
+ * 	&#064;Url(&quot;/{userId,a-z}/edit&quot;)
  * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
  * 	public ActionResult m5() {
  * 	}
@@ -45,6 +45,7 @@ import java.lang.annotation.Target;
  * </p>
  * 
  * @author agata
+ * @author baba
  * @since 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -55,15 +56,24 @@ public @interface Url {
 	 * アクションメソッドを起動する対象となる HTTP メソッド。
 	 * 
 	 * @author agata
+	 * @author baba
 	 * @since 1.0
 	 */
-	enum Method {
+	enum RequestMethod {
 		/** HTTP GET */
 		GET,
+		/** HTTP HEAD */
+		HEAD,
 		/** HTTP POST */
 		POST,
-		/** HTTP GET、HTTP POST 両方 */
-		ALL
+		/** HTTP PUT */
+		PUT,
+		/** HTTP DELETE */
+		DELETE,
+		/** HTTP OPTIONS */
+		OPTIONS,
+		/** HTTP TRACE */
+		TRACE,
 	}
 
 	/**
@@ -86,16 +96,10 @@ public @interface Url {
 
 	/**
 	 * アクションメソッドが対応するHTTPのメソッドを指定します。
-	 * <p>
-	 * {@link Method#GET}、{@link Method#POST}、{@link Method#ALL}
-	 * の３種類を指定できます。
-	 * </p>
-	 * <p>
-	 * <strong> この設定はcubby0.8では未実装。0.8までアクションメソッドはGET、POSTを意識せずに実行されます。 つまり、常に
-	 * RequestMethod.ALLです。 </strong>
-	 * </p>
 	 * 
 	 * @return アクションメソッドが対応するHTTPのメソッド
 	 */
-	Method method() default Url.Method.ALL;
+	RequestMethod[] accept() default { RequestMethod.GET,
+			RequestMethod.POST };
+
 }

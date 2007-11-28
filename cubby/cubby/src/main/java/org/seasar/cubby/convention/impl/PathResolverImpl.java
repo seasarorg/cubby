@@ -12,11 +12,15 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Url;
 import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
@@ -33,7 +37,7 @@ import org.seasar.framework.util.StringUtil;
  */
 public class PathResolverImpl implements PathResolver, Disposable {
 
-	private static Pattern urlRewritePattern = Pattern
+	private static Pattern routingPattern = Pattern
 			.compile("([{]([^}]+)[}])([^{]*)");
 
 	private static final Logger logger = Logger
@@ -72,21 +76,24 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		initialized = false;
 	}
 
-	public void add(final String patternStr,
-			final Class<? extends Action> actionClass, final String methodName) {
+	public void add(final String regexp,
+			final Class<? extends Action> actionClass, final String methodName,
+			final Url.RequestMethod... requestMethods) {
 
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
-		this.add(patternStr, actionClass, method, customRoutingPatterns);
+		this.add(regexp, actionClass, method, customRoutingPatterns,
+				requestMethods);
 	}
 
-	private void add(final String patternStr,
+	private void add(final String regexp,
 			final Class<? extends Action> actionClass, final Method method,
-			final Map<Pattern, RoutingInfo> patternToRewriteInfoMap) {
+			final Map<Pattern, RoutingInfo> patternToRoutingInfoMap,
+			final Url.RequestMethod... requestMethods) {
 
-		String actionFullName = patternStr;
+		String actionFullName = regexp;
 		final List<String> uriParameterNames = new ArrayList<String>();
-		final Matcher matcher = urlRewritePattern.matcher(actionFullName);
+		final Matcher matcher = routingPattern.matcher(actionFullName);
 		while (matcher.find()) {
 			final String name = matcher.group(2);
 			final String[] names = name.split(",", 2);
@@ -101,14 +108,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			}
 		}
 
-		final String rewritePath = this.fromActionClassToPath(actionClass,
+		final String forwardPath = this.fromActionClassToPath(actionClass,
 				method);
 
-		final RoutingInfo rewriteInfo = new RoutingInfo(actionClass, method,
-				uriParameterNames, rewritePath);
+		final RoutingInfo routingInfo = new RoutingInfo(actionClass, method,
+				uriParameterNames, forwardPath, requestMethods);
 		final Pattern pattern = Pattern.compile("^" + actionFullName + "$");
 
-		patternToRewriteInfoMap.put(pattern, rewriteInfo);
+		patternToRoutingInfoMap.put(pattern, routingInfo);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0007", new Object[] { actionFullName, method,
 					uriParameterNames });
@@ -160,16 +167,20 @@ public class PathResolverImpl implements PathResolver, Disposable {
 				.entrySet()) {
 			final Matcher matcher = entry.getKey().matcher(path);
 			if (matcher.find()) {
-				final RoutingInfo rewriteInfo = entry.getValue();
-				for (int i = 1; i < matcher.groupCount() + 1; i++) {
-					final String name = rewriteInfo.getUriParameterNames().get(
-							i - 1);
-					final String value = matcher.group(i);
-					uriParams.put(name, value);
+				final RoutingInfo routingInfo = entry.getValue();
+				final HttpServletRequest request = SingletonS2Container
+						.getComponent(HttpServletRequest.class);
+				if (routingInfo.isAcceptable(request)) {
+					for (int i = 1; i < matcher.groupCount() + 1; i++) {
+						final String name = routingInfo.getUriParameterNames()
+								.get(i - 1);
+						final String value = matcher.group(i);
+						uriParams.put(name, value);
+					}
+					final ForwardInfoImpl forwardInfo = new ForwardInfoImpl(
+							routingInfo, uriParams);
+					return forwardInfo;
 				}
-				final ForwardInfoImpl forwardInfo = new ForwardInfoImpl(
-						rewriteInfo, uriParams);
-				return forwardInfo;
 			}
 		}
 		return null;
@@ -187,20 +198,24 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		private final List<String> uriParameterNames;
 
-		private final String rewritePath;
+		private final String forwardPath;
+
+		private final Url.RequestMethod[] requestMethods;
 
 		public RoutingInfo(final Class<? extends Action> actionClass,
 				final Method method, final List<String> uriParameterNames,
-				final String rewritePath) {
+				final String forwardPath,
+				final Url.RequestMethod[] requestMethods) {
 			this.actionClass = actionClass;
 			this.method = method;
 			this.uriParameterNames = uriParameterNames;
-			this.rewritePath = rewritePath;
+			this.forwardPath = forwardPath;
+			this.requestMethods = requestMethods;
 		}
 
-		public String buildRewritePath(final Map<String, String> uriParams) {
+		public String buildForwardPath(final Map<String, String> uriParams) {
 			final StringBuilder builder = new StringBuilder(100);
-			builder.append(rewritePath);
+			builder.append(forwardPath);
 			if (!uriParams.isEmpty()) {
 				builder.append("?");
 				final QueryStringBuilder query = new QueryStringBuilder();
@@ -228,8 +243,23 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			return uriParameterNames;
 		}
 
-		public String getRewritePath() {
-			return rewritePath;
+		public String getForwardPath() {
+			return forwardPath;
+		}
+
+		public Url.RequestMethod[] getRequestMethods() {
+			return requestMethods;
+		}
+
+		public boolean isAcceptable(final HttpServletRequest request) {
+			final String requestMethod = request.getMethod();
+			for (final Url.RequestMethod acceptableRequestMethod : requestMethods) {
+				if (StringUtil.equalsIgnoreCase(acceptableRequestMethod.name(),
+						requestMethod)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 	}
@@ -262,7 +292,10 @@ public class PathResolverImpl implements PathResolver, Disposable {
 				if (CubbyUtils.isActionMethod(method)) {
 					final String actionFullName = CubbyUtils.getActionUrl(
 							clazz, method);
-					add(actionFullName, clazz, method, routingPatterns);
+					final Url.RequestMethod[] acceptableRequestMethods = CubbyUtils
+							.getAcceptableRequestMethods(clazz, method);
+					add(actionFullName, clazz, method, routingPatterns,
+							acceptableRequestMethods);
 				}
 			}
 		}
