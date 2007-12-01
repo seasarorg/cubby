@@ -6,15 +6,16 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-  <title>Cuuby archetype sample app : /hello/message</title>
+  <title>Cuuby archetype sample app : /hello/</title>
 </head>
 <body>
-<h1>Cuuby archetype sample app : /hello/message</h1>
-${dollar}{messages['msg.dummy']}<br/>
-<c:import url="/commons/errors.jsp"/>
-<c:import url="/commons/notice.jsp"/>
-post message : [${dollar}{message}]
-<br/>
-<a href="back">Back(redirect and flash message)</a>
+<h1>Cuuby archetype sample app : /hello/</h1>
+<c:import url="/common/errors.jsp"/>
+<c:import url="/common/notice.jsp"/>
+<t:form action="message" value="${dollar}{action}" method="post">
+	Your Name:
+	<t:input type="text" name="name"/>
+	<input type="submit" value="POST"/>
+</t:form>
 </body>
 </html>

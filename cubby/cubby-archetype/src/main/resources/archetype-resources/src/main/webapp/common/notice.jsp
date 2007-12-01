@@ -1,8 +1,4 @@
-<c:if test="${f:containsKey(flash, 'notice')}">
-<div id="notice" class="notice">${f:out(flash['notice'])}</div>
-<script type="text/javascript">
-	Event.observe(window,'load', function() {
-		new Effect.Highlight('notice');
-	});
-</script>
+#set($dollar = '$')
+<c:if test="${dollar}{f:containsKey(flash, 'notice')}">
+<div id="notice" class="notice">${dollar}{f:out(flash['notice'])}</div>
 </c:if>

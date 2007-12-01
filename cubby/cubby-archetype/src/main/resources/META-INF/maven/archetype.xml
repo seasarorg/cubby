@@ -19,8 +19,11 @@
 		<resource>src/main/resources/messages.properties</resource>
 		<resource>src/main/resources/s2container.dicon</resource>
 		<resource>src/main/webapp/common/header.jsp</resource>
+		<resource>src/main/webapp/common/notice.jsp</resource>
+		<resource>src/main/webapp/common/errors.jsp</resource>
 		<resource>src/main/webapp/index.jsp</resource>
 		<resource>src/main/webapp/hello/hello.jsp</resource>
+		<resource>src/main/webapp/hello/index.jsp</resource>
 		<resource>src/main/webapp/WEB-INF/web.xml</resource>
 	</resources>
 	<testSources>
