@@ -24,12 +24,12 @@
 <a name="14" href="#14">14</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String methodName;
 <a name="15" href="#15">15</a>  
 <a name="16" href="#16">16</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../../org/seasar/cubby/convention/impl/ForwardInfoImpl.html">ForwardInfoImpl</a>(<a href="../../../../../org/seasar/cubby/convention/impl/PathResolverImpl.html">RoutingInfo</a> rewriteInfo, Map&lt;String, String&gt; uriParams) {
-<a name="17" href="#17">17</a>  		<strong class="jxr_keyword">this</strong>.rewritePath = rewriteInfo.buildRewritePath(uriParams);
+<a name="17" href="#17">17</a>  		<strong class="jxr_keyword">this</strong>.rewritePath = rewriteInfo.buildForwardPath(uriParams);
 <a name="18" href="#18">18</a>  		<strong class="jxr_keyword">this</strong>.actionClassName = rewriteInfo.getActionClass().getCanonicalName();
 <a name="19" href="#19">19</a>  		<strong class="jxr_keyword">this</strong>.methodName = rewriteInfo.getMethod().getName();;
 <a name="20" href="#20">20</a>  	}
 <a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  	<strong class="jxr_keyword">public</strong> String getRewritePath() {
+<a name="22" href="#22">22</a>  	<strong class="jxr_keyword">public</strong> String getForwardPath() {
 <a name="23" href="#23">23</a>  		<strong class="jxr_keyword">return</strong> rewritePath;
 <a name="24" href="#24">24</a>  	}
 <a name="25" href="#25">25</a>  

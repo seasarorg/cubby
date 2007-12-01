@@ -41,7 +41,7 @@
   
   
             <div class="xleft">
-        最終更新: 11/01/2007
+        最終更新: 12/01/2007
                       </div>
             <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
           
@@ -120,7 +120,26 @@
         </li>
               
     <li class="none">
-              <a href="cubby/apidocs/index.html">JavaDoc</a>
+              <a href="tips.html">Tips集</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/index.html">JavaDoc</a>
+        </li>
+          </ul>
+          <h5>リソース</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="mail-lists.html">メーリングリスト</a>
+        </li>
+              
+    <li class="none">
+              <a href="issue-tracking.html">課題(JIRA)</a>
+        </li>
+              
+    <li class="none">
+              <a href="source-repository.html">SVNリポジトリ</a>
         </li>
           </ul>
           <h5>プロジェクト文書</h5>
@@ -152,6 +171,8 @@
               
                 
               
+      
+            
       
             
       
@@ -205,9 +226,9 @@
 -Dversion=(作成するプロジェクトのバージョン 例:1.0-SNAPSHOT) \
 -DarchetypeGroupId=org.seasar.cubby \
 -DarchetypeArtifactId=cubby-archetype \
--DarchetypeVersion=0.9.1 \
+-DarchetypeVersion=0.9.2 \
 -DremoteRepositories=http://maven.seasar.org/maven2/
-(実際には1行で入力してください)</pre></div><p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p><div class="source"><pre>mvn eclipse:eclipse</pre></div><p>Eclipseを使用せずにTomcatを直接起動して動作確認するには、プロジェクトのディレクトリで以下のコマンドを実行します。</p><div class="source"><pre>mvn tomcat:run</pre></div></div><div class="section"><h2>各種ファイル</h2><p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p><div class="section"><h3>必要なライブラリ (WEB-INF/lib)</h3><p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p><p>主な依存ライブラリを以下にあげます。</p><ul><li>cubby-*.jar<p>Cubby 本体です。</p></li><li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。</p></li><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p></li></ul></div><div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3><p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p><ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
+(実際には1行で入力してください)</pre></div><p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p><div class="source"><pre>mvn eclipse:eclipse</pre></div><p>Eclipseを使用せずにTomcatを直接起動して動作確認するには、プロジェクトのディレクトリで以下のコマンドを実行します。Tomcat起動後にブラウザで「http://localhost:8080/(アーティファクトID)/」にアクセスすることで、雛形アプリケーションの動作を確認できます。</p><div class="source"><pre>mvn tomcat:run</pre></div></div><div class="section"><h2>各種ファイル</h2><p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p><div class="section"><h3>必要なライブラリ (WEB-INF/lib)</h3><p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p><p>主な依存ライブラリを以下にあげます。</p><ul><li>cubby-*.jar<p>Cubby 本体です。</p></li><li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。</p></li><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p></li></ul></div><div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3><p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p><ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p><div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
         &lt;filter-name&gt;s2Filter&lt;/filter-name&gt;
         &lt;filter-class&gt;org.seasar.framework.container.filter.S2ContainerFilter&lt;/filter-class&gt;
@@ -259,14 +280,14 @@
         &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
         &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
     &lt;/filter-mapping&gt;
-&lt;/web-app&gt;</pre></div></li></ol></div><div class="section"><h3>diconファイル (WEB-INF/classes)</h3><ol type="1"><li>app.dicon<p>以下の dicon ファイルをインクルードしてください。</p><ul><li>dxo.dicon (S2Extension の jar ファイルに含まれます)</li><li>cubby.dicon (Cubby の jar ファイルに含まれます)</li><li>app-cubby.dicon (必要な場合に作成してください。必須ではありません)<div class="source"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;/web-app&gt;</pre></div></li></ol></div><div class="section"><h3>diconファイル (WEB-INF/classes)</h3><ol type="1"><li>app.dicon<p>以下の dicon ファイルをインクルードしてください。</p><ul><li>dxo.dicon (S2Extension の jar ファイルに含まれます)</li><li>routing.dicon、cubby.dicon (Cubby の jar ファイルに含まれます)</li><li>app-cubby.dicon (必要な場合に作成してください。必須ではありません)<div class="source"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot;
         &quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
 &lt;components&gt;
         &lt;include path=&quot;convention.dicon&quot;/&gt;
         &lt;include path=&quot;aop.dicon&quot;/&gt;
         &lt;include path=&quot;dxo.dicon&quot;/&gt;
-        &lt;include path=&quot;urlfilter.dicon&quot;/&gt;
+        &lt;include path=&quot;routing.dicon&quot;/&gt;
         &lt;include path=&quot;cubby.dicon&quot;/&gt;
         &lt;include path=&quot;app-cubby.dicon&quot;/&gt;
 &lt;/components&gt;</pre></div></li></ul></li><li>convention.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>を参考に、ルートパッケージを設定してください。</p></li><li>creator.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>を参考に、ActionCreator を設定してください。</p></li><li>customizer.dicon<p>Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。 cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。</p><p>アクションメソッドでトランザクションの制御が必要な場合もここで定義してください。 org.seasar.cubby.customizer.ActionMethodCustomizer は、アクションメソッドのみが対象になるカスタマイザです。</p><p>JSP の ELでは public フィールドをアクセスできないので、プロパティを public フィールドにしているばあいは PropertyInterType を適用してアクセサメソッドが生成されるようにしてください。</p><div class="source"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
