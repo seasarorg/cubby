@@ -1,3 +1,4 @@
+#set($dollar = '$')
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
@@ -8,13 +9,6 @@
   <title>Cuuby archetype sample app : index</title>
 </head>
 <body>
-<h1>Cuuby archetype sample app : index</h1>
-<c:import url="/commons/errors.jsp"/>
-<c:import url="/commons/notice.jsp"/>
-<t:form action="message" value="${action}" method="post">
-	Name:
-	<t:input type="text" name="name"/>
-	<input type="submit" value="POST"/>
-</t:form>
+<a href="hello">HelloAction</a>
 </body>
 </html>
