@@ -25,6 +25,7 @@ public class LoginActionTest extends CubbyTestCase {
 		getRequest().addParameter("password", "test");
 		actionContext.initialize(new ActionDefImpl(getComponentDef(LoginAction.class), LoginAction.class.getMethod("process", new Class[0])));
 		assertPathEquals(Redirect.class, "/todo/", action.process());
+		assertNotNull(action.sessionScope.get("user"));
 	}
 
 	public void testLogin_authError() throws Exception {
@@ -38,6 +39,7 @@ public class LoginActionTest extends CubbyTestCase {
 		assertEquals(1, action.getErrors().getFields().get("password").size());
 		assertEquals("ユーザIDかパスワードが違います。", action.getErrors().getFields().get("userId").get(0));
 		assertEquals("ユーザIDかパスワードが違います。", action.getErrors().getFields().get("password").get(0));
+		assertNull(action.sessionScope.get("user"));
 	}
 
 	public void testLogin_validationError() throws Exception {
@@ -49,5 +51,6 @@ public class LoginActionTest extends CubbyTestCase {
 		assertEquals(1, action.getErrors().getFields().get("password").size());
 		assertEquals("ユーザ名は必須です。", action.getErrors().getFields().get("userId").get(0));
 		assertEquals("パスワードは必須です。", action.getErrors().getFields().get("password").get(0));
+		assertNull(action.sessionScope.get("user"));
 	}
 }
