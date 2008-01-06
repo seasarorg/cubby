@@ -21,8 +21,8 @@ public class HelloActionTest extends CubbyTestCase {
 	}
 	
 	public void testMessage() throws Exception {
+		getRequest().addParameter("name", "name1");
 		actionContext.initialize(new ActionDefImpl(getComponentDef(HelloAction.class), HelloAction.class.getMethod("message", new Class[0])));
-		action.name = "name1";
 		Forward result = (Forward) action.message();
 		assertEquals("result.jsp", result.getPath());
 		assertEquals("name1", action.name);
