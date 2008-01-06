@@ -52,6 +52,14 @@ public class Forward extends AbstractActionResult {
 		this.path = path;
 	}
 
+	/**
+	 * パスを取得します。
+	 * @return パス
+	 */
+	public String getPath() {
+		return this.path;
+	}
+	
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {

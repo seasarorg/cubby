@@ -78,6 +78,11 @@ public class ForwardTest extends S2TestCase {
 					}
 				}), response);
 	}
+	
+	public void testGetPath() throws Exception {
+		Forward forward = new Forward("/absolute/path.jsp");
+		assertEquals("/absolute/path.jsp", forward.getPath());
+	}
 
 	interface Asserter {
 		void assertDispatchPath(String path);
