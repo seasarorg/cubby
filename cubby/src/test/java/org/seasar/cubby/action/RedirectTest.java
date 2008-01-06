@@ -95,6 +95,11 @@ public class RedirectTest extends S2TestCase {
 				}));
 	}
 
+	public void testGetPath() throws Exception {
+		Redirect redirect = new Redirect("/absolute/redirect");
+		assertEquals("/absolute/redirect", redirect.getPath());
+	}
+
 	interface Asserter {
 		void assertDispatchPath(String path);
 	}

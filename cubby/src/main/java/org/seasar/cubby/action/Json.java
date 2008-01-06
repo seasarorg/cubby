@@ -67,7 +67,23 @@ public class Json extends AbstractActionResult {
 		this.bean = bean;
 		this.calllback = callback;
 	}
-
+	
+	/**
+	 * JSON 形式に変換する JavaBeanを取得します。
+	 * @return JSON 形式に変換する JavaBean
+	 */
+	public Object getBean() {
+		return this.bean;
+	}
+	
+	/**
+	 * コールバック関数名を取得します。
+	 * @return コールバック関数名
+	 */
+	public String getCallback() {
+		return this.calllback;
+	}
+	
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
