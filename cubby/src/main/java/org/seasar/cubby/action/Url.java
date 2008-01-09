@@ -16,6 +16,10 @@ import java.lang.annotation.Target;
  * <pre>
  * &#064;Url(&quot;fuga&quot;)
  * public class HogeAction {
+ * 	// -&gt; &quot;/fuga/index&quot;
+ * 	public ActionResult index() {
+ * 	}
+ * 
  * 	// -&gt; &quot;/fuga/m1&quot;
  * 	public ActionResult m1() {
  * 	}
@@ -38,6 +42,27 @@ import java.lang.annotation.Target;
  * 	&#064;Url(&quot;/{userId,a-z}/edit&quot;)
  * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
  * 	public ActionResult m5() {
+ * 	}
+ * }
+ * 
+ * &#064;Url(&quot;/&quot;)
+ * public class RootAction {
+ * 	// -&gt; &quot;/&quot;
+ * 	public ActionResult index() {
+ * 	}
+ * 
+ * 	// -&gt; &quot;/m1&quot;
+ * 	public ActionResult m1() {
+ * 	}
+ * 
+ * 	&#064;Url(&quot;list&quot;)
+ * 	// -&gt; &quot;/list&quot;
+ * 	public ActionResult m2() {
+ * 	}
+ * 
+ * 	&#064;Url(&quot;/xxx/yyy&quot;)
+ * 	// -&gt; &quot;/xxx/yyy&quot;
+ * 	public ActionResult m3() {
  * 	}
  * }
  * </pre>
