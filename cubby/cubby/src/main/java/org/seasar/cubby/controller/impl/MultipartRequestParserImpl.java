@@ -25,7 +25,7 @@ import org.seasar.framework.util.StringUtil;
 /**
  * 
  * @author baba
- *
+ * 
  */
 public class MultipartRequestParserImpl implements RequestParser {
 
@@ -36,25 +36,25 @@ public class MultipartRequestParserImpl implements RequestParser {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object[]> getParameterMap(final HttpServletRequest request) {
-		final Map<String, Object[]> parameterMap;
+	public Map<String, Object[]> getParameterMap(
+			final HttpServletRequest request) {
+		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>(
+				request.getParameterMap());
 		if (ServletFileUpload.isMultipartContent(request)) {
 			final S2Container root = container.getRoot();
 			final FileUpload fileUpload = (FileUpload) root
 					.getComponent(FileUpload.class);
 			final RequestContext requestContext = (RequestContext) root
 					.getComponent(RequestContext.class);
-			parameterMap = this.getMultipartParameterMap(fileUpload,
-					requestContext);
-		} else {
-			parameterMap = request.getParameterMap();
+			parameterMap.putAll(this.getMultipartParameterMap(fileUpload,
+					requestContext));
 		}
 		return parameterMap;
 	}
 
 	@SuppressWarnings("unchecked")
-	Map<String, Object[]> getMultipartParameterMap(
-			final FileUpload fileUpload, final RequestContext requestContext) {
+	Map<String, Object[]> getMultipartParameterMap(final FileUpload fileUpload,
+			final RequestContext requestContext) {
 		try {
 			final String encoding = requestContext.getCharacterEncoding();
 			fileUpload.setHeaderEncoding(encoding);
