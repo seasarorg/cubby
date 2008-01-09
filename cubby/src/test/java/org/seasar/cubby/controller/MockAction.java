@@ -53,4 +53,14 @@ public class MockAction extends Action {
 	public ActionResult index() {
 		return new Forward("dummy1.jsp");
 	}
+	
+	@Url("todo/lists")
+	public ActionResult todolist() {
+		return new Forward("dummy1.jsp");
+	}
+
+	@Url("/tasklists")
+	public ActionResult tasklist() {
+		return new Forward("dummy1.jsp");
+	}
 }
