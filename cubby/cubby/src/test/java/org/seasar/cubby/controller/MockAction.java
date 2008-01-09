@@ -5,10 +5,12 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
+@Url("/")
 public class MockAction extends Action {
 	
 	public ValidationRules validation = new DefaultValidationRules();
@@ -44,6 +46,11 @@ public class MockAction extends Action {
 	@Validation(errorPage="error.jsp", rules="validation2")
 	@Form
 	public ActionResult dummy3() {
+		return new Forward("dummy1.jsp");
+	}
+
+	@Form
+	public ActionResult index() {
 		return new Forward("dummy1.jsp");
 	}
 }

@@ -4,6 +4,7 @@
 <components>
 	<include path="cubby.dicon" />
 	<include path="app-cubby.dicon" />
+	<include path="routing.dicon" />
 	<component name="sample1" class="org.seasar.cubby.seasar.Sample1Controller"/>
 	<component name="sample2" class="org.seasar.cubby.seasar.Sample2Controller"/>
 </components>
