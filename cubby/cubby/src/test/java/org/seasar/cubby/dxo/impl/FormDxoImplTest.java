@@ -23,7 +23,7 @@ public class FormDxoImplTest extends S2TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-        include(getClass().getName().replace('.', '/') + ".dicon");
+		include(getClass().getName().replace('.', '/') + ".dicon");
 	}
 
 	public void testBeanToMapNullSource() {
@@ -46,7 +46,7 @@ public class FormDxoImplTest extends S2TestCase {
 		bean.setDate(cal.getTime());
 		bean.setNum1(5);
 		bean.setNum2(new Integer[] { 2, 3, 4 });
-		bean.setNum3(Arrays.asList(new String[] {"abc", "def" }));
+		bean.setNum3(Arrays.asList(new String[] { "abc", "def" }));
 
 		Map<String, String[]> map = new HashMap<String, String[]>();
 
@@ -59,7 +59,7 @@ public class FormDxoImplTest extends S2TestCase {
 
 	public void testMapToBean() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("date", new Object[] { "2006-01-01" } );
+		map.put("date", new Object[] { "2006-01-01" });
 
 		TestBean bean = new TestBean();
 
@@ -67,7 +67,8 @@ public class FormDxoImplTest extends S2TestCase {
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		assertEquals(format.format(cal.getTime()), format.format(bean.getDate()));
+		assertEquals(format.format(cal.getTime()), format
+				.format(bean.getDate()));
 	}
 
 	public void testMapToBean_OneValue() {
@@ -91,8 +92,8 @@ public class FormDxoImplTest extends S2TestCase {
 
 	public void testMapToBean_MultiValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num2", new String[] {"1", "2"});
-		map.put("num3", new String[] { "abc", "def" });
+		map.put("num2", new Object[] { "1", "2" });
+		map.put("num3", new Object[] { "abc", "def" });
 
 		TestBean bean = new TestBean();
 
@@ -107,9 +108,9 @@ public class FormDxoImplTest extends S2TestCase {
 		assertEquals("def", bean.getNum3().get(1));
 	}
 
-	public void testMapToBean_MultiValueIncludesEmptyValue () {
+	public void testMapToBean_MultiValueIncludesEmptyValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num2", new String[] {"1", "", "2"});
+		map.put("num2", new String[] { "1", "", "2" });
 
 		TestBean bean = new TestBean();
 
@@ -118,6 +119,18 @@ public class FormDxoImplTest extends S2TestCase {
 		assertEquals(Integer.valueOf(1), bean.getNum2()[0]);
 		assertEquals(null, bean.getNum2()[1]);
 		assertEquals(Integer.valueOf(2), bean.getNum2()[2]);
+	}
+
+	public void testNoCloneableObject() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		NoDefaultConstructorBean bean = new NoDefaultConstructorBean("1");
+		map.put("bean", new Object[] { bean });
+
+		NoDefaultConstructorBeanHolder dest = new NoDefaultConstructorBeanHolder();
+
+		formDxo.convert(map, dest);
+		assertNotNull(dest.bean);
+		assertSame(bean, dest.bean);
 	}
 
 	public static class TestBean {
@@ -162,5 +175,17 @@ public class FormDxoImplTest extends S2TestCase {
 			this.num3 = num3;
 		}
 
+	}
+
+	public static class NoDefaultConstructorBeanHolder {
+		public NoDefaultConstructorBean bean;
+	}
+
+	public static class NoDefaultConstructorBean {
+		public String prop1;
+
+		public NoDefaultConstructorBean(String prop1) {
+			this.prop1 = prop1;
+		}
 	}
 }
