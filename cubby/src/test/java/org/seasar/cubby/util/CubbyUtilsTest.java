@@ -6,6 +6,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.controller.MockAction;
 import org.seasar.framework.util.ClassUtil;
 
 public class CubbyUtilsTest extends TestCase {
@@ -41,6 +42,11 @@ public class CubbyUtilsTest extends TestCase {
 		assertEquals("/hoge/index2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index2", null)));
 		assertEquals("/hoge2/m1", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
 		assertEquals("/hoge/m2", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
+		assertEquals("/", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "index", null)));
+		assertEquals("/dummy1", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy1", null)));
+		assertEquals("/dummy2", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy2", null)));
+		assertEquals("/todo/lists", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "todolist", null)));
+		assertEquals("/tasklists", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "tasklist", null)));
 	}
 
 	public void testGetActionClassName() {

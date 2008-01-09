@@ -56,7 +56,11 @@ public class CubbyUtils {
 			return actionMethodName;
 		} else {
 			final String actionName = CubbyUtils.getActionClassName(c);
-			return "/" + actionName + "/" + actionMethodName;
+			if ("/".equals(actionName)) {
+				return "/" + actionMethodName;
+			} else {
+				return "/" + actionName + "/" + actionMethodName;
+			}
 		}
 	}
 
