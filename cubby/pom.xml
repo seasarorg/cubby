@@ -27,6 +27,7 @@
       <id>agata</id>
       <name>AGATA Toshitaka</name>
       <email>agata_at_nulab.co.jp</email>
+      <url>http://d.hatena.ne.jp/agt/</url>
       <organization>Nulab Inc.</organization>
       <timezone>+9</timezone>
     </developer>
@@ -42,6 +43,13 @@
       <name>BABA Yasuyuki</name>
       <email>caster74_at_users.sourceforge.jp</email>
       <organization>Nulab Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>jfut</id>
+      <name>Jun Futagawa</name>
+      <email/>
+      <organization/>
       <timezone>+9</timezone>
     </developer>
   </developers>
