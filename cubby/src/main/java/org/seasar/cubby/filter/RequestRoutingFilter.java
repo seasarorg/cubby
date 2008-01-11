@@ -5,6 +5,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_METHOD_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -41,6 +42,8 @@ public class RequestRoutingFilter implements Filter {
 	private static final Logger logger = Logger
 			.getLogger(RequestRoutingFilter.class);
 
+	private static final Router router = new Router();
+
 	private final List<Pattern> ignorePathPatterns = new ArrayList<Pattern>();
 
 	public void init(final FilterConfig config) throws ServletException {
@@ -64,8 +67,8 @@ public class RequestRoutingFilter implements Filter {
 			final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
 
-		final String forwardPath = routing((HttpServletRequest) request,
-				(HttpServletResponse) response);
+		final String forwardPath = router.routing((HttpServletRequest) request,
+				(HttpServletResponse) response, ignorePathPatterns);
 		if (!StringUtil.isEmpty(forwardPath)) {
 			if (logger.isDebugEnabled()) {
 				logger.log("DCUB0001", new Object[] { forwardPath });
@@ -78,41 +81,54 @@ public class RequestRoutingFilter implements Filter {
 		}
 	}
 
-	private String routing(final HttpServletRequest request,
-			final HttpServletResponse response) throws ServletException,
-			IOException {
-		final String path = CubbyUtils.getPath(request);
+	public static class Router {
 
-		if (isIgnorePath(path)) {
-			return null;
+		private static final List<Pattern> EMPTY_IGNORE_PATH_PATTERNS = Collections
+				.emptyList();
+
+		public String routing(final HttpServletRequest request,
+				final HttpServletResponse response) {
+			return routing(request, response, EMPTY_IGNORE_PATH_PATTERNS);
 		}
 
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final PathResolver pathResolver = (PathResolver) container
-				.getComponent(PathResolver.class);
+		public String routing(final HttpServletRequest request,
+				final HttpServletResponse response, List<Pattern> ignorePattern) {
+			final String path = CubbyUtils.getPath(request);
 
-		final String forwardPath;
-		final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
-		if (forwardInfo != null) {
-			request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo
-					.getActionClassName());
-			request.setAttribute(ATTR_METHOD_NAME, forwardInfo.getMethodName());
-			forwardPath = forwardInfo.getForwardPath();
-		} else {
-			forwardPath = null;
-		}
-		return forwardPath;
-	}
-
-	private boolean isIgnorePath(final String path) {
-		for (final Pattern pattern : ignorePathPatterns) {
-			final Matcher matcher = pattern.matcher(path);
-			if (matcher.matches()) {
-				return true;
+			if (isIgnorePath(path, ignorePattern)) {
+				return null;
 			}
+
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
+			final PathResolver pathResolver = (PathResolver) container
+					.getComponent(PathResolver.class);
+
+			final String forwardPath;
+			final ForwardInfo forwardInfo = pathResolver.getForwardInfo(path);
+			if (forwardInfo != null) {
+				request.setAttribute(ATTR_ACTION_CLASS_NAME, forwardInfo
+						.getActionClassName());
+				request.setAttribute(ATTR_METHOD_NAME, forwardInfo
+						.getMethodName());
+				forwardPath = forwardInfo.getForwardPath();
+			} else {
+				forwardPath = null;
+			}
+			return forwardPath;
 		}
-		return false;
+
+		private boolean isIgnorePath(final String path,
+				List<Pattern> ignorePathPatterns) {
+			for (final Pattern pattern : ignorePathPatterns) {
+				final Matcher matcher = pattern.matcher(path);
+				if (matcher.matches()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 	}
 
 }

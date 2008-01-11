@@ -11,7 +11,6 @@ import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.convention.CubbyConvention;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 
 public class ActionProcessorImpl implements ActionProcessor {
@@ -34,14 +33,14 @@ public class ActionProcessorImpl implements ActionProcessor {
 	public void process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)
 			throws Exception {
-		final String path = CubbyUtils.getPath(request);
-
-		final ActionDef actionDef = cubbyConvention.fromPathToActionDef(
-				request, path);
+		final ActionDef actionDef = cubbyConvention
+				.fromPathToActionDef(request);
 		if (actionDef != null) {
 			context.initialize(actionDef);
 			if (logger.isDebugEnabled()) {
-				logger.log("DCUB0004", new Object[] { path });
+				logger
+						.log("DCUB0004",
+								new Object[] { request.getRequestURI() });
 				logger.log("DCUB0005", new Object[] { context.getMethod() });
 			}
 			final ActionResult result = context.invoke();
