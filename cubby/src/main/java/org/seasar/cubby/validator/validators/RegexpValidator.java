@@ -11,6 +11,9 @@ import org.seasar.framework.util.StringUtil;
 /**
  * 指定された正規表現にマッチするか検証します。
  * <p>
+ * 正規表現についての詳細は {@link Pattern}を参照してください。
+ * </p>
+ * <p>
  * デフォルトエラーメッセージキー:valid.regexp
  * </p>
  * 
@@ -34,7 +37,7 @@ public class RegexpValidator implements ScalarFieldValidator {
 	 * コンストラクタ
 	 * 
 	 * @param regex
-	 *            正規表現（例：".+\\.(png|jpg)"）
+	 *            正規表現（例：".+\\.(?i)(png|jpg)"）・・・「(?i)」は大文字小文字を区別しないフラグ
 	 */
 	public RegexpValidator(final String regex) {
 		this(regex, "valid.regexp");
@@ -44,12 +47,32 @@ public class RegexpValidator implements ScalarFieldValidator {
 	 * エラーメッセージキーを指定するコンストラクタ
 	 * 
 	 * @param regex
-	 *            正規表現（例：".+\\.(png|jpg)"）
+	 *            正規表現（例：".+\\.(?i)(png|jpg)"）・・・「(?i)」は大文字小文字を区別しないフラグ
 	 * @param messageKey
 	 *            エラーメッセージキー
 	 */
 	public RegexpValidator(final String regex, final String messageKey) {
-		this.pattern = Pattern.compile(regex);
+		this(Pattern.compile(regex), messageKey);
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param pattern 正規表現パターン
+	 */
+	public RegexpValidator(final Pattern pattern) {
+		this(pattern, "valid.regexp");
+	}
+
+	/**
+	 * エラーメッセージキーを指定するコンストラクタ
+	 * 
+	 * @param pattern 正規表現パターン
+	 * @param messageKey
+	 *            エラーメッセージキー
+	 */
+	public RegexpValidator(Pattern pattern, String messageKey) {
+		this.pattern = pattern;
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
