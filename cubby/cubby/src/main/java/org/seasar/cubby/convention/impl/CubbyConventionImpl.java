@@ -33,10 +33,9 @@ public class CubbyConventionImpl implements CubbyConvention {
 		this.namingConvention = namingConvention;
 	}
 
-	public ActionDef fromPathToActionDef(final HttpServletRequest request,
-			final String path) {
+	public ActionDef fromPathToActionDef(final HttpServletRequest request) {
 		final List<String> tokens = new ArrayList<String>();
-		for (final StringTokenizer tokenizer = new StringTokenizer(path, "/"); tokenizer
+		for (final StringTokenizer tokenizer = new StringTokenizer(request.getRequestURI(), "/"); tokenizer
 				.hasMoreTokens();) {
 			final String token = tokenizer.nextToken();
 			tokens.add(token);
@@ -47,7 +46,6 @@ public class CubbyConventionImpl implements CubbyConvention {
 
 		final String methodName = tokens.remove(tokens.size() - 1);
 
-		CubbyUtils.join(tokens.iterator(), '_');
 		final String actionName = CubbyUtils.join(tokens.iterator(), '_')
 				+ namingConvention.getActionSuffix();
 		final ComponentDef componentDef = fromRequestOrActionNameToComponentDef(

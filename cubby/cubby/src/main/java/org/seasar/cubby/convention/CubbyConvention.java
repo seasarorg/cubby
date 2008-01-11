@@ -6,6 +6,6 @@ import org.seasar.cubby.controller.ActionDef;
 
 public interface CubbyConvention {
 
-	ActionDef fromPathToActionDef(HttpServletRequest request, String path);
+	ActionDef fromPathToActionDef(HttpServletRequest request);
 
 }

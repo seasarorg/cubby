@@ -100,7 +100,13 @@ public class CubbyUtils {
 	public static String getPath(final HttpServletRequest request) {
 		final String uri = request.getRequestURI();
 		final String contextPath = request.getContextPath();
-		return uri.substring(contextPath.length());
+		final String path;
+		if ("/".equals(contextPath)) {
+			path = uri;
+		} else {
+			path = uri.substring(contextPath.length());
+		}
+		return path;
 	}
 
 	public static boolean isActionClass(final Class<?> c) {
