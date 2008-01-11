@@ -10,7 +10,10 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。
- * <p>
+* <p>
+ * 正規表現についての詳細は {@link Pattern}を参照してください。
+ * </p>
+  * <p>
  * デフォルトエラーメッセージキー:valid.fileRegexp
  * </p>
  * 
@@ -34,7 +37,7 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 	 * コンストラクタ
 	 * 
 	 * @param regex
-	 *            正規表現（例：".+\\.(png|jpg)"）
+	 *            正規表現（例：".+\\.(?i)(png|jpg)"）・・・「(?i)」は大文字小文字を区別しないフラグ
 	 */
 	public FileRegexpValidator(final String regex) {
 		this(regex, "valid.fileRegexp");
@@ -44,12 +47,32 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 	 * エラーメッセージキーを指定するコンストラクタ
 	 * 
 	 * @param regex
-	 *            正規表現（例：".+\\.(png|jpg)"）
+	 *            正規表現（例：".+\\.(?i)(png|jpg)"）・・・「(?i)」は大文字小文字を区別しないフラグ
 	 * @param messageKey
 	 *            エラーメッセージキー
 	 */
 	public FileRegexpValidator(final String regex, final String messageKey) {
-		this.pattern = Pattern.compile(regex);
+		this(Pattern.compile(regex), messageKey);
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param pattern 正規表現パターン
+	 */
+	public FileRegexpValidator(Pattern pattern) {
+		this(pattern, "valid.fileRegexp");
+	}
+	
+	/**
+	 * エラーメッセージキーを指定するコンストラクタ
+	 * 
+	 * @param pattern 正規表現パターン
+	 * @param messageKey
+	 *            エラーメッセージキー
+	 */
+	public FileRegexpValidator(Pattern pattern, String messageKey) {
+		this.pattern = pattern;
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
