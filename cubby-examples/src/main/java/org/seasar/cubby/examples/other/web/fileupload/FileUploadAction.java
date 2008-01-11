@@ -19,7 +19,9 @@ public class FileUploadAction extends Action {
 		public void initialize() {
 			add("filename", new RequiredValidator());
 			add("file", new RequiredValidator());
-			add("file", new FileRegexpValidator(".+\\.(png|jpg)"));
+			// (?i)を付けることで大文字小文字を区別しないという意味
+			// 正規表現に関しての詳細な情報はjava.util.PatternクラスのJavaDocを参照してください。
+			add("file", new FileRegexpValidator(".+\\.(?i)(png|jpg)")); 
 		}
 	};
 	
