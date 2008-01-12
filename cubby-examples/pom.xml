@@ -118,12 +118,12 @@
     <dependency>
       <groupId>org.seasar.dao</groupId>
       <artifactId>s2-dao</artifactId>
-      <version>1.0.46</version>
+      <version>1.0.47</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.dao</groupId>
       <artifactId>s2-dao-tiger</artifactId>
-      <version>1.0.46</version>
+      <version>1.0.47</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>

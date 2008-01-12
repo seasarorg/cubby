@@ -10,11 +10,11 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.Form;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.examples.whiteboard.dao.PageDao;
 import org.seasar.cubby.examples.whiteboard.entity.Page;
 
-@Url("whiteboard")
+@Path("whiteboard")
 public class ImageDownloadAction extends Action {
 
 	public HttpServletResponse response;
@@ -24,7 +24,7 @@ public class ImageDownloadAction extends Action {
 	public Integer id;
 
 	@Form
-	@Url("api/image/{id,[0-9]+}")
+	@Path("api/image/{id,[0-9]+}")
 	public ActionResult upload() throws IOException {
 		Page page = pageDao.selectById(id);
 

@@ -7,9 +7,9 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 
-@Url("mayaa")
+@Path("mayaa")
 public class MayaaComponentsAction extends Action {
 
 	// ----------------------------------------------[DI Filed]

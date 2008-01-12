@@ -13,9 +13,9 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.Form;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 
-@Url("whiteboard")
+@Path("whiteboard")
 public class ImageLineAction extends Action {
 
 	public HttpServletResponse response;
@@ -27,7 +27,7 @@ public class ImageLineAction extends Action {
 	public Integer size;
 
 	@Form
-	@Url("api/line/{x,[-]?[0-9]+}/{y,[-]?[0-9]+}/")
+	@Path("api/line/{x,[-]?[0-9]+}/{y,[-]?[0-9]+}/")
 	public ActionResult drawLine() throws IOException {
 		int width = Math.abs(x);
 		int height = Math.abs(y);

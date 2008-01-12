@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 
 public class ImageAction extends Action {
 
@@ -25,13 +24,11 @@ public class ImageAction extends Action {
 
 	public String message = "The quick brown fox jumps over the lazy dog";
 
-	@Form
 	public ActionResult index() {
 		return new Forward("image.jsp");
 	}
 
-	@Url("{message,.*}.png")
-	@Form
+	@Path("{message,.*}.png")
 	public ActionResult download() throws IOException {
 		BufferedImage image = new BufferedImage(300, 50, BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = image.getGraphics();

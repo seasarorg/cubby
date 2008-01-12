@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
-@Url("components")
+@Path("components")
 public class ArrayAction extends Action {
 
 	// ----------------------------------------------[DI Filed]
@@ -32,7 +31,9 @@ public class ArrayAction extends Action {
 	public String value[];
 
 	public String[] check;
-	
+
+	public int[] intValues;
+
 	// ----------------------------------------------[Action Method]
 
 	@Override
@@ -40,8 +41,7 @@ public class ArrayAction extends Action {
 		super.prerender();
 	}
 	
-	@Form()
-	@Url("array")
+	@Path("array")
 	public ActionResult array() {
 		List<Color> colors = getColors();
 		this.name = new String[colors.size()];
@@ -54,8 +54,7 @@ public class ArrayAction extends Action {
 		return new Forward("array.jsp");
 	}
 	
-	@Form()
-	@Url("array_save")
+	@Path("array_save")
 	@Validation(rules="validation", errorPage="array.jsp")
 	public ActionResult array_save() {
 		System.out.println(check);
