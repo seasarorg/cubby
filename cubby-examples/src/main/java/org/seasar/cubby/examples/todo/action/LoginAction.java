@@ -2,21 +2,20 @@ package org.seasar.cubby.examples.todo.action;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
+import org.seasar.framework.aop.annotation.InvalidateSession;
 
 /**
  * ログイン画面
@@ -24,7 +23,7 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
  * @author agata
  * @author baba
  */
-@Url("todo/login")
+@Path("todo/login")
 public class LoginAction extends Action {
 
 	// ----------------------------------------------[Validation]
@@ -40,8 +39,6 @@ public class LoginAction extends Action {
 	};
 
 	// ----------------------------------------------[DI Filed]
-
-	public HttpSession session;
 
 	public Map<String, Object> sessionScope;
 
@@ -97,10 +94,9 @@ public class LoginAction extends Action {
 		}
 	}
 
-	@Url("/todo/logout")
-	// @InvalidateSession : s2-framework 2.4.18 から
+	@Path("/todo/logout")
+	@InvalidateSession
 	public ActionResult logout() {
-		session.invalidate(); // s2-framework 2.4.17 まで
 		return new Redirect("/todo/login/");
 	}
 

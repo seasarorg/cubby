@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.TodoDao;
 import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
@@ -65,8 +64,7 @@ public class TodoAction extends Action {
 	/**
 	 * 詳細表示処理(/todo/{id})
 	 */
-	@Url("{id,[0-9]+}")
-	@Form
+	@Path("{id,[0-9]+}")
 	public ActionResult show() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDxo.convert(todo, this);
@@ -76,7 +74,6 @@ public class TodoAction extends Action {
 	/**
 	 * 追加表示処理(/todo/create)
 	 */
-	@Form
 	public ActionResult create() {
 		return new Forward("edit.jsp");
 	}
@@ -84,7 +81,6 @@ public class TodoAction extends Action {
 	/**
 	 * 編集表示処理(/todo/edit)
 	 */
-	@Form
 	public ActionResult edit() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDxo.convert(todo, this);
@@ -94,7 +90,6 @@ public class TodoAction extends Action {
 	/**
 	 * 確認表示処理(/todo/confirm)
 	 */
-	@Form
 	@Validation(rules = "validation", errorPage = "edit.jsp")
 	public ActionResult confirm() {
 		TodoType todoType = todoTypeDao.selectById(this.typeId);
@@ -105,7 +100,6 @@ public class TodoAction extends Action {
 	/**
 	 * 編集画面に戻る処理(/todo/confirm_back)
 	 */
-	@Form
 	public ActionResult confirm_back() {
 		return new Forward("edit.jsp");
 	}
@@ -113,7 +107,6 @@ public class TodoAction extends Action {
 	/**
 	 * 保存処理(/todo/save)
 	 */
-	@Form
 	@Validation(rules = "validation", errorPage = "confirm.jsp")
 	public ActionResult save() {
 		if (this.id == null) {
@@ -131,7 +124,6 @@ public class TodoAction extends Action {
 	/**
 	 * 削除処理(/todo/delete)
 	 */
-	@Form
 	public ActionResult delete() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDao.delete(todo);
