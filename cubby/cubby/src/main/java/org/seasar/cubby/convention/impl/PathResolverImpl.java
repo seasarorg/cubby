@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.cubby.convention.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
@@ -30,8 +30,8 @@ import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasae.cubby.action.Url}
- * の情報によって、リクエストされたURLをどのメソッドに振り分けるかを決定します。
+ * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasae.cubby.action.Path}
+ * の情報によって、リクエストされたパスをどのメソッドに振り分けるかを決定します。
  * 
  * @author baba
  */
@@ -78,7 +78,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 	public void add(final String regexp,
 			final Class<? extends Action> actionClass, final String methodName,
-			final Url.RequestMethod... requestMethods) {
+			final RequestMethod... requestMethods) {
 
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
@@ -89,7 +89,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private void add(final String regexp,
 			final Class<? extends Action> actionClass, final Method method,
 			final Map<Pattern, RoutingInfo> patternToRoutingInfoMap,
-			final Url.RequestMethod... requestMethods) {
+			final RequestMethod... requestMethods) {
 
 		String actionFullName = regexp;
 		final List<String> uriParameterNames = new ArrayList<String>();
@@ -200,12 +200,12 @@ public class PathResolverImpl implements PathResolver, Disposable {
 
 		private final String forwardPath;
 
-		private final Url.RequestMethod[] requestMethods;
+		private final RequestMethod[] requestMethods;
 
 		public RoutingInfo(final Class<? extends Action> actionClass,
 				final Method method, final List<String> uriParameterNames,
 				final String forwardPath,
-				final Url.RequestMethod[] requestMethods) {
+				final RequestMethod[] requestMethods) {
 			this.actionClass = actionClass;
 			this.method = method;
 			this.uriParameterNames = uriParameterNames;
@@ -247,13 +247,13 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			return forwardPath;
 		}
 
-		public Url.RequestMethod[] getRequestMethods() {
+		public RequestMethod[] getRequestMethods() {
 			return requestMethods;
 		}
 
 		public boolean isAcceptable(final HttpServletRequest request) {
 			final String requestMethod = request.getMethod();
-			for (final Url.RequestMethod acceptableRequestMethod : requestMethods) {
+			for (final RequestMethod acceptableRequestMethod : requestMethods) {
 				if (StringUtil.equalsIgnoreCase(acceptableRequestMethod.name(),
 						requestMethod)) {
 					return true;
@@ -292,7 +292,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 				if (CubbyUtils.isActionMethod(method)) {
 					final String actionFullName = CubbyUtils.getActionUrl(
 							clazz, method);
-					final Url.RequestMethod[] acceptableRequestMethods = CubbyUtils
+					final RequestMethod[] acceptableRequestMethods = CubbyUtils
 							.getAcceptableRequestMethods(clazz, method);
 					add(actionFullName, clazz, method, routingPatterns,
 							acceptableRequestMethods);

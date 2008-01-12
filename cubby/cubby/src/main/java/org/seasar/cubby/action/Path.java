@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * アクションメソッドの URL。
+ * アクションメソッドのパス。
  * <p>
- * アクションメソッドを起動するための URL を指定するアノテーションです。
+ * アクションメソッドを起動するためのパスを指定するアノテーションです。
  * </p>
  * <p>
  * 使用例
  * 
  * <pre>
- * &#064;Url(&quot;fuga&quot;)
+ * &#064;Path(&quot;fuga&quot;)
  * public class HogeAction {
  * 	// -&gt; &quot;/fuga/index&quot;
  * 	public ActionResult index() {
@@ -24,28 +24,28 @@ import java.lang.annotation.Target;
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	&#064;Url(&quot;list&quot;)
+ * 	&#064;Path(&quot;list&quot;)
  * 	// -&gt; &quot;/fuga/list&quot;
  * 	public ActionResult m2() {
  * 	}
  * 
- * 	&#064;Url(&quot;/xxx/yyy&quot;)
+ * 	&#064;Path(&quot;/xxx/yyy&quot;)
  * 	// -&gt; &quot;/xxx/yyy&quot;
  * 	public ActionResult m3() {
  * 	}
  * 
- * 	&#064;Url(&quot;/{id}/edit&quot;)
+ * 	&#064;Path(&quot;/{id}/edit&quot;)
  * 	// {id}部分をリクエストパラメータに追加
  * 	public ActionResult m4() {
  * 	}
  * 
- * 	&#064;Url(&quot;/{userId,a-z}/edit&quot;)
+ * 	&#064;Path(&quot;/{userId,a-z}/edit&quot;)
  * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
  * 	public ActionResult m5() {
  * 	}
  * }
  * 
- * &#064;Url(&quot;/&quot;)
+ * &#064;Path(&quot;/&quot;)
  * public class RootAction {
  * 	// -&gt; &quot;/&quot;
  * 	public ActionResult index() {
@@ -55,12 +55,12 @@ import java.lang.annotation.Target;
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	&#064;Url(&quot;list&quot;)
+ * 	&#064;Path(&quot;list&quot;)
  * 	// -&gt; &quot;/list&quot;
  * 	public ActionResult m2() {
  * 	}
  * 
- * 	&#064;Url(&quot;/xxx/yyy&quot;)
+ * 	&#064;Path(&quot;/xxx/yyy&quot;)
  * 	// -&gt; &quot;/xxx/yyy&quot;
  * 	public ActionResult m3() {
  * 	}
@@ -75,36 +75,12 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
-public @interface Url {
+public @interface Path {
 
 	/**
-	 * アクションメソッドを起動する対象となる HTTP メソッド。
-	 * 
-	 * @author agata
-	 * @author baba
-	 * @since 1.0
-	 */
-	enum RequestMethod {
-		/** HTTP GET */
-		GET,
-		/** HTTP HEAD */
-		HEAD,
-		/** HTTP POST */
-		POST,
-		/** HTTP PUT */
-		PUT,
-		/** HTTP DELETE */
-		DELETE,
-		/** HTTP OPTIONS */
-		OPTIONS,
-		/** HTTP TRACE */
-		TRACE,
-	}
-
-	/**
-	 * アクションメソッドのバインディング用URLを指定します。
+	 * アクションメソッドのバインディング用パスを指定します。
 	 * <p>
-	 * URLはアクションクラスのURL＋アクションメソッドのURLで決定されます。
+	 * URLはアクションクラスのパス＋アクションメソッドのパスで決定されます。
 	 * ただし、先頭が『/』の場合コンテキストルートからの絶対パスとして解釈されます。
 	 * </p>
 	 * <p>
@@ -118,13 +94,5 @@ public @interface Url {
 	 * @return アクションメソッドのバインディング用URL
 	 */
 	String value() default "";
-
-	/**
-	 * アクションメソッドが対応するHTTPのメソッドを指定します。
-	 * 
-	 * @return アクションメソッドが対応するHTTPのメソッド
-	 */
-	RequestMethod[] accept() default { RequestMethod.GET,
-			RequestMethod.POST };
 
 }

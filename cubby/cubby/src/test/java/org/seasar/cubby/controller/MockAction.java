@@ -4,13 +4,13 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.action.Url;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
-@Url("/")
+@Path("/")
 public class MockAction extends Action {
 	
 	public ValidationRules validation = new DefaultValidationRules();
@@ -54,12 +54,12 @@ public class MockAction extends Action {
 		return new Forward("dummy1.jsp");
 	}
 	
-	@Url("todo/lists")
+	@Path("todo/lists")
 	public ActionResult todolist() {
 		return new Forward("dummy1.jsp");
 	}
 
-	@Url("/tasklists")
+	@Path("/tasklists")
 	public ActionResult tasklist() {
 		return new Forward("dummy1.jsp");
 	}
