@@ -1,16 +1,16 @@
 package org.seasar.cubby.controller;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
 
 public class TodoController extends Action {
 
-	@Url("/{name}/todo/{id}")
+	@Path("/{name}/todo/{id}")
 	public String show() {
 		return null;
 	}	
 
-	@Url("/{name}/todo/edit/{id}")
+	@Path("/{name}/todo/edit/{id}")
 	public String edit() {
 		return "edit.jsp";
 	}	

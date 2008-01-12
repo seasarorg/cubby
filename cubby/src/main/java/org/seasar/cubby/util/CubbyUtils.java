@@ -6,26 +6,28 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Url;
+import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.RequestMethod;
 import org.seasar.framework.util.StringUtil;
 
 public class CubbyUtils {
 
-	private static Url DEFAULT_URL_ANNOTATION;
+	private static Accept DEFAULT_ACCEPT_ANNOTATION;
 	static {
-		@Url
-		class UrlDummy {
+		@Accept
+		class AcceptDummy {
 		}
-		DEFAULT_URL_ANNOTATION = UrlDummy.class.getAnnotation(Url.class);
+		DEFAULT_ACCEPT_ANNOTATION = AcceptDummy.class.getAnnotation(Accept.class);
 	}
 
 	public static String getActionClassName(final Class<?> c) {
 		final String actionName;
-		final Url url = c.getAnnotation(Url.class);
-		if (url != null && !StringUtil.isEmpty(url.value())) {
-			actionName = url.value();
+		final Path path = c.getAnnotation(Path.class);
+		if (path != null && !StringUtil.isEmpty(path.value())) {
+			actionName = path.value();
 		} else {
 			final String name = left(c.getSimpleName(), "$");
 			actionName = toFirstLower(name.replaceAll(
@@ -36,9 +38,9 @@ public class CubbyUtils {
 
 	static String getActionMethodName(final Method m) {
 		final String actionName;
-		final Url url = m.getAnnotation(Url.class);
-		if (url != null && !StringUtil.isEmpty(url.value())) {
-			actionName = url.value();
+		final Path path = m.getAnnotation(Path.class);
+		if (path != null && !StringUtil.isEmpty(path.value())) {
+			actionName = path.value();
 		} else {
 			final String methodName = m.getName();
 			if ("index".equals(methodName)) {
@@ -64,16 +66,16 @@ public class CubbyUtils {
 		}
 	}
 
-	public static Url.RequestMethod[] getAcceptableRequestMethods(
+	public static RequestMethod[] getAcceptableRequestMethods(
 			final Class<?> c, final Method m) {
-		Url url = m.getAnnotation(Url.class);
-		if (url == null) {
-			url = c.getAnnotation(Url.class);
-			if (url == null) {
-				url = DEFAULT_URL_ANNOTATION;
+		Accept accept = m.getAnnotation(Accept.class);
+		if (accept == null) {
+			accept = c.getAnnotation(Accept.class);
+			if (accept == null) {
+				accept = DEFAULT_ACCEPT_ANNOTATION;
 			}
 		}
-		return url.accept();
+		return accept.value();
 	}
 
 	public static boolean isActionMethod(final Method m) {
