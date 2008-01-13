@@ -5,6 +5,61 @@
                                     ------
                                   2007-11-30
 
+ファイルアップロード
+
+ ファイルアップロードは以下のようにorg.apache.commons.fileupload.FileItemの型で受け取ることができます。
+ アップロードを使用するには{{{setup.html}app-cubby.diconの設定}}を行っておく必要があります。
+
+ <<アップロード用のJSP>>
+
++------------------------------------------------------+
+<t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data"
+	value="${form}">
+<h1>ファイルアップロード</h1>
+拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
+...
+<label for="file">ファイル:</label>
+<t:input type="file" name="file"/><br/>
+<input type="submit" value="アップロード"/>
+</t:form>
++------------------------------------------------------+
+ 
+ <<アップロードを処理するアクションクラス>>
+
++------------------------------------------------------+
+import org.apache.commons.fileupload.FileItem;
+...
+public class FileUploadAction extends Action {
+	public ValidationRules validation = new DefaultValidationRules() {
+		public void initialize() {
+			...
+			// (?i)を付けることで大文字小文字を区別しないという意味
+			// 正規表現に関しての詳細な情報はjava.util.PatternクラスのJavaDocを参照してください。
+			add("file", new FileRegexpValidator(".+\\.(?i)(png|jpg)")); 
+		}
+	};
+	...
+	public FileItem file;
+	...
+	@Validation(rules = "validation", errorPage = "fileupload.jsp")
+	public ActionResult upload() {
+		return new Forward("fileupload_done.jsp");
+	}	
+}
++------------------------------------------------------+
+
+ <<アップロード結果を表示するクラス>>
+
++------------------------------------------------------+
+...
+<h2>ファイルアップロード結果</h2>
+<label for="file">File:</label>
+アップロード完了しました。<br/>
+ファイル名：${action.file.name}<br/>
+ファイルサイズ：${action.file.size}<br/>
+...
++------------------------------------------------------+
+
 画面部品のインポートについて
 
  Cubby では 共通の画面部品（他のフレームワークではコンポーネントなどと呼ばれます）を何もサポートしませんが、
