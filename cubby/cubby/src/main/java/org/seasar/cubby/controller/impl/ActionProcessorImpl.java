@@ -30,7 +30,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		this.cubbyConvention = cubbyConvention;
 	}
 
-	public void process(final HttpServletRequest request,
+	public ActionResult process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)
 			throws Exception {
 		final ActionDef actionDef = cubbyConvention
@@ -51,10 +51,12 @@ public class ActionProcessorImpl implements ActionProcessor {
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
 					request, context);
 			result.execute(context, wrappedRequest, response);
+			return result;
 		} else {
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
 					request, context);
 			chain.doFilter(wrappedRequest, response);
+			return null;
 		}
 	}
 
