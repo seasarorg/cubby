@@ -16,7 +16,6 @@
 	<li><a href="components/">コンポーネント一覧</a></li>
 	<li><a href="mayaa/components">コンポーネント一覧(Mayaa版)</a></li>
 	<li><a href="components/array">配列</a></li>
-	<li><a href="bsf/">EL式にJavaScriptを使用して、メソッド呼び出しを実現する（Jakarta BSFを使用）</a></li>
 	<li><a href="fileupload/">ファイルアップロード</a></li>
 	<li><a href="image/">画像ダウンロード</a></li>		
 	<li><a href="import/">他のページのインポート</a></li>		
