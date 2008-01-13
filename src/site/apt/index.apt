@@ -14,7 +14,7 @@ What's Cubby ?
 
  *設定ファイルはほとんど使用しません。
 
- *{{{cubby/apidocs/org/seasar/cubby/action/Url.html}REST っぽい URI をサポート}}します。 (/username/todo/1001、拡張子が付かない URI など)
+ *{{{cubby/apidocs/org/seasar/cubby/action/Path.html}REST っぽい URI をサポート}}します。 (/username/todo/1001、拡張子が付かない URI など)
 
  *直感的な名前の{{{tags.html}タグライブラリ}}
 
