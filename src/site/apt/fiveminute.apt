@@ -35,7 +35,7 @@ Todo アプリケーションの概要
  <<LoginAction.java>>
 
 +------------------------------------------------------+
-@Url("todo/login")
+@Path("todo/login")
 public class LoginAction extends Action {
 
   // フィールドにはアクセサメソッドが必要。
@@ -57,7 +57,6 @@ public class LoginAction extends Action {
   /**
    * ログイン処理(/todo/login/proess)
    */
-  @Form
   public ActionResult process() {
     User user = login(userId, password);
     if (user != null) {
@@ -153,7 +152,7 @@ test/testでログインできます。
  <<LoginAction.java>>
 
 +------------------------------------------------------+
-@Url("todo/login")
+@Path("todo/login")
 public class LoginAction extends Action {
 
   // ----------------------------------------------[Validation]
@@ -166,7 +165,6 @@ public class LoginAction extends Action {
 	}
   };
   ...
-  @Form
   @Validation(rulesField="loginValidation", errorPage = "/todo/login.jsp")
   public ActionResult process() {
     ...
@@ -222,7 +220,7 @@ public class LoginAction extends Action {
  <<TodoListAction.java>>
 
 +------------------------------------------------------+
-@Url("todo")
+@Path("todo")
 public class TodoListAction extends Action {
 
   // ----------------------------------------------[Validation]
@@ -412,8 +410,7 @@ public class TodoAction extends Action {
   /**
    * 詳細画面表示(/todo/{id})
    */
-  @Url("{id,[0-9]+}")
-  @Form
+  @Path("{id,[0-9]+}")
   public ActionResult show() {
     Todo todo = todoDao.selectById(this.id);
     todoDxo.convert(todo, this);
@@ -457,12 +454,12 @@ public class TodoAction extends Action {
 ...
 +------------------------------------------------------+
 
-*@Urlを使用したURLマッピングのカスタマイズ
+*@Pathを使用したURLマッピングのカスタマイズ
 
- @Urlアノテーションを使用することでURLのカスタマイズができます。
- ここでは「@Url("{id,[0-9]+}")」という定義で、「todo/1001」のようなURLが呼び出された場合、
+ @Pathアノテーションを使用することでURLのカスタマイズができます。
+ ここでは「@Path("{id,[0-9]+}")」という定義で、「todo/1001」のようなURLが呼び出された場合、
  URLのリクエストパラメータに「id=1001」を追加してアクションのidフィールドにセットします。
- @Urlを使用したURLマッピングのカスタマイズは{{{cubby/apidocs/org/seasar/cubby/action/Url.html}@UrlのAPIドキュメント}}を参照ください。
+ @Pathを使用したURLマッピングのカスタマイズは{{{cubby/apidocs/org/seasar/cubby/action/Path.html}@PathのAPIドキュメント}}を参照ください。
 
 追加・編集画面の作成
 
@@ -479,7 +476,6 @@ public class TodoAction extends Action {
   /**
    * 追加画面表示（todo/create）
    */
-  @Form
   public ActionResult create() {
     return new Forward("edit.jsp");
   }
@@ -487,7 +483,6 @@ public class TodoAction extends Action {
   /**
    * 編集画面表示（todo/edit）
    */
-  @Form
   public ActionResult edit() {
     Todo todo = todoDao.selectById(this.id);
     todoDxo.convert(todo, this);
@@ -570,7 +565,6 @@ public class TodoAction extends Action {
   /**
    * 確認画面表示
    */
-  @Form
   @Validation(rulesField = "validation", errorPage = "edit.jsp")
   public ActionResult confirm() {
     TodoType todoType = todoTypeDao.selectById(this.typeId);
@@ -581,7 +575,6 @@ public class TodoAction extends Action {
   /**
    * 確認画面から編集画面への表示
    */
-  @Form
   public ActionResult confirm_back() {
     return new Forward("edit.jsp");
   }
@@ -589,7 +582,6 @@ public class TodoAction extends Action {
   /**
    * 保存処理
    */
-  @Form
   @Validation(rulesField = "validation", errorPage = "confirm.jsp")
   public ActionResult save() {
     if (this.id == null) {
