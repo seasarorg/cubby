@@ -14,6 +14,10 @@ import java.lang.annotation.Target;
 @Target( { ElementType.METHOD, ElementType.TYPE })
 public @interface Accept {
 
+	/**
+	 * HTTPのメソッドを指定します。省略された場合、GETとPOSTが指定されます。
+	 * @return
+	 */
 	RequestMethod[] value() default { RequestMethod.GET, RequestMethod.POST };
 
 }
