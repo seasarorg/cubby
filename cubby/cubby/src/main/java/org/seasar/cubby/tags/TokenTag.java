@@ -37,7 +37,7 @@ import org.seasar.framework.util.StringUtil;
  * 一致しない場合、不正な経路からのアクセスとみなしてエラー処理を行います。
  * </p>
  * 
- * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext)
+ * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext, Object[])
  * @author agata
  */
 public class TokenTag extends DynamicAttributesTagSupport {

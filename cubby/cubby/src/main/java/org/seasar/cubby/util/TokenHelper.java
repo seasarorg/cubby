@@ -65,7 +65,7 @@ public class TokenHelper {
      * セッション中にトークン用のマップが存在しない場合、新規に生成します。
      * トークン用のマップは{@link LruHashMap}を使い、トークンの保持上限付きのMapになります。
      * </p>
-     * @param sessionMap
+     * @param session セッション
      * @return トークン用のマップ
      */
 	@SuppressWarnings("unchecked")
@@ -81,7 +81,7 @@ public class TokenHelper {
 	
 	/**
 	 * トークンをセッション中のトークン用のMapにセットします。
-	 * @param sessionMap セッション
+	 * @param session セッション
 	 * @param token トークン文字列
 	 */
 	public static void setToken(HttpSession session, String token) {
@@ -97,7 +97,7 @@ public class TokenHelper {
 	 * セッション中に格納されたトークン用のMapのキーに、
 	 * 指定されたトークン文字列が含まれるかどうかを判定し、Mapから取り除きます。
 	 * </p>
-	 * @param sessionMap セッション用のMap
+	 * @param session セッション
 	 * @param token トークン文字列
 	 * @return 指定されたトークン文字列がセッション中に存在したら<code>true</code>、それ以外は<code>false</code>
 	 */

@@ -31,7 +31,8 @@ public @interface Accept {
 
 	/**
 	 * HTTPのメソッドを指定します。省略された場合、GETとPOSTが指定されます。
-	 * @return
+	 * 
+	 * @return アクションメソッドが対応するHTTPのメソッド
 	 */
 	RequestMethod[] value() default { RequestMethod.GET, RequestMethod.POST };
 

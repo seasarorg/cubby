@@ -34,72 +34,88 @@ import org.seasar.framework.util.FieldUtil;
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
  * <p>
- * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。
- * 親クラスに
+ * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。 親クラスに
+ * 
  * <pre>
- * public class HelloActionTest extends CubbyTestCase<HelloAction> {
- *   private HelloAction action;
- *   protected void setUp() throws Exception {
- *     include("app.dicon");
- *   }
- *   public void testIndex() throws Exception {
- *     ActionResult result = processAction("/hello/");
- *     assertPathEquals(Forward.class, "input.jsp", result);
- *   }
- *   public void testMessage() throws Exception {
- *     getRequest().addParameter("name", "name1");
- *     ActionResult result = processAction("/hello/message");
- *     assertPathEquals(Forward.class, "result.jsp", result);
- *     assertEquals("name1", action.name);
- *   }	
+ * public class HelloActionTest extends CubbyTestCase&lt;HelloAction&gt; {
+ * 	private HelloAction action;
+ * 
+ * 	protected void setUp() throws Exception {
+ * 		include(&quot;app.dicon&quot;);
+ * 	}
+ * 
+ * 	public void testIndex() throws Exception {
+ * 		ActionResult result = processAction(&quot;/hello/&quot;);
+ * 		assertPathEquals(Forward.class, &quot;input.jsp&quot;, result);
+ * 	}
+ * 
+ * 	public void testMessage() throws Exception {
+ * 		getRequest().addParameter(&quot;name&quot;, &quot;name1&quot;);
+ * 		ActionResult result = processAction(&quot;/hello/message&quot;);
+ * 		assertPathEquals(Forward.class, &quot;result.jsp&quot;, result);
+ * 		assertEquals(&quot;name1&quot;, action.name);
+ * 	}
  * }
  * </pre>
+ * 
  * </p>
+ * 
  * @author agata
  */
 public class CubbyTestCase extends S2TigerTestCase {
-	
+
 	/** ルーティング */
 	private RequestRoutingFilter.Router router = new RequestRoutingFilter.Router();
 
 	private MockFilterChain filterChain = new MockFilterChain();
-	
+
 	/** ActionProcessor */
 	private ActionProcessor actionProcessor;
-	
+
 	/**
 	 * ActionResultの型とパスをチェックします。
-	 * @param <T>
-	 * @param resultClass ActionResultの型
-	 * @param expectedPath 期待されるパス
-	 * @param actualResult チェックするActionResult
+	 * 
+	 * @param resultClass
+	 *            ActionResultの型
+	 * @param expectedPath
+	 *            期待されるパス
+	 * @param actualResult
+	 *            チェックするActionResult
 	 */
-	public static void assertPathEquals(Class<? extends ActionResult> resultClass, String expectedPath,
+	public static void assertPathEquals(
+			Class<? extends ActionResult> resultClass, String expectedPath,
 			ActionResult actualResult) {
-		assertEquals("ActionResultの型をチェック", resultClass, actualResult.getClass());
+		assertEquals("ActionResultの型をチェック", resultClass, actualResult
+				.getClass());
 		if (actualResult instanceof Forward) {
-			assertEquals("パスのチェック", expectedPath, ((Forward)actualResult).getPath());
+			assertEquals("パスのチェック", expectedPath, ((Forward) actualResult)
+					.getPath());
 		} else if (actualResult instanceof Redirect) {
-			assertEquals("パスのチェック", expectedPath, ((Redirect)actualResult).getPath());
+			assertEquals("パスのチェック", expectedPath, ((Redirect) actualResult)
+					.getPath());
 		}
 	}
-	
+
 	/**
 	 * アクションメソッドを実行します。
-	 * @param string 
-	 * @param string 
+	 * 
+	 * @param orginalPath
+	 *            パス
 	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合、null
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	@SuppressWarnings({ "hiding", "unchecked" })
+	@SuppressWarnings( { "hiding", "unchecked" })
 	protected ActionResult processAction(String orginalPath) throws Exception {
 		routing(orginalPath);
-		return actionProcessor.process(getRequest(), getResponse(), filterChain);
+		return actionProcessor
+				.process(getRequest(), getResponse(), filterChain);
 	}
-	
+
 	/**
 	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
-	 * @param orginalPath オリジナルパス
+	 * 
+	 * @param orginalPath
+	 *            オリジナルパス
 	 * @return 内部フォワードパス
 	 * @throws NoSuchFieldException
 	 */
@@ -114,12 +130,12 @@ public class CubbyTestCase extends S2TigerTestCase {
 
 	/**
 	 * モックのFilterChain
+	 * 
 	 * @author agata
 	 */
 	private static class MockFilterChain implements FilterChain {
-		public void doFilter(ServletRequest request,
-				ServletResponse response) throws IOException,
-				ServletException {
+		public void doFilter(ServletRequest request, ServletResponse response)
+				throws IOException, ServletException {
 		}
 	}
 
