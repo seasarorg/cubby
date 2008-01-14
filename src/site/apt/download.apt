@@ -19,7 +19,7 @@
 
  * 以前のバージョンからの移行する際の注意点
  
- @Urlが{{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}と{{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}に変更・分割されました。
+ @Urlが{{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}}と{{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}に変更・分割されました。
  
 * Cubby 0.9.2 (2007-11-30)
 

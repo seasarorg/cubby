@@ -113,8 +113,8 @@ public class ActionErrorsImpl implements ActionErrors {
 	 * 
 	 * @param message
 	 *            メッセージ
-	 * @param fieldInfos
-	 *            フィールド情報
+	 * @param fieldNames
+	 *            フィールド名
 	 */
 	public void add(final String message, final String... fieldNames) {
 		final FieldInfo[] fieldInfos = new FieldInfo[fieldNames.length];

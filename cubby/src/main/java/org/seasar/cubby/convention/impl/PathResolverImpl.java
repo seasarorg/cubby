@@ -45,7 +45,7 @@ import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasae.cubby.action.Path}
+ * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasar.cubby.action.Path}
  * の情報によって、リクエストされたパスをどのメソッドに振り分けるかを決定します。
  * 
  * @author baba

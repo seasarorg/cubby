@@ -22,15 +22,20 @@ import org.seasar.cubby.controller.ActionContext;
 
 /**
  * アクションメソッド実行後の処理を表す結果オブジェクトのインターフェイス
+ * 
  * @author agata
  */
 public interface ActionResult {
 
 	/**
 	 * 処理を実行します。
-	 * @param context アクションコンテキスト
-	 * @param request リクエスト
-	 * @param response レスポンス
+	 * 
+	 * @param context
+	 *            アクションコンテキスト
+	 * @param request
+	 *            リクエスト
+	 * @param response
+	 *            レスポンス
 	 * @throws Exception
 	 */
 	void execute(ActionContext context, HttpServletRequest request,
@@ -38,8 +43,9 @@ public interface ActionResult {
 
 	/**
 	 * フォワード直前の処理を実行します。
-	 * @param context アクションコンテキスト
-	 * @param request リクエスト
+	 * 
+	 * @param context
+	 *            アクションコンテキスト
 	 */
 	void prerender(ActionContext context);
 

@@ -3,7 +3,6 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>1.0.0-rc1-SNAPSHOT</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby Tomcat55 Support</name>
