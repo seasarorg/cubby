@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Path;
 
 @Path("whiteboard")
@@ -41,7 +40,6 @@ public class ImageLineAction extends Action {
 
 	public Integer size;
 
-	@Form
 	@Path("api/line/{x,[-]?[0-9]+}/{y,[-]?[0-9]+}/")
 	public ActionResult drawLine() throws IOException {
 		int width = Math.abs(x);

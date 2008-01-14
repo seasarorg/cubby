@@ -20,7 +20,6 @@ import java.util.Map;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Path;
@@ -75,7 +74,6 @@ public class LoginAction extends Action {
 	/**
 	 * ログイン処理(/todo/login/process)
 	 */
-	@Form
 	@Validation(rules = "loginValidation", errorPage = "/todo/login.jsp")
 	public ActionResult process() {
 		return new Redirect("/todo/");
