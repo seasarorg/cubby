@@ -2,7 +2,6 @@ package ${package}.action;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Validation;
@@ -15,6 +14,7 @@ import ${package}.service.HelloService;
 public class HelloAction extends Action {
 
 	public ValidationRules validation = new DefaultValidationRules() {
+		@Override
 		public void initialize() {
 			add("name", new RequiredValidator());
 		}
