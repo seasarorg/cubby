@@ -29,7 +29,6 @@
         </component>
       </arg>
     </initMethod>
-    <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer">
       <arg>
         <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
@@ -49,6 +48,7 @@
         </component>
       </arg>
     </initMethod>
+    <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer"><arg>cubby.validationCustomizer</arg></initMethod>
   </component>
   <component name="serviceCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
