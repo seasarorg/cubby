@@ -8,7 +8,7 @@
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <c:import url="/common/errors.jsp"/>
-<t:form method="post" action="${contextPath}/components/" value="${form}">
+<t:form method="post" action="${contextPath}/components/" value="${formDto}">
 <h1>コンポーネント一覧</h1>
 <h2>Input Text</h2>
 <label for="userName">Name:</label><t:input type="text" name="userName" id="userName"><input type="text"/></t:input>
@@ -52,16 +52,20 @@
 
 <h2>Odd & Null</h2>
 <table border="1">
-	<tr>
-		<th>ID</th>
-		<th>LABEL</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>LABEL</th>
+		</tr>
+	</thead>
+	<tbody>
 	<c:forEach var="item" varStatus="s" items="${colors}">
 		<tr class="${f:odd(s.index, 'odd,even')}">
 			<td>${item.value}</td>
 			<td>${item.name}</td>
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
 
 <h2>messages</h2>

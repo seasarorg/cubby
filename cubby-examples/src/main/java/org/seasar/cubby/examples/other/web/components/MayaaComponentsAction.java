@@ -31,7 +31,7 @@ public class MayaaComponentsAction extends Action {
 
 	// ----------------------------------------------[Attribute]
 
-	public UserForm form = new UserForm();
+	public FormDto formDto;
 
 	public List<Hobby> hobbies;
 
@@ -46,7 +46,7 @@ public class MayaaComponentsAction extends Action {
 		colors = getColors();
 	}
 	
-	@Form("form")
+	@Form("formDto")
 	public ActionResult components() {
 		return new Forward("components.html");
 	}

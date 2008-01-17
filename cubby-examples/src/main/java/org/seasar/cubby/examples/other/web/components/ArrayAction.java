@@ -32,6 +32,8 @@ public class ArrayAction extends Action {
 
 	// ----------------------------------------------[DI Filed]
 
+	// ----------------------------------------------[Attribute]
+
 	public final ValidationRules validation = new DefaultValidationRules("color.") {
 		public void initialize() {
 			add("name", new RequiredValidator());
@@ -39,8 +41,6 @@ public class ArrayAction extends Action {
 		}
 	};
 	
-	// ----------------------------------------------[Attribute]
-
 	public String name[];
 
 	public String value[];

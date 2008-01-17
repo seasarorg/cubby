@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserForm {
+public class FormDto {
 	public String userName;
 	public String color;
 	private List<String> hobbies = new ArrayList<String>();

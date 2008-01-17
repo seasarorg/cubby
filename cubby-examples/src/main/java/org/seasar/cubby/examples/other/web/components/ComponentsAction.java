@@ -30,6 +30,10 @@ import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
 
 public class ComponentsAction extends Action {
+	
+	// ----------------------------------------------[DI Filed]
+	
+	// ----------------------------------------------[Attribute]
 
 	public ValidationRules validation = new DefaultValidationRules() {
 		@Override
@@ -38,12 +42,8 @@ public class ComponentsAction extends Action {
 			add("intValue", new NumberValidator(), new RangeValidator(1, 10));
 		}
 	};
-	
-	// ----------------------------------------------[DI Filed]
-	
-	// ----------------------------------------------[Attribute]
 
-	public UserForm form = new UserForm();
+	public FormDto formDto;
 
 	public List<Hobby> hobbies;
 
@@ -58,7 +58,7 @@ public class ComponentsAction extends Action {
 		colors = getColors();
 	}
 	
-	@Form("form")
+	@Form("formDto")
 	@Validation(rules="validation", errorPage="components.jsp")
 	public ActionResult index() {
 		return new Forward("components.jsp");
