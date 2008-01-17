@@ -26,7 +26,7 @@
     <!--
     <filter>
         <filter-name>requestDumpFilter</filter-name>
-        <filter-class>org.seasar.cubby.filter.RequestDumpFilter</filter-class>
+        <filter-class>org.seasar.extension.filter.RequestDumpFilter</filter-class>
     </filter>
     -->
 
