@@ -17,9 +17,11 @@
 	<li><a href="mayaa/components">コンポーネント一覧(Mayaa版)</a></li>
 	<li><a href="components/array">配列</a></li>
 	<li><a href="fileupload/">ファイルアップロード</a></li>
-	<li><a href="image/">画像ダウンロード</a></li>		
-	<li><a href="import/">他のページのインポート</a></li>		
-	<li><a href="token/">2重サブミット防止（token）</a></li>		
+	<li><a href="fileupload2/">ファイルアップロード (入力ストリーム)</a></li>
+	<li><a href="fileupload3/">ファイルアップロード (バイト配列)</a></li>
+	<li><a href="image/">画像ダウンロード</a></li>
+	<li><a href="import/">他のページのインポート</a></li>
+	<li><a href="token/">2重サブミット防止（token）</a></li>
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
 -->
