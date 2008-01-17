@@ -25,6 +25,9 @@
 	<!-- dxo -->
 	<component class="org.seasar.cubby.dxo.impl.RequestParameterConverterFactoryImpl">
 		<initMethod name="addConverterContainerPath" >
+			<arg>"cubby-converters.dicon"</arg>
+		</initMethod>
+		<initMethod name="addConverterContainerPath" >
 			<arg>"dxo-builtin-converters-shallow.dicon"</arg>
 		</initMethod>
 		<initMethod name="addConverterContainerPath" >
