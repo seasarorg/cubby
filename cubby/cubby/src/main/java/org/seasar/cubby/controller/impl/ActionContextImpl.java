@@ -51,6 +51,7 @@ public class ActionContextImpl implements ActionContext {
 
 	public void initialize(final ActionDef actionDef) {
 		this.actionDef = actionDef;
+		this.action = null;
 	}
 
 	public boolean isInitialized() {
