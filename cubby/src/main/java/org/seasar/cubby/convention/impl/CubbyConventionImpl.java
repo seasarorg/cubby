@@ -49,8 +49,9 @@ public class CubbyConventionImpl implements CubbyConvention {
 	}
 
 	public ActionDef fromPathToActionDef(final HttpServletRequest request) {
+		final String path = CubbyUtils.getPath(request);
 		final List<String> tokens = new ArrayList<String>();
-		for (final StringTokenizer tokenizer = new StringTokenizer(request.getRequestURI(), "/"); tokenizer
+		for (final StringTokenizer tokenizer = new StringTokenizer(path, "/"); tokenizer
 				.hasMoreTokens();) {
 			final String token = tokenizer.nextToken();
 			tokens.add(token);
