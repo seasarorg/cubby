@@ -114,6 +114,11 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 			return annotationReader.getSourcePrefix(dxoClass, method);
 		}
 
+		@SuppressWarnings("unchecked")
+		public String getDestPrefix(final Class dxoClass, final Method method) {
+			return annotationReader.getDestPrefix(dxoClass, method);
+		}
+
 	}
 
 }
