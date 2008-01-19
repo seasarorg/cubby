@@ -3,17 +3,18 @@
                                     ------
                                     agata
                                     ------
-                                  2007-11-30
+                                  2008-01-21
 
 ダウンロード
 
-* Cubby 0.9.3 (2008-01-13)
+* Cubby 1.0.0-RC1 (2008-01-21)
 
- APIの変更とアクションの単体テストを実行をサポートしたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10603}変更履歴}}）
+ APIの変更とアクションの単体テストを実行をサポートしたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。
+ （{{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10541}リリースノート}}）
 
- * Cubby 本体とドキュメント {{{http://cubby.sandbox.seasar.org/download/cubby-0.9.3.zip}ダウンロード}}
+ * Cubby 本体とドキュメント {{{http://cubby.sandbox.seasar.org/download/cubby-1.0.0-rc1.zip}ダウンロード}}
 
- * サンプル war {{{http://cubby.sandbox.seasar.org/download/cubby-examples-0.9.3.war}ダウンロード}}
+ * サンプル war {{{http://cubby.sandbox.seasar.org/download/cubby-examples-1.0.0-rc1.war}ダウンロード}}
 
  * Eclipse プロジェクト {{{https://www.seasar.org/svn/sandbox/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
 
