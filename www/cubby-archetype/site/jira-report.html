@@ -9,9 +9,10 @@
 
 
 
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Cubby Archetype - </title>
+    <title>Cubby - </title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -22,7 +23,7 @@
       </head>
   <body class="composite">
     <div id="banner">
-                  <a href="../index.html" id="bannerLeft">
+                  <a href="index.html" id="bannerLeft">
     
             Cubby
     
@@ -39,17 +40,19 @@
     
   
   
+    
             <div class="xleft">
-        最終更新: 12/02/2007
+        最終更新: 2008-01-20
                       </div>
-            <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
-          
+            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
+            
   
 
   
     
   
   
+    
   </div>
       <div class="clear">
         <hr/>
@@ -64,8 +67,90 @@
     
   
   
-                   <h5>プロジェクト文書</h5>
-        <ul>
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+    <li class="none">
+                    <a href="setup.html">セットアップ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="twominute.html">2分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="action.html">アクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="validation.html">バリデーション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="jsp.html">JSP</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tags.html">カスタムタグ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="functions.html">ファンクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="messages.html">メッセージリソース</a>
+          </li>
+              
+    <li class="none">
+                    <a href="unit.html">アクションのテスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mayaa.html">Cubby&Mayaa</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tips.html">Tips集</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
               
                 
               
@@ -90,8 +175,8 @@
       
               
         <li class="collapsed">
-              <a href="project-info.html">プロジェクト情報</a>
-              </li>
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
               
                 
               
@@ -108,36 +193,36 @@
       
               
             <li class="expanded">
-              <a href="project-reports.html">プロジェクトレポート</a>
-                <ul>
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                  <ul>
                   
     <li class="none">
-              <a href="changelog.html">Change Log</a>
-        </li>
+                    <a href="changelog.html">Change Log</a>
+          </li>
                   
     <li class="none">
-              <a href="dev-activity.html">Developer Activity</a>
-        </li>
+                    <a href="dev-activity.html">Developer Activity</a>
+          </li>
                   
     <li class="none">
-              <a href="file-activity.html">File Activity</a>
-        </li>
+                    <a href="file-activity.html">File Activity</a>
+          </li>
                   
     <li class="none">
-              <a href="jdepend-report.html">JDepend</a>
-        </li>
+                    <a href="jdepend-report.html">JDepend</a>
+          </li>
                   
     <li class="none">
               <strong>Jira Report</strong>
         </li>
                   
     <li class="none">
-              <a href="surefire-report.html">Maven Surefire Report</a>
-        </li>
+                    <a href="surefire-report.html">Maven Surefire Report</a>
+          </li>
               </ul>
         </li>
           </ul>
-                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
                        
@@ -147,13 +232,56 @@
     
   
   
+    
         </div>
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <h2>Jira Report</h2><table class="bodyTable"><tr class="a"><th>Key</th><th>Summary</th><th>Status</th><th>Resolution</th><th>By</th></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-24
+        <h2>Jira Report</h2>
+<table class="bodyTable"><tr class="a"><th>Key</th>
+<th>Summary</th>
+<th>Status</th>
+<th>Resolution</th>
+<th>By</th>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-61
+">CUBBY-61
+</a>
+</td>
+<td>[cubby-user:2
+]
+contextPath
+直
+下
+の
+イ
+ン
+デ
+ッ
+ク
+ス
+ペ
+ー
+ジ
+に
+対
+応
+し
+た
+Action
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-24
 ">CUBBY-24
-</a></td><td>input
+</a>
+</td>
+<td>input
 タ
 グ
 で
@@ -165,13 +293,511 @@ radio
 れ
 な
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-52
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-71
+">CUBBY-71
+</a>
+</td>
+<td>Maven2
+で
+メ
+タ
+情
+報
+の
+出
+力
+</td>
+<td>Open
+</td>
+<td>Unr
+esolved
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-70
+">CUBBY-70
+</a>
+</td>
+<td>0.9.3 -
+>
+1.0.0-rc1
+へ
+の
+移
+行
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-69
+">CUBBY-69
+</a>
+</td>
+<td>Cubby
+か
+ら
+Cubby
+へ
+の
+Forward
+に
+失
+敗
+す
+る
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-68
+">CUBBY-68
+</a>
+</td>
+<td>ク
+ラ
+ス
++
+メ
+ソ
+ッ
+ド
+名
+で
+フ
+ォ
+ワ
+ー
+ド
+、
+リ
+ダ
+イ
+レ
+ク
+ト
+の
+機
+能
+</td>
+<td>Open
+</td>
+<td>Unresolved
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-67
+">CUBBY-67
+</a>
+</td>
+<td>RequestDumpFilter
+を
+削
+除
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-66
+">CUBBY-66
+</a>
+</td>
+<td>コ
+ン
+ポ
+ー
+ネ
+ン
+ト
+一
+覧
+(Mayaa)
+の
+odd/even
+の
+最
+初
+の
+行
+に
+class
+が
+設
+定
+さ
+れ
+て
+い
+な
+い
+</td>
+<td>Resolved
+</td>
+<td>Fixe
+d
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-65
+">CUBBY-65
+</a>
+</td>
+<td>authActionInterceptor
+よ
+り
+後
+に
+cubby.initializeCustomizer
+が
+実
+行
+さ
+れ
+る
+よ
+う
+に
+す
+る
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>Jun Futagawa
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-64
+">CUBBY-64
+</a>
+</td>
+<td>CubbyTestCase
+の
+場
+所
+</td>
+<td>Closed
+</td>
+<td>Won
+'
+t Fix
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-63
+">CUBBY-63
+</a>
+</td>
+<td>ActionProcesser#process
+の
+戻
+り
+値
+を
+void
+か
+ら
+ActionResult
+に
+変
+更
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-62
+">CUBBY-62
+</a>
+</td>
+<td>FileRegexpValidator
+と
+RegexpValidator
+で
+マ
+ッ
+チ
+フ
+ラ
+グ
+対
+応
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-60
+">CUBBY-60
+</a>
+</td>
+<td>multipart/form-data
+利
+用
+時
+、
+@Url
+に
+よ
+る
+リ
+ク
+エ
+ス
+ト
+パ
+ラ
+メ
+ー
+タ
+が
+設
+定
+さ
+れ
+な
+い
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-59
+">CUBBY-59
+</a>
+</td>
+<td>S2Container 2.4.18
+以
+降
+と
+の
+組
+み
+合
+わ
+せ
+時
+、
+FormDxo
+で
+オ
+ブ
+ジ
+ェ
+ク
+ト
+型
+の
+パ
+ラ
+メ
+ー
+タ
+が
+コ
+ピ
+ー
+さ
+れ
+な
+い
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-58
+">CUBBY-58
+</a>
+</td>
+<td>ソ
+ー
+ス
+コ
+ー
+ド
+の
+先
+頭
+に
+copyright
+を
+入
+れ
+る
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-57
+">CUBBY-57
+</a>
+</td>
+<td>Action
+の
+単
+体
+テ
+ス
+ト
+が
+や
+り
+や
+す
+い
+仕
+組
+み
+を
+用
+意
+す
+る
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-56
+">CUBBY-56
+</a>
+</td>
+<td>API
+の
+再
+度
+検
+討
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-55
+">CUBBY-55
+</a>
+</td>
+<td>S2Container
+の
+バ
+ー
+ジ
+ョ
+ン
+を
+2.4.21
+に
+す
+る
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-54
+">CUBBY-54
+</a>
+</td>
+<td>プ
+レ
+ゼ
+ン
+資
+料
+を
+リ
+ン
+ク
+す
+る
+</td>
+<td>Open
+</td>
+<td>Unresolved
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-53
+">CUBBY-53
+</a>
+</td>
+<td>Map
+を
+使
+っ
+た
+public
+フ
+ィ
+ー
+ル
+ド
+の
+認
+識
+</td>
+<td>Open
+</td>
+<td>Unresolved
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-52
 ">CUBBY-52
-</a></td><td>Url.Meth
-od
+</a>
+</td>
+<td>Url.Method
 に
 よ
 っ
@@ -201,12 +827,19 @@ HTTP
 定
 す
 る
-</td><td>Resolved
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-51
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-51
 ">CUBBY-51
-</a></td><td>ス
+</a>
+</td>
+<td>ス
 ク
 リ
 ー
@@ -228,23 +861,37 @@ HTTP
 の
 作
 成
-</td><td>Open
-</td><td>Unresolved
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-50
+</td>
+<td>Open
+</td>
+<td>Unresolved
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-50
 ">CUBBY-50
-</a></td><td>Null
+</a>
+</td>
+<td>Null
 タ
 グ
 の
 除
 去
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-49
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-49
 ">CUBBY-49
-</a></td><td>配
+</a>
+</td>
+<td>配
 列
 を
 チ
@@ -262,24 +909,38 @@ Validator
 を
 変
 更
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-48
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-48
 ">CUBBY-48
-</a></td><td>API
+</a>
+</td>
+<td>API
 の
 整
 理
 、
 変
 更
-</td><td>Resolved
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-47
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-47
 ">CUBBY-47
-</a></td><td>2
+</a>
+</td>
+<td>2
 重
 サ
 ブ
@@ -288,32 +949,53 @@ Validator
 ト
 防
 止
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-46
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-46
 ">CUBBY-46
-</a></td><td>selenium-rc
+</a>
+</td>
+<td>selenium-rc
 に
 よ
 る
 integration test
-</td><td>Open
-</td><td>Unresolved
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-45
+</td>
+<td>Open
+</td>
+<td>Unresolved
+</td>
+<td>Unassigned
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-45
 ">CUBBY-45
-</a></td><td>selenium-rc
+</a>
+</td>
+<td>selenium-rc
 に
 よ
 る
 integration test
-</td><td>Closed
-</td><td>Duplicate
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-44
+</td>
+<td>Closed
+</td>
+<td>Duplicate
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-44
 ">CUBBY-44
-</a></td><td>Validation
+</a>
+</td>
+<td>Validation
 エ
 ラ
 ー
@@ -331,12 +1013,19 @@ integration test
 ス
 対
 応
-</td><td>Resolved
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-43
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-43
 ">CUBBY-43
-</a></td><td>Cubby
+</a>
+</td>
+<td>Cubby
 の
 コ
 ン
@@ -358,12 +1047,19 @@ integration test
 え
 た
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-42
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-42
 ">CUBBY-42
-</a></td><td>Archetype
+</a>
+</td>
+<td>Archetype
 で
 作
 成
@@ -384,12 +1080,19 @@ integration test
 に
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-41
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-41
 ">CUBBY-41
-</a></td><td>checkedValue
+</a>
+</td>
+<td>checkedValue
 属
 性
 が
@@ -401,12 +1104,19 @@ integration test
 し
 な
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-40
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-40
 ">CUBBY-40
-</a></td><td>定
+</a>
+</td>
+<td>定
 義
 済
 み
@@ -436,12 +1146,19 @@ integration test
 成
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-39
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-39
 ">CUBBY-39
-</a></td><td>バ
+</a>
+</td>
+<td>バ
 リ
 デ
 ー
@@ -461,12 +1178,19 @@ integration test
 記
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-38
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-38
 ">CUBBY-38
-</a></td><td>小
+</a>
+</td>
+<td>小
 数
 の
 バ
@@ -476,12 +1200,19 @@ integration test
 シ
 ョ
 ン
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-37
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-37
 ">CUBBY-37
-</a></td><td>Date
+</a>
+</td>
+<td>Date
 型
 の
 テ
@@ -518,12 +1249,19 @@ integration test
 い
 る
 。
-</td><td>Resolved
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-36
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-36
 ">CUBBY-36
-</a></td><td>ArrayValidator
+</a>
+</td>
+<td>ArrayValidator
 が
 機
 能
@@ -532,12 +1270,19 @@ integration test
 い
 な
 い
-</td><td>Resolved
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-35
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-35
 ">CUBBY-35
-</a></td><td>数
+</a>
+</td>
+<td>数
 値
 の
 入
@@ -579,36 +1324,57 @@ integration test
 れ
 な
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-34
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-34
 ">CUBBY-34
-</a></td><td>UrlRewriteFilter
+</a>
+</td>
+<td>UrlRewriteFilter
 か
 ら
 RequestRoutingFilter
 に
 変
 更
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-33
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-33
 ">CUBBY-33
-</a></td><td>Option
+</a>
+</td>
+<td>Option
 ク
 ラ
 ス
 の
 廃
 止
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-32
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-32
 ">CUBBY-32
-</a></td><td>Uri
+</a>
+</td>
+<td>Uri
 ク
 ラ
 ス
@@ -618,21 +1384,35 @@ QueryStringBuilder
 に
 変
 更
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-31
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-31
 ">CUBBY-31
-</a></td><td>CubbyHelperFunctions
+</a>
+</td>
+<td>CubbyHelperFunctions
 の
 廃
 止
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-30
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-30
 ">CUBBY-30
-</a></td><td>フ
+</a>
+</td>
+<td>フ
 ィ
 ー
 ル
@@ -674,12 +1454,19 @@ ClassCastException
 生
 す
 る
-</td><td>Open
-</td><td>Unresolved
-</td><td>Unassigned
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-29
+</td>
+<td>Resolved
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-29
 ">CUBBY-29
-</a></td><td>セ
+</a>
+</td>
+<td>セ
 ッ
 シ
 ョ
@@ -704,12 +1491,19 @@ ClassCastException
 の
 復
 元
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-28
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-28
 ">CUBBY-28
-</a></td><td>Todo
+</a>
+</td>
+<td>Todo
 ア
 プ
 リ
@@ -722,12 +1516,19 @@ ClassCastException
 ClassCastException
 発
 生
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-27
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-27
 ">CUBBY-27
-</a></td><td>Input
+</a>
+</td>
+<td>Input
 タ
 グ
 で
@@ -759,12 +1560,19 @@ Date
 合
 修
 正
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-26
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-26
 ">CUBBY-26
-</a></td><td>package.html
+</a>
+</td>
+<td>package.html
 の
 文
 字
@@ -796,12 +1604,19 @@ API
 け
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-25
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-25
 ">CUBBY-25
-</a></td><td>JSP
+</a>
+</td>
+<td>JSP
 で
 の
 暗
@@ -828,12 +1643,20 @@ contextPath
 つ
 い
 て
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-23
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasa
+r.org:443/issues/browse/CUBBY-23
 ">CUBBY-23
-</a></td><td>cubby-archetype
+</a>
+</td>
+<td>cubby-archetype
 で
 作
 成
@@ -851,12 +1674,19 @@ contextPath
 し
 な
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-22
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-22
 ">CUBBY-22
-</a></td><td>フ
+</a>
+</td>
+<td>フ
 ァ
 イ
 ル
@@ -888,12 +1718,19 @@ commons-fileupload
 生
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-21
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-21
 ">CUBBY-21
-</a></td><td>app-cubby.dicon
+</a>
+</td>
+<td>app-cubby.dicon
 の
 時
 刻
@@ -911,12 +1748,19 @@ commons-fileupload
 つ
 い
 て
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-20
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-20
 ">CUBBY-20
-</a></td><td>ア
+</a>
+</td>
+<td>ア
 プ
 リ
 ケ
@@ -952,12 +1796,19 @@ OutputStream
 い
 か
 ？
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-19
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-19
 ">CUBBY-19
-</a></td><td>select
+</a>
+</td>
+<td>select
 タ
 グ
 の
@@ -971,12 +1822,19 @@ HashMap
 せ
 た
 い
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-18
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-18
 ">CUBBY-18
-</a></td><td>ド
+</a>
+</td>
+<td>ド
 キ
 ュ
 メ
@@ -995,12 +1853,19 @@ apt
 ん
 か
 ？
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-17
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-17
 ">CUBBY-17
-</a></td><td>0.8.2
+</a>
+</td>
+<td>0.8.2
 の
 リ
 リ
@@ -1008,12 +1873,19 @@ apt
 ス
 作
 業
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-16
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-16
 ">CUBBY-16
-</a></td><td>カ
+</a>
+</td>
+<td>カ
 ス
 タ
 ム
@@ -1059,12 +1931,19 @@ apt
 が
 あ
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-15
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-15
 ">CUBBY-15
-</a></td><td>サ
+</a>
+</td>
+<td>サ
 ン
 プ
 ル
@@ -1094,14 +1973,21 @@ ZIP
 正
 す
 る
-</td><td>Closed
-</td><td>Won
+</td>
+<td>Closed
+</td>
+<td>Won
 '
 t Fix
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-14
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-14
 ">CUBBY-14
-</a></td><td>Mayaa
+</a>
+</td>
+<td>Mayaa
 と
 の
 連
@@ -1115,12 +2001,19 @@ t Fix
 ト
 作
 成
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-13
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-13
 ">CUBBY-13
-</a></td><td>リ
+</a>
+</td>
+<td>リ
 フ
 ァ
 レ
@@ -1139,12 +2032,19 @@ t Fix
 、
 分
 割
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-12
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-12
 ">CUBBY-12
-</a></td><td>cubby-examples-smartdeploy
+</a>
+</td>
+<td>cubby-examples-smartdeploy
 を
 cubby-examples
 と
@@ -1160,12 +2060,19 @@ cubby-examples
 止
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-11
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-11
 ">CUBBY-11
-</a></td><td>セ
+</a>
+</td>
+<td>セ
 ッ
 ト
 ア
@@ -1181,23 +2088,37 @@ cubby-examples
 ・
 補
 足
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-10
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-10
 ">CUBBY-10
-</a></td><td>0.9.0
+</a>
+</td>
+<td>0.9.0
 の
 リ
 リ
 ー
 ス
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-9
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-9
 ">CUBBY-9
-</a></td><td>HotDeploy
+</a>
+</td>
+<td>HotDeploy
 の
 ド
 キ
@@ -1210,12 +2131,19 @@ cubby-examples
 加
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>baba
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-8
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>baba
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-8
 ">CUBBY-8
-</a></td><td>コ
+</a>
+</td>
+<td>コ
 ン
 ポ
 ー
@@ -1231,12 +2159,19 @@ cubby-examples
 さ
 せ
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-7
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-7
 ">CUBBY-7
-</a></td><td>Mayaa
+</a>
+</td>
+<td>Mayaa
 連
 携
 の
@@ -1249,12 +2184,19 @@ cubby-examples
 加
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-6
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-6
 ">CUBBY-6
-</a></td><td>カ
+</a>
+</td>
+<td>カ
 ス
 タ
 ム
@@ -1291,21 +2233,34 @@ Java
 更
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://ww
-w.seasar.org:443/issues/browse/CUBBY-5
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-5
 ">CUBBY-5
-</a></td><td>HOTDelpoy
+</a>
+</td>
+<td>HOTDelpoy
 対
 応
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-4
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-4
 ">CUBBY-4
-</a></td><td>Validation
+</a>
+</td>
+<td>Validation
 の
 定
 義
@@ -1333,12 +2288,19 @@ w.seasar.org:443/issues/browse/CUBBY-5
 に
 書
 く
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-3
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-3
 ">CUBBY-3
-</a></td><td>5
+</a>
+</td>
+<td>5
 分
 間
 チ
@@ -1353,12 +2315,19 @@ w.seasar.org:443/issues/browse/CUBBY-5
 成
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="b"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-2
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="a"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-2
 ">CUBBY-2
-</a></td><td>ド
+</a>
+</td>
+<td>ド
 キ
 ュ
 メ
@@ -1383,12 +2352,19 @@ Action
 加
 す
 る
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr><tr class="a"><td><a href="https://www.seasar.org:443/issues/browse/CUBBY-1
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+<tr class="b"><td><a class="externalLink" href="https://www.seasar.org:443/issues/browse/CUBBY-1
 ">CUBBY-1
-</a></td><td>サ
+</a>
+</td>
+<td>サ
 イ
 ト
 ト
@@ -1420,10 +2396,16 @@ Cuuby(
 ま
 す
 。
-</td><td>Closed
-</td><td>Fixed
-</td><td>agata
-</td></tr></table>
+</td>
+<td>Closed
+</td>
+<td>Fixed
+</td>
+<td>agata
+</td>
+</tr>
+</table>
+
       </div>
     </div>
     <div class="clear">
@@ -1431,7 +2413,7 @@ Cuuby(
     </div>
     <div id="footer">
       <div class="xright">&#169;  
-          2006-2007
+          2006-2008
     
           The Seasar Foundation and the others. All rights reserved.
           
@@ -1441,6 +2423,7 @@ Cuuby(
     
   
   
+    
   </div>
       <div class="clear">
         <hr/>

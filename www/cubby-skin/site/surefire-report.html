@@ -9,9 +9,10 @@
 
 
 
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Cubby Archetype - </title>
+    <title>Cubby - </title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -22,7 +23,7 @@
       </head>
   <body class="composite">
     <div id="banner">
-                  <a href="../" id="bannerLeft">
+                  <a href="index.html" id="bannerLeft">
     
             Cubby
     
@@ -39,17 +40,19 @@
     
   
   
+    
             <div class="xleft">
-        最終更新: 12/02/2007
+        最終更新: 2008-01-20
                       </div>
-            <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
-          
+            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
+            
   
 
   
     
   
   
+    
   </div>
       <div class="clear">
         <hr/>
@@ -64,8 +67,90 @@
     
   
   
-                   <h5>プロジェクト文書</h5>
-        <ul>
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+    <li class="none">
+                    <a href="setup.html">セットアップ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="twominute.html">2分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="action.html">アクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="validation.html">バリデーション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="jsp.html">JSP</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tags.html">カスタムタグ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="functions.html">ファンクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="messages.html">メッセージリソース</a>
+          </li>
+              
+    <li class="none">
+                    <a href="unit.html">アクションのテスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mayaa.html">Cubby&Mayaa</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tips.html">Tips集</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
               
                 
               
@@ -90,8 +175,8 @@
       
               
         <li class="collapsed">
-              <a href="project-info.html">プロジェクト情報</a>
-              </li>
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
               
                 
               
@@ -108,28 +193,28 @@
             
               
             <li class="expanded">
-              <a href="project-reports.html">プロジェクトレポート</a>
-                <ul>
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                  <ul>
                   
     <li class="none">
-              <a href="changelog.html">Change Log</a>
-        </li>
+                    <a href="changelog.html">Change Log</a>
+          </li>
                   
     <li class="none">
-              <a href="dev-activity.html">Developer Activity</a>
-        </li>
+                    <a href="dev-activity.html">Developer Activity</a>
+          </li>
                   
     <li class="none">
-              <a href="file-activity.html">File Activity</a>
-        </li>
+                    <a href="file-activity.html">File Activity</a>
+          </li>
                   
     <li class="none">
-              <a href="jdepend-report.html">JDepend</a>
-        </li>
+                    <a href="jdepend-report.html">JDepend</a>
+          </li>
                   
     <li class="none">
-              <a href="jira-report.html">Jira Report</a>
-        </li>
+                    <a href="jira-report.html">Jira Report</a>
+          </li>
                   
     <li class="none">
               <strong>Maven Surefire Report</strong>
@@ -137,7 +222,7 @@
               </ul>
         </li>
           </ul>
-                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
                        
@@ -147,6 +232,7 @@
     
   
   
+    
         </div>
     </div>
     <div id="bodyColumn">
@@ -165,7 +251,32 @@ function toggleDisplay(elementId) {
  } 
  } 
  }
-</script><h2><a name="Summary"></a>Summary</h2><table class="bodyTable"><tr class="a"></tr><tr class="b"></tr></table><table class="bodyTable"><tr class="a"><th>Tests</th><th>Errors </th><th>Failures</th><th>Success Rate</th><th>Time</th></tr><tr class="b"><td>0</td><td>0</td><td>0</td><td>0%</td><td>0</td></tr></table><br />Note: failures are anticipated and checked for with assertions while errors are unanticipated.<table class="bodyTable"><tr class="a"></tr><tr class="b"></tr></table><table class="bodyTable"><tr class="a"></tr><tr class="b"></tr></table>
+</script><h2><a name="Summary"></a>
+Summary</h2>
+<table class="bodyTable"><tr class="a"></tr>
+<tr class="b"></tr>
+</table>
+<table class="bodyTable"><tr class="a"><th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Success Rate</th>
+<th>Time</th>
+</tr>
+<tr class="b"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0%</td>
+<td>0</td>
+</tr>
+</table>
+<br />
+Note: failures are anticipated and checked for with assertions while errors are unanticipated.<table class="bodyTable"><tr class="a"></tr>
+<tr class="b"></tr>
+</table>
+<table class="bodyTable"><tr class="a"></tr>
+<tr class="b"></tr>
+</table>
+
       </div>
     </div>
     <div class="clear">
@@ -173,7 +284,7 @@ function toggleDisplay(elementId) {
     </div>
     <div id="footer">
       <div class="xright">&#169;  
-          2006-2007
+          2006-2008
     
           The Seasar Foundation and the others. All rights reserved.
           
@@ -183,6 +294,7 @@ function toggleDisplay(elementId) {
     
   
   
+    
   </div>
       <div class="clear">
         <hr/>
