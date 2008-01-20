@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>Cubby - JSP</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="agata" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="index.html" id="bannerLeft">
+    
+            Cubby
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+            <div class="xleft">
+        最終更新: 10/01/2007
+                      </div>
+            <div class="xright">      <a href="http://www.seasar.org/">seasar.org</a>
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+                   <h5>ドキュメント</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">Cubbyについて</a>
+        </li>
+              
+    <li class="none">
+              <a href="setup.html">セットアップ</a>
+        </li>
+              
+    <li class="none">
+              <a href="twominute.html">2分間チュートリアル</a>
+        </li>
+              
+    <li class="none">
+              <a href="fiveminute.html">5分間チュートリアル</a>
+        </li>
+              
+    <li class="none">
+              <a href="download.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h5>リファレンス</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="action.html">アクション</a>
+        </li>
+              
+    <li class="none">
+              <a href="validation.html">バリデーション</a>
+        </li>
+              
+    <li class="none">
+              <strong>JSP</strong>
+        </li>
+              
+    <li class="none">
+              <a href="tags.html">カスタムタグ</a>
+        </li>
+              
+    <li class="none">
+              <a href="functions.html">ファンクション</a>
+        </li>
+              
+    <li class="none">
+              <a href="messages.html">メッセージリソース</a>
+        </li>
+              
+    <li class="none">
+              <a href="mayaa.html">Cubby&Mayaa</a>
+        </li>
+          </ul>
+          <h5>プロジェクト文書</h5>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-reports.html">プロジェクトレポート</a>
+              </li>
+          </ul>
+          <h5>モジュール</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="cubby/index.html">cubby</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-archetype/index.html">cubby-archetype</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-tomcat55-support/index.html">cubby-tomcat55-support</a>
+        </li>
+              
+    <li class="none">
+              <a href="cubby-skin/index.html">cubby-skin</a>
+        </li>
+              
+    <li class="none">
+              <a href="index.html">Cubby Distribution</a>
+        </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>JSP</h2><p>Cubby のビューは JSP で作成します。</p></div><div class="section"><h2>JSP での暗黙オブジェクト一覧</h2><table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b></td><td align="left"><b>説明</b></td><td align="left"><b>型</b></td><td align="left"><b>スコープ</b></td><td align="left"><b>セットされるタイミング</b></td></tr><tr class="b"><td align="left">action</td><td align="left">forward したアクションのオブジェクト</td><td align="left">org.seasar.cubby.action.Action</td><td align="left">request</td><td align="left">forward の直前</td></tr><tr class="a"><td align="left">action のプロパティ名</td><td align="left">Action で public なゲッターがあるプロパティは自動的にリクエストスコープにセットされます。<br />（例）getXyz -&gt; xyz</td><td align="left">それぞれのプロパティの型</td><td align="left">request</td><td align="left">forward の直前</td></tr><tr class="b"><td align="left">errors</td><td align="left">エラー保持オブジェクト</td><td align="left">org.seasar.cubby.action.ActionErrors</td><td align="left">request</td><td align="left">action メソッドの実行前</td></tr><tr class="a"><td align="left">actionErrors</td><td align="left">errors のプロパティ actionErrors</td><td align="left">java.util.List</td><td align="left">request</td><td align="left">action メソッドの実行前</td></tr><tr class="b"><td align="left">fieldErrors</td><td align="left">errors のプロパティ fieldErrors</td><td align="left">java.util.Map</td><td align="left">request</td><td align="left">action メソッドの実行前</td></tr><tr class="a"><td align="left">allErrors</td><td align="left">errors のプロパティ allErrors</td><td align="left">java.util.List</td><td align="left">request</td><td align="left">action メソッドの実行前</td></tr><tr class="b"><td align="left">flash</td><td align="left">リダイレクト時にメッセージなどを受け渡しするためのMap。<br />この Map は１度 get すると Map から自動的に除去(remove)されます。</td><td align="left">java.util.Map</td><td align="left">session</td><td align="left">action メソッドの実行前</td></tr><tr class="a"><td align="left">contextPath</td><td align="left">request.getContextPath()の値</td><td align="left">java.lang.String</td><td align="left">request</td><td align="left">forward の直前</td></tr><tr class="b"><td align="left">messages</td><td align="left">messages.propertiesをMapにしたもの。<br />リクエストのロケールに対応したプロパティファイルを使用します。 </td><td align="left">java.util.Map</td><td align="left">request</td><td align="left">forward の直前</td></tr></tbody></table></div>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2006-2007
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

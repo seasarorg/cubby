@@ -1,0 +1,831 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Cubby - 5分間チュートリアル</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="agata" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="index.html" id="bannerLeft">
+    
+            Cubby
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        最終更新: 2008-01-20
+                      </div>
+            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+    <li class="none">
+                    <a href="setup.html">セットアップ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="twominute.html">2分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+              <strong>5分間チュートリアル</strong>
+        </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="action.html">アクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="validation.html">バリデーション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="jsp.html">JSP</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tags.html">カスタムタグ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="functions.html">ファンクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="messages.html">メッセージリソース</a>
+          </li>
+              
+    <li class="none">
+                    <a href="unit.html">アクションのテスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mayaa.html">Cubby&Mayaa</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tips.html">Tips集</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                </li>
+          </ul>
+              <h5>モジュール</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="cubby/index.html">Cubby</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-skin/index.html">Cubby Skin</a>
+          </li>
+              
+    <li class="none">
+                    <a href="index.html">Cubby Distribution</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>Todo アプリケーションの概要</h2>
+<p>ログイン画面、一覧画面、詳細画面、追加・編集画面、確認画面を持つシンプルなアプリケーションです。 このチュートリアルはCubby のサンプル war の「Todoサンプルアプリケーション」から実行できます。</p>
+</div>
+<div class="section"><h2>ログイン画面の作成</h2>
+<p>ログイン画面のActionクラスとJSPを作成します。 まずはバリデーションなしで作成します。 アクションにログイン画面を表示する「indexメソッド」とログイン処理を行う「process」メソッドを定義します。 「processメソッド」ではログインに成功した場合一覧画面の「/todo/」にリダイレクトします。 リダイレクトは「new Redirct(&quot;/todo/&quot;)」となります。</p>
+<p>ログインに失敗した場合、エラーメッセージを追加してログイン画面にフォワードします。 アクションで発生したエラーやバリデーションエラーはアクションの「errors」フィールドに追加します。 ここではアクションで発生したエラーを「errors.addActionError(&quot;ユーザIDかパスワードが違います。&quot;);」 で追加しています。</p>
+<p>エラーメッセージをHTMLに出力する部品はCubbyでは用意されていません。 これはエラー画面はアプリケーションにより、表示形式が異なると思われるためです。 サンプルでは「common/errors.jsp」をエラーメッセージの表示用部品としてインポートして各画面で使用しています。 こちらを参考に各アプリケーションでのエラー表示部品を作成してください。</p>
+<p><b>ログイン画面</b>
+</p>
+<img src="images/todo_login.png" alt="ログイン画面" /><p><b>LoginAction.java</b>
+</p>
+<div class="source"><pre>@Path(&quot;todo/login&quot;)
+public class LoginAction extends Action {
+
+  // フィールドにはアクセサメソッドが必要。
+  // サンプルではPropertyInterTypeを使用しているのでアクセサメソッドは自動生成されます。
+
+  public Map&lt;String, Object&gt; sessionScope;
+  public String userId;
+  public String password;
+
+  // ----------------------------------------------[Action Method]
+
+  /**
+   * ログイン画面表示処理(/todo/login/)
+   */
+  public ActionResult index() {
+    return new Forward(&quot;/todo/login.jsp&quot;);
+  }
+
+  /**
+   * ログイン処理(/todo/login/proess)
+   */
+  public ActionResult process() {
+    User user = login(userId, password);
+    if (user != null) {
+      sessionScope.put(&quot;user&quot;, user);
+      return new Redirect(&quot;/todo/&quot;);
+    } else {
+      errors.addActionError(&quot;ユーザIDかパスワードが違います。&quot;);
+      return new Forward(&quot;/todo/login.jsp&quot;);
+    }
+  }
+
+  /**
+   * 認証処理
+   */
+  private User login(String userId, String password) {
+    User user;
+    if (&quot;test&quot;.equals(userId) &amp;&amp; &quot;test&quot;.equals(password)) {
+      user = new User();
+      user.setId(1);
+      user.setName(&quot;Cubby&quot;);
+    } else {
+      user = null;
+    }
+    return user;
+  }
+
+}</pre>
+</div>
+<p><b>login.jsp</b>
+</p>
+<div class="source"><pre>...
+&lt;body&gt;
+[&lt;a href=&quot;${contextPath}/&quot;&gt;戻る&lt;/a&gt;]
+&lt;h1&gt;Todoログイン&lt;/h1&gt;
+&lt;c:import url=&quot;/common/errors.jsp&quot;/&gt;
+&lt;t:form action=&quot;${contextPath}/todo/login/process&quot; method=&quot;post&quot; value=&quot;${action}&quot;&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;ユーザID&lt;/th&gt;
+    &lt;td&gt;&lt;t:input type=&quot;text&quot; name=&quot;userId&quot; maxlength=&quot;20&quot; /&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;パスワード&lt;/th&gt;
+    &lt;td&gt;&lt;t:input type=&quot;password&quot; name=&quot;password&quot; maxlength=&quot;20&quot; /&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;ログイン&quot;/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+test/testでログインできます。
+&lt;/t:form&gt;
+&lt;/body&gt;
+...</pre>
+</div>
+<p><b>errors.jsp</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${fn:length(allErrors) &gt; 0}&quot;&gt;
+  &lt;div id=&quot;errors&quot; class=&quot;errors&quot;&gt;
+    &lt;ul&gt;
+    &lt;c:forEach var=&quot;error&quot; varStatus=&quot;s&quot; items=&quot;${allErrors}&quot;&gt;
+      &lt;li&gt;${fn:replace(error, &quot;
+&quot;, &quot;&lt;br/&gt;&quot;)}&lt;/li&gt;
+    &lt;/c:forEach&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/c:if&gt;</pre>
+</div>
+<div class="section"><h3>バリデーションの追加</h3>
+<p>ログイン画面にバリデーションを追加します。 userId、passwordとも必須にしてみましょう。 バリデーションを定義する場合、以下3カ所を追記します。</p>
+<ul><li>バリデーションルールをアクションのフィールドに定義します。</li>
+<li>バリデーションをかけたいアクションメソッドに@Validationアノテーションを追加します。</li>
+<li>JSP中でバリデーションエラーを表示する記述を追記します。<p>バリデーションの詳細は<a href="validation.html">バリデーションのリファレンス</a>
+を参照下さい。</p>
+<p><b>バリデーションエラーの表示</b>
+</p>
+<img src="images/todo_validation.png" alt="バリデーションエラーの表示" /><p><b>LoginAction.java</b>
+</p>
+<div class="source"><pre>@Path(&quot;todo/login&quot;)
+public class LoginAction extends Action {
+
+  // ----------------------------------------------[Validation]
+
+  public ValidationRules loginValidation = new DefaultValidationRules(&quot;login.&quot;) {
+        @Override
+        public void initialize() {
+          add(&quot;userId&quot;, new RequiredValidator());
+          add(&quot;password&quot;, new RequiredValidator());
+        }
+  };
+  ...
+  @Validation(rulesField=&quot;loginValidation&quot;, errorPage = &quot;/todo/login.jsp&quot;)
+  public ActionResult process() {
+    ...
+  }
+  ...
+}</pre>
+</div>
+<p><b>errors.jsp</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${fn:length(allErrors) &gt; 0}&quot;&gt;
+  &lt;div id=&quot;errors&quot; class=&quot;errors&quot;&gt;
+    &lt;ul&gt;
+    &lt;c:forEach var=&quot;error&quot; varStatus=&quot;s&quot; items=&quot;${allErrors}&quot;&gt;
+      &lt;li&gt;${fn:replace(error, &quot;
+&quot;, &quot;&lt;br/&gt;&quot;)}&lt;/li&gt;
+    &lt;/c:forEach&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/c:if&gt;</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section"><h3>HttpServletRequestやHttpServletResponseの利用</h3>
+<p>アクションクラスでHttpServletRequestやHttpServletResponseを使用する場合、 フィールドとセッターを用意することで、Seasar2が自動的にインジェクションしてくれます。<br />
+ログイン画面ではセッションを取得するためにHttpServletRequestを使用しています。</p>
+</div>
+<div class="section"><h3>フォワードとリダイレクトの使い分け</h3>
+<p>フォワードは表示処理のみで使用します。 何らかの処理（ここではログイン処理）を行った後に別の画面に遷移する場合、次画面の表示用URLにリダイレクトするようにします。 リダイレクト後のURLは次画面の表示用URLになっているので、ブラウザのリロードボタンを押しても 処理が2回実行されることはありません。</p>
+<p>リダイレクトを使用した場合、処理用のリクエストと表示用のリクエストが別になってしまうため 情報（例えば「TODO1を更新しました」というメッセージ）などの情報を引き継げない問題があります。 これは「フラッシュメッセージ」という揮発性のメッセージをセッションに保持することで解消します。 フラッシュメッセージについては後述します。</p>
+</div>
+</div>
+<div class="section"><h2>一覧画面の作成</h2>
+<p>一覧画面では検索条件に一致するTODOを表示しています。 なお、サンプルではインジェクションされたDaoを直接呼び出していますが、 実際の大きなアプリケーションではアクションはサービス（あるいはLogic）を使用して、Daoを直接呼び出すのは 避けたほうが良いでしょう。</p>
+<p><b>一覧画面</b>
+</p>
+<img src="images/todo_list.png" alt="一覧画面" /><p><b>TodoListAction.java</b>
+</p>
+<div class="source"><pre>@Path(&quot;todo&quot;)
+public class TodoListAction extends Action {
+
+  // ----------------------------------------------[Validation]
+
+  public ValidationRules validation = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      add(&quot;limitDate&quot;, new DateFormatValidator());
+      }
+  };
+
+  // ----------------------------------------------[DI Filed]
+
+  public FormatPattern formatPattern;
+  public TodoDao todoDao;
+  public TodoTypeDao todoTypeDao;
+
+  // ----------------------------------------------[Attribute]
+
+  public TodoConditionDto todoConditionDto;
+  public List&lt;Todo&gt; todoList;
+
+  // ----------------------------------------------[Action Method]
+
+  /**
+   * 一覧表示処理(/todo/)
+   */
+  @Form(&quot;todoConditionDto&quot;)
+  @Validation(rulesField=&quot;validation&quot;, errorPage=&quot;list.jsp&quot;)
+  public ActionResult index() {
+    this.todoList = todoDao.selectByCondition(todoConditionDto);
+    return new Forward(&quot;list.jsp&quot;);
+  }
+
+  // ----------------------------------------------[Helper Method]
+
+  /**
+   * 種別一覧の取得
+   */
+  public List&lt;TodoType&gt; getTodoTypes() {
+    List&lt;TodoType&gt; todoTypes = todoTypeDao.seletAll();
+    return todoTypes;
+  }
+
+  /**
+   * 検索条件の文字列取得
+   */
+  public String getQueryString() {
+    StringBuilder sb = new StringBuilder();
+    if (todoConditionDto.hasKeyword()) {
+      sb.append(&quot;キーワード:&quot;).append(todoConditionDto.getKeyword()).append(&quot; &quot;);
+    }
+    if (todoConditionDto.hasTypeId()) {
+      sb.append(&quot;種別:&quot;).append(
+      todoTypeDao.selectById(todoConditionDto.getTypeId()).getName()).append(&quot; &quot;);
+    }
+    if (todoConditionDto.hasLimitDate()) {
+      DateFormat dateFormat = formatPattern.getDateFormat();
+      sb.append(&quot;期限日&lt;=&quot;).append(
+      dateFormat.format(todoConditionDto.getLimitDate()));
+    }
+    return sb.toString();
+  }
+  
+}</pre>
+</div>
+<p><b>list.jsp</b>
+</p>
+<div class="source"><pre>...
+&lt;c:import url=&quot;/common/notice.jsp&quot;/&gt;
+&lt;h2&gt;Todoの一覧&lt;/h2&gt;
+&lt;c:import url=&quot;/common/errors.jsp&quot;/&gt;
+&lt;div class=&quot;menu&quot;&gt;
+[&lt;a href=&quot;${contextPath}/todo/create&quot;&gt;新規作成&lt;/a&gt;]
+&lt;/div&gt;
+&lt;t:form action=&quot;${contextPath}/todo/&quot; method=&quot;post&quot; value=&quot;${todoConditionDto}&quot;&gt;
+&lt;table&gt;
+  &lt;tr&gt;
+        &lt;th&gt;キーワード&lt;/th&gt;
+    &lt;td&gt;
+        &lt;t:input type=&quot;text&quot; name=&quot;keyword&quot; size=&quot;10&quot; maxsize=&quot;10&quot;/&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;種別&lt;/th&gt;
+    &lt;td&gt;
+        &lt;t:select id=&quot;typeId&quot; name=&quot;typeId&quot;
+                items=&quot;${action.todoTypes}&quot; labelProperty=&quot;name&quot; valueProperty=&quot;id&quot;/&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;期限日&lt;/th&gt;
+    &lt;td&gt;
+      &lt;t:input type=&quot;text&quot; id=&quot;limitDate&quot; name=&quot;limitDate&quot; size=&quot;10&quot; maxsize=&quot;10&quot;/&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;検索&quot;/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+検索条件:${f:out(action.queryString)}
+&lt;/t:form&gt;
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;内容&lt;/th&gt;
+    &lt;th&gt;種別&lt;/th&gt;
+    &lt;th&gt;期限日&lt;/th&gt;
+    &lt;th&gt;アクション&lt;/th&gt;
+  &lt;/tr&gt;
+        &lt;c:forEach var=&quot;todo&quot; items=&quot;${action.todoList}&quot; varStatus=&quot;status&quot;&gt;
+                &lt;tr class=&quot;${f:odd(status.index, 'odd,even')}&quot;&gt;
+                        &lt;td&gt;&lt;a href=&quot;${contextPath}/todo/${f:out(todo.id)}&quot;&gt;${f:out(todo.text)}&lt;/a&gt;&lt;/td&gt;
+                        &lt;td&gt;${f:out(todo.todoType.name)}&lt;/td&gt;
+                        &lt;td&gt;${f:dateFormat(todo.limitDate, 'yyyy-MM-dd')}&lt;/td&gt;
+                        &lt;td&gt;[&lt;a href=&quot;javascript:doDelete('${f:out(todo.text)}',${f:out(todo.id)});&quot;&gt;削除&lt;/a&gt;]&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+&lt;/table&gt;
+&lt;/div&gt;&lt;!-- End of id=&quot;content&quot; --&gt;
+&lt;c:import url=&quot;fotter.jsp&quot; /&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<div class="section"><h3>コンボ・チェックボックス・ラジオボタンの一覧データ取得</h3>
+<p>検索条件の「種別」コンボボックスに表示するデータはTodoListActionの「getTodoTypes」メソッドから取得しています。 labelPropertyに表示用のラベルのプロパティ名、valuePropertyにvalue値のプロパティ名を指定します。 このようにコンボ・チェックボックス・ラジオボタンの一覧データ取得にはアクションのメソッドを呼び出して使用することもできます。</p>
+<p>ただしこの場合画面中で2回「getTodoTypes」を呼び出す箇所があると処理が2回実行されてしまいます。 2回以上使用されるデータに関しては、アクションメソッドの中で取得してフィールドに保持するのが良いでしょう。</p>
+<p><b>list.jsp</b>
+</p>
+<div class="source"><pre>        &lt;t:select id=&quot;typeId&quot; name=&quot;typeId&quot;
+                items=&quot;${action.todoTypes}&quot; labelProperty=&quot;name&quot; valueProperty=&quot;id&quot;/&gt;</pre>
+</div>
+</div>
+<div class="section"><h3>行毎の色分け</h3>
+<p>一覧表示では「$<a name="f:oddstatus.index_oddeven">f:odd(status.index, 'odd,even')</a>
+」のようにodd関数をつかって1行ごとにCSSのクラスを切り替えています。</p>
+<p><b>list.jsp</b>
+</p>
+<div class="source"><pre>        &lt;c:forEach var=&quot;todo&quot; items=&quot;${action.todoList}&quot; varStatus=&quot;status&quot;&gt;
+                &lt;tr class=&quot;${f:odd(status.index, 'odd,even')}&quot;&gt;
+                  ...
+            &lt;/tr&gt;
+        &lt;/c:forEach&gt;</pre>
+</div>
+</div>
+</div>
+<div class="section"><h2>詳細画面の作成</h2>
+<p>次に詳細画面を作成します。</p>
+<p><b>詳細画面</b>
+</p>
+<img src="images/todo_detail.png" alt="詳細画面" /><p><b>TodoAction.java</b>
+</p>
+<div class="source"><pre>public class TodoAction extends Action {
+  ...
+  // ----------------------------------------------[DI Filed]
+
+  public TodoDao todoDao;
+  public TodoDxo todoDxo;
+  public TodoTypeDao todoTypeDao;
+
+  // ----------------------------------------------[Attribute]
+
+  public Integer id;
+  public String text;
+  public String memo;
+  public Integer typeId;
+  public String limitDate;
+  public TodoType todoType;
+
+  // ----------------------------------------------[Action Method]
+
+  /**
+   * 詳細画面表示(/todo/{id})
+   */
+  @Path(&quot;{id,[0-9]+}&quot;)
+  public ActionResult show() {
+    Todo todo = todoDao.selectById(this.id);
+    todoDxo.convert(todo, this);
+    return new Forward(&quot;show.jsp&quot;);
+  }
+  ...
+}</pre>
+</div>
+<p><b>show.jsp</b>
+</p>
+<div class="source"><pre>...
+&lt;h2&gt;Todo詳細&lt;/h2&gt;
+&lt;div class=&quot;menu&quot;&gt;
+[&lt;a href=&quot;${contextPath}/todo/&quot;&gt;一覧に戻る&lt;/a&gt;]
+[&lt;a href=&quot;${contextPath}/todo/edit?id=${id}&quot;&gt;編集&lt;/a&gt;]
+[&lt;a href=&quot;javascript:doDelete('${f:out(text)}',${f:out(id)})&quot;&gt;削除&lt;/a&gt;]
+&lt;/div&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;内容&lt;/th&gt;
+    &lt;td&gt;${f:out(text)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;種別&lt;/th&gt;
+    &lt;td&gt;${f:out(todoType.name)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;期限日&lt;/th&gt;
+    &lt;td&gt;${f:out(limitDate)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;th&gt;メモ&lt;/th&gt;
+  &lt;td&gt;${f:out(memo)}&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;&lt;!-- End of id=&quot;content&quot; --&gt;
+&lt;c:import url=&quot;fotter.jsp&quot; /&gt;
+&lt;/body&gt;
+...</pre>
+</div>
+<div class="section"><h3>@Pathを使用したURLマッピングのカスタマイズ</h3>
+<p>@Pathアノテーションを使用することでURLのカスタマイズができます。 ここでは「@Path(&quot;<a name="id0-9">id,[0-9]+</a>
+&quot;)」という定義で、「todo/1001」のようなURLが呼び出された場合、 URLのリクエストパラメータに「id=1001」を追加してアクションのidフィールドにセットします。 @Pathを使用したURLマッピングのカスタマイズは<a href="cubby/apidocs/org/seasar/cubby/action/Path.html">@PathのAPIドキュメント</a>
+を参照ください。</p>
+</div>
+</div>
+<div class="section"><h2>追加・編集画面の作成</h2>
+<p>追加・編集画面は同じJSPを使用して作成します。</p>
+<p><b>追加・編集画面</b>
+</p>
+<img src="images/todo_edit.png" alt="追加・編集画面" /><p><b>TodoAction.java</b>
+</p>
+<div class="source"><pre>  ...
+  /**
+   * 追加画面表示（todo/create）
+   */
+  public ActionResult create() {
+    return new Forward(&quot;edit.jsp&quot;);
+  }
+
+  /**
+   * 編集画面表示（todo/edit）
+   */
+  public ActionResult edit() {
+    Todo todo = todoDao.selectById(this.id);
+    todoDxo.convert(todo, this);
+    return new Forward(&quot;edit.jsp&quot;);
+  }
+  ...</pre>
+</div>
+<p><b>edit.jsp</b>
+</p>
+<div class="source"><pre>...
+&lt;h2&gt;Todo編集&lt;/h2&gt;
+&lt;c:import url=&quot;/common/errors.jsp&quot;/&gt;
+[&lt;a href=&quot;${contextPath}/todo/&quot;&gt;一覧に戻る&lt;/a&gt;]
+&lt;t:form action=&quot;confirm&quot; method=&quot;post&quot; value=&quot;${action}&quot;&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;id&quot; /&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;タイトル&lt;/th&gt;
+    &lt;td&gt;
+        &lt;t:input type=&quot;text&quot; maxlength=&quot;50&quot; name=&quot;text&quot;  /&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;種別&lt;/th&gt;
+    &lt;td&gt;
+                &lt;t:select id=&quot;typeId&quot; name=&quot;typeId&quot;
+                        items=&quot;${todoTypes}&quot; labelProperty=&quot;name&quot; valueProperty=&quot;id&quot; emptyOptionLabel=&quot;選択してください。&quot; /&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;期限日&lt;/th&gt;
+    &lt;td&gt;
+        &lt;t:input type=&quot;text&quot; maxlength=&quot;12&quot; name=&quot;limitDate&quot;/&gt;(YYYY-MM-DD)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;メモ&lt;/th&gt;
+  &lt;td&gt;
+    &lt;t:textarea name=&quot;memo&quot; value=&quot;${f:out(memo)}&quot;/&gt;
+  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;次へ&quot;/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/t:form&gt;
+&lt;div id=&quot;content&quot;&gt;
+&lt;/div&gt;&lt;!-- End of id=&quot;content&quot; --&gt;
+&lt;c:import url=&quot;fotter.jsp&quot; /&gt;
+&lt;/body&gt;
+...</pre>
+</div>
+</div>
+<div class="section"><h2>確認画面の作成</h2>
+<p>確認画面は表示処理で追加・編集画面からのパラメータにバリデーションをかけています。 確認画面は入力された値の表示のみなので、入力データはhiddenパラメータとして保持します。 確認画面からポストされたデータのポスト先はアクションのsaveメソッドです。 saveメソッドでは入力データをDBに保存後、一覧画面にリダイレクトしています。</p>
+<p><b>確認画面</b>
+</p>
+<img src="images/todo_confirm.png" alt="確認画面" /><p><b>TodoAction.java</b>
+</p>
+<div class="source"><pre>  ...
+  public ValidationRules validation = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      add(&quot;text&quot;, new RequiredValidator(), new MaxLengthValidator(10));
+      add(&quot;memo&quot;, new RequiredValidator(), new MaxLengthValidator(100));
+      add(&quot;typeId&quot;, &quot;type&quot;, new RequiredValidator());
+      add(&quot;limitDate&quot;, new DateFormatValidator());
+        }
+  };
+  
+  /**
+   * 確認画面表示
+   */
+  @Validation(rulesField = &quot;validation&quot;, errorPage = &quot;edit.jsp&quot;)
+  public ActionResult confirm() {
+    TodoType todoType = todoTypeDao.selectById(this.typeId);
+    this.todoType = todoType;
+    return new Forward(&quot;confirm.jsp&quot;);
+  }
+
+  /**
+   * 確認画面から編集画面への表示
+   */
+  public ActionResult confirm_back() {
+    return new Forward(&quot;edit.jsp&quot;);
+  }
+
+  /**
+   * 保存処理
+   */
+  @Validation(rulesField = &quot;validation&quot;, errorPage = &quot;confirm.jsp&quot;)
+  public ActionResult save() {
+    if (this.id == null) {
+      Todo todo = todoDxo.convert(this);
+      todoDao.insert(todo);
+      flash.put(&quot;notice&quot;, todo.getText() + &quot;を追加しました。&quot;);
+    } else {
+      Todo todo = todoDxo.convert(this);
+      todoDao.update(todo);
+      flash.put(&quot;notice&quot;, todo.getText() + &quot;を更新しました。&quot;);
+    }
+    return new Redirect(&quot;/todo/&quot;);
+  }
+  ...</pre>
+</div>
+<p><b>confirm.jsp</b>
+</p>
+<div class="source"><pre>...
+&lt;h2&gt;Todo編集確認&lt;/h2&gt;
+以下の内容で登録しますがよろしいですか？
+&lt;div class=&quot;menu&quot;&gt;
+[&lt;a href=&quot;javascript:doBack()&quot;&gt;戻る&lt;/a&gt;]
+&lt;/div&gt;
+&lt;t:form action=&quot;${contextPath}/todo/save&quot; method=&quot;post&quot; value=&quot;${action}&quot;&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;id&quot;/&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;text&quot;/&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;typeId&quot;/&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;limitDate&quot; value=&quot;${limitDate}&quot;/&gt;
+&lt;t:input type=&quot;hidden&quot; name=&quot;memo&quot;/&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;内容&lt;/th&gt;
+    &lt;td&gt;${f:out(text)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;種別&lt;/th&gt;
+    &lt;td&gt;${f:out(todoType.name)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;期限日&lt;/th&gt;
+    &lt;td&gt;${f:out(limitDate)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;メモ&lt;/th&gt;
+    &lt;td&gt;${f:out(memo)}&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;/th&gt;
+    &lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;登録&quot;/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/t:form&gt;
+&lt;/div&gt;&lt;!-- End of id=&quot;content&quot; --&gt;
+&lt;c:import url=&quot;fotter.jsp&quot; /&gt;
+&lt;/body&gt;
+...</pre>
+</div>
+<div class="section"><h3>フラッシュメッセージの利用</h3>
+<p>リダイレクト前の処理から、リダイレクト後の画面表示処理に値を引き継ぎたいときは、 揮発性のフラッシュメッセージを使用します。 Actionのフィールド<a href="cubby/apidocs/org/seasar/cubby/action/Action.html#flash">flash</a>
+ を使用して、 追加・更新のメッセージを受け渡しています。 フラッシュメッセージは次画面のフォワード処理後にクリアされます。 フラッシュメッセージを使用する場合、フラッシュメッセージ表示用のJSP部品を用意しておくと便利です（common/notice.jsp）。 サンプルでは<a href="http://script.aculo.us/" class="externalLink">script.aculo.us</a>
+の<a href="http://wiki.script.aculo.us/scriptaculous/show/CoreEffects" class="externalLink">Effects</a>
+を利用して フラッシュメッセージをエフェクト付きで表示しています。</p>
+<p><b>フラッシュメッセージの表示</b>
+</p>
+<img src="images/todo_flash.png" alt="フラッシュメッセージの表示" /><p><b>TodoAction.java</b>
+</p>
+<div class="source"><pre>  public ActionResult save() {
+    ...
+      flash.put(&quot;notice&quot;, todo.getText() + &quot;を追加しました。&quot;);
+    ...
+  }</pre>
+</div>
+<p><b>list.jsp</b>
+</p>
+<div class="source"><pre>&lt;c:import url=&quot;/common/notice.jsp&quot;/&gt;</pre>
+</div>
+<p><b>common/notice.jsp</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${f:containsKey(flash, 'notice')}&quot;&gt;
+&lt;div id=&quot;notice&quot; class=&quot;notice&quot;&gt;${f:out(flash['notice'])}&lt;/div&gt;
+...
+&lt;/c:if&gt;</pre>
+</div>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2006-2008
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
