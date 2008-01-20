@@ -100,6 +100,7 @@
           <encoding>UTF-8</encoding>
           <inputEncoding>UTF-8</inputEncoding>
           <outputEncoding>UTF-8</outputEncoding>
+          <templateFile>src/site/cubby-site.vm</templateFile>
         </configuration>
       </plugin>
       <plugin>
