@@ -12,6 +12,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Cubby - セットアップ</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
@@ -20,8 +21,7 @@
     </style>
     <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
           <meta name="author" content="baba" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      </head>
+          </head>
   <body class="composite">
     <div id="banner">
                   <a href="index.html" id="bannerLeft">
@@ -230,8 +230,8 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>前提</h2>
-<p>Cubby は S2Container2.4 の <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html">SMART Deploy</a>
- 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming">SMART Deploy 推奨のパッケージ構成</a>
+<p>Cubby は S2Container2.4 の <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html" class="externalLink">SMART Deploy</a>
+ 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming" class="externalLink">SMART Deploy 推奨のパッケージ構成</a>
 としてください。</p>
 </div>
 <div class="section"><h2>プロジェクトの作成</h2>
@@ -285,7 +285,7 @@
 </ul>
 <div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3>
 <p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p>
-<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a class="externalLink" href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>
+<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request" class="externalLink">リクエストの自動バインディング</a>
 を使用するので、S2ContainerFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -303,7 +303,7 @@
 &lt;/web-app&gt;</pre>
 </div>
 </li>
-<li>HotdeployFilter<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy">Hot deploy</a>
+<li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy" class="externalLink">Hot deploy</a>
  を使用する場合は HotdeployFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -379,10 +379,10 @@
 </li>
 </ul>
 </li>
-<li>convention.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
+<li>convention.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
 を参考に、ルートパッケージを設定してください。</p>
 </li>
-<li>creator.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
+<li>creator.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
 を参考に、ActionCreator を設定してください。</p>
 </li>
 <li>customizer.dicon<p>Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。 cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。</p>
