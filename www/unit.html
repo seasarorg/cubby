@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Cubby - アクションのテスト</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="agata" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="index.html" id="bannerLeft">
+    
+            Cubby
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        最終更新: 2008-01-20
+                      </div>
+            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+    <li class="none">
+                    <a href="setup.html">セットアップ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="twominute.html">2分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+          </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="action.html">アクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="validation.html">バリデーション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="jsp.html">JSP</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tags.html">カスタムタグ</a>
+          </li>
+              
+    <li class="none">
+                    <a href="functions.html">ファンクション</a>
+          </li>
+              
+    <li class="none">
+                    <a href="messages.html">メッセージリソース</a>
+          </li>
+              
+    <li class="none">
+              <strong>アクションのテスト</strong>
+        </li>
+              
+    <li class="none">
+                    <a href="mayaa.html">Cubby&Mayaa</a>
+          </li>
+              
+    <li class="none">
+                    <a href="tips.html">Tips集</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                </li>
+          </ul>
+              <h5>モジュール</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="cubby/index.html">Cubby</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-skin/index.html">Cubby Skin</a>
+          </li>
+              
+    <li class="none">
+                    <a href="index.html">Cubby Distribution</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>アクションのテスト</h2>
+<p>アクションの単体テストは<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html">CubbyTestCase</a>
+を使用します。 SeasarのS2Unitの機能を全て使用できるので <a class="externalLink" href="http://s2container.seasar.org/2.4/ja/S2Unit.html">SeasarのS2Unitのドキュメント</a>
+も合わせてご覧ください。</p>
+<ol type="1"><li>CubbyTestCaseを継承して、XXXXTest作成します。 </li>
+<li>テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。</li>
+<li>アクションのメソッドごとにテストメソッドを書きます。メソッド名はtestから始めます。</li>
+<li>テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。</li>
+<li><a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)">CubbyTestCase#processAction</a>
+にリクエストのパスを指定して、アクションメソッドを実行します。</li>
+<li>戻り値を<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)">CubbyTestCase#processAction</a>
+で結果のActionResultの型とパスをチェックします。パスのチェックはForwardとRedirectの場合のみ行われます。</li>
+<li>必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。<div class="source"><pre>package org.seasar.cubby.examples.other.web.hello;
+
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.unit.CubbyTestCase;
+
+public class HelloActionTest extends CubbyTestCase {
+
+        // 対象のアクション
+        private HelloAction action;
+        
+        // 初期化処理
+    protected void setUp() throws Exception {
+        // diconファイルの読み込み
+        include(&quot;app.dicon&quot;);
+    }
+    
+        public void testIndex() throws Exception {
+                // アクションの実行
+                ActionResult result = processAction(&quot;/hello/&quot;);
+                // 結果のチェック
+                assertPathEquals(Forward.class, &quot;input.jsp&quot;, result);
+        }
+        
+        public void testMessage() throws Exception {
+            // リクエストパラメータのセット
+                getRequest().addParameter(&quot;name&quot;, &quot;name1&quot;);
+                // アクションの実行
+                ActionResult result = processAction(&quot;/hello/message&quot;);
+                // 結果のチェック
+                assertPathEquals(Forward.class, &quot;result.jsp&quot;, result);
+                // 実行後のアクションの状態を確認
+                assertEquals(&quot;name1&quot;, action.name);
+        }       
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2006-2008
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
