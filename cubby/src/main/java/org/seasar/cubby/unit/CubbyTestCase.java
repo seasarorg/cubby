@@ -34,10 +34,10 @@ import org.seasar.framework.util.FieldUtil;
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
  * <p>
- * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。 親クラスに
- * 
+ * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。
+ * 詳細はCubbyドキュメントの「アクションのテスト」を参照下さい。
  * <pre>
- * public class HelloActionTest extends CubbyTestCase&lt;HelloAction&gt; {
+ * public class HelloActionTest extends CubbyTestCase {
  * 	private HelloAction action;
  * 
  * 	protected void setUp() throws Exception {
