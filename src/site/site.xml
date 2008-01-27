@@ -36,6 +36,7 @@
 		</menu>
 
 		<menu name="リソース">
+			<item name="プレゼン資料" href="/presentation.html" />
 			<item name="メーリングリスト" href="/mail-lists.html" />
 			<item name="課題(JIRA)" href="/issue-tracking.html" />
 			<item name="SVNリポジトリ" href="/source-repository.html" />
