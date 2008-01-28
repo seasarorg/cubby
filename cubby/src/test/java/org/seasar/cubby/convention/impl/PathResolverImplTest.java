@@ -15,6 +15,13 @@
  */
 package org.seasar.cubby.convention.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import junit.framework.Assert;
+
 import org.seasar.cubby.convention.ForwardInfo;
 import org.seasar.extension.unit.S2TestCase;
 
@@ -25,15 +32,169 @@ public class PathResolverImplTest extends S2TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		include("app.dicon");
+		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
 	}
 	
-	public void testRoot() {
+	public void testRoot1() {
 		ForwardInfo info = resolver.getForwardInfo("/");
-		assertEquals("/mock/index", info.getForwardPath());
-
-		info = resolver.getForwardInfo("/dummy1");
-		assertEquals("/mock/dummy1", info.getForwardPath());
+		assertNotNull(info);
+		assertEquals("/mockRoot/index", info.getForwardPath());
 	}
-	
+
+	public void testRoot2() {
+		ForwardInfo info = resolver.getForwardInfo("/dummy1");
+		assertNotNull(info);
+		assertEquals("/mockRoot/dummy1", info.getForwardPath());
+	}
+
+	public void testDefault1() {
+		ForwardInfo info = resolver.getForwardInfo("/mock/update");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mock/update", query.getPath());
+		assertTrue(query.isEmptyParameter());
+	}
+
+	public void testDefault2() {
+		ForwardInfo info = resolver.getForwardInfo("/mock/create");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mock/insert", query.getPath());
+		assertTrue(query.isEmptyParameter());
+	}
+
+	public void testDefault3() {
+		ForwardInfo info = resolver.getForwardInfo("/mock/delete/10");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mock/delete", query.getPath());
+		assertEquals(1, query.getParameterSize());
+		assertEquals(1, query.getParam("value").size());
+		assertEquals("10", query.getParam("value").get(0));
+	}
+
+	public void testDefault4() {
+		ForwardInfo info = resolver.getForwardInfo("/mock/delete/a");
+		assertNull(info);
+	}
+
+//	public void testDefault5() {
+//		ForwardInfo info = resolver.getForwardInfo("/mock/cubby");
+//		assertNotNull(info);
+//		Query query = new Query(info.getForwardPath());
+//		assertEquals("/mock/name", query.getPath());
+//		assertEquals(1, query.getParam("name").size());
+//		assertEquals("cubby", query.getParam("name").get(0));
+//	}
+
+	public void testPath1() {
+		ForwardInfo info = resolver.getForwardInfo("/foo/4/update");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mockPath/update", query.getPath());
+		assertEquals(1, query.getParameterSize());
+		assertEquals(1, query.getParam("id").size());
+		assertEquals("4", query.getParam("id").get(0));
+	}
+
+	public void testPath2() {
+		ForwardInfo info = resolver.getForwardInfo("/foo/4/create");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mockPath/insert", query.getPath());
+		assertEquals(1, query.getParameterSize());
+		assertEquals(1, query.getParam("id").size());
+		assertEquals("4", query.getParam("id").get(0));
+	}
+
+	public void testPath3() {
+		ForwardInfo info = resolver.getForwardInfo("/foo/4/delete/10");
+		assertNotNull(info);
+		Query query = new Query(info.getForwardPath());
+		assertEquals("/mockPath/delete", query.getPath());
+		assertEquals(2, query.getParameterSize());
+		assertEquals(1, query.getParam("id").size());
+		assertEquals("4", query.getParam("id").get(0));
+		assertEquals(1, query.getParam("value").size());
+		assertEquals("10", query.getParam("value").get(0));
+	}
+
+	public void testPath4() {
+		ForwardInfo info = resolver.getForwardInfo("/foo/4/delete/a");
+		assertNull(info);
+	}
+
+//	public void testPath4() {
+//		ForwardInfo info = resolver.getForwardInfo("/foo/4/cubby");
+//		assertNotNull(info);
+//		Query query = new Query(info.getForwardPath());
+//		assertEquals("/mockPath/name", query.getPath());
+//		assertEquals(1, query.getParam("id").size());
+//		assertEquals("4", query.getParam("id").get(0));
+//		assertEquals(1, query.getParam("name").size());
+//		assertEquals("cubby", query.getParam("name").get(0));
+//	}
+
+
+	class Query {
+		private String path;
+		private Map<String, List<String>> params;
+		public Query(String path) {
+			String[] tokens = path.split("\\?", 2);
+			switch (tokens.length) {
+			case 1:
+				this.path = tokens[0];
+				this.params = new HashMap<String, List<String>>();
+				break;
+			case 2:
+				this.path = tokens[0];
+				this.params = parseQueryString(tokens[1]);
+				
+				break;
+			default:
+				Assert.fail("illegal path " + path);
+				break;
+			}
+		}
+
+		private Map<String, List<String>> parseQueryString(String queryString) {
+			Map<String, List<String>> params = new HashMap<String, List<String>>();
+			String[] tokens = queryString.split("&");
+			for (String token : tokens) {
+				String[] param = parseQueryParameter(token);
+				String name = param[0];
+				String value = param[1];
+				List<String> values;
+				if (params.containsKey(name)) {
+					values = params.get(name);
+				} else {
+					values = new ArrayList<String>();
+					params.put(name, values);
+				}
+				values.add(value);
+			}
+			return params;
+		}
+
+		private String[] parseQueryParameter(String token) {
+			return token.split("=");
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public List<String> getParam(String name) {
+			return params.get(name);
+		}
+
+		public boolean isEmptyParameter() {
+			return params.isEmpty();
+		}
+
+		public int getParameterSize() {
+			return params.size();
+		}
+	}
+
 }
