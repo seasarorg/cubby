@@ -15,12 +15,32 @@
  */
 package org.seasar.cubby.convention;
 
-public interface ForwardInfo {
+/**
+ * 内部フォワード情報です。
+ * 
+ * @author baba
+ */
+public interface InternalForwardInfo {
 
-	String getForwardPath();
+	/**
+	 * 内部フォワード先のパスを取得します。
+	 * 
+	 * @return 内部フォワード先のパス
+	 */
+	String getInternalForwardPath();
 
+	/**
+	 * 内部フォワード先のアクションクラス名を取得します。
+	 * 
+	 * @return 内部フォワード先のアクションクラス名
+	 */
 	String getActionClassName();
 
+	/**
+	 * 内部フォワード先のアクションメソッド名を取得します。
+	 * 
+	 * @return 内部フォワード先のアクションメソッド名
+	 */
 	String getMethodName();
 
 }

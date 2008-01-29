@@ -22,7 +22,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.seasar.cubby.convention.ForwardInfo;
+import org.seasar.cubby.convention.InternalForwardInfo;
 import org.seasar.extension.unit.S2TestCase;
 
 public class PathResolverImplTest extends S2TestCase {
@@ -36,37 +36,37 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 	
 	public void testRoot1() {
-		ForwardInfo info = resolver.getForwardInfo("/");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/", "GET");
 		assertNotNull(info);
-		assertEquals("/mockRoot/index", info.getForwardPath());
+		assertEquals("/mockRoot/index", info.getInternalForwardPath());
 	}
 
 	public void testRoot2() {
-		ForwardInfo info = resolver.getForwardInfo("/dummy1");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/dummy1", "GET");
 		assertNotNull(info);
-		assertEquals("/mockRoot/dummy1", info.getForwardPath());
+		assertEquals("/mockRoot/dummy1", info.getInternalForwardPath());
 	}
 
 	public void testDefault1() {
-		ForwardInfo info = resolver.getForwardInfo("/mock/update");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/mock/update", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mock/update", query.getPath());
 		assertTrue(query.isEmptyParameter());
 	}
 
 	public void testDefault2() {
-		ForwardInfo info = resolver.getForwardInfo("/mock/create");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/mock/create", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mock/insert", query.getPath());
 		assertTrue(query.isEmptyParameter());
 	}
 
 	public void testDefault3() {
-		ForwardInfo info = resolver.getForwardInfo("/mock/delete/10");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/mock/delete/10", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mock/delete", query.getPath());
 		assertEquals(1, query.getParameterSize());
 		assertEquals(1, query.getParam("value").size());
@@ -74,23 +74,23 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 
 	public void testDefault4() {
-		ForwardInfo info = resolver.getForwardInfo("/mock/delete/a");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/mock/delete/a", "GET");
 		assertNull(info);
 	}
 
-//	public void testDefault5() {
-//		ForwardInfo info = resolver.getForwardInfo("/mock/cubby");
-//		assertNotNull(info);
-//		Query query = new Query(info.getForwardPath());
-//		assertEquals("/mock/name", query.getPath());
-//		assertEquals(1, query.getParam("name").size());
-//		assertEquals("cubby", query.getParam("name").get(0));
-//	}
+	public void testDefault5() {
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/mock/cubby", "GET");
+		assertNotNull(info);
+		Query query = new Query(info.getInternalForwardPath());
+		assertEquals("/mock/name", query.getPath());
+		assertEquals(1, query.getParam("name").size());
+		assertEquals("cubby", query.getParam("name").get(0));
+	}
 
 	public void testPath1() {
-		ForwardInfo info = resolver.getForwardInfo("/foo/4/update");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/foo/4/update", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mockPath/update", query.getPath());
 		assertEquals(1, query.getParameterSize());
 		assertEquals(1, query.getParam("id").size());
@@ -98,9 +98,9 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 
 	public void testPath2() {
-		ForwardInfo info = resolver.getForwardInfo("/foo/4/create");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/foo/4/create", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mockPath/insert", query.getPath());
 		assertEquals(1, query.getParameterSize());
 		assertEquals(1, query.getParam("id").size());
@@ -108,9 +108,9 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 
 	public void testPath3() {
-		ForwardInfo info = resolver.getForwardInfo("/foo/4/delete/10");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/foo/4/delete/10", "GET");
 		assertNotNull(info);
-		Query query = new Query(info.getForwardPath());
+		Query query = new Query(info.getInternalForwardPath());
 		assertEquals("/mockPath/delete", query.getPath());
 		assertEquals(2, query.getParameterSize());
 		assertEquals(1, query.getParam("id").size());
@@ -120,20 +120,20 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 
 	public void testPath4() {
-		ForwardInfo info = resolver.getForwardInfo("/foo/4/delete/a");
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/foo/4/delete/a", "GET");
 		assertNull(info);
 	}
 
-//	public void testPath4() {
-//		ForwardInfo info = resolver.getForwardInfo("/foo/4/cubby");
-//		assertNotNull(info);
-//		Query query = new Query(info.getForwardPath());
-//		assertEquals("/mockPath/name", query.getPath());
-//		assertEquals(1, query.getParam("id").size());
-//		assertEquals("4", query.getParam("id").get(0));
-//		assertEquals(1, query.getParam("name").size());
-//		assertEquals("cubby", query.getParam("name").get(0));
-//	}
+	public void testPath5() {
+		InternalForwardInfo info = resolver.getInternalForwardInfo("/foo/4/cubby", "GET");
+		assertNotNull(info);
+		Query query = new Query(info.getInternalForwardPath());
+		assertEquals("/mockPath/name", query.getPath());
+		assertEquals(1, query.getParam("id").size());
+		assertEquals("4", query.getParam("id").get(0));
+		assertEquals(1, query.getParam("name").size());
+		assertEquals("cubby", query.getParam("name").get(0));
+	}
 
 
 	class Query {

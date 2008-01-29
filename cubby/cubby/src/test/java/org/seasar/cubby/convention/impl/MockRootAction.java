@@ -1,5 +1,9 @@
 package org.seasar.cubby.convention.impl;
 
+import static org.seasar.cubby.action.RequestMethod.DELETE;
+import static org.seasar.cubby.action.RequestMethod.PUT;
+
+import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
 
@@ -14,4 +18,9 @@ public class MockRootAction {
 		return null;
 	}
 
+	@Path("dummy1")
+	@Accept({ PUT, DELETE })
+	public ActionResult dummy2() {
+		return null;
+	}
 }

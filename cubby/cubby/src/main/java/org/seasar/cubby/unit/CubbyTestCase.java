@@ -15,6 +15,9 @@
  */
 package org.seasar.cubby.unit;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CLASS_NAME;
+import static org.seasar.cubby.CubbyConstants.ATTR_METHOD_NAME;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 
@@ -22,11 +25,14 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
+import org.seasar.cubby.convention.InternalForwardInfo;
 import org.seasar.cubby.filter.RequestRoutingFilter;
 import org.seasar.framework.unit.S2TigerTestCase;
 import org.seasar.framework.util.FieldUtil;
@@ -120,12 +126,19 @@ public class CubbyTestCase extends S2TigerTestCase {
 	 * @throws NoSuchFieldException
 	 */
 	protected String routing(String orginalPath) throws NoSuchFieldException {
-		Field field = getRequest().getClass().getDeclaredField("servletPath");
+		HttpServletRequest request = getRequest();
+		HttpServletResponse response = getResponse();
+		Field field = request.getClass().getDeclaredField("servletPath");
 		field.setAccessible(true);
-		FieldUtil.set(field, getRequest(), orginalPath);
-		String forwardPath = router.routing(getRequest(), getResponse());
-		FieldUtil.set(field, getRequest(), forwardPath);
-		return forwardPath;
+		FieldUtil.set(field, request, orginalPath);
+		InternalForwardInfo internalForwardInfo = router.routing(request, response);
+		request.setAttribute(ATTR_ACTION_CLASS_NAME, internalForwardInfo
+				.getActionClassName());
+		request.setAttribute(ATTR_METHOD_NAME, internalForwardInfo
+				.getMethodName());
+		String internalForwardPath = internalForwardInfo.getInternalForwardPath();
+		FieldUtil.set(field, request, internalForwardPath);
+		return internalForwardPath;
 	}
 
 	/**
