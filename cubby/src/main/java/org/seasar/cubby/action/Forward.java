@@ -69,17 +69,18 @@ public class Forward extends AbstractActionResult {
 
 	/**
 	 * パスを取得します。
+	 * 
 	 * @return パス
 	 */
 	public String getPath() {
 		return this.path;
 	}
-	
+
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		final Action action = context.getAction();
-		final String actionClassName = CubbyUtils.getActionClassName(context
+		final String actionClassName = CubbyUtils.getActionName(context
 				.getComponentDef().getComponentClass());
 
 		final String absolutePath;

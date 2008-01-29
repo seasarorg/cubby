@@ -62,15 +62,16 @@ public class Redirect extends AbstractActionResult {
 	public Redirect(final String path) {
 		this.path = path;
 	}
-	
+
 	/**
 	 * パスを取得します。
+	 * 
 	 * @return パス
 	 */
 	public String getPath() {
 		return this.path;
 	}
-	
+
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
@@ -85,9 +86,8 @@ public class Redirect extends AbstractActionResult {
 		if (this.path.startsWith("/")) {
 			absolutePath = contextPath + this.path;
 		} else {
-			final String actionClassName = CubbyUtils
-					.getActionClassName(context.getComponentDef()
-							.getComponentClass());
+			final String actionClassName = CubbyUtils.getActionName(context
+					.getComponentDef().getComponentClass());
 			if (StringUtil.isEmpty(actionClassName)) {
 				absolutePath = contextPath + "/" + this.path;
 			} else {

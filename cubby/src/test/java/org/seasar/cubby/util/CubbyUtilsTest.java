@@ -16,6 +16,7 @@
 package org.seasar.cubby.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,23 +51,46 @@ public class CubbyUtilsTest extends TestCase {
 		return list;
 	}
 
-	public void testGetActionUrl() {
-		assertEquals("/hoge/m1", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
-		assertEquals("/hoge/m/m2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m2", null)));
-		assertEquals("/hoge/", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index", null)));
-		assertEquals("/hoge/index2", CubbyUtils.getActionUrl(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index2", null)));
-		assertEquals("/hoge2/m1", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
-		assertEquals("/hoge/m2", CubbyUtils.getActionUrl(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
-		assertEquals("/", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "index", null)));
-		assertEquals("/dummy1", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy1", null)));
-		assertEquals("/dummy2", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy2", null)));
-		assertEquals("/todo/lists", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "todolist", null)));
-		assertEquals("/tasklists", CubbyUtils.getActionUrl(MockAction.class, ClassUtil.getMethod(MockAction.class, "tasklist", null)));
+	public void testGetActionPath() {
+		assertEquals("/hoge/m1", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
+		assertEquals("/hoge/m/m2", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m2", null)));
+		assertEquals("/hoge/", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index", null)));
+		assertEquals("/hoge/index2", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index2", null)));
+		assertEquals("/hoge2/m1", CubbyUtils.getActionPath(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
+		assertEquals("/hoge/m2", CubbyUtils.getActionPath(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
+		assertEquals("/", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "index", null)));
+		assertEquals("/dummy1", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy1", null)));
+		assertEquals("/dummy2", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy2", null)));
+		assertEquals("/todo/lists", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "todolist", null)));
+		assertEquals("/tasklists", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "tasklist", null)));
 	}
 
 	public void testGetActionClassName() {
-		assertEquals("hoge", CubbyUtils.getActionClassName(Hoge1Action.class));
-		assertEquals("hoge2", CubbyUtils.getActionClassName(Hoge2Action.class));
+		assertEquals("hoge", CubbyUtils.getActionName(Hoge1Action.class));
+		assertEquals("hoge2", CubbyUtils.getActionName(Hoge2Action.class));
+	}
+
+	public void testReplaceFirst() {
+		assertNull(CubbyUtils.replaceFirst(null, "", ""));
+		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", null, null));
+		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", "a", null));
+		assertEquals("baa", CubbyUtils.replaceFirst("abaa", "a", ""));
+		assertEquals("zbaa", CubbyUtils.replaceFirst("abaa", "a", "z"));
+		assertEquals("xyzaab", CubbyUtils.replaceFirst("abaab", "ab", "xyz"));
+		assertNull(CubbyUtils.replaceFirst(null, "", ""));
+		assertEquals("3abaa", CubbyUtils.replaceFirst("3abaa", null, null));
+		assertEquals("3abaa", CubbyUtils.replaceFirst("3abaa", "a", null));
+		assertEquals("3baa", CubbyUtils.replaceFirst("3abaa", "a", ""));
+		assertEquals("3zbaa", CubbyUtils.replaceFirst("3abaa", "a", "z"));
+		assertEquals("3xyzaab", CubbyUtils.replaceFirst("3abaab", "ab", "xyz"));
+	}
+
+	public void testSplit2() {
+		assertNull(CubbyUtils.split2(null, '_'));
+		assertTrue(Arrays.deepEquals(new String[] { "" }, CubbyUtils.split2("", '_')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab", "" }, CubbyUtils.split2("ab_", '_')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab_cd_de_" }, CubbyUtils.split2("ab_cd_de_", ',')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab", "cd_de_" }, CubbyUtils.split2("ab_cd_de_", '_')));
 	}
 
 }

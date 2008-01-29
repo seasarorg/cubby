@@ -9,19 +9,19 @@
 
 * 2008-01-15 技術発表会資料
 
- 技術発表会で使用した資料です。
+ {{{http://www.opentone.co.jp/study/index.html}技術交流会}}で使用した資料です。
 
  * {{{http://www.slideshare.net/agattino/cubby20080115-ot/}Cubby-20080115OT(SlideShare)}}
 
- * {{{/presentation/20080115/Cubby-20080115OT.pdf}Cubby-20080115OT.pdf}}
+ * {{{./presentation/20080115/Cubby-20080115OT.pdf}Cubby-20080115OT.pdf}}
 
- * {{{/presentation/20080115/Cubby-20080115OT.ppt}Cubby-20080115OT.ppt}}
+ * {{{./presentation/20080115/Cubby-20080115OT.ppt}Cubby-20080115OT.ppt}}
 
 * 2007-12-08 SeasarCon 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料
 
  SeasarCon 2007 Fukuokaで使用した資料です。現在の仕様(Cubby-1.0)とは仕様が一部異なります。
 
- * {{{/presentation/20071207/cubby-20071207.html}cubby-20071207(S6 - HTML Slide)}}
+ * {{{./presentation/20071207/cubby-20071207.html}cubby-20071207(S6 - HTML Slide)}}
  
 * 2006-08-23 ヌーラボ臨海学校発表資料
 
@@ -29,7 +29,7 @@
 
  * {{{http://www.slideshare.net/agattino/cubby-20060823/}Cubby-20060823(SlideShare)}}
 
- * {{{/presentation/20060823/cubby-20060823.pdf}cubby-20060823.pdf}}
+ * {{{./presentation/20060823/cubby-20060823.pdf}cubby-20060823.pdf}}
 
- * {{{/presentation/20060823/cubby-20060823.ppt}cubby-20060823.ppt}}
+ * {{{./presentation/20060823/cubby-20060823.ppt}cubby-20060823.ppt}}
  

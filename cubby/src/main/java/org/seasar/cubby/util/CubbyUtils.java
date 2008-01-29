@@ -30,35 +30,55 @@ import org.seasar.framework.util.StringUtil;
 
 public class CubbyUtils {
 
+	private static final String INDEX_METHOD_NAME = "index";
+
 	private static Accept DEFAULT_ACCEPT_ANNOTATION;
 	static {
 		@Accept
 		class AcceptDummy {
 		}
-		DEFAULT_ACCEPT_ANNOTATION = AcceptDummy.class.getAnnotation(Accept.class);
+		DEFAULT_ACCEPT_ANNOTATION = AcceptDummy.class
+				.getAnnotation(Accept.class);
 	}
 
-	public static String getActionClassName(final Class<?> c) {
+	public static String getActionName(final Class<?> actionClass) {
 		final String actionName;
-		final Path path = c.getAnnotation(Path.class);
+		final Path path = actionClass.getAnnotation(Path.class);
 		if (path != null && !StringUtil.isEmpty(path.value())) {
 			actionName = path.value();
 		} else {
-			final String name = left(c.getSimpleName(), "$");
+			final String name = left(actionClass.getSimpleName(), "$");
 			actionName = toFirstLower(name.replaceAll(
 					"(.*[.])*([^.]+)(Action$)", "$2"));
 		}
 		return actionName;
 	}
 
-	static String getActionMethodName(final Method m) {
+	public static String getActionPath(final Class<?> actionClass,
+			final Method method) {
+		final String path;
+		final String actionMethodName = getActionMethodName(method);
+		if (actionMethodName.startsWith("/")) {
+			return path = actionMethodName;
+		} else {
+			final String actionName = CubbyUtils.getActionName(actionClass);
+			if ("/".equals(actionName)) {
+				path = "/" + actionMethodName;
+			} else {
+				path = "/" + actionName + "/" + actionMethodName;
+			}
+		}
+		return path;
+	}
+
+	static String getActionMethodName(final Method method) {
 		final String actionName;
-		final Path path = m.getAnnotation(Path.class);
+		final Path path = method.getAnnotation(Path.class);
 		if (path != null && !StringUtil.isEmpty(path.value())) {
 			actionName = path.value();
 		} else {
-			final String methodName = m.getName();
-			if ("index".equals(methodName)) {
+			final String methodName = method.getName();
+			if (INDEX_METHOD_NAME.equals(methodName)) {
 				actionName = "";
 			} else {
 				actionName = methodName;
@@ -67,35 +87,16 @@ public class CubbyUtils {
 		return actionName;
 	}
 
-	public static String getActionUrl(final Class<?> c, final Method m) {
-		final String actionMethodName = getActionMethodName(m);
-		if (actionMethodName.startsWith("/")) {
-			return actionMethodName;
-		} else {
-			final String actionName = CubbyUtils.getActionClassName(c);
-			if ("/".equals(actionName)) {
-				return "/" + actionMethodName;
-			} else {
-				return "/" + actionName + "/" + actionMethodName;
-			}
-		}
-	}
-
 	public static RequestMethod[] getAcceptableRequestMethods(
-			final Class<?> c, final Method m) {
-		Accept accept = m.getAnnotation(Accept.class);
+			final Class<?> actionClass, final Method method) {
+		Accept accept = method.getAnnotation(Accept.class);
 		if (accept == null) {
-			accept = c.getAnnotation(Accept.class);
+			accept = actionClass.getAnnotation(Accept.class);
 			if (accept == null) {
 				accept = DEFAULT_ACCEPT_ANNOTATION;
 			}
 		}
 		return accept.value();
-	}
-
-	public static boolean isActionMethod(final Method m) {
-		return m.getReturnType().isAssignableFrom(ActionResult.class)
-				&& m.getParameterTypes().length == 0;
 	}
 
 	public static int getObjectSize(final Object value) {
@@ -128,6 +129,11 @@ public class CubbyUtils {
 
 	public static boolean isActionClass(final Class<?> c) {
 		return Action.class.isAssignableFrom(c);
+	}
+
+	public static boolean isActionMethod(final Method method) {
+		return method.getReturnType().isAssignableFrom(ActionResult.class)
+				&& method.getParameterTypes().length == 0;
 	}
 
 	static String toFirstLower(final String propertyName) {
@@ -174,4 +180,34 @@ public class CubbyUtils {
 		}
 		return buf.toString();
 	}
+
+	public static String replaceFirst(final String text, final String replace, final String with) {
+		if (text == null || replace == null || with == null) {
+			return text;
+		}
+		final int index = text.indexOf(replace);
+		if (index == -1) {
+			return text;
+		}
+		final StringBuilder builder = new StringBuilder(100);
+		builder.append(text.substring(0, index));
+		builder.append(with);
+		builder.append(text.substring(index + replace.length()));
+		return builder.toString();
+	}
+
+	public static String[] split2(final String text, final char delim) {
+		if (text == null) {
+			return null;
+		}
+		int index = text.indexOf(delim);
+		if (index == -1) {
+			return new String[] { text };
+		}
+		String[] tokens = new String[2];
+		tokens[0] = text.substring(0, index);
+		tokens[1] = text.substring(index + 1);
+		return tokens;
+	}
+
 }

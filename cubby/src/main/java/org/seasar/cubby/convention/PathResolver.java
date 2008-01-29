@@ -15,20 +15,25 @@
  */
 package org.seasar.cubby.convention;
 
-import org.seasar.cubby.filter.RequestRoutingFilter;
-
 /**
- * {@link RequestRoutingFilter} がフォワードするための情報を抽出するクラス。
+ * {@link org.seasar.cubby.filter.RequestRoutingFilter} がフォワードするための情報を抽出するクラス。
  * 
  * @author baba
  */
 public interface PathResolver {
 
 	/**
-	 * 指定されたパスからフォワードするための情報を抽出します。
-	 * @param path パス
+	 * 指定されたパスとメソッドからフォワードするための情報を抽出します。
+	 * <p>
+	 * パスにマッチするパターンがない場合は <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @param path
+	 *            パス
+	 * @param requestMethod
+	 *            HTTPメソッド
 	 * @return フォワード情報
 	 */
-	ForwardInfo getForwardInfo(String path);
+	InternalForwardInfo getInternalForwardInfo(String path, String requestMethod);
 
 }

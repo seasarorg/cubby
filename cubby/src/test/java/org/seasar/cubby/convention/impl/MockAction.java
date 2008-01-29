@@ -1,7 +1,9 @@
 package org.seasar.cubby.convention.impl;
 
+import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.RequestMethod;
 
 public class MockAction {
 
@@ -19,9 +21,16 @@ public class MockAction {
 		return null;
 	}
 
-//	@Path("{name}")
-//	public ActionResult name() {
-//		return null;
-//	}
+	@Path("{name}")
+	public ActionResult name() {
+		return null;
+	}
+
+	@Path("update")
+	@Accept(RequestMethod.PUT)
+	public ActionResult update2() {
+		// メソッドがPUTなのでエラーにならない
+		return null;
+	}
 
 }
