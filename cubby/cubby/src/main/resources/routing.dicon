@@ -4,7 +4,7 @@
 <components namespace="urlfilter">
 	<include path="convention.dicon"/>
 
-	<component class="org.seasar.cubby.convention.impl.PathResolverImpl">
+	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
 		<property name="uriEncoding">"UTF-8"</property>
 	</component>
 
