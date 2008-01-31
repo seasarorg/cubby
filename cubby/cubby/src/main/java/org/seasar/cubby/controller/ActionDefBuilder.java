@@ -15,29 +15,25 @@
  */
 package org.seasar.cubby.controller;
 
-import java.lang.reflect.Method;
-
-import org.seasar.framework.container.ComponentDef;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * アクションの定義です。
+ * アクションの定義を組み立てるビルダです。
  * 
  * @author baba
  */
-public interface ActionDef {
+public interface ActionDefBuilder {
 
 	/**
-	 * アクションクラスのコンポーネント定義を取得します。
+	 * リクエストから {@link ActionDef} 生成します。
+	 * <p>
+	 * リクエストに対応するアクションが定義されていない場合は <code>null</code> を返します。
+	 * </p>
 	 * 
-	 * @return アクションクラスのコンポーネント定義
+	 * @param request
+	 *            リクエスト
+	 * @return アクション定義
 	 */
-	ComponentDef getComponentDef();
-
-	/**
-	 * アクションメソッドを取得します。
-	 * 
-	 * @return アクションメソッド
-	 */
-	Method getMethod();
+	ActionDef build(HttpServletRequest request);
 
 }

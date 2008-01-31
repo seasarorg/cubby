@@ -21,25 +21,45 @@ import org.seasar.cubby.controller.ActionDef;
 import org.seasar.framework.container.ComponentDef;
 
 /**
+ * アクションの定義の実装です。
  * 
  * @author baba
- *
  */
-public class ActionDefImpl implements ActionDef {
+class ActionDefImpl implements ActionDef {
 
+	/** アクションクラスのコンポーネント定義 */
 	private final ComponentDef componentDef;
 
+	/** アクションメソッド */
 	private final Method method;
 
-	public ActionDefImpl(final ComponentDef componentDef, final Method method) {
+	/**
+	 * インスタンス化します。
+	 * 
+	 * @param componentDef
+	 *            アクションクラスのコンポーネント定義
+	 * @param method
+	 *            アクションメソッド
+	 */
+	ActionDefImpl(final ComponentDef componentDef, final Method method) {
 		this.componentDef = componentDef;
 		this.method = method;
 	}
 
+	/**
+	 * アクションクラスのコンポーネント定義を取得します。
+	 * 
+	 * @return アクションクラスのコンポーネント定義
+	 */
 	public ComponentDef getComponentDef() {
 		return componentDef;
 	}
 
+	/**
+	 * アクションメソッドを取得します。
+	 * 
+	 * @return アクションメソッド
+	 */
 	public Method getMethod() {
 		return method;
 	}
