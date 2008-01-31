@@ -15,9 +15,6 @@
  */
 package org.seasar.cubby.filter;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CLASS_NAME;
-import static org.seasar.cubby.CubbyConstants.ATTR_METHOD_NAME;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,8 +33,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.convention.InternalForwardInfo;
-import org.seasar.cubby.convention.PathResolver;
+import org.seasar.cubby.routing.InternalForwardInfo;
+import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
@@ -145,10 +142,6 @@ public class RequestRoutingFilter implements Filter {
 		if (internalForwardInfo != null) {
 			final String internalForwardPath = internalForwardInfo
 					.getInternalForwardPath();
-			request.setAttribute(ATTR_ACTION_CLASS_NAME, internalForwardInfo
-					.getActionClassName());
-			request.setAttribute(ATTR_METHOD_NAME, internalForwardInfo
-					.getMethodName());
 			if (logger.isDebugEnabled()) {
 				logger.log("DCUB0001", new Object[] { internalForwardPath });
 			}
