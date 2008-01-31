@@ -15,9 +15,6 @@
  */
 package org.seasar.cubby.unit;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CLASS_NAME;
-import static org.seasar.cubby.CubbyConstants.ATTR_METHOD_NAME;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 
@@ -32,16 +29,16 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.convention.InternalForwardInfo;
 import org.seasar.cubby.filter.RequestRoutingFilter;
+import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.framework.unit.S2TigerTestCase;
 import org.seasar.framework.util.FieldUtil;
 
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
  * <p>
- * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。
- * 詳細はCubbyドキュメントの「アクションのテスト」を参照下さい。
+ * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。 詳細はCubbyドキュメントの「アクションのテスト」を参照下さい。
+ * 
  * <pre>
  * public class HelloActionTest extends CubbyTestCase {
  * 	private HelloAction action;
@@ -131,12 +128,10 @@ public class CubbyTestCase extends S2TigerTestCase {
 		Field field = request.getClass().getDeclaredField("servletPath");
 		field.setAccessible(true);
 		FieldUtil.set(field, request, orginalPath);
-		InternalForwardInfo internalForwardInfo = router.routing(request, response);
-		request.setAttribute(ATTR_ACTION_CLASS_NAME, internalForwardInfo
-				.getActionClassName());
-		request.setAttribute(ATTR_METHOD_NAME, internalForwardInfo
-				.getMethodName());
-		String internalForwardPath = internalForwardInfo.getInternalForwardPath();
+		InternalForwardInfo internalForwardInfo = router.routing(request,
+				response);
+		String internalForwardPath = internalForwardInfo
+				.getInternalForwardPath();
 		FieldUtil.set(field, request, internalForwardPath);
 		return internalForwardPath;
 	}
