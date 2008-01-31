@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+	<properties>
+		<title>発表資料</title>
+		<author>baba</author>
+	</properties>
+
+	<head>
+	</head>
+
+	<body>
+		<section name="発表資料">
+			<subsection name="2008-01-15 技術発表会資料">
+				<p>
+					<a href="http://www.opentone.co.jp/study/index.html">技術交流会</a>で使用した資料です。
+				<div style="width:425px;text-align:left" id="__ss_242938"><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;"><a href="http://www.slideshare.net/?src=embed"><img src="http://static.slideshare.net/swf/logo_embd.png" style="border:0px none;margin-bottom:-5px" alt="SlideShare"/></a> | <a href="http://www.slideshare.net/agattino/cubby20080115-ot?src=embed" title="View 'Cubby-2008-01-15 OT' on SlideShare">View</a> | <a href="http://www.slideshare.net/upload?src=embed">Upload your own</a></div></div>
+				<ul>
+					<li>
+						<a href="./presentation/20080115/Cubby-20080115OT.pdf">Cubby-20080115OT.pdf</a>
+					</li>
+					<li>
+						<a href="./presentation/20080115/Cubby-20080115OT.ppt">Cubby-20080115OT.ppt</a>
+					</li>
+				</ul>
+				</p>
+			</subsection>
+			<subsection
+				name="2007-12-08 SeasarCon 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料">
+				<p>
+					SeasarCon 2007 Fukuokaで使用した資料です。現在の仕様(Cubby-1.0)とは仕様が一部異なります。
+				</p>
+				<ul>
+					<li>
+						<a href="./presentation/20071207/cubby-20071207.html">cubby-20071207(S6 - HTML Slide)</a>
+					</li>
+				</ul>
+			</subsection>
+			<subsection name="2006-08-23 ヌーラボ臨海学校発表資料">
+				<p>Cubbyコンセプトの資料です。現在の仕様(Cubby-1.0)とは仕様がかなり異なります。</p>
+				<div style="width:425px;text-align:left" id="__ss_242945"><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;"><a href="http://www.slideshare.net/?src=embed"><img src="http://static.slideshare.net/swf/logo_embd.png" style="border:0px none;margin-bottom:-5px" alt="SlideShare"/></a> | <a href="http://www.slideshare.net/agattino/cubby-20060823?src=embed" title="View 'Cubby 2006-08-23' on SlideShare">View</a> | <a href="http://www.slideshare.net/upload?src=embed">Upload your own</a></div></div>
+				<ul>
+					<li>
+						<a href="./presentation/20060823/cubby-20060823.pdf">cubby-20060823.pdf</a>
+					</li>
+					<li>
+						<a href="./presentation/20060823/cubby-20060823.ppt">cubby-20060823.ppt</a>
+					</li>
+				</ul>
+			</subsection>
+		</section>
+	</body>
+</document>
