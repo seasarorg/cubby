@@ -5,8 +5,9 @@
   <artifactId>cubby-examples</artifactId>
   <packaging>war</packaging>
   <name>cubby-examples</name>
-  <version>1.0.0-rc1</version>
+  <version>1.0.0-rc2-SNAPSHOT</version>
   <build>
+    <finalName>cubby-examples</finalName>
     <defaultGoal>validate</defaultGoal>
     <plugins>
       <plugin>
@@ -107,7 +108,7 @@
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>1.0.0-rc1</version>
+      <version>1.0.0-rc2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.dao</groupId>
