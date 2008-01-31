@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.util;
 
+import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
@@ -125,6 +127,21 @@ public class CubbyUtils {
 			path = uri.substring(contextPath.length());
 		}
 		return path;
+	}
+
+	/**
+	 * アクションクラスとメソッドから内部フォワードのパスへ変換します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param method
+	 *            アクションメソッド
+	 * @return 内部フォワードパス
+	 */
+	public static String getInternalForwardPath(
+			final Class<? extends Action> actionClass, final String methodName) {
+		return "/" + INTERNAL_FORWARD_DIRECTORY + "/"
+				+ actionClass.getCanonicalName() + "/" + methodName;
 	}
 
 	public static boolean isActionClass(final Class<?> c) {
