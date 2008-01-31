@@ -4,21 +4,19 @@
 <components namespace="cubby">
 	<include path="convention.dicon" />
 
-	<!-- Convention -->
-	<component class="org.seasar.cubby.convention.impl.CubbyConventionImpl" />
-
-	<!-- ActionContext -->
+	<!-- action -->
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
 	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
+	<component class="org.seasar.cubby.controller.impl.ActionDefBuilderImpl" />
 	<component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" />
 
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
 
-	<!-- Validation -->
+	<!-- validation -->
 	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/>
 
-	<!-- インターセプタ -->
+	<!-- interceptor -->
 	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
 	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
 
