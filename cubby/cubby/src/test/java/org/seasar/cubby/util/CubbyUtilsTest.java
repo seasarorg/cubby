@@ -22,7 +22,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.seasar.cubby.controller.MockAction;
 import org.seasar.framework.util.ClassUtil;
 
 public class CubbyUtilsTest extends TestCase {
