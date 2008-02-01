@@ -1,8 +1,6 @@
 package org.seasar.cubby.examples.it;
 
 
-import junit.framework.TestResult;
-
 import org.openqa.selenium.server.SeleniumServer;
 
 import com.thoughtworks.selenium.DefaultSelenium;
@@ -61,17 +59,5 @@ abstract public class AbstractSeleniumTestCase extends SeleneseTestCase  {
         this.browser = browser;
     }
 
-    @Override
-    public TestResult run() {
-        selenium.setSpeed("500");
-        return super.run();
-    }
-    
-    @Override
-    protected void runTest() throws Throwable {
-        selenium.setSpeed("500");
-        super.runTest();
-    }
-    
 }
 
