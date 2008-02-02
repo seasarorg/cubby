@@ -72,6 +72,9 @@ public class Redirect extends AbstractActionResult {
 		return this.path;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {

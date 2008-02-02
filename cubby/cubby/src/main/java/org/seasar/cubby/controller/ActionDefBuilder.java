@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface ActionDefBuilder {
 
 	/**
-	 * リクエストから {@link ActionDef} 生成します。
+	 * リクエストからアクションの定義を組み立てます。
 	 * <p>
 	 * リクエストに対応するアクションが定義されていない場合は <code>null</code> を返します。
 	 * </p>

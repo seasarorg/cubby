@@ -29,6 +29,10 @@ abstract class AbstractActionResult implements ActionResult {
 
 	/**
 	 * 何も行いません。
+	 * {@inheritDoc}
+	 * 
+	 * @param context
+	 *            アクションコンテキスト
 	 */
 	public void prerender(final ActionContext context) {
 	}

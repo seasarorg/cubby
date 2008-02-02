@@ -68,6 +68,9 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 		setMethodNames(methodNames);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isApplied(final Method targetMethod) {
 		if (!CubbyUtils.isActionMethod(targetMethod)) {
 			return false;

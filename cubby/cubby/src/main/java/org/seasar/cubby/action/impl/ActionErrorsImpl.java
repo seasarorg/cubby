@@ -155,16 +155,19 @@ public class ActionErrorsImpl implements ActionErrors {
 		indexedMessages.add(message);
 	}
 
-	class NotNullHashMap<K, V> extends HashMap<K, V> {
+	private static class NotNullHashMap<K, V> extends HashMap<K, V> {
 
 		private static final long serialVersionUID = 1L;
 
 		private final EmptyValueFactory<V> emptyValueFactory;
 
-		public NotNullHashMap(EmptyValueFactory<V> emptyValueFactory) {
+		private NotNullHashMap(EmptyValueFactory<V> emptyValueFactory) {
 			this.emptyValueFactory = emptyValueFactory;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@SuppressWarnings("unchecked")
 		@Override
 		public V get(final Object key) {
@@ -180,20 +183,33 @@ public class ActionErrorsImpl implements ActionErrors {
 
 	}
 
-	interface EmptyValueFactory<T> {
+	private interface EmptyValueFactory<T> {
+		/**
+		 * 空のオブジェクトを生成します。
+		 * 
+		 * @return 空のオブジェクト
+		 */
 		T create();
 	}
 
-	class MessageListEmptyValueFactory implements EmptyValueFactory<List<String>> {
+	private static class MessageListEmptyValueFactory implements
+			EmptyValueFactory<List<String>> {
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public List<String> create() {
 			return new ArrayList<String>();
 		}
-		
+
 	}
 
-	class IndexMapEmptyValueFactory implements EmptyValueFactory<Map<Integer, List<String>>> {
+	private static class IndexMapEmptyValueFactory implements
+			EmptyValueFactory<Map<Integer, List<String>>> {
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public Map<Integer, List<String>> create() {
 			return new NotNullHashMap<Integer, List<String>>(
 					new MessageListEmptyValueFactory());

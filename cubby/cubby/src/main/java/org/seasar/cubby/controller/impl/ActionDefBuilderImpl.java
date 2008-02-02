@@ -57,14 +57,7 @@ public class ActionDefBuilderImpl implements ActionDefBuilder {
 	}
 
 	/**
-	 * リクエストから {@link ActionDef} 生成します。
-	 * <p>
-	 * リクエストに対応するアクションが定義されていない場合は <code>null</code> を返します。
-	 * </p>
-	 * 
-	 * @param request
-	 *            リクエスト
-	 * @return アクション定義
+	 * {@inheritDoc}
 	 */
 	public ActionDef build(final HttpServletRequest request) {
 		final String path = CubbyUtils.getPath(request);
