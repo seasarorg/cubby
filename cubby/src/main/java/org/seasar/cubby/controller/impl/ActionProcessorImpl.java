@@ -66,23 +66,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 	}
 
 	/**
-	 * リクエストのパスを元にアクションメソッドを決定して実行します。
-	 * <p>
-	 * <ul>
-	 * <li>リクエストパスを元に実行するアクションとそのアクションメソッドを決定します。</li>
-	 * <li>アクションメソッドを実行します。</li>
-	 * <li>アクションメソッドの実行結果である{@link ActionResult}を実行します。</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param request
-	 *            リクエスト
-	 * @param response
-	 *            レスポンス
-	 * @param chain
-	 *            フィルターチェイン
-	 * @return 実行結果、アクションメソッドが存在しない場合は <code>null</code>
-	 * @throws Exception
+	 * {@inheritDoc}
 	 */
 	public ActionResult process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)

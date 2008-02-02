@@ -46,8 +46,9 @@ import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * クラスパスから {@link Action} を検索し、そのメソッドに指定された {@link org.seasar.cubby.action.Path}
- * の情報によって、リクエストされたパスをどのメソッドに振り分けるかを決定します。
+ * クラスパスから {@link Action} を検索し、クラス名やメソッド名、そのクラスやメソッドに指定された
+ * {@link org.seasar.cubby.action.Path}
+ * の情報からアクションのパスを抽出し、リクエストされたパスをどのメソッドに振り分けるかを決定します。
  * 
  * @author baba
  */
@@ -60,7 +61,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/** デフォルトの URI エンコーディング */
 	private static final String DEFAULT_URI_ENCODING = "UTF-8";
 
-	/** URI パラメータを抽出するための正規表現パターン */
+	/** アクションのパスからパラメータを抽出するための正規表現パターン */
 	private static Pattern URI_PARAMETER_MATCHING_PATTERN = Pattern
 			.compile("([{]([^}]+)[}])([^{]*)");
 
@@ -113,10 +114,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	/**
-	 * 破棄します。
-	 * 
-	 * @see Disposable#dispose()
-	 * @see DisposableUtil
+	 * {@inheritDoc}
 	 */
 	public void dispose() {
 		final List<Routing> removes = new ArrayList<Routing>();
@@ -138,7 +136,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * </p>
 	 * 
 	 * @param actionPath
-	 *            アクションパス
+	 *            アクションのパス
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param methodName
@@ -159,7 +157,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * ルーティング情報を登録します。
 	 * 
 	 * @param actionPath
-	 *            アクションパス
+	 *            アクションのパス
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param method
@@ -173,10 +171,10 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			final Class<? extends Action> actionClass, final Method method,
 			final RequestMethod[] requestMethods, final boolean auto) {
 
-		String actionPathRegex = actionPath;
+		String uriRegex = actionPath;
 		final List<String> uriParameterNames = new ArrayList<String>();
 		final Matcher matcher = URI_PARAMETER_MATCHING_PATTERN
-				.matcher(actionPathRegex);
+				.matcher(uriRegex);
 		while (matcher.find()) {
 			final String holder = matcher.group(2);
 			final String[] tokens = CubbyUtils.split2(holder, ',');
@@ -187,11 +185,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			} else {
 				uriParameterRegex = tokens[1];
 			}
-			actionPathRegex = StringUtil.replace(actionPathRegex, matcher
-					.group(1), regexGroup(uriParameterRegex));
+			uriRegex = StringUtil.replace(uriRegex, matcher.group(1),
+					regexGroup(uriParameterRegex));
 		}
-		actionPathRegex = "^" + actionPathRegex + "$";
-		final Pattern pattern = Pattern.compile(actionPathRegex);
+		uriRegex = "^" + uriRegex + "$";
+		final Pattern pattern = Pattern.compile(uriRegex);
 
 		final Routing routing = new Routing(actionClass, method,
 				uriParameterNames, pattern, requestMethods, auto);
@@ -212,13 +210,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	/**
-	 * 指定されたパス、メソッドに対応する内部フォワード情報を取得します。
-	 * 
-	 * @param path
-	 *            リクエストのパス
-	 * @param requestMethod
-	 *            リクエストのメソッド
-	 * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
+	 * {@inheritDoc}
 	 */
 	public InternalForwardInfo getInternalForwardInfo(final String path,
 			final String requestMethod) {
@@ -338,6 +330,12 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		 * <li>正規表現の順(@link {@link String#compareTo(String)})</li>
 		 * </ul>
 		 * </p>
+		 * 
+		 * @param routing1
+		 *            比較対象1
+		 * @param routing2
+		 *            比較対象2
+		 * @return 比較結果
 		 */
 		public int compare(final Routing routing1, final Routing routing2) {
 			int compare = routing1.getUriParameterNames().size()
@@ -519,7 +517,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 
 		/**
-		 * 指定されたパッケージとクラス名からクラスを検索します。
+		 * 指定されたパッケージとクラス名からクラスを検索し、アクションクラスであれば{@link PathResolverImpl}に登録します。
 		 * 
 		 * @param packageName
 		 *            パッケージ名

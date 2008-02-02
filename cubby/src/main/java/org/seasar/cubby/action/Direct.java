@@ -37,6 +37,9 @@ public class Direct extends AbstractActionResult {
 	public Direct() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {

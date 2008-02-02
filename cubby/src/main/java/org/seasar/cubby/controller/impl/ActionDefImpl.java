@@ -47,18 +47,14 @@ class ActionDefImpl implements ActionDef {
 	}
 
 	/**
-	 * アクションクラスのコンポーネント定義を取得します。
-	 * 
-	 * @return アクションクラスのコンポーネント定義
+	 * {@inheritDoc}
 	 */
 	public ComponentDef getComponentDef() {
 		return componentDef;
 	}
 
 	/**
-	 * アクションメソッドを取得します。
-	 * 
-	 * @return アクションメソッド
+	 * {@inheritDoc}
 	 */
 	public Method getMethod() {
 		return method;

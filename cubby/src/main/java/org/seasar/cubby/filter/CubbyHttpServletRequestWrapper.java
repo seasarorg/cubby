@@ -27,6 +27,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.framework.beans.BeanDesc;
@@ -35,13 +36,53 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
 /**
+ * 特別な属性を取得するためのリクエストのラッパです。
+ * <p>
+ * 以下のような属性を使用することができます。 <table><thead>
+ * <tr>
+ * <th>属性名</th>
+ * <th>値</th>
+ * <th>型</th>
+ * </tr>
+ * </thead><tbody>
+ * <tr>
+ * <td>{@link CubbyConstants#ATTR_CONTEXT_PATH}</td>
+ * <td>コンテキストパス</td>
+ * <td>{@link String}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link CubbyConstants#ATTR_ACTION}</td>
+ * <td>アクション</td>
+ * <td>{@link org.seasar.cubby.action.Action}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link CubbyConstants#ATTR_MESSAGES}</td>
+ * <td>メッセージリソース</td>
+ * <td>{@link java.util.Map}</td>
+ * </tr>
+ * <tr>
+ * <td>アクションのプロパティ名</td>
+ * <td>アクションのプロパティ値</td>
+ * <td>任意</td>
+ * </tr>
+ * </table> これらの属性は通常の属性よりも優先されるのでご注意ください。
+ * </p>
  * 
  * @author baba
  */
 public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
+	/** アクションのコンテキスト。 */
 	private final ActionContext context;
 
+	/**
+	 * インスタンス化します。
+	 * 
+	 * @param request
+	 *            ラップするリクエスト
+	 * @param context
+	 *            アクションのコンテキスト
+	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
 			final ActionContext context) {
 		super(request);
@@ -49,6 +90,12 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		this.context = context;
 	}
 
+	/**
+	 * リクエストの属性を取得します。
+	 * 
+	 * @param name
+	 *            属性名
+	 */
 	@Override
 	public Object getAttribute(final String name) {
 		final Object attribute;
@@ -82,6 +129,11 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		return attribute;
 	}
 
+	/**
+	 * 属性名の列挙を返します。
+	 * 
+	 * @return 属性名の列挙
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getAttributeNames() {
@@ -93,31 +145,37 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 				.getConcreteClass();
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(concreteClass);
 		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
-			PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
+			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
 			if (propertyDesc.isReadable()) {
 				attributeNames.add(propertyDesc.getPropertyName());
 			}
 		}
 
-		Enumeration defaultAttributeNames = super.getAttributeNames();
+		final Enumeration defaultAttributeNames = super.getAttributeNames();
 		while (defaultAttributeNames.hasMoreElements()) {
-			attributeNames.add((String) defaultAttributeNames.nextElement());
+			attributeNames.add(defaultAttributeNames.nextElement());
 		}
 		return new IteratorEnumeration(attributeNames.iterator());
 	}
 
-	static class IteratorEnumeration<T> implements Enumeration<T> {
+	private static class IteratorEnumeration<T> implements Enumeration<T> {
 
 		private final Iterator<T> iterator;
 
-		public IteratorEnumeration(Iterator<T> iterator) {
+		private IteratorEnumeration(final Iterator<T> iterator) {
 			this.iterator = iterator;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public boolean hasMoreElements() {
 			return iterator.hasNext();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public T nextElement() {
 			return iterator.next();
 		}

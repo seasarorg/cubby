@@ -110,7 +110,7 @@ public class RequestRoutingFilter implements Filter {
 	}
 
 	/**
-	 * このフィルタを破棄します。
+	 * {@inheritDoc}
 	 */
 	public void destroy() {
 	}
@@ -129,6 +129,10 @@ public class RequestRoutingFilter implements Filter {
 	 *            レスポンス
 	 * @param chain
 	 *            フィルタチェイン
+	 * @throws IOException
+	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
+	 * @throws ServletException
+	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
 	 * @see CubbyFilter
 	 */
@@ -183,15 +187,7 @@ public class RequestRoutingFilter implements Filter {
 		/**
 		 * リクエストのルーティング処理を行い、内部フォワード情報を返します。
 		 * <p>
-		 * このメソッドはリクエスト URI とメソッドに対応する情報が、{@link PathResolver} から取得します。
-		 * 取得できた場合はリクエストに次の属性を登録します。
-		 * <ul>
-		 * <li>{@link org.seasar.cubby.CubbyConstants#ATTR_ACTION_CLASS_NAME}
-		 * 遷移先のアクションのクラス名</li>
-		 * <li>{@link org.seasar.cubby.CubbyConstants#ATTR_METHOD_NAME}
-		 * に遷移先のメソッド名</li>
-		 * </ul>
-		 * これらは遷移先の {@link CubbyFilter} で使用されます。
+		 * このメソッドはリクエスト URI とメソッドに対応するフォワード情報を{@link PathResolver} によって決定します。
 		 * </p>
 		 * 
 		 * @param request

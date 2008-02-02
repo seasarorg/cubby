@@ -33,7 +33,9 @@ import org.seasar.framework.log.Logger;
 
 /**
  * Cubby用のフィルター。
- * リクエストの処理をActionProcesserに委譲します。
+ * <p>
+ * リクエストの処理を{@link ActionProcessor}に委譲します。
+ * </p>
  * 
  * @author agata
  * @author baba
@@ -41,27 +43,38 @@ import org.seasar.framework.log.Logger;
 public class CubbyFilter implements Filter {
 
 	/**
-	 * ログ 
+	 * ログ
 	 */
 	private static final Logger logger = Logger.getLogger(CubbyFilter.class);
 
 	/**
-	 * 初期化処理。
-	 * 特に何も処理しません。
+	 * {@inheritDoc}
 	 */
 	public void init(final FilterConfig config) throws ServletException {
 	}
 
 	/**
-	 * 廃棄処理。
-	 * 特に何も処理しません。
+	 * {@inheritDoc}
 	 */
 	public void destroy() {
 	}
 
 	/**
 	 * フィルター処理。
-	 * リクエストの処理をS2Containerから取得したActionProcesserに委譲します。
+	 * <p>
+	 * リクエストの処理を{@link SingletonS2Container コンテナ}から取得した{@link ActionProcessor}に委譲します。
+	 * </p>
+	 * 
+	 * @param req
+	 *            リクエスト
+	 * @param res
+	 *            レスポンス
+	 * @param chain
+	 *            フィルタチェイン
+	 * @throws IOException
+	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
+	 * @throws ServletException
+	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {

@@ -46,7 +46,8 @@ public class ActionMethodCustomizer extends AspectCustomizer {
      * @param pointcut
      *            ポイントカット
      */
-    public void setPointcut(final String pointcut) {
+    @Override
+	public void setPointcut(final String pointcut) {
     	super.setPointcut(pointcut);
         this.pointcut = pointcut;
     }
@@ -61,7 +62,8 @@ public class ActionMethodCustomizer extends AspectCustomizer {
      * 
      * @return ポイントカット
      */
-    protected Pointcut createPointcut() {
+    @Override
+	protected Pointcut createPointcut() {
         if (!StringUtil.isEmpty(pointcut)) {
             return PointcutFactory.createPointcut(pointcut);
         }

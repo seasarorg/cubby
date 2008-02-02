@@ -39,6 +39,8 @@ class InternalForwardInfoImpl implements InternalForwardInfo {
 	/**
 	 * インスタンス化します。
 	 * 
+	 * @param internalForwardPath
+	 *            内部フォワードパス
 	 * @param routing
 	 *            ルーティング
 	 * @param uriParameters
@@ -52,27 +54,21 @@ class InternalForwardInfoImpl implements InternalForwardInfo {
 	}
 
 	/**
-	 * 内部フォワード先のパスを取得します。
-	 * 
-	 * @return 内部フォワード先のパス
+	 * {@inheritDoc}
 	 */
 	public String getInternalForwardPath() {
 		return internalForwardPath;
 	}
 
 	/**
-	 * 内部フォワード先のアクションクラス名を取得します。
-	 * 
-	 * @return 内部フォワード先のアクションクラス名
+	 * {@inheritDoc}
 	 */
 	public String getActionClassName() {
 		return actionClassName;
 	}
 
 	/**
-	 * 内部フォワード先のアクションメソッド名を取得します。
-	 * 
-	 * @return 内部フォワード先のアクションメソッド名
+	 * {@inheritDoc}
 	 */
 	public String getMethodName() {
 		return methodName;

@@ -45,8 +45,11 @@ abstract class ClassCollector implements ClassHandler {
 
 	/**
 	 * {@link ClassCollector}を作成します。
+	 * 
+	 * @param namingConvention
+	 *            命名規約
 	 */
-	public ClassCollector(NamingConvention namingConvention) {
+	protected ClassCollector(final NamingConvention namingConvention) {
 		this.namingConvention = namingConvention;
 		addStrategy("file", new FileSystemStrategy());
 		addStrategy("jar", new JarFileStrategy());
@@ -69,8 +72,8 @@ abstract class ClassCollector implements ClassHandler {
 	 * @param protocol
 	 * @return {@link Strategy}
 	 */
-	protected Strategy getStrategy(String protocol) {
-		return (Strategy) strategies.get(URLUtil.toCanonicalProtocol(protocol));
+	protected Strategy getStrategy(final String protocol) {
+		return strategies.get(URLUtil.toCanonicalProtocol(protocol));
 	}
 
 	/**
@@ -79,7 +82,7 @@ abstract class ClassCollector implements ClassHandler {
 	 * @param protocol
 	 * @param strategy
 	 */
-	protected void addStrategy(String protocol, Strategy strategy) {
+	protected void addStrategy(final String protocol, final Strategy strategy) {
 		strategies.put(protocol, strategy);
 	}
 
@@ -92,12 +95,12 @@ abstract class ClassCollector implements ClassHandler {
 		if (rootPackageNames != null) {
 			for (int i = 0; i < rootPackageNames.length; ++i) {
 				final String rootDir = rootPackageNames[i].replace('.', '/');
-				for (final Iterator<?> it = ClassLoaderUtil.getResources(rootDir); it
-						.hasNext();) {
+				for (final Iterator<?> it = ClassLoaderUtil
+						.getResources(rootDir); it.hasNext();) {
 					final URL url = (URL) it.next();
 					final Strategy strategy = getStrategy(URLUtil
 							.toCanonicalProtocol(url.getProtocol()));
-					strategy.collect(rootDir, url, rootPackageNames[i]);
+					strategy.collect(rootDir, url);
 				}
 			}
 			webSphereClassLoaderFix();
@@ -140,62 +143,49 @@ abstract class ClassCollector implements ClassHandler {
 		 * 自動登録を行います。
 		 * 
 		 * @param path
+		 *            パス
 		 * @param url
+		 *            URL
 		 */
-		void collect(String path, URL url, String rootPackageName);
+		void collect(String path, URL url);
 	}
 
 	/**
-	 * ファイルシステム用の
-	 * {@link org.seasar.framework.container.cooldeploy.CoolComponentAutoRegister.Strategy}です。
-	 * 
+	 * ファイルシステム用の {@link Strategy}です。
 	 */
 	protected class FileSystemStrategy implements Strategy {
 
-		public void collect(String path, URL url, String rootPackageName) {
-			File rootDir = getRootDir(path);
-			ClassTraversal.forEach(rootDir, rootPackageName,
-					ClassCollector.this);
-		}
- 
-		protected File getRootDir(String path) {
-            File file = ResourceUtil.getResourceAsFile(path);
-            String[] names = StringUtil.split(path, "/");
-            for (int i = 0; i < names.length; ++i) {
-                file = file.getParentFile();
-            }
-            return file;
-        }
-    }
-
-	/**
-	 * jarファイル用の {@link ClassCollector.Strategy}です。
-	 * 
-	 */
-	protected class JarFileStrategy implements Strategy {
-
-		public void collect(String path, URL url, String rootPackageName) {
-			JarFile jarFile = createJarFile(url);
-			ClassTraversal.forEach(jarFile, ClassCollector.this);
-		}
-
 		/**
-		 * {@link JarFile}を作成します。
-		 * 
-		 * @param url
-		 * @return {@link JarFile}
+		 * {@inheritDoc}
 		 */
-		protected JarFile createJarFile(URL url) {
-			return JarFileUtil.toJarFile(url);
+		public void collect(String path, URL url) {
+			File rootDir = getRootDir(path, url);
+			String[] rootPackageNames = namingConvention.getRootPackageNames();
+			for (int i = 0; i < rootPackageNames.length; ++i) {
+				ClassTraversal.forEach(rootDir, rootPackageNames[i],
+						ClassCollector.this);
+			}
+		}
+
+		protected File getRootDir(String path, URL url) {
+			File file = URLUtil.toFile(url);
+			String[] names = StringUtil.split(path, "/");
+			for (int i = 0; i < names.length; ++i) {
+				file = file.getParentFile();
+			}
+			return file;
 		}
 	}
 
 	/**
-	 * WebLogic固有の<code>zip:</code>プロトコルで表現されるURLをサポートするストラテジです。
+	 * jarファイル用の {@link Strategy}です。
 	 */
-	protected class ZipFileStrategy implements Strategy {
+	protected class JarFileStrategy implements Strategy {
 
-		public void collect(String path, URL url, String rootPackageName) {
+		/**
+		 * {@inheritDoc}
+		 */
+		public void collect(final String path, final URL url) {
 			final JarFile jarFile = createJarFile(url);
 			ClassTraversal.forEach(jarFile, ClassCollector.this);
 		}
@@ -206,7 +196,31 @@ abstract class ClassCollector implements ClassHandler {
 		 * @param url
 		 * @return {@link JarFile}
 		 */
-		protected JarFile createJarFile(URL url) {
+		protected JarFile createJarFile(final URL url) {
+			return JarFileUtil.toJarFile(url);
+		}
+	}
+
+	/**
+	 * WebLogic固有の<code>zip:</code>プロトコルで表現されるURLをサポートするストラテジです。
+	 */
+	protected class ZipFileStrategy implements Strategy {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void collect(final String path, final URL url) {
+			final JarFile jarFile = createJarFile(url);
+			ClassTraversal.forEach(jarFile, ClassCollector.this);
+		}
+
+		/**
+		 * {@link JarFile}を作成します。
+		 * 
+		 * @param url
+		 * @return {@link JarFile}
+		 */
+		protected JarFile createJarFile(final URL url) {
 			final String jarFileName = ZipFileUtil.toZipFilePath(url);
 			return JarFileUtil.create(new File(jarFileName));
 		}
@@ -217,7 +231,10 @@ abstract class ClassCollector implements ClassHandler {
 	 */
 	protected class CodeSourceFileStrategy implements Strategy {
 
-		public void collect(String path, URL url, String rootPackageName) {
+		/**
+		 * {@inheritDoc}
+		 */
+		public void collect(final String path, final URL url) {
 			final JarFile jarFile = createJarFile(url);
 			ClassTraversal.forEach(jarFile, ClassCollector.this);
 		}
