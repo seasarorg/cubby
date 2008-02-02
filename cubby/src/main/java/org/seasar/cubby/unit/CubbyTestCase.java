@@ -16,14 +16,11 @@
 package org.seasar.cubby.unit;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
@@ -31,8 +28,9 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.filter.RequestRoutingFilter;
 import org.seasar.cubby.routing.InternalForwardInfo;
+import org.seasar.framework.mock.servlet.MockHttpServletRequest;
+import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.unit.S2TigerTestCase;
-import org.seasar.framework.util.FieldUtil;
 
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
@@ -64,13 +62,15 @@ import org.seasar.framework.util.FieldUtil;
  * </p>
  * 
  * @author agata
+ * @author baba
  */
 public class CubbyTestCase extends S2TigerTestCase {
 
 	/** ルーティング */
-	private RequestRoutingFilter.Router router = new RequestRoutingFilter.Router();
+	private final RequestRoutingFilter.Router router = new RequestRoutingFilter.Router();
 
-	private MockFilterChain filterChain = new MockFilterChain();
+	/** フィルターチェイン */
+	private final MockFilterChain filterChain = new MockFilterChain();
 
 	/** ActionProcessor */
 	private ActionProcessor actionProcessor;
@@ -86,8 +86,8 @@ public class CubbyTestCase extends S2TigerTestCase {
 	 *            チェックするActionResult
 	 */
 	public static void assertPathEquals(
-			Class<? extends ActionResult> resultClass, String expectedPath,
-			ActionResult actualResult) {
+			final Class<? extends ActionResult> resultClass,
+			final String expectedPath, final ActionResult actualResult) {
 		assertEquals("ActionResultの型をチェック", resultClass, actualResult
 				.getClass());
 		if (actualResult instanceof Forward) {
@@ -107,8 +107,8 @@ public class CubbyTestCase extends S2TigerTestCase {
 	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合、null
 	 * @throws Exception
 	 */
-	@SuppressWarnings( { "hiding", "unchecked" })
-	protected ActionResult processAction(String orginalPath) throws Exception {
+	protected ActionResult processAction(final String orginalPath)
+			throws Exception {
 		routing(orginalPath);
 		return actionProcessor
 				.process(getRequest(), getResponse(), filterChain);
@@ -120,30 +120,36 @@ public class CubbyTestCase extends S2TigerTestCase {
 	 * @param orginalPath
 	 *            オリジナルパス
 	 * @return 内部フォワードパス
-	 * @throws NoSuchFieldException
 	 */
-	protected String routing(String orginalPath) throws NoSuchFieldException {
-		HttpServletRequest request = getRequest();
-		HttpServletResponse response = getResponse();
-		Field field = request.getClass().getDeclaredField("servletPath");
-		field.setAccessible(true);
-		FieldUtil.set(field, request, orginalPath);
-		InternalForwardInfo internalForwardInfo = router.routing(request,
+	protected String routing(final String orginalPath) {
+		final MockHttpServletRequest request = this.getServletContext()
+				.createRequest(orginalPath);
+		final MockHttpServletResponse response = this.getResponse();
+		final InternalForwardInfo internalForwardInfo = router.routing(request,
 				response);
-		String internalForwardPath = internalForwardInfo
+		if (internalForwardInfo == null) {
+			fail(orginalPath + " could not mapping to action");
+		}
+		final String internalForwardPath = internalForwardInfo
 				.getInternalForwardPath();
-		FieldUtil.set(field, request, internalForwardPath);
+		final MockHttpServletRequest internalForwardRequest = this
+				.getServletContext().createRequest(internalForwardPath);
+		this.setRequest(internalForwardRequest);
 		return internalForwardPath;
 	}
 
 	/**
-	 * モックのFilterChain
+	 * モックのFilterChain。
 	 * 
 	 * @author agata
 	 */
 	private static class MockFilterChain implements FilterChain {
-		public void doFilter(ServletRequest request, ServletResponse response)
-				throws IOException, ServletException {
+		/**
+		 * {@inheritDoc}
+		 */
+		public void doFilter(final ServletRequest request,
+				final ServletResponse response) throws IOException,
+				ServletException {
 		}
 	}
 
