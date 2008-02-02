@@ -64,7 +64,7 @@ import org.seasar.framework.unit.S2TigerTestCase;
  * @author agata
  * @author baba
  */
-public class CubbyTestCase extends S2TigerTestCase {
+public abstract class CubbyTestCase extends S2TigerTestCase {
 
 	/** ルーティング */
 	private final RequestRoutingFilter.Router router = new RequestRoutingFilter.Router();
