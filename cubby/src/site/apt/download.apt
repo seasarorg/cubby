@@ -3,9 +3,23 @@
                                     ------
                                     agata
                                     ------
-                                  2008-01-21
+                                  2008-02-04
 
 ダウンロード
+
+* Cubby 1.0.0-RC2 (2008-02-04)
+
+ リリース候補版です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10614}リリースノート}}）
+
+ * Cubby 本体とドキュメント {{{http://cubby.sandbox.seasar.org/download/cubby-1.0.0-rc2.zip}ダウンロード}}
+
+ * サンプル war {{{http://cubby.sandbox.seasar.org/download/cubby-examples-1.0.0-rc2.war}ダウンロード}}
+
+ * Eclipse プロジェクト {{{https://www.seasar.org/svn/sandbox/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+
+ * 以前のバージョンからの移行する際の注意点
+ 
+ 必要なSeasarのバージョンが2.4.22に上がっています。
 
 * Cubby 1.0.0-RC1 (2008-01-21)
 
