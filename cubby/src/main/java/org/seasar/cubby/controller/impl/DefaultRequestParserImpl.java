@@ -22,14 +22,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.seasar.cubby.controller.RequestParser;
 
 /**
+ * リクエスト解析器のデフォルト実装です。
  * 
  * @author baba
- *
  */
 public class DefaultRequestParserImpl implements RequestParser {
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * {@link HttpServletRequest#getParameterMap()} の結果をそのまま返します。
+	 * </p>
+	 * @see HttpServletRequest#getParameterMap()
+	 */
 	@SuppressWarnings("unchecked")
-	public Map<String, Object[]> getParameterMap(final HttpServletRequest request) {
+	public Map<String, Object[]> getParameterMap(
+			final HttpServletRequest request) {
 		return request.getParameterMap();
 	}
 

@@ -20,12 +20,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * リクエスト解析器です。
  * 
  * @author baba
- *
  */
 public interface RequestParser {
 
+	/**
+	 * 指定されたリクエストのリクエストパラメータ等から、アクションにバインドするパラメータを取得します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 * @return アクションにバインドするパラメータの{@link Map}
+	 */
 	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 
 }
