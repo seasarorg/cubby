@@ -20,21 +20,30 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.unit.CubbyTestCase;
 
 public class HelloActionTest extends CubbyTestCase {
+	// 対象のアクション
 	private HelloAction action;
 	
+	// 初期化処理
     protected void setUp() throws Exception {
+    	// diconファイルの読み込み
         include("app.dicon");
     }
     
 	public void testIndex() throws Exception {
+		// アクションの実行
 		ActionResult result = processAction("/hello/");
+		// 結果のチェック
 		assertPathEquals(Forward.class, "input.jsp", result);
 	}
 	
 	public void testMessage() throws Exception {
+	    // リクエストパラメータのセット
 		getRequest().addParameter("name", "name1");
+		// アクションの実行
 		ActionResult result = processAction("/hello/message");
+		// 結果のチェック
 		assertPathEquals(Forward.class, "result.jsp", result);
+		// 実行後のアクションの状態を確認
 		assertEquals("name1", action.name);
 	}	
 }
