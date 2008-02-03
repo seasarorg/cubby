@@ -119,6 +119,11 @@ public class RequestParameterAnnotationReaderFactoryWrapper implements
 			return annotationReader.getDestPrefix(dxoClass, method);
 		}
 
+		@SuppressWarnings("unchecked")
+		public boolean isExcludeWhitespace(final Class dxoClass, final Method method) {
+			return annotationReader.isExcludeWhitespace(dxoClass, method);
+		}
+
 	}
 
 }
