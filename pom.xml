@@ -7,7 +7,7 @@
   <artifactId>cubby-project</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Project</name>
-  <version>1.0.0-rc2-SNAPSHOT</version>
+  <version>1.0.0-rc2</version>
   <description>Cubby Simple JSP based Web Application Framework</description>
   <url>http://cubby.sandbox.seasar.org/</url>
   <inceptionYear>2006</inceptionYear>
@@ -50,6 +50,13 @@
       <name>Jun Futagawa</name>
       <email/>
       <organization/>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>sakamoto</id>
+      <name>SAKAMOTO Takashi</name>
+      <email>sakamoto_at_nulab.co.jp</email>
+      <organization>Nulab Inc.</organization>
       <timezone>+9</timezone>
     </developer>
   </developers>
