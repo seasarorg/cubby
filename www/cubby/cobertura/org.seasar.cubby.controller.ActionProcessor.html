@@ -76,43 +76,57 @@
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">interface</span> ActionProcessor {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        </pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">         * リクエストのパスを元にアクションメソッドを決定して実行します。</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;33</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;ul&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;リクエストパスを元に実行するアクションとそのアクションメソッドを決定します。&lt;/li&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;ul&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;アクションメソッドを実行します。&lt;/li&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;リクエストパスを元に実行するアクションとそのアクションメソッドを決定します。&lt;/li&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;アクションメソッドの実行結果である{@link ActionResult}を実行します。&lt;/li&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;アクションメソッドを実行します。&lt;/li&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;37</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;/ul&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;li&gt;アクションメソッドの実行結果である{@link ActionResult}を実行します。&lt;/li&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;38</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param request リクエスト</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;/ul&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param response レスポンス</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param chain フィルターチェイン</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * </span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;41</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return 実行結果。アクションメソッドが存在しない場合はnull。</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param request</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;42</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @throws Exception</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         *            リクエスト</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param response</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;44</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        ActionResult process(HttpServletRequest request, HttpServletResponse response,</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         *            レスポンス</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                        FilterChain chain) <span class="keyword">throws</span> Exception;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @param chain</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;46</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         *            フィルターチェイン</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @return 実行結果。アクションメソッドが存在しない場合はnull。</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         * @throws Exception</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         *             アクションの実行時に例外が発生した場合</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        ActionResult process(HttpServletRequest request,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                        HttpServletResponse response, FilterChain chain) <span class="keyword">throws</span> Exception;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;53</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;54</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9 on 08/01/20 23:27.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9 on 08/02/04 1:40.</div>
 </body>
 </html>

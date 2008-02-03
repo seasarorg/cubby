@@ -165,63 +165,79 @@
 <a name="155" href="#155">155</a> 		indexedMessages.add(message);
 <a name="156" href="#156">156</a> 	}
 <a name="157" href="#157">157</a> 
-<a name="158" href="#158">158</a> 	<strong class="jxr_keyword">class</strong> NotNullHashMap&lt;K, V&gt; <strong class="jxr_keyword">extends</strong> HashMap&lt;K, V&gt; {
+<a name="158" href="#158">158</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> NotNullHashMap&lt;K, V&gt; <strong class="jxr_keyword">extends</strong> HashMap&lt;K, V&gt; {
 <a name="159" href="#159">159</a> 
 <a name="160" href="#160">160</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
 <a name="161" href="#161">161</a> 
 <a name="162" href="#162">162</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> EmptyValueFactory&lt;V&gt; emptyValueFactory;
 <a name="163" href="#163">163</a> 
-<a name="164" href="#164">164</a> 		<strong class="jxr_keyword">public</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">NotNullHashMap</a>(EmptyValueFactory&lt;V&gt; emptyValueFactory) {
+<a name="164" href="#164">164</a> 		<strong class="jxr_keyword">private</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">NotNullHashMap</a>(EmptyValueFactory&lt;V&gt; emptyValueFactory) {
 <a name="165" href="#165">165</a> 			<strong class="jxr_keyword">this</strong>.emptyValueFactory = emptyValueFactory;
 <a name="166" href="#166">166</a> 		}
 <a name="167" href="#167">167</a> 
-<a name="168" href="#168">168</a> 		@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="169" href="#169">169</a> 		@Override
-<a name="170" href="#170">170</a> 		<strong class="jxr_keyword">public</strong> V get(<strong class="jxr_keyword">final</strong> Object key) {
-<a name="171" href="#171">171</a> 			<strong class="jxr_keyword">final</strong> V value = <strong class="jxr_keyword">super</strong>.get(key);
-<a name="172" href="#172">172</a> 			<strong class="jxr_keyword">if</strong> (value != <strong class="jxr_keyword">null</strong>) {
-<a name="173" href="#173">173</a> 				<strong class="jxr_keyword">return</strong> value;
-<a name="174" href="#174">174</a> 			}
-<a name="175" href="#175">175</a> 
-<a name="176" href="#176">176</a> 			<strong class="jxr_keyword">final</strong> V emptyValue = emptyValueFactory.create();
-<a name="177" href="#177">177</a> 			<strong class="jxr_keyword">this</strong>.put((K) key, emptyValue);
-<a name="178" href="#178">178</a> 			<strong class="jxr_keyword">return</strong> emptyValue;
-<a name="179" href="#179">179</a> 		}
-<a name="180" href="#180">180</a> 
-<a name="181" href="#181">181</a> 	}
-<a name="182" href="#182">182</a> 
-<a name="183" href="#183">183</a> 	<strong class="jxr_keyword">interface</strong> EmptyValueFactory&lt;T&gt; {
-<a name="184" href="#184">184</a> 		T create();
-<a name="185" href="#185">185</a> 	}
-<a name="186" href="#186">186</a> 
-<a name="187" href="#187">187</a> 	<strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">MessageListEmptyValueFactory</a> implements EmptyValueFactory&lt;List&lt;String&gt;&gt; {
-<a name="188" href="#188">188</a> 
-<a name="189" href="#189">189</a> 		<strong class="jxr_keyword">public</strong> List&lt;String&gt; create() {
-<a name="190" href="#190">190</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a name="191" href="#191">191</a> 		}
-<a name="192" href="#192">192</a> 		
+<a name="168" href="#168">168</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="169" href="#169">169</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
+<a name="170" href="#170">170</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="171" href="#171">171</a> 		@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a name="172" href="#172">172</a> 		@Override
+<a name="173" href="#173">173</a> 		<strong class="jxr_keyword">public</strong> V get(<strong class="jxr_keyword">final</strong> Object key) {
+<a name="174" href="#174">174</a> 			<strong class="jxr_keyword">final</strong> V value = <strong class="jxr_keyword">super</strong>.get(key);
+<a name="175" href="#175">175</a> 			<strong class="jxr_keyword">if</strong> (value != <strong class="jxr_keyword">null</strong>) {
+<a name="176" href="#176">176</a> 				<strong class="jxr_keyword">return</strong> value;
+<a name="177" href="#177">177</a> 			}
+<a name="178" href="#178">178</a> 
+<a name="179" href="#179">179</a> 			<strong class="jxr_keyword">final</strong> V emptyValue = emptyValueFactory.create();
+<a name="180" href="#180">180</a> 			<strong class="jxr_keyword">this</strong>.put((K) key, emptyValue);
+<a name="181" href="#181">181</a> 			<strong class="jxr_keyword">return</strong> emptyValue;
+<a name="182" href="#182">182</a> 		}
+<a name="183" href="#183">183</a> 
+<a name="184" href="#184">184</a> 	}
+<a name="185" href="#185">185</a> 
+<a name="186" href="#186">186</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">interface</strong> EmptyValueFactory&lt;T&gt; {
+<a name="187" href="#187">187</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="188" href="#188">188</a> <em class="jxr_javadoccomment">		 * 空のオブジェクトを生成します。</em>
+<a name="189" href="#189">189</a> <em class="jxr_javadoccomment">		 * </em>
+<a name="190" href="#190">190</a> <em class="jxr_javadoccomment">		 * @return 空のオブジェクト</em>
+<a name="191" href="#191">191</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="192" href="#192">192</a> 		T create();
 <a name="193" href="#193">193</a> 	}
 <a name="194" href="#194">194</a> 
-<a name="195" href="#195">195</a> 	<strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">IndexMapEmptyValueFactory</a> implements EmptyValueFactory&lt;Map&lt;Integer, List&lt;String&gt;&gt;&gt; {
-<a name="196" href="#196">196</a> 
-<a name="197" href="#197">197</a> 		<strong class="jxr_keyword">public</strong> Map&lt;Integer, List&lt;String&gt;&gt; create() {
-<a name="198" href="#198">198</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NotNullHashMap&lt;Integer, List&lt;String&gt;&gt;(
-<a name="199" href="#199">199</a> 					<strong class="jxr_keyword">new</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">MessageListEmptyValueFactory</a>());
-<a name="200" href="#200">200</a> 		}
-<a name="201" href="#201">201</a> 
-<a name="202" href="#202">202</a> 	}
-<a name="203" href="#203">203</a> 
-<a name="204" href="#204">204</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * エラーをクリアします。</em>
-<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="207" href="#207">207</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> clear() {
-<a name="208" href="#208">208</a> 		<strong class="jxr_keyword">this</strong>.all.clear();
-<a name="209" href="#209">209</a> 		<strong class="jxr_keyword">this</strong>.fields.clear();
-<a name="210" href="#210">210</a> 		<strong class="jxr_keyword">this</strong>.indexedFields.clear();
-<a name="211" href="#211">211</a> 		<strong class="jxr_keyword">this</strong>.others.clear();
-<a name="212" href="#212">212</a> 	}
-<a name="213" href="#213">213</a> 
-<a name="214" href="#214">214</a> }
+<a name="195" href="#195">195</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">MessageListEmptyValueFactory</a> implements
+<a name="196" href="#196">196</a> 			EmptyValueFactory&lt;List&lt;String&gt;&gt; {
+<a name="197" href="#197">197</a> 
+<a name="198" href="#198">198</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="199" href="#199">199</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
+<a name="200" href="#200">200</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="201" href="#201">201</a> 		<strong class="jxr_keyword">public</strong> List&lt;String&gt; create() {
+<a name="202" href="#202">202</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a name="203" href="#203">203</a> 		}
+<a name="204" href="#204">204</a> 
+<a name="205" href="#205">205</a> 	}
+<a name="206" href="#206">206</a> 
+<a name="207" href="#207">207</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">IndexMapEmptyValueFactory</a> implements
+<a name="208" href="#208">208</a> 			EmptyValueFactory&lt;Map&lt;Integer, List&lt;String&gt;&gt;&gt; {
+<a name="209" href="#209">209</a> 
+<a name="210" href="#210">210</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="211" href="#211">211</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
+<a name="212" href="#212">212</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="213" href="#213">213</a> 		<strong class="jxr_keyword">public</strong> Map&lt;Integer, List&lt;String&gt;&gt; create() {
+<a name="214" href="#214">214</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NotNullHashMap&lt;Integer, List&lt;String&gt;&gt;(
+<a name="215" href="#215">215</a> 					<strong class="jxr_keyword">new</strong> <a href="../../../../../org/seasar/cubby/action/impl/ActionErrorsImpl.html">MessageListEmptyValueFactory</a>());
+<a name="216" href="#216">216</a> 		}
+<a name="217" href="#217">217</a> 
+<a name="218" href="#218">218</a> 	}
+<a name="219" href="#219">219</a> 
+<a name="220" href="#220">220</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="221" href="#221">221</a> <em class="jxr_javadoccomment">	 * エラーをクリアします。</em>
+<a name="222" href="#222">222</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="223" href="#223">223</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> clear() {
+<a name="224" href="#224">224</a> 		<strong class="jxr_keyword">this</strong>.all.clear();
+<a name="225" href="#225">225</a> 		<strong class="jxr_keyword">this</strong>.fields.clear();
+<a name="226" href="#226">226</a> 		<strong class="jxr_keyword">this</strong>.indexedFields.clear();
+<a name="227" href="#227">227</a> 		<strong class="jxr_keyword">this</strong>.others.clear();
+<a name="228" href="#228">228</a> 	}
+<a name="229" href="#229">229</a> 
+<a name="230" href="#230">230</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

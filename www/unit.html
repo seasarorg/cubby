@@ -43,7 +43,7 @@
   
     
             <div class="xleft">
-        最終更新: 2008-01-20
+        最終更新: 2008-02-04
                       </div>
             <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
             
@@ -139,6 +139,10 @@
             <ul>
               
     <li class="none">
+                    <a href="presentation.html">プレゼン資料</a>
+          </li>
+              
+    <li class="none">
                     <a href="mail-lists.html">メーリングリスト</a>
           </li>
               
@@ -231,17 +235,19 @@
       <div id="contentBox">
         <div class="section"><h2>アクションのテスト</h2>
 <p>アクションの単体テストは<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html">CubbyTestCase</a>
-を使用します。 SeasarのS2Unitの機能を全て使用できるので <a href="http://s2container.seasar.org/2.4/ja/S2Unit.html" class="externalLink">SeasarのS2Unitのドキュメント</a>
+を使用します。 SeasarのS2Unitの機能を全て使用できるので <a class="externalLink" href="http://s2container.seasar.org/2.4/ja/S2Unit.html">SeasarのS2Unitのドキュメント</a>
 も合わせてご覧ください。</p>
 <ol type="1"><li>CubbyTestCaseを継承して、XXXXTest作成します。 </li>
 <li>テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。</li>
 <li>アクションのメソッドごとにテストメソッドを書きます。メソッド名はtestから始めます。</li>
 <li>テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。</li>
 <li><a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)">CubbyTestCase#processAction</a>
-にリクエストのパスを指定して、アクションメソッドを実行します。</li>
+にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。</li>
 <li>戻り値を<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)">CubbyTestCase#processAction</a>
 で結果のActionResultの型とパスをチェックします。パスのチェックはForwardとRedirectの場合のみ行われます。</li>
-<li>必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。<div class="source"><pre>package org.seasar.cubby.examples.other.web.hello;
+<li>必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。<p><b>HelloActionTest.java</b>
+</p>
+<div class="source"><pre>package org.seasar.cubby.examples.other.web.hello;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
@@ -275,6 +281,49 @@ public class HelloActionTest extends CubbyTestCase {
                 // 実行後のアクションの状態を確認
                 assertEquals(&quot;name1&quot;, action.name);
         }       
+}</pre>
+</div>
+<p><b>HelloActionTest.java</b>
+</p>
+<div class="source"><pre>package org.seasar.cubby.examples.todo.action;
+
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.examples.RunDdlServletRequestListener;
+import org.seasar.cubby.unit.CubbyTestCase;
+
+public class TodoActionTest extends CubbyTestCase {
+
+        private TodoAction action;
+        
+    protected void setUp() throws Exception {
+        include(&quot;app.dicon&quot;);
+        RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
+        listener.requestInitialized(null);
+    }
+
+    @Override
+    protected void setUpAfterBindFields() throws Throwable {
+        super.setUpAfterBindFields();
+                getRequest().addParameter(&quot;userId&quot;, &quot;test&quot;);
+                getRequest().addParameter(&quot;password&quot;, &quot;test&quot;);
+                // 後続のテストを実行するためにログインアクションを実行
+                assertPathEquals(Redirect.class, &quot;/todo/&quot;, processAction(&quot;/todo/login/process&quot;));
+    }
+    
+        public void testShow() throws Exception {
+        this.readXlsAllReplaceDb(&quot;TodoActionTest_PREPARE.xls&quot;);
+        // CoolURIの場合のテスト
+                ActionResult result = processAction(&quot;/todo/1&quot;);
+                assertPathEquals(Forward.class, &quot;show.jsp&quot;, result);
+                assertEquals(new Integer(1), action.id);
+                assertEquals(&quot;todo1&quot;, action.text);
+                assertEquals(&quot;todo1 memo&quot;, action.memo);
+                assertEquals(new Integer(1), action.todoType.getId());
+                assertEquals(&quot;type1&quot;, action.todoType.getName());
+                assertEquals(&quot;2008-01-01&quot;, action.limitDate);
+        }
 }</pre>
 </div>
 </li>

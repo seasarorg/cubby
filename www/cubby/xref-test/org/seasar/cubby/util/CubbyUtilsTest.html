@@ -26,12 +26,12 @@
 <a name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> org.seasar.cubby.util;
 <a name="17" href="#17">17</a>  
 <a name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> java.util.Collection;
-<a name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> junit.framework.TestCase;
-<a name="23" href="#23">23</a>  
-<a name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.controller.MockAction;
+<a name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
+<a name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> java.util.Collection;
+<a name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a name="22" href="#22">22</a>  
+<a name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> junit.framework.TestCase;
+<a name="24" href="#24">24</a>  
 <a name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.seasar.framework.util.ClassUtil;
 <a name="26" href="#26">26</a>  
 <a name="27" href="#27">27</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/seasar/cubby/util/CubbyUtilsTest.html">CubbyUtilsTest</a> <strong class="jxr_keyword">extends</strong> TestCase {
@@ -60,26 +60,49 @@
 <a name="50" href="#50">50</a>  		<strong class="jxr_keyword">return</strong> list;
 <a name="51" href="#51">51</a>  	}
 <a name="52" href="#52">52</a>  
-<a name="53" href="#53">53</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetActionUrl() {
-<a name="54" href="#54">54</a>  		assertEquals(<span class="jxr_string">"/hoge/m1"</span>, CubbyUtils.getActionUrl(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m1"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="55" href="#55">55</a>  		assertEquals(<span class="jxr_string">"/hoge/m/m2"</span>, CubbyUtils.getActionUrl(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m2"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="56" href="#56">56</a>  		assertEquals(<span class="jxr_string">"/hoge/"</span>, CubbyUtils.getActionUrl(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="57" href="#57">57</a>  		assertEquals(<span class="jxr_string">"/hoge/index2"</span>, CubbyUtils.getActionUrl(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index2"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="58" href="#58">58</a>  		assertEquals(<span class="jxr_string">"/hoge2/m1"</span>, CubbyUtils.getActionUrl(Hoge2Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge2Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m1"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="59" href="#59">59</a>  		assertEquals(<span class="jxr_string">"/hoge/m2"</span>, CubbyUtils.getActionUrl(Hoge2Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge2Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m2"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="60" href="#60">60</a>  		assertEquals(<span class="jxr_string">"/"</span>, CubbyUtils.getActionUrl(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="61" href="#61">61</a>  		assertEquals(<span class="jxr_string">"/dummy1"</span>, CubbyUtils.getActionUrl(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"dummy1"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="62" href="#62">62</a>  		assertEquals(<span class="jxr_string">"/dummy2"</span>, CubbyUtils.getActionUrl(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"dummy2"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="63" href="#63">63</a>  		assertEquals(<span class="jxr_string">"/todo/lists"</span>, CubbyUtils.getActionUrl(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"todolist"</span>, <strong class="jxr_keyword">null</strong>)));
-<a name="64" href="#64">64</a>  		assertEquals(<span class="jxr_string">"/tasklists"</span>, CubbyUtils.getActionUrl(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"tasklist"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="53" href="#53">53</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetActionPath() {
+<a name="54" href="#54">54</a>  		assertEquals(<span class="jxr_string">"/hoge/m1"</span>, CubbyUtils.getActionPath(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m1"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="55" href="#55">55</a>  		assertEquals(<span class="jxr_string">"/hoge/m/m2"</span>, CubbyUtils.getActionPath(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m2"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="56" href="#56">56</a>  		assertEquals(<span class="jxr_string">"/hoge/"</span>, CubbyUtils.getActionPath(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="57" href="#57">57</a>  		assertEquals(<span class="jxr_string">"/hoge/index2"</span>, CubbyUtils.getActionPath(Hoge1Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge1Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index2"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="58" href="#58">58</a>  		assertEquals(<span class="jxr_string">"/hoge2/m1"</span>, CubbyUtils.getActionPath(Hoge2Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge2Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m1"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="59" href="#59">59</a>  		assertEquals(<span class="jxr_string">"/hoge/m2"</span>, CubbyUtils.getActionPath(Hoge2Action.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(Hoge2Action.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"m2"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="60" href="#60">60</a>  		assertEquals(<span class="jxr_string">"/"</span>, CubbyUtils.getActionPath(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"index"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="61" href="#61">61</a>  		assertEquals(<span class="jxr_string">"/dummy1"</span>, CubbyUtils.getActionPath(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"dummy1"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="62" href="#62">62</a>  		assertEquals(<span class="jxr_string">"/dummy2"</span>, CubbyUtils.getActionPath(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"dummy2"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="63" href="#63">63</a>  		assertEquals(<span class="jxr_string">"/todo/lists"</span>, CubbyUtils.getActionPath(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"todolist"</span>, <strong class="jxr_keyword">null</strong>)));
+<a name="64" href="#64">64</a>  		assertEquals(<span class="jxr_string">"/tasklists"</span>, CubbyUtils.getActionPath(MockAction.<strong class="jxr_keyword">class</strong>, ClassUtil.getMethod(MockAction.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"tasklist"</span>, <strong class="jxr_keyword">null</strong>)));
 <a name="65" href="#65">65</a>  	}
 <a name="66" href="#66">66</a>  
 <a name="67" href="#67">67</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetActionClassName() {
-<a name="68" href="#68">68</a>  		assertEquals(<span class="jxr_string">"hoge"</span>, CubbyUtils.getActionClassName(Hoge1Action.<strong class="jxr_keyword">class</strong>));
-<a name="69" href="#69">69</a>  		assertEquals(<span class="jxr_string">"hoge2"</span>, CubbyUtils.getActionClassName(Hoge2Action.<strong class="jxr_keyword">class</strong>));
+<a name="68" href="#68">68</a>  		assertEquals(<span class="jxr_string">"hoge"</span>, CubbyUtils.getActionName(Hoge1Action.<strong class="jxr_keyword">class</strong>));
+<a name="69" href="#69">69</a>  		assertEquals(<span class="jxr_string">"hoge2"</span>, CubbyUtils.getActionName(Hoge2Action.<strong class="jxr_keyword">class</strong>));
 <a name="70" href="#70">70</a>  	}
 <a name="71" href="#71">71</a>  
-<a name="72" href="#72">72</a>  }
+<a name="72" href="#72">72</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testReplaceFirst() {
+<a name="73" href="#73">73</a>  		assertNull(CubbyUtils.replaceFirst(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">""</span>, <span class="jxr_string">""</span>));
+<a name="74" href="#74">74</a>  		assertEquals(<span class="jxr_string">"abaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"abaa"</span>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>));
+<a name="75" href="#75">75</a>  		assertEquals(<span class="jxr_string">"abaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"abaa"</span>, <span class="jxr_string">"a"</span>, <strong class="jxr_keyword">null</strong>));
+<a name="76" href="#76">76</a>  		assertEquals(<span class="jxr_string">"baa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"abaa"</span>, <span class="jxr_string">"a"</span>, <span class="jxr_string">""</span>));
+<a name="77" href="#77">77</a>  		assertEquals(<span class="jxr_string">"zbaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"abaa"</span>, <span class="jxr_string">"a"</span>, <span class="jxr_string">"z"</span>));
+<a name="78" href="#78">78</a>  		assertEquals(<span class="jxr_string">"xyzaab"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"abaab"</span>, <span class="jxr_string">"ab"</span>, <span class="jxr_string">"xyz"</span>));
+<a name="79" href="#79">79</a>  		assertNull(CubbyUtils.replaceFirst(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">""</span>, <span class="jxr_string">""</span>));
+<a name="80" href="#80">80</a>  		assertEquals(<span class="jxr_string">"3abaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"3abaa"</span>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>));
+<a name="81" href="#81">81</a>  		assertEquals(<span class="jxr_string">"3abaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"3abaa"</span>, <span class="jxr_string">"a"</span>, <strong class="jxr_keyword">null</strong>));
+<a name="82" href="#82">82</a>  		assertEquals(<span class="jxr_string">"3baa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"3abaa"</span>, <span class="jxr_string">"a"</span>, <span class="jxr_string">""</span>));
+<a name="83" href="#83">83</a>  		assertEquals(<span class="jxr_string">"3zbaa"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"3abaa"</span>, <span class="jxr_string">"a"</span>, <span class="jxr_string">"z"</span>));
+<a name="84" href="#84">84</a>  		assertEquals(<span class="jxr_string">"3xyzaab"</span>, CubbyUtils.replaceFirst(<span class="jxr_string">"3abaab"</span>, <span class="jxr_string">"ab"</span>, <span class="jxr_string">"xyz"</span>));
+<a name="85" href="#85">85</a>  	}
+<a name="86" href="#86">86</a>  
+<a name="87" href="#87">87</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSplit2() {
+<a name="88" href="#88">88</a>  		assertNull(CubbyUtils.split2(<strong class="jxr_keyword">null</strong>, '_'));
+<a name="89" href="#89">89</a>  		assertTrue(Arrays.deepEquals(<strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">""</span> }, CubbyUtils.split2(<span class="jxr_string">""</span>, '_')));
+<a name="90" href="#90">90</a>  		assertTrue(Arrays.deepEquals(<strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">"ab"</span>, <span class="jxr_string">""</span> }, CubbyUtils.split2(<span class="jxr_string">"ab_"</span>, '_')));
+<a name="91" href="#91">91</a>  		assertTrue(Arrays.deepEquals(<strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">"ab_cd_de_"</span> }, CubbyUtils.split2(<span class="jxr_string">"ab_cd_de_"</span>, ',')));
+<a name="92" href="#92">92</a>  		assertTrue(Arrays.deepEquals(<strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">"ab"</span>, <span class="jxr_string">"cd_de_"</span> }, CubbyUtils.split2(<span class="jxr_string">"ab_cd_de_"</span>, '_')));
+<a name="93" href="#93">93</a>  	}
+<a name="94" href="#94">94</a>  
+<a name="95" href="#95">95</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

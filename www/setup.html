@@ -43,7 +43,7 @@
   
     
             <div class="xleft">
-        最終更新: 2008-01-20
+        最終更新: 2008-02-04
                       </div>
             <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
             
@@ -139,6 +139,10 @@
             <ul>
               
     <li class="none">
+                    <a href="presentation.html">プレゼン資料</a>
+          </li>
+              
+    <li class="none">
                     <a href="mail-lists.html">メーリングリスト</a>
           </li>
               
@@ -230,8 +234,8 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>前提</h2>
-<p>Cubby は S2Container2.4 の <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html" class="externalLink">SMART Deploy</a>
- 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming" class="externalLink">SMART Deploy 推奨のパッケージ構成</a>
+<p>Cubby は S2Container2.4 の <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html">SMART Deploy</a>
+ 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming">SMART Deploy 推奨のパッケージ構成</a>
 としてください。</p>
 </div>
 <div class="section"><h2>プロジェクトの作成</h2>
@@ -243,7 +247,7 @@
 -Dversion=(作成するプロジェクトのバージョン 例:1.0-SNAPSHOT) \
 -DarchetypeGroupId=org.seasar.cubby \
 -DarchetypeArtifactId=cubby-archetype \
--DarchetypeVersion=0.9.2 \
+-DarchetypeVersion=(Cubby Archetype PluginのバージョンでCubbyのバージョンと連動しています。 例：1.0.0) \
 -DremoteRepositories=http://maven.seasar.org/maven2/
 (実際には1行で入力してください)</pre>
 </div>
@@ -272,10 +276,13 @@
 <table class="bodyTable"><tbody><tr class="a"><td align="center">Cubby</td>
 <td align="center">Seasar2</td>
 </tr>
-<tr class="b"><td align="center">1.0.0-RC1</td>
+<tr class="b"><td align="center">1.0.0-RC2</td>
+<td align="center">2.4.22以上</td>
+</tr>
+<tr class="a"><td align="center">1.0.0-RC1</td>
 <td align="center">2.4.21以上</td>
 </tr>
-<tr class="a"><td align="center">0.9.2</td>
+<tr class="b"><td align="center">0.9.2</td>
 <td align="center">2.4.17</td>
 </tr>
 </tbody>
@@ -285,7 +292,7 @@
 </ul>
 <div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3>
 <p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p>
-<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request" class="externalLink">リクエストの自動バインディング</a>
+<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a class="externalLink" href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>
 を使用するので、S2ContainerFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -303,7 +310,7 @@
 &lt;/web-app&gt;</pre>
 </div>
 </li>
-<li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy" class="externalLink">Hot deploy</a>
+<li>HotdeployFilter<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy">Hot deploy</a>
  を使用する場合は HotdeployFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -379,10 +386,10 @@
 </li>
 </ul>
 </li>
-<li>convention.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
+<li>convention.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
 を参考に、ルートパッケージを設定してください。</p>
 </li>
-<li>creator.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
+<li>creator.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
 を参考に、ActionCreator を設定してください。</p>
 </li>
 <li>customizer.dicon<p>Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。 cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。</p>
@@ -478,6 +485,20 @@ valid.minSize={0}は{1}以上選択してください。
 valid.fileRegexp={0}のファイル名が不正です。
 valid.email={0}のメールアドレスの形式が正しくありません。</pre>
 </div>
+</li>
+</ol>
+</div>
+<div class="section"><h3>Eclipseコードテンプレートによる雛形作成</h3>
+<p>以下のコードテンプレート設定をEclipseにインポートすることで「アクションメソッドのコード雛形作成」「バリデーションフィールドのコード雛形作成」が行えます。 </p>
+<ol type="1"><li>コードテンプレート定義ファイル「<a href="/eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml">cubby-eclipse-code-templates-1.0.0.xml</a>
+」をダウンロードします。</li>
+<li>Eclipseの設定を開きます。(Windowsなら「ウインドウ(Window)-&gt;設定(Preference)」、MacOSXなら「Eclipse」-&gt;設定(Preference)」)</li>
+<li>「Java-&gt;エディタ(Editor)-&gt;テンプレート(Templates)」を選択し、「インポート(Import)」ボタンをクリックします。</li>
+<li>1.でダウンロードしたコードテンプレート定義ファイルを選択します。</li>
+<li>以下のコードテンプレートによるコード補完がJavaエディタ上で使用できるようになります。 「cu」と入力して「コントロールキー＋スペースキー」を押してみてください。<p><b>CubbyとSeasar2のバージョンの推奨の組み合わせ</b>
+</p>
+<ul><li>------------------------*-------------------------------* | 補完名 | 内容 | *------------------------*-------------------------------* | cubby_action_method | アクションメソッドの雛形作成 | *------------------------*-------------------------------* | cubby_validation_field | バリデーションフィールドの雛形作成 | *------------------------*-------------------------------*</li>
+</ul>
 </li>
 </ol>
 </div>
