@@ -17,22 +17,16 @@ package org.seasar.cubby.unit;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpUtils;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.examples.RunDdlServletRequestListener;
-import org.seasar.cubby.examples.todo.action.TodoAction;
 import org.seasar.cubby.filter.RequestRoutingFilter;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.framework.beans.util.Beans;
@@ -40,7 +34,6 @@ import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.unit.S2TigerTestCase;
 import org.seasar.framework.util.ClassUtil;
-import org.seasar.framework.util.FieldUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
@@ -174,7 +167,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 *            オリジナルパス
 	 * @return 内部フォワードパス
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	protected String routing(final String orginalPath) {
 		final MockHttpServletRequest request = this.getServletContext()
 				.createRequest(orginalPath);
@@ -198,7 +191,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		}
 		
 		if (StringUtil.isNotBlank(internalForwardRequest.getQueryString())) {
-			getRequest().getParameterMap().putAll(HttpUtils.parseQueryString(getRequest().getQueryString()));
+			getRequest().getParameterMap().putAll(javax.servlet.http.HttpUtils.parseQueryString(getRequest().getQueryString()));
 		}
 		return internalForwardPath;
 	}
