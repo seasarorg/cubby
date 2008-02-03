@@ -32,48 +32,77 @@ import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
 
 /**
+ * アクションメソッドの実行時コンテキストの実装です。
  * 
  * @author baba
- * 
  */
 public class ActionContextImpl implements ActionContext {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(ActionContextImpl.class);
 
+	/** 空の引数。 */
 	private static final Object[] EMPTY_ARGS = new Object[0];
 
+	/** アクションの定義。 */
 	private ActionDef actionDef;
 
+	/** アクション。 */
 	private Action action;
 
+	/** リクエストパラメータとフォームオブジェクトを変換する DXO。 */
 	private FormDxo formDxo;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void initialize(final ActionDef actionDef) {
 		this.actionDef = actionDef;
 		this.action = null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isInitialized() {
 		return this.actionDef != null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public FormDxo getFormDxo() {
 		return formDxo;
 	}
 
+	/**
+	 * リクエストパラメータとフォームオブジェクトを変換する DXO を設定します。
+	 * 
+	 * @param formDxo
+	 *            リクエストパラメータとフォームオブジェクトを変換する DXO
+	 */
 	public void setFormDxo(final FormDxo formDxo) {
 		this.formDxo = formDxo;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ComponentDef getComponentDef() {
 		return actionDef.getComponentDef();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Method getMethod() {
 		return actionDef.getMethod();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Action getAction() {
 		if (action == null) {
 			action = (Action) actionDef.getComponentDef().getComponent();
@@ -81,10 +110,16 @@ public class ActionContextImpl implements ActionContext {
 		return action;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Validation getValidation() {
 		return actionDef.getMethod().getAnnotation(Validation.class);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ActionResult invoke() throws Exception {
 		try {
 			final ActionResult result = (ActionResult) actionDef.getMethod()
@@ -103,6 +138,9 @@ public class ActionContextImpl implements ActionContext {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object getFormBean() {
 		final Object formBean;
 		final Action action = getAction();
