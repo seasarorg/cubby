@@ -16,21 +16,32 @@
 package org.seasar.cubby.unit;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpUtils;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
+import org.seasar.cubby.examples.RunDdlServletRequestListener;
+import org.seasar.cubby.examples.todo.action.TodoAction;
 import org.seasar.cubby.filter.RequestRoutingFilter;
 import org.seasar.cubby.routing.InternalForwardInfo;
+import org.seasar.framework.beans.util.Beans;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.unit.S2TigerTestCase;
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.FieldUtil;
+import org.seasar.framework.util.StringUtil;
 
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
@@ -39,26 +50,68 @@ import org.seasar.framework.unit.S2TigerTestCase;
  * 
  * <pre>
  * public class HelloActionTest extends CubbyTestCase {
+ *  // 対象のアクション
  * 	private HelloAction action;
- * 
+ *  
+ *  // 初期化処理
  * 	protected void setUp() throws Exception {
+ *      // diconファイルの読み込み
  * 		include(&quot;app.dicon&quot;);
  * 	}
  * 
  * 	public void testIndex() throws Exception {
+ *      // アクションの実行
  * 		ActionResult result = processAction(&quot;/hello/&quot;);
+ *      // 結果のチェック
  * 		assertPathEquals(Forward.class, &quot;input.jsp&quot;, result);
  * 	}
  * 
  * 	public void testMessage() throws Exception {
+ *      // リクエストパラメータのセット
  * 		getRequest().addParameter(&quot;name&quot;, &quot;name1&quot;);
+ *      // アクションの実行
  * 		ActionResult result = processAction(&quot;/hello/message&quot;);
+ *      // 結果のチェック
  * 		assertPathEquals(Forward.class, &quot;result.jsp&quot;, result);
+ *      // 実行後のアクションの状態を確認
  * 		assertEquals(&quot;name1&quot;, action.name);
  * 	}
  * }
  * </pre>
  * 
+ * <pre>
+ * public class TodoActionTest extends CubbyTestCase {
+ *   private TodoAction action;
+ *   
+ *   protected void setUp() throws Exception {
+ *     include("app.dicon");
+ *     RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
+ *     listener.requestInitialized(null);
+ *   }
+ *   
+ *   @Override
+ *   protected void setUpAfterBindFields() throws Throwable {
+ *     super.setUpAfterBindFields();
+ *     getRequest().addParameter("userId", "test");
+ *     getRequest().addParameter("password", "test");
+ *     // 後続のテストを実行するためにログインアクションを実行
+ *     assertPathEquals(Redirect.class, "/todo/", processAction("/todo/login/process"));
+ *   }
+ *   
+ *   public void testShow() throws Exception {
+ *     this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
+ *     // CoolURIの場合のテスト
+ *     ActionResult result = processAction("/todo/1");
+ *     assertPathEquals(Forward.class, "show.jsp", result);
+ *     assertEquals(new Integer(1), action.id);
+ *     assertEquals("todo1", action.text);
+ *     assertEquals("todo1 memo", action.memo);
+ *     assertEquals(new Integer(1), action.todoType.getId());
+ *     assertEquals("type1", action.todoType.getName());
+ *     assertEquals("2008-01-01", action.limitDate);
+ *    }
+ *  }
+ * </pre>
  * </p>
  * 
  * @author agata
@@ -121,6 +174,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 *            オリジナルパス
 	 * @return 内部フォワードパス
 	 */
+	@SuppressWarnings("unchecked")
 	protected String routing(final String orginalPath) {
 		final MockHttpServletRequest request = this.getServletContext()
 				.createRequest(orginalPath);
@@ -134,7 +188,18 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 				.getInternalForwardPath();
 		final MockHttpServletRequest internalForwardRequest = this
 				.getServletContext().createRequest(internalForwardPath);
-		this.setRequest(internalForwardRequest);
+		Beans.copy(internalForwardRequest, getRequest()).execute();
+		Field servletPathField = ClassUtil.getDeclaredField(getRequest().getClass(), "servletPath");
+		servletPathField.setAccessible(true);
+		try {
+			servletPathField.set(getRequest(), internalForwardRequest.getServletPath());
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		
+		if (StringUtil.isNotBlank(internalForwardRequest.getQueryString())) {
+			getRequest().getParameterMap().putAll(HttpUtils.parseQueryString(getRequest().getQueryString()));
+		}
 		return internalForwardPath;
 	}
 
