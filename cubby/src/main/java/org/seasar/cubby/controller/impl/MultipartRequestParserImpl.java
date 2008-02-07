@@ -30,6 +30,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.exception.FileUploadRuntimeException;
@@ -122,7 +123,17 @@ public class MultipartRequestParserImpl implements RequestParser {
 
 			return parameterMap;
 		} catch (final FileUploadException e) {
-			throw new FileUploadRuntimeException(e);
+			final String messageCode;
+			final Object[] args;
+			if (e instanceof SizeLimitExceededException) {
+				final SizeLimitExceededException sle = (SizeLimitExceededException) e;
+				messageCode = "ECUB0202";
+				args = new Object[] { sle.getPermittedSize(), sle.getActualSize() };
+			} else {
+				messageCode = "ECUB0201";
+				args = new Object[] { e };
+			}
+			throw new FileUploadRuntimeException(messageCode, args, e);
 		} catch (final IOException e) {
 			throw new IORuntimeException(e);
 		}
