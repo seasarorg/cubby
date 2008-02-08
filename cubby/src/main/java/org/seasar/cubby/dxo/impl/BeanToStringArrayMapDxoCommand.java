@@ -28,9 +28,9 @@ import org.seasar.extension.dxo.converter.Converter;
 import org.seasar.extension.dxo.converter.ConverterFactory;
 
 /**
+ * Beanから{@link String}をキー、{@link String}の配列を値にもつ{@link Map}に変換するコマンドです。
  * 
  * @author baba
- * 
  */
 class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 
