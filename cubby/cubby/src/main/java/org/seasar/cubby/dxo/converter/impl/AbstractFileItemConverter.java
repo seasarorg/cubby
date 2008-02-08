@@ -19,13 +19,27 @@ import org.apache.commons.fileupload.FileItem;
 import org.seasar.extension.dxo.converter.ConversionContext;
 import org.seasar.extension.dxo.converter.impl.AbstractConverter;
 
+/**
+ * {@link FileItem}を他の型のオブジェクトに変換するクラスの抽象クラウスです。
+ * 
+ * @author baba
+ */
 public abstract class AbstractFileItemConverter extends AbstractConverter {
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * {@link FileItem}のクラスと{@link FileItem}配列のクラスを返します。
+	 * </p>
+	 */
 	@SuppressWarnings("unchecked")
 	public Class[] getSourceClasses() {
 		return new Class[] { FileItem.class, FileItem[].class };
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public Object convert(final Object source, final Class destClass,
 			final ConversionContext context) {
