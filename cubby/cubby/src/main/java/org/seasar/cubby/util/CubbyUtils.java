@@ -173,31 +173,6 @@ public class CubbyUtils {
 		return str;
 	}
 
-	public static String join(final Iterator<?> iterator, final char separator) {
-		if (iterator == null) {
-			return null;
-		}
-		if (!iterator.hasNext()) {
-			return "";
-		}
-		final Object first = iterator.next();
-		if (!iterator.hasNext()) {
-			return first != null ? first.toString() : "";
-		}
-		final StringBuffer buf = new StringBuffer(256);
-		if (first != null) {
-			buf.append(first);
-		}
-		while (iterator.hasNext()) {
-			buf.append(separator);
-			final Object obj = iterator.next();
-			if (obj != null) {
-				buf.append(obj);
-			}
-		}
-		return buf.toString();
-	}
-
 	public static String replaceFirst(final String text, final String replace, final String with) {
 		if (text == null || replace == null || with == null) {
 			return text;
