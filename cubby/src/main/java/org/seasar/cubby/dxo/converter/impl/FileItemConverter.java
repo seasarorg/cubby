@@ -17,13 +17,31 @@ package org.seasar.cubby.dxo.converter.impl;
 
 import org.apache.commons.fileupload.FileItem;
 
+/**
+ * {@link FileItem}から{@link FileItem}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
+ * 
+ * @author baba
+ */
 public class FileItemConverter extends AbstractFileItemConverter {
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return {@link FileItem}のクラスを返します。
+	 */
 	@SuppressWarnings("unchecked")
 	public Class getDestClass() {
 		return FileItem.class;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定された{@link FileItem}をそのまま返します。
+	 * </p>
+	 * 
+	 * @return 指定された{@link FileItem}
+	 */
 	@Override
 	protected Object convert(final FileItem fileItem) {
 		return fileItem;
