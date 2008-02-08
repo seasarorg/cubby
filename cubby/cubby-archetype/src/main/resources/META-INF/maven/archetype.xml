@@ -1,33 +1,34 @@
 <archetype>
 	<id>maven-archetype-cubby</id>
 	<sources>
-		<source>src/main/java/action/HelloAction.java</source>
-		<source>src/main/java/service/HelloService.java</source>
-		<source>src/main/java/service/impl/HelloServiceImpl.java</source>
+		<source encoding="UTF-8">src/main/java/action/HelloAction.java</source>
+		<source encoding="UTF-8">src/main/java/service/HelloService.java</source>
+		<source encoding="UTF-8">src/main/java/service/impl/HelloServiceImpl.java</source>
 	</sources>
 	<resources>
-		<resource>src/main/resources/app.dicon</resource>
-		<resource>src/main/resources/app-cubby.dicon</resource>
-		<resource>src/main/resources/convention.dicon</resource>
-		<resource>src/main/resources/creator.dicon</resource>
-		<resource>src/main/resources/customizer.dicon</resource>
-		<resource>src/main/resources/dbsession.dicon</resource>
-		<resource>src/main/resources/env_ut.txt</resource>
-		<resource>src/main/resources/env.txt</resource>
-		<resource>src/main/resources/jdbc.dicon</resource>
-		<resource>src/main/resources/log4j.properties</resource>
-		<resource>src/main/resources/messages.properties</resource>
-		<resource>src/main/resources/s2container.dicon</resource>
-		<resource>src/main/webapp/common/header.jsp</resource>
-		<resource>src/main/webapp/common/notice.jsp</resource>
-		<resource>src/main/webapp/common/errors.jsp</resource>
-		<resource>src/main/webapp/index.jsp</resource>
-		<resource>src/main/webapp/hello/hello.jsp</resource>
-		<resource>src/main/webapp/hello/index.jsp</resource>
-		<resource>src/main/webapp/WEB-INF/web.xml</resource>
+		<resource encoding="UTF-8">src/main/resources/app.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/app-cubby.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/convention.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/creator.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/customizer.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/dbsession.dicon</resource>
+		<resource encoding="UTF-8">src/main/resources/env_ut.txt</resource>
+		<resource encoding="UTF-8">src/main/resources/env.txt</resource>
+		<resource encoding="UTF-8">src/main/resources/jdbc.dicon</resource>
+		<resource encoding="iso-8859-1">src/main/resources/log4j.properties</resource>
+		<resource encoding="iso-8859-1">src/main/resources/messages.properties</resource>
+		<resource encoding="UTF-8">src/main/resources/s2container.dicon</resource>
+		<resource encoding="UTF-8">src/main/webapp/common/header.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/common/notice.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/common/errors.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/index.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/hello/hello.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/hello/index.jsp</resource>
+		<resource encoding="UTF-8">src/main/webapp/WEB-INF/web.xml</resource>
 	</resources>
 	<testSources>
-		<source>src/test/java/service/impl/HelloServiceImplTest.java</source>
+		<source encoding="UTF-8">src/test/java/service/impl/HelloServiceImplTest.java</source>
 	</testSources>
-	<testResources></testResources>
+	<testResources>
+	</testResources>
 </archetype>
