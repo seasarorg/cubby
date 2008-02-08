@@ -19,37 +19,56 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.tags.FormTag;
 import org.seasar.extension.dxo.annotation.AnnotationReader;
-import org.seasar.extension.dxo.annotation.AnnotationReaderFactory;
 import org.seasar.extension.dxo.command.DxoCommand;
+import org.seasar.extension.dxo.converter.Converter;
 import org.seasar.extension.dxo.converter.ConverterFactory;
 import org.seasar.framework.container.annotation.tiger.InitMethod;
 import org.seasar.framework.util.ClassUtil;
 
 /**
+ * リクエストのパラメータとアクションのプロパティとを変換するDXOです。
  * 
  * @author baba
- *
  */
 public class FormDxoImpl implements FormDxo {
 
+	/** {@link Converter コンバータ}のファクトリクラス。 */
 	private ConverterFactory converterFactory;
 
-	private AnnotationReaderFactory annotationReaderFactory;
+	/** Dxoからアノテーションを読み取るためのインタフェース。 */
+	private AnnotationReader annotationReader;
 
+	/** リクエストのパラメータからフォームオブジェクトへ変換するコマンド。 */
 	private DxoCommand objectArrayMapToBeanDxoCommand;
 
+	/** フォームオブジェクトからリクエストのパラメータへ変換するコマンド。 */
 	private DxoCommand beanToStringArrayMapDxoCommand;
 
+	/**
+	 * {@link Converter コンバータ}のファクトリクラスを設定します。
+	 * 
+	 * @param converterFactory
+	 *            {@link Converter コンバータ}のファクトリクラス
+	 */
 	public void setConverterFactory(final ConverterFactory converterFactory) {
 		this.converterFactory = converterFactory;
 	}
 
-	public void setAnnotationReaderFactory(
-			final AnnotationReaderFactory annotationReaderFactory) {
-		this.annotationReaderFactory = annotationReaderFactory;
+	/**
+	 * Dxoからアノテーションを読み取るためのインタフェースを設定します。
+	 * 
+	 * @param annotationReader
+	 *            Dxoからアノテーションを読み取るためのインタフェース
+	 */
+	public void setAnnotationReader(final AnnotationReader annotationReader) {
+		this.annotationReader = annotationReader;
 	}
 
+	/**
+	 * このインスタンスを初期化します。
+	 */
 	@InitMethod
 	public void initialize() {
 		final Class<?> targetClass = this.getClass();
@@ -67,12 +86,28 @@ public class FormDxoImpl implements FormDxo {
 				targetClass, beanToStringArrayMapConvertMethod);
 	}
 
+	/**
+	 * リクエストパラメータの{@link Map}の値を変換してフォームオブジェクトへ設定します。
+	 * 
+	 * @param src
+	 *            変換元
+	 * @param dest
+	 *            変換先
+	 */
 	public void convert(final Map<String, Object[]> src, final Object dest) {
 		if (src != null) {
 			objectArrayMapToBeanDxoCommand.execute(new Object[] { src, dest });
 		}
 	}
 
+	/**
+	 * フォームオブジェクトの値を変換して{@link FormTag}で使用する{@link Map}へ設定します。
+	 * 
+	 * @param src
+	 *            変換元
+	 * @param dest
+	 *            変換先
+	 */
 	public void convert(final Object src, final Map<String, String[]> dest) {
 		if (src != null) {
 			beanToStringArrayMapDxoCommand.execute(new Object[] { src, dest });
@@ -80,19 +115,15 @@ public class FormDxoImpl implements FormDxo {
 	}
 
 	@SuppressWarnings("unchecked")
-	public DxoCommand createObjectArrayMapToBeanDxoCommand(
+	private DxoCommand createObjectArrayMapToBeanDxoCommand(
 			final Class dxoClass, final Method method) {
-		final AnnotationReader annotationReader = annotationReaderFactory
-				.getAnnotationReader();
 		return new ObjectArrayMapToBeanDxoCommand(dxoClass, method,
 				converterFactory, annotationReader, Object.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public DxoCommand createBeanToStringArrayMapDxoCommand(
+	private DxoCommand createBeanToStringArrayMapDxoCommand(
 			final Class dxoClass, final Method method) {
-		final AnnotationReader annotationReader = annotationReaderFactory
-				.getAnnotationReader();
 		final String expression = annotationReader.getConversionRule(dxoClass,
 				method);
 		return new BeanToStringArrayMapDxoCommand(dxoClass, method,
