@@ -65,8 +65,8 @@ public class CubbyUtilsTest extends TestCase {
 	}
 
 	public void testGetActionClassName() {
-		assertEquals("hoge", CubbyUtils.getActionName(Hoge1Action.class));
-		assertEquals("hoge2", CubbyUtils.getActionName(Hoge2Action.class));
+		assertEquals("hoge", CubbyUtils.getActionDirectory(Hoge1Action.class));
+		assertEquals("hoge2", CubbyUtils.getActionDirectory(Hoge2Action.class));
 	}
 
 	public void testReplaceFirst() {

@@ -89,12 +89,13 @@ public class Redirect extends AbstractActionResult {
 		if (this.path.startsWith("/")) {
 			absolutePath = contextPath + this.path;
 		} else {
-			final String actionClassName = CubbyUtils.getActionName(context
-					.getComponentDef().getComponentClass());
-			if (StringUtil.isEmpty(actionClassName)) {
+			final String actionDirectory = CubbyUtils
+					.getActionDirectory(context.getComponentDef()
+							.getComponentClass());
+			if (StringUtil.isEmpty(actionDirectory)) {
 				absolutePath = contextPath + "/" + this.path;
 			} else {
-				absolutePath = contextPath + "/" + actionClassName + "/"
+				absolutePath = contextPath + "/" + actionDirectory + "/"
 						+ this.path;
 			}
 		}
