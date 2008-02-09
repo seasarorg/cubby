@@ -18,8 +18,6 @@ package org.seasar.cubby.interceptor;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +31,6 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.validator.ValidationProcessor;
-import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -56,47 +53,71 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  */
 public class ValidationInterceptor implements MethodInterceptor {
 
-	private static final ValidationRules NULL_VALIDATION_RULES = new ValidationRules() {
-		public List<ValidationRule> getRules() {
-			return Collections.emptyList();
-		}
-	};
-
+	/** 入力検証を行うクラス。 */
 	private ValidationProcessor validationProcessor;
 
+	/** リクエスト。 */
 	private HttpServletRequest request;
 
+	/** アクションメソッドの実行時コンテキスト。 */
 	private ActionContext context;
 
+	/**
+	 * インスタンス化します。
+	 */
 	public ValidationInterceptor() {
 	}
 
+	/**
+	 * 入力検証を行うクラスを設定します。
+	 * 
+	 * @param validationProcessor
+	 *            入力検証を行うクラス
+	 */
 	public void setValidationProcessor(
 			final ValidationProcessor validationProcessor) {
 		this.validationProcessor = validationProcessor;
 	}
 
+	/**
+	 * リクエストを設定します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 */
 	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
+	/**
+	 * アクションメソッド実行時のコンテキストを設定します。
+	 * 
+	 * @param context
+	 *            アクションメソッド実行時のコンテキスト
+	 */
 	public void setActionContext(final ActionContext context) {
 		this.context = context;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * アクションメソッドの実行前に入力検証を実行し、入力にエラーがあった場合はエラーページへ遷移するための{@link Forward}を返します。
+	 * </p>
+	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		final Validation validation = context.getValidation();
-
-		final boolean success;
 		if (validation == null) {
-			success = true;
-		} else {
-			final Map<String, Object[]> params = getParams(request);
-			final Object form = context.getFormBean();
-			final ActionErrors errors = context.getAction().getErrors();
-			final ValidationRules rules = getValidationRules(context);
-			success = validationProcessor.process(errors, params, form, rules);
+			return true;
 		}
+
+		final Map<String, Object[]> params = getAttribute(request, ATTR_PARAMS);
+		final Object form = context.getFormBean();
+		final ActionErrors errors = context.getAction().getErrors();
+		final ValidationRules rules = getValidationRules(context);
+
+		final boolean success = validationProcessor.process(errors, params,
+				form, rules);
 
 		final Object result;
 		if (success) {
@@ -110,26 +131,40 @@ public class ValidationInterceptor implements MethodInterceptor {
 		return result;
 	}
 
+	/**
+	 * 実行しているアクションメソッドの入力検証ルールの集合を取得します。
+	 * 
+	 * @param context
+	 *            アクションメソッド実行時のコンテキスト
+	 * @return アクションメソッドの入力検証ルールの集合
+	 */
 	private ValidationRules getValidationRules(final ActionContext context) {
 		final Validation validation = context.getValidation();
-		final ValidationRules rules;
-		if (validation == null) {
-			rules = NULL_VALIDATION_RULES;
-		} else {
-			final Action action = context.getAction();
-			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
-					.getClass());
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(validation.rules());
-			rules = (ValidationRules) propertyDesc.getValue(action);
-		}
+		final Action action = context.getAction();
+		final BeanDesc beanDesc = BeanDescFactory
+				.getBeanDesc(action.getClass());
+		final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
+				.rules());
+		final ValidationRules rules = (ValidationRules) propertyDesc
+				.getValue(action);
 		return rules;
 	}
 
+	/**
+	 * リクエストから属性を取得します。
+	 * 
+	 * @param <T>
+	 *            取得する属性の型
+	 * @param request
+	 *            リクエスト
+	 * @param name
+	 *            属性名
+	 * @return 属性
+	 */
 	@SuppressWarnings("unchecked")
-	private static Map<String, Object[]> getParams(
-			final HttpServletRequest request) {
-		return (Map<String, Object[]>) request.getAttribute(ATTR_PARAMS);
+	private static <T> T getAttribute(final HttpServletRequest request,
+			final String name) {
+		return (T) request.getAttribute(name);
 	}
 
 }
