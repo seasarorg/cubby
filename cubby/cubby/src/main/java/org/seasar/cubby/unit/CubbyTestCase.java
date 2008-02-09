@@ -43,30 +43,30 @@ import org.seasar.framework.util.StringUtil;
  * 
  * <pre>
  * public class HelloActionTest extends CubbyTestCase {
- *  // 対象のアクション
+ * 	// 対象のアクション
  * 	private HelloAction action;
- *  
- *  // 初期化処理
+ * 
+ * 	// 初期化処理
  * 	protected void setUp() throws Exception {
- *      // diconファイルの読み込み
+ * 		// diconファイルの読み込み
  * 		include(&quot;app.dicon&quot;);
  * 	}
  * 
  * 	public void testIndex() throws Exception {
- *      // アクションの実行
+ * 		// アクションの実行
  * 		ActionResult result = processAction(&quot;/hello/&quot;);
- *      // 結果のチェック
+ * 		// 結果のチェック
  * 		assertPathEquals(Forward.class, &quot;input.jsp&quot;, result);
  * 	}
  * 
  * 	public void testMessage() throws Exception {
- *      // リクエストパラメータのセット
+ * 		// リクエストパラメータのセット
  * 		getRequest().addParameter(&quot;name&quot;, &quot;name1&quot;);
- *      // アクションの実行
+ * 		// アクションの実行
  * 		ActionResult result = processAction(&quot;/hello/message&quot;);
- *      // 結果のチェック
+ * 		// 結果のチェック
  * 		assertPathEquals(Forward.class, &quot;result.jsp&quot;, result);
- *      // 実行後のアクションの状態を確認
+ * 		// 実行後のアクションの状態を確認
  * 		assertEquals(&quot;name1&quot;, action.name);
  * 	}
  * }
@@ -74,37 +74,39 @@ import org.seasar.framework.util.StringUtil;
  * 
  * <pre>
  * public class TodoActionTest extends CubbyTestCase {
- *   private TodoAction action;
- *   
- *   protected void setUp() throws Exception {
- *     include("app.dicon");
- *     RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
- *     listener.requestInitialized(null);
- *   }
- *   
- *   @Override
- *   protected void setUpAfterBindFields() throws Throwable {
- *     super.setUpAfterBindFields();
- *     getRequest().addParameter("userId", "test");
- *     getRequest().addParameter("password", "test");
- *     // 後続のテストを実行するためにログインアクションを実行
- *     assertPathEquals(Redirect.class, "/todo/", processAction("/todo/login/process"));
- *   }
- *   
- *   public void testShow() throws Exception {
- *     this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
- *     // CoolURIの場合のテスト
- *     ActionResult result = processAction("/todo/1");
- *     assertPathEquals(Forward.class, "show.jsp", result);
- *     assertEquals(new Integer(1), action.id);
- *     assertEquals("todo1", action.text);
- *     assertEquals("todo1 memo", action.memo);
- *     assertEquals(new Integer(1), action.todoType.getId());
- *     assertEquals("type1", action.todoType.getName());
- *     assertEquals("2008-01-01", action.limitDate);
- *    }
- *  }
+ * 	private TodoAction action;
+ * 
+ * 	protected void setUp() throws Exception {
+ * 		include(&quot;app.dicon&quot;);
+ * 		RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
+ * 		listener.requestInitialized(null);
+ * 	}
+ * 
+ * 	&#064;Override
+ * 	protected void setUpAfterBindFields() throws Throwable {
+ * 		super.setUpAfterBindFields();
+ * 		getRequest().addParameter(&quot;userId&quot;, &quot;test&quot;);
+ * 		getRequest().addParameter(&quot;password&quot;, &quot;test&quot;);
+ * 		// 後続のテストを実行するためにログインアクションを実行
+ * 		assertPathEquals(Redirect.class, &quot;/todo/&quot;,
+ * 				processAction(&quot;/todo/login/process&quot;));
+ * 	}
+ * 
+ * 	public void testShow() throws Exception {
+ * 		this.readXlsAllReplaceDb(&quot;TodoActionTest_PREPARE.xls&quot;);
+ * 		// CoolURIの場合のテスト
+ * 		ActionResult result = processAction(&quot;/todo/1&quot;);
+ * 		assertPathEquals(Forward.class, &quot;show.jsp&quot;, result);
+ * 		assertEquals(new Integer(1), action.id);
+ * 		assertEquals(&quot;todo1&quot;, action.text);
+ * 		assertEquals(&quot;todo1 memo&quot;, action.memo);
+ * 		assertEquals(new Integer(1), action.todoType.getId());
+ * 		assertEquals(&quot;type1&quot;, action.todoType.getName());
+ * 		assertEquals(&quot;2008-01-01&quot;, action.limitDate);
+ * 	}
+ * }
  * </pre>
+ * 
  * </p>
  * 
  * @author agata
@@ -167,7 +169,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 *            オリジナルパス
 	 * @return 内部フォワードパス
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings( { "unchecked", "deprecation" })
 	protected String routing(final String orginalPath) {
 		final MockHttpServletRequest request = this.getServletContext()
 				.createRequest(orginalPath);
@@ -182,16 +184,20 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		final MockHttpServletRequest internalForwardRequest = this
 				.getServletContext().createRequest(internalForwardPath);
 		Beans.copy(internalForwardRequest, getRequest()).execute();
-		Field servletPathField = ClassUtil.getDeclaredField(getRequest().getClass(), "servletPath");
+		final Field servletPathField = ClassUtil.getDeclaredField(getRequest()
+				.getClass(), "servletPath");
 		servletPathField.setAccessible(true);
 		try {
-			servletPathField.set(getRequest(), internalForwardRequest.getServletPath());
-		} catch (Exception ex) {
+			servletPathField.set(getRequest(), internalForwardRequest
+					.getServletPath());
+		} catch (final Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		
+
 		if (StringUtil.isNotBlank(internalForwardRequest.getQueryString())) {
-			getRequest().getParameterMap().putAll(javax.servlet.http.HttpUtils.parseQueryString(getRequest().getQueryString()));
+			getRequest().getParameterMap().putAll(
+					javax.servlet.http.HttpUtils.parseQueryString(getRequest()
+							.getQueryString()));
 		}
 		return internalForwardPath;
 	}
