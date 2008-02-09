@@ -73,7 +73,8 @@ public class RegexpValidator implements ScalarFieldValidator {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param pattern 正規表現パターン
+	 * @param pattern
+	 *            正規表現パターン
 	 */
 	public RegexpValidator(final Pattern pattern) {
 		this(pattern, "valid.regexp");
@@ -82,15 +83,19 @@ public class RegexpValidator implements ScalarFieldValidator {
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
 	 * 
-	 * @param pattern 正規表現パターン
+	 * @param pattern
+	 *            正規表現パターン
 	 * @param messageKey
 	 *            エラーメッセージキー
 	 */
-	public RegexpValidator(Pattern pattern, String messageKey) {
+	public RegexpValidator(final Pattern pattern, final String messageKey) {
 		this.pattern = pattern;
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value == null) {
 			return;

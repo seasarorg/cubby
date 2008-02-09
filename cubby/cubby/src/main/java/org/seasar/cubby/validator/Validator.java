@@ -15,6 +15,11 @@
  */
 package org.seasar.cubby.validator;
 
+/**
+ * 入力フォームに対する入力検証です。
+ * 
+ * @author baba
+ */
 public interface Validator {
 
 }
