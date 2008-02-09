@@ -61,6 +61,9 @@ public class EqualsValidator implements ScalarFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (!this.value.equals(value)) {
 			context.addMessageInfo(this.messageHelper.createMessageInfo());

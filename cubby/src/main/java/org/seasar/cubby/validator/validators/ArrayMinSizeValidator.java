@@ -63,6 +63,9 @@ public class ArrayMinSizeValidator implements ArrayFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object[] values) {
 		if (values == null) {
 			return;

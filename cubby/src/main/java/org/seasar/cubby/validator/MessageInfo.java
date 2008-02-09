@@ -17,20 +17,43 @@ package org.seasar.cubby.validator;
 
 import org.seasar.cubby.util.Messages;
 
+/**
+ * メッセージ情報です。
+ * 
+ * @author baba
+ */
 public class MessageInfo {
 
+	/** {@link Messages}からメッセージを取得するためのキー。 */
 	private String key;
 
+	/** メッセージの置換パターンを置き換えるオブジェクトからなる配列。 */
 	private Object[] arguments;
 
+	/**
+	 * {@link Messages}からメッセージを取得するためのキーを取得します。
+	 * 
+	 * @return キー
+	 */
 	public String getKey() {
 		return key;
 	}
 
-	public void setKey(String key) {
+	/**
+	 * {@link Messages}からメッセージを取得するためのキーを設定します。
+	 * 
+	 * @param key
+	 *            キー
+	 */
+	public void setKey(final String key) {
 		this.key = key;
 	}
 
+	/**
+	 * メッセージの置換パターンを置き換えるオブジェクトからなる配列を取得します。
+	 * 
+	 * @return 置換文字列の配列
+	 */
 	public Object[] getArguments() {
 		if (arguments == null) {
 			return null;
@@ -38,44 +61,88 @@ public class MessageInfo {
 		return arguments.clone();
 	}
 
-	public void setArguments(Object... arguments) {
+	/**
+	 * メッセージの置換パターンを置き換えるオブジェクトからなる配列を取得します。
+	 * 
+	 * @param arguments
+	 *            置換文字列
+	 */
+	public void setArguments(final Object... arguments) {
 		this.arguments = arguments;
 	}
 
+	/**
+	 * このメッセージ情報から文字列へ変換するためのビルダを取得します。
+	 * 
+	 * @return メッセージのビルダ
+	 */
 	public MessageBuilder builder() {
-		MessageBuilder builder = new MessageBuilder(key, arguments);
+		final MessageBuilder builder = new MessageBuilder(key, arguments);
 		return builder;
 	}
 
+	/**
+	 * {@link Messages}を使用したメッセージを構築するためのビルダ。
+	 * 
+	 * @see Messages
+	 * @author baba
+	 */
 	public class MessageBuilder {
 
+		/** メッセージキー。 */
 		private final String messageKey;
 
+		/** 置換文字列。 */
+		private final Object[] arguments;
+
+		/** フィールド名のキー。 */
 		private String fieldNameKey;
 
-		public final Object[] arguments;
-
+		/**
+		 * 指定された情報からインスタンス化します。
+		 * 
+		 * @param messageKey
+		 *            メッセージキー
+		 * @param arguments
+		 *            置換文字列
+		 */
 		private MessageBuilder(final String messageKey, final Object[] arguments) {
 			this.messageKey = messageKey;
 			this.arguments = arguments;
 		}
 
+		/**
+		 * フィールド名のキーを設定します。
+		 * 
+		 * @param fieldNameKey
+		 *            フィールド名のキー
+		 * @return このオブジェクト
+		 */
 		public MessageBuilder fieldNameKey(final String fieldNameKey) {
 			this.fieldNameKey = fieldNameKey;
 			return this;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * {@link Messages}から取得したメッセージをフォーマットした文字列を返します。
+		 * </p>
+		 */
+		@Override
 		public String toString() {
 			final Object[] args;
 			if (fieldNameKey != null) {
 				args = new Object[this.arguments.length + 1];
 				final String paramNameText = Messages.getText(fieldNameKey);
 				args[0] = paramNameText;
-				System.arraycopy(this.arguments, 0, args, 1, this.arguments.length);
+				System.arraycopy(this.arguments, 0, args, 1,
+						this.arguments.length);
 			} else {
 				args = this.arguments;
 			}
 			return Messages.getText(messageKey, args);
 		}
 	}
+
 }

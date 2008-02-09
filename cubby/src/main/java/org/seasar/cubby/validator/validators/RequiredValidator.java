@@ -56,6 +56,9 @@ public class RequiredValidator implements ScalarFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;

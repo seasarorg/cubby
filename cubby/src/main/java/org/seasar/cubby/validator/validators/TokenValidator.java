@@ -58,6 +58,9 @@ public class TokenValidator implements ArrayFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object[] values) {
 		if (values != null && values.length != 1) {
 			context.addMessageInfo(this.messageHelper.createMessageInfo());
