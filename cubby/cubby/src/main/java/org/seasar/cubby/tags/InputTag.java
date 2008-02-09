@@ -66,26 +66,59 @@ public class InputTag extends DynamicAttributesTagSupport {
 
 	private Integer index;
 
+	/**
+	 * type属性を設定します。
+	 * 
+	 * @param type
+	 *            type属性
+	 */
 	public void setType(final String type) {
 		this.type = type;
 	}
 
+	/**
+	 * name属性を設定します。
+	 * 
+	 * @param name
+	 *            name属性
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * checkedValue属性を設定します。
+	 * 
+	 * @param checkedValue
+	 *            checkedValue属性
+	 */
 	public void setCheckedValue(final String checkedValue) {
 		this.checkedValue = checkedValue;
 	}
 
+	/**
+	 * value属性を設定します。
+	 * 
+	 * @param value
+	 *            value属性
+	 */
 	public void setValue(final Object value) {
 		this.value = value;
 	}
 
+	/**
+	 * index属性を設定します。
+	 * 
+	 * @param index
+	 *            index属性
+	 */
 	public void setIndex(final Integer index) {
 		this.index = index;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doTag() throws JspException, IOException {
 		final JspContext context = this.getJspContext();

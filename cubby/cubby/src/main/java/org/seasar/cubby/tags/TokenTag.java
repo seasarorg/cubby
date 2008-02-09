@@ -37,17 +37,27 @@ import org.seasar.framework.util.StringUtil;
  * 一致しない場合、不正な経路からのアクセスとみなしてエラー処理を行います。
  * </p>
  * 
- * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext, Object[])
+ * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext,
+ *      Object[])
  * @author agata
  */
 public class TokenTag extends DynamicAttributesTagSupport {
 
 	private String name;
 
+	/**
+	 * name属性を設定します。
+	 * 
+	 * @param name
+	 *            name属性
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doTag() throws JspException, IOException {
 		final PageContext context = (PageContext) getJspContext();

@@ -57,7 +57,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 	private Object value;
 
 	/**
-	 * DynamicAttributeをセットします。
+	 * {@inheritDoc} DynamicAttributeをセットします。
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
