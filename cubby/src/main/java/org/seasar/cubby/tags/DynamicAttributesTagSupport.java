@@ -38,8 +38,8 @@ abstract public class DynamicAttributesTagSupport extends SimpleTagSupport
 	private Map<String, Object> attrs = new HashMap<String, Object>();
 
 	/**
-	 * DynamicAttributesをセットします。
-	 * FIXME 現在はuriを無視しているので、必要であれば対応したほうがよいかも
+	 * {@inheritDoc} DynamicAttributesをセットします。 FIXME
+	 * 現在はuriを無視しているので、必要であれば対応したほうがよいかも
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
