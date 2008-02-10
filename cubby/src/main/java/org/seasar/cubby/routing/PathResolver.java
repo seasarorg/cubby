@@ -16,7 +16,7 @@
 package org.seasar.cubby.routing;
 
 /**
- * {@link org.seasar.cubby.filter.RequestRoutingFilter} がフォワードするための情報を抽出するクラス。
+ * {@link Router} がフォワードするための情報を抽出するクラス。
  * 
  * @author baba
  * @since 1.0.0
