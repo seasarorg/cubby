@@ -27,6 +27,7 @@ import org.seasar.cubby.validator.ValidationContext;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class EqualsValidator implements ScalarFieldValidator {
 

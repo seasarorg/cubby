@@ -50,6 +50,7 @@ import org.seasar.framework.util.ArrayUtil;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class InputTag extends DynamicAttributesTagSupport {
 

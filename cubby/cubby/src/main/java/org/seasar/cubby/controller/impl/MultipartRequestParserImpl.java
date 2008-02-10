@@ -47,6 +47,7 @@ import org.seasar.framework.util.StringUtil;
  * 
  * @author baba
  * @see <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
+ * @since 1.0.0
  */
 public class MultipartRequestParserImpl implements RequestParser {
 

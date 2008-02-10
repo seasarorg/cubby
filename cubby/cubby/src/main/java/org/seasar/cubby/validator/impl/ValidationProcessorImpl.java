@@ -26,6 +26,7 @@ import org.seasar.cubby.validator.ValidationRules;
  * 入力検証を行うクラスの実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ValidationProcessorImpl implements ValidationProcessor {
 

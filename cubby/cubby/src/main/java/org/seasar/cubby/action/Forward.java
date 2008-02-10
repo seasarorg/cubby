@@ -50,6 +50,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Forward extends AbstractActionResult {
 

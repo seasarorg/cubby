@@ -49,6 +49,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class RequestRoutingFilter implements Filter {
 
@@ -161,6 +162,7 @@ public class RequestRoutingFilter implements Filter {
 	 * ルーター。
 	 * 
 	 * @author baba
+	 * @since 1.0.0
 	 */
 	public static class Router {
 

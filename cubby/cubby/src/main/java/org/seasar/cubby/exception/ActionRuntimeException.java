@@ -21,6 +21,7 @@ import org.seasar.framework.exception.SRuntimeException;
  * アクションメソッドが <code>null</code> を返した場合にスローされる実行時例外です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionRuntimeException extends SRuntimeException {
 

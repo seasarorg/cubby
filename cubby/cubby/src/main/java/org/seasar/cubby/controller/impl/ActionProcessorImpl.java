@@ -32,6 +32,7 @@ import org.seasar.framework.log.Logger;
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスの実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionProcessorImpl implements ActionProcessor {
 

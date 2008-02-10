@@ -36,6 +36,7 @@ import org.seasar.cubby.util.CubbyFunctions;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class TextareaTag extends DynamicAttributesTagSupport {
 

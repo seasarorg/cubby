@@ -34,6 +34,7 @@ import org.seasar.framework.util.ResourceUtil;
  * リクエストのパラメータとアクションのプロパティとの変換に使用する{@link org.seasar.extension.dxo.converter.Converter コンバータ}のファクトリクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 

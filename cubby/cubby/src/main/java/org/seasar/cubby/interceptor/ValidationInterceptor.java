@@ -49,7 +49,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  * @see CubbyConstants#ATTR_VALIDATION_FAIL 入力検証エラーフラグの属性名
  * @author agata
  * @author baba
- * @since 1.0
+ * @since 1.0.0
  */
 public class ValidationInterceptor implements MethodInterceptor {
 

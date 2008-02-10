@@ -41,6 +41,7 @@ import org.seasar.framework.util.StringUtil;
  * @author agata
  * @author baba
  * @see SimpleDateFormat
+ * @since 1.0.0
  */
 public class DateFormatValidator implements ScalarFieldValidator {
 

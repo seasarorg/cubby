@@ -36,6 +36,8 @@ import org.seasar.framework.util.ClassTraversal.ClassHandler;
 /**
  * クラスを抽出するクラスです。
  * 
+ * @author baba
+ * @since 1.0.0
  */
 abstract class ClassCollector implements ClassHandler {
 

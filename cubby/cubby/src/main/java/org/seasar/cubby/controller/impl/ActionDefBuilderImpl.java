@@ -36,6 +36,7 @@ import org.seasar.framework.util.ClassUtil;
  * アクションの定義を組み立てるビルダの実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionDefBuilderImpl implements ActionDefBuilder {
 

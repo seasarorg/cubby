@@ -23,6 +23,7 @@ import java.util.List;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class ValidationContext {
 

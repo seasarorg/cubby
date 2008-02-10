@@ -33,6 +33,7 @@ import org.seasar.framework.util.StringUtil;
  * {@link String}をキー、{@link Object}の配列を値にもつ{@link Map}からBeanに変換するコマンドです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 class ObjectArrayMapToBeanDxoCommand extends MapToBeanDxoCommand {
 

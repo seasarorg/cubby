@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * アクションの定義を組み立てるビルダです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface ActionDefBuilder {
 

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * リクエスト解析器です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface RequestParser {
 

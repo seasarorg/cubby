@@ -32,6 +32,7 @@ import org.seasar.framework.util.StringUtil;
  * @author agata
  * @author baba
  * @see String#length()
+ * @since 1.0.0
  */
 public class MaxLengthValidator implements ScalarFieldValidator {
 

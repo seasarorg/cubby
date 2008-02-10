@@ -24,6 +24,7 @@ import org.seasar.cubby.controller.ActionContext;
  * アクションメソッド実行後の処理を表す結果オブジェクトのインターフェイス
  * 
  * @author agata
+ * @since 1.0.0
  */
 public interface ActionResult {
 

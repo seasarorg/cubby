@@ -19,6 +19,7 @@ package org.seasar.cubby.validator;
  * メッセージ取得のためのヘルパクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class MessageHelper {
 

@@ -31,6 +31,7 @@ import org.seasar.framework.util.ClassUtil;
  * リクエストのパラメータとアクションのプロパティとを変換するDXOです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class FormDxoImpl implements FormDxo {
 

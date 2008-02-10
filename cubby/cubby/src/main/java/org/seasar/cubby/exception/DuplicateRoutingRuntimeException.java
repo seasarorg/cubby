@@ -21,6 +21,7 @@ import org.seasar.framework.exception.SRuntimeException;
  * アクションの登録時に、そのクラス名、メソッド名、アノテーションから算出したパスの正規表現が重複したことを示すためにスローされる実行時例外です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class DuplicateRoutingRuntimeException extends SRuntimeException {
 

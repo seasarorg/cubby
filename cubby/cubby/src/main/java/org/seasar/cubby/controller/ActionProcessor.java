@@ -25,6 +25,7 @@ import org.seasar.cubby.action.ActionResult;
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスです。
  * 
  * @author agata
+ * @since 1.0.0
  */
 public interface ActionProcessor {
 

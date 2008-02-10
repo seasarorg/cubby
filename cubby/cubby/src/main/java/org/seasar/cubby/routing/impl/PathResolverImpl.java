@@ -51,6 +51,7 @@ import org.seasar.framework.util.StringUtil;
  * の情報からアクションのパスを抽出し、リクエストされたパスをどのメソッドに振り分けるかを決定します。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class PathResolverImpl implements PathResolver, Disposable {
 
@@ -365,6 +366,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * ルーティング。
 	 * 
 	 * @author baba
+	 * @since 1.0.0
 	 */
 	static class Routing {
 

@@ -19,6 +19,7 @@ package org.seasar.cubby.routing;
  * 内部フォワード情報です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface InternalForwardInfo {
 

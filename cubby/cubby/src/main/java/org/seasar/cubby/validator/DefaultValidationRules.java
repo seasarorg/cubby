@@ -22,6 +22,7 @@ import java.util.List;
  * 入力検証を保持するクラスです。
  * 
  * @author agata
+ * @since 1.0.0
  */
 public class DefaultValidationRules implements ValidationRules {
 

@@ -20,6 +20,7 @@ package org.seasar.cubby;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyConstants {
 
