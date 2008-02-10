@@ -17,7 +17,7 @@ package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
-import static org.seasar.cubby.tags.TagUtils.isChecked;
+import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.outputValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
@@ -220,7 +220,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			if (value == null || values == null) {
 				return "";
 			}
-			if (isChecked(value, values)) {
+			if (contains(values, value)) {
 				return "selected=\"true\"";
 			} else {
 				return "";
