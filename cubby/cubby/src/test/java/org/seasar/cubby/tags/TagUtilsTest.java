@@ -106,63 +106,63 @@ public class TagUtilsTest extends TestCase {
     public void testIsChecked() throws Throwable {
         Object[] values = new Object[1];
         values[0] = "";
-        boolean result = TagUtils.isChecked("testTagUtilsValue", values);
+        boolean result = TagUtils.contains(values, "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     @SuppressWarnings("unchecked")
     public void testIsChecked1() throws Throwable {
-        boolean result = TagUtils.isChecked("testTagUtilsValue", new ArrayList(100));
+        boolean result = TagUtils.contains(new ArrayList(100), "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     public void testIsChecked2() throws Throwable {
         Object[] values = new Object[2];
         values[1] = "testString";
-        boolean result = TagUtils.isChecked("testString", values);
+        boolean result = TagUtils.contains(values, "testString");
         assertTrue("result", result);
     }
     
     public void testIsChecked3() throws Throwable {
         Object[] values = new Object[0];
-        boolean result = TagUtils.isChecked("testTagUtilsValue", values);
+        boolean result = TagUtils.contains(values, "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     public void testIsChecked4() throws Throwable {
         Object[] values = new Object[3];
         values[0] = "";
-        boolean result = TagUtils.isChecked("", values);
+        boolean result = TagUtils.contains(values, "");
         assertTrue("result", result);
     }
     
     public void testIsChecked5() throws Throwable {
-        boolean result = TagUtils.isChecked("testString", "testString");
+        boolean result = TagUtils.contains("testString", "testString");
         assertTrue("result", result);
     }
     
     public void testIsChecked6() throws Throwable {
         Object[] values = new Object[1];
-        boolean result = TagUtils.isChecked("testTagUtilsValue", values);
+        boolean result = TagUtils.contains(values, "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     public void testIsChecked7() throws Throwable {
         Object[] values = new Object[3];
         values[1] = new Integer(100);
-        boolean result = TagUtils.isChecked("testTagUtilsValue", values);
+        boolean result = TagUtils.contains(values, "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     public void testIsChecked8() throws Throwable {
-        boolean result = TagUtils.isChecked("testTagUtilsValue", Boolean.FALSE);
+        boolean result = TagUtils.contains(Boolean.FALSE, "testTagUtilsValue");
         assertFalse("result", result);
     }
     
     public void testIsChecked9() throws Throwable {
         Object[] values = new Object[4];
         values[0] = "testString";
-        boolean result = TagUtils.isChecked("testString", values);
+        boolean result = TagUtils.contains(values, "testString");
         assertTrue("result", result);
     }
     
@@ -170,7 +170,7 @@ public class TagUtilsTest extends TestCase {
         Object[] values = new Object[2];
         values[0] = new Integer(-2);
         values[1] = "testString";
-        boolean result = TagUtils.isChecked("testString", values);
+        boolean result = TagUtils.contains(values, "testString");
         assertTrue("result", result);
     }
 
@@ -273,7 +273,7 @@ public class TagUtilsTest extends TestCase {
     public void testIsCheckedThrowsClassCastException() throws Throwable {
         char[] values = new char[2];
         try {
-            TagUtils.isChecked("testTagUtilsValue", values);
+            TagUtils.contains(values, "testTagUtilsValue");
             fail("Expected ClassCastException to be thrown");
         } catch (ClassCastException ex) {
             assertEquals("ex.getClass()", ClassCastException.class, ex.getClass());
@@ -282,7 +282,7 @@ public class TagUtilsTest extends TestCase {
     
     public void testIsCheckedThrowsNullPointerException() throws Throwable {
         try {
-            TagUtils.isChecked("testTagUtilsValue", null);
+            TagUtils.contains(null, "testTagUtilsValue");
             fail("Expected NullPointerException to be thrown");
         } catch (NullPointerException ex) {
             assertNull("ex.getMessage()", ex.getMessage());
