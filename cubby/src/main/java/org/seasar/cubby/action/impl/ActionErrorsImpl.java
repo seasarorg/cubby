@@ -28,6 +28,7 @@ import org.seasar.cubby.action.FieldInfo;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class ActionErrorsImpl implements ActionErrors {
 

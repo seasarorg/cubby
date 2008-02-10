@@ -41,6 +41,7 @@ import org.seasar.framework.container.SingletonS2Container;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class FormTag extends BodyTagSupport implements DynamicAttributes {
 

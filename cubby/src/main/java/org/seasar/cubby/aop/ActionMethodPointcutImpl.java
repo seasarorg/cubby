@@ -29,6 +29,7 @@ import org.seasar.framework.exception.EmptyRuntimeException;
  * アクションメソッドに適用される {@link Pointcut}。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 

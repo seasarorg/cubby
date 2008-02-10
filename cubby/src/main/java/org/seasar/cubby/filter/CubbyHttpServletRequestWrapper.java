@@ -69,6 +69,7 @@ import org.seasar.framework.container.ComponentDef;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 

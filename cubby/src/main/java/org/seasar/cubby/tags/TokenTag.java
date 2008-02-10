@@ -40,6 +40,7 @@ import org.seasar.framework.util.StringUtil;
  * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext,
  *      Object[])
  * @author agata
+ * @since 1.0.0
  */
 public class TokenTag extends DynamicAttributesTagSupport {
 

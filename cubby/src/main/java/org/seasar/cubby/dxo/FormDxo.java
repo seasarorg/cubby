@@ -21,6 +21,7 @@ import java.util.Map;
  * フォームオブジェクトと {@link Map} とを相互に変換します。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface FormDxo {
 

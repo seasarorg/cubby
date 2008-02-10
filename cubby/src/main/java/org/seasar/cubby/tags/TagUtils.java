@@ -37,6 +37,7 @@ import org.seasar.framework.util.StringUtil;
  * カスタムタグで使用するユーティリティクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 class TagUtils {
 

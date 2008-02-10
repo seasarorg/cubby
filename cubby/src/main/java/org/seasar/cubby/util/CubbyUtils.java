@@ -33,6 +33,7 @@ import org.seasar.framework.util.StringUtil;
  * Cubby内部で使用するユーティリティクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyUtils {
 

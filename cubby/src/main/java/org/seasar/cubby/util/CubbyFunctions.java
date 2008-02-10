@@ -25,6 +25,7 @@ import java.util.Map;
  * CubbyのJSP EL functionsを提供します。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyFunctions {
 

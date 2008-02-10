@@ -35,6 +35,7 @@ import org.seasar.framework.log.Logger;
  * アクションメソッドの実行時コンテキストの実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionContextImpl implements ActionContext {
 

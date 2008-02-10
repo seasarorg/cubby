@@ -23,6 +23,7 @@ import org.seasar.cubby.action.ActionErrors;
  * 入力検証を行うクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface ValidationProcessor {
 

@@ -23,6 +23,7 @@ import org.seasar.cubby.action.ActionErrors;
  * 入力検証のルールです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface ValidationRule {
 

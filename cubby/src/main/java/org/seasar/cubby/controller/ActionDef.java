@@ -23,6 +23,7 @@ import org.seasar.framework.container.ComponentDef;
  * アクションの定義です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface ActionDef {
 

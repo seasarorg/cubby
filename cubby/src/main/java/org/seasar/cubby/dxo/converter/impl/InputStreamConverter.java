@@ -25,6 +25,7 @@ import org.seasar.framework.log.Logger;
  * {@link FileItem}から{@link InputStream}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class InputStreamConverter extends AbstractFileItemConverter {
 

@@ -21,6 +21,7 @@ import org.seasar.cubby.util.Messages;
  * メッセージ情報です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class MessageInfo {
 

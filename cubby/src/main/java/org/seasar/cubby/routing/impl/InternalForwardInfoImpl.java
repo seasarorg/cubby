@@ -24,6 +24,7 @@ import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
  * 内部フォワード情報の実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 class InternalForwardInfoImpl implements InternalForwardInfo {
 

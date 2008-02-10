@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.FileItem;
  * {@link FileItem}から byte の配列へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ByteArrayConverter extends AbstractFileItemConverter {
 

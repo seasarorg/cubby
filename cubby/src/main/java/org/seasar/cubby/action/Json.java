@@ -54,6 +54,7 @@ import org.seasar.framework.util.StringUtil;
  *      with Padding)</a>
  * @see JSONSerializer#serialize(Object)
  * @author baba
+ * @since 1.0.0
  */
 public class Json extends AbstractActionResult {
 

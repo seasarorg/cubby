@@ -78,7 +78,7 @@ import java.lang.annotation.Target;
  * </pre>
  * 
  * @author agata
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })

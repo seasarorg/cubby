@@ -19,6 +19,7 @@ package org.seasar.cubby.action;
  * HTMLフォームにおけるフィールドの情報です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class FieldInfo {
 

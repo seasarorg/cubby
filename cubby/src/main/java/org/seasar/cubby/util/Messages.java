@@ -25,6 +25,7 @@ import org.seasar.cubby.controller.ThreadContext;
  * メッセージリソースを取得するユーティリティクラスです。
  * 
  * @author agata
+ * @since 1.0.0
  */
 public class Messages {
 

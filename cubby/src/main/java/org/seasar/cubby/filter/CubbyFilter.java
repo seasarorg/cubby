@@ -39,6 +39,7 @@ import org.seasar.framework.log.Logger;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyFilter implements Filter {
 

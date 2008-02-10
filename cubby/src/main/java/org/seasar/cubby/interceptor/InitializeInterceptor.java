@@ -38,7 +38,7 @@ import org.seasar.cubby.dxo.FormDxo;
  * 
  * @author agata
  * @author baba
- * @since 1.0
+ * @since 1.0.0
  */
 public class InitializeInterceptor implements MethodInterceptor {
 

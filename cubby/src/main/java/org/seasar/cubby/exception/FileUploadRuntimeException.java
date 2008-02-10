@@ -21,6 +21,7 @@ import org.seasar.framework.exception.SRuntimeException;
  * multipart/form-data 形式でのファイルアップロードに失敗した場合にスローされる実行時例外です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class FileUploadRuntimeException extends SRuntimeException {
 

@@ -35,6 +35,7 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @see Pattern
  * @see Matcher
+ * @since 1.0.0
  */
 public class RegexpValidator implements ScalarFieldValidator {
 

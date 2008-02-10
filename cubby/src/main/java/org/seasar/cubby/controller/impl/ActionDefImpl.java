@@ -24,6 +24,7 @@ import org.seasar.framework.container.ComponentDef;
  * アクションの定義の実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 class ActionDefImpl implements ActionDef {
 

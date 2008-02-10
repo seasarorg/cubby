@@ -28,6 +28,7 @@ import org.seasar.framework.util.StringUtil;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class RangeValidator implements ScalarFieldValidator {
 

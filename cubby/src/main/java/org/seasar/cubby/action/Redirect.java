@@ -46,6 +46,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Redirect extends AbstractActionResult {
 

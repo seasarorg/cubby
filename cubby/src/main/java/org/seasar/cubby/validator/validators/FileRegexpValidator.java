@@ -35,6 +35,7 @@ import org.seasar.cubby.validator.ValidationContext;
  * @see Pattern
  * @see Matcher
  * @author baba
+ * @since 1.0.0
  */
 public class FileRegexpValidator implements ScalarFieldValidator {
 

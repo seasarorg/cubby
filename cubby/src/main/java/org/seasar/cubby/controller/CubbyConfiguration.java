@@ -21,6 +21,7 @@ import org.seasar.cubby.action.FormatPattern;
  * Cubby の全体的な設定情報です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface CubbyConfiguration {
 

@@ -28,6 +28,7 @@ import org.seasar.cubby.controller.ActionContext;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Direct extends AbstractActionResult {
 

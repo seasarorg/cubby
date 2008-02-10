@@ -23,6 +23,7 @@ import org.seasar.extension.dxo.converter.impl.AbstractConverter;
  * {@link FileItem}を他の型のオブジェクトに変換するクラスの抽象クラウスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public abstract class AbstractFileItemConverter extends AbstractConverter {
 

@@ -27,6 +27,7 @@ import org.seasar.framework.log.Logger;
  * Cubby の全体的な設定情報の実装です。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class CubbyConfigurationImpl implements CubbyConfiguration {
 
