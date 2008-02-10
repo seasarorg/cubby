@@ -21,62 +21,122 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.seasar.framework.util.StringUtil;
-
+/**
+ * CubbyのJSP EL functionsを提供します。
+ * 
+ * @author baba
+ */
 public class CubbyFunctions {
 
-	public static Boolean contains(Object c, Object value) {
-		if (c instanceof Collection) {
-			return _contains((Collection<?>) c, value);
-		} else if (c != null && c.getClass().isArray()) {
-			return _contains(Arrays.asList((Object[]) c), value);
+	/**
+	 * 配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。
+	 * 
+	 * @param collection
+	 *            配列や{@link Collection コレクション}
+	 * @param obj
+	 *            配列やコレクションにあるかどうかを調べる要素
+	 * @return 配列やコレクションに指定したオブジェクトが含まれる場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static Boolean contains(final Object collection, final Object obj) {
+		if (collection instanceof Collection) {
+			return _contains((Collection<?>) collection, obj);
+		} else if (collection != null && collection.getClass().isArray()) {
+			return _contains(Arrays.asList((Object[]) collection), obj);
 		} else {
 			return false;
 		}
 	}
 
-	public static Boolean _contains(Collection<?> c, Object value) {
-		return c.contains(value);
+	/**
+	 * 指定された要素が{@link Collection}内にあるかどうかを示します。
+	 * 
+	 * @param collection
+	 *            コレクション
+	 * @param obj
+	 *            コレクションにあるかどうかを調べる要素
+	 * @return 指定された要素が{@link Collection}内にある場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	private static Boolean _contains(final Collection<?> collection,
+			final Object obj) {
+		return collection.contains(obj);
 	}
 
-	public static Boolean containsKey(Map<?, ?> m, Object value) {
-		return m.containsKey(value);
+	/**
+	 * {@link Map}に指定したキーが含まれるかどうかを判定します。
+	 * 
+	 * @param map
+	 *            マップ
+	 * @param key
+	 *            マップにあるかどうかが判定されるキー
+	 * @return {@link Map}に指定したキーが含まれる場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static Boolean containsKey(final Map<?, ?> map, final Object key) {
+		return map.containsKey(key);
 	}
 
-	public static Boolean containsValue(Map<?, ?> m, Object value) {
-		return m.containsValue(value);
+	/**
+	 * {@link Map}に指定した値が含まれるかどうかを判定します。
+	 * 
+	 * @param map
+	 *            マップ
+	 * @param value
+	 *            マップにあるかどうかを判定される値
+	 * @return {@link Map}に指定した値が含まれる場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static Boolean containsValue(final Map<?, ?> map, final Object value) {
+		return map.containsValue(value);
 	}
 
-	public static String odd(Integer index, String classnames) {
-		String[] c = classnames.split(",");
+	/**
+	 * 指定したカンマ区切りの文字列をインデックス値でサイクルして出力します。
+	 * <p>
+	 * 主に行毎に色分けする場合に CSS のクラス名を出力する場合に使用します。
+	 * </p>
+	 * 
+	 * @param index
+	 *            インデックス
+	 * @param classNames
+	 *            カンマ区切りの文字列
+	 * @return 指定したインデックスに対応する文字列
+	 */
+	public static String odd(final Integer index, final String classNames) {
+		final String[] c = classNames.split(",");
 		return c[index % c.length];
 	}
 
-	public static String out(Object value) {
-		return value == null ? "" : escapeHtml(value.toString());
+	/**
+	 * HTMLをエスケープします。
+	 * <p>
+	 * JSTLのoutタグの代わりに使用します。EL式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこのfunctionを使用します。
+	 * </p>
+	 * 
+	 * @param str
+	 *            エスケープする文字列
+	 * @return エスケープされた HTML
+	 */
+	public static String out(final Object str) {
+		return str == null ? "" : CubbyUtils.escapeHtml(str.toString());
 	}
 
-	public static String escapeHtml(Object value) {
-		if (value == null) {
-			return "";
-		}
-		String text;
-		if (value instanceof String) {
-			text = (String) value;
-		} else {
-			text = value.toString();
-		}
-		text = StringUtil.replace(text, "&", "&amp;");
-		text = StringUtil.replace(text, "<", "&lt;");
-		text = StringUtil.replace(text, ">", "&gt;");
-		text = StringUtil.replace(text, "\"", "&quot;");
-		text = StringUtil.replace(text, "'", "&#39;");
-		return text;
-	}
-
-	public static String dateFormat(Object date, String pattern) {
+	/**
+	 * {@link Date}型のオブジェクトをフォーマットして出力します。
+	 * <p>
+	 * JSTL の dateFormat タグの代わりに使用します。
+	 * </p>
+	 * 
+	 * @param date
+	 *            日付/時刻文字列にフォーマットする日付/時刻値
+	 * @param pattern
+	 *            日付と時刻のフォーマットを記述するパターン
+	 * @return フォーマットされた日付/時刻文字列
+	 */
+	public static String dateFormat(final Object date, final String pattern) {
 		if (date instanceof Date) {
-			SimpleDateFormat format = new SimpleDateFormat(pattern);
+			final SimpleDateFormat format = new SimpleDateFormat(pattern);
 			return format.format(date);
 		} else {
 			return "";
