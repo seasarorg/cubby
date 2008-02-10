@@ -29,7 +29,6 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
-import org.seasar.cubby.routing.impl.RouterImpl;
 import org.seasar.framework.beans.util.Beans;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
@@ -117,7 +116,7 @@ import org.seasar.framework.util.StringUtil;
 public abstract class CubbyTestCase extends S2TigerTestCase {
 
 	/** ルーティング */
-	private final Router router = new RouterImpl();
+	private Router router;
 
 	/** フィルターチェイン */
 	private final MockFilterChain filterChain = new MockFilterChain();
