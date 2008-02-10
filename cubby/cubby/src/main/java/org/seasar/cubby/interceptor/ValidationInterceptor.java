@@ -107,17 +107,17 @@ public class ValidationInterceptor implements MethodInterceptor {
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		final Validation validation = context.getValidation();
+		final boolean success;
 		if (validation == null) {
-			return true;
+			success = true;
+		} else {
+			final Map<String, Object[]> params = getAttribute(request,
+					ATTR_PARAMS);
+			final Object form = context.getFormBean();
+			final ActionErrors errors = context.getAction().getErrors();
+			final ValidationRules rules = getValidationRules(context);
+			success = validationProcessor.process(errors, params, form, rules);
 		}
-
-		final Map<String, Object[]> params = getAttribute(request, ATTR_PARAMS);
-		final Object form = context.getFormBean();
-		final ActionErrors errors = context.getAction().getErrors();
-		final ValidationRules rules = getValidationRules(context);
-
-		final boolean success = validationProcessor.process(errors, params,
-				form, rules);
 
 		final Object result;
 		if (success) {
