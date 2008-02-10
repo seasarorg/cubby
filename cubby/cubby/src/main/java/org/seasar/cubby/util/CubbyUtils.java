@@ -30,7 +30,7 @@ import org.seasar.cubby.action.RequestMethod;
 import org.seasar.framework.util.StringUtil;
 
 /**
- * Cubby内部で使用するユーティリティメソッドです。
+ * Cubby内部で使用するユーティリティクラスです。
  * 
  * @author baba
  */
