@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-catalog>
+  <archetypes>
+    <archetype>
+      <groupId>org.seasar.cubby</groupId>
+      <artifactId>cubby-archetype</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <repository>http://maven.seasar.org/maven2/</repository>
+      <description>Cubby 1.0.0</description>
+    </archetype>
+  </archetypes>
+</archetype-catalog>
