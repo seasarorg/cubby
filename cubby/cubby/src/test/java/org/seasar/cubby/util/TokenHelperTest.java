@@ -15,6 +15,9 @@
  */
 package org.seasar.cubby.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import junit.framework.TestCase;
 
 import org.seasar.cubby.CubbyConstants;
@@ -26,8 +29,17 @@ import org.seasar.framework.util.LruHashMap;
 public class TokenHelperTest extends TestCase {
 
 	public void testGenerateGUID() throws Exception {
-		String guid = TokenHelper.generateGUID();
-		assertEquals("GUIDは32文字", 32, guid.length());
+		final int count = 50000;
+		Set<String> generatedGuids = new HashSet<String>();
+		for (int i = 0; i < count; i++) {
+			String guid = TokenHelper.generateGUID();
+//			assertEquals("GUIDは32文字[" + guid + "]", 32, guid.length());
+			assertNotNull(guid);
+			assertTrue(guid.length() > 0);
+			assertFalse("GUIDが重複した:" + guid, generatedGuids.contains(guid));
+			generatedGuids.add(guid);
+		}
+		assertEquals(count, generatedGuids.size());
 	}
 
 	public void testSetToken() throws Exception {
