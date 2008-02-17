@@ -10,9 +10,9 @@
 		<href>../index.html</href>
 	</bannerLeft>
 	<body>
-   		<links>
-			<item name="seasar.org" href="http://www.seasar.org/" />
-		</links>
+		<breadcrumbs>
+			<item name="${project.name}" href="/index.html"/>
+		</breadcrumbs>
 
 		${reports}
 

@@ -6,13 +6,13 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</skin>
 	<bannerLeft>
-		<name>Cubby Tomcat55 Support</name>
-		<href>http://cubby.sandbox.seasar.org/</href>
+		<name>Cubby</name>
+		<href>../index.html</href>
 	</bannerLeft>
 	<body>
-   		<links>
-			<item name="seasar.org" href="http://www.seasar.org/" />
-		</links>
+		<breadcrumbs>
+			<item name="${project.name}" href="/index.html"/>
+		</breadcrumbs>
 
 		${reports}
 
