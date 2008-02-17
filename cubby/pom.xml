@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
   <name>Cubby Project</name>
   <version>1.0.0-SNAPSHOT</version>
-  <description>Cubby Simple JSP based Web Application Framework</description>
+  <description>Cubby Simple Web Application Framework</description>
   <url>http://cubby.sandbox.seasar.org/</url>
   <inceptionYear>2006</inceptionYear>
   <organization>
