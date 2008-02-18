@@ -73,10 +73,6 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	 */
 	private String emptyOptionLabel;
 
-	// public Object getItems() {
-	// return items;
-	// }
-
 	/**
 	 * option要素リストをセットします。
 	 * 
@@ -167,7 +163,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			out.write("</option>\n");
 		}
 
-		if (items.getClass().isArray()) {
+		if (items != null && items.getClass().isArray()) {
 			final OptionWriter optionWriter = new OptionWriter(
 					new BeanItemAdaptor());
 			for (final Object item : (Object[]) items) {
