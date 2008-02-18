@@ -1,0 +1,44 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>06_fileUpload_001</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">06_fileUpload_001</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/cubby-selenium-test/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=ファイルアップロード</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>ファイルアップロード</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='アップロード']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>ファイル名は必須です。</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>components.jsp</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
