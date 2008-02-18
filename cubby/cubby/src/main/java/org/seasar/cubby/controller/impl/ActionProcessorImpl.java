@@ -83,7 +83,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 			}
 			final ActionResult result = context.invoke();
 			if (result == null) {
-				throw new ActionRuntimeException("ECUB0001",
+				throw new ActionRuntimeException("ECUB0101",
 						new Object[] { context.getMethod() });
 			}
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
