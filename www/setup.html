@@ -263,14 +263,17 @@
 (実際には1行で入力してください)</pre>
 </div>
 </li>
-<li>maven-archetype-plugin のバージョンが 2.x の場合はインタラクティブに作成するプロジェクトの情報を指定します。<div class="source"><pre>mvn archetype:create -DarchetypeCatalog=http://cubby.sandbox.seasar.org/archetype-catalog.xml</pre>
+<li>maven-archetype-plugin のバージョンが 2.x の場合はインタラクティブに作成するプロジェクトの情報を指定します。<p>2008/2時点では maven-archetype-plugin は SNAPSHOT 版です。</p>
+<p>Archetype の<a href="http://cubby.sandbox.seasar.org/archetype-catalog.xml" class="externalLink">カタログファイル</a>
+をダウンロードしてください。</p>
+<div class="source"><pre>mvn archetype:create -DarchetypeCatalog=file://(ダウンロードしたカタログファイルのパス 例：&quot;C:\Users\foo\archetype-catalog.xml&quot;)</pre>
 </div>
 <p>コマンド入力後、いくつかの質問に回答していきます。</p>
 <div class="source"><pre>Choose archetype:
-1: http://cubby.sandbox.seasar.org/archetype-catalog.xml -&gt; cubby-archetype (Cubby Archetype)
+1: local -&gt; cubby-archetype (Cubby 1.0.0)
 Choose a number:  (1):</pre>
 </div>
-<p>1を入力して、cubby-archetypeを選んでください。</p>
+<p>1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。</p>
 <div class="source"><pre>Define value for groupId: :</pre>
 </div>
 <p>作成するプロジェクトのグループIDを入力してください。 例:com.example.foo</p>

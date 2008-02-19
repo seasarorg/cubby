@@ -434,47 +434,50 @@
 </div>
 </div>
 <div class="section"><h2>独自バリデーションの定義</h2>
-<p>独自のバリデーションクラスは<a href="cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a>
- または<a href="cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html">ArrayFieldValidator</a>
-を実装して作成します。</p>
-<p><b>ひとつの要素を検証するバリデーションクラス</b>
-</p>
-<div class="source"><pre></pre>
+<div class="section"><h3>リクエストパラメータのバリデーション</h3>
+<p>リクエストパラメータのバリデーションを独自に作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a>
+ または<a href="cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html">ArrayFieldValidator</a>
+を実装して作成します。<br />
+実装の方法は<a href="cubby/xref/org/seasar/cubby/validator/validators/package-summary.html">それぞれのインターフェイスの実装クラス</a>
+を参照してください。</p>
 </div>
-<p><b>配列全体を検証するバリデーションクラス</b>
-</p>
-<div class="source"><pre>public class MaxLengthValidator implements ArrayFieldValidator {
+<div class="section"><h3>業務ロジックによるバリデーション</h3>
+<p>データベースアクセスなどの業務ロジックによるバリデーションを作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a>
+を実装して作成してください。</p>
+<div class="source"><pre>
+  public String userId;
+  public String password;
+  public Map&lt;String, Object&gt; sessionScope;
 
-  private final MessageHelper messageHelper;
-
-  private final int max;
-
-  public MaxLengthValidator(final int max) {
-    this(max, &quot;valid.maxLength&quot;);
-  }
-
-  public MaxLengthValidator(final int max, final String messageKey) {
-    this.max = max;
-    this.messageHelper = new MessageHelper(messageKey);
-  }
-
-  // 検証メソッド
-  public void validate(final ValidationContext context, final Object value) {
-    if (value instanceof String) {
-      final String str = (String) value;
-      if (StringUtil.isEmpty((String) value)) {
-        return;
-      }
-      if (str.length() &lt;= max) {
-        return;
-      }
-    } else if (value == null) {
-      return;
+  public ValidationRules loginValidation = new DefaultValidationRules(
+      &quot;login.&quot;) {
+    @Override
+    public void initialize() {
+      add(&quot;userId&quot;, new RequiredValidator());
+      add(&quot;password&quot;, new RequiredValidator());
+      add(new UserValidationRule());
     }
-    // エラーの場合は ValidationContext#addMessageInfo(MessageInfo) で、コンテキストにエラーメッセージを設定します。
-    context.addMessageInfo(this.messageHelper.createMessageInfo(max));
+  };
+
+  private class UserValidationRule implements ValidationRule {
+
+    public void apply(Map&lt;String, Object[]&gt; params, Object form,
+        ActionErrors errors) throws ValidationException {
+      if (userId == null || password == null) {
+        return;
+      }
+      User user = findUser(userId, password);
+      if (user != null) {
+        sessionScope.put(&quot;user&quot;, user);
+      } else {
+        errors.add(&quot;ユーザIDかパスワードが違います。&quot;, &quot;userId&quot;, &quot;password&quot;);
+      }
+      sessionScope.put(&quot;user&quot;, user);
+    }
+
   }
-}</pre>
+</pre>
+</div>
 </div>
 </div>
 
