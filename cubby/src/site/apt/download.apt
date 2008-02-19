@@ -19,7 +19,7 @@
 
  * 以前のバージョンからの移行する際の注意点
  
- maven-archetype-plugin 2に対応しました。詳細は{{setup.html}セットアップ}}をご覧下さい。
+ maven-archetype-plugin 2に対応しました。詳細は{{{setup.html}セットアップ}}をご覧下さい。
 
 * Cubby 1.0.0-RC2 (2008-02-04)
 
