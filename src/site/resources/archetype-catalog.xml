@@ -4,7 +4,7 @@
     <archetype>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-archetype</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <repository>http://maven.seasar.org/maven2/</repository>
       <description>Cubby 1.0.0</description>
     </archetype>

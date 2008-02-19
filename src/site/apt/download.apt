@@ -3,9 +3,23 @@
                                     ------
                                     agata
                                     ------
-                                  2008-02-04
+                                  2008-02-19
 
 ダウンロード
+
+* Cubby 1.0.0 (2008-02-19)
+
+ リリース1.0.0です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10615}リリースノート}}）
+
+ * Cubby 本体とドキュメント {{{http://cubby.sandbox.seasar.org/download/cubby-1.0.0.zip}ダウンロード}}
+
+ * サンプル war {{{http://cubby.sandbox.seasar.org/download/cubby-examples-1.0.0.war}ダウンロード}}
+
+ * Eclipse プロジェクト {{{https://www.seasar.org/svn/sandbox/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+
+ * 以前のバージョンからの移行する際の注意点
+ 
+ maven-archetype-plugin 2に対応しました。詳細は{{setup.html}セットアップ}}をご覧下さい。
 
 * Cubby 1.0.0-RC2 (2008-02-04)
 
