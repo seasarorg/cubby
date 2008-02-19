@@ -43,10 +43,13 @@
   
     
             <div class="xleft">
-        最終更新: 2008-02-04
-                      </div>
-            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
-            
+          
+                <a href="http://www.seasar.org/" class="externalLink">The Seasar Project</a>
+                &gt;
+      
+                <a href="index.html">Cubby Project</a>
+                  </div>
+            <div class="xright">      
   
 
   
@@ -54,7 +57,8 @@
   
   
     
-  </div>
+             最終更新: 2008-02-19
+            </div>
       <div class="clear">
         <hr/>
       </div>
@@ -221,6 +225,9 @@
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
+          <a href="http://www.seasar.org/" title"Seasar" class="poweredBy">
+            <img alt="Seasar.org" src="http://www.seasar.org/images/seasar_banner.gif">
+          </a>
                        
   
 
@@ -234,15 +241,19 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>前提</h2>
-<p>Cubby は S2Container2.4 の <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html">SMART Deploy</a>
- 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming">SMART Deploy 推奨のパッケージ構成</a>
+<p>Cubby は S2Container2.4 の <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html" class="externalLink">SMART Deploy</a>
+ 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#Naming" class="externalLink">SMART Deploy 推奨のパッケージ構成</a>
 としてください。</p>
 </div>
 <div class="section"><h2>プロジェクトの作成</h2>
-<p>Cubby は maven2 の archetype を用意していますので、これを仕様してプロジェクトの雛形を作成することをおすすめします。 データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。</p>
-<p>Maven2 のインストール後、以下のコマンドでプロジェクトの雛形を作成します。</p>
-<div class="source"><pre>mvn archetype:create \
--DgroupId=(作成するプロジェクトのグループID 例:com.foo.bar) \
+<p>Cubby は <a href="http://maven.apache.org/" class="externalLink">Maven2</a>
+ の <a href="http://maven.apache.org/plugins/maven-archetype-plugin/" class="externalLink">archetypeコンテナ</a>
+ を用意していますので、これを使用してプロジェクトの雛形を作成することをおすすめします。 データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。</p>
+<div class="section"><h3>Maven2 によるプロジェクトの雛形作成</h3>
+<p>Maven2 のインストール後、以下のコマンドでプロジェクトの雛形を作成します。<br />
+(maven-archetype-plugin のバージョンによって作成方法が異なるのでご注意ください)</p>
+<ul><li>maven-archetype-plugin のバージョンが 1.x の場合はコマンドのオプションで作成するプロジェクトの情報を指定します。<div class="source"><pre>mvn archetype:create \
+-DgroupId=(作成するプロジェクトのグループID 例:com.example.foo) \
 -DartifactId=(作成するプロジェクトのアーティファクトID 例:barapp) \
 -Dversion=(作成するプロジェクトのバージョン 例:1.0-SNAPSHOT) \
 -DarchetypeGroupId=org.seasar.cubby \
@@ -251,11 +262,89 @@
 -DremoteRepositories=http://maven.seasar.org/maven2/
 (実際には1行で入力してください)</pre>
 </div>
-<p>プロジェクトを Eclipse で開発する場合は、プロジェクトのディレクトリで以下のコマンドを実行することで、必要な jar ファイルのダウンロードと WTP の設定ができます。</p>
+</li>
+<li>maven-archetype-plugin のバージョンが 2.x の場合はインタラクティブに作成するプロジェクトの情報を指定します。<div class="source"><pre>mvn archetype:create -DarchetypeCatalog=http://cubby.sandbox.seasar.org/archetype-catalog.xml</pre>
+</div>
+<p>コマンド入力後、いくつかの質問に回答していきます。</p>
+<div class="source"><pre>Choose archetype:
+1: http://cubby.sandbox.seasar.org/archetype-catalog.xml -&gt; cubby-archetype (Cubby Archetype)
+Choose a number:  (1):</pre>
+</div>
+<p>1を入力して、cubby-archetypeを選んでください。</p>
+<div class="source"><pre>Define value for groupId: :</pre>
+</div>
+<p>作成するプロジェクトのグループIDを入力してください。 例:com.example.foo</p>
+<div class="source"><pre>Define value for artifactId: :</pre>
+</div>
+<p>作成するプロジェクトのアーティファクトIDを入力してください。 例:barapp</p>
+<div class="source"><pre>Define value for version: :</pre>
+</div>
+<p>作成するプロジェクトのバージョンを入力してください。 例:1.0-SNAPSHOT</p>
+<div class="source"><pre>Define value for package: :</pre>
+</div>
+<p>作成するプロジェクトのパッケージを入力してください。 例:com.example.foo.barapp</p>
+<div class="source"><pre>Confirm properties configuration:
+groupId: com.example.foo
+artifactId: barapp
+version: 1.0-SNAPSHOT
+package: com.example.foo.barapp
+ Y: :</pre>
+</div>
+<p>いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。</p>
+</li>
+</ul>
+</div>
+<div class="section"><h3>Tomcat の起動</h3>
+<p>プロジェクトのディレクトリで以下のコマンドを実行すると Tomcat が起動し、ブラウザで「http://localhost:8080/(アーティファクトID)/」にアクセスすることで、雛形アプリケーションの動作を確認できます。</p>
+<div class="source"><pre>mvn tomcat:run</pre>
+</div>
+<p>Mayaaを使用する場合は依存する jarファイルを「src/main/webapps/WEB-INF」以下に配備する必要があります。 プロジェクトのディレクトリで以下のコマンドを実行し、jarファイルを配備してからTomcatを実行してください。 (EclipseからWTP等で実行する場合は不要です)</p>
+<div class="source"><pre>mvn war:inplace</pre>
+</div>
+</div>
+<div class="section"><h3>Eclipse を使った開発</h3>
+<div class="section"><h4>プロジェクトの設定</h4>
+<p>プロジェクトを Eclipse で開発する場合は、Maven2 で Eclipse のワークスペースやプロジェクトを設定します。</p>
+<ol type="1"><li>ワークスペースのクラスパス変数<p>Eclipse ワークスペースにビルドパスのクラスパス変数(MAVEN_REPO)を追加します。<br />
+以下のコマンドを実行してください。</p>
+<div class="source"><pre>mvn eclipse:add-maven-repo -Dmaven.eclipse.workspace=(ワークスペースのディレクトリ 例 &quot;C:/eclipse/workspace&quot;)</pre>
+</div>
+</li>
+<li>プロジェクト設定ファイル<p>プロジェクトに .project や .classpath などといった Eclipse プロジェクトの設定ファイルを作成します。<br />
+プロジェクトのディレクトリに移動して以下のコマンドを実行してください。</p>
 <div class="source"><pre>mvn eclipse:eclipse</pre>
 </div>
-<p>Eclipseを使用せずにTomcatを直接起動して動作確認するには、プロジェクトのディレクトリで以下のコマンドを実行します。Tomcat起動後にブラウザで「http://localhost:8080/(アーティファクトID)/」にアクセスすることで、雛形アプリケーションの動作を確認できます。</p>
-<div class="source"><pre>mvn tomcat:run</pre>
+<p>Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。</p>
+</li>
+<li>プロジェクトのインポート<p>プロジェクトを Eclipse のワークスペースへインポートします。</p>
+<ol type="1"><li>File(ファイル)メニュー → Import(インポート)を選択します。</li>
+<li>Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。</li>
+<li>プロジェクトのディレクトリを指定します。</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section"><h4>コードテンプレート</h4>
+<p>以下のコードテンプレート設定を Eclipse にインポートすることで「アクションメソッドのコード雛形作成」「バリデーションフィールドのコード雛形作成」が行えます。 </p>
+<ol type="1"><li>コードテンプレート定義ファイル「<a href="./eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml">cubby-eclipse-code-templates-1.0.0.xml</a>
+」をダウンロードします。</li>
+<li>Eclipse の設定を開きます。(Windowsなら「ウインドウ(Window)-&gt;設定(Preference)」、MacOSXなら「Eclipse」-&gt;設定(Preference)」)</li>
+<li>「Java-&gt;エディタ(Editor)-&gt;テンプレート(Templates)」を選択し、「インポート(Import)」ボタンをクリックします。</li>
+<li>1.でダウンロードしたコードテンプレート定義ファイルを選択します。</li>
+<li>以下のコードテンプレートによるコード補完が Java エディタ上で使用できるようになります。「cu」と入力して「コントロールキー＋スペースキー」を押してみてください。<table class="bodyTable"><tbody><tr class="a"><td align="center">補完名</td>
+<td align="center">内容</td>
+</tr>
+<tr class="b"><td align="center">cubby_action_method</td>
+<td align="center">アクションメソッドの雛形作成</td>
+</tr>
+<tr class="a"><td align="center">cubby_validation_field</td>
+<td align="center">バリデーションフィールドの雛形作成</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="section"><h2>各種ファイル</h2>
@@ -266,15 +355,14 @@
 <p>主な依存ライブラリを以下にあげます。</p>
 <ul><li>cubby-*.jar<p>Cubby 本体です。</p>
 </li>
-<li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。Cubby1.0.0-RC1以降ではs2-2.4.21以降を使用する必要があります。</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="section"><h2><b>CubbyとSeasar2のバージョンの推奨の組み合わせ</b>
-</h2>
-<table class="bodyTable"><tbody><tr class="a"><td align="center">Cubby</td>
+<li>s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar<p>Seasar2 です。Cubby1.0.0-RC2以降ではs2-2.4.22以降を使用する必要があります。</p>
+<p><b>CubbyとSeasar2のバージョンの推奨の組み合わせ</b>
+</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="center">Cubby</td>
 <td align="center">Seasar2</td>
+</tr>
+<tr class="a"><td align="center">1.0.0</td>
+<td align="center">2.4.22以上</td>
 </tr>
 <tr class="b"><td align="center">1.0.0-RC2</td>
 <td align="center">2.4.22以上</td>
@@ -287,12 +375,14 @@
 </tr>
 </tbody>
 </table>
-<ul><li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p>
+</li>
+<li>commons-fileupload-*.jar、commons-io-*.jar<p>ファイルアップロード機能で使用されます。</p>
 </li>
 </ul>
+</div>
 <div class="section"><h3>デプロイメント記述子 (WEB-INF/web.xml)</h3>
 <p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p>
-<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a class="externalLink" href="http://s2container.seasar.org/ja/DIContainer.html#request">リクエストの自動バインディング</a>
+<ol type="1"><li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request" class="externalLink">リクエストの自動バインディング</a>
 を使用するので、S2ContainerFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -310,7 +400,7 @@
 &lt;/web-app&gt;</pre>
 </div>
 </li>
-<li>HotdeployFilter<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy">Hot deploy</a>
+<li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy" class="externalLink">Hot deploy</a>
  を使用する場合は HotdeployFilter を定義します。</p>
 <div class="source"><pre>&lt;web-app&gt;
     &lt;filter&gt;
@@ -386,10 +476,10 @@
 </li>
 </ul>
 </li>
-<li>convention.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
+<li>convention.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
 を参考に、ルートパッケージを設定してください。</p>
 </li>
-<li>creator.dicon<p><a class="externalLink" href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample">dicon ファイルの設定例</a>
+<li>creator.dicon<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#DiconConfSample" class="externalLink">dicon ファイルの設定例</a>
 を参考に、ActionCreator を設定してください。</p>
 </li>
 <li>customizer.dicon<p>Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。 cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。</p>
@@ -488,20 +578,6 @@ valid.email={0}のメールアドレスの形式が正しくありません。</
 </li>
 </ol>
 </div>
-<div class="section"><h3>Eclipseコードテンプレートによる雛形作成</h3>
-<p>以下のコードテンプレート設定をEclipseにインポートすることで「アクションメソッドのコード雛形作成」「バリデーションフィールドのコード雛形作成」が行えます。 </p>
-<ol type="1"><li>コードテンプレート定義ファイル「<a href="/eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml">cubby-eclipse-code-templates-1.0.0.xml</a>
-」をダウンロードします。</li>
-<li>Eclipseの設定を開きます。(Windowsなら「ウインドウ(Window)-&gt;設定(Preference)」、MacOSXなら「Eclipse」-&gt;設定(Preference)」)</li>
-<li>「Java-&gt;エディタ(Editor)-&gt;テンプレート(Templates)」を選択し、「インポート(Import)」ボタンをクリックします。</li>
-<li>1.でダウンロードしたコードテンプレート定義ファイルを選択します。</li>
-<li>以下のコードテンプレートによるコード補完がJavaエディタ上で使用できるようになります。 「cu」と入力して「コントロールキー＋スペースキー」を押してみてください。<p><b>CubbyとSeasar2のバージョンの推奨の組み合わせ</b>
-</p>
-<ul><li>------------------------*-------------------------------* | 補完名 | 内容 | *------------------------*-------------------------------* | cubby_action_method | アクションメソッドの雛形作成 | *------------------------*-------------------------------* | cubby_validation_field | バリデーションフィールドの雛形作成 | *------------------------*-------------------------------*</li>
-</ul>
-</li>
-</ol>
-</div>
 </div>
 
       </div>
@@ -510,7 +586,8 @@ valid.email={0}のメールアドレスの形式が正しくありません。</
       <hr/>
     </div>
     <div id="footer">
-      <div class="xright">&#169;  
+      <div class="xright">&#169;      Copyright
+    
           2006-2008
     
           The Seasar Foundation and the others. All rights reserved.

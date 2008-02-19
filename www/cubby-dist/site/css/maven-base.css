@@ -84,10 +84,10 @@ div.clear hr{
   font-size: smaller;
 }
 #navcolumn li.expanded {
-  background-image: url(../images/expanded.gif);
+  background-image: url(../images/expanded.png);
 }
 #navcolumn li.collapsed {
-  background-image: url(../images/collapsed.gif);
+  background-image: url(../images/collapsed.png);
 }
 #poweredBy {
   text-align: center;

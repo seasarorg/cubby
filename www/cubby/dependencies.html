@@ -42,10 +42,16 @@
   
     
             <div class="xleft">
-        最終更新: 2008-02-04
-                      </div>
-            <div class="xright">            <a href="http://www.seasar.org/" class="externalLink">seasar.org</a>
-            
+          
+                <a href="../index.html">Cubby Project</a>
+                &gt;
+      
+                <a href="http://www.seasar.org/" class="externalLink">The Seasar Project</a>
+                &gt;
+      
+                <a href="index.html">Cubby Project</a>
+                  </div>
+            <div class="xright">      
   
 
   
@@ -53,7 +59,8 @@
   
   
     
-  </div>
+             最終更新: 2008-02-19
+            </div>
       <div class="clear">
         <hr/>
       </div>
@@ -261,6 +268,9 @@
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
+          <a href="http://www.seasar.org/" title"Seasar" class="poweredBy">
+            <img alt="Seasar.org" src="http://www.seasar.org/images/seasar_banner.gif">
+          </a>
                        
   
 
@@ -293,20 +303,6 @@
 <tr class="a"><td>commons-io</td>
 <td>commons-io</td>
 <td>1.3.1</td>
-<td>-</td>
-<td>jar</td>
-<td> </td>
-</tr>
-<tr class="b"><td>org.seasar.container</td>
-<td>s2-extension</td>
-<td>2.4.22</td>
-<td>-</td>
-<td>jar</td>
-<td> </td>
-</tr>
-<tr class="a"><td>org.seasar.container</td>
-<td>s2-framework</td>
-<td>2.4.22</td>
 <td>-</td>
 <td>jar</td>
 <td> </td>
@@ -424,6 +420,20 @@
 <td>jar</td>
 <td> </td>
 </tr>
+<tr class="b"><td>org.seasar.container</td>
+<td>s2-extension</td>
+<td>2.4.22</td>
+<td>-</td>
+<td>jar</td>
+<td> </td>
+</tr>
+<tr class="a"><td>org.seasar.container</td>
+<td>s2-framework</td>
+<td>2.4.22</td>
+<td>-</td>
+<td>jar</td>
+<td> </td>
+</tr>
 </table>
 </div>
 <div class="section"><h3>test</h3>
@@ -491,28 +501,12 @@
 </li>
 <li><a href="#org.apache.geronimo.specs:geronimo-jsp_2.0_spec:jar">org.apache.geronimo.specs:geronimo-jsp_2.0_spec:jar</a>
 </li>
-<li><a href="#org.seasar.container:s2-framework:jar">org.seasar.container:s2-framework:jar</a>
-<ul><li><a href="#aopalliance:aopalliance:jar">aopalliance:aopalliance:jar</a>
-</li>
-<li><a href="#jboss:javassist:jar">jboss:javassist:jar</a>
-</li>
-<li><a href="#ognl:ognl:jar">ognl:ognl:jar</a>
-</li>
-<li><a href="#commons-logging:commons-logging:jar">commons-logging:commons-logging:jar</a>
+<li><a href="#org.seasar.container:s2-tiger:jar">org.seasar.container:s2-tiger:jar</a>
+<ul><li><a href="#org.seasar.container:s2-extension:jar">org.seasar.container:s2-extension:jar</a>
 </li>
 <li><a href="#junit:junit:jar">junit:junit:jar</a>
 </li>
-</ul>
-</p>
-</li>
-<li><a href="#org.seasar.container:s2-extension:jar">org.seasar.container:s2-extension:jar</a>
-<ul><li><a href="#org.apache.poi:poi:jar">org.apache.poi:poi:jar</a>
-</li>
-</ul>
-</p>
-</li>
-<li><a href="#org.seasar.container:s2-tiger:jar">org.seasar.container:s2-tiger:jar</a>
-<ul><li><a href="#org.easymock:easymock:jar">org.easymock:easymock:jar</a>
+<li><a href="#org.easymock:easymock:jar">org.easymock:easymock:jar</a>
 </li>
 </ul>
 </p>
@@ -529,14 +523,14 @@
 <p><a name="org.seasar.cubby:cubby:jar"><b>Cubby</b>
 </a>
 </p>
-<p>Cubby Simple JSP based Web Application Framework</p>
-<p><a class="externalLink" href="http://cubby.sandbox.seasar.org/cubby">http://cubby.sandbox.seasar.org/cubby</a>
+<p>Cubby Simple Web Application Framework</p>
+<p><a href="http://cubby.sandbox.seasar.org/cubby" class="externalLink">http://cubby.sandbox.seasar.org/cubby</a>
 </p>
 <p><a name="log4j:log4j:jar"><b>Apache Log4j</b>
 </a>
 </p>
 <p>Apache Log4j 1.2</p>
-<p><a class="externalLink" href="http://logging.apache.org:80/log4j/1.2/">http://logging.apache.org:80/log4j/1.2/</a>
+<p><a href="http://logging.apache.org:80/log4j/1.2/" class="externalLink">http://logging.apache.org:80/log4j/1.2/</a>
 </p>
 <p><a name="javax.mail:mail:jar"><b>Unnamed - javax.mail:mail:jar:1.4</b>
 </a>
@@ -548,83 +542,50 @@
 </a>
 </p>
 <p>Commons-IO contains utility classes, stream implementations, file filters, and endian classes.</p>
-<p><a class="externalLink" href="http://jakarta.apache.org/commons/io/">http://jakarta.apache.org/commons/io/</a>
+<p><a href="http://jakarta.apache.org/commons/io/" class="externalLink">http://jakarta.apache.org/commons/io/</a>
 </p>
 <p><a name="commons-fileupload:commons-fileupload:jar"><b>FileUpload</b>
 </a>
 </p>
 <p>The FileUpload component provides a simple yet flexible means of adding support for multipart
     file upload functionality to servlets and web applications.</p>
-<p><a class="externalLink" href="http://jakarta.apache.org/commons/fileupload/">http://jakarta.apache.org/commons/fileupload/</a>
+<p><a href="http://jakarta.apache.org/commons/fileupload/" class="externalLink">http://jakarta.apache.org/commons/fileupload/</a>
 </p>
 <p><a name="org.apache.geronimo.specs:geronimo-servlet_2.4_spec:jar"><b>Servlet 2.4</b>
 </a>
 </p>
 <p>Provides open-source implementations of Sun specifications.</p>
-<p><a class="externalLink" href="http://geronimo.apache.org/specs/geronimo-servlet_2.4_spec">http://geronimo.apache.org/specs/geronimo-servlet_2.4_spec</a>
+<p><a href="http://geronimo.apache.org/specs/geronimo-servlet_2.4_spec" class="externalLink">http://geronimo.apache.org/specs/geronimo-servlet_2.4_spec</a>
 </p>
 <p><a name="org.apache.geronimo.specs:geronimo-jsp_2.0_spec:jar"><b>JSP 2.0</b>
 </a>
 </p>
 <p>Provides open-source implementations of Sun specifications.</p>
-<p><a class="externalLink" href="http://geronimo.apache.org/specs/geronimo-jsp_2.0_spec">http://geronimo.apache.org/specs/geronimo-jsp_2.0_spec</a>
-</p>
-<p><a name="org.seasar.container:s2-framework:jar"><b>Seasar2 Framework</b>
-</a>
-</p>
-<p>DI Container with AOP</p>
-<p><a class="externalLink" href="http://s2container.seasar.org/">http://s2container.seasar.org/</a>
-</p>
-<p><a name="aopalliance:aopalliance:jar"><b>AOP alliance</b>
-</a>
-</p>
-<p>AOP Alliance</p>
-<p><a name="jboss:javassist:jar"><b>Javassist</b>
-</a>
-</p>
-<p>Javassist (Java programming assistant) is a load-time reflective system for Java.</p>
-<p><a class="externalLink" href="http://www.jboss.org/products/javassist">http://www.jboss.org/products/javassist</a>
-</p>
-<p><a name="ognl:ognl:jar"><b>OGNL</b>
-</a>
-</p>
-<p>Patch for OGNL version 2.6.9 (http://www.ognl.org/)</p>
-<p><a name="commons-logging:commons-logging:jar"><b>Logging</b>
-</a>
-</p>
-<p>Commons Logging is a thin adapter allowing configurable bridging to other,
-    well known logging systems.</p>
-<p><a class="externalLink" href="http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/">http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</a>
-</p>
-<p><a name="junit:junit:jar"><b>JUnit</b>
-</a>
-</p>
-<p>JUnit is a regression testing framework written by Erich Gamma and Kent Beck. It is used by the developer who implements unit tests in Java.</p>
-<p><a class="externalLink" href="http://junit.org">http://junit.org</a>
-</p>
-<p><a name="org.seasar.container:s2-extension:jar"><b>Seasar2 Extension</b>
-</a>
-</p>
-<p>DI Container with AOP</p>
-<p><a class="externalLink" href="http://s2container.seasar.org/">http://s2container.seasar.org/</a>
-</p>
-<p><a name="org.apache.poi:poi:jar"><b>Jakarta POI</b>
-</a>
-</p>
-<p>Jakarta POI - Java API To Access Microsoft Format Files</p>
-<p><a class="externalLink" href="http://jakarta.apache.org/poi/">http://jakarta.apache.org/poi/</a>
+<p><a href="http://geronimo.apache.org/specs/geronimo-jsp_2.0_spec" class="externalLink">http://geronimo.apache.org/specs/geronimo-jsp_2.0_spec</a>
 </p>
 <p><a name="org.seasar.container:s2-tiger:jar"><b>S2 Tiger</b>
 </a>
 </p>
 <p>DI Container with AOP</p>
-<p><a class="externalLink" href="http://s2container.seasar.org/">http://s2container.seasar.org/</a>
+<p><a href="http://s2container.seasar.org/" class="externalLink">http://s2container.seasar.org/</a>
+</p>
+<p><a name="org.seasar.container:s2-extension:jar"><b>Seasar2 Extension</b>
+</a>
+</p>
+<p>DI Container with AOP</p>
+<p><a href="http://s2container.seasar.org/" class="externalLink">http://s2container.seasar.org/</a>
+</p>
+<p><a name="junit:junit:jar"><b>JUnit</b>
+</a>
+</p>
+<p>JUnit is a regression testing framework written by Erich Gamma and Kent Beck. It is used by the developer who implements unit tests in Java.</p>
+<p><a href="http://junit.org" class="externalLink">http://junit.org</a>
 </p>
 <p><a name="org.easymock:easymock:jar"><b>EasyMock</b>
 </a>
 </p>
 <p>EasyMock provides Mock Objects for interfaces in JUnit tests by generating them on the fly using Java's proxy mechanism</p>
-<p><a class="externalLink" href="http://www.easymock.org">http://www.easymock.org</a>
+<p><a href="http://www.easymock.org" class="externalLink">http://www.easymock.org</a>
 </p>
 <p><a name="jdom:jdom:jar"><b>Unnamed - jdom:jdom:jar:1.0</b>
 </a>
@@ -638,7 +599,8 @@
       <hr/>
     </div>
     <div id="footer">
-      <div class="xright">&#169;  
+      <div class="xright">&#169;      Copyright
+    
           2006-2008
     
           The Seasar Foundation and the others. All rights reserved.

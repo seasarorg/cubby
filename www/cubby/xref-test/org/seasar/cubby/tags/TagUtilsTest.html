@@ -116,63 +116,63 @@
 <a name="106" href="#106">106</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="107" href="#107">107</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[1];
 <a name="108" href="#108">108</a>         values[0] = <span class="jxr_string">""</span>;
-<a name="109" href="#109">109</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, values);
+<a name="109" href="#109">109</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="110" href="#110">110</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="111" href="#111">111</a>     }
 <a name="112" href="#112">112</a>     
 <a name="113" href="#113">113</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
 <a name="114" href="#114">114</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked1() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="115" href="#115">115</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, <strong class="jxr_keyword">new</strong> ArrayList(100));
+<a name="115" href="#115">115</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(<strong class="jxr_keyword">new</strong> ArrayList(100), <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="116" href="#116">116</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="117" href="#117">117</a>     }
 <a name="118" href="#118">118</a>     
 <a name="119" href="#119">119</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked2() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="120" href="#120">120</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[2];
 <a name="121" href="#121">121</a>         values[1] = <span class="jxr_string">"testString"</span>;
-<a name="122" href="#122">122</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testString"</span>, values);
+<a name="122" href="#122">122</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testString"</span>);
 <a name="123" href="#123">123</a>         assertTrue(<span class="jxr_string">"result"</span>, result);
 <a name="124" href="#124">124</a>     }
 <a name="125" href="#125">125</a>     
 <a name="126" href="#126">126</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked3() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="127" href="#127">127</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[0];
-<a name="128" href="#128">128</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, values);
+<a name="128" href="#128">128</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="129" href="#129">129</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="130" href="#130">130</a>     }
 <a name="131" href="#131">131</a>     
 <a name="132" href="#132">132</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked4() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="133" href="#133">133</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[3];
 <a name="134" href="#134">134</a>         values[0] = <span class="jxr_string">""</span>;
-<a name="135" href="#135">135</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">""</span>, values);
+<a name="135" href="#135">135</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">""</span>);
 <a name="136" href="#136">136</a>         assertTrue(<span class="jxr_string">"result"</span>, result);
 <a name="137" href="#137">137</a>     }
 <a name="138" href="#138">138</a>     
 <a name="139" href="#139">139</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked5() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="140" href="#140">140</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testString"</span>, <span class="jxr_string">"testString"</span>);
+<a name="140" href="#140">140</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(<span class="jxr_string">"testString"</span>, <span class="jxr_string">"testString"</span>);
 <a name="141" href="#141">141</a>         assertTrue(<span class="jxr_string">"result"</span>, result);
 <a name="142" href="#142">142</a>     }
 <a name="143" href="#143">143</a>     
 <a name="144" href="#144">144</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked6() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="145" href="#145">145</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[1];
-<a name="146" href="#146">146</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, values);
+<a name="146" href="#146">146</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="147" href="#147">147</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="148" href="#148">148</a>     }
 <a name="149" href="#149">149</a>     
 <a name="150" href="#150">150</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked7() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="151" href="#151">151</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[3];
 <a name="152" href="#152">152</a>         values[1] = <strong class="jxr_keyword">new</strong> Integer(100);
-<a name="153" href="#153">153</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, values);
+<a name="153" href="#153">153</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="154" href="#154">154</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="155" href="#155">155</a>     }
 <a name="156" href="#156">156</a>     
 <a name="157" href="#157">157</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked8() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="158" href="#158">158</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, Boolean.FALSE);
+<a name="158" href="#158">158</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(Boolean.FALSE, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="159" href="#159">159</a>         assertFalse(<span class="jxr_string">"result"</span>, result);
 <a name="160" href="#160">160</a>     }
 <a name="161" href="#161">161</a>     
 <a name="162" href="#162">162</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsChecked9() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="163" href="#163">163</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[4];
 <a name="164" href="#164">164</a>         values[0] = <span class="jxr_string">"testString"</span>;
-<a name="165" href="#165">165</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testString"</span>, values);
+<a name="165" href="#165">165</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testString"</span>);
 <a name="166" href="#166">166</a>         assertTrue(<span class="jxr_string">"result"</span>, result);
 <a name="167" href="#167">167</a>     }
 <a name="168" href="#168">168</a>     
@@ -180,7 +180,7 @@
 <a name="170" href="#170">170</a>         Object[] values = <strong class="jxr_keyword">new</strong> Object[2];
 <a name="171" href="#171">171</a>         values[0] = <strong class="jxr_keyword">new</strong> Integer(-2);
 <a name="172" href="#172">172</a>         values[1] = <span class="jxr_string">"testString"</span>;
-<a name="173" href="#173">173</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.isChecked(<span class="jxr_string">"testString"</span>, values);
+<a name="173" href="#173">173</a>         <strong class="jxr_keyword">boolean</strong> result = TagUtils.contains(values, <span class="jxr_string">"testString"</span>);
 <a name="174" href="#174">174</a>         assertTrue(<span class="jxr_string">"result"</span>, result);
 <a name="175" href="#175">175</a>     }
 <a name="176" href="#176">176</a> 
@@ -283,7 +283,7 @@
 <a name="273" href="#273">273</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsClassCastException() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="274" href="#274">274</a>         <strong class="jxr_keyword">char</strong>[] values = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">char</strong>[2];
 <a name="275" href="#275">275</a>         <strong class="jxr_keyword">try</strong> {
-<a name="276" href="#276">276</a>             TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, values);
+<a name="276" href="#276">276</a>             TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="277" href="#277">277</a>             fail(<span class="jxr_string">"Expected ClassCastException to be thrown"</span>);
 <a name="278" href="#278">278</a>         } <strong class="jxr_keyword">catch</strong> (ClassCastException ex) {
 <a name="279" href="#279">279</a>             assertEquals(<span class="jxr_string">"ex.getClass()"</span>, ClassCastException.<strong class="jxr_keyword">class</strong>, ex.getClass());
@@ -292,7 +292,7 @@
 <a name="282" href="#282">282</a>     
 <a name="283" href="#283">283</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
 <a name="284" href="#284">284</a>         <strong class="jxr_keyword">try</strong> {
-<a name="285" href="#285">285</a>             TagUtils.isChecked(<span class="jxr_string">"testTagUtilsValue"</span>, <strong class="jxr_keyword">null</strong>);
+<a name="285" href="#285">285</a>             TagUtils.contains(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"testTagUtilsValue"</span>);
 <a name="286" href="#286">286</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
 <a name="287" href="#287">287</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
 <a name="288" href="#288">288</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());

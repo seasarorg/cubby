@@ -64,94 +64,95 @@
 <a name="54" href="#54">54</a>  <em class="jxr_javadoccomment"> *      with Padding)&lt;/a&gt;</em>
 <a name="55" href="#55">55</a>  <em class="jxr_javadoccomment"> * @see JSONSerializer#serialize(Object)</em>
 <a name="56" href="#56">56</a>  <em class="jxr_javadoccomment"> * @author baba</em>
-<a name="57" href="#57">57</a>  <em class="jxr_javadoccomment"> */</em>
-<a name="58" href="#58">58</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/seasar/cubby/action/AbstractActionResult.html">AbstractActionResult</a> {
-<a name="59" href="#59">59</a>  
-<a name="60" href="#60">60</a>  	<strong class="jxr_keyword">private</strong> Object bean;
-<a name="61" href="#61">61</a>  
-<a name="62" href="#62">62</a>  	<strong class="jxr_keyword">private</strong> String calllback;
-<a name="63" href="#63">63</a>  
-<a name="64" href="#64">64</a>  	<em class="jxr_javadoccomment">/**</em>
-<a name="65" href="#65">65</a>  <em class="jxr_javadoccomment">	 * JSON 形式でレスポンスを返すインスタンスを生成します。</em>
-<a name="66" href="#66">66</a>  <em class="jxr_javadoccomment">	 * </em>
-<a name="67" href="#67">67</a>  <em class="jxr_javadoccomment">	 * @param bean</em>
-<a name="68" href="#68">68</a>  <em class="jxr_javadoccomment">	 *            JSON 形式に変換する JavaBean</em>
-<a name="69" href="#69">69</a>  <em class="jxr_javadoccomment">	 */</em>
-<a name="70" href="#70">70</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a>(<strong class="jxr_keyword">final</strong> Object bean) {
-<a name="71" href="#71">71</a>  		<strong class="jxr_keyword">this</strong>(bean, <strong class="jxr_keyword">null</strong>);
-<a name="72" href="#72">72</a>  	}
-<a name="73" href="#73">73</a>  
-<a name="74" href="#74">74</a>  	<em class="jxr_javadoccomment">/**</em>
-<a name="75" href="#75">75</a>  <em class="jxr_javadoccomment">	 * JSONP 形式でレスポンスを返すインスタンスを生成します。</em>
-<a name="76" href="#76">76</a>  <em class="jxr_javadoccomment">	 * </em>
-<a name="77" href="#77">77</a>  <em class="jxr_javadoccomment">	 * @param bean</em>
-<a name="78" href="#78">78</a>  <em class="jxr_javadoccomment">	 *            JSON 形式に変換する JavaBean</em>
-<a name="79" href="#79">79</a>  <em class="jxr_javadoccomment">	 * @param callback</em>
-<a name="80" href="#80">80</a>  <em class="jxr_javadoccomment">	 *            コールバック関数名</em>
-<a name="81" href="#81">81</a>  <em class="jxr_javadoccomment">	 */</em>
-<a name="82" href="#82">82</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a>(<strong class="jxr_keyword">final</strong> Object bean, <strong class="jxr_keyword">final</strong> String callback) {
-<a name="83" href="#83">83</a>  		<strong class="jxr_keyword">this</strong>.bean = bean;
-<a name="84" href="#84">84</a>  		<strong class="jxr_keyword">this</strong>.calllback = callback;
-<a name="85" href="#85">85</a>  	}
-<a name="86" href="#86">86</a>  
-<a name="87" href="#87">87</a>  	<em class="jxr_javadoccomment">/**</em>
-<a name="88" href="#88">88</a>  <em class="jxr_javadoccomment">	 * JSON 形式に変換する JavaBeanを取得します。</em>
-<a name="89" href="#89">89</a>  <em class="jxr_javadoccomment">	 * </em>
-<a name="90" href="#90">90</a>  <em class="jxr_javadoccomment">	 * @return JSON 形式に変換する JavaBean</em>
-<a name="91" href="#91">91</a>  <em class="jxr_javadoccomment">	 */</em>
-<a name="92" href="#92">92</a>  	<strong class="jxr_keyword">public</strong> Object getBean() {
-<a name="93" href="#93">93</a>  		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.bean;
-<a name="94" href="#94">94</a>  	}
-<a name="95" href="#95">95</a>  
-<a name="96" href="#96">96</a>  	<em class="jxr_javadoccomment">/**</em>
-<a name="97" href="#97">97</a>  <em class="jxr_javadoccomment">	 * コールバック関数名を取得します。</em>
-<a name="98" href="#98">98</a>  <em class="jxr_javadoccomment">	 * </em>
-<a name="99" href="#99">99</a>  <em class="jxr_javadoccomment">	 * @return コールバック関数名</em>
-<a name="100" href="#100">100</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="101" href="#101">101</a> 	<strong class="jxr_keyword">public</strong> String getCallback() {
-<a name="102" href="#102">102</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.calllback;
-<a name="103" href="#103">103</a> 	}
-<a name="104" href="#104">104</a> 
-<a name="105" href="#105">105</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="106" href="#106">106</a> <em class="jxr_javadoccomment">	 * {@inheritDoc}</em>
-<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="108" href="#108">108</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute(<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/controller/ActionContext.html">ActionContext</a> context,
-<a name="109" href="#109">109</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request, <strong class="jxr_keyword">final</strong> HttpServletResponse response)
-<a name="110" href="#110">110</a> 			<strong class="jxr_keyword">throws</strong> Exception {
-<a name="111" href="#111">111</a> 
-<a name="112" href="#112">112</a> 		response.setContentType(<span class="jxr_string">"text/javascript; charset=utf-8"</span>);
-<a name="113" href="#113">113</a> 		response.setHeader(<span class="jxr_string">"Cache-Control"</span>, <span class="jxr_string">"no-cache"</span>);
-<a name="114" href="#114">114</a> 		response.setHeader(<span class="jxr_string">"Pragma"</span>, <span class="jxr_string">"no-cache"</span>);
-<a name="115" href="#115">115</a> 
-<a name="116" href="#116">116</a> 		<strong class="jxr_keyword">final</strong> String script;
-<a name="117" href="#117">117</a> 		<strong class="jxr_keyword">if</strong> (isJsonp()) {
-<a name="118" href="#118">118</a> 			script = appendCallbackFunction(JSONSerializer.serialize(bean),
-<a name="119" href="#119">119</a> 					calllback);
-<a name="120" href="#120">120</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="121" href="#121">121</a> 			script = JSONSerializer.serialize(bean);
-<a name="122" href="#122">122</a> 		}
-<a name="123" href="#123">123</a> 
-<a name="124" href="#124">124</a> 		<strong class="jxr_keyword">final</strong> Writer writer = response.getWriter();
-<a name="125" href="#125">125</a> 		writer.write(script);
-<a name="126" href="#126">126</a> 		writer.flush();
-<a name="127" href="#127">127</a> 	}
-<a name="128" href="#128">128</a> 
-<a name="129" href="#129">129</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isJsonp() {
-<a name="130" href="#130">130</a> 		<strong class="jxr_keyword">return</strong> !StringUtil.isEmpty(calllback);
-<a name="131" href="#131">131</a> 	}
-<a name="132" href="#132">132</a> 
-<a name="133" href="#133">133</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String appendCallbackFunction(<strong class="jxr_keyword">final</strong> String script,
-<a name="134" href="#134">134</a> 			<strong class="jxr_keyword">final</strong> String callback) {
-<a name="135" href="#135">135</a> 		<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder(script.length()
-<a name="136" href="#136">136</a> 				+ callback.length() + 10);
-<a name="137" href="#137">137</a> 		builder.append(callback);
-<a name="138" href="#138">138</a> 		builder.append(<span class="jxr_string">"("</span>);
-<a name="139" href="#139">139</a> 		builder.append(script);
-<a name="140" href="#140">140</a> 		builder.append(<span class="jxr_string">");"</span>);
-<a name="141" href="#141">141</a> 		<strong class="jxr_keyword">return</strong> builder.toString();
-<a name="142" href="#142">142</a> 	}
-<a name="143" href="#143">143</a> 
-<a name="144" href="#144">144</a> }
+<a name="57" href="#57">57</a>  <em class="jxr_javadoccomment"> * @since 1.0.0</em>
+<a name="58" href="#58">58</a>  <em class="jxr_javadoccomment"> */</em>
+<a name="59" href="#59">59</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/seasar/cubby/action/AbstractActionResult.html">AbstractActionResult</a> {
+<a name="60" href="#60">60</a>  
+<a name="61" href="#61">61</a>  	<strong class="jxr_keyword">private</strong> Object bean;
+<a name="62" href="#62">62</a>  
+<a name="63" href="#63">63</a>  	<strong class="jxr_keyword">private</strong> String calllback;
+<a name="64" href="#64">64</a>  
+<a name="65" href="#65">65</a>  	<em class="jxr_javadoccomment">/**</em>
+<a name="66" href="#66">66</a>  <em class="jxr_javadoccomment">	 * JSON 形式でレスポンスを返すインスタンスを生成します。</em>
+<a name="67" href="#67">67</a>  <em class="jxr_javadoccomment">	 * </em>
+<a name="68" href="#68">68</a>  <em class="jxr_javadoccomment">	 * @param bean</em>
+<a name="69" href="#69">69</a>  <em class="jxr_javadoccomment">	 *            JSON 形式に変換する JavaBean</em>
+<a name="70" href="#70">70</a>  <em class="jxr_javadoccomment">	 */</em>
+<a name="71" href="#71">71</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a>(<strong class="jxr_keyword">final</strong> Object bean) {
+<a name="72" href="#72">72</a>  		<strong class="jxr_keyword">this</strong>(bean, <strong class="jxr_keyword">null</strong>);
+<a name="73" href="#73">73</a>  	}
+<a name="74" href="#74">74</a>  
+<a name="75" href="#75">75</a>  	<em class="jxr_javadoccomment">/**</em>
+<a name="76" href="#76">76</a>  <em class="jxr_javadoccomment">	 * JSONP 形式でレスポンスを返すインスタンスを生成します。</em>
+<a name="77" href="#77">77</a>  <em class="jxr_javadoccomment">	 * </em>
+<a name="78" href="#78">78</a>  <em class="jxr_javadoccomment">	 * @param bean</em>
+<a name="79" href="#79">79</a>  <em class="jxr_javadoccomment">	 *            JSON 形式に変換する JavaBean</em>
+<a name="80" href="#80">80</a>  <em class="jxr_javadoccomment">	 * @param callback</em>
+<a name="81" href="#81">81</a>  <em class="jxr_javadoccomment">	 *            コールバック関数名</em>
+<a name="82" href="#82">82</a>  <em class="jxr_javadoccomment">	 */</em>
+<a name="83" href="#83">83</a>  	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Json.html">Json</a>(<strong class="jxr_keyword">final</strong> Object bean, <strong class="jxr_keyword">final</strong> String callback) {
+<a name="84" href="#84">84</a>  		<strong class="jxr_keyword">this</strong>.bean = bean;
+<a name="85" href="#85">85</a>  		<strong class="jxr_keyword">this</strong>.calllback = callback;
+<a name="86" href="#86">86</a>  	}
+<a name="87" href="#87">87</a>  
+<a name="88" href="#88">88</a>  	<em class="jxr_javadoccomment">/**</em>
+<a name="89" href="#89">89</a>  <em class="jxr_javadoccomment">	 * JSON 形式に変換する JavaBeanを取得します。</em>
+<a name="90" href="#90">90</a>  <em class="jxr_javadoccomment">	 * </em>
+<a name="91" href="#91">91</a>  <em class="jxr_javadoccomment">	 * @return JSON 形式に変換する JavaBean</em>
+<a name="92" href="#92">92</a>  <em class="jxr_javadoccomment">	 */</em>
+<a name="93" href="#93">93</a>  	<strong class="jxr_keyword">public</strong> Object getBean() {
+<a name="94" href="#94">94</a>  		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.bean;
+<a name="95" href="#95">95</a>  	}
+<a name="96" href="#96">96</a>  
+<a name="97" href="#97">97</a>  	<em class="jxr_javadoccomment">/**</em>
+<a name="98" href="#98">98</a>  <em class="jxr_javadoccomment">	 * コールバック関数名を取得します。</em>
+<a name="99" href="#99">99</a>  <em class="jxr_javadoccomment">	 * </em>
+<a name="100" href="#100">100</a> <em class="jxr_javadoccomment">	 * @return コールバック関数名</em>
+<a name="101" href="#101">101</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="102" href="#102">102</a> 	<strong class="jxr_keyword">public</strong> String getCallback() {
+<a name="103" href="#103">103</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.calllback;
+<a name="104" href="#104">104</a> 	}
+<a name="105" href="#105">105</a> 
+<a name="106" href="#106">106</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 * {@inheritDoc}</em>
+<a name="108" href="#108">108</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="109" href="#109">109</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute(<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/controller/ActionContext.html">ActionContext</a> context,
+<a name="110" href="#110">110</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request, <strong class="jxr_keyword">final</strong> HttpServletResponse response)
+<a name="111" href="#111">111</a> 			<strong class="jxr_keyword">throws</strong> Exception {
+<a name="112" href="#112">112</a> 
+<a name="113" href="#113">113</a> 		response.setContentType(<span class="jxr_string">"text/javascript; charset=utf-8"</span>);
+<a name="114" href="#114">114</a> 		response.setHeader(<span class="jxr_string">"Cache-Control"</span>, <span class="jxr_string">"no-cache"</span>);
+<a name="115" href="#115">115</a> 		response.setHeader(<span class="jxr_string">"Pragma"</span>, <span class="jxr_string">"no-cache"</span>);
+<a name="116" href="#116">116</a> 
+<a name="117" href="#117">117</a> 		<strong class="jxr_keyword">final</strong> String script;
+<a name="118" href="#118">118</a> 		<strong class="jxr_keyword">if</strong> (isJsonp()) {
+<a name="119" href="#119">119</a> 			script = appendCallbackFunction(JSONSerializer.serialize(bean),
+<a name="120" href="#120">120</a> 					calllback);
+<a name="121" href="#121">121</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="122" href="#122">122</a> 			script = JSONSerializer.serialize(bean);
+<a name="123" href="#123">123</a> 		}
+<a name="124" href="#124">124</a> 
+<a name="125" href="#125">125</a> 		<strong class="jxr_keyword">final</strong> Writer writer = response.getWriter();
+<a name="126" href="#126">126</a> 		writer.write(script);
+<a name="127" href="#127">127</a> 		writer.flush();
+<a name="128" href="#128">128</a> 	}
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isJsonp() {
+<a name="131" href="#131">131</a> 		<strong class="jxr_keyword">return</strong> !StringUtil.isEmpty(calllback);
+<a name="132" href="#132">132</a> 	}
+<a name="133" href="#133">133</a> 
+<a name="134" href="#134">134</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String appendCallbackFunction(<strong class="jxr_keyword">final</strong> String script,
+<a name="135" href="#135">135</a> 			<strong class="jxr_keyword">final</strong> String callback) {
+<a name="136" href="#136">136</a> 		<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder(script.length()
+<a name="137" href="#137">137</a> 				+ callback.length() + 10);
+<a name="138" href="#138">138</a> 		builder.append(callback);
+<a name="139" href="#139">139</a> 		builder.append(<span class="jxr_string">"("</span>);
+<a name="140" href="#140">140</a> 		builder.append(script);
+<a name="141" href="#141">141</a> 		builder.append(<span class="jxr_string">");"</span>);
+<a name="142" href="#142">142</a> 		<strong class="jxr_keyword">return</strong> builder.toString();
+<a name="143" href="#143">143</a> 	}
+<a name="144" href="#144">144</a> 
+<a name="145" href="#145">145</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
