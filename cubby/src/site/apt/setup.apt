@@ -38,19 +38,23 @@ mvn archetype:create \
 
  * maven-archetype-plugin のバージョンが 2.x の場合はインタラクティブに作成するプロジェクトの情報を指定します。
 
+   2008/2時点では maven-archetype-plugin は SNAPSHOT 版です。
+
+   Archetype の{{{http://cubby.sandbox.seasar.org/archetype-catalog.xml}カタログファイル}}をダウンロードしてください。
+
 +------------------------------------------------------+
-mvn archetype:create -DarchetypeCatalog=http://cubby.sandbox.seasar.org/archetype-catalog.xml
+mvn archetype:create -DarchetypeCatalog=file://(ダウンロードしたカタログファイルのパス 例："C:\Users\foo\archetype-catalog.xml")
 +------------------------------------------------------+
 
    コマンド入力後、いくつかの質問に回答していきます。
 
 +------------------------------------------------------+
 Choose archetype:
-1: http://cubby.sandbox.seasar.org/archetype-catalog.xml -> cubby-archetype (Cubby Archetype)
+1: local -> cubby-archetype (Cubby 1.0.0)
 Choose a number:  (1):
 +------------------------------------------------------+
 
-   1を入力して、cubby-archetypeを選んでください。
+   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。
 
 +------------------------------------------------------+
 Define value for groupId: :
