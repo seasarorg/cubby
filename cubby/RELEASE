@@ -1,16 +1,16 @@
 #リリース手順
 # find . -name '*.xml' -print | xargs grep -l "1.0.0-rc1" | xargs perl -pi -e 's/1\.0\.0-rc1/1\.0\.0-rc2-SNAPSHOT/g'
 
-svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1.x/cubby/
-svn co https://www.seasar.org/svn/sandbox/cubby/branches/0.9.1.x/cubby-examples/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/1.0.x/cubby/
+svn co https://www.seasar.org/svn/sandbox/cubby/branches/1.0.x/cubby-apps/cubby-examples/
 svn co https://www.seasar.org/svn/sandbox/cubby/trunk/www/
 
 cd cubby
 mvn clean package install
 
-cd ../cubby-examples
+cd ../cubby-apps
 mvn clean package
-cp -f target/*.war ../www/download
+cp -f cubby-examples/target/*.war ../www/download
 
 cd ../cubby
 mvn clean package site
