@@ -1,0 +1,66 @@
+                                    ------
+                                メッセージリソース
+                                    ------
+                                    agata
+                                    ------
+                                  2007-09-30
+
+メッセージリソース用のプロパティファイル
+
+ Cubbyのメッセージリソースはクラスパスのトップの「messages.properties」が使用されます。
+ 入力検証のエラーメッセージが設定された「messages.properties」はcubby.jarに含まれています。
+ アプリ用のメッセージを追記や変更する場合、cubby.jarから取り出してコピーして使用します。
+
+ <<messages.properties>>
+
++------------------------------------------------------+
+# 入力検証エラーメッセージ
+valid.required={0}は必須です。
+valid.maxLength={0}は{1}文字以下で入力してください。
+...
+valid.email={0}のメールアドレスの形式が正しくありません。
+
+# アプリケーションで使用するメッセージ
+text=タイトル
+type=優先度
+memo=メモ
+limitDate=期限日
+...
++------------------------------------------------------+
+
+Javaコード中でメッセージを取得する
+
+ {{{cubby/apidocs/org/seasar/cubby/util/Messages.html#getText(java.lang.String)}Messages#getText}}メソッドでメッセージを取得することができます。
+
++------------------------------------------------------+
+import org.seasar.cubby.util.Messages;
+
+public class MessageTestServiceImpl implments MessageTestService {
+...
+  public void getMessageSample() {
+    // 置換文字なし
+    String message1 = Messages.getText("msg.sample1");
+    // 置換文字なし
+    String message2 = Messages.getText("msg.sample2", "foo", "bar");
+    ...
+  }
+...
+}
++------------------------------------------------------+
+
+JSP中でメッセージを取得する
+
+ プロパティファイルをMapに変換した暗黙オブジェクト「messages」リクエストスコープの属性にセットされています。
+ EL式では${messages['キー']}でメッセージを取得することができます。
+ EL式ではメソッド呼び出しができないため、置換文字を引数として渡すことができません。
+
++------------------------------------------------------+
+<span>${messages['msg.sample1']}</span>
++------------------------------------------------------+
+
+ エスケープして出力する場合は以下のように記述します。
+ 
++------------------------------------------------------+
+<span>${f:out(messages['msg.sample1'])}</span>
++------------------------------------------------------+
+ 

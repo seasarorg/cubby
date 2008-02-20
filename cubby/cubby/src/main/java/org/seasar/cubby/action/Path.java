@@ -1,0 +1,118 @@
+/*
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.cubby.action;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * アクションメソッドのパス。
+ * <p>
+ * アクションメソッドを起動するためのパスを指定するアノテーションです。
+ * </p>
+ * <p>
+ * 使用例
+ * 
+ * <pre>
+ * &#064;Path(&quot;fuga&quot;)
+ * public class HogeAction {
+ * 	// -&gt; &quot;/fuga/index&quot;
+ * 	public ActionResult index() {
+ * 	}
+ * 
+ * 	// -&gt; &quot;/fuga/m1&quot;
+ * 	public ActionResult m1() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;list&quot;)
+ * 	// -&gt; &quot;/fuga/list&quot;
+ * 	public ActionResult m2() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;/xxx/yyy&quot;)
+ * 	// -&gt; &quot;/xxx/yyy&quot;
+ * 	public ActionResult m3() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;/{id}/edit&quot;)
+ * 	// {id}部分をリクエストパラメータに追加
+ * 	public ActionResult m4() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;/{userId,a-z}/edit&quot;)
+ * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
+ * 	public ActionResult m5() {
+ * 	}
+ * }
+ * 
+ * &#064;Path(&quot;/&quot;)
+ * public class RootAction {
+ * 	// -&gt; &quot;/&quot;
+ * 	public ActionResult index() {
+ * 	}
+ * 
+ * 	// -&gt; &quot;/m1&quot;
+ * 	public ActionResult m1() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;list&quot;)
+ * 	// -&gt; &quot;/list&quot;
+ * 	public ActionResult m2() {
+ * 	}
+ * 
+ * 	&#064;Path(&quot;/xxx/yyy&quot;)
+ * 	// -&gt; &quot;/xxx/yyy&quot;
+ * 	public ActionResult m3() {
+ * 	}
+ * }
+ * </pre>
+ * 
+ * </p>
+ * 
+ * @author agata
+ * @author baba
+ * @since 1.0.0
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.METHOD, ElementType.TYPE })
+public @interface Path {
+
+	/**
+	 * アクションメソッドのバインディング用パスを指定します。
+	 * <p>
+	 * URLはアクションクラスのパス＋アクションメソッドのパスで決定されます。
+	 * ただし、先頭が『/』の場合コンテキストルートからの絶対パスとして解釈されます。
+	 * </p>
+	 * <p>
+	 * {パラメータ名,正規表現}でプレースホルダーの指定ができます。
+	 * </p>
+	 * <p>
+	 * 正規表現にマッチした場合、マッチした箇所が指定されたパラメータ名に追加され、アクションメソッドが実行されます。
+	 * 正規表現は省略可能です。省略した場合「0-9a-zA-Z」と同じ意味になります。
+	 * </p>
+	 * <p>
+	 * アクションメソッドのパスは「パスの正規表現+{@link Accept リクエストメソッド}」で一意に特定できなければいけません。
+	 * 実行時に重複が発見されると例外が発生します。
+	 * </p>
+	 * 
+	 * @return アクションメソッドのバインディング用パス
+	 * @see Accept
+	 */
+	String value() default "";
+
+}

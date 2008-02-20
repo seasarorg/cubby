@@ -1,0 +1,239 @@
+                                    ------
+                                  バリデーション
+                                    ------
+                                    agata
+                                    ------
+                                  2007-09-30
+
+バリデーション
+
+ Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。
+
+ フォームから入力された値は HttpServletRequest#getParameterValues で返される値が String の配列であることからもわかるように、
+ 全ての値は配列として取得できます。この配列に対してバリデーションを行います。
+
+ また、それ以外にもフォームオブジェクトやデータベースを参照したバリデーションをプログラム上に定義することができます。
+
+バリデーションの定義
+
+ バリデーションの定義は Java コードで記述します。以下のように、アクションメソッドに対してバリデーションのルールを定義します。
+
+ [[1]]アクションに{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}ValidationRules}}型のプロパティを用意し、
+      定義したバリデーションのルールを取得できるようにします。
+
+      以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
+      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッドをオーバーライドし、そのメソッドの中で
+      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドを用いて
+      フォームのフィールドごとにバリデーションのルールを追加します。
+
+
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // バリデーションのルール
+  public ValidationRules validationRules = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      // フィールド "userId" は必須入力で最大10文字まで
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+
+      // フィールド "password" は必須入力で最大10文字まで
+      add("password", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+  ...
++------------------------------------------------------+
+
+ [[2]]アクションメソッドにアノテーション{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}を定義し、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#rules()}rules}}でアクションメソッドと[[1]]で定義したバリデーションルールのプロパティを関連付けます。
+
+      入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたページに遷移します。
+
++------------------------------------------------------+
+  // プロパティ「validationRules」をバリデーションのルールとして使用します。
+  // 検証エラー発生時は「confirm.jsp」に遷移します。
+  @Form
+  @Validation(rules = "validationRules", errorPage = "confirm.jsp")
+  public ActionResult save1() {
+    ... 
+  }
+
+}
++------------------------------------------------------+
+
+[]
+
+*定義済みバリデーション
+
+ Cubbyで定義済みのバリデーションクラスは以下のものがあります。
+
+ {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}} を実装しているクラスがひとつの要素を検証するバリデータ、
+ {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}} を実装しているクラスが配列全体を検証するバリデータとなっています。
+
+ <<定義済みバリデーションクラス一覧>>
+
+*----------------------+--------------------------------------+
+| <<クラス名>>          | <<説明>>                              |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMaxSizeValidator.html}ArrayMaxSizeValidator}}      |配列の最大サイズを検証します。            |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMinSizeValidator.html}ArrayMinSizeValidator}}      |配列の最小サイズを検証します。            |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/DateFormatValidator.html}DateFormatValidator}}   |日付に対する検証を行います。              | 
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/EmailValidator.html}EmailValidator}}        |Eメールアドレスに対する検証を行います。    |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/EqualsValidator.html}EqualsValidator}}       |指定した文字列と等しいかどうかを検証します。|
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/FileRegexpValidator.html}FileRegexpValidator}}   |ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。|
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/MaxLengthValidator.html}MaxLengthValidator}}    |最大文字数を検証します。                 |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/NumberValidator.html}NumberValidator}}       |数値かどうかを検証します。                |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RangeLengthValidator.html}RangeLengthValidator}}  |文字列の長さの範囲を指定して検証します。    |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RangeValidator.html}RangeValidator}}       |数値の範囲を指定して検証します。           |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RegexpValidator.html}RegexpValidator}}       |指定された正規表現にマッチするか検証します。|
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html}RequiredValidator}}     |必須検証します。                         |
+*----------------------+--------------------------------------+
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/TokenValidator.html}TokenValidator}}     |2重サブミットを検証します。                         |
+*----------------------+--------------------------------------+
+
+ 詳細は{{{cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html}APIドキュメント}}をご覧下さい。
+
+*バリデーションのエラーメッセージ
+
+ バリデーションのエラーメッセージは以下のルールで作成されます。
+
+ * メッセージキーを指定しない場合、パラメータ名がエラーメッセージ中の項目名のメッセージキーとして使用されます。
+
+ * メッセージキーを指定する場合、指定されたメッセージキーがエラーメッセージ中の項目名のメッセージキーとして使用されます。
+
+ * DefaultValidationRules のコンストラクタでキーの項目名のメッセージキーのプリフィックスを指定することができます。
+
+ * 各バリデーションのコンストラクタでメッセージキーを指定することで検証時のエラーメッセージを切り替えることもできます。
+
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // 項目のメッセージキーを指定
+  public static ValidationRules VALIDATION = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      // メッセージキー"userId"の値がエラーメッセージ中の項目名として使用されます。
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+      // メッセージキー"login.password"の値がエラーメッセージ中の項目名として使用されます。
+      add("password", "login.password", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+
+  // 項目名のメッセージキーのプリフィックスを指定
+  public static ValidationRules VALIDATION2 = new DefaultValidationRules("login.") {
+    @Override
+    public void initialize() {
+      // メッセージキー"login.userId"の値がエラーメッセージ中の項目名として使用されます。
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+
+  // 各バリデーションにメッセージキーを指定
+  public static ValidationRules VALIDATION3 = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      // メッセージキー"err.myrequired"がエラーメッセージとして使用されます。
+      add("password", new RequiredValidator("err.myrequired"));
+    }
+  };
+
+  ...
+}
++------------------------------------------------------+
+
+*バリデーションルールのコピー
+
+ ほとんどが同じでいくつかの項目が異なる複数のルールを作りたい場合、以下のように他のルールをコピーして使用することができます。
+ 
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // ベースのルール
+  public static ValidationRules BASE_VALIDATION = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+      add("password", "login.password", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+
+  // ベースのルールに「nickname」の検証を追加
+  public static ValidationRules VALIDATION1 = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      // BASE_VALIDATIONのルールをコピーして追加
+      getRules().addAll(BASE_VALIDATION.getRules());
+      add("nickname", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+
+  // ベースのルールに「password2」の検証を追加
+  public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      // BASE_VALIDATIONのルールをコピーして追加
+      getRules().addAll(BASE_VALIDATION.getRules());
+      add("password2", new RequiredValidator(), new MaxLengthValidator(10));
+    }
+  };
+  ...
+}
++------------------------------------------------------+
+
+独自バリデーションの定義
+
+*リクエストパラメータのバリデーション
+
+ リクエストパラメータのバリデーションを独自に作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}}
+ または{{{cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}}を実装して作成します。\
+ 実装の方法は{{{cubby/xref/org/seasar/cubby/validator/validators/package-summary.html}それぞれのインターフェイスの実装クラス}}を参照してください。
+
+*業務ロジックによるバリデーション
+
+ データベースアクセスなどの業務ロジックによるバリデーションを作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html}ValidationRule}}を実装して作成してください。
+
++------------------------------------------------------+
+
+  public String userId;
+  public String password;
+  public Map<String, Object> sessionScope;
+
+  public ValidationRules loginValidation = new DefaultValidationRules(
+      "login.") {
+    @Override
+    public void initialize() {
+      add("userId", new RequiredValidator());
+      add("password", new RequiredValidator());
+      add(new UserValidationRule());
+    }
+  };
+
+  private class UserValidationRule implements ValidationRule {
+
+    public void apply(Map<String, Object[]> params, Object form,
+        ActionErrors errors) throws ValidationException {
+      if (userId == null || password == null) {
+        return;
+      }
+      User user = findUser(userId, password);
+      if (user != null) {
+        sessionScope.put("user", user);
+      } else {
+        errors.add("ユーザIDかパスワードが違います。", "userId", "password");
+      }
+      sessionScope.put("user", user);
+    }
+
+  }
+
++------------------------------------------------------+

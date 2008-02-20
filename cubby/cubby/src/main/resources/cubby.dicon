@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="cubby">
+	<include path="convention.dicon" />
+
+	<!-- action -->
+	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" instance="prototype" />
+	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
+	<component class="org.seasar.cubby.controller.impl.ActionDefBuilderImpl" />
+	<component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" />
+
+	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
+	<component name="flash" class="java.util.HashMap" instance="session" />
+
+	<!-- validation -->
+	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/>
+
+	<!-- interceptor -->
+	<component name="initializeInterceptor" class="org.seasar.cubby.interceptor.InitializeInterceptor" instance="prototype" />
+	<component name="validationInterceptor" class="org.seasar.cubby.interceptor.ValidationInterceptor" instance="prototype" />
+
+	<!-- dxo -->
+	<component class="org.seasar.cubby.dxo.impl.RequestParameterConverterFactoryImpl">
+		<initMethod name="addConverterContainerPath">
+			<arg>"cubby-converters.dicon"</arg>
+		</initMethod>
+		<initMethod name="addConverterContainerPath">
+			<arg>"dxo-builtin-converters-shallow.dicon"</arg>
+		</initMethod>
+		<initMethod name="addConverterContainerPath">
+			<arg>"dxo-tiger-converters.dicon"</arg>
+		</initMethod>
+		<property name="includeApplicationConverters">true</property>
+	</component>
+	<component class="org.seasar.cubby.dxo.impl.RequestParameterAnnotationReader"/>
+	<component class="org.seasar.cubby.dxo.impl.FormDxoImpl"/>
+
+</components>

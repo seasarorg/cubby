@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cubby">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+	</skin>
+	<bannerLeft>
+		<name>Cubby</name>
+		<href>../index.html</href>
+	</bannerLeft>
+	<body>
+		<breadcrumbs>
+			<item name="${project.name}" href="/index.html"/>
+		</breadcrumbs>
+
+		${reports}
+
+		${modules}
+
+	</body>
+</project>
