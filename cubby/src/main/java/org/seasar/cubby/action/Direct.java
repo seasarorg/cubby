@@ -28,6 +28,7 @@ import org.seasar.cubby.controller.ActionContext;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Direct extends AbstractActionResult {
 
@@ -37,6 +38,9 @@ public class Direct extends AbstractActionResult {
 	public Direct() {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {

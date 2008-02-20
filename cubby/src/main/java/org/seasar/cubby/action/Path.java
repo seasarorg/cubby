@@ -86,7 +86,7 @@ import java.lang.annotation.Target;
  * 
  * @author agata
  * @author baba
- * @since 1.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
@@ -105,8 +105,13 @@ public @interface Path {
 	 * 正規表現にマッチした場合、マッチした箇所が指定されたパラメータ名に追加され、アクションメソッドが実行されます。
 	 * 正規表現は省略可能です。省略した場合「0-9a-zA-Z」と同じ意味になります。
 	 * </p>
+	 * <p>
+	 * アクションメソッドのパスは「パスの正規表現+{@link Accept リクエストメソッド}」で一意に特定できなければいけません。
+	 * 実行時に重複が発見されると例外が発生します。
+	 * </p>
 	 * 
-	 * @return アクションメソッドのバインディング用URL
+	 * @return アクションメソッドのバインディング用パス
+	 * @see Accept
 	 */
 	String value() default "";
 

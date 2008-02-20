@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2008 the Seasar Foundation and the Others.
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,28 @@ import org.apache.commons.fileupload.FileItem;
 import org.seasar.extension.dxo.converter.ConversionContext;
 import org.seasar.extension.dxo.converter.impl.AbstractConverter;
 
+/**
+ * {@link FileItem}を他の型のオブジェクトに変換するクラスの抽象クラウスです。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public abstract class AbstractFileItemConverter extends AbstractConverter {
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * {@link FileItem}のクラスと{@link FileItem}配列のクラスを返します。
+	 * </p>
+	 */
 	@SuppressWarnings("unchecked")
 	public Class[] getSourceClasses() {
 		return new Class[] { FileItem.class, FileItem[].class };
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public Object convert(final Object source, final Class destClass,
 			final ConversionContext context) {

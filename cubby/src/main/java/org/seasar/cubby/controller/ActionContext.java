@@ -24,30 +24,79 @@ import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.container.ComponentDef;
 
 /**
- * アクションメソッドの実行時のコンテキスト情報を保持するインターフェイス。
+ * アクションメソッドの実行時コンテキストです。
  * 
  * @author agata
  * @author baba
- * @since 1.0
+ * @since 1.0.0
  */
 public interface ActionContext {
 
+	/**
+	 * このコンテキストを初期化します。
+	 * 
+	 * @param actionDef
+	 *            アクションの定義
+	 */
 	void initialize(ActionDef actionDef);
 
+	/**
+	 * このコンテキストが初期化されているかを示します。
+	 * 
+	 * @return このコンテキストが初期化されている場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
 	boolean isInitialized();
 
+	/**
+	 * このコンテキストが保持するアクションを実行します。
+	 * 
+	 * @return アクションの実行結果
+	 * @throws Exception
+	 *             アクションが例外をスローした場合
+	 */
 	ActionResult invoke() throws Exception;
 
+	/**
+	 * アクションのコンポーネントの定義を取得します。
+	 * 
+	 * @return コンポーネントの定義
+	 */
 	ComponentDef getComponentDef();
 
+	/**
+	 * アクションのオブジェクトを取得します。
+	 * 
+	 * @return アクションのオブジェクト
+	 */
 	Action getAction();
 
+	/**
+	 * アクションメソッドを取得します。
+	 * 
+	 * @return アクションメソッド
+	 */
 	Method getMethod();
 
+	/**
+	 * アクションの入力検証の定義を取得します。
+	 * 
+	 * @return アクションの入力検証の定義
+	 */
 	Validation getValidation();
 
+	/**
+	 * アクションのフォームオブジェクトを取得します。
+	 * 
+	 * @return アクションのフォームオブジェクト
+	 */
 	Object getFormBean();
 
+	/**
+	 * リクエストパラメータとフォームオブジェクトを変換する DXO を取得します
+	 * 
+	 * @return リクエストパラメータとフォームオブジェクトを変換する DXO
+	 */
 	FormDxo getFormDxo();
 
 }

@@ -24,11 +24,16 @@ import org.seasar.cubby.controller.ActionContext;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 abstract class AbstractActionResult implements ActionResult {
 
 	/**
 	 * 何も行いません。
+	 * {@inheritDoc}
+	 * 
+	 * @param context
+	 *            アクションコンテキスト
 	 */
 	public void prerender(final ActionContext context) {
 	}

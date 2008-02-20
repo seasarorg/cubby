@@ -18,7 +18,7 @@ package org.seasar.cubby.tags;
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
-import static org.seasar.cubby.tags.TagUtils.isChecked;
+import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.outputValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
@@ -50,6 +50,7 @@ import org.seasar.framework.util.ArrayUtil;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class InputTag extends DynamicAttributesTagSupport {
 
@@ -66,26 +67,59 @@ public class InputTag extends DynamicAttributesTagSupport {
 
 	private Integer index;
 
+	/**
+	 * type属性を設定します。
+	 * 
+	 * @param type
+	 *            type属性
+	 */
 	public void setType(final String type) {
 		this.type = type;
 	}
 
+	/**
+	 * name属性を設定します。
+	 * 
+	 * @param name
+	 *            name属性
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * checkedValue属性を設定します。
+	 * 
+	 * @param checkedValue
+	 *            checkedValue属性
+	 */
 	public void setCheckedValue(final String checkedValue) {
 		this.checkedValue = checkedValue;
 	}
 
+	/**
+	 * value属性を設定します。
+	 * 
+	 * @param value
+	 *            value属性
+	 */
 	public void setValue(final Object value) {
 		this.value = value;
 	}
 
+	/**
+	 * index属性を設定します。
+	 * 
+	 * @param index
+	 *            index属性
+	 */
 	public void setIndex(final Integer index) {
 		this.index = index;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doTag() throws JspException, IOException {
 		final JspContext context = this.getJspContext();
@@ -145,7 +179,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 		if (value == null || values == null) {
 			return "";
 		}
-		if (isChecked(value, values)) {
+		if (contains(values, value)) {
 			return "checked=\"true\"";
 		} else {
 			return "";

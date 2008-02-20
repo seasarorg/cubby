@@ -92,7 +92,7 @@ public class LoginAction extends Action {
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/RangeLengthValidator.html}RangeLengthValidator}}  |文字列の長さの範囲を指定して検証します。    |
 *----------------------+--------------------------------------+
-|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RangeValidator.html}RangeValidator}}	       |数値の範囲を指定して検証します。           |
+|{{{cubby/apidocs/org/seasar/cubby/validator/validators/RangeValidator.html}RangeValidator}}       |数値の範囲を指定して検証します。           |
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/RegexpValidator.html}RegexpValidator}}       |指定された正規表現にマッチするか検証します。|
 *----------------------+--------------------------------------+
@@ -192,48 +192,48 @@ public class LoginAction extends Action {
 
 独自バリデーションの定義
 
- 独自のバリデーションクラスは{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}}
- または{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ArrayFieldValidator}}を実装して作成します。
+*リクエストパラメータのバリデーション
 
- <<ひとつの要素を検証するバリデーションクラス>>
+ リクエストパラメータのバリデーションを独自に作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}}
+ または{{{cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}}を実装して作成します。\
+ 実装の方法は{{{cubby/xref/org/seasar/cubby/validator/validators/package-summary.html}それぞれのインターフェイスの実装クラス}}を参照してください。
+
+*業務ロジックによるバリデーション
+
+ データベースアクセスなどの業務ロジックによるバリデーションを作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html}ValidationRule}}を実装して作成してください。
 
 +------------------------------------------------------+
-+------------------------------------------------------+
 
- <<配列全体を検証するバリデーションクラス>>
+  public String userId;
+  public String password;
+  public Map<String, Object> sessionScope;
 
-+------------------------------------------------------+
-public class MaxLengthValidator implements ArrayFieldValidator {
-
-  private final MessageHelper messageHelper;
-
-  private final int max;
-
-  public MaxLengthValidator(final int max) {
-    this(max, "valid.maxLength");
-  }
-
-  public MaxLengthValidator(final int max, final String messageKey) {
-    this.max = max;
-    this.messageHelper = new MessageHelper(messageKey);
-  }
-
-  // 検証メソッド
-  public void validate(final ValidationContext context, final Object value) {
-    if (value instanceof String) {
-      final String str = (String) value;
-      if (StringUtil.isEmpty((String) value)) {
-        return;
-      }
-      if (str.length() <= max) {
-        return;
-      }
-    } else if (value == null) {
-      return;
+  public ValidationRules loginValidation = new DefaultValidationRules(
+      "login.") {
+    @Override
+    public void initialize() {
+      add("userId", new RequiredValidator());
+      add("password", new RequiredValidator());
+      add(new UserValidationRule());
     }
-    // エラーの場合は ValidationContext#addMessageInfo(MessageInfo) で、コンテキストにエラーメッセージを設定します。
-    context.addMessageInfo(this.messageHelper.createMessageInfo(max));
+  };
+
+  private class UserValidationRule implements ValidationRule {
+
+    public void apply(Map<String, Object[]> params, Object form,
+        ActionErrors errors) throws ValidationException {
+      if (userId == null || password == null) {
+        return;
+      }
+      User user = findUser(userId, password);
+      if (user != null) {
+        sessionScope.put("user", user);
+      } else {
+        errors.add("ユーザIDかパスワードが違います。", "userId", "password");
+      }
+      sessionScope.put("user", user);
+    }
+
   }
-}
+
 +------------------------------------------------------+
- 

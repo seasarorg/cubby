@@ -50,6 +50,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Forward extends AbstractActionResult {
 
@@ -69,26 +70,30 @@ public class Forward extends AbstractActionResult {
 
 	/**
 	 * パスを取得します。
+	 * 
 	 * @return パス
 	 */
 	public String getPath() {
 		return this.path;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		final Action action = context.getAction();
-		final String actionClassName = CubbyUtils.getActionClassName(context
+		final String actionDirectory = CubbyUtils.getActionDirectory(context
 				.getComponentDef().getComponentClass());
 
 		final String absolutePath;
 		if (this.path.startsWith("/")) {
 			absolutePath = this.path;
-		} else if (StringUtil.isEmpty(actionClassName)) {
+		} else if (StringUtil.isEmpty(actionDirectory)) {
 			absolutePath = "/" + this.path;
 		} else {
-			absolutePath = "/" + actionClassName + "/" + this.path;
+			absolutePath = "/" + actionDirectory + "/" + this.path;
 		}
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0001", new String[] { absolutePath });

@@ -17,19 +17,50 @@ package org.seasar.cubby.exception;
 
 import org.seasar.framework.exception.SRuntimeException;
 
+/**
+ * アクションメソッドが <code>null</code> を返した場合にスローされる実行時例外です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class ActionRuntimeException extends SRuntimeException {
 
+	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 5185053339795669542L;
 
+	/**
+	 * 指定されたメッセージコードとその置換文字列および原因を使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 * @param args
+	 *            メッセージコードに対応するメッセージに対する置換文字列の配列
+	 * @param cause
+	 *            この例外の原因
+	 */
 	public ActionRuntimeException(final String messageCode,
 			final Object[] args, final Throwable cause) {
 		super(messageCode, args, cause);
 	}
 
+	/**
+	 * 指定されたメッセージコードとその置換文字列を使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 * @param args
+	 *            メッセージコードに対応するメッセージに対する置換文字列の配列
+	 */
 	public ActionRuntimeException(final String messageCode, final Object[] args) {
 		super(messageCode, args);
 	}
 
+	/**
+	 * 指定されたメッセージコードを使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 */
 	public ActionRuntimeException(final String messageCode) {
 		super(messageCode);
 	}

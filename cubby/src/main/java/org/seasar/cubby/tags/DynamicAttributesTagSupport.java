@@ -28,18 +28,19 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  * DynamicAttributesをフィールドに持つタグの基底クラスです。
  * 
  * @author agata
+ * @since 1.0.0
  */
-abstract public class DynamicAttributesTagSupport extends SimpleTagSupport
+abstract class DynamicAttributesTagSupport extends SimpleTagSupport
 		implements DynamicAttributes {
 
 	/**
 	 * DynamicAttributes
 	 */
-	private Map<String, Object> attrs = new HashMap<String, Object>();
+	private final Map<String, Object> attrs = new HashMap<String, Object>();
 
 	/**
-	 * DynamicAttributesをセットします。
-	 * FIXME 現在はuriを無視しているので、必要であれば対応したほうがよいかも
+	 * {@inheritDoc} DynamicAttributesをセットします。 FIXME
+	 * 現在はuriを無視しているので、必要であれば対応したほうがよいかも
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
@@ -80,7 +81,7 @@ abstract public class DynamicAttributesTagSupport extends SimpleTagSupport
 	 *            対象のオブジェクト
 	 * @return オブジェクトのtoString結果。
 	 */
-	protected static String toString(Object object) {
+	protected static String toString(final Object object) {
 		return object == null ? "" : object.toString();
 	}
 

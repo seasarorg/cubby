@@ -19,8 +19,7 @@ import static org.seasar.cubby.TestUtils.getPrivateField;
 import junit.framework.TestCase;
 
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.convention.CubbyConvention;
-import org.seasar.cubby.convention.impl.CubbyConventionImpl;
+import org.seasar.cubby.controller.ActionDefBuilder;
 
 public class ActionProcessorImplTest extends TestCase {
 
@@ -36,11 +35,11 @@ public class ActionProcessorImplTest extends TestCase {
         assertSame("actionProcessorImpl.context", context, getPrivateField(actionProcessorImpl, "context"));
     }
     
-    public void testSetCubbyConvention() throws Throwable {
+    public void testSetActionDefBuilder() throws Throwable {
         ActionProcessorImpl actionProcessorImpl = new ActionProcessorImpl();
-        CubbyConvention cubbyConvention = new CubbyConventionImpl();
-        actionProcessorImpl.setCubbyConvention(cubbyConvention);
-        assertSame("actionProcessorImpl.cubbyConvention", cubbyConvention, getPrivateField(actionProcessorImpl, "cubbyConvention"));
+        ActionDefBuilder actionDefBuilder = new ActionDefBuilderImpl();
+        actionProcessorImpl.setActionDefBuilder(actionDefBuilder);
+        assertSame("actionProcessorImpl.actionDefBuilder", actionDefBuilder, getPrivateField(actionProcessorImpl, "actionDefBuilder"));
     }
     
 //    public void testProcessThrowsStringIndexOutOfBoundsException() throws Throwable {

@@ -31,36 +31,60 @@ import org.seasar.framework.util.DisposableUtil;
 import org.seasar.framework.util.ResourceUtil;
 
 /**
+ * リクエストのパラメータとアクションのプロパティとの変換に使用する{@link org.seasar.extension.dxo.converter.Converter コンバータ}のファクトリクラスです。
  * 
  * @author baba
- * 
+ * @since 1.0.0
  */
 public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(RequestParameterConverterFactoryImpl.class);
 
+	/** 空のコンバータの配列。 */
 	private static final Converter[] EMPTY_CONVERTER_ARRAY = new Converter[0];
 
+	/** コンバータのラッパのキャッシュ。 */
 	private static final Map<Converter, Converter> wrapperCache = new HashMap<Converter, Converter>();
 
+	/** コンバータが定義されたコンテナのパス。 */
 	private final List<String> converterContainerPaths = new ArrayList<String>();
 
+	/** コンバータが定義されたコンテナ。 */
 	private final List<S2Container> containers = new ArrayList<S2Container>();
 
+	/** アプリケーションで定義したコンバータを使用するかどうかを示します。 */
 	private boolean includeApplicationConverters = true;
 
+	/** 初期化されたかどうかを示します。 */
 	private boolean initialized = false;
 
+	/**
+	 * コンバータが定義されたコンテナのパスを追加します。
+	 * 
+	 * @param converterContainerPath
+	 *            コンバータが定義されたコンテナのパス
+	 */
 	public void addConverterContainerPath(final String converterContainerPath) {
 		this.converterContainerPaths.add(converterContainerPath);
 	}
 
+	/**
+	 * アプリケーションで定義したコンバータを使用するかどうかを設定します。
+	 * 
+	 * @param includeApplicationConverters
+	 *            アプリケーションで定義したコンバータを使用する場合は <code>true</code>、そうでない場合は
+	 *            <code>false</code>
+	 */
 	public void setIncludeApplicationConverters(
 			final boolean includeApplicationConverters) {
 		this.includeApplicationConverters = includeApplicationConverters;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize() {
 		if (initialized) {
@@ -120,6 +144,9 @@ public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 		initialized = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispose() {
 		wrapperCache.clear();
@@ -131,6 +158,13 @@ public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 		initialized = false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * ここで生成されるコンバータは、{@link Converter#convert(Object, Class, ConversionContext)}の実行時に例外が発生した場合は
+	 * <code>null</code> を返すようにラップされます。
+	 * </p>
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public Converter getConverter(final Class sourceClass, final Class destClass) {
@@ -146,14 +180,33 @@ public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 		return wrapper;
 	}
 
-	static class DisregardExceptionConverterWrapper implements Converter {
+	/**
+	 * 変換時の例外を無視するように{@link Converter}をラップするクラスです。
+	 * 
+	 * @author baba
+	 */
+	private static class DisregardExceptionConverterWrapper implements
+			Converter {
 
+		/** ラップするコンバータ。 */
 		private final Converter converter;
 
-		public DisregardExceptionConverterWrapper(final Converter converter) {
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param converter
+		 *            ラップするコンバータ
+		 */
+		private DisregardExceptionConverterWrapper(final Converter converter) {
 			this.converter = converter;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * 変換時に例外が発生した場合は <code>null</code> を返します。
+		 * </p>
+		 */
 		@SuppressWarnings("unchecked")
 		public Object convert(final Object source, final Class destClass,
 				final ConversionContext context) {
@@ -164,16 +217,27 @@ public class RequestParameterConverterFactoryImpl extends ConverterFactoryImpl {
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see #convert(Object, Class, ConversionContext)
+		 */
 		public void convert(final Object source, final Object dest,
 				final ConversionContext context) {
 			converter.convert(source, dest, context);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@SuppressWarnings("unchecked")
 		public Class getDestClass() {
 			return converter.getDestClass();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@SuppressWarnings("unchecked")
 		public Class[] getSourceClasses() {
 			return converter.getSourceClasses();

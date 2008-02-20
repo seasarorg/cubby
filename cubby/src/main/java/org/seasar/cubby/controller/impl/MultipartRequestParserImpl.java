@@ -30,6 +30,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.exception.FileUploadRuntimeException;
@@ -38,18 +39,59 @@ import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.StringUtil;
 
 /**
+ * contentType が multipart/form-data のリクエストに対応したリクエスト解析器です。
+ * <p>
+ * リクエストの解析には <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
+ * を使用します。
+ * </p>
  * 
  * @author baba
- * 
+ * @see <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
+ * @since 1.0.0
  */
 public class MultipartRequestParserImpl implements RequestParser {
 
+	/** コンテナ。 */
 	private final S2Container container;
 
+	/**
+	 * インスタンス化します。
+	 * 
+	 * @param container
+	 *            コンテナ
+	 */
 	public MultipartRequestParserImpl(final S2Container container) {
 		this.container = container;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたリクエストがマルチパートのリクエスト(contentType が multipart/form-data)であれば、コンテナに登録された
+	 * {@link FileUpload} と {@link RequestContext} を使用してリクエストを解析します。
+	 * <p>
+	 * リクエストパラメータを戻り値の {@link Map} に格納する際には以下のように変換します。
+	 * <ul>
+	 * <li> フォームのフィールド
+	 * <p>
+	 * 文字列に変換
+	 * </p>
+	 * </li>
+	 * <li> フォームのフィールド以外(アップロードされたファイル)
+	 * <p>
+	 * {@link FileItem}に変換
+	 * </p>
+	 * </li>
+	 * </ul>
+	 * </p>
+	 * </p>
+	 * <p>
+	 * 指定されたリクエストが通常のリクエストであれば、{@link HttpServletRequest#getParameterMap()}
+	 * の結果をそのまま返します。
+	 * </p>
+	 * 
+	 * @see FileUpload
+	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object[]> getParameterMap(
 			final HttpServletRequest request) {
@@ -82,7 +124,17 @@ public class MultipartRequestParserImpl implements RequestParser {
 
 			return parameterMap;
 		} catch (final FileUploadException e) {
-			throw new FileUploadRuntimeException(e);
+			final String messageCode;
+			final Object[] args;
+			if (e instanceof SizeLimitExceededException) {
+				final SizeLimitExceededException sle = (SizeLimitExceededException) e;
+				messageCode = "ECUB0202";
+				args = new Object[] { sle.getPermittedSize(), sle.getActualSize() };
+			} else {
+				messageCode = "ECUB0201";
+				args = new Object[] { e };
+			}
+			throw new FileUploadRuntimeException(messageCode, args, e);
 		} catch (final IOException e) {
 			throw new IORuntimeException(e);
 		}

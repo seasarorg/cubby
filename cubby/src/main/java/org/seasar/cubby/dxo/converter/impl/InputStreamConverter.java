@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2008 the Seasar Foundation and the Others.
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,38 @@ import java.io.InputStream;
 import org.apache.commons.fileupload.FileItem;
 import org.seasar.framework.log.Logger;
 
+/**
+ * {@link FileItem}から{@link InputStream}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class InputStreamConverter extends AbstractFileItemConverter {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(InputStreamConverter.class);
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return {@link InputStream}のクラスを返します。
+	 */
 	@SuppressWarnings("unchecked")
 	public Class getDestClass() {
 		return InputStream.class;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定された{@link FileItem}から取得した{@link InputStream}を返します。変換時に{@link IOException}が発生した場合は
+	 * <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @return 指定された{@link FileItem}から取得した{@link InputStream}
+	 * @see FileItem#getInputStream()
+	 */
 	@Override
 	protected Object convert(final FileItem fileItem) {
 		try {
@@ -40,6 +62,5 @@ public class InputStreamConverter extends AbstractFileItemConverter {
 			return null;
 		}
 	}
-
 
 }

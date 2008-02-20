@@ -36,6 +36,7 @@ import org.seasar.cubby.util.CubbyFunctions;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class TextareaTag extends DynamicAttributesTagSupport {
 
@@ -45,20 +46,38 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 
 	private Integer index;
 
+	/**
+	 * name属性を設定します。
+	 * 
+	 * @param name
+	 *            name属性
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * value属性を設定します。
+	 * 
+	 * @param value
+	 *            value属性
+	 */
 	public void setValue(final Object value) {
 		this.value = value;
 	}
 
+	/**
+	 * index属性を設定します。
+	 * 
+	 * @param index
+	 *            index属性
+	 */
 	public void setIndex(final Integer index) {
 		this.index = index;
 	}
 
 	/**
-	 * タグの処理
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void doTag() throws JspException, IOException {

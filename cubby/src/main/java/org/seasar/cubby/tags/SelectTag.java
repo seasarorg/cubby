@@ -17,7 +17,7 @@ package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
-import static org.seasar.cubby.tags.TagUtils.isChecked;
+import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.outputValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
@@ -45,26 +45,22 @@ import org.seasar.framework.message.MessageFormatter;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class SelectTag extends DynamicAttributesTagSupport {
 
 	private static final Logger logger = Logger.getLogger(SelectTag.class);
 
+	/** name属性。 */
 	private String name;
 
-	/**
-	 * option要素リスト
-	 */
+	/** option要素リスト。 */
 	private Object items;
 
-	/**
-	 * optionのラベルのプロパティ名
-	 */
+	/** optionのラベルのプロパティ名。 */
 	private String labelProperty;
 
-	/**
-	 * optionの値のプロパティ名
-	 */
+	/** optionの値のプロパティ名。 */
 	private String valueProperty;
 
 	/**
@@ -76,10 +72,6 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	 * 空のoption要素を出力した場合のラベル文字列
 	 */
 	private String emptyOptionLabel;
-
-	public Object getItems() {
-		return items;
-	}
 
 	/**
 	 * option要素リストをセットします。
@@ -131,12 +123,18 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		this.emptyOptionLabel = emptyOptionLabel;
 	}
 
+	/**
+	 * name属性を設定します。
+	 * 
+	 * @param name
+	 *            name属性
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
 	/**
-	 * タグの処理
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void doTag() throws JspException, IOException {
@@ -165,7 +163,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			out.write("</option>\n");
 		}
 
-		if (items.getClass().isArray()) {
+		if (items != null && items.getClass().isArray()) {
 			final OptionWriter optionWriter = new OptionWriter(
 					new BeanItemAdaptor());
 			for (final Object item : (Object[]) items) {
@@ -192,7 +190,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		out.write("</select>\n");
 	}
 
-	static class OptionWriter {
+	private static class OptionWriter {
 
 		private final ItemAdaptor itemAdaptor;
 
@@ -200,7 +198,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			this.itemAdaptor = itemAdaptor;
 		}
 
-		public void write(final JspWriter out, final Object item,
+		void write(final JspWriter out, final Object item,
 				final Object value) throws IOException {
 			out.write("<option value=\"");
 			final String itemValue = DynamicAttributesTagSupport
@@ -219,7 +217,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			if (value == null || values == null) {
 				return "";
 			}
-			if (isChecked(value, values)) {
+			if (contains(values, value)) {
 				return "selected=\"true\"";
 			} else {
 				return "";
@@ -227,27 +225,47 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		}
 	}
 
-	interface ItemAdaptor {
+	private interface ItemAdaptor {
 
+		/**
+		 * 要素の値を取得します。
+		 * 
+		 * @param item
+		 *            要素
+		 * @return 要素の値
+		 */
 		Object getItemValue(Object item);
 
+		/**
+		 * 要素のラベルを取得します。
+		 * 
+		 * @param item
+		 *            要素
+		 * @return 要素のラベル
+		 */
 		Object getLabelValue(Object item);
 
 	}
 
-	class BeanItemAdaptor implements ItemAdaptor {
+	private class BeanItemAdaptor implements ItemAdaptor {
 
-		public BeanItemAdaptor() throws JspTagException {
+		BeanItemAdaptor() throws JspTagException {
 			if (valueProperty == null) {
 				throw new JspTagException(MessageFormatter.getMessage(
 						"ECUB1002", new Object[] { "items", "valueProperty" }));
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public Object getItemValue(final Object item) {
 			return property(item, valueProperty);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public Object getLabelValue(final Object item) {
 			final Object labelValue;
 			if (labelProperty == null) {
@@ -268,9 +286,9 @@ public class SelectTag extends DynamicAttributesTagSupport {
 
 	}
 
-	class EntryItemAdaptor implements ItemAdaptor {
+	private class EntryItemAdaptor implements ItemAdaptor {
 
-		public EntryItemAdaptor() {
+		EntryItemAdaptor() {
 			if (valueProperty != null) {
 				logger.log("WCUB1001", new Object[] { "items",
 						Map.class.getSimpleName(), "valueProperty",
@@ -285,10 +303,16 @@ public class SelectTag extends DynamicAttributesTagSupport {
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public Object getItemValue(final Object item) {
 			return ((Entry<?, ?>) item).getKey();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		public Object getLabelValue(final Object item) {
 			return ((Entry<?, ?>) item).getValue();
 		}

@@ -25,16 +25,17 @@ import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。
-* <p>
+ * <p>
  * 正規表現についての詳細は {@link Pattern}を参照してください。
  * </p>
-  * <p>
+ * <p>
  * デフォルトエラーメッセージキー:valid.fileRegexp
  * </p>
  * 
  * @see Pattern
  * @see Matcher
  * @author baba
+ * @since 1.0.0
  */
 public class FileRegexpValidator implements ScalarFieldValidator {
 
@@ -73,24 +74,29 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param pattern 正規表現パターン
+	 * @param pattern
+	 *            正規表現パターン
 	 */
-	public FileRegexpValidator(Pattern pattern) {
+	public FileRegexpValidator(final Pattern pattern) {
 		this(pattern, "valid.fileRegexp");
 	}
-	
+
 	/**
 	 * エラーメッセージキーを指定するコンストラクタ
 	 * 
-	 * @param pattern 正規表現パターン
+	 * @param pattern
+	 *            正規表現パターン
 	 * @param messageKey
 	 *            エラーメッセージキー
 	 */
-	public FileRegexpValidator(Pattern pattern, String messageKey) {
+	public FileRegexpValidator(final Pattern pattern, final String messageKey) {
 		this.pattern = pattern;
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof FileItem) {
 			final FileItem fileItem = (FileItem) value;

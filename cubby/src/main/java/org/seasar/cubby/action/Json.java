@@ -27,8 +27,8 @@ import org.seasar.framework.util.StringUtil;
 /**
  * JSON 形式のレスポンスを返す {@link ActionResult} です。
  * <p>
- * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP 形式に変換してレスポンスを返します。
- * ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。
+ * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP
+ * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。
  * </p>
  * <p>
  * 使用例1 : JSON 形式のレスポンスを返す
@@ -50,9 +50,11 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)</a>
- * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON with Padding)</a>
+ * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON
+ *      with Padding)</a>
  * @see JSONSerializer#serialize(Object)
  * @author baba
+ * @since 1.0.0
  */
 public class Json extends AbstractActionResult {
 
@@ -82,23 +84,28 @@ public class Json extends AbstractActionResult {
 		this.bean = bean;
 		this.calllback = callback;
 	}
-	
+
 	/**
 	 * JSON 形式に変換する JavaBeanを取得します。
+	 * 
 	 * @return JSON 形式に変換する JavaBean
 	 */
 	public Object getBean() {
 		return this.bean;
 	}
-	
+
 	/**
 	 * コールバック関数名を取得します。
+	 * 
 	 * @return コールバック関数名
 	 */
 	public String getCallback() {
 		return this.calllback;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {

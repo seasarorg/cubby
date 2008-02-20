@@ -22,8 +22,17 @@ import org.seasar.cubby.validator.ValidationProcessor;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 
+/**
+ * 入力検証を行うクラスの実装です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class ValidationProcessorImpl implements ValidationProcessor {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean process(final ActionErrors errors,
 			final Map<String, Object[]> params, final Object form,
 			final ValidationRules rules) {

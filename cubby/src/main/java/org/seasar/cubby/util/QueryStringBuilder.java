@@ -34,7 +34,7 @@ import org.seasar.framework.exception.IORuntimeException;
  * </pre>
  * 
  * @author agata
- * 
+ * @since 1.0.0
  */
 public class QueryStringBuilder {
 

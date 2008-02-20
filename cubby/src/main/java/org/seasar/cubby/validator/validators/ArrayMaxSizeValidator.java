@@ -27,6 +27,7 @@ import org.seasar.cubby.validator.ValidationContext;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class ArrayMaxSizeValidator implements ArrayFieldValidator {
 
@@ -63,6 +64,9 @@ public class ArrayMaxSizeValidator implements ArrayFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object[] values) {
 		if (values == null) {
 			return;

@@ -46,6 +46,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class Redirect extends AbstractActionResult {
 
@@ -62,15 +63,19 @@ public class Redirect extends AbstractActionResult {
 	public Redirect(final String path) {
 		this.path = path;
 	}
-	
+
 	/**
 	 * パスを取得します。
+	 * 
 	 * @return パス
 	 */
 	public String getPath() {
 		return this.path;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
@@ -85,13 +90,13 @@ public class Redirect extends AbstractActionResult {
 		if (this.path.startsWith("/")) {
 			absolutePath = contextPath + this.path;
 		} else {
-			final String actionClassName = CubbyUtils
-					.getActionClassName(context.getComponentDef()
+			final String actionDirectory = CubbyUtils
+					.getActionDirectory(context.getComponentDef()
 							.getComponentClass());
-			if (StringUtil.isEmpty(actionClassName)) {
+			if (StringUtil.isEmpty(actionDirectory)) {
 				absolutePath = contextPath + "/" + this.path;
 			} else {
-				absolutePath = contextPath + "/" + actionClassName + "/"
+				absolutePath = contextPath + "/" + actionDirectory + "/"
 						+ this.path;
 			}
 		}

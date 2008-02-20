@@ -18,16 +18,19 @@ package org.seasar.cubby.validator;
 import java.util.List;
 
 /**
- * 入力検証の定義を保持するクラスのインターフェイスです。
+ * アクションメソッドに対する入力検証のルールの集合です。
  * 
  * @author agata
- * 
+ * @author baba
+ * @since 1.0.0
  */
 public interface ValidationRules {
+
 	/**
-	 * 入力検証の定義を取得します。
+	 * 入力検証ルールのリストを取得します。
 	 * 
 	 * @return 入力検証ルールのリスト
 	 */
 	List<ValidationRule> getRules();
+
 }

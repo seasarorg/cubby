@@ -17,10 +17,26 @@ package org.seasar.cubby.controller;
 
 import org.seasar.cubby.action.FormatPattern;
 
+/**
+ * Cubby の全体的な設定情報です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public interface CubbyConfiguration {
 
+	/**
+	 * リクエストのパーサを取得します。
+	 * 
+	 * @return リクエストのパーサ
+	 */
 	RequestParser getRequestParser();
 
+	/**
+	 * フォーマットのパターンを取得します。
+	 * 
+	 * @return フォーマットのパターン
+	 */
 	FormatPattern getFormatPattern();
 
 }

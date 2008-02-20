@@ -3,18 +3,20 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>1.0.0-rc1-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
 		<href>/index.html</href>
 	</bannerLeft>
+	<publishDate format="yyyy-MM-dd" position="right" />
 	<body>
-   		<links>
-			<item name="seasar.org" href="http://www.seasar.org/" />
-		</links>
+		<breadcrumbs>
+			<item name="The Seasar Project" href="http://www.seasar.org/" />
+			<item name="Cubby Project" href="/index.html" />
+		</breadcrumbs>
 
-		<menu name="ドキュメント">
+		<menu name="&#x30c9;&#x30ad;&#x30e5;&#x30e1;&#x30f3;&#x30c8;">
 			<item name="Cubbyについて" href="/index.html" />
 			<item name="セットアップ" href="/setup.html" />
 			<item name="2分間チュートリアル" href="/twominute.html" />
@@ -36,6 +38,7 @@
 		</menu>
 
 		<menu name="リソース">
+			<item name="プレゼン資料" href="/presentation.html" />
 			<item name="メーリングリスト" href="/mail-lists.html" />
 			<item name="課題(JIRA)" href="/issue-tracking.html" />
 			<item name="SVNリポジトリ" href="/source-repository.html" />

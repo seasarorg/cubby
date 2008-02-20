@@ -41,6 +41,7 @@ import org.seasar.framework.container.SingletonS2Container;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class FormTag extends BodyTagSupport implements DynamicAttributes {
 
@@ -57,7 +58,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 	private Object value;
 
 	/**
-	 * DynamicAttributeをセットします。
+	 * {@inheritDoc} DynamicAttributeをセットします。
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {

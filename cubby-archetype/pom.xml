@@ -5,7 +5,7 @@
   <parent>
     <artifactId>cubby-project</artifactId>
     <groupId>org.seasar.cubby</groupId>
-	<version>1.0.0-rc1-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby-archetype</artifactId>

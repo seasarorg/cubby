@@ -19,10 +19,26 @@ import java.lang.reflect.Method;
 
 import org.seasar.framework.container.ComponentDef;
 
+/**
+ * アクションの定義です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public interface ActionDef {
 
+	/**
+	 * アクションクラスのコンポーネント定義を取得します。
+	 * 
+	 * @return アクションクラスのコンポーネント定義
+	 */
 	ComponentDef getComponentDef();
 
+	/**
+	 * アクションメソッドを取得します。
+	 * 
+	 * @return アクションメソッド
+	 */
 	Method getMethod();
 
 }

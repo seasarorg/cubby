@@ -33,6 +33,7 @@ import org.seasar.framework.util.StringUtil;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class EmailValidator implements ScalarFieldValidator {
 
@@ -73,6 +74,9 @@ public class EmailValidator implements ScalarFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value == null) {
 			return;
@@ -155,24 +159,22 @@ public class EmailValidator implements ScalarFieldValidator {
 		return true;
 	}
 
-	private boolean isValidSymbolicDomain(String domain) {
+	private boolean isValidSymbolicDomain(final String domain) {
 		final List<String> domainSegments = new ArrayList<String>();
 		boolean match = true;
-		int i = 0;
 
 		final Pattern pattern = Pattern.compile(ATOM_PATTERN);
-		Matcher atomMatcher;
-		String ds;
+		String domainSegment;
+		String currentDomain = domain;
 		while (match) {
-			atomMatcher = pattern.matcher(domain);
+			final Matcher atomMatcher = pattern.matcher(currentDomain);
 			match = atomMatcher.find();
 			if (match) {
-				ds = atomMatcher.group(1);
-				domainSegments.add(ds);
-				final int l = ds.length() + 1;
-				domain = l >= domain.length() ? "" : domain.substring(l);
-
-				i++;
+				domainSegment = atomMatcher.group(1);
+				domainSegments.add(domainSegment);
+				final int domainSegmentLength = domainSegment.length() + 1;
+				currentDomain = domainSegmentLength >= currentDomain.length() ? ""
+						: currentDomain.substring(domainSegmentLength);
 			}
 		}
 
@@ -184,7 +186,7 @@ public class EmailValidator implements ScalarFieldValidator {
 			}
 		}
 
-		if (domainSegments.size() < 2) {
+		if (size < 2) {
 			return false;
 		}
 

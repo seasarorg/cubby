@@ -15,25 +15,60 @@
  */
 package org.seasar.cubby.action;
 
+/**
+ * HTMLフォームにおけるフィールドの情報です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class FieldInfo {
 
+	/** フィールド名。 */
 	private final String name;
 
+	/** インデックス。 */
 	private final Integer index;
 
+	/**
+	 * 指定されたフィールド名のフィールドの情報をインスタンス化します。
+	 * 
+	 * @param name
+	 *            フィールド名
+	 */
 	public FieldInfo(final String name) {
 		this(name, null);
 	}
 
+	/**
+	 * 指定されたフィールド名とインデックスのフィールドの情報をインスタンス化します。
+	 * 
+	 * @param name
+	 *            フィールド名
+	 * @param index
+	 *            インデックス
+	 */
 	public FieldInfo(final String name, final Integer index) {
 		this.name = name;
 		this.index = index;
 	}
 
+	/**
+	 * フィールド名を取得します。
+	 * 
+	 * @return フィールド名
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * インデックスを取得します。
+	 * <p>
+	 * コンストラクタでインデックスを指定しなかった場合は <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @return インデックス
+	 */
 	public Integer getIndex() {
 		return index;
 	}

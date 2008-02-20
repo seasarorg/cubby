@@ -20,12 +20,25 @@ import java.util.Map;
 import org.seasar.cubby.action.ActionErrors;
 
 /**
+ * 入力検証を行うクラスです。
  * 
  * @author baba
- * 
+ * @since 1.0.0
  */
 public interface ValidationProcessor {
 
+	/**
+	 * 指定されたリクエストパラメータの入力検証を行います。
+	 * 
+	 * @param errors
+	 *            アクションで発生したエラー
+	 * @param params
+	 *            リクエストパラメータの{@link Map}
+	 * @param form
+	 *            フォームオブジェクト
+	 * @param rules
+	 * @return 入力検証でエラーを発見した場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
 	boolean process(ActionErrors errors, Map<String, Object[]> params,
 			Object form, ValidationRules rules);
 

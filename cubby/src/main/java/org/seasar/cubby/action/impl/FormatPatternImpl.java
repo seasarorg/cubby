@@ -22,7 +22,9 @@ import org.seasar.cubby.action.FormatPattern;
 
 /**
  * 日付や時刻のフォーマットパターンを保持するクラスの実装です。
+ * 
  * @author baba
+ * @since 1.0.0
  */
 public class FormatPatternImpl implements FormatPattern {
 
@@ -43,6 +45,8 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付フォーマットパターンを取得します。
+	 * 
+	 * @return 日付フォーマットパターン
 	 */
 	public String getDatePattern() {
 		return datePattern;
@@ -50,7 +54,9 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付フォーマットパターンをセットします。
-	 * @param datePattern　日付フォーマットパターン
+	 * 
+	 * @param datePattern
+	 *            日付フォーマットパターン
 	 */
 	public void setDatePattern(String datePattern) {
 		this.datePattern = datePattern;
@@ -58,6 +64,8 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 時刻フォーマットパターンを取得します。
+	 * 
+	 * @return 時刻フォーマットパターン
 	 */
 	public String getTimePattern() {
 		return timePattern;
@@ -65,7 +73,9 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 時刻フォーマットパターンをセットします。
-	 * @param timePattern　時刻フォーマットパターン
+	 * 
+	 * @param timePattern
+	 *            時刻フォーマットパターン
 	 */
 	public void setTimePattern(String timePattern) {
 		this.timePattern = timePattern;
@@ -73,6 +83,8 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付時刻フォーマットパターンを取得します。
+	 * 
+	 * @return 日付時刻フォーマットパターン
 	 */
 	public String getTimestampPattern() {
 		return timestampPattern;
@@ -80,7 +92,9 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付時刻フォーマットパターンをセットします。
-	 * @param timestampPattern　日付時刻フォーマットパターン
+	 * 
+	 * @param timestampPattern
+	 *            日付時刻フォーマットパターン
 	 */
 	public void setTimestampPattern(String timestampPattern) {
 		this.timestampPattern = timestampPattern;
@@ -88,6 +102,8 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付フォーマットを取得します。
+	 * 
+	 * @return 日付フォーマット
 	 */
 	public DateFormat getDateFormat() {
 		return new SimpleDateFormat(this.datePattern);
@@ -95,6 +111,8 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 時刻フォーマットを取得します。
+	 * 
+	 * @return 時刻フォーマット
 	 */
 	public DateFormat getTimeFormat() {
 		return new SimpleDateFormat(this.timePattern);
@@ -102,11 +120,18 @@ public class FormatPatternImpl implements FormatPattern {
 
 	/**
 	 * 日付時刻フォーマットを取得します。
+	 * 
+	 * @return 日付時刻フォーマット
 	 */
 	public DateFormat getTimestampFormat() {
 		return new SimpleDateFormat(this.timestampPattern);
 	}
 
+	/**
+	 * このオブジェクトの文字列表現を取得します。
+	 * 
+	 * @return このオブジェクトの文字列表現
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -15,8 +15,22 @@
  */
 package org.seasar.cubby.validator;
 
+/**
+ * ひとつの値をもつ入力フォームのフィールドに対する入力検証です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public interface ScalarFieldValidator extends Validator {
 
+	/**
+	 * 指定された入力値を検証します。
+	 * 
+	 * @param context
+	 *            入力検証のコンテキスト
+	 * @param value
+	 *            入力値
+	 */
 	void validate(ValidationContext context, Object value);
 
 }

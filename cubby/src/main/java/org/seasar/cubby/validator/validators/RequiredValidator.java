@@ -31,6 +31,7 @@ import org.seasar.framework.util.StringUtil;
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class RequiredValidator implements ScalarFieldValidator {
 
@@ -56,6 +57,9 @@ public class RequiredValidator implements ScalarFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;

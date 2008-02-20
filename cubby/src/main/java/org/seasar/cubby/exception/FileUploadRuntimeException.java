@@ -15,36 +15,54 @@
  */
 package org.seasar.cubby.exception;
 
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.seasar.framework.exception.SRuntimeException;
 
+/**
+ * multipart/form-data 形式でのファイルアップロードに失敗した場合にスローされる実行時例外です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class FileUploadRuntimeException extends SRuntimeException {
 
+	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = -4519684364519402697L;
 
-	public FileUploadRuntimeException(final FileUploadException cause) {
-		super(messageCode(cause), args(cause), cause);
+	/**
+	 * 指定されたメッセージコードとその置換文字列および原因を使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 * @param args
+	 *            メッセージコードに対応するメッセージに対する置換文字列の配列
+	 * @param cause
+	 *            この例外の原因
+	 */
+	public FileUploadRuntimeException(String messageCode, Object[] args,
+			Throwable cause) {
+		super(messageCode, args, cause);
 	}
 
-	private static String messageCode(final FileUploadException cause) {
-		final String messageCode;
-		if (cause instanceof SizeLimitExceededException) {
-			messageCode = "ECUB0202";
-		} else {
-			messageCode = "ECUB0201";
-		}
-		return messageCode;
+	/**
+	 * 指定されたメッセージコードとその置換文字列を使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 * @param args
+	 *            メッセージコードに対応するメッセージに対する置換文字列の配列
+	 */
+	public FileUploadRuntimeException(String messageCode, Object[] args) {
+		super(messageCode, args);
 	}
 
-	private static Object[] args(final FileUploadException cause) {
-		final Object[] args;
-		if (cause instanceof SizeLimitExceededException) {
-			final SizeLimitExceededException sle = (SizeLimitExceededException) cause;
-			args = new Object[] { sle.getPermittedSize(), sle.getActualSize() };
-		} else {
-			args = new Object[] { cause };
-		}
-		return args;
+	/**
+	 * 指定されたメッセージコードを使用して新規例外を構築します。
+	 * 
+	 * @param messageCode
+	 *            メッセージコード
+	 */
+	public FileUploadRuntimeException(String messageCode) {
+		super(messageCode);
 	}
+
 }

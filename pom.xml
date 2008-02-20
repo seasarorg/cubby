@@ -7,12 +7,12 @@
   <artifactId>cubby-project</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Project</name>
-  <version>1.0.0-rc1-SNAPSHOT</version>
-  <description>Cubby Simple JSP based Web Application Framework</description>
+  <version>1.0.1-SNAPSHOT</version>
+  <description>Cubby Simple Web Application Framework</description>
   <url>http://cubby.sandbox.seasar.org/</url>
   <inceptionYear>2006</inceptionYear>
   <organization>
-    <name>The Seasar Foundation and the others. All rights reserved.</name>
+    <name>The Seasar Foundation</name>
     <url>http://www.seasar.org/</url>
   </organization>
   <licenses>
@@ -29,6 +29,7 @@
       <email>agata_at_nulab.co.jp</email>
       <url>http://d.hatena.ne.jp/agt/</url>
       <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
       <timezone>+9</timezone>
     </developer>
     <developer>
@@ -36,13 +37,15 @@
       <name>INUMARU Sachie</name>
       <email />
       <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
       <timezone>+9</timezone>
     </developer>
     <developer>
       <id>baba</id>
       <name>BABA Yasuyuki</name>
-      <email>caster74_at_users.sourceforge.jp</email>
+      <email>baba_at_nulab.co.jp</email>
       <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
       <timezone>+9</timezone>
     </developer>
     <developer>
@@ -50,6 +53,14 @@
       <name>Jun Futagawa</name>
       <email/>
       <organization/>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>sakamoto</id>
+      <name>SAKAMOTO Takashi</name>
+      <email>sakamoto_at_nulab.co.jp</email>
+      <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
       <timezone>+9</timezone>
     </developer>
   </developers>
@@ -162,6 +173,7 @@
             <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
             <link>http://aopalliance.sourceforge.net/doc/</link>
             <link>http://www.junit.org/junit/javadoc/4.3/</link>
+            <link>http://commons.apache.org/fileupload/apidocs/</link>
             <link>http://s2container.seasar.org/2.4/s2-framework/ja/apidocs/</link>
             <link>http://s2container.seasar.org/2.4/s2-extension/ja/apidocs/</link>
             <link>http://s2container.seasar.org/2.4/s2-tiger/ja/apidocs/</link>

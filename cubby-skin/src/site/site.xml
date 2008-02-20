@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Cubby Archetype">
+<project name="Cubby Skin">
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
-		<href>http://cubby.sandbox.seasar.org/</href>
+		<href>../index.html</href>
 	</bannerLeft>
 	<body>
-   		<links>
-			<item name="seasar.org" href="http://www.seasar.org/" />
-		</links>
+		<breadcrumbs>
+			<item name="${project.name}" href="/index.html"/>
+		</breadcrumbs>
 
 		${reports}
 

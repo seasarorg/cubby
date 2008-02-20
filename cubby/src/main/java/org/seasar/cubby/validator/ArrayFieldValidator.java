@@ -15,8 +15,22 @@
  */
 package org.seasar.cubby.validator;
 
+/**
+ * 複数の値をもつ入力フォームのフィールドに対する入力検証です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public interface ArrayFieldValidator extends Validator {
 
+	/**
+	 * 指定された入力値を検証します。
+	 * 
+	 * @param context
+	 *            入力検証のコンテキスト
+	 * @param values
+	 *            入力値の配列
+	 */
 	void validate(ValidationContext context, Object[] values);
 
 }

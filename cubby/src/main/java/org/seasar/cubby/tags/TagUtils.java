@@ -28,21 +28,42 @@ import java.util.Map.Entry;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
 
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.util.CubbyFunctions;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.util.StringUtil;
 
 /**
+ * カスタムタグで使用するユーティリティクラスです。
  * 
  * @author baba
- * 
+ * @since 1.0.0
  */
 class TagUtils {
 
+	/** リクエストスコープから{@link ActionErrors}を取得するためのキー。 */
+	private static final String ATTR_ERRORS = "errors";
+
+	/**
+	 * 指定されたJSPコンテキストから{@link ActionErrors}を取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @return アクションで発生したエラー
+	 */
 	public static ActionErrors errors(final JspContext context) {
-		return (ActionErrors) context.getAttribute("errors", REQUEST_SCOPE);
+		return (ActionErrors) context.getAttribute(ATTR_ERRORS, REQUEST_SCOPE);
 	}
 
+	/**
+	 * 指定されたJSPコンテキストから指定されたパラメータ名に対応するリクエストパラメータを取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @param name
+	 *            パラメータ名
+	 * @return リクエストパラメータ
+	 */
 	@SuppressWarnings("unchecked")
 	private static Object[] paramValues(final JspContext context,
 			final String name) {
@@ -57,6 +78,15 @@ class TagUtils {
 		return values;
 	}
 
+	/**
+	 * フォーム値の{@link Map}から指定されたフィールドの値を取得します。
+	 * 
+	 * @param valuesMap
+	 *            フォーム値の{@link Map}
+	 * @param name
+	 *            フィールド名
+	 * @return フィールドの値
+	 */
 	private static Object[] formValues(final Map<String, String[]> valuesMap,
 			final String name) {
 		final Object[] values;
@@ -68,11 +98,35 @@ class TagUtils {
 		return values;
 	}
 
+	/**
+	 * 指定されたフィールド名に対応するフォームのフィールドへの出力値を取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @param outputValuesMap
+	 *            フォームへ出力する値の{@link Map}
+	 * @param name
+	 *            フィールド名
+	 * @return フォームのフィールドへの出力値
+	 */
 	public static Object[] multipleFormValues(final JspContext context,
 			final Map<String, String[]> outputValuesMap, final String name) {
 		return multipleFormValues(context, outputValuesMap, name, null);
 	}
 
+	/**
+	 * 指定されたフィールド名に対応するフォームのフィールドへの出力値を取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @param outputValuesMap
+	 *            フォームへ出力する値の{@link Map}
+	 * @param name
+	 *            フィールド名
+	 * @param checkedValue
+	 *            チェック済みにする値
+	 * @return フォームのフィールドへの出力値
+	 */
 	public static Object[] multipleFormValues(final JspContext context,
 			final Map<String, String[]> outputValuesMap, final String name,
 			final String checkedValue) {
@@ -89,6 +143,21 @@ class TagUtils {
 		return values;
 	}
 
+	/**
+	 * 指定されたフィールド名に対応するフォームのフィールドへの出力値を取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @param outputValuesMap
+	 *            フォームへ出力する値の{@link Map}
+	 * @param name
+	 *            フィールド名
+	 * @param index
+	 *            インデックス
+	 * @param specifiedValue
+	 *            エラーがない場合に設定する値
+	 * @return フォームのフィールドへの出力値
+	 */
 	public static Object formValue(final JspContext context,
 			final Map<String, String[]> outputValuesMap, final String name,
 			final Integer index, final Object specifiedValue) {
@@ -109,6 +178,19 @@ class TagUtils {
 		return value;
 	}
 
+	/**
+	 * オブジェクトの配列から指定されたインデックスの値を取得します。
+	 * <p>
+	 * values が <code>null</code> の場合や index が要素数を越えていた場合は空文字を返します。index が
+	 * <code>null</code> の場合は配列の最初の要素を返します。
+	 * </p>
+	 * 
+	 * @param values
+	 *            オブジェクトの配列
+	 * @param index
+	 *            インデックス
+	 * @return 指定されたインデックスの要素
+	 */
 	private static Object value(final Object[] values, final Integer index) {
 		final Object value;
 		if (values == null) {
@@ -123,6 +205,18 @@ class TagUtils {
 		return value;
 	}
 
+	/**
+	 * オブジェクトの配列から指定されたインデックスの要素を取得します。
+	 * <p>
+	 * index が要素数を越えていた場合は空文字を返します。
+	 * </p>
+	 * 
+	 * @param values
+	 *            オブジェクトの配列
+	 * @param index
+	 *            インデックス
+	 * @return 指定されたインデックスの要素
+	 */
 	private static Object getElement(final Object[] values, final Integer index) {
 		final Object value;
 		if (values.length <= index) {
@@ -133,11 +227,27 @@ class TagUtils {
 		return value;
 	}
 
+	/**
+	 * 指定されたJSPコンテキストのアクションが入力検証に失敗したかどうかを示します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @return アクションが入力検証に失敗した場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 * @see CubbyConstants#ATTR_VALIDATION_FAIL
+	 */
 	private static boolean isValidationFail(final JspContext context) {
 		return TRUE.equals(context.getAttribute(ATTR_VALIDATION_FAIL,
 				REQUEST_SCOPE));
 	}
 
+	/**
+	 * 指定されたJSPコンテキストから&lt;t:form&gt;タグによって設定されたフォームへの出力値の{@link Map}を取得します。
+	 * 
+	 * @param context
+	 *            JSPコンテキスト
+	 * @return フォームへの出力値の{@link Map}
+	 */
 	@SuppressWarnings("unchecked")
 	public static Map<String, String[]> outputValues(final JspContext context) {
 		final Map<String, String[]> outputValues = (Map<String, String[]>) context
@@ -145,47 +255,87 @@ class TagUtils {
 		return outputValues;
 	}
 
+	/**
+	 * 指定された{@link Map}をHTMLタグの属性へ変換します。
+	 * 
+	 * @param map
+	 *            属性のマップ
+	 * @return HTMLタグの属性
+	 */
 	public static String toAttr(final Map<String, Object> map) {
-		final StringBuilder sb = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		for (final Entry<String, Object> entry : map.entrySet()) {
 			final String key = entry.getKey();
 			if ("value".equals(key) || "checkedValue".equals(key)) {
 				continue;
 			}
-			sb.append(key);
-			sb.append("=\"");
-			sb.append(CubbyFunctions.escapeHtml(entry.getValue()));
-			sb.append("\" ");
+			builder.append(key);
+			builder.append("=\"");
+			builder.append(CubbyUtils.escapeHtml(entry.getValue()));
+			builder.append("\" ");
 		}
-		return sb.toString();
+		return builder.toString();
 	}
 
-	public static boolean isChecked(final String value, final Object values) {
-		if (values instanceof Collection) {
-			return ((Collection<?>) values).contains(value);
-		} else if (values.getClass().isArray()) {
-			for (final Object v : (Object[]) values) {
-				if (equalsValue(v, value)) {
+	/**
+	 * 指定されたオブジェクトが特定の文字列を含むかを示します。
+	 * <p>
+	 * 指定されたオブジェクトが配列や{@link Collection}の場合は、その要素の文字列表現が指定された文字列と同値かを示します。
+	 * 指定されたオブジェクトが配列や{@link Collection}でない場合は、そのオブジェクトの文字列表現が指定された文字列と同値かを示します。
+	 * </p>
+	 * 
+	 * @param obj
+	 *            オブジェクト
+	 * @param str
+	 *            文字列
+	 * @return 指定されたオブジェクトが特定の文字列を含む場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static boolean contains(final Object obj, final String str) {
+		if (obj instanceof Collection) {
+			return ((Collection<?>) obj).contains(str);
+		} else if (obj.getClass().isArray()) {
+			for (final Object value : (Object[]) obj) {
+				if (equalsAsString(value, str)) {
 					return true;
 				}
 			}
 			return false;
 		} else {
-			return equalsValue(values, value);
+			return equalsAsString(obj, str);
 		}
 	}
 
-	private static boolean equalsValue(final Object values, final Object value) {
-		if (values == value) {
+	/**
+	 * 指定された値が文字列として同値かを示します。
+	 * 
+	 * @param obj1
+	 *            比較するオブジェクト1
+	 * @param obj2
+	 *            比較するオブジェクト2
+	 * @return obj1とobj2が文字列として同値の場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	private static boolean equalsAsString(final Object obj1, final Object obj2) {
+		if (obj1 == obj2) {
 			return true;
-		} else if (values == null) {
+		} else if (obj1 == null) {
 			return false;
 		} else {
-			return values.toString().equals(value.toString());
+			return obj1.toString().equals(obj2.toString());
 		}
 	}
 
-	public static void addClassName(final Map<String, Object> dyn, final String className) {
+	/**
+	 * Dynamic-Attributesに指定されたclass属性を追加します。
+	 * 
+	 * @param dyn
+	 *            Dynamic-Attributes
+	 * @param className
+	 *            class属性の名前
+	 */
+	public static void addClassName(final Map<String, Object> dyn,
+			final String className) {
 		String classValue = (String) dyn.get("class");
 		if (StringUtil.isEmpty(classValue)) {
 			classValue = className;

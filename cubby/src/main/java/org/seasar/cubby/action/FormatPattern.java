@@ -21,6 +21,7 @@ import java.text.DateFormat;
  * 日付や時刻のフォーマットパターンを保持するクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface FormatPattern {
 

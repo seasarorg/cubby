@@ -22,34 +22,57 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
+import org.seasar.cubby.controller.ActionDefBuilder;
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.convention.CubbyConvention;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.framework.log.Logger;
 
+/**
+ * リクエストのパスを元にアクションメソッドを決定して実行するクラスの実装です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class ActionProcessorImpl implements ActionProcessor {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(ActionProcessorImpl.class);
 
+	/** アクションのコンテキスト。 */
 	private ActionContext context;
 
-	private CubbyConvention cubbyConvention;
+	/** アクションの定義を組み立てるビルダ。 */
+	private ActionDefBuilder actionDefBuilder;
 
+	/**
+	 * アクションのコンテキストを設定します。
+	 * 
+	 * @param context
+	 *            アクションのコンテキスト
+	 */
 	public void setActionContext(final ActionContext context) {
 		this.context = context;
 	}
 
-	public void setCubbyConvention(final CubbyConvention cubbyConvention) {
-		this.cubbyConvention = cubbyConvention;
+	/**
+	 * アクションの定義を組み立てるビルダを設定します。
+	 * 
+	 * @param actionDefBuilder
+	 *            アクションの定義を組み立てるビルダ
+	 */
+	public void setActionDefBuilder(final ActionDefBuilder actionDefBuilder) {
+		this.actionDefBuilder = actionDefBuilder;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ActionResult process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)
 			throws Exception {
-		final ActionDef actionDef = cubbyConvention
-				.fromPathToActionDef(request);
+		final ActionDef actionDef = actionDefBuilder.build(request);
 		if (actionDef != null) {
 			context.initialize(actionDef);
 			if (logger.isDebugEnabled()) {
@@ -60,7 +83,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 			}
 			final ActionResult result = context.invoke();
 			if (result == null) {
-				throw new ActionRuntimeException("ECUB0001",
+				throw new ActionRuntimeException("ECUB0101",
 						new Object[] { context.getMethod() });
 			}
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(

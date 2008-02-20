@@ -15,12 +15,18 @@
  */
 package org.seasar.cubby.validator;
 
+/**
+ * メッセージ取得のためのヘルパクラスです。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class MessageHelper {
 
 	/**
 	 * メッセージのキー。
 	 */
-	private String messageKey;
+	private final String messageKey;
 
 	/**
 	 * 初期化します。

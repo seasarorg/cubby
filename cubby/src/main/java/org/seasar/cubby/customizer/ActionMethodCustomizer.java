@@ -35,6 +35,7 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
+ * @since 1.0.0
  */
 public class ActionMethodCustomizer extends AspectCustomizer {
 
@@ -46,7 +47,8 @@ public class ActionMethodCustomizer extends AspectCustomizer {
      * @param pointcut
      *            ポイントカット
      */
-    public void setPointcut(final String pointcut) {
+    @Override
+	public void setPointcut(final String pointcut) {
     	super.setPointcut(pointcut);
         this.pointcut = pointcut;
     }
@@ -61,7 +63,8 @@ public class ActionMethodCustomizer extends AspectCustomizer {
      * 
      * @return ポイントカット
      */
-    protected Pointcut createPointcut() {
+    @Override
+	protected Pointcut createPointcut() {
         if (!StringUtil.isEmpty(pointcut)) {
             return PointcutFactory.createPointcut(pointcut);
         }

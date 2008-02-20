@@ -18,9 +18,10 @@ package org.seasar.cubby.dxo;
 import java.util.Map;
 
 /**
- * フォームオブジェクトと {@link Map} の変換。
+ * フォームオブジェクトと {@link Map} とを相互に変換します。
  * 
  * @author baba
+ * @since 1.0.0
  */
 public interface FormDxo {
 

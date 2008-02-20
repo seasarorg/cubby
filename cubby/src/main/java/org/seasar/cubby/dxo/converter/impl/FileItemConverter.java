@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2008 the Seasar Foundation and the Others.
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,32 @@ package org.seasar.cubby.dxo.converter.impl;
 
 import org.apache.commons.fileupload.FileItem;
 
+/**
+ * {@link FileItem}から{@link FileItem}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
+ * 
+ * @author baba
+ * @since 1.0.0
+ */
 public class FileItemConverter extends AbstractFileItemConverter {
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @return {@link FileItem}のクラスを返します。
+	 */
 	@SuppressWarnings("unchecked")
 	public Class getDestClass() {
 		return FileItem.class;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定された{@link FileItem}をそのまま返します。
+	 * </p>
+	 * 
+	 * @return 指定された{@link FileItem}
+	 */
 	@Override
 	protected Object convert(final FileItem fileItem) {
 		return fileItem;

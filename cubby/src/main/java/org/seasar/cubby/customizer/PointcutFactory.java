@@ -23,6 +23,7 @@ import org.seasar.framework.util.StringUtil;
  * {@link org.seasar.framework.aop.Pointcut ポイントカット}を構築するためのファクトリクラスです。
  * 
  * @author baba
+ * @since 1.0.0
  */
 class PointcutFactory {
 

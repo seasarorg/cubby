@@ -19,14 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 入力値検証のコンテキスト。
+ * 入力検証のコンテキスト。
  * 
  * @author agata
  * @author baba
+ * @since 1.0.0
  */
 public class ValidationContext {
 
-	private List<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+	private final List<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
 
 	/**
 	 * メッセージ情報を追加します。
@@ -34,10 +35,15 @@ public class ValidationContext {
 	 * @param messageInfo
 	 *            メッセージ情報
 	 */
-	public void addMessageInfo(MessageInfo messageInfo) {
+	public void addMessageInfo(final MessageInfo messageInfo) {
 		messageInfos.add(messageInfo);
 	}
 
+	/**
+	 * メッセージ情報のリストを取得します。
+	 * 
+	 * @return メッセージ情報のリスト
+	 */
 	public List<MessageInfo> getMessageInfos() {
 		return messageInfos;
 	}

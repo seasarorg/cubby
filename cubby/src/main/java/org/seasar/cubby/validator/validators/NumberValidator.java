@@ -33,6 +33,7 @@ import org.seasar.framework.util.StringUtil;
  * @author agata
  * @author baba
  * @see BigDecimal#BigDecimal(String)
+ * @since 1.0.0
  */
 public class NumberValidator implements ScalarFieldValidator {
 
@@ -58,6 +59,9 @@ public class NumberValidator implements ScalarFieldValidator {
 		this.messageHelper = new MessageHelper(messageKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;
