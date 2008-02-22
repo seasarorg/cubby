@@ -65,7 +65,7 @@ public class HelloActionTest extends CubbyTestCase {
 }
 +------------------------------------------------------+
 
- <<HelloActionTest.java>>
+ <<TodoActionTest.java>>
 
 +------------------------------------------------------+
 package org.seasar.cubby.examples.todo.action;
