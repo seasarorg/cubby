@@ -17,7 +17,6 @@
 
   <!-- More Project Information -->
   <name>Cubby Distribution</name>
-  <url>http://cubby.sandbox.seasar.org/</url>
 
   <build>
     <plugins>
