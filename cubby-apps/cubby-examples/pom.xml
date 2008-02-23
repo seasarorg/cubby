@@ -12,6 +12,17 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-war-plugin</artifactId>
+          <configuration>
+            <webResources>
+              <resource>
+                <directory>src</directory>
+                <targetPath>WEB-INF/src</targetPath>
+              </resource>
+            </webResources>
+          </configuration>
+        </plugin>
+        <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
             <encoding>UTF-8</encoding>
