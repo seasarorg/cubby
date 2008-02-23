@@ -40,7 +40,7 @@ mvn archetype:create \
 
    2008/2時点では maven-archetype-plugin は SNAPSHOT 版です。
 
-   Archetype の{{{http://cubby.sandbox.seasar.org/archetype-catalog.xml}カタログファイル}}をダウンロードしてください。
+   Archetype の{{{http://cubby.seasar.org/archetype-catalog.xml}カタログファイル}}をダウンロードしてください。
 
 +------------------------------------------------------+
 mvn archetype:create -DarchetypeCatalog=file://(ダウンロードしたカタログファイルのパス 例："C:\Users\foo\archetype-catalog.xml")
