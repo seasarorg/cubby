@@ -7,10 +7,21 @@
 </head>
 <body>
 [<a href="./../">戻る</a>]
+<div id="errors" class="errors">
+	<ul id="error">
+		<li><span id="errorMessage">Dummy Error Messages.</span></li>
+	</ul>
+</div>
 <form id="form" method="post" action="./components">
 <h1>コンポーネント一覧</h1>
 <h2>Input Text</h2>
 <label for="userName">Name:</label><input id="userName" type="text" name="userName"/>
+
+<h2>Input Text(date)</h2>
+<label for="date">Date:</label><input id="date" type="text" name="date"/>
+
+<h2>Input Text(int)</h2>
+<label for="intValue">Int(1-10):</label><input id="intValue" type="text" name="intValue"/>
 
 <h2>Select</h2>
 <label for="color">Color:</label>
@@ -33,6 +44,12 @@
 <input id="check2-1" type="checkbox" name="check2" value="1"/>
 <input id="check2-2" type="checkbox" name="check2" value="2"/>
 <input id="check2-3" type="checkbox" name="check2" value="3"/>
+
+<h2>Radio</h2> 
+<label for="radio">Radio:</label><br/>
+<input id="radio1-1" type="radio" name="radio1" value="1"/>1
+<input id="radio1-2" type="radio" name="radio1" value="2"/>2
+<input id="radio1-3" type="radio" name="radio1" value="3"/>3
 
 <h2>Odd &amp; Null</h2>
 <table border="1">
