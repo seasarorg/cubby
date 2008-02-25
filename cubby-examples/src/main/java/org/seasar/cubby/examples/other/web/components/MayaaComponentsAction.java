@@ -23,6 +23,12 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.DateFormatValidator;
+import org.seasar.cubby.validator.validators.NumberValidator;
+import org.seasar.cubby.validator.validators.RangeValidator;
 
 @Path("mayaa")
 public class MayaaComponentsAction extends Action {
@@ -30,6 +36,14 @@ public class MayaaComponentsAction extends Action {
 	// ----------------------------------------------[DI Filed]
 
 	// ----------------------------------------------[Attribute]
+
+	public ValidationRules validation = new DefaultValidationRules() {
+		@Override
+		public void initialize() {
+			add("date", new DateFormatValidator("yyyy-MM-dd"));
+			add("intValue", new NumberValidator(), new RangeValidator(1, 10));
+		}
+	};
 
 	public FormDto formDto;
 
@@ -47,6 +61,7 @@ public class MayaaComponentsAction extends Action {
 	}
 	
 	@Form("formDto")
+	@Validation(rules="validation", errorPage="components.html")
 	public ActionResult components() {
 		return new Forward("components.html");
 	}
