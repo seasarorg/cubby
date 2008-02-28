@@ -21,7 +21,7 @@
 
  [[5]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}}にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
  
- [[6]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#processAction}}で結果のActionResultの型とパスをチェックします。パスのチェックはForwardとRedirectの場合のみ行われます。
+ [[6]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#assertPathEquals}}で結果のActionResultの型とパスをチェックします。パスのチェックはForwardとRedirectの場合のみ行われます。
 
  [[7]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
 
