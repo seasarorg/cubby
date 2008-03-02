@@ -1,11 +1,23 @@
-                                    ------
-                              2分間チュートリアル
-                                    ------
-                                    agata
-                                    ------
-                                  2007-09-20
+  --------
+  2分間チュートリアル
+  --------
+  agata
+  baba
+  --------
+  2008-03-01
+  --------
 
-Hello アプリケーションの概要
+{目次}
+
+ *{{{#Hello_アプリケーションの概要}Hello アプリケーションの概要}}
+
+ *{{{#アクションクラスの作成}アクションクラスの作成}}
+
+ *{{{#{JSP_の作成}JSP の作成}}
+
+ *{{{#ブラウザで確認する}ブラウザで確認する}}
+
+{Hello アプリケーションの概要}
 
  入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
  このチュートリアルはCubby のサンプル war の「Hello World」から実行できます。
@@ -18,7 +30,7 @@ Hello アプリケーションの概要
 
 [images/hello_result.png]結果画面
 
-アクションクラスの作成
+{アクションクラスの作成}
 
  アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
  ここでは HelloAction クラスを作成します。
@@ -71,7 +83,7 @@ public class HelloAction extends Action {
 }
 +------------------------------------------------------+
 
-JSP の作成
+{JSP の作成}
 
  入力画面用の「input.jsp」とメッセージ出力画面用の「result.jsp」を作成します。\
  input.jsp では、Cubby のカスタムタグを使って、フォームを作成します。\
@@ -118,43 +130,8 @@ JSP の作成
 </html>
 +------------------------------------------------------+
 
-入力画面をブラウザで確認する
+ また、{{{jsp.html#JSP_共通ヘッダー}JSP 共通ヘッダー}}を使用することによって、JSP 先頭の taglib ディレクティブを省略しています。
+ 
+{ブラウザで確認する}
 
- ブラウザで{{http://localhost:8080/cubby-examples/hello/}}にアクセスします。
-
-おまけ：JSP共通ヘッダーの設定
-
- JSP のページディレクティブや taglib ディレクティブは、各 JSP には記述せずにヘッダーファイルをインクルードして設定することを推奨します。\
- Servlet 2.4/JSP 2.0 の web.xml の設定として「include-prelude」ディレクティブが用意されていますので、これを使用してヘッダーファイルのインクルードを行います。\
- ヘッダーファイル(header.jsp)では、ページ共通の taglib ディレクティブを記述しておきます。
-
- 上記サンプルの JSP は、共通ヘッダーを使用しているので、JSP の先頭に taglib ディレクティブの宣言がありません。\
- 実際は、以下の「header.jsp」の内容が JSP の先頭に自動的に付加されてから、コンパイル・実行されています。
-
- <</common/header.jsp>>
-
-+------------------------------------------------------+
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib uri="http://www.seasar.org/cubby/tags" prefix="t" %>
-<%@ taglib uri="http://www.seasar.org/cubby/functions" prefix="f" %>
-+------------------------------------------------------+
-
- <<web.xml>>
-
-+------------------------------------------------------+
-</web-app>
-  ...
-  <jsp-config>
-    <jsp-property-group>
-      <url-pattern>*.jsp</url-pattern>
-      <el-ignored>false</el-ignored>
-      <page-encoding>UTF-8</page-encoding>
-      <scripting-invalid>false</scripting-invalid>
-      <include-prelude>/common/header.jsp</include-prelude>
-    </jsp-property-group>
-  </jsp-config>
-</web-app>
-+------------------------------------------------------+
+ ブラウザで {{http://localhost:8080/cubby-examples/hello/}} にアクセスします。

@@ -7,36 +7,94 @@
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
-		<href>/index.html</href>
-		<src>/images/logo.png</src>
+		<href>./index.html</href>
+		<src>./images/logo.png</src>
 		<alt>Cubby</alt>
 	</bannerLeft>
 	<publishDate format="yyyy-MM-dd" position="right" />
 	<body>
 		<breadcrumbs>
-			<item name="The Seasar Project" href="http://www.seasar.org/" />
+			<item name="The Seasar Project"
+				href="http://www.seasar.org/" />
 			<item name="Cubby Project" href="/index.html" />
 		</breadcrumbs>
 
 		<menu name="&#x30c9;&#x30ad;&#x30e5;&#x30e1;&#x30f3;&#x30c8;">
 			<item name="Cubbyについて" href="/index.html" />
-			<item name="セットアップ" href="/setup.html" />
-			<item name="2分間チュートリアル" href="/twominute.html" />
-			<item name="5分間チュートリアル" href="/fiveminute.html" />
+			<item name="セットアップ" href="/setup.html" collapse="true">
+				<item name="前提" href="/setup.html#前提" />
+				<item name="プロジェクトの作成" href="/setup.html#プロジェクトの作成" />
+				<item name="各種ファイル" href="/setup.html#各種ファイル" />
+			</item>
+			<item name="2分間チュートリアル" href="/twominute.html"
+				collapse="true">
+				<item name="Hello アプリケーションの概要"
+					href="/twominute.html#Hello_アプリケーションの概要" />
+				<item name="アクションクラスの作成"
+					href="/twominute.html#アクションクラスの作成" />
+				<item name="JSP の作成" href="/twominute.html#JSP_の作成" />
+				<item name="ブラウザで確認する" href="/twominute.html#ブラウザで確認する" />
+			</item>
+			<item name="5分間チュートリアル" href="/fiveminute.html"
+				collapse="true">
+				<item name="Todo アプリケーションの概要"
+					href="/fiveminute.html#Todo_アプリケーションの概要" />
+				<item name="ログイン画面の作成"
+					href="/fiveminute.html#ログイン画面の作成" />
+				<item name="一覧画面の作成" href="/fiveminute.html#一覧画面の作成" />
+				<item name="詳細画面の作成" href="/fiveminute.html#詳細画面の作成" />
+				<item name="ログイン画面の作成"
+					href="/fiveminute.html#ログイン画面の作成" />
+				<item name="追加・編集画面の作成"
+					href="/fiveminute.html#追加編集画面の作成" />
+				<item name="確認画面の作成" href="/fiveminute.html#確認画面の作成" />
+			</item>
 			<item name="ダウンロード" href="/download.html" />
 		</menu>
 
 		<menu name="リファレンス">
-			<item name="アクション" href="/action.html" />
-			<item name="バリデーション" href="/validation.html" />
-			<item name="JSP" href="/jsp.html" />
-			<item name="カスタムタグ" href="/tags.html" />
-			<item name="ファンクション" href="/functions.html" />
-			<item name="メッセージリソース" href="/messages.html" />
-			<item name="アクションのテスト" href="/unit.html" />
-			<item name="Cubby&amp;Mayaa" href="/mayaa.html" />
-			<item name="Tips集" href="/tips.html" />
+			<item name="アクション" href="/action.html" collapse="true">
+				<item name="アクション" href="/action.html#アクション" />
+				<item name="アクションの定義" href="/action.html#アクションの定義" />
+				<item name="アクションのテスト" href="/action.html#アクションのテスト" />
+			</item>
+			<item name="バリデーション" href="/validation.html"
+				collapse="true">
+				<item name="バリデーション" href="/validation.html#バリデーション" />
+				<item name="バリデーションの定義"
+					href="/validation.html#バリデーションの定義" />
+				<item name="独自バリデーションの定義"
+					href="/validation.html#独自バリデーションの定義" />
+			</item>
+			<item name="メッセージリソース" href="/messages.html"
+				collapse="true">
+				<item name="メッセージリソース用のプロパティファイル"
+					href="/messages.html#メッセージリソース用のプロパティファイル" />
+				<item name="Java コード中でメッセージを取得する"
+					href="/messages.html#Java_コード中でメッセージを取得する" />
+				<item name="JSP 中でメッセージを取得する"
+					href="/messages.html#JSP_中でメッセージを取得する" />
+			</item>
+			<item name="JSP" href="/jsp.html" collapse="true">
+				<item name="JSP" href="/jsp.html#JSP" />
+				<item name="暗黙オブジェクト" href="/jsp.html#暗黙オブジェクト" />
+				<item name="カスタムタグ" href="/jsp.html#カスタムタグ" />
+				<item name="ファンクション" href="/jsp.html#ファンクション" />
+				<item name="JSP 共通ヘッダー" href="/jsp.html#SP_共通ヘッダー" />
+			</item>
+			<item name="Mayaa" href="/mayaa.html" collapse="true">
+				<item name="Mayaa" href="/mayaa.html#Mayaa" />
+				<item name="Mayaa と連携するための設定"
+					href="/mayaa.html#Mayaa_と連携するための設定" />
+				<item name="Cubby と Mayaa の使い分け"
+					href="/mayaa.html#Cubby_と_Mayaa_の使い分け" />
+			</item>
+			<item name="Tips集" href="/tips.html" collapse="true">
+				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
+				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
+			</item>
 			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
+			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
 		</menu>
 
 		<menu name="リソース">
