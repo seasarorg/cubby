@@ -1,20 +1,40 @@
-                                    ------
-                                  バリデーション
-                                    ------
-                                    agata
-                                    ------
-                                  2007-09-30
+  --------
+  バリデーション
+  --------
+  agata
+  baba
+  --------
+  2008-03-01
+  --------
 
-バリデーション
+{目次}
+
+ *{{{#バリデーション}バリデーション}}
+
+ *{{{#バリデーションの定義}バリデーションの定義}}
+
+  *{{{#定義済みバリデーション}定義済みバリデーション}}
+
+  *{{{#バリデーションのエラーメッセージ}バリデーションのエラーメッセージ}}
+
+  *{{{#バリデーションルールのコピー}バリデーションルールのコピー}}
+
+ *{{{#独自バリデーションの定義}独自バリデーションの定義}}
+
+  *{{{#リクエストパラメータのバリデーション}リクエストパラメータのバリデーション}}
+
+  *{{{#業務ロジックによるバリデーション}業務ロジックによるバリデーション}}
+
+{バリデーション}
 
  Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。
 
  フォームから入力された値は HttpServletRequest#getParameterValues で返される値が String の配列であることからもわかるように、
  全ての値は配列として取得できます。この配列に対してバリデーションを行います。
 
- また、それ以外にもフォームオブジェクトやデータベースを参照したバリデーションをプログラム上に定義することができます。
+ また、それ以外にもフォームオブジェクトやデータベースを参照する独自のバリデーションをプログラム上に定義することができます。
 
-バリデーションの定義
+{バリデーションの定義}
 
  バリデーションの定義は Java コードで記述します。以下のように、アクションメソッドに対してバリデーションのルールを定義します。
 
@@ -62,14 +82,12 @@ public class LoginAction extends Action {
 
 []
 
-*定義済みバリデーション
+*{定義済みバリデーション}
 
  Cubbyで定義済みのバリデーションクラスは以下のものがあります。
 
  {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}} を実装しているクラスがひとつの要素を検証するバリデータ、
  {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}} を実装しているクラスが配列全体を検証するバリデータとなっています。
-
- <<定義済みバリデーションクラス一覧>>
 
 *----------------------+--------------------------------------+
 | <<クラス名>>          | <<説明>>                              |
@@ -100,10 +118,11 @@ public class LoginAction extends Action {
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/TokenValidator.html}TokenValidator}}     |2重サブミットを検証します。                         |
 *----------------------+--------------------------------------+
+定義済みバリデーションクラス一覧
 
  詳細は{{{cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html}APIドキュメント}}をご覧下さい。
 
-*バリデーションのエラーメッセージ
+*{バリデーションのエラーメッセージ}
 
  バリデーションのエラーメッセージは以下のルールで作成されます。
 
@@ -151,7 +170,7 @@ public class LoginAction extends Action {
 }
 +------------------------------------------------------+
 
-*バリデーションルールのコピー
+*{バリデーションルールのコピー}
 
  ほとんどが同じでいくつかの項目が異なる複数のルールを作りたい場合、以下のように他のルールをコピーして使用することができます。
  
@@ -190,15 +209,15 @@ public class LoginAction extends Action {
 }
 +------------------------------------------------------+
 
-独自バリデーションの定義
+{独自バリデーションの定義}
 
-*リクエストパラメータのバリデーション
+*{リクエストパラメータのバリデーション}
 
  リクエストパラメータのバリデーションを独自に作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}}
  または{{{cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}}を実装して作成します。\
  実装の方法は{{{cubby/xref/org/seasar/cubby/validator/validators/package-summary.html}それぞれのインターフェイスの実装クラス}}を参照してください。
 
-*業務ロジックによるバリデーション
+*{業務ロジックによるバリデーション}
 
  データベースアクセスなどの業務ロジックによるバリデーションを作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html}ValidationRule}}を実装して作成してください。
 

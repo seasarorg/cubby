@@ -1,22 +1,48 @@
-                                    ------
-                                  アクション
-                                    ------
-                                    agata
-                                    ------
-                                  2007-09-20
+  --------
+  アクション
+  --------
+  agata
+  baba
+  --------
+  2008-03-01
+  --------
 
-アクション
+{目次}
 
- アクションは{{{cubby/apidocs/org/seasar/cubby/action/Action.html}Action}}を継承して作成します。
+ *{{{#アクション}アクション}}
 
-アクションメソッド
+ *{{{#アクションの定義}アクションの定義}}
 
- リクエストされた URL に応じて、アクションメソッドが呼び出され処理を実行します。\
- Action クラスの中で public で戻り値が ActionResult のメソッドが、アクションメソッドとして認識されます。
- 
-ActionResult の種類
+  *{{{#アクションクラス}アクションクラス}}
 
- 以下のクラスはActionResultを実装するクラスで、アクションメソッドの戻り値として使用できます。
+  *{{{#アクションメソッド}アクションメソッド}}
+
+  *{{{#ActionResult}ActionResult}}
+
+  *{{{#アノテーション}アノテーション}}
+
+  *{{{#事前処理事後処理}事前処理・事後処理}}
+
+ *{{{#アクションのテスト}アクションのテスト}}
+
+{アクション}
+
+ アクションとは特定の URI へのリクエストに対応する処理で、Cubby のユーザーが実装する部分です。\
+ URI に対応するメソッドをアクションメソッド、アクションメソッドが定義されたクラスをアクションクラスといいます。
+
+{アクションの定義}
+
+*{アクションクラス}
+
+ {{{cubby/apidocs/org/seasar/cubby/action/Action.html}Action}} を継承し、〜Action という名前のクラスをアクションクラスとして認識します。
+
+*{アクションメソッド}
+
+ アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。
+
+*{ActionResult}
+
+ 以下のクラスは {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} を実装するクラスで、アクションメソッドの戻り値として使用できます。
 
 *-------------------------------------------------------------------+--------------------------------------------------------------------+
 | <<クラス名>>                                                      | <<説明>>                                                           |
@@ -30,32 +56,138 @@ ActionResult の種類
 | {{{cubby/apidocs/org/seasar/cubby/action/Json.html}Json}}         | 指定されたオブジェクトを Json 形式に変換してレスポンスを返します。 |
 *-------------------------------------------------------------------+--------------------------------------------------------------------+
 
-アノテーション
+*{アノテーション}
 
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| <<アノテーション名>>                                                   | <<説明>>                                                           |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Url.html}@Path}}               | アクションメソッドのURLを指定します。                              |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}               | アクションメソッドのHTTPメソッドを指定します。省略された場合、GETとPOSTに対応するメソッドになります。|
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}}             | リクエストパラメータのオブジェクトへのバインディングを指定します。 |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}} | 入力検証を指定します。                                             |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
+ アクションクラスやアクションメソッドに以下のアノテーションを指定することで、アクションのメタ情報を設定することができます。
 
-事前処理・事後処理
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
+| <<アノテーション名>>                                                   | <<説明>>                                                     | <<省略した場合>>                                 |
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}}             | アクションメソッドに対応する URI を指定します。              | XxxAction#yyyy() の場合は /xxx/yyyy になります。 |
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}         | アクションメソッドが受け付ける HTTP メソッドを指定します。   | GET と POST に対応するメソッドになります。       |
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}}             | リクエストパラメータをバインドするオブジェクトを指定します。 | アクションクラスのインスタンスになります。       |
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}} | 入力検証を定義したプロパティを指定します。                   | 入力検証を行いません。                           |
+*------------------------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------+
 
- Actionクラスにある以下のメソッドをオーバーライドすることで、Action実行時の前後にフック処理を記述することができます。\
- またActionメソッド実行の前後に処理を組み込みたい場合は、SeasarのAOPを使用して処理をフックします。
+*{事前処理・事後処理}
 
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| <<メソッド名>>                                                   | <<説明>>                                                           |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()}Action#initialize}}               | Actionの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。                              |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()}Action#prerender}}             | フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。 |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()}Action#postrender}} | フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。                                             |
-*------------------------------------------------------------------------+--------------------------------------------------------------------+
+ アクションクラスにある以下のメソッドをオーバーライドすることで、アクションメソッド実行の前後にフック処理を記述することができます。\
+ また、アクションメソッド実行の前後に処理を組み込みたい場合は、{{{http://s2container.seasar.org/2.4/ja/aop.html}Seasar の AOP}} を使用して処理をフックします。
+
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| <<メソッド名>>                                                                              | <<説明>>                                                                                                                                                   |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()}Action#initialize}}       | アクションメソッドの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。 |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()}Action#prerender}}         | フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。                                 |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()}Action#postrender}}       | フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。                                                                                     |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+{アクションのテスト}
+
+ アクションの単体テストは {{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html}CubbyTestCase}} を使用します。
+ Seasar の S2Unit の機能を全て使用できるので
+ {{{http://s2container.seasar.org/2.4/ja/S2Unit.html}SeasarのS2Unitのドキュメント}}も合わせてご覧ください。
+
+ [[1]]CubbyTestCase を継承して、XXXXTest を作成します。 
+
+ [[2]]テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。
+
+ [[3]]アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。
+
+ [[4]]テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。
+
+ [[5]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}} にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
  
+ [[6]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#processAction}}で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。
+
+ [[7]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
+
+ <<HelloActionTest.java>>
+ 
++------------------------------------------------------+
+package org.seasar.cubby.examples.other.web.hello;
+
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.unit.CubbyTestCase;
+
+public class HelloActionTest extends CubbyTestCase {
+
+	// 対象のアクション
+	private HelloAction action;
+	
+	// 初期化処理
+    protected void setUp() throws Exception {
+    	// diconファイルの読み込み
+        include("app.dicon");
+    }
+    
+	public void testIndex() throws Exception {
+		// アクションの実行
+		ActionResult result = processAction("/hello/");
+		// 結果のチェック
+		assertPathEquals(Forward.class, "input.jsp", result);
+	}
+	
+	public void testMessage() throws Exception {
+	    // リクエストパラメータのセット
+		getRequest().addParameter("name", "name1");
+		// アクションの実行
+		ActionResult result = processAction("/hello/message");
+		// 結果のチェック
+		assertPathEquals(Forward.class, "result.jsp", result);
+		// 実行後のアクションの状態を確認
+		assertEquals("name1", action.name);
+	}	
+}
++------------------------------------------------------+
+
+ <<TodoActionTest.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.examples.todo.action;
+
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.examples.RunDdlServletRequestListener;
+import org.seasar.cubby.unit.CubbyTestCase;
+
+public class TodoActionTest extends CubbyTestCase {
+
+	private TodoAction action;
+	
+    protected void setUp() throws Exception {
+        include("app.dicon");
+        RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
+        listener.requestInitialized(null);
+    }
+
+    @Override
+    protected void setUpAfterBindFields() throws Throwable {
+    	super.setUpAfterBindFields();
+		getRequest().addParameter("userId", "test");
+		getRequest().addParameter("password", "test");
+		// 後続のテストを実行するためにログインアクションを実行
+		assertPathEquals(Redirect.class, "/todo/", processAction("/todo/login/process"));
+    }
+    
+	public void testShow() throws Exception {
+        this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
+        // CoolURIの場合のテスト
+		ActionResult result = processAction("/todo/1");
+		assertPathEquals(Forward.class, "show.jsp", result);
+		assertEquals(new Integer(1), action.id);
+		assertEquals("todo1", action.text);
+		assertEquals("todo1 memo", action.memo);
+		assertEquals(new Integer(1), action.todoType.getId());
+		assertEquals("type1", action.todoType.getName());
+		assertEquals("2008-01-01", action.limitDate);
+	}
+}
++------------------------------------------------------+
