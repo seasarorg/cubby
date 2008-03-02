@@ -72,7 +72,8 @@ h2 {
 	background-color: #ffffff;
 	border: none;
 	border-bottom: solid 3px #2d9100;
-	padding-bottom: 2px;
+	border-left: solid 24px #2d9100;
+	padding: 1px 0 0 6px;
 }
 
 h3 {
@@ -81,13 +82,26 @@ h3 {
 	background-color: #ffffff;
 	border: none;
 	border-bottom: solid 2px #2d9100;
-	padding-bottom: 2px;
+	padding: 0 0 0 2px;
+}
+
+h2 a:active,
+h2 a:hover,
+h3 a:active,
+h3 a:hover {
+	color: #ff8c00;
+}
+
+h2 a,
+h3 a {
+	text-decoration: none;
 }
 
 h4 {
 	color: #2d9100;
 	font-size: 1.0em;
 	background-color: #ffffff;
+	text-decoration: none;
 }
 
 h5 {
@@ -129,7 +143,7 @@ p {
 
 #navcolumn ul {
 	margin: 0;
-	padding: 0px 0px 10px;
+	padding: 0;
 	list-style-type: none;
 	font-size: inherit;
 }
@@ -137,15 +151,15 @@ p {
 #navcolumn li {
 	font-size: 1em;
 	background-image: none;
-	background-position: 6px 8px;
+	background-position: 0.5em 0.4em;
 	background-repeat: no-repeat;
 	padding-left: 16px;
 }
 
 #navcolumn a, #navcolumn strong {
 	display: block;
-	padding: 5px;
-	width: 140px;
+	padding: 2px 0 2px 0;
+	height: 100%;
 }
 
 #navcolumn a:link, #navcolumn a:visited {
@@ -156,11 +170,6 @@ p {
 #navcolumn a:hover {
 	background-color: #f5f5f5;
 	color: #2d9100;
-}
-
-#navcolumn a {
-	display: block;
-	width: 140px;
 }
 
 #navcolumn h5 {
