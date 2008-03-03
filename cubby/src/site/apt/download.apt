@@ -1,82 +1,88 @@
-                                    ------
-                                 ダウンロード
-                                    ------
-                                    agata
-                                    ------
-                                  2008-02-19
+  --------
+  ダウンロード
+  --------
+  agata
+  baba
+  --------
+  2008-03-01
+  --------
 
-ダウンロード
+{ダウンロード}
 
-* Cubby 1.0.0 (2008-02-19)
+*{最新のリリース}
 
- リリース1.0.0です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10615}リリースノート}}）
+** Cubby 1.0.0 (2008-02-19)
 
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0.zip}ダウンロード}}
+  リリース1.0.0です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10615}リリースノート}}）
 
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0.war}ダウンロード}}
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0.zip}ダウンロード}}
 
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0.war}ダウンロード}}
 
- * 以前のバージョンからの移行する際の注意点
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/1.0.0/}SVNリポジトリのtags}}からチェックアウトして下さい
+
+  * 以前のバージョンからの移行する際の注意点
  
- maven-archetype-plugin 2に対応しました。詳細は{{{setup.html}セットアップ}}をご覧下さい。
+  maven-archetype-plugin 2に対応しました。詳細は{{{setup.html}セットアップ}}をご覧下さい。
 
-* Cubby 1.0.0-RC2 (2008-02-04)
+*{過去のリリース}
 
- リリース候補版です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10614}リリースノート}}）
+** Cubby 1.0.0-RC2 (2008-02-04)
 
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0-rc2.zip}ダウンロード}}
+  リリース候補版です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10614}リリースノート}}）
 
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0-rc2.war}ダウンロード}}
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0-rc2.zip}ダウンロード}}
 
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0-rc2.war}ダウンロード}}
 
- * 以前のバージョンからの移行する際の注意点
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/1.0.0-rc2/}SVNリポジトリのtags}}からチェックアウトして下さい
+
+  * 以前のバージョンからの移行する際の注意点
+
+  必要なSeasarのバージョンが2.4.22に上がっています。
+
+** Cubby 1.0.0-RC1 (2008-01-21)
+
+  APIの変更とアクションの単体テストを実行をサポートしたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。
+  （{{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10541}リリースノート}}）
+
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0-rc1.zip}ダウンロード}}
+
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0-rc1.war}ダウンロード}}
+
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/1.0.0-rc1/}SVNリポジトリのtags}}からチェックアウトして下さい
+
+  * 以前のバージョンからの移行する際の注意点
  
- 必要なSeasarのバージョンが2.4.22に上がっています。
-
-* Cubby 1.0.0-RC1 (2008-01-21)
-
- APIの変更とアクションの単体テストを実行をサポートしたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。
- （{{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10541}リリースノート}}）
-
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.0.0-rc1.zip}ダウンロード}}
-
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.0.0-rc1.war}ダウンロード}}
-
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
-
- * 以前のバージョンからの移行する際の注意点
+  @Urlが{{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}}と{{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}に変更・分割されました。
  
- @Urlが{{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}}と{{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}に変更・分割されました。
- 
-* Cubby 0.9.2 (2007-11-30)
+** Cubby 0.9.2 (2007-11-30)
 
- APIの変更をFIXさせたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10537}変更履歴}}）
+  APIの変更をFIXさせたバージョンです。今後、1.0.0のリリースまでAPIの変更は基本的には行いません。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10537}変更履歴}}）
 
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.2.zip}ダウンロード}}
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.2.zip}ダウンロード}}
 
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.2.war}ダウンロード}}
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.2.war}ダウンロード}}
 
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/0.9.2/}SVNリポジトリのtags}}からチェックアウトして下さい
 
-* Cubby 0.9.1 (2007-10-31)
+** Cubby 0.9.1 (2007-10-31)
 
- APIの変更、バグフィックスバージョンです。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10521}変更履歴}}）
+  APIの変更、バグフィックスバージョンです。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10521}変更履歴}}）
 
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.1.zip}ダウンロード}}
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.1.zip}ダウンロード}}
 
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.1.war}ダウンロード}}
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.1.war}ダウンロード}}
 
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/0.9.1/}SVNリポジトリのtags}}からチェックアウトして下さい
 
-* Cubby 0.9.0 (2007-09-30)
+** Cubby 0.9.0 (2007-09-30)
 
- Mayaaやカスタムタグの変更を取り込んだバージョンです。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10517}変更履歴}}）
+  Mayaaやカスタムタグの変更を取り込んだバージョンです。（{{{https://www.seasar.org/issues/browse/CUBBY/fixforversion/10517}変更履歴}}）
 
- * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.0.zip}ダウンロード}}
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-0.9.0.zip}ダウンロード}}
 
- * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.0.war}ダウンロード}}
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-0.9.0.war}ダウンロード}}
 
- * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/}SVNリポジトリのtags}}から該当バージョンをチェックアウトして下さい
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/0.9.0/}SVNリポジトリのtags}}からチェックアウトして下さい
 

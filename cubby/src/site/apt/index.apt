@@ -1,11 +1,13 @@
-                                    ------
-                               Cubby について
-                                    ------
-                                    agata
-                                    ------
-                                  2008-02-19
+  --------
+  Cubby について
+  --------
+  agata
+  baba
+  --------
+  2008-03-01
+  --------
 
-News
+{News}
 
  *2008-02-19 {{{download.html}バージョン 1.0.0}}がリリースされました。
 
@@ -19,7 +21,7 @@ News
 
  *2007-09-30 HotDeploy と Mayaa 連携に対応した{{{download.html}バージョン 0.9}}がリリースされました。
 
-What's Cubby ?
+{What's Cubby ?}
 
  Cubby(カビー)は Java/Servlet2.4/JSP.2.0 をベースにしたシンプルな Web アプリケーションフレームワークです。\
  以下の特徴があります。
@@ -34,7 +36,7 @@ What's Cubby ?
 
  *HTMLテンプレートエンジン「{{{http://mayaa.seasar.org}Mayaa}}」と連携することができます。
 
-Cubbyのゴール
+{Cubbyのゴール}
 
  *Servlet/JSPとJava5とSeasar2を知っていれば使いこなせる。
 
@@ -44,7 +46,7 @@ Cubbyのゴール
 
  *トラブルに遭遇したときに、わかりやすいメッセージで原因解決がすぐにできる
  
-動作環境
+{動作環境}
 
  *Java5以上
 
