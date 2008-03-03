@@ -42,7 +42,7 @@
 
 *{Maven2 によるプロジェクトの雛形作成}
 
- Maven2 のインストール後、以下のいずれかの方法でプロジェクトの雛形を作成します。\
+ Maven2 のインストール後、以下のいずれかの方法でプロジェクトの雛形を作成します。
 
  [[1]] archetype:create で作成するプロジェクトの情報をコマンドのオプションで指定する\
        (<maven-archetype-plugin-2.0-alpha-2 では -DarchetypeVersion を指定するとエラーになってしまいます。そのときは -DarchetypeVersion を指定しないか、2.の方法で雛形を作成してください>)
@@ -59,7 +59,7 @@ mvn archetype:create \
 (実際には1行で入力してください)
 +------------------------------------------------------+
 
- [[2]] archetype:generate で作成するプロジェクトの情報をインタラクティブに指定する\
+ [[2]] archetype:generate で作成するプロジェクトの情報をインタラクティブに指定する
 
 +------------------------------------------------------+
 mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
