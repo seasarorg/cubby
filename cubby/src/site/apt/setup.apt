@@ -42,24 +42,27 @@
 
 *{Maven2 によるプロジェクトの雛形作成}
 
- Maven2 のインストール後、以下のいずれかの方法でプロジェクトの雛形を作成します。
+~~ Maven2 のインストール後、以下のいずれかの方法でプロジェクトの雛形を作成します。
+~~
+~~ [[1]] 作成するプロジェクトの情報をコマンドのオプションで指定する
+~~
+~~+------------------------------------------------------+
+~~mvn archetype:generate \
+~~-DgroupId=(作成するプロジェクトのグループID 例 : com.example.foo) \
+~~-DartifactId=(作成するプロジェクトのアーティファクトID 例 : barapp) \
+~~-Dversion=(作成するプロジェクトのバージョン 例 : 1.0-SNAPSHOT) \
+~~-DarchetypeGroupId=org.seasar.cubby \
+~~-DarchetypeArtifactId=cubby-archetype \
+~~-DarchetypeVersion=(Cubby Archetype PluginのバージョンでCubbyのバージョンと連動しています。 例：1.0.0) \
+~~-DarchetypeRepository=http://maven.seasar.org/maven2/
+~~(実際には1行で入力してください)
+~~+------------------------------------------------------+
+~~
+~~ [[2]] 作成するプロジェクトの情報をインタラクティブに指定する
 
- [[1]] archetype:create で作成するプロジェクトの情報をコマンドのオプションで指定する\
-       (<maven-archetype-plugin-2.0-alpha-2 では -DarchetypeVersion を指定するとエラーになってしまいます。そのときは -DarchetypeVersion を指定しないか、2.の方法で雛形を作成してください>)
+ Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。
 
-+------------------------------------------------------+
-mvn archetype:create \
--DgroupId=(作成するプロジェクトのグループID 例 : com.example.foo) \
--DartifactId=(作成するプロジェクトのアーティファクトID 例 : barapp) \
--Dversion=(作成するプロジェクトのバージョン 例 : 1.0-SNAPSHOT) \
--DarchetypeGroupId=org.seasar.cubby \
--DarchetypeArtifactId=cubby-archetype \
--DarchetypeVersion=(Cubby Archetype PluginのバージョンでCubbyのバージョンと連動しています。 例：1.0.0) \
--DremoteRepositories=http://maven.seasar.org/maven2/
-(実際には1行で入力してください)
-+------------------------------------------------------+
-
- [[2]] archetype:generate で作成するプロジェクトの情報をインタラクティブに指定する
+   まずは以下のコマンドを入力してください。
 
 +------------------------------------------------------+
 mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
@@ -134,7 +137,7 @@ mvn war:inplace
 
  [[1]]ワークスペースのクラスパス変数
 
-      Eclipse ワークスペースにビルドパスのクラスパス変数(MAVEN_REPO)を追加します。\
+      Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。\
       以下のコマンドを実行してください。
 
 +------------------------------------------------------+
