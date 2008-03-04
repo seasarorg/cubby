@@ -11,8 +11,8 @@
 <body>
 <h1>Cuuby archetype sample app : /hello/message</h1>
 ${dollar}{messages['msg.dummy']}<br/>
-<c:import url="/commons/errors.jsp"/>
-<c:import url="/commons/notice.jsp"/>
+<c:import url="/common/errors.jsp"/>
+<c:import url="/common/notice.jsp"/>
 post message : [${dollar}{message}]
 <br/>
 <a href="back">Back(redirect and flash message)</a>
