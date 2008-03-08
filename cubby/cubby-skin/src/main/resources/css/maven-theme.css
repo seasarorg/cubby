@@ -20,6 +20,10 @@ a {
 	text-decoration: underline;
 }
 
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a,h7 a {
+	text-decoration: none;
+}
+
 a:link {
 	color: #3366aa;
 }

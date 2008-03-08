@@ -8,7 +8,7 @@
 	<bannerLeft>
 		<name>Cubby</name>
 		<href>./index.html</href>
-		<src>./images/logo.png</src>
+		<src>./images/logo.gif</src>
 		<alt>Cubby</alt>
 	</bannerLeft>
 	<publishDate format="yyyy-MM-dd" position="right" />
@@ -91,6 +91,7 @@
 			</item>
 			<item name="Tips集" href="/tips.html" collapse="true">
 				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
+				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 			</item>
 			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
