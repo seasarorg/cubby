@@ -1,0 +1,894 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Cubby - JSP</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="agata
+baba" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="./index.html" id="bannerLeft">
+    
+                                            <img src="./images/logo.gif" alt="Cubby" />
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+          
+                <a href="http://www.seasar.org/" class="externalLink">The Seasar Project</a>
+                &gt;
+      
+                <a href="index.html">Cubby Project</a>
+                  </div>
+            <div class="xright">      
+  
+
+  
+    
+  
+  
+    
+             最終更新: 2008-03-08
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="setup.html">セットアップ</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="twominute.html">2分間チュートリアル</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+                </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="action.html">アクション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="validation.html">バリデーション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="messages.html">メッセージリソース</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+            <li class="expanded">
+              <strong>JSP</strong>
+                <ul>
+                  
+    <li class="none">
+                    <a href="jsp.html#JSP">JSP</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="jsp.html#暗黙オブジェクト">暗黙オブジェクト</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="jsp.html#カスタムタグ">カスタムタグ</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="jsp.html#ファンクション">ファンクション</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="jsp.html#SP_共通ヘッダー">JSP 共通ヘッダー</a>
+          </li>
+              </ul>
+        </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="mayaa.html">Mayaa</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/tlddoc/index.html">TLDDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="presentation.html">プレゼン資料</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                </li>
+          </ul>
+              <h5>モジュール</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="cubby/index.html">Cubby</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-skin/index.html">Cubby Skin</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby-dist/index.html">Cubby Distribution</a>
+          </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+          <a href="http://www.seasar.org/" title="The Seasar Project" class="poweredBy">
+            <img alt="The Seasar Project" src="http://www.seasar.org/images/seasar_banner.gif">
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2><a name="目次">目次</a>
+</h2>
+<ul><li><a href="#JSP">JSP</a>
+</li>
+<li><a href="#暗黙オブジェクト">暗黙オブジェクト</a>
+</li>
+<li><a href="#カスタムタグ">カスタムタグ</a>
+<ul><li><a href="#form">form</a>
+</li>
+<li><a href="#input">input</a>
+</li>
+<li><a href="#select">select</a>
+</li>
+<li><a href="#textarea">textarea</a>
+</li>
+<li><a href="#token">token</a>
+</li>
+</ul>
+</li>
+<li><a href="#ファンクション">ファンクション</a>
+<ul><li><a href="#out">out</a>
+</li>
+<li><a href="#dateFormat">dateFormat</a>
+</li>
+<li><a href="#odd">odd</a>
+</li>
+<li><a href="#contains">contains</a>
+</li>
+<li><a href="#containsKey">containsKey</a>
+</li>
+<li><a href="#containsValue">containsValue</a>
+</li>
+</ul>
+</li>
+<li><a href="#JSP_共通ヘッダー">JSP 共通ヘッダー</a>
+</li>
+</ul>
+</div>
+<div class="section"><h2><a name="JSP">JSP</a>
+</h2>
+<p>Cubby のビューは JSP で作成します。</p>
+</div>
+<div class="section"><h2><a name="暗黙オブジェクト">暗黙オブジェクト</a>
+</h2>
+<p>アクションからフォワードされた JSP では、以下の暗黙オブジェクトを使用することができます。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>スコープ</b>
+</td>
+<td align="left"><b>セットされるタイミング</b>
+</td>
+</tr>
+<tr class="b"><td align="left">action</td>
+<td align="left">forward したアクションのオブジェクト</td>
+<td align="left">org.seasar.cubby.action.Action</td>
+<td align="left">request</td>
+<td align="left">forward の直前</td>
+</tr>
+<tr class="a"><td align="left">action のプロパティ名</td>
+<td align="left">Action で public なゲッターがあるプロパティは自動的にリクエストスコープにセットされます。<br />
+（例）getXyz -&gt; xyz</td>
+<td align="left">それぞれのプロパティの型</td>
+<td align="left">request</td>
+<td align="left">forward の直前</td>
+</tr>
+<tr class="b"><td align="left">errors</td>
+<td align="left">エラー保持オブジェクト</td>
+<td align="left">org.seasar.cubby.action.ActionErrors</td>
+<td align="left">request</td>
+<td align="left">action メソッドの実行前</td>
+</tr>
+<tr class="a"><td align="left">flash</td>
+<td align="left">リダイレクト時にメッセージなどを受け渡しするためのMap。<br />
+この Map は１度 get すると Map から自動的に除去(remove)されます。</td>
+<td align="left">java.util.Map</td>
+<td align="left">session</td>
+<td align="left">action メソッドの実行前</td>
+</tr>
+<tr class="b"><td align="left">contextPath</td>
+<td align="left">request.getContextPath()の値</td>
+<td align="left">java.lang.String</td>
+<td align="left">request</td>
+<td align="left">forward の直前</td>
+</tr>
+<tr class="a"><td align="left">messages</td>
+<td align="left">messages.propertiesをMapにしたもの。<br />
+リクエストのロケールに対応したプロパティファイルを使用します。 </td>
+<td align="left">java.util.Map</td>
+<td align="left">request</td>
+<td align="left">forward の直前</td>
+</tr>
+</tbody>
+<caption>暗黙オブジェクト一覧</caption>
+</table>
+</div>
+<div class="section"><h2><a name="カスタムタグ">カスタムタグ</a>
+</h2>
+<p>Cubby のカスタムタグはフォーム値の表示・復元・バリデーション結果の反映に使用します。 以下のタグライブラリ宣言を行うことでカスタムタグが使用できます。</p>
+<div class="source"><pre>&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/tags&quot; prefix=&quot;t&quot; %&gt;</pre>
+</div>
+<p>Cubby のカスタムタグは、全て JSP2.0 の Dynamic-Attribute に対応しています。 カスタムタグに定義されていない属性はそのまま素直に出力されます。</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>用途</b>
+</td>
+<td align="left"><b>タグ名</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left">入力フォーム作成</td>
+<td align="left"><a href="#form">form</a>
+</td>
+<td align="left">form タグを出力します。</td>
+</tr>
+<tr class="b"><td align="left">入力フォーム作成</td>
+<td align="left"><a href="#input">input</a>
+</td>
+<td align="left">input タグを出力します。</td>
+</tr>
+<tr class="a"><td align="left">入力フォーム作成</td>
+<td align="left"><a href="#select">select</a>
+</td>
+<td align="left">select タグと option タグを出力します。</td>
+</tr>
+<tr class="b"><td align="left">入力フォーム作成</td>
+<td align="left"><a href="#textarea">textarea</a>
+</td>
+<td align="left">textarea タグを出力します。</td>
+</tr>
+<tr class="a"><td align="left">2重サブミット防止</td>
+<td align="left"><a href="#token">token</a>
+</td>
+<td align="left">2重サブミットを防止します。</td>
+</tr>
+</tbody>
+<caption>カスタムタグ一覧</caption>
+</table>
+<div class="section"><h3><a name="form">form</a>
+</h3>
+<p>HTML の form タグを出力します。 Cubby の input/select/textarea タグで参照するフォーム用オブジェクトを指定するために使用します。</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>EL式の使用</b>
+</td>
+<td align="left"><b>必須</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left">value</td>
+<td align="left">Object</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">フォームオブジェクトを指定します。</td>
+</tr>
+</tbody>
+</table>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;t:form value=&quot;${action}&quot;&gt;
+  ...
+&lt;t:/form&gt;</pre>
+</div>
+<p><b>結果</b>
+</p>
+<div class="source"><pre>&lt;form&gt;
+  ...
+&lt;/form&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="input">input</a>
+</h3>
+<p>HTML の input タグを出力します。</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>EL式の使用</b>
+</td>
+<td align="left"><b>必須</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left">name</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">value 属性として出力する値を取得するプロパティ名を指定します。<br />
+この属性の値は name 属性としてそのまま出力されます。</td>
+</tr>
+<tr class="b"><td align="left">index</td>
+<td align="left">Integer</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left">name 属性が同じフィールドが複数ある場合に、何番目の要素なのかを指定します。</td>
+</tr>
+<tr class="a"><td align="left">type</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">text/password/checkbox/radio/hidden が指定できます。<br />
+この属性の値は type 属性としてそのまま出力されます。</td>
+</tr>
+<tr class="b"><td align="left">value</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">type 属性が radio/checkbox の場合にポストされる値を指定します。この属性の値は value 属性としてそのまま出力されます。<br />
+この値と name 属性で指定したプロパティから取得した値が一致した場合には checked 属性が true になります。<br />
+type 属性が radio/checkbox の場合は必ず指定してください。</td>
+</tr>
+<tr class="a"><td align="left">checkedValue</td>
+<td align="left">String,配列,java.util.Collection</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left">formを指定しない場合に、比較対象となる値を指定します。<br />
+この値と value 属性で指定したプロパティから取得した値が一致した場合には checked 属性が true になります。<br />
+フォームオブジェクトを指定しなかった場合、かならず指定してください。</td>
+</tr>
+</tbody>
+</table>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;t:input name=&quot;title&quot;/&gt;</pre>
+</div>
+<p><b>結果</b>
+</p>
+<div class="source"><pre>&lt;input name=&quot;title&quot; value=&quot;Todo Title&quot;/&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="select">select</a>
+</h3>
+<p>HTML の select タグと option タグを出力します。</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>EL式の使用</b>
+</td>
+<td align="left"><b>必須</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left">name</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">selected 属性を付加する option タグを決めるための値を取得するプロパティ名を指定します。<br />
+この属性の値は name 属性としてそのまま出力されます。</td>
+</tr>
+<tr class="b"><td align="left">items</td>
+<td align="left">配列,java.util.Collection</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">option タグの内容を表すリストを指定します。</td>
+</tr>
+<tr class="a"><td align="left">valueProperty</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">items 属性で指定したリストの要素から、option タグの値として使用するプロパティ名を指定します。</td>
+</tr>
+<tr class="b"><td align="left">labelProperty</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">items 属性で指定したリストの要素から、option タグの表示文字列として使用するプロパティ名を指定します。</td>
+</tr>
+<tr class="a"><td align="left">emptyOption</td>
+<td align="left">Boolean</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left">空白の option タグを出力するかどうかを指定します。<br />
+省略した場合は true と見なして先頭に空白の option タグが出力されます。</td>
+</tr>
+<tr class="b"><td align="left">emptyOptionLabel</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left">空白の option タグの表示文字列を指定します。<br />
+省略した場合は何も表示されません。 true と見なして先頭に空白の option タグが出力されます。</td>
+</tr>
+</tbody>
+</table>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;t:select name=&quot;typeId&quot; items=&quot;${todoTypes}&quot; labelProperty=&quot;name&quot; valueProperty=&quot;id&quot;/&gt;</pre>
+</div>
+<p><b>結果</b>
+</p>
+<div class="source"><pre>&lt;select name=&quot;typeId&quot;&gt;
+  &lt;option name=&quot;1&quot;&gt;TodoType 1&lt;/option&gt;
+  &lt;option name=&quot;2&quot;&gt;TodoType 2&lt;/option&gt;
+&lt;/select&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="textarea">textarea</a>
+</h3>
+<p>HTML の textarea タグを出力します。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>EL式の使用</b>
+</td>
+<td align="left"><b>必須</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="b"><td align="left">name</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">○</td>
+<td align="left">value 属性として出力する値を取得するプロパティ名を指定します。<br />
+この属性の値は name 属性としてそのまま出力されます。</td>
+</tr>
+<tr class="a"><td align="left">index</td>
+<td align="left">Integer</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left">name 属性が同じフィールドが複数ある場合に、何番目の要素なのかを指定します。</td>
+</tr>
+</tbody>
+</table>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;t:textarea name=&quot;memo&quot;/&gt;</pre>
+</div>
+<p><b>結果</b>
+</p>
+<div class="source"><pre>&lt;textarea name=&quot;memo&quot;&gt;Memo 1&lt;/textarea&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="token">token</a>
+</h3>
+<p>2重サブミットを防止します。</p>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
+</td>
+<td align="left"><b>型</b>
+</td>
+<td align="left"><b>EL式の使用</b>
+</td>
+<td align="left"><b>必須</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left">name</td>
+<td align="left">String</td>
+<td align="left">○</td>
+<td align="left">×</td>
+<td align="left"><i>input type=&quot;hidden&quot;/</i>
+タグのname属性を指定します。通常は省略可能です。省略した場合、nameの属性名は「cubby.token」になります。</td>
+</tr>
+</tbody>
+</table>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;t:form value=&quot;${action}&quot;&gt;
+  &lt;t:token / &gt;
+&lt;t:/form&gt;</pre>
+</div>
+<p><b>結果</b>
+</p>
+<div class="source"><pre>&lt;form&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;cubby.token&quot; value=&quot;ランダムな文字列...&quot;&gt;
+&lt;/form&gt;</pre>
+</div>
+<p><b>アクション</b>
+</p>
+<div class="source"><pre>public class TokenAction extends Action {
+  ...
+  public ValidationRules validation = new DefaultValidationRules() {
+  @Override
+    public void initialize() {
+      add(&quot;cubby.token&quot;, new TokenValidator());
+    }
+  };
+  ...
+  @Form
+  @Validation(errorPage=&quot;token.jsp&quot;, rules = &quot;validation&quot;)
+  public ActionResult message() {
+    return new Forward(&quot;result.jsp&quot;);
+  }
+        
+}</pre>
+</div>
+</div>
+</div>
+<div class="section"><h2><a name="ファンクション">ファンクション</a>
+</h2>
+<p>Cubby では JSP2.0 のファンクションを用意しています。 以下のタグライブラリ宣言を行うことでファンクションが使用できます。</p>
+<div class="source"><pre>&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/functions&quot; prefix=&quot;f&quot; %&gt;</pre>
+</div>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>ファンクション名</b>
+</td>
+<td align="left"><b>説明</b>
+</td>
+</tr>
+<tr class="a"><td align="left"><a href="#out">out</a>
+</td>
+<td align="left">HTML をエスケープします。</td>
+</tr>
+<tr class="b"><td align="left"><a href="#dateFormat">dateFormat</a>
+</td>
+<td align="left">Date 型のオブジェクトをフォーマットして出力します。</td>
+</tr>
+<tr class="a"><td align="left"><a href="#odd">odd</a>
+</td>
+<td align="left">指定したカンマ区切りの文字列をインデックス値でサイクルして出力します。</td>
+</tr>
+<tr class="b"><td align="left"><a href="#contains">contains</a>
+</td>
+<td align="left">配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。</td>
+</tr>
+<tr class="a"><td align="left"><a href="#containsKey">containsKey</a>
+</td>
+<td align="left">Map に指定したキーが含まれるかどうかを判定します。</td>
+</tr>
+<tr class="b"><td align="left"><a href="#containsValue">containsValue</a>
+</td>
+<td align="left">Map に指定したキーが含まれるかどうかを判定します。</td>
+</tr>
+</tbody>
+<caption>ファンクション一覧</caption>
+</table>
+<div class="section"><h3><a name="out">out</a>
+</h3>
+<p>HTML をエスケープします。JSTL の out タグの代わりに使用します。 EL 式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこの function を使用します。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>${f:out(user.name)}さんこんにちは</pre>
+</div>
+</div>
+<div class="section"><h3><a name="dateFormat">dateFormat</a>
+</h3>
+<p>Date 型のオブジェクトをフォーマットして出力します。JSTL の dateFormat タグの代わりに使用します。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>${f:dateFormat(todo.limitDate, &quot;yyyy-MM-dd&quot;)}</pre>
+</div>
+</div>
+<div class="section"><h3><a name="odd">odd</a>
+</h3>
+<p>指定したカンマ区切りの文字列をインデックス値でサイクルして出力します。 主に行毎に色分けする場合にCSSのクラス名を出力する場合に使用します。 下記の例では、status.indexを2で割って余りが0の場合「odd」、1の場合「even」が出力されます。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;c:forEach var=&quot;todo&quot; items=&quot;${action.todoList}&quot; varStatus=&quot;status&quot;&gt;
+  &lt;tr class=&quot;${f:odd(status.index, 'odd,even')}&quot;&gt;
+    ...
+  &lt;/tr&gt;
+&lt;/c:forEach&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="contains">contains</a>
+</h3>
+<p>配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${f:contains(idlist, '1001')}&quot;&gt;
+  ...
+&lt;/c:if&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="containsKey">containsKey</a>
+</h3>
+<p>Map に指定したキーが含まれるかどうかを判定します。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${f:containsKey(idmap, '1001')}&quot;&gt;
+  ...
+&lt;/c:if&gt;</pre>
+</div>
+</div>
+<div class="section"><h3><a name="containsValue">containsValue</a>
+</h3>
+<p>Map に指定した値が含まれるかどうかを判定します。</p>
+<p><b>使用例</b>
+</p>
+<div class="source"><pre>&lt;c:if test=&quot;${f:containsValue(idmap, '値1')}&quot;&gt;
+  ...
+&lt;/c:if&gt;</pre>
+</div>
+</div>
+</div>
+<div class="section"><h2><a name="JSP_共通ヘッダー">JSP 共通ヘッダー</a>
+</h2>
+<p>JSP のページディレクティブや taglib ディレクティブは、各 JSP には記述せずにヘッダーファイルをインクルードして設定することを推奨します。<br />
+Servlet 2.4/JSP 2.0 の web.xml の設定として「include-prelude」ディレクティブが用意されていますので、これを使用してヘッダーファイルのインクルードを行います。</p>
+<p>2分間チュートリアルの JSP は、共通ヘッダーを使用しているので、JSP の先頭に taglib ディレクティブの宣言がありません。<br />
+実際は、以下の「header.jsp」の内容が JSP の先頭に自動的に付加されてから、コンパイル・実行されています。</p>
+<p><b>/common/header.jsp</b>
+</p>
+<div class="source"><pre>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot; %&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@ taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;
+&lt;%@ taglib prefix=&quot;fn&quot; uri=&quot;http://java.sun.com/jsp/jstl/functions&quot; %&gt;
+&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/tags&quot; prefix=&quot;t&quot; %&gt;
+&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/functions&quot; prefix=&quot;f&quot; %&gt;</pre>
+</div>
+<p><b>web.xml</b>
+</p>
+<div class="source"><pre>&lt;/web-app&gt;
+  ...
+  &lt;jsp-config&gt;
+    &lt;jsp-property-group&gt;
+      &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
+      &lt;el-ignored&gt;false&lt;/el-ignored&gt;
+      &lt;page-encoding&gt;UTF-8&lt;/page-encoding&gt;
+      &lt;scripting-invalid&gt;false&lt;/scripting-invalid&gt;
+      &lt;include-prelude&gt;/common/header.jsp&lt;/include-prelude&gt;
+    &lt;/jsp-property-group&gt;
+  &lt;/jsp-config&gt;
+&lt;/web-app&gt;</pre>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;      Copyright
+    
+          2006-2008
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
