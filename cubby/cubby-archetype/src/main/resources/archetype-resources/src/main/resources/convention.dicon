@@ -7,4 +7,5 @@
 			<arg>"${package}"</arg>
 		</initMethod>
 	</component>
+	<component class="org.seasar.framework.convention.impl.PersistenceConventionImpl"/>
 </components>
