@@ -1,2 +1,0 @@
-#mavenリポジトリへのデプロイリリース手順
-mvn clean source:jar javadoc:jar deploy -DupdateReleaseInfo=true

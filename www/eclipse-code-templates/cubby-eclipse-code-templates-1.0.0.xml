@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><templates><template autoinsert="true" context="java" deleted="false" description="Cubby action method" enabled="true" name="cubby_action_method">public ActionResult ${name}() throws Exception {
-	${cursor}
-	return null;
-}</template><template autoinsert="true" context="java" deleted="false" description="Cubby validation field" enabled="true" name="cubby_validation_field">public final ValidationRules ${validation} = new DefaultValidationRules() {
-	public void initialize() {
-		add("${propertyName}", ${cursor});
-	}
-};</template></templates>
