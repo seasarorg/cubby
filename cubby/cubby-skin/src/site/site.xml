@@ -8,6 +8,8 @@
 	<bannerLeft>
 		<name>Cubby</name>
 		<href>../index.html</href>
+		<src>../images/logo.gif</src>
+		<alt>Cubby</alt>
 	</bannerLeft>
 	<body>
 		<breadcrumbs>

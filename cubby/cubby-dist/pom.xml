@@ -6,7 +6,6 @@
 >
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- The Basics -->
   <artifactId>cubby-dist</artifactId>
   <packaging>pom</packaging>
   <parent>
@@ -15,7 +14,6 @@
     <version>1.0.1-SNAPSHOT</version>
   </parent>
 
-  <!-- More Project Information -->
   <name>Cubby Distribution</name>
 
   <build>
