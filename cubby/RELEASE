@@ -10,15 +10,14 @@ mvn clean package install
 
 cd ../cubby-apps
 mvn clean package
-cp -f cubby-examples/target/*.war ../www/download
+cp -f cubby-examples/target/*.war ../cubby/src/site/resources/download/
 
 cd ../cubby
 mvn clean package site
-cp -f cubby-dist/target/*.zip ../www/download
+cp -f cubby-dist/target/*.zip src/site/resources/download
 cp -pRf target/site/* ../www/
 cp -pRf cubby/target/site/* ../www/cubby
 cp -pRf cubby-archetype/target/site ../www/cubby-archetype
 cp -pRf cubby-tomcat55-support/target/site ../www/cubby-tomcat55-support
 cp -pRf cubby-skin/target/site ../www/cubby-skin
 cp -pRf cubby-dist/target/site ../www/cubby-dist
-
