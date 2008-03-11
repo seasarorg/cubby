@@ -18,6 +18,9 @@ package org.seasar.cubby.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+
 /**
  * 入力検証を保持するクラスです。
  * 
@@ -123,6 +126,16 @@ public class DefaultValidationRules implements ValidationRules {
 	 */
 	public List<ValidationRule> getRules() {
 		return rules;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたエラーページへ遷移する {@link Forward} を返します。
+	 * </p>
+	 */
+	public ActionResult fail(final String errorPage) {
+		return new Forward(errorPage);
 	}
 
 }

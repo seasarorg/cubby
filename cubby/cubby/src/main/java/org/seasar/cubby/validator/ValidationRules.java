@@ -17,6 +17,8 @@ package org.seasar.cubby.validator;
 
 import java.util.List;
 
+import org.seasar.cubby.action.ActionResult;
+
 /**
  * アクションメソッドに対する入力検証のルールの集合です。
  * 
@@ -32,5 +34,16 @@ public interface ValidationRules {
 	 * @return 入力検証ルールのリスト
 	 */
 	List<ValidationRule> getRules();
+
+	/**
+	 * 入力検証にエラーがあった場合に呼び出されます。
+	 * 
+	 * @param errorPage
+	 *            エラーページ
+	 * @return アクションメソッド実行後の処理
+	 * @see org.seasar.cubby.action.Validation#errorPage()
+	 * @since 1.0.2
+	 */
+	ActionResult fail(String errorPage);
 
 }

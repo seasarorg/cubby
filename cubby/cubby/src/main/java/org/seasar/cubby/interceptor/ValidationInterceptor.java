@@ -27,7 +27,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.validator.ValidationProcessor;
@@ -102,31 +101,28 @@ public class ValidationInterceptor implements MethodInterceptor {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * アクションメソッドの実行前に入力検証を実行し、入力にエラーがあった場合はエラーページへ遷移するための{@link Forward}を返します。
+	 * アクションメソッドの実行前に入力検証を実行し、入力にエラーがあった場合はアクションメソッドを実行せずに
+	 * {@link ValidationRules#fail(String)} の結果を返します。
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		final Validation validation = context.getValidation();
-		final boolean success;
-		if (validation == null) {
-			success = true;
-		} else {
+		if (validation != null) {
 			final Map<String, Object[]> params = getAttribute(request,
 					ATTR_PARAMS);
 			final Object form = context.getFormBean();
 			final ActionErrors errors = context.getAction().getErrors();
 			final ValidationRules rules = getValidationRules(context);
-			success = validationProcessor.process(errors, params, form, rules);
+			final boolean success = validationProcessor.process(errors, params,
+					form, rules);
+			if (!success) {
+				request.setAttribute(ATTR_VALIDATION_FAIL, true);
+				final String errorPage = validation.errorPage();
+				return rules.fail(errorPage);
+			}
 		}
 
-		final Object result;
-		if (success) {
-			result = invocation.proceed();
-		} else {
-			request.setAttribute(ATTR_VALIDATION_FAIL, true);
-			final String path = validation.errorPage();
-			result = new Forward(path);
-		}
+		final Object result = invocation.proceed();
 
 		return result;
 	}
