@@ -19,6 +19,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
@@ -76,4 +79,35 @@ public class DefaultValidationRulesTest extends TestCase {
 		assertEquals("age", rule.getFieldName());
 		assertEquals("userProfile.age", rule.getFieldNameKey());
 	}
+
+	public void testFail() {
+		ValidationRules rules = new DefaultValidationRules("userProfile.") {
+			public void initialize() {
+				add("name", new RequiredValidator(), new MaxLengthValidator(10));
+				add("age", new NumberValidator(), new RangeValidator(0, 10));
+			}
+		};
+		ActionResult result = rules.fail("error.jsp");
+		assertTrue(result instanceof Forward);
+		Forward forward = (Forward) result;
+		assertEquals("error.jsp", forward.getPath());
+	}
+
+	public void testFailOverride() {
+		ValidationRules rules = new DefaultValidationRules("userProfile.") {
+			public void initialize() {
+				add("name", new RequiredValidator(), new MaxLengthValidator(10));
+				add("age", new NumberValidator(), new RangeValidator(0, 10));
+			}
+
+			public ActionResult fail(String errorPage) {
+				return new Redirect(errorPage);
+			}
+		};
+		ActionResult result = rules.fail("error.jsp");
+		assertTrue(result instanceof Redirect);
+		Redirect redirect = (Redirect) result;
+		assertEquals("error.jsp", redirect.getPath());
+	}
+
 }
