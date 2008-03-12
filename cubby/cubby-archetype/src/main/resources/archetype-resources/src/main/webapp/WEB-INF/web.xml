@@ -102,6 +102,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>cubbyservlet</servlet-name>
+        <servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>jsp</servlet-name>
         <servlet-class>
             org.apache.jasper.servlet.JspServlet
@@ -124,6 +129,11 @@
     <servlet-mapping>
         <servlet-name>s2servlet</servlet-name>
         <url-pattern>/s2servlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>cubbyservlet</servlet-name>
+        <url-pattern>/cubbyservlet</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
