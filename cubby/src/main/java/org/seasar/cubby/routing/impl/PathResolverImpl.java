@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +90,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * インスタンス化します。
 	 */
 	public PathResolverImpl() {
+	}
+	
+	/**
+	 * ルーティング情報を取得します。
+	 * @return
+	 */
+	public Map<Routing, Routing> getRoutings() {
+		return Collections.unmodifiableMap(this.routings);
 	}
 
 	/**
@@ -238,7 +247,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 *            リクエストのメソッド
 	 * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
 	 */
-	private InternalForwardInfo findInternalForwardInfo(final String path,
+	public InternalForwardInfo findInternalForwardInfo(final String path,
 			final String requestMethod) {
 		final Map<String, String> uriParameters = new HashMap<String, String>();
 		for (final Routing routing : routings.values()) {
@@ -368,7 +377,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * @author baba
 	 * @since 1.0.0
 	 */
-	static class Routing {
+	public static class Routing {
 
 		/** アクションクラス。 */
 		private final Class<? extends Action> actionClass;
