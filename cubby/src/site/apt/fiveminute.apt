@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-03-01
+  2008-03-14
   --------
 
 {目次}
@@ -195,7 +195,7 @@ public class LoginAction extends Action {
 	}
   };
   ...
-  @Validation(rulesField="loginValidation", errorPage = "/todo/login.jsp")
+  @Validation(rules="loginValidation", errorPage = "/todo/login.jsp")
   public ActionResult process() {
     ...
   }
@@ -279,7 +279,7 @@ public class TodoListAction extends Action {
    * 一覧表示処理(/todo/)
    */
   @Form("todoConditionDto")
-  @Validation(rulesField="validation", errorPage="list.jsp")
+  @Validation(rules="validation", errorPage="list.jsp")
   public ActionResult index() {
     this.todoList = todoDao.selectByCondition(todoConditionDto);
     return new Forward("list.jsp");
@@ -595,7 +595,7 @@ public class TodoAction extends Action {
   /**
    * 確認画面表示
    */
-  @Validation(rulesField = "validation", errorPage = "edit.jsp")
+  @Validation(rules = "validation", errorPage = "edit.jsp")
   public ActionResult confirm() {
     TodoType todoType = todoTypeDao.selectById(this.typeId);
     this.todoType = todoType;
@@ -612,7 +612,7 @@ public class TodoAction extends Action {
   /**
    * 保存処理
    */
-  @Validation(rulesField = "validation", errorPage = "confirm.jsp")
+  @Validation(rules = "validation", errorPage = "confirm.jsp")
   public ActionResult save() {
     if (this.id == null) {
       Todo todo = todoDxo.convert(this);
