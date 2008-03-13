@@ -25,6 +25,7 @@ import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -128,7 +129,7 @@ public class ActionContextImpl implements ActionContext {
 			return result;
 		} catch (final InvocationTargetException ex) {
 			logger.log(ex);
-			Throwable target = ex.getTargetException();
+			final Throwable target = ex.getTargetException();
 			if (target instanceof Error) {
 				throw (Error) target;
 			} else if (target instanceof RuntimeException) {
@@ -141,21 +142,32 @@ public class ActionContextImpl implements ActionContext {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws ActionRuntimeException
+	 *             &#064;Formでフォームオブジェクトとなるプロパティを指定しているが、そのプロパティが
+	 *             <code>null</code> だった場合
 	 */
 	public Object getFormBean() {
 		final Object formBean;
 		final Action action = getAction();
 		final Form form = actionDef.getMethod().getAnnotation(Form.class);
-		if (form != null && form.binding() == false) {
+		if (form != null && !form.binding()) {
 			formBean = null;
-		} else if (form == null || Form.THIS.equals(form.value())) {
-			formBean = action;
 		} else {
-			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
-					.getClass());
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(form
-					.value());
-			formBean = propertyDesc.getValue(action);
+			if (form == null || Form.THIS.equals(form.value())) {
+				formBean = action;
+			} else {
+				final String propertyName = form.value();
+				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+						.getClass());
+				final PropertyDesc propertyDesc = beanDesc
+						.getPropertyDesc(propertyName);
+				formBean = propertyDesc.getValue(action);
+				if (formBean == null) {
+					throw new ActionRuntimeException("ECUB0102",
+							new Object[] { propertyName });
+				}
+			}
 		}
 		return formBean;
 	}
