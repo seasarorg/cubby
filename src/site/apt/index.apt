@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-03-08
+  2008-03-14
   --------
 
 {News}
@@ -30,7 +30,7 @@
 
  *{{{cubby/apidocs/org/seasar/cubby/action/Path.html}REST っぽい URI をサポート}}します。 (/username/todo/1001、拡張子が付かない URI など)
 
- *直感的な名前の{{{tags.html}タグライブラリ}}
+ *直感的な名前の{{{jsp.html#カスタムタグ}タグライブラリ}}
 
  *HTMLテンプレートエンジン「{{{http://mayaa.seasar.org}Mayaa}}」と連携することができます。
 
