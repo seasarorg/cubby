@@ -24,24 +24,22 @@ import java.lang.annotation.Target;
  * リクエストパラメータがバインディングされるオブジェクトを指定します。
  * 
  * <pre>
- * public class HogeAction {
- * 	private FugaBean fuga;
+ * public class FooAction {
  * 
- * 	public FugaBean getFuga() {
- * 		return this.fuga;
- * 	}
+ *  // コンテナの機能によって自動的にインジェクションされる想定です。
+ * 	public BarDto BarDto;
  * 
- * 	// -&gt; HogeActionにバインディングします。
+ * 	// -&gt; アクション自身(FooAction)のプロパティにバインディングします。
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	// -&gt; HogeActionにバインディングします。
+ * 	// -&gt; アクション自身(FooAction)のプロパティにバインディングします。
  * 	&#064;Form
  * 	public ActionResult m2() {
  * 	}
  * 
- * 	// プロパティfugaにバインディングします。
- * 	&#064;Form(&quot;fuga&quot;)
+ * 	// barDto のプロパティにバインディングします。
+ * 	&#064;Form(&quot;barDto&quot;)
  * 	public ActionResult m3() {
  * 	}
  * 
@@ -51,27 +49,20 @@ import java.lang.annotation.Target;
  *  }
  * }
  * 
- * &#064;Form(&quot;fuga&quot;)
+ * &#064;Form(&quot;barDto&quot;)
  * // 全アクションメソッドに対して一括でバインディングの指定を行います。
- * public class Hoge2Action {
- * 	private FugaBean fuga;
+ * public class Foo2Action {
  * 
- * 	public FugaBean getFuga() {
- * 		return this.fuga;
- * 	}
+ * 	public BarDto barDto;
  * 
- * 	private ZzzBean zzz;
+ * 	public BazDto bazDto;
  * 
- * 	public ZzzBean getZzz() {
- * 		return this.zzz;
- * 	}
- * 
- * 	// プロパティfugaにバインディングします(クラスでの指定が有効なため)。
+ * 	// barDto のプロパティにバインディングします (クラスでの指定が有効なため)。
  * 	public ActionResult m1() {
  * 	}
  * 
- * 	&#064;Form(&quot;zzz&quot;)
- * 	// プロパティzzzにバインディングします（アクションメソッドでの指定が優先されるため）。
+ * 	&#064;Form(&quot;bazDto&quot;)
+ * 	// bazDto のプロパティにバインディングします（アクションメソッドでの指定が優先されるため）。
  * 	public ActionResult m2() {
  * 	}
  * }
