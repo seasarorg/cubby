@@ -140,7 +140,9 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	public Enumeration getAttributeNames() {
 		final List attributeNames = new ArrayList();
 
+		attributeNames.add(ATTR_CONTEXT_PATH);
 		attributeNames.add(ATTR_ACTION);
+		attributeNames.add(ATTR_MESSAGES);
 
 		final Class<?> concreteClass = context.getComponentDef()
 				.getConcreteClass();
