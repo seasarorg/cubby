@@ -27,6 +27,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.controller.ActionProcessor;
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
 import org.seasar.framework.beans.util.Beans;
@@ -159,8 +160,16 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	protected ActionResult processAction(final String orginalPath)
 			throws Exception {
 		routing(orginalPath);
+		setupThreadContext();
 		return actionProcessor
 				.process(getRequest(), getResponse(), filterChain);
+	}
+
+	/**
+	 * {@link ThreadContext}にリクエストをセットします。
+	 */
+	protected void setupThreadContext() {
+		ThreadContext.setRequest(getRequest());
 	}
 
 	/**
