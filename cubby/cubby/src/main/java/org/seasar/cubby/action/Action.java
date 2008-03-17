@@ -17,6 +17,8 @@ package org.seasar.cubby.action;
 
 import java.util.Map;
 
+import org.seasar.cubby.controller.ActionContext;
+
 /**
  * アクションの基底クラスです。
  * <p>
@@ -29,32 +31,59 @@ import java.util.Map;
  */
 public abstract class Action {
 
-	/**
-	 * アクションエラーオブジェクト。
-	 */
+	/** アクションのコンテキスト。 */
+	protected ActionContext context;
+
+	/** アクションエラーオブジェクト。 */
 	protected ActionErrors errors;
 
-	/**
-	 * 揮発性メッセージ。
-	 */
+	/** 揮発性メッセージ。 */
 	protected Map<String, Object> flash;
 
 	/**
-	 * Actionの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。
+	 * アクションメソッドの実行前に呼ばれます。
+	 * <p>
+	 * パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。
+	 * </p>
 	 */
 	public void initialize() {
 	}
 
 	/**
-	 * フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。
+	 * フォーワードの直前で呼ばれます。
+	 * <p>
+	 * 対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。
+	 * </p>
 	 */
 	public void prerender() {
 	}
 
 	/**
-	 * フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。
+	 * フォワードの直後で呼ばれます。
+	 * <p>
+	 * 通常はあまり使用することはないでしょう。
+	 * </p>
 	 */
 	public void postrender() {
+	}
+
+	/**
+	 * アクションのコンテキストを取得します。
+	 * 
+	 * @return アクションのコンテキスト
+	 */
+	public ActionContext getContext() {
+		return context;
+	}
+
+	/**
+	 * アクションのコンテキストを設定します。
+	 * 
+	 * @param context
+	 *            コンテキスト
+	 */
+	public void setContext(ActionContext context) {
+		this.context = context;
 	}
 
 	/**
