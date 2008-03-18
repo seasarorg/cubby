@@ -40,28 +40,36 @@ public class RoutingComparatorTest extends TestCase {
 	private Routing routing4;
 	private Routing routing5;
 	private Routing routing5d;
+	private Routing routing6;
+	private Routing routing6d;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		routing1 = new Routing(null, null, asList(new String[0]), Pattern
-				.compile("/foo/bar"), new RequestMethod[] { GET }, false);
+				.compile("/foo/bar"), new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
 		routing1d = new Routing(null, null, asList(new String[0]), Pattern
-				.compile("/foo/bar"), new RequestMethod[] { GET }, false);
+				.compile("/foo/bar"), new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
 		routing2 = new Routing(null, null, asList(new String[] { "p1" }),
 				Pattern.compile("/foo/bar/a"), new RequestMethod[] { GET },
-				false);
+				true, Integer.MAX_VALUE);
 		routing3 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
 				Pattern.compile("/foo/bar/bbb"), new RequestMethod[] { GET },
-				false);
+				true, Integer.MAX_VALUE);
 		routing4 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
 				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { GET },
-				false);
+				true, Integer.MAX_VALUE);
 		routing5 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
 				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { POST },
-				false);
+				true, Integer.MAX_VALUE);
 		routing5d = new Routing(null, null, asList(new String[] { "p1", "p2" }),
 				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { POST, GET },
-				false);
+				true, Integer.MAX_VALUE);
+		routing6 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
+				Pattern.compile("/foo/bar/cc/dd"), new RequestMethod[] { POST, GET },
+				false, 1);
+		routing6d = new Routing(null, null, asList(new String[] { "p1", "p2" }),
+				Pattern.compile("/foo/bar/cc/dd"), new RequestMethod[] { POST, GET },
+				false, 0);
 	}
 
 	public void testDuplicate() {
@@ -79,6 +87,20 @@ public class RoutingComparatorTest extends TestCase {
 		assertSame("3", routing3, routings.get(2));
 		assertSame("4", routing4, routings.get(3));
 		assertSame("5", routing5, routings.get(4));
+	}
+
+	public void testSort2() {
+		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
+				routing3, routing5, routing1, routing4, routing2, routing6, routing6d }));
+		Collections.sort(routings, comparator);
+		System.out.println(routings);
+		assertSame("0", routing6d, routings.get(0));
+		assertSame("1", routing6, routings.get(1));
+		assertSame("2", routing1, routings.get(2));
+		assertSame("3", routing2, routings.get(3));
+		assertSame("4", routing3, routings.get(4));
+		assertSame("5", routing4, routings.get(5));
+		assertSame("6", routing5, routings.get(6));
 	}
 
 }

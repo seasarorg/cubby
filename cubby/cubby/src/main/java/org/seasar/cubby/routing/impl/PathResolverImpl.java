@@ -87,6 +87,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private String uriEncoding = DEFAULT_URI_ENCODING;
 
 	/**
+	 * 手動登録用のプライオリティカウンタ
+	 */
+	private int priprityCounter = 0;
+
+	/**
 	 * インスタンス化します。
 	 */
 	public PathResolverImpl() {
@@ -96,8 +101,10 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * ルーティング情報を取得します。
 	 * @return
 	 */
-	public Map<Routing, Routing> getRoutings() {
-		return Collections.unmodifiableMap(this.routings);
+	public List<Routing> getRoutings() {
+		initialize();
+		return Collections.unmodifiableList(
+				new ArrayList<Routing>(routings.values()));
 	}
 
 	/**
@@ -156,10 +163,13 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 */
 	public void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
-			final RequestMethod... requestMethods) {
+			RequestMethod... requestMethods) {
 
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
+		if (requestMethods == null || requestMethods.length == 0) {
+			requestMethods = new RequestMethod[]{ RequestMethod.GET, RequestMethod.POST};
+		}
 		this.add(actionPath, actionClass, method, requestMethods, false);
 	}
 
@@ -201,8 +211,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		uriRegex = "^" + uriRegex + "$";
 		final Pattern pattern = Pattern.compile(uriRegex);
 
+		int priority = auto ? CubbyUtils.getPriority(method) : priprityCounter++;
 		final Routing routing = new Routing(actionClass, method,
-				uriParameterNames, pattern, requestMethods, auto);
+				uriParameterNames, pattern, requestMethods, auto, priority);
 
 		if (routings.containsKey(routing)) {
 			final Routing duplication = routings.get(routing);
@@ -348,7 +359,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		 * @return 比較結果
 		 */
 		public int compare(final Routing routing1, final Routing routing2) {
-			int compare = routing1.getUriParameterNames().size()
+			int compare = routing1.getPriority() - routing2.getPriority();
+			if (compare != 0) {
+				return compare;
+			}
+			compare = routing1.getUriParameterNames().size()
 					- routing2.getUriParameterNames().size();
 			if (compare != 0) {
 				return compare;
@@ -397,6 +412,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		/** 自動登録されたかどうか */
 		private final boolean auto;
 
+		/** 優先順位 */
+		private final int priority;
+
 		/**
 		 * インスタンス化します。
 		 * 
@@ -412,17 +430,20 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		 *            リクエストメソッド
 		 * @param auto
 		 *            自動登録されたかどうか
+		 * @param priority
+		 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}が常にセットされます。
 		 */
-		public Routing(final Class<? extends Action> actionClass,
+		Routing(final Class<? extends Action> actionClass,
 				final Method method, final List<String> uriParameterNames,
 				final Pattern pattern, final RequestMethod[] requestMethods,
-				final boolean auto) {
+				final boolean auto, final int priority) {
 			this.actionClass = actionClass;
 			this.method = method;
 			this.uriParameterNames = uriParameterNames;
 			this.pattern = pattern;
 			this.requestMethods = requestMethods;
 			this.auto = auto;
+			this.priority = priority;
 		}
 
 		/**
@@ -479,6 +500,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		public boolean isAuto() {
 			return auto;
 		}
+		
+		/**
+		 * プライオリティを取得します。
+		 * @return プライオリティ
+		 */
+		public int getPriority() {
+			return this.priority;
+		}
 
 		/**
 		 * 指定されたリクエストメソッドがこのルーティングの対象かどうかを示します。
@@ -506,9 +535,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		public String toString() {
 			return new StringBuilder().append("[regex=").append(this.pattern)
 					.append(",method=").append(this.method).append(
-							",uriParameterNames=").append(uriParameterNames)
+							",uriParameterNames=").append(this.uriParameterNames)
 					.append(",requestMethods=").append(
-							Arrays.deepToString(requestMethods)).append("]")
+							Arrays.deepToString(this.requestMethods))
+					.append(",auto=").append(this.auto)
+					.append(",priority=").append(this.priority).append("]")
 					.toString();
 		}
 	}

@@ -187,7 +187,7 @@ public class CubbyServlet extends HttpServlet {
 				getText(req.getLocale(), "lbl.actionMethod"),
 				getText(req.getLocale(), "lbl.pathParams"));
 		int no = 1;
-		for (Routing routing : resolver.getRoutings().values()) {
+		for (Routing routing : resolver.getRoutings()) {
 			if (isEmpty(path)) {
 				out.printf("<tr class=\"%s\">\n", no % 2 == 0 ? "odd" : "even");
 				out.printf("<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td></td>\n", 
