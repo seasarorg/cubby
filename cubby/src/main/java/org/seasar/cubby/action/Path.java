@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.cubby.routing.PathResolver;
+
 /**
  * アクションメソッドのパス。
  * <p>
@@ -114,5 +116,17 @@ public @interface Path {
 	 * @see Accept
 	 */
 	String value() default "";
-
+	
+	/**
+	 * アクションメソッドのバインディング時の優先度を設定します。
+	 * <p>
+	 * この値が小さいほど、優先度が高く先に適用されます。デフォルト値は{@link Integer#MAX_VALUE}です。
+	 * </p>
+	 * <p>
+	 * 手動でバインディングの設定が追加された場合、優先度は0から順番に振られます。手動追加よりも自動設定の優先度を上げたい場合は、負の値を設定してください。
+	 * </p>
+	 * @see PathResolver#add(String, Class, String, RequestMethod...) 手動によるバインディング設定の追加
+	 * @return
+	 */
+	int priority() default Integer.MAX_VALUE;
 }

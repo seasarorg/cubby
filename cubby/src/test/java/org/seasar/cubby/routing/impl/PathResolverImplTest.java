@@ -22,8 +22,10 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
 
@@ -37,6 +39,32 @@ public class PathResolverImplTest extends S2TestCase {
 		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
 	}
 
+	public void testGetRoutings() {
+		List<Routing> routings = new ArrayList<Routing>(pathResolver.getRoutings());
+		assertEquals(14, routings.size());
+	}
+
+	public void testAdd() {
+		pathResolver.add("/wiki/edit/{name,.+}", MockAction.class, "update");
+		pathResolver.add("/wiki/{name,.+}", MockAction.class, "update2", RequestMethod.POST);
+		pathResolver.add("/wiki/{name,.+}", MockAction.class, "name", RequestMethod.PUT);
+
+		List<Routing> routingList = new ArrayList<Routing>(pathResolver.getRoutings());
+		assertEquals(17, routingList.size());
+		assertEquals("^/wiki/edit/(.+)$", routingList.get(0).getPattern().pattern());
+		assertEquals(RequestMethod.GET, routingList.get(0).getRequestMethods()[0]);
+		assertEquals(0, routingList.get(0).getPriority());
+		assertEquals("^/wiki/(.+)$", routingList.get(1).getPattern().pattern());
+		assertEquals(RequestMethod.POST, routingList.get(1).getRequestMethods()[0]);
+		assertEquals(1, routingList.get(1).getPriority());
+		assertEquals("^/wiki/(.+)$", routingList.get(2).getPattern().pattern());
+		assertEquals(RequestMethod.PUT, routingList.get(2).getRequestMethods()[0]);
+		assertEquals(2, routingList.get(2).getPriority());
+		assertEquals("^/mockPriority/update$", routingList.get(3).getPattern().pattern());
+		assertEquals(100, routingList.get(3).getPriority());
+		assertEquals(RequestMethod.PUT, routingList.get(3).getRequestMethods()[0]);
+	}
+	
 	public void testRoot1() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo("/",
 				"GET");

@@ -362,4 +362,14 @@ public class CubbyUtils {
 		return text;
 	}
 
+	/**
+	 * アクションメソッドの{@link Path}アノテーションから優先度を取得します。
+	 * 
+	 * @param method アクションメソッド
+	 * @return 優先度。メソッドに{@link Path}アノテーションが設定されていない場合{@link Integer#MAX_VALUE}
+	 */
+	public static int getPriority(Method method) {
+		Path path = method.getAnnotation(Path.class);
+		return path != null ? path.priority() : Integer.MAX_VALUE;
+	}
 }

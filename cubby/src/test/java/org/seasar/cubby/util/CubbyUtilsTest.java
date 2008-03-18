@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.util;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.Path;
 import org.seasar.framework.util.ClassUtil;
 
 public class CubbyUtilsTest extends TestCase {
@@ -90,6 +92,30 @@ public class CubbyUtilsTest extends TestCase {
 		assertTrue(Arrays.deepEquals(new String[] { "ab", "" }, CubbyUtils.split2("ab_", '_')));
 		assertTrue(Arrays.deepEquals(new String[] { "ab_cd_de_" }, CubbyUtils.split2("ab_cd_de_", ',')));
 		assertTrue(Arrays.deepEquals(new String[] { "ab", "cd_de_" }, CubbyUtils.split2("ab_cd_de_", '_')));
+	}
+	
+	public void testGetPriority() throws Exception {
+		Method method = TestGetPriprity.class.getMethod("m1", new Class[0]);
+		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
+		
+		method = TestGetPriprity.class.getMethod("m2", new Class[0]);
+		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
+
+		method = TestGetPriprity.class.getMethod("m3", new Class[0]);
+		assertEquals(0, CubbyUtils.getPriority(method));
+}
+	
+	static class TestGetPriprity {
+		public void m1() {
+		}
+		@Path
+		public void m2() {
+			
+		}
+		@Path(value="", priority=0)
+		public void m3() {
+			
+		}
 	}
 
 }
