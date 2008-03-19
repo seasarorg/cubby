@@ -15,12 +15,12 @@
  */
 package org.seasar.cubby.validator;
 
-import java.util.Map;
-
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionResult;
 
 /**
- * 入力検証を行うクラスです。
+ * 入力検証処理です。
  * 
  * @author baba
  * @since 1.0.0
@@ -28,18 +28,33 @@ import org.seasar.cubby.action.ActionErrors;
 public interface ValidationProcessor {
 
 	/**
-	 * 指定されたリクエストパラメータの入力検証を行います。
+	 * 入力検証を行います。
+	 * <p>
+	 * 入力検証はフェーズごとに実行され、そのフェーズの入力検証でエラーがあった({@link ActionErrors}
+	 * にメッセージが登録された)場合には {@link ValidationException} をスローします。
+	 * </p>
 	 * 
-	 * @param errors
-	 *            アクションで発生したエラー
-	 * @param params
-	 *            リクエストパラメータの{@link Map}
-	 * @param form
-	 *            フォームオブジェクト
-	 * @param rules
-	 * @return 入力検証でエラーを発見した場合は <code>true</code>、そうでない場合は <code>false</code>
+	 * @throws ValidationException
+	 *             入力検証にエラーがあった場合
 	 */
-	boolean process(ActionErrors errors, Map<String, Object[]> params,
-			Object form, ValidationRules rules);
+	void process() throws ValidationException;
+
+	/**
+	 * {@link #process()} で発生した {@link ValidationException} を処理します。
+	 * <p>
+	 * <ul>
+	 * <li>{@link ValidationException} にメッセージが指定されていた場合はそれを
+	 * {@link ActionErrors} に設定</li>
+	 * <li>リクエストの属性 {@link CubbyConstants#ATTR_VALIDATION_FAIL} に
+	 * <code>true</code> を設定</li>
+	 * <li>{@link ValidationRules#fail(String)} の呼び出し</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param e
+	 * @return {@link ValidationRules#fail(String)} が返す値
+	 * @since 1.1.0
+	 */
+	ActionResult handleValidationException(ValidationException e);
 
 }

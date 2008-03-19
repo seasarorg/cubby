@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.validator;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.seasar.cubby.action.ActionResult;
 
@@ -29,13 +29,6 @@ import org.seasar.cubby.action.ActionResult;
 public interface ValidationRules {
 
 	/**
-	 * 入力検証ルールのリストを取得します。
-	 * 
-	 * @return 入力検証ルールのリスト
-	 */
-	List<ValidationRule> getRules();
-
-	/**
 	 * 入力検証にエラーがあった場合に呼び出されます。
 	 * 
 	 * @param errorPage
@@ -45,5 +38,24 @@ public interface ValidationRules {
 	 * @since 1.0.2
 	 */
 	ActionResult fail(String errorPage);
+
+	/**
+	 * 入力検証のフェーズの一覧を実行順に並べた{@link Collection}として取得します。
+	 * 
+	 * @return 入力検証のフェーズ
+	 * @since 1.1.0
+	 */
+	Collection<ValidationPhase> getValidationPhases();
+
+	/**
+	 * 指定された入力検証フェーズに対応する入力検証ルールの{@link Collection}を取得します。
+	 * 
+	 * @param validationPhase
+	 *            入力検証フェーズ
+	 * @return 指定された入力検証フェーズに対応する入力検証ルールの{@link Collection}
+	 * @since 1.1.0
+	 */
+	Collection<ValidationRule> getPhaseValidationRules(
+			ValidationPhase validationPhase);
 
 }

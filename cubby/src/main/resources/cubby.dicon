@@ -13,7 +13,7 @@
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
 
-	<!-- validation -->
+	<!-- Validation -->
 	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/>
 
 	<!-- interceptor -->

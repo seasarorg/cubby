@@ -39,7 +39,10 @@ public interface ValidationRule {
 	 *            フォームオブジェクト
 	 * @param errors
 	 *            アクションで発生したエラー
+	 * @throws ValidationException
+	 *             入力検証でエラーを検出し、検証を途中で中断する場合にスローされます
 	 */
-	void apply(Map<String, Object[]> params, Object form, ActionErrors errors);
+	void apply(Map<String, Object[]> params, Object form, ActionErrors errors)
+			throws ValidationException;
 
 }

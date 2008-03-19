@@ -120,17 +120,6 @@ public class ActionContextImplTest extends S2TestCase {
 		}
 	}
 
-	public void testGetValidationThrowsNullPointerException() throws Throwable {
-		try {
-			actionContext.getValidation();
-			fail("Expected NullPointerException to be thrown");
-		} catch (NullPointerException ex) {
-			assertNull("ex.getMessage()", ex.getMessage());
-			assertFalse("actionContextImpl.isInitialized()", actionContext
-					.isInitialized());
-		}
-	}
-
 	public void testInvokeThrowsNullPointerException() throws Throwable {
 		try {
 			actionContext.invoke();

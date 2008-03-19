@@ -299,11 +299,11 @@ public class CubbyUtils {
 		if (text == null) {
 			return null;
 		}
-		int index = text.indexOf(delim);
+		final int index = text.indexOf(delim);
 		if (index == -1) {
 			return new String[] { text };
 		}
-		String[] tokens = new String[2];
+		final String[] tokens = new String[2];
 		tokens[0] = text.substring(0, index);
 		tokens[1] = text.substring(index + 1);
 		return tokens;
@@ -365,11 +365,30 @@ public class CubbyUtils {
 	/**
 	 * アクションメソッドの{@link Path}アノテーションから優先度を取得します。
 	 * 
-	 * @param method アクションメソッド
+	 * @param method
+	 *            アクションメソッド
 	 * @return 優先度。メソッドに{@link Path}アノテーションが設定されていない場合{@link Integer#MAX_VALUE}
 	 */
-	public static int getPriority(Method method) {
-		Path path = method.getAnnotation(Path.class);
+	public static int getPriority(final Method method) {
+		final Path path = method.getAnnotation(Path.class);
 		return path != null ? path.priority() : Integer.MAX_VALUE;
 	}
+
+	/**
+	 * リクエストから属性を取得します。
+	 * 
+	 * @param <T>
+	 *            取得する属性の型
+	 * @param request
+	 *            リクエスト
+	 * @param name
+	 *            属性名
+	 * @return 属性
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T getAttribute(final HttpServletRequest request,
+			final String name) {
+		return (T) request.getAttribute(name);
+	}
+
 }

@@ -15,10 +15,13 @@
  */
 package org.seasar.cubby.validator;
 
+import static org.seasar.cubby.validator.DefaultValidationRules.DATA_CONSTRAINT;
+import static org.seasar.cubby.validator.DefaultValidationRules.DATA_TYPE;
+
 import java.util.Iterator;
+import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
@@ -26,14 +29,46 @@ import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
+import org.seasar.extension.unit.S2TestCase;
 
-public class DefaultValidationRulesTest extends TestCase {
+public class DefaultValidationRulesTest extends S2TestCase {
 
-	public void testAddAndGetRules() throws Exception {
-		DefaultValidationRules rules = new DefaultValidationRules();
-		rules.add(new FieldValidationRule("name", new RequiredValidator(),
-				new MaxLengthValidator(10)));
-		assertEquals(1, rules.getRules().size());
+	@Override
+	protected void setUp() throws Exception {
+		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+	}
+
+	public void testAddAndGetRules1() throws Exception {
+		ValidationRules rules = new DefaultValidationRules() {
+			@Override
+			protected void initialize() {
+				add("name", new RequiredValidator(), new MaxLengthValidator(10));
+			}
+		};
+		assertEquals(1, rules.getPhaseValidationRules(DATA_TYPE).size());
+		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
+	}
+
+	public void testAddAndGetRules2() throws Exception {
+		ValidationRules rules = new DefaultValidationRules() {
+			@Override
+			protected void initialize() {
+				add(DATA_CONSTRAINT, new ValidationRule() {
+					public void apply(Map<String, Object[]> params,
+							Object form, ActionErrors errors)
+							throws ValidationException {
+						if ("2".equals(params.get("foo"))) {
+							if (params.get("bar") == null
+									|| "".equals(params.get("bar"))) {
+								throw new ValidationException("message");
+							}
+						}
+					}
+				});
+			}
+		};
+		assertEquals(0, rules.getPhaseValidationRules(DATA_TYPE).size());
+		assertEquals(1, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
 
 	public void testInitialize() throws Exception {
@@ -43,7 +78,8 @@ public class DefaultValidationRulesTest extends TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(2, rules.getRules().size());
+		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
+		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
 
 	public void testConstractor1() throws Exception {
@@ -53,8 +89,11 @@ public class DefaultValidationRulesTest extends TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(2, rules.getRules().size());
-		Iterator<ValidationRule> iter = rules.getRules().iterator();
+		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
+		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
+
+		Iterator<ValidationRule> iter = rules
+				.getPhaseValidationRules(DATA_TYPE).iterator();
 		FieldValidationRule rule = (FieldValidationRule) iter.next();
 		assertEquals("name", rule.getFieldName());
 		assertEquals("name", rule.getFieldNameKey());
@@ -70,8 +109,11 @@ public class DefaultValidationRulesTest extends TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(2, rules.getRules().size());
-		Iterator<ValidationRule> iter = rules.getRules().iterator();
+		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
+		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
+
+		Iterator<ValidationRule> iter = rules
+				.getPhaseValidationRules(DATA_TYPE).iterator();
 		FieldValidationRule rule = (FieldValidationRule) iter.next();
 		assertEquals("name", rule.getFieldName());
 		assertEquals("userProfile.name", rule.getFieldNameKey());
@@ -110,4 +152,23 @@ public class DefaultValidationRulesTest extends TestCase {
 		assertEquals("error.jsp", redirect.getPath());
 	}
 
+	public void testValidationPhasePriority() {
+
+		ValidationRules validationRules = new DefaultValidationRules() {
+
+			@Override
+			protected void initialize() {
+			}
+
+		};
+
+		Iterator<ValidationPhase> iterator = validationRules
+				.getValidationPhases().iterator();
+		ValidationPhase first = iterator.next();
+		ValidationPhase second = iterator.next();
+		assertFalse(iterator.hasNext());
+
+		assertEquals(DATA_TYPE, first);
+		assertEquals(DATA_CONSTRAINT, second);
+	}
 }

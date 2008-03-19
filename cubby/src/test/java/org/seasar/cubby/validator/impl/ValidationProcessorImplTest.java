@@ -15,105 +15,103 @@
  */
 package org.seasar.cubby.validator.impl;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.validator.DefaultValidationRules;
-import org.seasar.cubby.validator.FieldValidationRule;
-import org.seasar.cubby.validator.ValidationRule;
-import org.seasar.cubby.validator.validators.RequiredValidator;
+import javax.servlet.http.HttpServletRequest;
+
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.controller.ActionDef;
+import org.seasar.cubby.controller.ActionDefBuilder;
+import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.validator.ValidationException;
 import org.seasar.extension.unit.S2TestCase;
+import org.seasar.framework.mock.servlet.MockServletContext;
 
 public class ValidationProcessorImplTest extends S2TestCase {
 
-	public ValidationProcessorImpl processor;
-	Map<String, Object[]> params;
-	ActionErrors errors = new ActionErrorsImpl();
-	DefaultValidationRules validators = new DefaultValidationRules();
+	public ValidationProcessorImpl validationProcessor;
+
+	public ActionDefBuilder actionDefBuilder;
+
+	public ActionContext context;
+
+	public MockAction action;
+
+	public Map<String, Object[]> params;
 
 	@Override
 	protected void setUp() throws Exception {
 		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-
-		params = new HashMap<String, Object[]>();
-		validators = new DefaultValidationRules();
-		validators.add("prop1", new RequiredValidator());
-		validators.add("prop2", new RequiredValidator());
 	}
 
-	public void testProcessValidation() {
-		params.put("prop2", new Object[] { "prop2 value" });
-		boolean success = processor.process(errors, params,
-				new Sample1Form(), validators);
-		assertFalse(success);
-	}
+	public void testProcess1() {
+		MockServletContext servletContext = getServletContext();
+		HttpServletRequest request = servletContext.createRequest(CubbyUtils
+				.getInternalForwardPath(MockAction.class, "dummy"));
+		ActionDef actionDef = actionDefBuilder.build(request);
+		context.initialize(actionDef);
 
-	public void testValidateAction() {
-		params.put("prop2", new Object[] { "prop2 value" });
-		for (ValidationRule rule : validators.getRules()) {
-			rule.apply(params, new Sample1Form(), errors);
-		}
-		assertEquals(1, errors.getFields().get("prop1").size());
-		assertEquals("prop1は必須です。", errors.getFields().get("prop1").get(0));
-		assertEquals(0, errors.getFields().get("prop2").size());
-	}
-
-	public void testValidate() {
-		params.put("prop2", new Object[] { "prop2 value" });
-		Object form = new Object();
-		FieldValidationRule[] rules = {
-				new FieldValidationRule("prop1", new RequiredValidator()),
-				new FieldValidationRule("prop2", new RequiredValidator()), };
-		for (final ValidationRule rule : rules) {
-			rule.apply(params, form, errors);
-		}
-		assertEquals(1, errors.getFields().get("prop1").size());
-		assertEquals("prop1は必須です。", errors.getFields().get("prop1").get(0));
-		assertEquals(0, errors.getFields().get("prop2").size());
-	}
-
-	public static class Foo {
-		public String value1 = "1";
-		private String value2 = "2";
-
-		public String getValue2() {
-			return value2;
+		try {
+			validationProcessor.process();
+			fail();
+		} catch (ValidationException e) {
+			assertFalse(action.getErrors().isEmpty());
+			assertEquals(1, action.getErrors().getFields().size());
+			assertNotNull(action.getErrors().getFields().get("name"));
 		}
 	}
 
-//	public static class SampleAction extends Action {
-//
-//		@Validation(rules = "validation", errorPage = "error.jsp")
-//		public String test() {
-//			return null;
-//		}
-//	}
+	public void testProcess2() {
+		MockServletContext servletContext = getServletContext();
+		HttpServletRequest request = servletContext.createRequest(CubbyUtils
+				.getInternalForwardPath(MockAction.class, "dummy"));
+		ActionDef actionDef = actionDefBuilder.build(request);
+		context.initialize(actionDef);
 
-	static class Sample1Form {
-		private String prop1;
-		private Integer prop2;
+		params.put("name", new Object[] { "bob" });
+		params.put("age", new Object[] { "bob" });
 
-		public String getProp1() {
-			return prop1;
+		try {
+			validationProcessor.process();
+			fail();
+		} catch (ValidationException e) {
+			assertFalse(action.getErrors().isEmpty());
+			assertEquals(1, action.getErrors().getFields().size());
+			assertNotNull(action.getErrors().getFields().get("age"));
 		}
-
-		public void setProp1(String prop1) {
-			this.prop1 = prop1;
-		}
-
-		public Integer getProp2() {
-			return prop2;
-		}
-
-		public void setProp2(Integer prop2) {
-			this.prop2 = prop2;
-		}
-
 	}
 
-	static class Sample2Form {
+	public void testProcess3() {
+		MockServletContext servletContext = getServletContext();
+		HttpServletRequest request = servletContext.createRequest(CubbyUtils
+				.getInternalForwardPath(MockAction.class, "dummy"));
+		ActionDef actionDef = actionDefBuilder.build(request);
+		context.initialize(actionDef);
+
+		params.put("name", new Object[] { "bob" });
+		params.put("age", new Object[] { "5" });
+
+		try {
+			validationProcessor.process();
+		} catch (ValidationException e) {
+			fail();
+		}
+	}
+
+	public void testHandleValidationException() {
+		MockServletContext servletContext = getServletContext();
+		HttpServletRequest request = servletContext.createRequest(CubbyUtils
+				.getInternalForwardPath(MockAction.class, "dummy"));
+		ActionDef actionDef = actionDefBuilder.build(request);
+		context.initialize(actionDef);
+
+		ValidationException e = new ValidationException("message", "field1");
+		ActionResult result = validationProcessor.handleValidationException(e);
+		assertTrue(result instanceof Forward);
+		Forward forward = (Forward) result;
+		assertEquals("error.jsp", forward.getPath());
 	}
 
 }
