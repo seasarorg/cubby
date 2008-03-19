@@ -21,11 +21,13 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.examples.todo.dao.UserDao;
 import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
@@ -48,13 +50,15 @@ public class LoginAction extends Action {
 		public void initialize() {
 			add("userId", new RequiredValidator());
 			add("password", new RequiredValidator());
-			add(new UserValidationRule());
+			add(DATA_CONSTRAINT, new UserValidationRule());
 		}
 	};
 
 	// ----------------------------------------------[DI Filed]
 
 	public Map<String, Object> sessionScope;
+
+	public UserDao userDao;
 
 	// ----------------------------------------------[Attribute]
 
@@ -83,28 +87,14 @@ public class LoginAction extends Action {
 
 		public void apply(Map<String, Object[]> params, Object form,
 				ActionErrors errors) {
-			if (userId == null || password == null) {
-				return;
+			User user = userDao.findByIdAndPassword(userId, password);
+			if (user == null) {
+				throw new ValidationException("ユーザIDかパスワードが違います。", "userId",
+						"password");
 			}
-			User user = findUser(userId, password);
-			if (user != null) {
-				sessionScope.put("user", user);
-			} else {
-				errors.add("ユーザIDかパスワードが違います。", "userId", "password");
-			}
+			sessionScope.put("user", user);
 		}
 
-		private User findUser(String userId, String password) {
-			User user;
-			if ("test".equals(userId) && "test".equals(password)) {
-				user = new User();
-				user.setId(1);
-				user.setName("Cubby");
-			} else {
-				user = null;
-			}
-			return user;
-		}
 	}
 
 	@Path("/todo/logout")
