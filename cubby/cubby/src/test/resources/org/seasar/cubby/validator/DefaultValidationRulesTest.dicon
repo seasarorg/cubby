@@ -3,9 +3,4 @@
 	"http://www.seasar.org/dtd/components.dtd">
 <components>
 	<include path="cubby.dicon"/>
-
-	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl" />
-
-	<component name="action" class="org.seasar.cubby.validator.UserValidationRuleTest$MockAction" />
-
 </components>

@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.container.ComponentDef;
 
@@ -77,13 +76,6 @@ public interface ActionContext {
 	 * @return アクションメソッド
 	 */
 	Method getMethod();
-
-	/**
-	 * アクションの入力検証の定義を取得します。
-	 * 
-	 * @return アクションの入力検証の定義
-	 */
-	Validation getValidation();
 
 	/**
 	 * アクションのフォームオブジェクトを取得します。

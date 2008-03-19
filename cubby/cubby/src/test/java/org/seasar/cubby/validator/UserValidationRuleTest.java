@@ -20,31 +20,36 @@ import java.util.Map;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.validator.impl.ValidationProcessorImpl;
 import org.seasar.extension.unit.S2TestCase;
 
 public class UserValidationRuleTest extends S2TestCase {
 
-	public MockAction action;
+	public ValidationProcessorImpl validationProcessor;
 
-	public ValidationProcessor validationProcessor;
+	public MockAction action;
 
 	@Override
 	protected void setUp() throws Exception {
 		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
 	}
 
-	public void testUserValidation() {
+	public void testUserValidation() throws ValidationException {
 		ActionErrors errors = action.getErrors();
 		Object form = action;
 		ValidationRules rules = action.rules;
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 
-		validationProcessor.process(errors, params, form, rules);
-		assertTrue(errors.isEmpty());
+		validationProcessor.validate(rules, params, form);
 
 		action.value2 = "ng";
-		validationProcessor.process(errors, params, form, rules);
-		assertFalse(errors.isEmpty());
+		try {
+			validationProcessor.validate(rules, params, form);
+			fail();
+		} catch (ValidationException e) {
+			assertEquals(1, errors.getAll().size());
+			assertEquals("validation failed", errors.getAll().get(0));
+		}
 	}
 
 	public static class MockAction extends Action {
@@ -56,7 +61,7 @@ public class UserValidationRuleTest extends S2TestCase {
 		public ValidationRules rules = new DefaultValidationRules() {
 			@Override
 			public void initialize() {
-				add(new UserValidationRule());
+				add(DATA_CONSTRAINT, new UserValidationRule());
 			}
 		};
 
@@ -65,7 +70,7 @@ public class UserValidationRuleTest extends S2TestCase {
 			public void apply(Map<String, Object[]> params, Object form,
 					ActionErrors errors) {
 				if ("ng".equals(value1) || "ng".equals(value2)) {
-					errors.add("validation fail", "value1", "value2");
+					errors.add("validation failed", "value1", "value2");
 				}
 			}
 

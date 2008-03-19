@@ -16,7 +16,12 @@
 package org.seasar.cubby.validator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
@@ -25,15 +30,26 @@ import org.seasar.cubby.action.Forward;
  * 入力検証を保持するクラスです。
  * 
  * @author agata
+ * @author baba
  * @since 1.0.0
  */
-public class DefaultValidationRules implements ValidationRules {
+public abstract class DefaultValidationRules implements ValidationRules {
 
-	/** 入力検証ルールのリスト。 */
-	public final List<ValidationRule> rules = new ArrayList<ValidationRule>();
+	/** データ型を検証するフェーズ。 */
+	public static final ValidationPhase DATA_TYPE = new ValidationPhase();
+
+	/** データ上の制約を検証するフェーズ。 */
+	public static final ValidationPhase DATA_CONSTRAINT = new ValidationPhase();
+
+	/** 入力検証のフェーズとそれに対応する入力検証ルールのリスト。 */
+	private final Map<ValidationPhase, List<ValidationRule>> phaseValidationRulesMap = new HashMap<ValidationPhase, List<ValidationRule>>();
 
 	/** メッセージキーのプリフィックス。 */
 	private final String resourceKeyPrefix;
+
+	/** 入力検証のフェーズ。 */
+	private static final List<ValidationPhase> VALIDATION_PHASES = Arrays
+			.asList(new ValidationPhase[] { DATA_TYPE, DATA_CONSTRAINT });
 
 	/**
 	 * メッセージキーのプリフィックスなしのコンストラクタ。
@@ -59,21 +75,39 @@ public class DefaultValidationRules implements ValidationRules {
 	 * このメソッドをサブクラスでオーバーライドして各項目の入力検証ルールを追加します。
 	 * </p>
 	 */
-	public void initialize() {
-	}
+	protected abstract void initialize();
 
 	/**
 	 * 入力検証ルールを追加します。
 	 * 
-	 * @param rule
+	 * @param validationPhase
+	 *            指定された入力検証ルールを実行するフェーズ
+	 * @param validationRule
 	 *            入力検証ルール
 	 */
-	protected void add(final ValidationRule rule) {
-		this.rules.add(rule);
+	protected void add(final ValidationPhase validationPhase,
+			final ValidationRule validationRule) {
+		if (!this.phaseValidationRulesMap.containsKey(validationPhase)) {
+			this.phaseValidationRulesMap.put(validationPhase,
+					new ArrayList<ValidationRule>());
+		}
+		final List<ValidationRule> validationRules = this.phaseValidationRulesMap
+				.get(validationPhase);
+		validationRules.add(validationRule);
 	}
 
 	/**
-	 * 入力検証ルールを追加します。
+	 * 最初のフェーズに入力検証ルールを追加します。
+	 * 
+	 * @param validationRule
+	 *            入力検証ルール
+	 */
+	protected void add(final ValidationRule validationRule) {
+		this.add(getValidationPhases().get(0), validationRule);
+	}
+
+	/**
+	 * 最初のフェーズに入力検証を追加します。
 	 * <p>
 	 * 項目名のメッセージキーとしてパラメータ名が使用されます。
 	 * </p>
@@ -81,26 +115,27 @@ public class DefaultValidationRules implements ValidationRules {
 	 * @param paramName
 	 *            パラメータ名
 	 * @param validators
-	 *            入力検証ルールリスト
+	 *            入力検証
 	 */
-	public void add(final String paramName, final Validator... validators) {
+	protected void add(final String paramName, final Validator... validators) {
 		this.add(paramName, paramName, validators);
 	}
 
 	/**
-	 * 項目名のメッセージキーを指定して入力検証ルールを追加します。
+	 * 項目名のメッセージキーを指定して、最初のフェーズに入力検証を追加します。
 	 * 
 	 * @param paramName
 	 *            パラメータ名
 	 * @param paramNameMessageKey
 	 *            項目名のメッセージキー
 	 * @param validators
-	 *            入力検証ルールリスト
+	 *            入力検証
 	 */
-	public void add(final String paramName, final String paramNameMessageKey,
-			final Validator... validators) {
-		this.add(new FieldValidationRule(paramName,
-				makePropertyNameKey(paramNameMessageKey), validators));
+	protected void add(final String paramName,
+			final String paramNameMessageKey, final Validator... validators) {
+		this.add(getValidationPhases().get(0),
+				new FieldValidationRule(paramName,
+						makePropertyNameKey(paramNameMessageKey), validators));
 	}
 
 	/**
@@ -123,19 +158,42 @@ public class DefaultValidationRules implements ValidationRules {
 
 	/**
 	 * {@inheritDoc}
-	 */
-	public List<ValidationRule> getRules() {
-		return rules;
-	}
-
-	/**
-	 * {@inheritDoc}
 	 * <p>
 	 * 指定されたエラーページへ遷移する {@link Forward} を返します。
 	 * </p>
 	 */
 	public ActionResult fail(final String errorPage) {
 		return new Forward(errorPage);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * デフォルトでは以下の順序です。
+	 * <ul>
+	 * <li>{@link #DATA_TYPE}</li>
+	 * <li>{@link #DATA_CONSTRAINT}</li>
+	 * </ul>
+	 * これを変更してフェーズの追加などをしたい場合はこのメソッドをオーバーライドしてください。
+	 * </p>
+	 */
+	public List<ValidationPhase> getValidationPhases() {
+		return VALIDATION_PHASES;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<ValidationRule> getPhaseValidationRules(
+			final ValidationPhase validationPhase) {
+		final Collection<ValidationRule> phaseValidationRules;
+		if (this.phaseValidationRulesMap.containsKey(validationPhase)) {
+			phaseValidationRules = this.phaseValidationRulesMap
+					.get(validationPhase);
+		} else {
+			phaseValidationRules = Collections.emptyList();
+		}
+		return phaseValidationRules;
 	}
 
 }

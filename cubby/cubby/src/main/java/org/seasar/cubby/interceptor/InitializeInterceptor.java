@@ -34,7 +34,8 @@ import org.seasar.cubby.dxo.FormDxo;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
- * {@link Action#initialize()}、{@link Action#prerender()} の実行を行います。
+ * {@link Action#initialize()}、{@link ActionResult#prerender(ActionContext)}
+ * の実行を行います。
  * 
  * @author agata
  * @author baba
@@ -64,7 +65,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * @param context
 	 *            アクションのコンテキスト
 	 */
-	public void setActionContext(final ActionContext context) {
+	public void setContext(final ActionContext context) {
 		this.context = context;
 	}
 
@@ -73,22 +74,29 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
-	 * <li>リクエストパラメータを{@link Map}に変換してリクエストの属性{@link CubbyConstants#ATTR_PARAMS}に設定します。</li>
-	 * <li>リクエストの属性{@link CubbyConstants#ATTR_PARAMS}の値をフォームオブジェクトにバインドします。</li>
-	 * <li>実際のアクションメソッドを呼び出します。</li>
-	 * <li>アクションの{@link Action#prerender()}を呼び出します。</li>
-	 * <li>アクションメソッドの実行結果を返します。</li>
+	 * <li>{@link Action#parseRequest(HttpServletRequest)}を呼び出してリクエストをパースしてリクエストパラメータをパースします。パース後、リクエストの属性
+	 * {@link CubbyConstants#ATTR_PARAMS} に設定。</li>
+	 * <li>{@link Action#initialize()}を呼び出してアクションを初期化します。</li>
+	 * <li>対象のメソッドを呼び出します。</li>
+	 * <li>{@link ActionResult#prerender(ActionContext)}を呼び出します。</li>
+	 * <li>メソッドの実行結果を返します。</li>
 	 * </ul>
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		setupParams(context, request);
-		setupForm(context, request);
-
 		final Action action = context.getAction();
+		final Map<String, Object[]> parameterMap = parseRequest(request);
+		request.setAttribute(ATTR_PARAMS, parameterMap);
 		action.initialize();
 
+		final Object formBean = context.getFormBean();
+		if (formBean != null) {
+			final FormDxo formDxo = context.getFormDxo();
+			formDxo.convert(parameterMap, formBean);
+		}
+
 		final ActionResult result = (ActionResult) invocation.proceed();
+
 		if (result != null) {
 			result.prerender(context);
 		}
@@ -97,57 +105,19 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	/**
-	 * リクエストパラメータを{@link Map}に変換してリクエストの属性{@link CubbyConstants#ATTR_PARAMS}に設定します。
+	 * リクエストをパースしてパラメータを取り出し、{@link Map}に変換して返します。
 	 * 
-	 * @param context
-	 *            アクションのコンテキスト
 	 * @param request
 	 *            リクエスト
+	 * @return リクエストパラメータの{@link Map}
 	 */
-	void setupParams(final ActionContext context,
-			final HttpServletRequest request) {
+	private Map<String, Object[]> parseRequest(final HttpServletRequest request) {
 		final CubbyConfiguration configuration = ThreadContext
 				.getConfiguration();
 		final RequestParser requestParser = configuration.getRequestParser();
 		final Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
-		request.setAttribute(ATTR_PARAMS, parameterMap);
-	}
-
-	/**
-	 * リクエストの属性{@link CubbyConstants#ATTR_PARAMS}の値をフォームオブジェクトにバインドします。
-	 * 
-	 * @param context
-	 *            アクションのコンテキスト
-	 * @param request
-	 *            リクエスト
-	 */
-	private void setupForm(final ActionContext context,
-			final HttpServletRequest request) {
-		final Object formBean = context.getFormBean();
-		if (formBean != null) {
-			final FormDxo formDxo = context.getFormDxo();
-			final Map<String, Object[]> params = getAttribute(request,
-					ATTR_PARAMS);
-			formDxo.convert(params, formBean);
-		}
-	}
-
-	/**
-	 * リクエストから属性を取得します。
-	 * 
-	 * @param <T>
-	 *            取得する属性の型
-	 * @param request
-	 *            リクエスト
-	 * @param name
-	 *            属性名
-	 * @return 属性
-	 */
-	@SuppressWarnings("unchecked")
-	private static <T> T getAttribute(final HttpServletRequest request,
-			final String name) {
-		return (T) request.getAttribute(name);
+		return parameterMap;
 	}
 
 }

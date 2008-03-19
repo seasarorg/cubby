@@ -28,7 +28,13 @@ import org.seasar.cubby.validator.ValidationRules;
 @Path("/")
 public class MockAction extends Action {
 	
-	public ValidationRules validation = new DefaultValidationRules();
+	public ValidationRules validation = new DefaultValidationRules() {
+
+		@Override
+		protected void initialize() {
+		}
+		
+	};
 	
 	public String attr1;
 	public String attr2;
