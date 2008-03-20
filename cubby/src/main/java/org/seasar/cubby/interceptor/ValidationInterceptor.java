@@ -15,8 +15,12 @@
  */
 package org.seasar.cubby.interceptor;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationProcessor;
 
@@ -31,6 +35,15 @@ public class ValidationInterceptor implements MethodInterceptor {
 
 	/** 入力検証処理。 */
 	private ValidationProcessor validationProcessor;
+
+	/** リクエスト。 */
+	private HttpServletRequest request;
+
+	/** アクションメソッドの実行時コンテキスト。 */
+	private ActionContext context;
+
+	/** アクションのエラー。 */
+	private ActionErrors errors;
 
 	/**
 	 * インスタンス化します。
@@ -50,6 +63,36 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	/**
+	 * リクエストを設定します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 */
+	public void setRequest(final HttpServletRequest request) {
+		this.request = request;
+	}
+
+	/**
+	 * アクションメソッド実行時のコンテキストを設定します。
+	 * 
+	 * @param context
+	 *            アクションメソッド実行時のコンテキスト
+	 */
+	public void setActionContext(final ActionContext context) {
+		this.context = context;
+	}
+
+	/**
+	 * アクションのエラーを設定します。
+	 * 
+	 * @param errors
+	 *            アクションのエラー
+	 */
+	public void setActionErrors(final ActionErrors errors) {
+		this.errors = errors;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * メソッドの実行前に入力検証を実行します。
@@ -57,10 +100,11 @@ public class ValidationInterceptor implements MethodInterceptor {
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		try {
-			validationProcessor.process();
+			validationProcessor.process(request, context, errors);
 			return invocation.proceed();
 		} catch (final ValidationException e) {
-			return validationProcessor.handleValidationException(e);
+			return validationProcessor.handleValidationException(e, request,
+					context, errors);
 		}
 	}
 

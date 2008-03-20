@@ -46,56 +46,19 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  */
 public class ValidationProcessorImpl implements ValidationProcessor {
 
-	/** リクエスト。 */
-	private HttpServletRequest request;
-
-	/** アクションメソッドの実行時コンテキスト。 */
-	private ActionContext context;
-
-	/** アクションで発生したエラー。 */
-	private ActionErrors errors;
-
-	/**
-	 * リクエストを設定します。
-	 * 
-	 * @param request
-	 *            リクエスト
-	 */
-	public void setRequest(final HttpServletRequest request) {
-		this.request = request;
-	}
-
-	/**
-	 * アクションメソッド実行時のコンテキストを設定します。
-	 * 
-	 * @param context
-	 *            アクションメソッド実行時のコンテキスト
-	 */
-	public void setActionContext(final ActionContext context) {
-		this.context = context;
-	}
-
-	/**
-	 * アクションで発生したエラーを設定します。
-	 * 
-	 * @param errors
-	 *            アクションで発生したエラー。
-	 */
-	public void setActionErrors(final ActionErrors errors) {
-		this.errors = errors;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
-	public void process() {
-		final Validation validation = this.getValidation();
+	public void process(final HttpServletRequest request,
+			ActionContext context, ActionErrors errors) {
+		final Validation validation = this.getValidation(context);
 		if (validation != null) {
 			final Map<String, Object[]> params = CubbyUtils.getAttribute(
 					request, ATTR_PARAMS);
-			final ValidationRules validationRules = this.getValidationRules();
+			final ValidationRules validationRules = this
+					.getValidationRules(context);
 			final Object form = context.getFormBean();
-			validate(validationRules, params, form);
+			validate(validationRules, params, form, errors);
 		}
 	}
 
@@ -108,12 +71,15 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 *            リクエストパラメータ
 	 * @param form
 	 *            フォームオブジェクト
+	 * @param errors
+	 *            アクションのエラー
 	 */
 	public void validate(final ValidationRules validationRules,
-			final Map<String, Object[]> params, final Object form) {
+			final Map<String, Object[]> params, final Object form,
+			final ActionErrors errors) {
 		for (ValidationPhase validationPhase : validationRules
 				.getValidationPhases()) {
-			validate(validationRules, validationPhase, params, form);
+			validate(validationRules, validationPhase, params, form, errors);
 		}
 	}
 
@@ -124,14 +90,17 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 *            入力検証ルールの集合
 	 * @param validationPhase
 	 *            入力検証のフェーズ
+	 * @param errors
+	 *            アクションのエラー
 	 * @param params
 	 *            リクエストパラメータ
 	 * @param form
 	 *            フォームオブジェクト
 	 */
 	public void validate(final ValidationRules validationRules,
-			ValidationPhase validationPhase,
-			final Map<String, Object[]> params, final Object form) {
+			final ValidationPhase validationPhase,
+			final Map<String, Object[]> params, final Object form,
+			final ActionErrors errors) {
 		final Collection<ValidationRule> phaseValidationRules = validationRules
 				.getPhaseValidationRules(validationPhase);
 		if (validationRules != null) {
@@ -147,21 +116,24 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult handleValidationException(final ValidationException e) {
+	public ActionResult handleValidationException(final ValidationException e,
+			final HttpServletRequest request, final ActionContext context,
+			final ActionErrors errors) {
 		if (e.hasMessage()) {
 			errors.add(e.getMessage(), e.getFieldNames());
 		}
 		request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
 
 		final String errorPage;
-		final Validation validation = this.getValidation();
+		final Validation validation = this.getValidation(context);
 		if (validation == null) {
 			errorPage = null;
 		} else {
 			errorPage = validation.errorPage();
 		}
 
-		final ValidationRules validationRules = this.getValidationRules();
+		final ValidationRules validationRules = this
+				.getValidationRules(context);
 		return validationRules.fail(errorPage);
 	}
 
@@ -172,7 +144,7 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 *            アクションメソッド実行時のコンテキスト
 	 * @return アクションの入力検証の定義
 	 */
-	private Validation getValidation() {
+	private Validation getValidation(final ActionContext context) {
 		return context.getMethod().getAnnotation(Validation.class);
 	}
 
@@ -183,8 +155,8 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 *            アクションメソッド実行時のコンテキスト
 	 * @return アクションメソッドの入力検証ルールの集合
 	 */
-	private ValidationRules getValidationRules() {
-		final Validation validation = getValidation();
+	private ValidationRules getValidationRules(final ActionContext context) {
+		final Validation validation = getValidation(context);
 		final Action action = context.getAction();
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());

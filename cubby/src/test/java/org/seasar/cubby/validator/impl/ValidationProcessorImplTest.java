@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.controller.ActionContext;
@@ -37,6 +38,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 
 	public ActionContext context;
 
+	public ActionErrors errors;
+
 	public MockAction action;
 
 	public Map<String, Object[]> params;
@@ -54,7 +57,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		context.initialize(actionDef);
 
 		try {
-			validationProcessor.process();
+			validationProcessor.process(getRequest(), context, errors);
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -74,7 +77,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		params.put("age", new Object[] { "bob" });
 
 		try {
-			validationProcessor.process();
+			validationProcessor.process(getRequest(), context, errors);
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -94,7 +97,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		params.put("age", new Object[] { "5" });
 
 		try {
-			validationProcessor.process();
+			validationProcessor.process(getRequest(), context, errors);
 		} catch (ValidationException e) {
 			fail();
 		}
@@ -108,7 +111,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		context.initialize(actionDef);
 
 		ValidationException e = new ValidationException("message", "field1");
-		ActionResult result = validationProcessor.handleValidationException(e);
+		ActionResult result = validationProcessor.handleValidationException(e,
+				request, context, errors);
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
 		assertEquals("error.jsp", forward.getPath());
