@@ -26,6 +26,7 @@ public class CubbyTestCaseTest extends CubbyTestCase {
 	 * @throws Exception
 	 */
 	public void testSetupThreadContext() throws Exception {
+		ThreadContext.remove();
 		assertNull(ThreadContext.getRequest());
 		setupThreadContext();
 		assertNotNull(ThreadContext.getRequest());
