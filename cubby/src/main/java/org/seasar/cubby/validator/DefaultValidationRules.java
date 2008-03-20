@@ -139,6 +139,23 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	}
 
 	/**
+	 * 指定された {@link ValidationRules} に定義された入力検証ルールをすべて追加します。
+	 * 
+	 * @param validationRules
+	 *            追加する入力検証ルールの集合
+	 */
+	protected void addAll(final ValidationRules validationRules) {
+		for (final ValidationPhase validationPhase : validationRules
+				.getValidationPhases()) {
+			final Collection<ValidationRule> phaseValidationRules = validationRules
+					.getPhaseValidationRules(validationPhase);
+			for (final ValidationRule validationRule : phaseValidationRules) {
+				this.add(validationPhase, validationRule);
+			}
+		}
+	}
+
+	/**
 	 * メッセージキーを作成します。
 	 * <p>
 	 * キーのプリフィックスが指定されていた場合、メッセージキーに付加します。
@@ -194,6 +211,16 @@ public abstract class DefaultValidationRules implements ValidationRules {
 			phaseValidationRules = Collections.emptyList();
 		}
 		return phaseValidationRules;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @deprecated {@link #addAll(ValidationRules)} を使用してください。
+	 */
+	@Deprecated
+	public List<ValidationRule> getRules() {
+		return phaseValidationRulesMap.get(getValidationPhases().get(0));
 	}
 
 }

@@ -18,6 +18,7 @@ package org.seasar.cubby.validator;
 import static org.seasar.cubby.validator.DefaultValidationRules.DATA_CONSTRAINT;
 import static org.seasar.cubby.validator.DefaultValidationRules.DATA_TYPE;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -171,4 +172,29 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals(DATA_TYPE, first);
 		assertEquals(DATA_CONSTRAINT, second);
 	}
+
+	public void testAddAll() {
+		final ValidationRules base = new DefaultValidationRules() {
+			@Override
+			protected void initialize() {
+				add("param1", new RequiredValidator());
+			}
+		};
+
+		final ValidationRules rules1 = new DefaultValidationRules() {
+			@Override
+			protected void initialize() {
+				addAll(base);
+			}
+		};
+
+		Collection<ValidationRule> dataTypeRules = rules1
+				.getPhaseValidationRules(DATA_TYPE);
+		Collection<ValidationRule> dataConstraintRules = rules1
+				.getPhaseValidationRules(DATA_CONSTRAINT);
+
+		assertEquals(1, dataTypeRules.size());
+		assertEquals(0, dataConstraintRules.size());
+	}
+
 }
