@@ -40,11 +40,11 @@ public class UserValidationRuleTest extends S2TestCase {
 		ValidationRules rules = action.rules;
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 
-		validationProcessor.validate(rules, params, form);
+		validationProcessor.validate(rules, params, form, errors);
 
 		action.value2 = "ng";
 		try {
-			validationProcessor.validate(rules, params, form);
+			validationProcessor.validate(rules, params, form, errors);
 			fail();
 		} catch (ValidationException e) {
 			assertEquals(1, errors.getAll().size());
