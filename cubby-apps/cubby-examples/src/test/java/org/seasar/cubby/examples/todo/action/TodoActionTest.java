@@ -18,7 +18,8 @@ package org.seasar.cubby.examples.todo.action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.examples.RunDdlServletRequestListener;
+import org.seasar.cubby.examples.H2ScriptRunner;
+import org.seasar.cubby.examples.ScriptRunner;
 import org.seasar.cubby.unit.CubbyTestCase;
 
 public class TodoActionTest extends CubbyTestCase {
@@ -27,8 +28,8 @@ public class TodoActionTest extends CubbyTestCase {
 	
     protected void setUp() throws Exception {
         include("app.dicon");
-        RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
-        listener.requestInitialized(null);
+		ScriptRunner scriptRunner = new H2ScriptRunner();
+		scriptRunner.execute("ddl.sql");
     }
 
     @Override
