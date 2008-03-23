@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-03-01
+  2008-03-23
   --------
 
 {目次}
@@ -23,16 +23,16 @@
 
   *{{{#リクエストパラメータのバリデーション}リクエストパラメータのバリデーション}}
 
-  *{{{#業務ロジックによるバリデーション}業務ロジックによるバリデーション}}
+  *{{{#ユーザー定義のロジックによるバリデーション}ユーザー定義のロジックによるバリデーション}}
 
 {バリデーション}
 
  Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。
 
  フォームから入力された値は HttpServletRequest#getParameterValues で返される値が String の配列であることからもわかるように、
- 全ての値は配列として取得できます。この配列に対してバリデーションを行います。
+ 全ての値を配列として取得できます。定義済みのバリデーションはこの配列に対してのバリデーションを行います。
 
- また、それ以外にもフォームオブジェクトやデータベースを参照する独自のバリデーションをプログラム上に定義することができます。
+ また、フォームオブジェクトやデータベースを参照してデータ制約を検証する独自のバリデーションをプログラム上に定義することができます。
 
 {バリデーションの定義}
 
@@ -43,7 +43,7 @@
 
       以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
       {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()}initialize}}メソッドをオーバーライドし、そのメソッドの中で
-      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))}add}}メソッドを用いて
+      {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String, org.seasar.cubby.validator.Validator...)}add}}メソッドを用いて
       フォームのフィールドごとにバリデーションのルールを追加します。
 
 
@@ -71,7 +71,6 @@ public class LoginAction extends Action {
 +------------------------------------------------------+
   // プロパティ「validationRules」をバリデーションのルールとして使用します。
   // 検証エラー発生時は「confirm.jsp」に遷移します。
-  @Form
   @Validation(rules = "validationRules", errorPage = "confirm.jsp")
   public ActionResult save1() {
     ... 
@@ -84,7 +83,7 @@ public class LoginAction extends Action {
 
 *{定義済みバリデーション}
 
- Cubbyで定義済みのバリデーションクラスは以下のものがあります。
+ Cubby に定義済みのバリデーションクラスは以下のものがあります。
 
  {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html}ScalarFieldValidator}} を実装しているクラスがひとつの要素を検証するバリデータ、
  {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}} を実装しているクラスが配列全体を検証するバリデータとなっています。
@@ -138,7 +137,7 @@ public class LoginAction extends Action {
 public class LoginAction extends Action {
 
   // 項目のメッセージキーを指定
-  public static ValidationRules VALIDATION = new DefaultValidationRules() {
+  public ValidationRules validation = new DefaultValidationRules() {
     @Override
     public void initialize() {
       // メッセージキー"userId"の値がエラーメッセージ中の項目名として使用されます。
@@ -149,7 +148,7 @@ public class LoginAction extends Action {
   };
 
   // 項目名のメッセージキーのプリフィックスを指定
-  public static ValidationRules VALIDATION2 = new DefaultValidationRules("login.") {
+  public ValidationRules validation2 = new DefaultValidationRules("login.") {
     @Override
     public void initialize() {
       // メッセージキー"login.userId"の値がエラーメッセージ中の項目名として使用されます。
@@ -158,7 +157,7 @@ public class LoginAction extends Action {
   };
 
   // 各バリデーションにメッセージキーを指定
-  public static ValidationRules VALIDATION3 = new DefaultValidationRules() {
+  public ValidationRules validation3 = new DefaultValidationRules() {
     @Override
     public void initialize() {
       // メッセージキー"err.myrequired"がエラーメッセージとして使用されます。
@@ -178,7 +177,7 @@ public class LoginAction extends Action {
 public class LoginAction extends Action {
 
   // ベースのルール
-  public static ValidationRules BASE_VALIDATION = new DefaultValidationRules() {
+  private ValidationRules baseValidationRules = new DefaultValidationRules() {
     @Override
     public void initialize() {
       add("userId", new RequiredValidator(), new MaxLengthValidator(10));
@@ -187,21 +186,21 @@ public class LoginAction extends Action {
   };
 
   // ベースのルールに「nickname」の検証を追加
-  public static ValidationRules VALIDATION1 = new DefaultValidationRules() {
+  public ValidationRules validationRules1 = new DefaultValidationRules() {
     @Override
     public void initialize() {
-      // BASE_VALIDATIONのルールをコピーして追加
-      getRules().addAll(BASE_VALIDATION.getRules());
+      // baseValidationRulesのルールをコピーして追加
+      addAll(baseValidationRules);
       add("nickname", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
 
   // ベースのルールに「password2」の検証を追加
-  public static ValidationRules VALIDATION2 = new DefaultValidationRules() {
+  public ValidationRules validation2 = new DefaultValidationRules() {
     @Override
     public void initialize() {
-      // BASE_VALIDATIONのルールをコピーして追加
-      getRules().addAll(BASE_VALIDATION.getRules());
+      // baseValidationRulesのルールをコピーして追加
+      addAll(baseValidationRules);
       add("password2", new RequiredValidator(), new MaxLengthValidator(10));
     }
   };
@@ -217,11 +216,23 @@ public class LoginAction extends Action {
  または{{{cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}}を実装して作成します。\
  実装の方法は{{{cubby/xref/org/seasar/cubby/validator/validators/package-summary.html}それぞれのインターフェイスの実装クラス}}を参照してください。
 
-*{業務ロジックによるバリデーション}
+*{ユーザー作成のロジックによるバリデーション}
 
- データベースアクセスなどの業務ロジックによるバリデーションを作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html}ValidationRule}}を実装して作成してください。
+ データベースアクセスなどのユーザー作成のロジックによるバリデーションを作成するには{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html}ValidationRule}}を実装して作成してください。
+
+ バリデーションルールを登録する際には {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(org.seasar.cubby.validator.ValidationPhase, org.seasar.cubby.validator.ValidationRule)}add}}
+ メソッドの第一引数でバリデーションを実行するフェーズを指定できます。
+
+ バリデーションはフェーズごとに実行されます。
+ あるフェーズのバリデーションでエラーがあった場合は次のフェーズのバリデーションを実行せずにエラー処理へ移行します。
+
+ デフォルトでは {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#DATA_TYPE}DATA_TYPE(データ型を検証するフェーズ)}} と
+ {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#DATA_CONSTRAINT}DATA_CONSTRAINT(データ上の制約を検証するフェーズ)}} が定義されていて、
+ フェーズを指定しない場合は DATA_TYPE のフェーズに追加されます。
 
 +------------------------------------------------------+
+
+  public UserDao userDao;
 
   public String userId;
   public String password;
@@ -233,7 +244,9 @@ public class LoginAction extends Action {
     public void initialize() {
       add("userId", new RequiredValidator());
       add("password", new RequiredValidator());
-      add(new UserValidationRule());
+      // userId と password の双方が入力されたことが確認されてから UserValidationRule
+      // を実行したいので、フェーズに DATA_CONSTRAINT に指定します。
+      add(DATA_CONSTRAINT, new UserValidationRule());
     }
   };
 
@@ -241,14 +254,11 @@ public class LoginAction extends Action {
 
     public void apply(Map<String, Object[]> params, Object form,
         ActionErrors errors) throws ValidationException {
-      if (userId == null || password == null) {
-        return;
-      }
-      User user = findUser(userId, password);
-      if (user != null) {
-        sessionScope.put("user", user);
-      } else {
-        errors.add("ユーザIDかパスワードが違います。", "userId", "password");
+      User user = userDao.findByIdAndPassword(userId, password);
+      if (user == null) {
+        // エラーを検出した時、次のバリデーションを実行しないようにするためには
+        // ValidationException をスローしてください。
+        throw new ValidationException("ユーザIDかパスワードが違います。", "userId", "password");
       }
       sessionScope.put("user", user);
     }
@@ -256,3 +266,9 @@ public class LoginAction extends Action {
   }
 
 +------------------------------------------------------+
+
+*{アクションメソッドからエラーページへの遷移}
+
+ アクションメソッドでエラーを検出した場合は
+ {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#ValidationException}ValidationException}}
+ をスローすることで、処理を中断してエラーページへ遷移させることができます。
