@@ -9,6 +9,9 @@
   <title>Cuuby archetype sample app : index</title>
 </head>
 <body>
+<div id="banner">
+<img src="./img/logo.gif" alt="Cubby" />
+</div>
 <a href="hello">HelloAction</a>
 </body>
 </html>
