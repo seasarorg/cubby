@@ -6,7 +6,7 @@
   <title>Cubby Examples</title>
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
-  <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
 </head>
 <body>
 <h1>Cubby Exmaples</h1>
@@ -23,6 +23,7 @@
 	<li><a href="import/">他のページのインポート</a></li>
 	<li><a href="token/">2重サブミット防止（token）</a></li>
 	<li><a href="feed/">Feed配信</a></li>
+	<li><a href="ajax/">Ajax(Json)</a></li>
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
 -->
