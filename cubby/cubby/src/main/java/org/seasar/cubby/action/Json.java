@@ -16,6 +16,8 @@
 package org.seasar.cubby.action;
 
 import java.io.Writer;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +31,7 @@ import org.seasar.framework.util.StringUtil;
  * <p>
  * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP
  * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。
+ * JavaBean/{@link Map}/配列/{@link Collection}などがコンストラクタに渡すことができます。
  * </p>
  * <p>
  * 使用例1 : JSON 形式のレスポンスを返す
@@ -66,7 +69,7 @@ public class Json extends AbstractActionResult {
 	 * JSON 形式でレスポンスを返すインスタンスを生成します。
 	 * 
 	 * @param bean
-	 *            JSON 形式に変換する JavaBean
+	 *            JSON 形式に変換する JavaBean/{@link Map}/配列/{@link Collection}など
 	 */
 	public Json(final Object bean) {
 		this(bean, null);
@@ -76,7 +79,7 @@ public class Json extends AbstractActionResult {
 	 * JSONP 形式でレスポンスを返すインスタンスを生成します。
 	 * 
 	 * @param bean
-	 *            JSON 形式に変換する JavaBean
+	 *            JSONP 形式に変換する JavaBean/{@link Map}/配列/{@link Collection}など
 	 * @param callback
 	 *            コールバック関数名
 	 */
