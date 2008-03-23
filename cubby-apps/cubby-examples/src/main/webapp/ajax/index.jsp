@@ -12,29 +12,51 @@
   	href="http://localhost:8080/cubby-examples/feed/atom" />
 </head>
 <script type="text/javascript">
-function loadText() {
-	new Ajax.Request("text", {
+function loadTextFromString() {
+	new Ajax.Request("textFromString", {
 		method: 'get', 
 		onComplete: function(req) {
-			$("textResult").innerText = req.responseText;
+			$("textFromStringResult").innerText = req.responseText;
 		}
 	});
 }
-function loadJson() {
-	new Ajax.Request("json", {
+function loadJsonFromBean() {
+	new Ajax.Request("jsonFromBean", {
 		method: 'get', 
 		onComplete: function(req) {
 			eval("var obj = " + req.responseText);
-			$("jsonResult").innerText = obj.text;
+			$("jsonFromBeanResult").innerText = obj.text;
+		}
+	});
+}
+function loadJsonFromMap() {
+	new Ajax.Request("jsonFromMap", {
+		method: 'get', 
+		onComplete: function(req) {
+			eval("var obj = " + req.responseText);
+			$("jsonFromMapResult").innerText = obj.text;
+		}
+	});
+}
+function loadJsonFromCollection() {
+	new Ajax.Request("jsonFromCollection", {
+		method: 'get', 
+		onComplete: function(req) {
+			eval("var array = " + req.responseText);
+			$("jsonFromCollectionResult").innerText = array.join(",");
 		}
 	});
 }
 </script>
 <body>
 <h1>Cubby Exmaples - Ajax</h1>
-<h2>Text result</h2>
-<input type="button" value="call" onclick="loadText()"/>Result:<span id="textResult"></span>
-<h2>Json result</h2>
-<input type="button" value="call" onclick="loadJson()"/>Result:<span id="jsonResult"></span>
+<h2>Text</h2>
+<input type="button" value="call" onclick="loadTextFromString()"/>Result:<span id="textFromStringResult"></span>
+<h2>Json from Bean</h2>
+<input type="button" value="call" onclick="loadJsonFromBean()"/>Result:<span id="jsonFromBeanResult"></span>
+<h2>Json from Map</h2>
+<input type="button" value="call" onclick="loadJsonFromMap()"/>Result:<span id="jsonFromMapResult"></span>
+<h2>Json from Collection</h2>
+<input type="button" value="call" onclick="loadJsonFromCollection()"/>Result:<span id="jsonFromCollectionResult"></span>
 </body>
 </html>
