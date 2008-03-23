@@ -89,7 +89,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/**
 	 * 手動登録用のプライオリティカウンタ
 	 */
-	private int priprityCounter = 0;
+	private int priorityCounter = 0;
 
 	/**
 	 * インスタンス化します。
@@ -211,7 +211,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		uriRegex = "^" + uriRegex + "$";
 		final Pattern pattern = Pattern.compile(uriRegex);
 
-		int priority = auto ? CubbyUtils.getPriority(method) : priprityCounter++;
+		int priority = auto ? CubbyUtils.getPriority(method) : priorityCounter++;
 		final Routing routing = new Routing(actionClass, method,
 				uriParameterNames, pattern, requestMethods, auto, priority);
 
