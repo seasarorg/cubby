@@ -17,12 +17,15 @@ package org.seasar.cubby.action;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
+import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
@@ -85,8 +88,8 @@ public class RedirectTest extends S2TestCase {
 		context.initialize(new MockActionDef(componentDef));
 
 		Redirect redirect = new Redirect("/absolute/path.jsp");
-		redirect.execute(context, request, new RequestDispatcherAssertionWrapper(
-				response, new Asserter() {
+		redirect.execute(context, request,
+				new RequestDispatcherAssertionWrapper(response, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals("/cubby/absolute/path.jsp", path);
 					}
@@ -102,12 +105,93 @@ public class RedirectTest extends S2TestCase {
 		context.initialize(new MockActionDef(componentDef));
 
 		Redirect redirect = new Redirect("path.jsp");
-		redirect.execute(context, request, new RequestDispatcherAssertionWrapper(
-				response, new Asserter() {
+		redirect.execute(context, request,
+				new RequestDispatcherAssertionWrapper(response, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals("/mock/path.jsp", path);
 					}
 				}));
+	}
+
+	public void testRedirectByClassAndMethod1() throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+
+		Redirect redirect = new Redirect(MockAction.class, "dummy1");
+		assertEquals("/routing/test", redirect.getPath());
+	}
+
+	public void testRedirectByClassAndMethod2() throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+
+		Map<String, String[]> values = new LinkedHashMap<String, String[]>();
+		values.put("value1", new String[] { "123" });
+		values.put("value2", new String[] { "456" });
+
+		Redirect redirect = new Redirect(MockAction.class, "dummy1", values);
+		assertEquals("/routing/test?value1=123&value2=456", redirect.getPath());
+	}
+
+	public void testRedirectByClassAndMethod3() throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+
+		Map<String, String[]> values = new LinkedHashMap<String, String[]>();
+		values.put("value1", new String[] { "123" });
+		values.put("value2", new String[] { "456" });
+		Redirect redirect = new Redirect(MockAction.class, "dummy2", values);
+		assertEquals("/routing/test/123/456", redirect.getPath());
+	}
+
+	public void testRedirectByClassAndMethod4() throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+
+		Map<String, String[]> values = new LinkedHashMap<String, String[]>();
+		values.put("value1", new String[] { "123" });
+		values.put("value2", new String[] { "456" });
+		values.put("value3", new String[] { "789" });
+		Redirect redirect = new Redirect(MockAction.class, "dummy2", values);
+		assertEquals("/routing/test/123/456?value3=789", redirect.getPath());
+	}
+
+	public void testRedirectByClassAndMethodFailureNoRouting() throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+		try {
+			new Redirect(MockAction.class, "none");
+			fail();
+		} catch (ActionRuntimeException e) {
+			// ok
+		}
+	}
+
+	public void testRedirectByClassAndMethodFailureLessParameter()
+			throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+		try {
+			new Redirect(MockAction.class, "dummy2");
+			fail();
+		} catch (ActionRuntimeException e) {
+			// ok
+		}
+	}
+
+	public void testRedirectByClassAndMethodFailureUnmatchParameter()
+			throws Exception {
+		ComponentDef componentDef = this.getComponentDef(MockAction.class);
+		context.initialize(new MockActionDef(componentDef));
+		Map<String, String[]> values = new LinkedHashMap<String, String[]>();
+		values.put("value1", new String[] { "abc" });
+		values.put("value2", new String[] { "456" });
+		try {
+			new Redirect(MockAction.class, "dummy2", values);
+			fail();
+		} catch (ActionRuntimeException e) {
+			// ok
+		}
 	}
 
 	public void testGetPath() throws Exception {
@@ -151,34 +235,6 @@ public class RedirectTest extends S2TestCase {
 
 		public Method getMethod() {
 			return null;
-		}
-
-	}
-
-	public static class MockAction extends Action {
-
-		private boolean prerendered = false;
-
-		private boolean postrendered = false;
-
-		@Override
-		public void prerender() {
-			super.prerender();
-			prerendered = true;
-		}
-
-		@Override
-		public void postrender() {
-			super.postrender();
-			postrendered = true;
-		}
-
-		public boolean isPrerendered() {
-			return prerendered;
-		}
-
-		public boolean isPostrendered() {
-			return postrendered;
 		}
 
 	}

@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
-import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
 import org.seasar.cubby.util.Messages;
 import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.util.InputStreamUtil;

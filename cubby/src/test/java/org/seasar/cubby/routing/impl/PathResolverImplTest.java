@@ -25,7 +25,7 @@ import junit.framework.Assert;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
 

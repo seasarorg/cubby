@@ -16,11 +16,11 @@
 package org.seasar.cubby.routing;
 
 import java.util.List;
+import java.util.Map;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
 
 /**
  * {@link Router} がフォワードするための情報を抽出するクラス。
@@ -45,16 +45,14 @@ public interface PathResolver {
 	InternalForwardInfo getInternalForwardInfo(String path, String requestMethod);
 
 	/**
-	 * ルーティング情報の一覧を取得します。
-	 * ルーティング情報は優先度順にソートされています。
+	 * ルーティング情報の一覧を取得します。 ルーティング情報は優先度順にソートされています。
 	 * 
 	 * @return ルーティング情報の一覧
 	 */
 	List<Routing> getRoutings();
-	
+
 	/**
-	 * ルーティング情報を手動登録します。
-	 * 手動登録の場合、優先度は0から連番で設定されます。
+	 * ルーティング情報を手動登録します。 手動登録の場合、優先度は0から連番で設定されます。
 	 * 
 	 * @see {@link Path#priority()} 自動設定の際のプライオリティ
 	 * 
@@ -70,4 +68,19 @@ public interface PathResolver {
 	void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
 			final RequestMethod... erequestMethodsquestMethods);
+
+	/**
+	 * 指定されたアクションクラス、メソッド名、パラメータからリダイレクト用のパスへ変換します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            メソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @return リダイレクト用のパス
+	 */
+	String toRidirectPath(final Class<? extends Action> actionClass,
+			String methodName, Map<String, String[]> parameters);
+
 }

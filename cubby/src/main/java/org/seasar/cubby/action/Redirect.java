@@ -15,11 +15,16 @@
  */
 package org.seasar.cubby.action;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
@@ -44,14 +49,38 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
+ * <p>
+ * 使用例3 : リダイレクト先をクラスとメソッド名で指定
+ * 
+ * <pre>
+ * return new Redirect(TodoListAction.class, &quot;show&quot;);
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * 使用例4 : リダイレクト先をクラスとメソッド名で指定(パラメータつき)
+ * 
+ * <pre>
+ * Map&lt;String, String[]&gt; parameters = new HashMap();
+ * parameters.put(&quot;value1&quot;, new String[] { &quot;12345&quot; });
+ * return new Redirect(TodoListAction.class, &quot;show&quot;, parameters);
+ * </pre>
+ * 
+ * </p>
  * 
  * @author baba
  * @since 1.0.0
  */
 public class Redirect extends AbstractActionResult {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger.getLogger(Redirect.class);
 
+	/** 空のパラメータ。 */
+	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
+			.emptyMap();
+
+	/** リダイレクト先のパス。 */
 	private final String path;
 
 	/**
@@ -62,6 +91,44 @@ public class Redirect extends AbstractActionResult {
 	 */
 	public Redirect(final String path) {
 		this.path = path;
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            メソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @throws org.seasar.cubby.exception.ActionRuntimeException
+	 *             リダイレクト先パスの構築に失敗した場合
+	 * @since 1.1.0
+	 */
+	public Redirect(final Class<? extends Action> actionClass,
+			final String methodName, final Map<String, String[]> parameters) {
+		final PathResolver pathResolver = SingletonS2Container
+				.getComponent(PathResolver.class);
+		final String redirectPath = pathResolver.toRidirectPath(actionClass,
+				methodName, parameters);
+		this.path = redirectPath;
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            メソッド名
+	 * @throws org.seasar.cubby.exception.ActionRuntimeException
+	 *             リダイレクト先パスの構築に失敗した場合
+	 * @since 1.1.0
+	 */
+	public Redirect(final Class<? extends Action> actionClass,
+			final String methodName) {
+		this(actionClass, methodName, EMPTY_PARAMETERS);
 	}
 
 	/**

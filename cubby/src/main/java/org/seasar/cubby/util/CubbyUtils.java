@@ -41,7 +41,7 @@ public class CubbyUtils {
 	private static final String INDEX_METHOD_NAME = "index";
 
 	/** デフォルトの{@link Accept}アノテーション。 */
-	private static Accept DEFAULT_ACCEPT_ANNOTATION;
+	public static Accept DEFAULT_ACCEPT_ANNOTATION;
 	static {
 		@Accept
 		class AcceptDummy {

@@ -48,14 +48,24 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
+ * <p>
+ * 使用例2 : フォワード先をクラスとメソッド名で指定
+ * 
+ * <pre>
+ * return new Forward(TodoListAction.class, &quot;show&quot;);
+ * </pre>
+ * 
+ * </p>
  * 
  * @author baba
  * @since 1.0.0
  */
 public class Forward extends AbstractActionResult {
 
+	/** ロガー。 */
 	private static final Logger logger = Logger.getLogger(Forward.class);
 
+	/** フォワード先のパス。 */
 	private final String path;
 
 	/**
@@ -66,6 +76,20 @@ public class Forward extends AbstractActionResult {
 	 */
 	public Forward(final String path) {
 		this.path = path;
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            アクションメソッド名
+	 * @since 1.1.0
+	 */
+	public Forward(final Class<? extends Action> actionClass,
+			final String methodName) {
+		this(CubbyUtils.getInternalForwardPath(actionClass, methodName));
 	}
 
 	/**
