@@ -18,7 +18,7 @@ package org.seasar.cubby.routing.impl;
 import java.util.Map;
 
 import org.seasar.cubby.routing.InternalForwardInfo;
-import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
+import org.seasar.cubby.routing.Routing;
 
 /**
  * 内部フォワード情報の実装です。

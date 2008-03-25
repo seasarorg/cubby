@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
@@ -99,6 +100,13 @@ public class ForwardTest extends S2TestCase {
 		assertEquals("/absolute/path.jsp", forward.getPath());
 	}
 
+	public void testForwardByClassAndMethodName() {
+		Forward forward = new Forward(MockAction.class, "dummy");
+		String expect = CubbyUtils.getInternalForwardPath(MockAction.class,
+				"dummy");
+		assertEquals(expect, forward.getPath());
+	}
+
 	interface Asserter {
 		void assertDispatchPath(String path);
 	}
@@ -139,37 +147,6 @@ public class ForwardTest extends S2TestCase {
 			return method;
 		}
 
-	}
-
-	public static class MockAction extends Action {
-
-		private boolean prerendered = false;
-
-		private boolean postrendered = false;
-
-		@Override
-		public void prerender() {
-			super.prerender();
-			prerendered = true;
-		}
-
-		@Override
-		public void postrender() {
-			super.postrender();
-			postrendered = true;
-		}
-
-		public boolean isPrerendered() {
-			return prerendered;
-		}
-
-		public boolean isPostrendered() {
-			return postrendered;
-		}
-
-		public ActionResult dummy() {
-			return null;
-		}
 	}
 
 }

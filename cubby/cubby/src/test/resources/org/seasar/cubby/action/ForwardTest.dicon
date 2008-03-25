@@ -4,6 +4,6 @@
 <components>
 	<include path="cubby.dicon"/>
 
-	<component class="org.seasar.cubby.action.ForwardTest$MockAction" />
+	<component class="org.seasar.cubby.action.MockAction" />
 
 </components>

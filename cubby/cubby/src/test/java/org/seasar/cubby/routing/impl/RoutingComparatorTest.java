@@ -27,49 +27,50 @@ import java.util.regex.Pattern;
 import junit.framework.TestCase;
 
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.routing.impl.PathResolverImpl.Routing;
 import org.seasar.cubby.routing.impl.PathResolverImpl.RoutingComparator;
 
 public class RoutingComparatorTest extends TestCase {
 
 	private RoutingComparator comparator = new RoutingComparator();
-	private Routing routing1;
-	private Routing routing1d;
-	private Routing routing2;
-	private Routing routing3;
-	private Routing routing4;
-	private Routing routing5;
-	private Routing routing5d;
-	private Routing routing6;
-	private Routing routing6d;
+	private RoutingImpl routing1;
+	private RoutingImpl routing1d;
+	private RoutingImpl routing2;
+	private RoutingImpl routing3;
+	private RoutingImpl routing4;
+	private RoutingImpl routing5;
+	private RoutingImpl routing5d;
+	private RoutingImpl routing6;
+	private RoutingImpl routing6d;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		routing1 = new Routing(null, null, asList(new String[0]), Pattern
-				.compile("/foo/bar"), new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
-		routing1d = new Routing(null, null, asList(new String[0]), Pattern
-				.compile("/foo/bar"), new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
-		routing2 = new Routing(null, null, asList(new String[] { "p1" }),
-				Pattern.compile("/foo/bar/a"), new RequestMethod[] { GET },
-				true, Integer.MAX_VALUE);
-		routing3 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/bbb"), new RequestMethod[] { GET },
-				true, Integer.MAX_VALUE);
-		routing4 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { GET },
-				true, Integer.MAX_VALUE);
-		routing5 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { POST },
-				true, Integer.MAX_VALUE);
-		routing5d = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/cc"), new RequestMethod[] { POST, GET },
-				true, Integer.MAX_VALUE);
-		routing6 = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/cc/dd"), new RequestMethod[] { POST, GET },
-				false, 1);
-		routing6d = new Routing(null, null, asList(new String[] { "p1", "p2" }),
-				Pattern.compile("/foo/bar/cc/dd"), new RequestMethod[] { POST, GET },
-				false, 0);
+		routing1 = new RoutingImpl(null, null, null, asList(new String[0]),
+				Pattern.compile("/foo/bar"), new RequestMethod[] { GET }, true,
+				Integer.MAX_VALUE);
+		routing1d = new RoutingImpl(null, null, null, asList(new String[0]),
+				Pattern.compile("/foo/bar"), new RequestMethod[] { GET }, true,
+				Integer.MAX_VALUE);
+		routing2 = new RoutingImpl(null, null, null,
+				asList(new String[] { "p1" }), Pattern.compile("/foo/bar/a"),
+				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+		routing3 = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/bbb"),
+				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+		routing4 = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
+				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+		routing5 = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
+				new RequestMethod[] { POST }, true, Integer.MAX_VALUE);
+		routing5d = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
+				new RequestMethod[] { POST, GET }, true, Integer.MAX_VALUE);
+		routing6 = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"),
+				new RequestMethod[] { POST, GET }, false, 1);
+		routing6d = new RoutingImpl(null, null, null, asList(new String[] {
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"),
+				new RequestMethod[] { POST, GET }, false, 0);
 	}
 
 	public void testDuplicate() {
@@ -78,8 +79,9 @@ public class RoutingComparatorTest extends TestCase {
 	}
 
 	public void testSort() {
-		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
-				routing3, routing5, routing1, routing4, routing2 }));
+		List<RoutingImpl> routings = new ArrayList<RoutingImpl>(
+				asList(new RoutingImpl[] { routing3, routing5, routing1,
+						routing4, routing2 }));
 		Collections.sort(routings, comparator);
 		System.out.println(routings);
 		assertSame("1", routing1, routings.get(0));
@@ -90,8 +92,9 @@ public class RoutingComparatorTest extends TestCase {
 	}
 
 	public void testSort2() {
-		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
-				routing3, routing5, routing1, routing4, routing2, routing6, routing6d }));
+		List<RoutingImpl> routings = new ArrayList<RoutingImpl>(
+				asList(new RoutingImpl[] { routing3, routing5, routing1,
+						routing4, routing2, routing6, routing6d }));
 		Collections.sort(routings, comparator);
 		System.out.println(routings);
 		assertSame("0", routing6d, routings.get(0));
