@@ -18,6 +18,7 @@ package org.seasar.cubby.validator.impl;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
@@ -50,15 +51,16 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 * {@inheritDoc}
 	 */
 	public void process(final HttpServletRequest request,
-			ActionContext context, ActionErrors errors) {
-		final Validation validation = this.getValidation(context);
+			final ActionContext context, final Action action,
+			final Method method) {
+		final Validation validation = getValidation(method);
 		if (validation != null) {
 			final Map<String, Object[]> params = CubbyUtils.getAttribute(
 					request, ATTR_PARAMS);
-			final ValidationRules validationRules = this
-					.getValidationRules(context);
+			final ValidationRules validationRules = this.getValidationRules(
+					action, validation.rules());
 			final Object form = context.getFormBean();
-			validate(validationRules, params, form, errors);
+			validate(validationRules, params, form, action.getErrors());
 		}
 	}
 
@@ -117,51 +119,52 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 * {@inheritDoc}
 	 */
 	public ActionResult handleValidationException(final ValidationException e,
-			final HttpServletRequest request, final ActionContext context,
-			final ActionErrors errors) {
+			final HttpServletRequest request, final Action action,
+			final Method method) {
 		if (e.hasMessage()) {
-			errors.add(e.getMessage(), e.getFieldNames());
+			action.getErrors().add(e.getMessage(), e.getFieldNames());
 		}
 		request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
 
 		final String errorPage;
-		final Validation validation = this.getValidation(context);
+		final Validation validation = getValidation(method);
 		if (validation == null) {
 			errorPage = null;
 		} else {
 			errorPage = validation.errorPage();
 		}
 
-		final ValidationRules validationRules = this
-				.getValidationRules(context);
+		final ValidationRules validationRules = this.getValidationRules(action,
+				validation.rules());
 		return validationRules.fail(errorPage);
 	}
 
 	/**
-	 * コンテキストに設定されたアクションの入力検証の定義を取得します。
+	 * 指定されたメソッドを修飾する {@link Validation} を取得します。
 	 * 
-	 * @param context
-	 *            アクションメソッド実行時のコンテキスト
-	 * @return アクションの入力検証の定義
+	 * @param method
+	 *            メソッド
+	 * @return {@link Validation}、修飾されていない場合は <code>null</code>
 	 */
-	private Validation getValidation(final ActionContext context) {
-		return context.getMethod().getAnnotation(Validation.class);
+	private static Validation getValidation(final Method method) {
+		return method.getAnnotation(Validation.class);
 	}
 
 	/**
-	 * コンテキストに設定されたアクションの入力検証ルールの集合を取得します。
+	 * 実行しているアクションメソッドの入力検証ルールの集合を取得します。
 	 * 
-	 * @param context
-	 *            アクションメソッド実行時のコンテキスト
+	 * @param action
+	 *            アクション
+	 * @param rulesPropertyName
+	 *            入力検証ルールの集合が定義されたプロパティ名
 	 * @return アクションメソッドの入力検証ルールの集合
 	 */
-	private ValidationRules getValidationRules(final ActionContext context) {
-		final Validation validation = getValidation(context);
-		final Action action = context.getAction();
+	private ValidationRules getValidationRules(final Action action,
+			final String rulesPropertyName) {
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());
-		final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
-				.rules());
+		final PropertyDesc propertyDesc = beanDesc
+				.getPropertyDesc(rulesPropertyName);
 		final ValidationRules rules = (ValidationRules) propertyDesc
 				.getValue(action);
 		return rules;
