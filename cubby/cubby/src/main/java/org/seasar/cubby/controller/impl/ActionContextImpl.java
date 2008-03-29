@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
-import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.dxo.FormDxo;
@@ -110,13 +109,6 @@ public class ActionContextImpl implements ActionContext {
 			action = (Action) actionDef.getComponentDef().getComponent();
 		}
 		return action;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Validation getValidation() {
-		return actionDef.getMethod().getAnnotation(Validation.class);
 	}
 
 	/**

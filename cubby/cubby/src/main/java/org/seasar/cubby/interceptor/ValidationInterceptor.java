@@ -18,6 +18,7 @@ package org.seasar.cubby.interceptor;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,13 +107,15 @@ public class ValidationInterceptor implements MethodInterceptor {
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final Validation validation = context.getValidation();
+		final Validation validation = getValidation(invocation.getMethod());
 		if (validation != null) {
 			final Map<String, Object[]> params = getAttribute(request,
 					ATTR_PARAMS);
 			final Object form = context.getFormBean();
 			final ActionErrors errors = context.getAction().getErrors();
-			final ValidationRules rules = getValidationRules(context);
+			final Action action = (Action) invocation.getThis();
+			final ValidationRules rules = getValidationRules(action, validation
+					.rules());
 			final boolean success = validationProcessor.process(errors, params,
 					form, rules);
 			if (!success) {
@@ -128,19 +131,31 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	/**
+	 * 指定されたメソッドを修飾する {@link Validation} を取得します。
+	 * 
+	 * @param method
+	 *            メソッド
+	 * @return {@link Validation}、修飾されていない場合は <code>null</code>
+	 */
+	private static Validation getValidation(final Method method) {
+		return method.getAnnotation(Validation.class);
+	}
+
+	/**
 	 * 実行しているアクションメソッドの入力検証ルールの集合を取得します。
 	 * 
-	 * @param context
-	 *            アクションメソッド実行時のコンテキスト
+	 * @param action
+	 *            アクション
+	 * @param rulesPropertyName
+	 *            入力検証ルールの集合が定義されたプロパティ名
 	 * @return アクションメソッドの入力検証ルールの集合
 	 */
-	private ValidationRules getValidationRules(final ActionContext context) {
-		final Validation validation = context.getValidation();
-		final Action action = context.getAction();
+	private ValidationRules getValidationRules(final Action action,
+			final String rulesPropertyName) {
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());
-		final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(validation
-				.rules());
+		final PropertyDesc propertyDesc = beanDesc
+				.getPropertyDesc(rulesPropertyName);
 		final ValidationRules rules = (ValidationRules) propertyDesc
 				.getValue(action);
 		return rules;

@@ -85,7 +85,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 		setupParams(context, request);
 		setupForm(context, request);
 
-		final Action action = context.getAction();
+		final Action action = (Action) invocation.getThis();
 		action.initialize();
 
 		final ActionResult result = (ActionResult) invocation.proceed();
