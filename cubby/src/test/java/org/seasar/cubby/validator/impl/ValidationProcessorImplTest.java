@@ -57,7 +57,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		context.initialize(actionDef);
 
 		try {
-			validationProcessor.process(getRequest(), context, errors);
+			validationProcessor.process(getRequest(), context, context
+					.getAction(), context.getMethod());
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -77,7 +78,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		params.put("age", new Object[] { "bob" });
 
 		try {
-			validationProcessor.process(getRequest(), context, errors);
+			validationProcessor.process(getRequest(), context, context
+					.getAction(), context.getMethod());
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -97,7 +99,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 		params.put("age", new Object[] { "5" });
 
 		try {
-			validationProcessor.process(getRequest(), context, errors);
+			validationProcessor.process(getRequest(), context, context
+					.getAction(), context.getMethod());
 		} catch (ValidationException e) {
 			fail();
 		}
@@ -112,7 +115,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 
 		ValidationException e = new ValidationException("message", "field1");
 		ActionResult result = validationProcessor.handleValidationException(e,
-				request, context, errors);
+				request, context.getAction(), context.getMethod());
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
 		assertEquals("error.jsp", forward.getPath());

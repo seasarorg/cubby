@@ -15,11 +15,13 @@
  */
 package org.seasar.cubby.interceptor;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationProcessor;
@@ -41,9 +43,6 @@ public class ValidationInterceptor implements MethodInterceptor {
 
 	/** アクションメソッドの実行時コンテキスト。 */
 	private ActionContext context;
-
-	/** アクションのエラー。 */
-	private ActionErrors errors;
 
 	/**
 	 * インスタンス化します。
@@ -83,28 +82,20 @@ public class ValidationInterceptor implements MethodInterceptor {
 	}
 
 	/**
-	 * アクションのエラーを設定します。
-	 * 
-	 * @param errors
-	 *            アクションのエラー
-	 */
-	public void setActionErrors(final ActionErrors errors) {
-		this.errors = errors;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * メソッドの実行前に入力検証を実行します。
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
+		final Action action = (Action) invocation.getThis();
+		final Method method = invocation.getMethod();
 		try {
-			validationProcessor.process(request, context, errors);
+			validationProcessor.process(request, context, action, method);
 			return invocation.proceed();
 		} catch (final ValidationException e) {
 			return validationProcessor.handleValidationException(e, request,
-					context, errors);
+					action, method);
 		}
 	}
 

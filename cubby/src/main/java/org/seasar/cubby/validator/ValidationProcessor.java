@@ -15,9 +15,12 @@
  */
 package org.seasar.cubby.validator;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
@@ -41,13 +44,17 @@ public interface ValidationProcessor {
 	 *            リクエスト
 	 * @param context
 	 *            アクションのコンテキスト
+	 * @param action
+	 *            アクション
+	 * @param method
+	 *            メソッド
 	 * @param errors
 	 *            アクションのエラー
 	 * @throws ValidationException
 	 *             入力検証にエラーがあった場合
 	 */
-	void process(final HttpServletRequest request, ActionContext context,
-			ActionErrors errors);
+	void process(HttpServletRequest request, ActionContext context,
+			Action action, Method method);
 
 	/**
 	 * {@link #process()} で発生した {@link ValidationException} を処理します。
@@ -65,15 +72,14 @@ public interface ValidationProcessor {
 	 *            処理対象の例外
 	 * @param request
 	 *            リクエスト
-	 * @param context
-	 *            アクションのコンテキスト
-	 * @param errors
-	 *            アクションのエラー
+	 * @param action
+	 *            アクション
+	 * @param method
+	 *            メソッド
 	 * @return {@link ValidationRules#fail(String)} が返す値
 	 * @since 1.1.0
 	 */
 	ActionResult handleValidationException(ValidationException e,
-			HttpServletRequest request, ActionContext context,
-			ActionErrors errors);
+			HttpServletRequest request, Action action, Method method);
 
 }

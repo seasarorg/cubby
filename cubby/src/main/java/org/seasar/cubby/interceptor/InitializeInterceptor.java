@@ -84,9 +84,10 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final Action action = context.getAction();
 		final Map<String, Object[]> parameterMap = parseRequest(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
+
+		final Action action = (Action) invocation.getThis();
 		action.initialize();
 
 		final Object formBean = context.getFormBean();
