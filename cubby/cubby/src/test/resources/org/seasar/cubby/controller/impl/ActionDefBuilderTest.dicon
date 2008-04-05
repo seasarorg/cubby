@@ -12,8 +12,6 @@
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
 	<component name="flash" class="java.util.HashMap" instance="session" />
 
-	<component class="org.seasar.cubby.controller.impl.ActionDefBuilderImpl" />
-
 	<component name="mockAction" class="org.seasar.cubby.controller.impl.MockAction" />
 
 </components>

@@ -23,7 +23,6 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 入力検証処理です。
@@ -42,10 +41,10 @@ public interface ValidationProcessor {
 	 * 
 	 * @param request
 	 *            リクエスト
-	 * @param context
-	 *            アクションのコンテキスト
 	 * @param action
 	 *            アクション
+	 * @param actionClass
+	 *            アクションクラス
 	 * @param method
 	 *            メソッド
 	 * @param errors
@@ -53,8 +52,8 @@ public interface ValidationProcessor {
 	 * @throws ValidationException
 	 *             入力検証にエラーがあった場合
 	 */
-	void process(HttpServletRequest request, ActionContext context,
-			Action action, Method method);
+	void process(HttpServletRequest request, Action action,
+			Class<? extends Action> actionClass, Method method);
 
 	/**
 	 * {@link #process()} で発生した {@link ValidationException} を処理します。

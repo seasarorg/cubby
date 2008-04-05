@@ -17,8 +17,6 @@ package org.seasar.cubby.action;
 
 import java.util.Map;
 
-import org.seasar.cubby.controller.ActionContext;
-
 /**
  * アクションの基底クラスです。
  * <p>
@@ -30,9 +28,6 @@ import org.seasar.cubby.controller.ActionContext;
  * @since 1.0.0
  */
 public abstract class Action {
-
-	/** アクションのコンテキスト。 */
-	protected ActionContext context;
 
 	/** アクションエラーオブジェクト。 */
 	protected ActionErrors errors;
@@ -65,25 +60,6 @@ public abstract class Action {
 	 * </p>
 	 */
 	public void postrender() {
-	}
-
-	/**
-	 * アクションのコンテキストを取得します。
-	 * 
-	 * @return アクションのコンテキスト
-	 */
-	public ActionContext getContext() {
-		return context;
-	}
-
-	/**
-	 * アクションのコンテキストを設定します。
-	 * 
-	 * @param context
-	 *            コンテキスト
-	 */
-	public void setContext(ActionContext context) {
-		this.context = context;
 	}
 
 	/**

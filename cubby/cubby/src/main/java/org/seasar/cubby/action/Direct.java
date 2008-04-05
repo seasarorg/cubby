@@ -15,10 +15,10 @@
  */
 package org.seasar.cubby.action;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * アクションメソッドから直接レスポンスを返すことを示す {@link ActionResult} です。
@@ -41,7 +41,8 @@ public class Direct extends AbstractActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final ActionContext context,
+	public void execute(final Action action,
+			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 	}

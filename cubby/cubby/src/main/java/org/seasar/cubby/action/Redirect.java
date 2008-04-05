@@ -15,13 +15,13 @@
  */
 package org.seasar.cubby.action;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.SingletonS2Container;
@@ -143,7 +143,8 @@ public class Redirect extends AbstractActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final ActionContext context,
+	public void execute(final Action action,
+			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 
@@ -158,8 +159,7 @@ public class Redirect extends AbstractActionResult {
 			absolutePath = contextPath + this.path;
 		} else {
 			final String actionDirectory = CubbyUtils
-					.getActionDirectory(context.getComponentDef()
-							.getComponentClass());
+					.getActionDirectory(actionClass);
 			if (StringUtil.isEmpty(actionDirectory)) {
 				absolutePath = contextPath + "/" + this.path;
 			} else {

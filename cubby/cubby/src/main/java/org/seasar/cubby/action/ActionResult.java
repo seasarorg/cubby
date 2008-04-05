@@ -15,10 +15,10 @@
  */
 package org.seasar.cubby.action;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * アクションメソッド実行後の処理を表す結果オブジェクトのインターフェイス
@@ -31,23 +31,28 @@ public interface ActionResult {
 	/**
 	 * 処理を実行します。
 	 * 
-	 * @param context
-	 *            アクションコンテキスト
+	 * @param action
+	 *            アクション
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param method
+	 *            アクションメソッド
 	 * @param request
 	 *            リクエスト
 	 * @param response
 	 *            レスポンス
 	 * @throws Exception
 	 */
-	void execute(ActionContext context, HttpServletRequest request,
+	void execute(Action action, Class<? extends Action> actionClass,
+			Method method, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
 	/**
 	 * フォワード直前の処理を実行します。
 	 * 
-	 * @param context
-	 *            アクションコンテキスト
+	 * @param action
+	 *            アクション
 	 */
-	void prerender(ActionContext context);
+	void prerender(Action action);
 
 }

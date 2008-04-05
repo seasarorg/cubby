@@ -24,6 +24,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.framework.util.ClassUtil;
 
 public class CubbyUtilsTest extends TestCase {
@@ -33,13 +34,15 @@ public class CubbyUtilsTest extends TestCase {
 		assertEquals(0, CubbyUtils.getObjectSize(null));
 		assertEquals(1, CubbyUtils.getObjectSize(""));
 		assertEquals(0, CubbyUtils.getObjectSize(new Object[] {}));
-		assertEquals(3, CubbyUtils.getObjectSize(new Object[] {1,2,3}));
-		assertEquals(3, CubbyUtils.getObjectSize(new Object[] {null,2,3}));
+		assertEquals(3, CubbyUtils.getObjectSize(new Object[] { 1, 2, 3 }));
+		assertEquals(3, CubbyUtils.getObjectSize(new Object[] { null, 2, 3 }));
 
 		// collection
 		assertEquals(0, CubbyUtils.getObjectSize(toCollection(new Object[] {})));
-		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] {1,2,3})));
-		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] {null,2,3})));
+		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] { 1,
+				2, 3 })));
+		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] {
+				null, 2, 3 })));
 
 	}
 
@@ -53,17 +56,29 @@ public class CubbyUtilsTest extends TestCase {
 	}
 
 	public void testGetActionPath() {
-		assertEquals("/hoge/m1", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
-		assertEquals("/hoge/m/m2", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "m2", null)));
-		assertEquals("/hoge/", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index", null)));
-		assertEquals("/hoge/index2", CubbyUtils.getActionPath(Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class, "index2", null)));
-		assertEquals("/hoge2/m1", CubbyUtils.getActionPath(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
-		assertEquals("/hoge/m2", CubbyUtils.getActionPath(Hoge2Action.class, ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
-		assertEquals("/", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "index", null)));
-		assertEquals("/dummy1", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy1", null)));
-		assertEquals("/dummy2", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "dummy2", null)));
-		assertEquals("/todo/lists", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "todolist", null)));
-		assertEquals("/tasklists", CubbyUtils.getActionPath(MockAction.class, ClassUtil.getMethod(MockAction.class, "tasklist", null)));
+		assertEquals("/hoge/m1", CubbyUtils.getActionPath(Hoge1Action.class,
+				ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
+		assertEquals("/hoge/m/m2", CubbyUtils.getActionPath(Hoge1Action.class,
+				ClassUtil.getMethod(Hoge1Action.class, "m2", null)));
+		assertEquals("/hoge/", CubbyUtils.getActionPath(Hoge1Action.class,
+				ClassUtil.getMethod(Hoge1Action.class, "index", null)));
+		assertEquals("/hoge/index2", CubbyUtils.getActionPath(
+				Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class,
+						"index2", null)));
+		assertEquals("/hoge2/m1", CubbyUtils.getActionPath(Hoge2Action.class,
+				ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
+		assertEquals("/hoge/m2", CubbyUtils.getActionPath(Hoge2Action.class,
+				ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
+		assertEquals("/", CubbyUtils.getActionPath(MockAction.class, ClassUtil
+				.getMethod(MockAction.class, "index", null)));
+		assertEquals("/dummy1", CubbyUtils.getActionPath(MockAction.class,
+				ClassUtil.getMethod(MockAction.class, "dummy1", null)));
+		assertEquals("/dummy2", CubbyUtils.getActionPath(MockAction.class,
+				ClassUtil.getMethod(MockAction.class, "dummy2", null)));
+		assertEquals("/todo/lists", CubbyUtils.getActionPath(MockAction.class,
+				ClassUtil.getMethod(MockAction.class, "todolist", null)));
+		assertEquals("/tasklists", CubbyUtils.getActionPath(MockAction.class,
+				ClassUtil.getMethod(MockAction.class, "tasklist", null)));
 	}
 
 	public void testGetActionClassName() {
@@ -88,33 +103,70 @@ public class CubbyUtilsTest extends TestCase {
 
 	public void testSplit2() {
 		assertNull(CubbyUtils.split2(null, '_'));
-		assertTrue(Arrays.deepEquals(new String[] { "" }, CubbyUtils.split2("", '_')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab", "" }, CubbyUtils.split2("ab_", '_')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab_cd_de_" }, CubbyUtils.split2("ab_cd_de_", ',')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab", "cd_de_" }, CubbyUtils.split2("ab_cd_de_", '_')));
+		assertTrue(Arrays.deepEquals(new String[] { "" }, CubbyUtils.split2("",
+				'_')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab", "" }, CubbyUtils
+				.split2("ab_", '_')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab_cd_de_" }, CubbyUtils
+				.split2("ab_cd_de_", ',')));
+		assertTrue(Arrays.deepEquals(new String[] { "ab", "cd_de_" },
+				CubbyUtils.split2("ab_cd_de_", '_')));
 	}
-	
+
 	public void testGetPriority() throws Exception {
 		Method method = TestGetPriprity.class.getMethod("m1", new Class[0]);
 		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
-		
+
 		method = TestGetPriprity.class.getMethod("m2", new Class[0]);
 		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
 
 		method = TestGetPriprity.class.getMethod("m3", new Class[0]);
 		assertEquals(0, CubbyUtils.getPriority(method));
-}
-	
+	}
+
 	static class TestGetPriprity {
 		public void m1() {
 		}
+
 		@Path
 		public void m2() {
-			
+
 		}
-		@Path(value="", priority=0)
+
+		@Path(value = "", priority = 0)
 		public void m3() {
-			
+
+		}
+	}
+
+	public void testGetFormBean1() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "normal",
+				new Class[0]);
+		Object actual = CubbyUtils
+				.getFormBean(action, MockAction.class, method);
+		assertSame(action, actual);
+	}
+
+	public void testGetFormBean2() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "legalForm",
+				new Class[0]);
+		Object actual = CubbyUtils
+				.getFormBean(action, MockAction.class, method);
+		assertSame(action.form, actual);
+	}
+
+	public void testGetFormBean3() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "illegalForm",
+				new Class[0]);
+		try {
+			CubbyUtils.getFormBean(action, MockAction.class, method);
+			fail();
+		} catch (ActionRuntimeException e) {
+			// ok
+			e.printStackTrace();
 		}
 	}
 

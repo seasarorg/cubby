@@ -16,13 +16,13 @@
 package org.seasar.cubby.action;
 
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.framework.util.JSONSerializer;
 import org.seasar.framework.util.StringUtil;
 
@@ -30,8 +30,7 @@ import org.seasar.framework.util.StringUtil;
  * JSON 形式のレスポンスを返す {@link ActionResult} です。
  * <p>
  * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP
- * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。
- * JavaBean/{@link Map}/配列/{@link Collection}などがコンストラクタに渡すことができます。
+ * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。 JavaBean/{@link Map}/配列/{@link Collection}などがコンストラクタに渡すことができます。
  * </p>
  * <p>
  * 使用例1 : JSON 形式のレスポンスを返す
@@ -109,7 +108,8 @@ public class Json extends AbstractActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final ActionContext context,
+	public void execute(final Action action,
+			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 

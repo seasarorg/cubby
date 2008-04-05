@@ -15,17 +15,19 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.ActionDefBuilder;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.log.Logger;
 
 /**
@@ -40,30 +42,19 @@ public class ActionProcessorImpl implements ActionProcessor {
 	private static final Logger logger = Logger
 			.getLogger(ActionProcessorImpl.class);
 
-	/** アクションのコンテキスト。 */
-	private ActionContext context;
+	/** 空の引数。 */
+	private static final Object[] EMPTY_ARGS = new Object[0];
 
-	/** アクションの定義を組み立てるビルダ。 */
-	private ActionDefBuilder actionDefBuilder;
-
-	/**
-	 * アクションのコンテキストを設定します。
-	 * 
-	 * @param context
-	 *            アクションのコンテキスト
-	 */
-	public void setActionContext(final ActionContext context) {
-		this.context = context;
-	}
+	private S2Container container;
 
 	/**
-	 * アクションの定義を組み立てるビルダを設定します。
+	 * コンテナを設定します。
 	 * 
-	 * @param actionDefBuilder
-	 *            アクションの定義を組み立てるビルダ
+	 * @param container
+	 *            コンテナ
 	 */
-	public void setActionDefBuilder(final ActionDefBuilder actionDefBuilder) {
-		this.actionDefBuilder = actionDefBuilder;
+	public void setContainer(final S2Container container) {
+		this.container = container;
 	}
 
 	/**
@@ -72,29 +63,63 @@ public class ActionProcessorImpl implements ActionProcessor {
 	public ActionResult process(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain chain)
 			throws Exception {
+		final ActionDefBuilder actionDefBuilder = new ActionDefBuilder(
+				container);
 		final ActionDef actionDef = actionDefBuilder.build(request);
 		if (actionDef != null) {
-			context.initialize(actionDef);
+			final Action action = actionDef.getAction();
+			final Class<? extends Action> actionClass = actionDef
+					.getActionClass();
+			final Method method = actionDef.getMethod();
 			if (logger.isDebugEnabled()) {
 				logger
 						.log("DCUB0004",
 								new Object[] { request.getRequestURI() });
-				logger.log("DCUB0005", new Object[] { context.getMethod() });
+				logger.log("DCUB0005", new Object[] { method });
 			}
-			final ActionResult result = context.invoke();
+			final ActionResult result = invoke(action, method);
 			if (result == null) {
 				throw new ActionRuntimeException("ECUB0101",
-						new Object[] { context.getMethod() });
+						new Object[] { method });
 			}
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-					request, context);
-			result.execute(context, wrappedRequest, response);
+					request, action);
+			result.execute(action, actionClass, method, wrappedRequest,
+					response);
 			return result;
 		} else {
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-					request, context);
+					request, null);
 			chain.doFilter(wrappedRequest, response);
 			return null;
+		}
+	}
+
+	/**
+	 * 指定されたアクションのメソッドを実行します。
+	 * 
+	 * @param action
+	 *            アクション
+	 * @param method
+	 *            アクションメソッド
+	 * @return アクションメソッドの実行結果
+	 */
+	private ActionResult invoke(final Action action, final Method method)
+			throws Exception {
+		try {
+			final ActionResult result = (ActionResult) method.invoke(action,
+					EMPTY_ARGS);
+			return result;
+		} catch (final InvocationTargetException ex) {
+			logger.log(ex);
+			final Throwable target = ex.getTargetException();
+			if (target instanceof Error) {
+				throw (Error) target;
+			} else if (target instanceof RuntimeException) {
+				throw (RuntimeException) target;
+			} else {
+				throw (Exception) target;
+			}
 		}
 	}
 

@@ -88,8 +88,14 @@ public class CubbyFilter implements Filter {
 					.getComponent(ActionProcessor.class);
 			processor.process(request, response, chain);
 		} catch (final Throwable e) {
-			logger.log(e);
-			throw new ServletException(e);
+			if (e instanceof IOException) {
+				throw (IOException) e;
+			} else if (e instanceof ServletException) {
+				throw (ServletException) e;
+			} else {
+				logger.log(e);
+				throw new ServletException(e);
+			}
 		} finally {
 			ThreadContext.remove();
 		}

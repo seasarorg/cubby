@@ -28,12 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.container.ComponentDef;
 
 /**
  * 特別な属性を取得するためのリクエストのラッパです。
@@ -73,8 +72,8 @@ import org.seasar.framework.container.ComponentDef;
  */
 public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	/** アクションのコンテキスト。 */
-	private final ActionContext context;
+	/** アクション。 */
+	private final Action action;
 
 	/**
 	 * インスタンス化します。
@@ -85,10 +84,9 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 *            アクションのコンテキスト
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
-			final ActionContext context) {
+			final Action action) {
 		super(request);
-
-		this.context = context;
+		this.action = action;
 	}
 
 	/**
@@ -103,20 +101,22 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (ATTR_CONTEXT_PATH.equals(name)) {
 			attribute = this.getContextPath();
 		} else if (ATTR_ACTION.equals(name)) {
-			attribute = context.getAction();
+			if (action == null) {
+				attribute = super.getAttribute(name);
+			} else {
+				attribute = action;
+			}
 		} else if (ATTR_MESSAGES.equals(name)) {
 			attribute = ThreadContext.getMessagesMap();
 		} else {
-			if (context.isInitialized()) {
-				final ComponentDef componentDef = context.getComponentDef();
-				final Class<?> concreteClass = componentDef.getConcreteClass();
-				final BeanDesc beanDesc = BeanDescFactory
-						.getBeanDesc(concreteClass);
+			if (action != null) {
+				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+						.getClass());
 				if (beanDesc.hasPropertyDesc(name)) {
 					final PropertyDesc propertyDesc = beanDesc
 							.getPropertyDesc(name);
 					if (propertyDesc.isReadable()) {
-						attribute = propertyDesc.getValue(context.getAction());
+						attribute = propertyDesc.getValue(action);
 					} else {
 						attribute = super.getAttribute(name);
 					}
@@ -144,13 +144,14 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		attributeNames.add(ATTR_ACTION);
 		attributeNames.add(ATTR_MESSAGES);
 
-		final Class<?> concreteClass = context.getComponentDef()
-				.getConcreteClass();
-		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(concreteClass);
-		for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
-			if (propertyDesc.isReadable()) {
-				attributeNames.add(propertyDesc.getPropertyName());
+		if (action != null) {
+			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+					.getClass());
+			for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
+				final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
+				if (propertyDesc.isReadable()) {
+					attributeNames.add(propertyDesc.getPropertyName());
+				}
 			}
 		}
 

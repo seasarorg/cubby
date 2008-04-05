@@ -17,16 +17,15 @@ package org.seasar.cubby.controller.impl;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.ActionDefBuilder;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockServletContext;
 
-public class ActionDefBuilderImplTest extends S2TestCase {
+public class ActionDefBuilderTest extends S2TestCase {
 
-	public ActionDefBuilder actionDefBuilder;
+	public S2Container container;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -36,6 +35,7 @@ public class ActionDefBuilderImplTest extends S2TestCase {
 	public void testFromPathToActionDefReturnsNull1() {
 		MockServletContext servletContext = getServletContext();
 		MockHttpServletRequest request = servletContext.createRequest("/none");
+		ActionDefBuilder actionDefBuilder = new ActionDefBuilder(container);
 		ActionDef actionDef = actionDefBuilder.build(request);
 		assertNull(actionDef);
 	}
@@ -45,6 +45,7 @@ public class ActionDefBuilderImplTest extends S2TestCase {
 		MockHttpServletRequest request = servletContext
 				.createRequest(CubbyUtils.getInternalForwardPath(
 						MockAction.class, ""));
+		ActionDefBuilder actionDefBuilder = new ActionDefBuilder(container);
 		ActionDef actionDef = actionDefBuilder.build(request);
 		assertNull(actionDef);
 	}
@@ -54,6 +55,7 @@ public class ActionDefBuilderImplTest extends S2TestCase {
 		MockHttpServletRequest request = servletContext
 				.createRequest(CubbyUtils.getInternalForwardPath(
 						MockAction.class, "none"));
+		ActionDefBuilder actionDefBuilder = new ActionDefBuilder(container);
 		ActionDef actionDef = actionDefBuilder.build(request);
 		assertNull(actionDef);
 	}
@@ -63,6 +65,7 @@ public class ActionDefBuilderImplTest extends S2TestCase {
 		MockHttpServletRequest request = servletContext
 				.createRequest(CubbyUtils.getInternalForwardPath(
 						NoDeployedAction.class, "none"));
+		ActionDefBuilder actionDefBuilder = new ActionDefBuilder(container);
 		ActionDef actionDef = actionDefBuilder.build(request);
 		assertNull(actionDef);
 	}
@@ -72,10 +75,10 @@ public class ActionDefBuilderImplTest extends S2TestCase {
 		MockHttpServletRequest request = servletContext
 				.createRequest(CubbyUtils.getInternalForwardPath(
 						MockAction.class, "update"));
+		ActionDefBuilder actionDefBuilder = new ActionDefBuilder(container);
 		ActionDef actionDef = actionDefBuilder.build(request);
 		assertNotNull(actionDef);
-		assertEquals(MockAction.class, actionDef.getComponentDef()
-				.getComponentClass());
+		assertEquals(MockAction.class, actionDef.getActionClass());
 		assertEquals("update", actionDef.getMethod().getName());
 	}
 

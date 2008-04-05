@@ -22,7 +22,7 @@ public class DirectTest extends TestCase {
 	public void testExecute() throws Exception {
 		Direct direct = new Direct();
 		direct.prerender(null);
-		direct.execute(null, null, null);
+		direct.execute(null, null, null, null, null);
 	}
 
 }

@@ -25,8 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
+import org.seasar.cubby.exception.ActionRuntimeException;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.StringUtil;
 
 /**
@@ -57,7 +62,8 @@ public class CubbyUtils {
 	 *            アクションクラス
 	 * @return アクションクラスに対応するディレクトリ
 	 */
-	public static String getActionDirectory(final Class<?> actionClass) {
+	public static String getActionDirectory(
+			final Class<? extends Action> actionClass) {
 		final String actionName;
 		final Path path = actionClass.getAnnotation(Path.class);
 		if (path != null && !StringUtil.isEmpty(path.value())) {
@@ -115,8 +121,8 @@ public class CubbyUtils {
 	 *            アクションメソッド
 	 * @return アクションメソッドのパス
 	 */
-	public static String getActionPath(final Class<?> actionClass,
-			final Method method) {
+	public static String getActionPath(
+			final Class<? extends Action> actionClass, final Method method) {
 		final String path;
 		final String actionMethodName = getActionMethodName(method);
 		if (actionMethodName.startsWith("/")) {
@@ -167,12 +173,13 @@ public class CubbyUtils {
 	 */
 	public static RequestMethod[] getAcceptableRequestMethods(
 			final Class<?> actionClass, final Method method) {
-		Accept accept = method.getAnnotation(Accept.class);
-		if (accept == null) {
+		final Accept accept;
+		if (method.isAnnotationPresent(Accept.class)) {
+			accept = method.getAnnotation(Accept.class);
+		} else if (actionClass.isAnnotationPresent(Accept.class)) {
 			accept = actionClass.getAnnotation(Accept.class);
-			if (accept == null) {
-				accept = DEFAULT_ACCEPT_ANNOTATION;
-			}
+		} else {
+			accept = DEFAULT_ACCEPT_ANNOTATION;
 		}
 		return accept.value();
 	}
@@ -375,6 +382,67 @@ public class CubbyUtils {
 	}
 
 	/**
+	 * 指定されたアクションからアクションメソッドに対応するフォームオブジェクトを取得します。
+	 * 
+	 * @param action
+	 *            アクション
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param method
+	 *            アクションメソッド
+	 * @return フォームオブジェクト
+	 * @throws ActionRuntimeException
+	 *             &#064;Formでフォームオブジェクトとなるプロパティを指定しているが、そのプロパティが
+	 *             <code>null</code> だった場合
+	 * @since 1.0.2
+	 */
+	public static Object getFormBean(final Action action,
+			final Class<?> actionClass, final Method method) {
+		final Object formBean;
+		final Form form = getForm(actionClass, method);
+		if (form != null && !form.binding()) {
+			formBean = null;
+		} else {
+			if (form == null || Form.THIS.equals(form.value())) {
+				formBean = action;
+			} else {
+				final String propertyName = form.value();
+				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
+						.getClass());
+				final PropertyDesc propertyDesc = beanDesc
+						.getPropertyDesc(propertyName);
+				formBean = propertyDesc.getValue(action);
+				if (formBean == null) {
+					throw new ActionRuntimeException("ECUB0102",
+							new Object[] { propertyName });
+				}
+			}
+		}
+		return formBean;
+	}
+
+	/**
+	 * 指定されたアクションメソッドを修飾する {@link Form} を取得します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param method
+	 *            アクションメソッド
+	 * @return {@link Form}、修飾されていない場合はメソッドが定義されたクラスを修飾する {@link Form}、クラスも修飾されていない場合は
+	 *         <code>null</code>
+	 * @since 1.0.2
+	 */
+	private static Form getForm(final Class<?> actionClass, final Method method) {
+		final Form form;
+		if (method.isAnnotationPresent(Form.class)) {
+			form = method.getAnnotation(Form.class);
+		} else {
+			form = actionClass.getAnnotation(Form.class);
+		}
+		return form;
+	}
+
+	/**
 	 * リクエストから属性を取得します。
 	 * 
 	 * @param <T>
@@ -384,6 +452,7 @@ public class CubbyUtils {
 	 * @param name
 	 *            属性名
 	 * @return 属性
+	 * @since 1.1.0
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getAttribute(final HttpServletRequest request,

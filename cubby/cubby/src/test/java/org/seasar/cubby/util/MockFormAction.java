@@ -13,17 +13,30 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.controller.impl;
+package org.seasar.cubby.util;
 
-import junit.framework.TestCase;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
 
-//TODO
-public class ActionProcessorImplTest extends TestCase {
+public class MockFormAction extends Action {
 
-	public void testConstructor() throws Throwable {
-        new ActionProcessorImpl();
-        assertTrue("Test call resulted in expected outcome", true);
-    }
+	public Object form = new Object();
+
+	public Object nullForm;
+
+	public ActionResult normal() {
+		return null;
+	}
+
+	@Form("form")
+	public ActionResult legalForm() {
+		return null;
+	}
+
+	@Form("nullForm")
+	public ActionResult illegalForm() {
+		return null;
+	}
 
 }
-
