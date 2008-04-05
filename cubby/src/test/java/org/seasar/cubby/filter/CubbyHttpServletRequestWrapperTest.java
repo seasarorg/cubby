@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.filter;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -25,11 +24,6 @@ import junit.framework.TestCase;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.impl.ActionContextImpl;
-import org.seasar.framework.container.ComponentDef;
-import org.seasar.framework.container.impl.ComponentDefImpl;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
 import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
@@ -45,37 +39,33 @@ public class CubbyHttpServletRequestWrapperTest extends TestCase {
 	}
 
 	public void testGetAttributeNames() throws Exception {
-		MockServletContextImpl context= new MockServletContextImpl("/cubby");
-		MockHttpServletRequestImpl request = new MockHttpServletRequestImpl(context, "servlet");
+		MockServletContextImpl context = new MockServletContextImpl("/cubby");
+		MockHttpServletRequestImpl request = new MockHttpServletRequestImpl(
+				context, "servlet");
 		request.setAttribute("a1", "a1");
 		Collection<String> origNames = toCollection(request.getAttributeNames());
 		assertTrue("追加済みの属性", origNames.contains("a1"));
 		assertFalse("存在しない属性", origNames.contains("a2"));
-		assertFalse("ラップ後の追加の属性", origNames.contains(CubbyConstants.ATTR_CONTEXT_PATH));
-		assertFalse("ラップ後の追加の属性", origNames.contains(CubbyConstants.ATTR_MESSAGES));
-		assertFalse("ラップ後の追加の属性", origNames.contains(CubbyConstants.ATTR_ACTION));
-		
-		ActionContext actionContext = getActionContext();
-		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(request, actionContext);
-		Collection<String> wrappedNames = toCollection(wrapper.getAttributeNames());
+		assertFalse("ラップ後の追加の属性", origNames
+				.contains(CubbyConstants.ATTR_CONTEXT_PATH));
+		assertFalse("ラップ後の追加の属性", origNames
+				.contains(CubbyConstants.ATTR_MESSAGES));
+		assertFalse("ラップ後の追加の属性", origNames
+				.contains(CubbyConstants.ATTR_ACTION));
+
+		Action action = new HogeAction();
+		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
+				request, action);
+		Collection<String> wrappedNames = toCollection(wrapper
+				.getAttributeNames());
 		assertTrue("追加済みの属性", origNames.contains("a1"));
 		assertFalse("存在しない属性", origNames.contains("a2"));
-		assertTrue("ラップ後の追加の属性", wrappedNames.contains(CubbyConstants.ATTR_CONTEXT_PATH));
-		assertTrue("ラップ後の追加の属性", wrappedNames.contains(CubbyConstants.ATTR_MESSAGES));
-		assertTrue("ラップ後の追加の属性", wrappedNames.contains(CubbyConstants.ATTR_ACTION));
-	}
-
-	private ActionContext getActionContext() {
-		ActionContextImpl actionContext = new ActionContextImpl();
-		actionContext.initialize(new ActionDef() {
-			public ComponentDef getComponentDef() {
-				return new ComponentDefImpl(HogeAction.class);
-			}
-			public Method getMethod() {
-				return null;
-			}
-		});
-		return actionContext;
+		assertTrue("ラップ後の追加の属性", wrappedNames
+				.contains(CubbyConstants.ATTR_CONTEXT_PATH));
+		assertTrue("ラップ後の追加の属性", wrappedNames
+				.contains(CubbyConstants.ATTR_MESSAGES));
+		assertTrue("ラップ後の追加の属性", wrappedNames
+				.contains(CubbyConstants.ATTR_ACTION));
 	}
 
 	private Collection<String> toCollection(Enumeration<?> attributeNames) {
@@ -85,6 +75,7 @@ public class CubbyHttpServletRequestWrapperTest extends TestCase {
 		}
 		return names;
 	}
-	
-	class HogeAction extends Action {}	
+
+	class HogeAction extends Action {
+	}
 }

@@ -28,7 +28,6 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationPhase;
@@ -50,17 +49,17 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void process(final HttpServletRequest request,
-			final ActionContext context, final Action action,
-			final Method method) {
+	public void process(final HttpServletRequest request, final Action action,
+			final Class<? extends Action> actionClass, final Method method) {
 		final Validation validation = getValidation(method);
 		if (validation != null) {
 			final Map<String, Object[]> params = CubbyUtils.getAttribute(
 					request, ATTR_PARAMS);
 			final ValidationRules validationRules = this.getValidationRules(
 					action, validation.rules());
-			final Object form = context.getFormBean();
-			validate(validationRules, params, form, action.getErrors());
+			final Object formBean = CubbyUtils.getFormBean(action, actionClass,
+					method);
+			validate(validationRules, params, formBean, action.getErrors());
 		}
 	}
 

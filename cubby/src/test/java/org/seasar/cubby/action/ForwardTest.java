@@ -21,11 +21,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.mock.servlet.MockServletContext;
@@ -33,7 +30,7 @@ import org.seasar.framework.util.ClassUtil;
 
 public class ForwardTest extends S2TestCase {
 
-	public ActionContext context;
+	public MockAction action;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -45,15 +42,13 @@ public class ForwardTest extends S2TestCase {
 		servletContext.setServletContextName("/cubby");
 		MockHttpServletRequest request = this.getRequest();
 		MockHttpServletResponse response = this.getResponse();
-		ComponentDef componentDef = this.getComponentDef(MockAction.class);
-		context.initialize(new MockActionDef(componentDef));
-		MockAction action = (MockAction) context.getAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
 		Forward forward = new Forward("path.jsp");
-		forward.prerender(context);
+		forward.prerender(action);
 		assertTrue(action.isPrerendered());
-		forward.execute(context, new RequestDispatcherAssertionWrapper(request,
-				new Asserter() {
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals("/mock/path.jsp", path);
 					}
@@ -66,12 +61,11 @@ public class ForwardTest extends S2TestCase {
 		servletContext.setServletContextName("/cubby");
 		MockHttpServletRequest request = this.getRequest();
 		MockHttpServletResponse response = this.getResponse();
-		ComponentDef componentDef = this.getComponentDef(MockAction.class);
-		context.initialize(new MockActionDef(componentDef));
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
 		Forward forward = new Forward("page.jsp");
-		forward.execute(context, new RequestDispatcherAssertionWrapper(request,
-				new Asserter() {
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals("/mock/page.jsp", path);
 					}
@@ -83,27 +77,26 @@ public class ForwardTest extends S2TestCase {
 		servletContext.setServletContextName("/cubby");
 		MockHttpServletRequest request = this.getRequest();
 		MockHttpServletResponse response = this.getResponse();
-		ComponentDef componentDef = this.getComponentDef(MockAction.class);
-		context.initialize(new MockActionDef(componentDef));
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
 		Forward forward = new Forward("/absolute/path.jsp");
-		forward.execute(context, new RequestDispatcherAssertionWrapper(request,
-				new Asserter() {
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals("/absolute/path.jsp", path);
 					}
 				}), response);
 	}
-	
+
 	public void testGetPath() throws Exception {
 		Forward forward = new Forward("/absolute/path.jsp");
 		assertEquals("/absolute/path.jsp", forward.getPath());
 	}
 
 	public void testForwardByClassAndMethodName() {
-		Forward forward = new Forward(MockAction.class, "dummy");
+		Forward forward = new Forward(MockAction.class, "dummy1");
 		String expect = CubbyUtils.getInternalForwardPath(MockAction.class,
-				"dummy");
+				"dummy1");
 		assertEquals(expect, forward.getPath());
 	}
 
@@ -125,26 +118,6 @@ public class ForwardTest extends S2TestCase {
 		public RequestDispatcher getRequestDispatcher(String path) {
 			asserter.assertDispatchPath(path);
 			return super.getRequestDispatcher(path);
-		}
-
-	}
-
-	class MockActionDef implements ActionDef {
-
-		private ComponentDef componentDef;
-
-		public MockActionDef(ComponentDef componentDef) {
-			this.componentDef = componentDef;
-		}
-
-		public ComponentDef getComponentDef() {
-			return componentDef;
-		}
-
-		public Method getMethod() {
-			Class<?> clazz = componentDef.getComponentClass();
-			Method method = ClassUtil.getMethod(clazz, "dummy", null);
-			return method;
 		}
 
 	}

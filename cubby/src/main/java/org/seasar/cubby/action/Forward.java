@@ -16,13 +16,13 @@
 package org.seasar.cubby.action;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
@@ -104,12 +104,12 @@ public class Forward extends AbstractActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final ActionContext context,
+	public void execute(final Action action,
+			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		final Action action = context.getAction();
-		final String actionDirectory = CubbyUtils.getActionDirectory(context
-				.getComponentDef().getComponentClass());
+		final String actionDirectory = CubbyUtils
+				.getActionDirectory(actionClass);
 
 		final String absolutePath;
 		if (this.path.startsWith("/")) {
@@ -140,8 +140,7 @@ public class Forward extends AbstractActionResult {
 	 * </p>
 	 */
 	@Override
-	public void prerender(final ActionContext context) {
-		final Action action = context.getAction();
+	public void prerender(final Action action) {
 		action.prerender();
 	}
 

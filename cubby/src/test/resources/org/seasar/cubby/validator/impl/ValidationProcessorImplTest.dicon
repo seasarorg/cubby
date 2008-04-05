@@ -4,8 +4,6 @@
 <components>
 	<include path="cubby.dicon"/>
 
-	<component class="org.seasar.cubby.controller.impl.ActionContextImpl" instance="request" />
-	<component class="org.seasar.cubby.controller.impl.ActionDefBuilderImpl" />
 	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl" />
 
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />

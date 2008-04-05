@@ -23,8 +23,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.ActionDefBuilder;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
@@ -33,27 +32,30 @@ import org.seasar.framework.exception.NoSuchMethodRuntimeException;
 import org.seasar.framework.util.ClassUtil;
 
 /**
- * アクションの定義を組み立てるビルダの実装です。
+ * アクションの定義を組み立てるビルダです。
  * 
  * @author baba
  * @since 1.0.0
  */
-public class ActionDefBuilderImpl implements ActionDefBuilder {
+class ActionDefBuilder {
 
-	/** 内部フォワードパスのパターン */
+	/** 内部フォワードパスのパターン。 */
 	private static final Pattern INTERNAL_FORWARD_PATH_PATTERN = Pattern
 			.compile("^/" + INTERNAL_FORWARD_DIRECTORY + "/(.*)/(.*)$");
 
-	/** コンテナ */
+	/** 空のパラメータ型。 */
+	private static final Class<?>[] EMPTY_PARAMETER_TYPES = new Class[0];
+
+	/** コンテナ。 */
 	private S2Container container;
 
 	/**
-	 * コンテナを設定します。
+	 * インスタンス化します。
 	 * 
 	 * @param container
 	 *            コンテナ
 	 */
-	public void setContainer(final S2Container container) {
+	public ActionDefBuilder(final S2Container container) {
 		this.container = container;
 	}
 
@@ -67,9 +69,9 @@ public class ActionDefBuilderImpl implements ActionDefBuilder {
 			return null;
 		}
 		final String actionClassName = matcher.group(1);
-		final Class<?> actionClass;
+		final Class<? extends Action> actionClass;
 		try {
-			actionClass = ClassUtil.forName(actionClassName);
+			actionClass = actionClassForName(actionClassName);
 		} catch (final ClassNotFoundRuntimeException e) {
 			return null;
 		}
@@ -83,14 +85,21 @@ public class ActionDefBuilderImpl implements ActionDefBuilder {
 		final Method method;
 		try {
 			method = ClassUtil.getMethod(componentDef.getComponentClass(),
-					methodName, new Class[0]);
+					methodName, EMPTY_PARAMETER_TYPES);
 		} catch (final NoSuchMethodRuntimeException e) {
 			return null;
 		}
 
-		final ActionDef actionDef = new ActionDefImpl(componentDef, method);
+		final ActionDef actionDef = new ActionDef((Action) componentDef
+				.getComponent(), actionClass, method);
 
 		return actionDef;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Class<? extends Action> actionClassForName(
+			final String actionClassName) {
+		return (Class<? extends Action>) ClassUtil.forName(actionClassName);
 	}
 
 }

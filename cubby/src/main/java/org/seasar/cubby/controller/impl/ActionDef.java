@@ -17,21 +17,23 @@ package org.seasar.cubby.controller.impl;
 
 import java.lang.reflect.Method;
 
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.framework.container.ComponentDef;
+import org.seasar.cubby.action.Action;
 
 /**
- * アクションの定義の実装です。
+ * アクションの定義です。
  * 
  * @author baba
  * @since 1.0.0
  */
-class ActionDefImpl implements ActionDef {
+class ActionDef {
 
-	/** アクションクラスのコンポーネント定義 */
-	private final ComponentDef componentDef;
+	/** アクション。 */
+	private final Action action;
 
-	/** アクションメソッド */
+	/** アクションクラス。 */
+	private final Class<? extends Action> actionClass;
+
+	/** アクションメソッド。 */
 	private final Method method;
 
 	/**
@@ -42,20 +44,35 @@ class ActionDefImpl implements ActionDef {
 	 * @param method
 	 *            アクションメソッド
 	 */
-	ActionDefImpl(final ComponentDef componentDef, final Method method) {
-		this.componentDef = componentDef;
+	ActionDef(final Action action, final Class<? extends Action> actionClass,
+			final Method method) {
+		this.action = action;
+		this.actionClass = actionClass;
 		this.method = method;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * アクションを取得します。
+	 * 
+	 * @return アクション
 	 */
-	public ComponentDef getComponentDef() {
-		return componentDef;
+	public Action getAction() {
+		return action;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * アクションクラスを取得します。
+	 * 
+	 * @return アクションクラス
+	 */
+	public Class<? extends Action> getActionClass() {
+		return actionClass;
+	}
+
+	/**
+	 * アクションメソッドを取得します。
+	 * 
+	 * @return アクションメソッド
 	 */
 	public Method getMethod() {
 		return method;

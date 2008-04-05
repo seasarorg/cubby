@@ -15,30 +15,18 @@
  */
 package org.seasar.cubby.validator.impl;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionDef;
-import org.seasar.cubby.controller.ActionDefBuilder;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockServletContext;
+import org.seasar.framework.util.ClassUtil;
 
 public class ValidationProcessorImplTest extends S2TestCase {
 
 	public ValidationProcessorImpl validationProcessor;
-
-	public ActionDefBuilder actionDefBuilder;
-
-	public ActionContext context;
-
-	public ActionErrors errors;
 
 	public MockAction action;
 
@@ -50,15 +38,11 @@ public class ValidationProcessorImplTest extends S2TestCase {
 	}
 
 	public void testProcess1() {
-		MockServletContext servletContext = getServletContext();
-		HttpServletRequest request = servletContext.createRequest(CubbyUtils
-				.getInternalForwardPath(MockAction.class, "dummy"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		context.initialize(actionDef);
-
+		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
+				new Class[0]);
 		try {
-			validationProcessor.process(getRequest(), context, context
-					.getAction(), context.getMethod());
+			validationProcessor.process(getRequest(), action, MockAction.class,
+					method);
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -68,18 +52,14 @@ public class ValidationProcessorImplTest extends S2TestCase {
 	}
 
 	public void testProcess2() {
-		MockServletContext servletContext = getServletContext();
-		HttpServletRequest request = servletContext.createRequest(CubbyUtils
-				.getInternalForwardPath(MockAction.class, "dummy"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		context.initialize(actionDef);
-
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "bob" });
 
+		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
+				new Class[0]);
 		try {
-			validationProcessor.process(getRequest(), context, context
-					.getAction(), context.getMethod());
+			validationProcessor.process(getRequest(), action, MockAction.class,
+					method);
 			fail();
 		} catch (ValidationException e) {
 			assertFalse(action.getErrors().isEmpty());
@@ -89,33 +69,25 @@ public class ValidationProcessorImplTest extends S2TestCase {
 	}
 
 	public void testProcess3() {
-		MockServletContext servletContext = getServletContext();
-		HttpServletRequest request = servletContext.createRequest(CubbyUtils
-				.getInternalForwardPath(MockAction.class, "dummy"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		context.initialize(actionDef);
-
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "5" });
 
+		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
+				new Class[0]);
 		try {
-			validationProcessor.process(getRequest(), context, context
-					.getAction(), context.getMethod());
+			validationProcessor.process(getRequest(), action, MockAction.class,
+					method);
 		} catch (ValidationException e) {
 			fail();
 		}
 	}
 
 	public void testHandleValidationException() {
-		MockServletContext servletContext = getServletContext();
-		HttpServletRequest request = servletContext.createRequest(CubbyUtils
-				.getInternalForwardPath(MockAction.class, "dummy"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		context.initialize(actionDef);
-
 		ValidationException e = new ValidationException("message", "field1");
+		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
+				new Class[0]);
 		ActionResult result = validationProcessor.handleValidationException(e,
-				request, context.getAction(), context.getMethod());
+				getRequest(), action, method);
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
 		assertEquals("error.jsp", forward.getPath());

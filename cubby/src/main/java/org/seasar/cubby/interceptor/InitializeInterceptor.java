@@ -16,7 +16,11 @@
 package org.seasar.cubby.interceptor;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getAction;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getActionClass;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getMethod;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,15 +30,15 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.util.CubbyUtils;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
- * {@link Action#initialize()}、{@link ActionResult#prerender(ActionContext)}
+ * {@link Action#initialize()}、{@link ActionResult#prerender(Action)}
  * の実行を行います。
  * 
  * @author agata
@@ -46,8 +50,8 @@ public class InitializeInterceptor implements MethodInterceptor {
 	/** リクエスト。 */
 	private HttpServletRequest request;
 
-	/** アクションのコンテキスト。 */
-	private ActionContext context;
+	/** リクエストパラメータとフォームオブジェクトを変換する DXO */
+	private FormDxo formDxo;
 
 	/**
 	 * リクエストを設定します。
@@ -60,13 +64,13 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	/**
-	 * アクションのコンテキストを設定します。
+	 * リクエストパラメータとフォームオブジェクトを変換する DXO を設定します。
 	 * 
-	 * @param context
-	 *            アクションのコンテキスト
+	 * @param formDxo
+	 *            リクエストパラメータとフォームオブジェクトを変換する DXO
 	 */
-	public void setContext(final ActionContext context) {
-		this.context = context;
+	public void setFormDxo(final FormDxo formDxo) {
+		this.formDxo = formDxo;
 	}
 
 	/**
@@ -78,7 +82,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * {@link CubbyConstants#ATTR_PARAMS} に設定。</li>
 	 * <li>{@link Action#initialize()}を呼び出してアクションを初期化します。</li>
 	 * <li>対象のメソッドを呼び出します。</li>
-	 * <li>{@link ActionResult#prerender(ActionContext)}を呼び出します。</li>
+	 * <li>{@link ActionResult#prerender(Action)}を呼び出します。</li>
 	 * <li>メソッドの実行結果を返します。</li>
 	 * </ul>
 	 * </p>
@@ -87,19 +91,20 @@ public class InitializeInterceptor implements MethodInterceptor {
 		final Map<String, Object[]> parameterMap = parseRequest(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 
-		final Action action = (Action) invocation.getThis();
+		final Action action = getAction(invocation);
 		action.initialize();
-
-		final Object formBean = context.getFormBean();
+		final Class<? extends Action> actionClass = getActionClass(invocation);
+		final Method method = getMethod(invocation);
+		final Object formBean = CubbyUtils.getFormBean(action, actionClass,
+				method);
 		if (formBean != null) {
-			final FormDxo formDxo = context.getFormDxo();
 			formDxo.convert(parameterMap, formBean);
 		}
 
 		final ActionResult result = (ActionResult) invocation.proceed();
 
 		if (result != null) {
-			result.prerender(context);
+			result.prerender(action);
 		}
 
 		return result;

@@ -15,12 +15,12 @@
  */
 package org.seasar.cubby.action;
 
-import org.seasar.cubby.controller.ActionContext;
+import java.lang.reflect.Method;
 
 /**
  * {@link ActionResult} の抽象クラス。
  * <p>
- * 空の {@link ActionResult#prerender(ActionContext)} を実装します。
+ * 空の {@link ActionResult#prerender(Action, Method)} を実装します。
  * </p>
  * 
  * @author baba
@@ -29,13 +29,12 @@ import org.seasar.cubby.controller.ActionContext;
 abstract class AbstractActionResult implements ActionResult {
 
 	/**
-	 * 何も行いません。
 	 * {@inheritDoc}
-	 * 
-	 * @param context
-	 *            アクションコンテキスト
+	 * <p>
+	 * 何も行いません。
+	 * </p>
 	 */
-	public void prerender(final ActionContext context) {
+	public void prerender(final Action action) {
 	}
 
 }
