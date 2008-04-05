@@ -29,7 +29,6 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.container.SingletonS2Container;
 
@@ -109,9 +108,8 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 		if (value == null) {
 			outputValues = Collections.emptyMap();
 		} else {
-			final ActionContext context = SingletonS2Container
-					.getComponent(ActionContext.class);
-			final FormDxo formDxo = context.getFormDxo();
+			final FormDxo formDxo = SingletonS2Container
+					.getComponent(FormDxo.class);
 			final Map<String, String[]> map = new HashMap<String, String[]>();
 			formDxo.convert(value, map);
 			outputValues = map;

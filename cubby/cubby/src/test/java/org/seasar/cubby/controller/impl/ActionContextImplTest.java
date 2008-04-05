@@ -17,17 +17,14 @@ package org.seasar.cubby.controller.impl;
 
 import static org.seasar.cubby.TestUtils.getPrivateField;
 
-import java.util.Map;
+import java.lang.reflect.Method;
 
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.ActionDefBuilder;
-import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockServletContext;
+import org.seasar.framework.util.ClassUtil;
 
 public class ActionContextImplTest extends S2TestCase {
 
@@ -57,20 +54,6 @@ public class ActionContextImplTest extends S2TestCase {
 		assertFalse("result", actionContext.isInitialized());
 	}
 
-	public void testSetParameterBinder() throws Throwable {
-		FormDxo formDxo = new FormDxo() {
-			public void convert(Map<String, Object[]> src, Object dest) {
-			}
-
-			public void convert(Object src, Map<String, String[]> dest) {
-			}
-		};
-		ActionContextImpl actionContextImpl = new ActionContextImpl();
-		actionContextImpl.setFormDxo(formDxo);
-		assertSame("actionContextImpl.getParameterBinder()", formDxo,
-				actionContextImpl.getFormDxo());
-	}
-
 	public void testGetActionThrowsNullPointerException() throws Throwable {
 		try {
 			actionContext.getAction();
@@ -96,19 +79,6 @@ public class ActionContextImplTest extends S2TestCase {
 		}
 	}
 
-	public void testGetFormBeanThrowsNullPointerException() throws Throwable {
-		try {
-			actionContext.getFormBean();
-			fail("Expected NullPointerException to be thrown");
-		} catch (NullPointerException ex) {
-			assertNull("ex.getMessage()", ex.getMessage());
-			assertFalse("actionContextImpl.isInitialized()", actionContext
-					.isInitialized());
-			assertNull("actionContextImpl.action", getPrivateField(
-					actionContext, "action"));
-		}
-	}
-
 	public void testGetMethodThrowsNullPointerException() throws Throwable {
 		try {
 			actionContext.getMethod();
@@ -120,50 +90,30 @@ public class ActionContextImplTest extends S2TestCase {
 		}
 	}
 
-	public void testInvokeThrowsNullPointerException() throws Throwable {
+	public void testGetFormBean1() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "normal",
+				new Class[0]);
+		Object actual = CubbyUtils.getFormBean(action, MockFormAction.class,
+				method);
+		assertSame(action, actual);
+	}
+
+	public void testGetFormBean2() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "legalForm",
+				new Class[0]);
+		Object actual = CubbyUtils.getFormBean(action, MockFormAction.class,
+				method);
+		assertSame(action.form, actual);
+	}
+
+	public void testGetFormBean3() throws Exception {
+		MockFormAction action = new MockFormAction();
+		Method method = ClassUtil.getMethod(action.getClass(), "illegalForm",
+				new Class[0]);
 		try {
-			actionContext.invoke();
-			fail("Expected NullPointerException to be thrown");
-		} catch (NullPointerException ex) {
-			assertNull("ex.getMessage()", ex.getMessage());
-			assertFalse("actionContextImpl.isInitialized()", actionContext
-					.isInitialized());
-			assertNull("actionContextImpl.action", getPrivateField(
-					actionContext, "action"));
-		}
-	}
-
-	public void testGetFormObject1() throws Exception {
-		MockServletContext servletContext = getServletContext();
-		MockHttpServletRequest request = servletContext
-				.createRequest(CubbyUtils.getInternalForwardPath(
-						MockAction.class, "update"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		actionContext.initialize(actionDef);
-		Object form = actionContext.getFormBean();
-		assertSame(mockAction, form);
-	}
-
-	public void testGetFormObject2() throws Exception {
-		MockServletContext servletContext = getServletContext();
-		MockHttpServletRequest request = servletContext
-				.createRequest(CubbyUtils.getInternalForwardPath(
-						MockAction.class, "legalForm"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		actionContext.initialize(actionDef);
-		Object form = actionContext.getFormBean();
-		assertSame(mockAction.form, form);
-	}
-
-	public void testGetFormObject3() throws Exception {
-		MockServletContext servletContext = getServletContext();
-		MockHttpServletRequest request = servletContext
-				.createRequest(CubbyUtils.getInternalForwardPath(
-						MockAction.class, "illegalForm"));
-		ActionDef actionDef = actionDefBuilder.build(request);
-		actionContext.initialize(actionDef);
-		try {
-			actionContext.getFormBean();
+			CubbyUtils.getFormBean(action, MockFormAction.class, method);
 			fail();
 		} catch (ActionRuntimeException e) {
 			// ok

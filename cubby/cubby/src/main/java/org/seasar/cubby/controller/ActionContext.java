@@ -18,8 +18,6 @@ package org.seasar.cubby.controller;
 import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.framework.container.ComponentDef;
 
 /**
@@ -48,15 +46,6 @@ public interface ActionContext {
 	boolean isInitialized();
 
 	/**
-	 * このコンテキストが保持するアクションを実行します。
-	 * 
-	 * @return アクションの実行結果
-	 * @throws Exception
-	 *             アクションが例外をスローした場合
-	 */
-	ActionResult invoke() throws Exception;
-
-	/**
 	 * アクションのコンポーネントの定義を取得します。
 	 * 
 	 * @return コンポーネントの定義
@@ -76,19 +65,5 @@ public interface ActionContext {
 	 * @return アクションメソッド
 	 */
 	Method getMethod();
-
-	/**
-	 * アクションのフォームオブジェクトを取得します。
-	 * 
-	 * @return アクションのフォームオブジェクト
-	 */
-	Object getFormBean();
-
-	/**
-	 * リクエストパラメータとフォームオブジェクトを変換する DXO を取得します
-	 * 
-	 * @return リクエストパラメータとフォームオブジェクトを変換する DXO
-	 */
-	FormDxo getFormDxo();
 
 }

@@ -16,7 +16,11 @@
 package org.seasar.cubby.interceptor;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getAction;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getActionClass;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getMethod;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +35,7 @@ import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.util.CubbyUtils;
 
 /**
  * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
@@ -47,6 +52,9 @@ public class InitializeInterceptor implements MethodInterceptor {
 
 	/** アクションのコンテキスト。 */
 	private ActionContext context;
+
+	/** リクエストパラメータとフォームオブジェクトを変換する DXO */
+	private FormDxo formDxo;
 
 	/**
 	 * リクエストを設定します。
@@ -69,6 +77,16 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	/**
+	 * リクエストパラメータとフォームオブジェクトを変換する DXO を設定します。
+	 * 
+	 * @param formDxo
+	 *            リクエストパラメータとフォームオブジェクトを変換する DXO
+	 */
+	public void setFormDxo(final FormDxo formDxo) {
+		this.formDxo = formDxo;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
@@ -83,9 +101,11 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		setupParams(context, request);
-		setupForm(context, request);
 
-		final Action action = (Action) invocation.getThis();
+		final Action action = getAction(invocation);
+		final Class<?> actionClass = getActionClass(invocation);
+		final Method method = getMethod(invocation);
+		setupForm(action, actionClass, method, request);
 		action.initialize();
 
 		final ActionResult result = (ActionResult) invocation.proceed();
@@ -117,16 +137,20 @@ public class InitializeInterceptor implements MethodInterceptor {
 	/**
 	 * リクエストの属性{@link CubbyConstants#ATTR_PARAMS}の値をフォームオブジェクトにバインドします。
 	 * 
-	 * @param context
-	 *            アクションのコンテキスト
+	 * @param action
+	 *            アクション
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param method
+	 *            アクションメソッド
 	 * @param request
 	 *            リクエスト
 	 */
-	private void setupForm(final ActionContext context,
-			final HttpServletRequest request) {
-		final Object formBean = context.getFormBean();
+	private void setupForm(final Action action, final Class<?> actionClass,
+			final Method method, final HttpServletRequest request) {
+		final Object formBean = CubbyUtils.getFormBean(action, actionClass,
+				method);
 		if (formBean != null) {
-			final FormDxo formDxo = context.getFormDxo();
 			final Map<String, Object[]> params = getAttribute(request,
 					ATTR_PARAMS);
 			formDxo.convert(params, formBean);

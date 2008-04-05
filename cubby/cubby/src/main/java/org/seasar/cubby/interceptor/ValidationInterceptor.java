@@ -17,6 +17,9 @@ package org.seasar.cubby.interceptor;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getAction;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getActionClass;
+import static org.seasar.cubby.interceptor.InterceptorUtils.getMethod;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -30,6 +33,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ValidationProcessor;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.framework.beans.BeanDesc;
@@ -111,9 +115,12 @@ public class ValidationInterceptor implements MethodInterceptor {
 		if (validation != null) {
 			final Map<String, Object[]> params = getAttribute(request,
 					ATTR_PARAMS);
-			final Object form = context.getFormBean();
+			final Action action = getAction(invocation);
+			final Class<?> actionClass = getActionClass(invocation);
+			final Method method = getMethod(invocation);
+			final Object form = CubbyUtils.getFormBean(action, actionClass,
+					method);
 			final ActionErrors errors = context.getAction().getErrors();
-			final Action action = (Action) invocation.getThis();
 			final ValidationRules rules = getValidationRules(action, validation
 					.rules());
 			final boolean success = validationProcessor.process(errors, params,

@@ -15,10 +15,14 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
@@ -39,6 +43,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(ActionProcessorImpl.class);
+
+	/** 空の引数。 */
+	private static final Object[] EMPTY_ARGS = new Object[0];
 
 	/** アクションのコンテキスト。 */
 	private ActionContext context;
@@ -81,7 +88,10 @@ public class ActionProcessorImpl implements ActionProcessor {
 								new Object[] { request.getRequestURI() });
 				logger.log("DCUB0005", new Object[] { context.getMethod() });
 			}
-			final ActionResult result = context.invoke();
+			final Action action = (Action) actionDef.getComponentDef()
+					.getComponent();
+			final Method method = actionDef.getMethod();
+			final ActionResult result = invoke(action, method);
 			if (result == null) {
 				throw new ActionRuntimeException("ECUB0101",
 						new Object[] { context.getMethod() });
@@ -95,6 +105,34 @@ public class ActionProcessorImpl implements ActionProcessor {
 					request, context);
 			chain.doFilter(wrappedRequest, response);
 			return null;
+		}
+	}
+
+	/**
+	 * 指定されたアクションのメソッドを実行します。
+	 * 
+	 * @param action
+	 *            アクション
+	 * @param method
+	 *            アクションメソッド
+	 * @return アクションメソッドの実行結果
+	 */
+	private ActionResult invoke(final Action action, final Method method)
+			throws Exception {
+		try {
+			final ActionResult result = (ActionResult) method.invoke(action,
+					EMPTY_ARGS);
+			return result;
+		} catch (final InvocationTargetException ex) {
+			logger.log(ex);
+			final Throwable target = ex.getTargetException();
+			if (target instanceof Error) {
+				throw (Error) target;
+			} else if (target instanceof RuntimeException) {
+				throw (RuntimeException) target;
+			} else {
+				throw (Exception) target;
+			}
 		}
 	}
 
