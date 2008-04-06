@@ -114,12 +114,6 @@
 	    </plugin>
     </plugins>
   </build>
-  <pluginRepositories>
-    <pluginRepository>
-    <id>mojo-snapshot</id>
-    <url>http://snapshots.repository.codehaus.org/</url>
-    </pluginRepository>
-  </pluginRepositories>
   <repositories>
     <repository>
       <id>maven.seasar.org</id>
