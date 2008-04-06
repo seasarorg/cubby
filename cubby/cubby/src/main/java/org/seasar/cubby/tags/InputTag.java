@@ -158,7 +158,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write(toAttr(dyn));
 			out.write(" ");
 			out.write(checked(toString(this.value), values));
-			out.write("/>\n");
+			out.write("/>");
 		} else {
 			final Object value = formValue(context, outputValues, this.name,
 					this.index, this.value);
@@ -171,7 +171,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write(CubbyFunctions.out(toString(value)));
 			out.write("\" ");
 			out.write(toAttr(dyn));
-			out.write("/>\n");
+			out.write("/>");
 		}
 	}
 
