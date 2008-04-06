@@ -106,6 +106,6 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 		out.write(toAttr(dyn));
 		out.write(">");
 		out.write(CubbyFunctions.out(value));
-		out.write("</textarea>\n");
+		out.write("</textarea>");
 	}
 }
