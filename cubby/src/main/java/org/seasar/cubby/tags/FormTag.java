@@ -96,7 +96,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 		try {
 			out.write("<form ");
 			out.write(toAttr(getDynamicAttribute()));
-			out.write(">\n");
+			out.write(">");
 		} catch (final IOException e) {
 			throw new JspException(e);
 		}
@@ -123,7 +123,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 	@Override
 	public int doEndTag() throws JspException {
 		try {
-			pageContext.getOut().write("</form>\n");
+			pageContext.getOut().write("</form>");
 		} catch (final IOException e) {
 			throw new JspException(e);
 		}
