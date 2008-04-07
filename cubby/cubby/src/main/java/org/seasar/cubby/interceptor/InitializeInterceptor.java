@@ -31,9 +31,6 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.cubby.util.CubbyUtils;
 
@@ -91,7 +88,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
-	 * <li>リクエストパラメータを{@link Map}に変換してリクエストの属性{@link CubbyConstants#ATTR_PARAMS}に設定します。</li>
 	 * <li>リクエストの属性{@link CubbyConstants#ATTR_PARAMS}の値をフォームオブジェクトにバインドします。</li>
 	 * <li>実際のアクションメソッドを呼び出します。</li>
 	 * <li>アクションの{@link Action#prerender()}を呼び出します。</li>
@@ -100,8 +96,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		setupParams(context, request);
-
 		final Action action = getAction(invocation);
 		final Class<?> actionClass = getActionClass(invocation);
 		final Method method = getMethod(invocation);
@@ -114,24 +108,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 		}
 
 		return result;
-	}
-
-	/**
-	 * リクエストパラメータを{@link Map}に変換してリクエストの属性{@link CubbyConstants#ATTR_PARAMS}に設定します。
-	 * 
-	 * @param context
-	 *            アクションのコンテキスト
-	 * @param request
-	 *            リクエスト
-	 */
-	void setupParams(final ActionContext context,
-			final HttpServletRequest request) {
-		final CubbyConfiguration configuration = ThreadContext
-				.getConfiguration();
-		final RequestParser requestParser = configuration.getRequestParser();
-		final Map<String, Object[]> parameterMap = requestParser
-				.getParameterMap(request);
-		request.setAttribute(ATTR_PARAMS, parameterMap);
 	}
 
 	/**

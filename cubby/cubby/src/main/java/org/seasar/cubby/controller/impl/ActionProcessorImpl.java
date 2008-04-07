@@ -15,8 +15,11 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,9 @@ import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionDef;
 import org.seasar.cubby.controller.ActionDefBuilder;
 import org.seasar.cubby.controller.ActionProcessor;
+import org.seasar.cubby.controller.CubbyConfiguration;
+import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.framework.log.Logger;
@@ -82,6 +88,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final ActionDef actionDef = actionDefBuilder.build(request);
 		if (actionDef != null) {
 			context.initialize(actionDef);
+			final Map<String, Object[]> parameterMap = parseRequest(request);
+			request.setAttribute(ATTR_PARAMS, parameterMap);
+
 			if (logger.isDebugEnabled()) {
 				logger
 						.log("DCUB0004",
@@ -106,6 +115,22 @@ public class ActionProcessorImpl implements ActionProcessor {
 			chain.doFilter(wrappedRequest, response);
 			return null;
 		}
+	}
+
+	/**
+	 * リクエストをパースしてパラメータを取り出し、{@link Map}に変換して返します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 * @return リクエストパラメータの{@link Map}
+	 */
+	private Map<String, Object[]> parseRequest(final HttpServletRequest request) {
+		final CubbyConfiguration configuration = ThreadContext
+				.getConfiguration();
+		final RequestParser requestParser = configuration.getRequestParser();
+		final Map<String, Object[]> parameterMap = requestParser
+				.getParameterMap(request);
+		return parameterMap;
 	}
 
 	/**
