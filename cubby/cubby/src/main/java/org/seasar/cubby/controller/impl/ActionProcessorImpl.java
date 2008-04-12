@@ -45,6 +45,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/** 空の引数。 */
 	private static final Object[] EMPTY_ARGS = new Object[0];
 
+	/** コンテナ。 */
 	private S2Container container;
 
 	/**
