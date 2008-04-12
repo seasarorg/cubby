@@ -284,11 +284,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 */
 	public InternalForwardInfo findInternalForwardInfo(final String path,
 			final String requestMethod) {
-		final Map<String, String> uriParameters = new HashMap<String, String>();
 		for (final Routing routing : routings.values()) {
 			final Matcher matcher = routing.getPattern().matcher(path);
 			if (matcher.find()) {
 				if (routing.isAcceptable(requestMethod)) {
+					final Map<String, String> uriParameters = new HashMap<String, String>();
 					for (int i = 0; i < matcher.groupCount(); i++) {
 						final String name = routing.getUriParameterNames().get(
 								i);
