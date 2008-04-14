@@ -45,7 +45,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  * <p>
  * 入力検証が失敗した場合
  * <ul>
- * <li>またリクエスト中の入力検証エラーフラグを <code>true</code> に設定します。</li>
+ * <li>リクエスト中の入力検証エラーフラグを <code>true</code> に設定します。</li>
  * <li>アクションメソッドに設定された{@link Validation#errorPage()}へフォワードします。</li>
  * </ul>
  * </p>
