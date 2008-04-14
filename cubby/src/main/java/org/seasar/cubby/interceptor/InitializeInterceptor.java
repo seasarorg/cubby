@@ -37,9 +37,7 @@ import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.cubby.util.CubbyUtils;
 
 /**
- * コントローラの初期化や実行結果のrequest/sessionへの反映などを行うインターセプタです。
- * {@link Action#initialize()}、{@link ActionResult#prerender(Action)}
- * の実行を行います。
+ * アクションの初期化やリクエストパラメータからフォームオブジェクトへのバインドなどを行うインターセプタです。
  * 
  * @author agata
  * @author baba
@@ -81,7 +79,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <li>{@link Action#parseRequest(HttpServletRequest)}を呼び出してリクエストをパースしてリクエストパラメータをパースします。パース後、リクエストの属性
 	 * {@link CubbyConstants#ATTR_PARAMS} に設定。</li>
 	 * <li>{@link Action#initialize()}を呼び出してアクションを初期化します。</li>
-	 * <li>対象のメソッドを呼び出します。</li>
+	 * <li>アクションメソッドを呼び出します。</li>
 	 * <li>{@link ActionResult#prerender(Action)}を呼び出します。</li>
 	 * <li>メソッドの実行結果を返します。</li>
 	 * </ul>
