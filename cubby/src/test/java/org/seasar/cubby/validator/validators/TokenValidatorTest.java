@@ -52,4 +52,15 @@ public class TokenValidatorTest extends S2TestCase {
 				.getMessageInfos().isEmpty());
 	}
 
+	public void testRequestIsNull() throws Exception {
+		ThreadContext.setRequest(null);
+		TokenValidator validator = new TokenValidator();
+		ValidationContext context = new ValidationContext();
+		try {
+			validator.validate(context, new Object[] { "tokenstring" });
+			fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
+		} catch (IllegalStateException ex) {
+		}
+	}
+
 }
