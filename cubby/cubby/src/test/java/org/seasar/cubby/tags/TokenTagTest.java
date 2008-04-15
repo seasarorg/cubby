@@ -93,4 +93,14 @@ public class TokenTagTest extends JspTagTestCase {
 		assertTrue(message, TokenHelper.validateToken(session, element
 				.getAttributeValue("value")));
 	}
+	
+	public void testRequestIsNull() throws Exception {
+		ThreadContext.setRequest(null);
+		tag.setDynamicAttribute(null, "id", "token");
+		try {
+			tag.doTag();
+			fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
+		} catch (IllegalStateException e) {
+		}
+	}
 }

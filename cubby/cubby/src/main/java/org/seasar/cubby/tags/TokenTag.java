@@ -19,6 +19,7 @@ import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -27,6 +28,7 @@ import javax.servlet.jsp.PageContext;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.util.TokenHelper;
 import org.seasar.cubby.validator.validators.TokenValidator;
+import org.seasar.framework.message.MessageFormatter;
 import org.seasar.framework.util.StringUtil;
 
 /**
@@ -76,7 +78,11 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		out.append("\" ");
 		out.write(toAttr(getDynamicAttribute()));
 		out.append("/>");
-		final HttpSession session = ThreadContext.getRequest().getSession();
+		final HttpServletRequest request = ThreadContext.getRequest();
+		if (request == null) {
+			throw new IllegalStateException(MessageFormatter.getMessage("ECUB0401", null));
+		}
+		final HttpSession session = request.getSession();
 		TokenHelper.setToken(session, token);
 	}
 }
