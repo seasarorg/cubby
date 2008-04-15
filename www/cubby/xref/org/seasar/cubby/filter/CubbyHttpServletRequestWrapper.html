@@ -150,50 +150,52 @@
 <a name="140" href="#140">140</a> 	<strong class="jxr_keyword">public</strong> Enumeration getAttributeNames() {
 <a name="141" href="#141">141</a> 		<strong class="jxr_keyword">final</strong> List attributeNames = <strong class="jxr_keyword">new</strong> ArrayList();
 <a name="142" href="#142">142</a> 
-<a name="143" href="#143">143</a> 		attributeNames.add(ATTR_ACTION);
-<a name="144" href="#144">144</a> 
-<a name="145" href="#145">145</a> 		<strong class="jxr_keyword">final</strong> Class&lt;?&gt; concreteClass = context.getComponentDef()
-<a name="146" href="#146">146</a> 				.getConcreteClass();
-<a name="147" href="#147">147</a> 		<strong class="jxr_keyword">final</strong> BeanDesc beanDesc = BeanDescFactory.getBeanDesc(concreteClass);
-<a name="148" href="#148">148</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; beanDesc.getPropertyDescSize(); i++) {
-<a name="149" href="#149">149</a> 			<strong class="jxr_keyword">final</strong> PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
-<a name="150" href="#150">150</a> 			<strong class="jxr_keyword">if</strong> (propertyDesc.isReadable()) {
-<a name="151" href="#151">151</a> 				attributeNames.add(propertyDesc.getPropertyName());
-<a name="152" href="#152">152</a> 			}
-<a name="153" href="#153">153</a> 		}
-<a name="154" href="#154">154</a> 
-<a name="155" href="#155">155</a> 		<strong class="jxr_keyword">final</strong> Enumeration defaultAttributeNames = <strong class="jxr_keyword">super</strong>.getAttributeNames();
-<a name="156" href="#156">156</a> 		<strong class="jxr_keyword">while</strong> (defaultAttributeNames.hasMoreElements()) {
-<a name="157" href="#157">157</a> 			attributeNames.add(defaultAttributeNames.nextElement());
-<a name="158" href="#158">158</a> 		}
-<a name="159" href="#159">159</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/filter/CubbyHttpServletRequestWrapper.html">IteratorEnumeration</a>(attributeNames.iterator());
-<a name="160" href="#160">160</a> 	}
-<a name="161" href="#161">161</a> 
-<a name="162" href="#162">162</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> IteratorEnumeration&lt;T&gt; implements Enumeration&lt;T&gt; {
+<a name="143" href="#143">143</a> 		attributeNames.add(ATTR_CONTEXT_PATH);
+<a name="144" href="#144">144</a> 		attributeNames.add(ATTR_ACTION);
+<a name="145" href="#145">145</a> 		attributeNames.add(ATTR_MESSAGES);
+<a name="146" href="#146">146</a> 
+<a name="147" href="#147">147</a> 		<strong class="jxr_keyword">final</strong> Class&lt;?&gt; concreteClass = context.getComponentDef()
+<a name="148" href="#148">148</a> 				.getConcreteClass();
+<a name="149" href="#149">149</a> 		<strong class="jxr_keyword">final</strong> BeanDesc beanDesc = BeanDescFactory.getBeanDesc(concreteClass);
+<a name="150" href="#150">150</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; beanDesc.getPropertyDescSize(); i++) {
+<a name="151" href="#151">151</a> 			<strong class="jxr_keyword">final</strong> PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
+<a name="152" href="#152">152</a> 			<strong class="jxr_keyword">if</strong> (propertyDesc.isReadable()) {
+<a name="153" href="#153">153</a> 				attributeNames.add(propertyDesc.getPropertyName());
+<a name="154" href="#154">154</a> 			}
+<a name="155" href="#155">155</a> 		}
+<a name="156" href="#156">156</a> 
+<a name="157" href="#157">157</a> 		<strong class="jxr_keyword">final</strong> Enumeration defaultAttributeNames = <strong class="jxr_keyword">super</strong>.getAttributeNames();
+<a name="158" href="#158">158</a> 		<strong class="jxr_keyword">while</strong> (defaultAttributeNames.hasMoreElements()) {
+<a name="159" href="#159">159</a> 			attributeNames.add(defaultAttributeNames.nextElement());
+<a name="160" href="#160">160</a> 		}
+<a name="161" href="#161">161</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/filter/CubbyHttpServletRequestWrapper.html">IteratorEnumeration</a>(attributeNames.iterator());
+<a name="162" href="#162">162</a> 	}
 <a name="163" href="#163">163</a> 
-<a name="164" href="#164">164</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Iterator&lt;T&gt; iterator;
+<a name="164" href="#164">164</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> IteratorEnumeration&lt;T&gt; implements Enumeration&lt;T&gt; {
 <a name="165" href="#165">165</a> 
-<a name="166" href="#166">166</a> 		<strong class="jxr_keyword">private</strong> <a href="../../../../org/seasar/cubby/filter/CubbyHttpServletRequestWrapper.html">IteratorEnumeration</a>(<strong class="jxr_keyword">final</strong> Iterator&lt;T&gt; iterator) {
-<a name="167" href="#167">167</a> 			<strong class="jxr_keyword">this</strong>.iterator = iterator;
-<a name="168" href="#168">168</a> 		}
-<a name="169" href="#169">169</a> 
-<a name="170" href="#170">170</a> 		<em class="jxr_javadoccomment">/**</em>
-<a name="171" href="#171">171</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
-<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">		 */</em>
-<a name="173" href="#173">173</a> 		<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> hasMoreElements() {
-<a name="174" href="#174">174</a> 			<strong class="jxr_keyword">return</strong> iterator.hasNext();
-<a name="175" href="#175">175</a> 		}
-<a name="176" href="#176">176</a> 
-<a name="177" href="#177">177</a> 		<em class="jxr_javadoccomment">/**</em>
-<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
-<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">		 */</em>
-<a name="180" href="#180">180</a> 		<strong class="jxr_keyword">public</strong> T nextElement() {
-<a name="181" href="#181">181</a> 			<strong class="jxr_keyword">return</strong> iterator.next();
-<a name="182" href="#182">182</a> 		}
-<a name="183" href="#183">183</a> 
-<a name="184" href="#184">184</a> 	}
+<a name="166" href="#166">166</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Iterator&lt;T&gt; iterator;
+<a name="167" href="#167">167</a> 
+<a name="168" href="#168">168</a> 		<strong class="jxr_keyword">private</strong> <a href="../../../../org/seasar/cubby/filter/CubbyHttpServletRequestWrapper.html">IteratorEnumeration</a>(<strong class="jxr_keyword">final</strong> Iterator&lt;T&gt; iterator) {
+<a name="169" href="#169">169</a> 			<strong class="jxr_keyword">this</strong>.iterator = iterator;
+<a name="170" href="#170">170</a> 		}
+<a name="171" href="#171">171</a> 
+<a name="172" href="#172">172</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
+<a name="174" href="#174">174</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="175" href="#175">175</a> 		<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> hasMoreElements() {
+<a name="176" href="#176">176</a> 			<strong class="jxr_keyword">return</strong> iterator.hasNext();
+<a name="177" href="#177">177</a> 		}
+<a name="178" href="#178">178</a> 
+<a name="179" href="#179">179</a> 		<em class="jxr_javadoccomment">/**</em>
+<a name="180" href="#180">180</a> <em class="jxr_javadoccomment">		 * {@inheritDoc}</em>
+<a name="181" href="#181">181</a> <em class="jxr_javadoccomment">		 */</em>
+<a name="182" href="#182">182</a> 		<strong class="jxr_keyword">public</strong> T nextElement() {
+<a name="183" href="#183">183</a> 			<strong class="jxr_keyword">return</strong> iterator.next();
+<a name="184" href="#184">184</a> 		}
 <a name="185" href="#185">185</a> 
-<a name="186" href="#186">186</a> }
+<a name="186" href="#186">186</a> 	}
+<a name="187" href="#187">187</a> 
+<a name="188" href="#188">188</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

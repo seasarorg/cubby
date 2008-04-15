@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-03-08
+             最終更新: 2008-04-16
             </div>
       <div class="clear">
         <hr/>
@@ -303,6 +303,8 @@ baba" />
       
             
       
+            
+      
               
         <li class="collapsed">
                     <a href="project-reports.html">プロジェクトレポート</a>
@@ -510,7 +512,7 @@ public class LoginAction extends Action {
         }
   };
   ...
-  @Validation(rulesField=&quot;loginValidation&quot;, errorPage = &quot;/todo/login.jsp&quot;)
+  @Validation(rules=&quot;loginValidation&quot;, errorPage = &quot;/todo/login.jsp&quot;)
   public ActionResult process() {
     ...
   }
@@ -581,7 +583,7 @@ public class TodoListAction extends Action {
    * 一覧表示処理(/todo/)
    */
   @Form(&quot;todoConditionDto&quot;)
-  @Validation(rulesField=&quot;validation&quot;, errorPage=&quot;list.jsp&quot;)
+  @Validation(rules=&quot;validation&quot;, errorPage=&quot;list.jsp&quot;)
   public ActionResult index() {
     this.todoList = todoDao.selectByCondition(todoConditionDto);
     return new Forward(&quot;list.jsp&quot;);
@@ -868,7 +870,7 @@ public class TodoListAction extends Action {
   /**
    * 確認画面表示
    */
-  @Validation(rulesField = &quot;validation&quot;, errorPage = &quot;edit.jsp&quot;)
+  @Validation(rules = &quot;validation&quot;, errorPage = &quot;edit.jsp&quot;)
   public ActionResult confirm() {
     TodoType todoType = todoTypeDao.selectById(this.typeId);
     this.todoType = todoType;
@@ -885,7 +887,7 @@ public class TodoListAction extends Action {
   /**
    * 保存処理
    */
-  @Validation(rulesField = &quot;validation&quot;, errorPage = &quot;confirm.jsp&quot;)
+  @Validation(rules = &quot;validation&quot;, errorPage = &quot;confirm.jsp&quot;)
   public ActionResult save() {
     if (this.id == null) {
       Todo todo = todoDxo.convert(this);
