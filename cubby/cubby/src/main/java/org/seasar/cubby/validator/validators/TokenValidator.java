@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.seasar.cubby.controller.ThreadContext;
@@ -23,6 +24,7 @@ import org.seasar.cubby.util.TokenHelper;
 import org.seasar.cubby.validator.ArrayFieldValidator;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ValidationContext;
+import org.seasar.framework.message.MessageFormatter;
 
 /**
  * 2重サブミットの検証をします。
@@ -67,7 +69,11 @@ public class TokenValidator implements ArrayFieldValidator {
 			context.addMessageInfo(this.messageHelper.createMessageInfo());
 		} else {
 			final String token = (String) values[0];
-			final HttpSession session = ThreadContext.getRequest().getSession();
+			final HttpServletRequest request = ThreadContext.getRequest();
+			if (request == null) {
+				throw new IllegalStateException(MessageFormatter.getMessage("ECUB0401", null));
+			}
+			final HttpSession session = request.getSession();
 			if (!TokenHelper.validateToken(session, token)) {
 				context.addMessageInfo(this.messageHelper.createMessageInfo());
 			}
