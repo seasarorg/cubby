@@ -38,7 +38,16 @@
 
 *{アクションメソッド}
 
- アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。
+ アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。\
+ このメソッドは AOP によってエンハンスされ、メソッド実行時に以下の処理が実行されるようになります。
+
+ *アクションの初期化やリクエストパラメータからフォームオブジェクトへのバインド ({{{cubby/apidocs/org/seasar/cubby/interceptor/InitializeInterceptor.html}InitializeInterceptor}})
+
+ *入力検証 ({{{cubby/apidocs/org/seasar/cubby/interceptor/ValidationInterceptor.html}ValidationInterceptor}})
+
+[]
+
+ これらは AOP によってメソッド自体がエンハンスされるため、アクションメソッドの中から他のアクションメソッドを呼び出した場合も上記の処理が実行されます。
 
 *{ActionResult}
 
