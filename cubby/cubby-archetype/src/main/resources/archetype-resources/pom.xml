@@ -80,7 +80,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.3.1</version>
+      <version>4.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,27 +101,27 @@
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-framework</artifactId>
-      <version>2.4.24</version>
+      <version>2.4.25</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-extension</artifactId>
-      <version>2.4.24</version>
+      <version>2.4.25</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-tiger</artifactId>
-      <version>2.4.24</version>
+      <version>2.4.25</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.dao</groupId>
       <artifactId>s2-dao</artifactId>
-      <version>1.0.47</version>
+      <version>1.0.48</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.dao</groupId>
       <artifactId>s2-dao-tiger</artifactId>
-      <version>1.0.47</version>
+      <version>1.0.48</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
