@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.controller;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -92,8 +91,8 @@ public class ThreadContext {
 		if (context.messagesResourceBundle == null) {
 			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
 			context.messagesResourceBundle = messagesBehaviour
-					.getBundle(context.request == null ? Locale.getDefault()
-							: context.request.getLocale());
+					.getBundle(context.request == null ? null : context.request
+							.getLocale());
 		}
 		return context.messagesResourceBundle;
 	}
