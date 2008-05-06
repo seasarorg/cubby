@@ -1,7 +1,6 @@
 package org.seasar.cubby.routing.impl;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -34,13 +33,16 @@ class RoutingImpl implements Routing {
 	private final Pattern pattern;
 
 	/** リクエストメソッド。 */
-	private final RequestMethod[] requestMethods;
+	private final RequestMethod requestMethod;
 
-	/** 自動登録されたかどうか */
-	private final boolean auto;
+	/** このルーティングを使用することを判断するためのパラメータ名。 */
+	private final String onSubmit;
 
-	/** 優先順位 */
+	/** 優先順位。 */
 	private final int priority;
+
+	/** 自動登録されたかどうか。 */
+	private final boolean auto;
 
 	/**
 	 * インスタンス化します。
@@ -55,25 +57,28 @@ class RoutingImpl implements Routing {
 	 *            URI パラメータ名
 	 * @param pattern
 	 *            正規表現パターン
-	 * @param requestMethods
+	 * @param requestMethod
 	 *            リクエストメソッド
-	 * @param auto
-	 *            自動登録されたかどうか
+	 * @param onSubmit
+	 *            このルーティングを使用することを判断するためのパラメータ名
 	 * @param priority
 	 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}が常にセットされます。
+	 * @param auto
+	 *            自動登録されたかどうか
 	 */
 	RoutingImpl(final Class<? extends Action> actionClass, final Method method,
 			final String actionPath, final List<String> uriParameterNames,
-			final Pattern pattern, final RequestMethod[] requestMethods,
-			final boolean auto, final int priority) {
+			final Pattern pattern, final RequestMethod requestMethod,
+			final String onSubmit, final int priority, final boolean auto) {
 		this.actionClass = actionClass;
 		this.method = method;
 		this.actionPath = actionPath;
 		this.uriParameterNames = uriParameterNames;
 		this.pattern = pattern;
-		this.requestMethods = requestMethods;
-		this.auto = auto;
+		this.requestMethod = requestMethod;
+		this.onSubmit = onSubmit;
 		this.priority = priority;
+		this.auto = auto;
 	}
 
 	/**
@@ -90,6 +95,9 @@ class RoutingImpl implements Routing {
 		return method;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getActionPath() {
 		return actionPath;
 	}
@@ -111,15 +119,15 @@ class RoutingImpl implements Routing {
 	/**
 	 * {@inheritDoc}
 	 */
-	public RequestMethod[] getRequestMethods() {
-		return requestMethods;
+	public RequestMethod getRequestMethod() {
+		return requestMethod;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isAuto() {
-		return auto;
+	public String getOnSubmit() {
+		return onSubmit;
 	}
 
 	/**
@@ -132,14 +140,16 @@ class RoutingImpl implements Routing {
 	/**
 	 * {@inheritDoc}
 	 */
+	public boolean isAuto() {
+		return auto;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isAcceptable(final String requestMethod) {
-		for (final RequestMethod acceptableRequestMethod : requestMethods) {
-			if (StringUtil.equalsIgnoreCase(acceptableRequestMethod.name(),
-					requestMethod)) {
-				return true;
-			}
-		}
-		return false;
+		return StringUtil.equalsIgnoreCase(this.requestMethod.name(),
+				requestMethod);
 	}
 
 	/**
@@ -152,9 +162,9 @@ class RoutingImpl implements Routing {
 		return new StringBuilder().append("[regex=").append(this.pattern)
 				.append(",method=").append(this.method).append(
 						",uriParameterNames=").append(this.uriParameterNames)
-				.append(",requestMethods=").append(
-						Arrays.deepToString(this.requestMethods)).append(
-						",auto=").append(this.auto).append(",priority=")
-				.append(this.priority).append("]").toString();
+				.append(",requestMethod=").append(this.requestMethod).append(
+						",onSubmit=").append(onSubmit).append(",priority=")
+				.append(this.priority).append(",auto=").append(this.auto)
+				.append("]").toString();
 	}
 }

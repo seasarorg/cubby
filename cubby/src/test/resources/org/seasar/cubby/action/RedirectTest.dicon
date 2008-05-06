@@ -20,6 +20,6 @@
 
 	<component class="org.seasar.cubby.routing.impl.RouterImpl" />
 
-	<component class="org.seasar.cubby.action.MockAction" />
+	<component class="org.seasar.cubby.action.MockAction"/>
 
 </components>

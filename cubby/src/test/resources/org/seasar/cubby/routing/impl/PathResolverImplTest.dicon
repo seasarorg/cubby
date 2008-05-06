@@ -5,7 +5,7 @@
 
 	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
 		<initMethod name="addRootPackageName">
-			<arg>"org.seasar.cubby.routing"</arg>
+			<arg>"org.seasar.cubby.routing.impl"</arg>
 		</initMethod>
 	</component>
 

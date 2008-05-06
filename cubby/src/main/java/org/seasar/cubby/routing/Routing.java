@@ -68,7 +68,21 @@ public interface Routing {
 	 * 
 	 * @return リクエストメソッド
 	 */
-	RequestMethod[] getRequestMethods();
+	RequestMethod getRequestMethod();
+
+	/**
+	 * このルーティングを使用することを判断するためのパラメータ名を取得します。
+	 * 
+	 * @return パラメータ名
+	 */
+	String getOnSubmit();
+
+	/**
+	 * プライオリティを取得します。
+	 * 
+	 * @return プライオリティ
+	 */
+	int getPriority();
 
 	/**
 	 * 自動登録されたルーティングかを示します。
@@ -77,13 +91,6 @@ public interface Routing {
 	 *         <code>false</code>
 	 */
 	boolean isAuto();
-
-	/**
-	 * プライオリティを取得します。
-	 * 
-	 * @return プライオリティ
-	 */
-	int getPriority();
 
 	/**
 	 * 指定されたリクエストメソッドがこのルーティングの対象かどうかを示します。

@@ -6,6 +6,7 @@
 
 	<!-- action -->
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" />
+	<component class="org.seasar.cubby.controller.impl.RoutingsDispatcherImpl" />
 	<component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" />
 
 	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />

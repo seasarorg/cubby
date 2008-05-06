@@ -53,9 +53,11 @@ public class CubbyHttpServletRequestWrapperTest extends TestCase {
 		assertFalse("ラップ後の追加の属性", origNames
 				.contains(CubbyConstants.ATTR_ACTION));
 
-		Action action = new HogeAction();
 		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-				request, action);
+				request);
+		Action action = new HogeAction();
+		wrapper.setAttribute(CubbyConstants.ATTR_ACTION, action);
+
 		Collection<String> wrappedNames = toCollection(wrapper
 				.getAttributeNames());
 		assertTrue("追加済みの属性", origNames.contains("a1"));

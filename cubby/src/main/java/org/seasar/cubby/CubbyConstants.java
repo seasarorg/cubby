@@ -27,7 +27,7 @@ public class CubbyConstants {
 	/**
 	 * 内部フォワード先のディレクトリ。
 	 */
-	public static final String INTERNAL_FORWARD_DIRECTORY = "__internal_forward";
+	public static final String INTERNAL_FORWARD_DIRECTORY = "/__internal_forward";
 
 	/**
 	 * Cubbyのデフォルトメッセージリソースの名前。
@@ -35,24 +35,9 @@ public class CubbyConstants {
 	public static final String RES_MESSAGES = "messages";
 
 	/**
-	 * パラメータオブジェクトのリクエストの属性中の名前。
-	 */
-	public static final String ATTR_PARAMS = "params";
-
-	/**
 	 * アクションオブジェクトのリクエストの属性中の名前。
 	 */
 	public static final String ATTR_ACTION = "action";
-
-	/**
-	 * バリデーションエラーを表すオブジェクトのリクエストの属性中の名前。
-	 */
-	public static final String ATTR_VALIDATION_FAIL = "validationFail";
-
-	/**
-	 * フォームの値を復元する際にリクエスト属性に一時的に作成する値の名前。
-	 */
-	public static final String ATTR_OUTPUT_VALUES = "outputValues";
 
 	/**
 	 * メッセージリソースをMapに変換したオブジェクトのリクエストの属性中の名前。
@@ -65,7 +50,27 @@ public class CubbyConstants {
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
 
 	/**
-	 * トークンのMapをセッションに保存する名前
+	 * パラメータオブジェクトのリクエストの属性中の名前。
+	 */
+	public static final String ATTR_PARAMS = "params";
+
+	/**
+	 * 内部フォワード時にルーティング情報を引き渡すための名前。
+	 */
+	public static final String ATTR_ROUTINGS = "org.seasar.cubby.routings";
+
+	/**
+	 * バリデーションエラーを表すオブジェクトのリクエストの属性中の名前。
+	 */
+	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
+
+	/**
+	 * フォームの値を復元する際にリクエスト属性に一時的に作成する値の名前。
+	 */
+	public static final String ATTR_OUTPUT_VALUES = "org.seasar.cubby.outputValues";
+
+	/**
+	 * トークンのMapをセッションに保存する名前。
 	 */
 	public static final String ATTR_TOKEN = "org.seasar.cubby.token";
 

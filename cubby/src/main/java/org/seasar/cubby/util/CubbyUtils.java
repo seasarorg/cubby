@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.util;
 
-import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
-
 import java.lang.reflect.Method;
 import java.util.Collection;
 
@@ -26,6 +24,7 @@ import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.OnSubmit;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.exception.ActionRuntimeException;
@@ -227,21 +226,6 @@ public class CubbyUtils {
 	}
 
 	/**
-	 * アクションクラスとメソッド名から内部フォワードのパスへ変換します。
-	 * 
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param methodName
-	 *            メソッド名
-	 * @return 内部フォワードパス
-	 */
-	public static String getInternalForwardPath(
-			final Class<? extends Action> actionClass, final String methodName) {
-		return "/" + INTERNAL_FORWARD_DIRECTORY + "/"
-				+ actionClass.getCanonicalName() + "/" + methodName;
-	}
-
-	/**
 	 * 指定されたクラスがアクションメソッドかを示します。
 	 * 
 	 * @param clazz
@@ -440,6 +424,27 @@ public class CubbyUtils {
 			form = actionClass.getAnnotation(Form.class);
 		}
 		return form;
+	}
+
+	/**
+	 * 指定されたアクションメソッドを使用することを判断するためのパラメータ名を取得します。
+	 * <p>
+	 * パラメータ名によらずに実行する場合は <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @param method
+	 *            アクションメソッド
+	 * @return パラメータ名
+	 */
+	public static String getOnSubmit(final Method method) {
+		final OnSubmit onSubmit = method.getAnnotation(OnSubmit.class);
+		final String parameterName;
+		if (onSubmit == null) {
+			parameterName = null;
+		} else {
+			parameterName = onSubmit.value();
+		}
+		return parameterName;
 	}
 
 	/**

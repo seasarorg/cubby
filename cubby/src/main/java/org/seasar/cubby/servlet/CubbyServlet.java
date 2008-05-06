@@ -193,7 +193,7 @@ public class CubbyServlet extends HttpServlet {
 				out.printf("<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td></td>\n", 
 						no, 
 						routing.getPattern().pattern(), 
-						join(routing.getRequestMethods(), "|"),
+						routing.getRequestMethod(),
 						routing.getActionClass().getName() + "#" + routing.getMethod().getName());
 				out.printf("</tr>\n");
 			} else {
@@ -210,7 +210,7 @@ public class CubbyServlet extends HttpServlet {
 					out.printf("<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n", 
 							no, 
 							routing.getPattern().pattern(), 
-							join(routing.getRequestMethods(), "|"),
+							routing.getRequestMethod(),
 							routing.getActionClass().getName() + "#" + routing.getMethod().getName(),
 							uriParameters);
 					out.printf("</tr>\n");
@@ -241,21 +241,6 @@ public class CubbyServlet extends HttpServlet {
 		out.println("</table>\n");
 	}
 
-	private String join(Object[] values, String delim) {
-		if (values == null) {
-			return "";
-		}
-		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < values.length; i++) {
-			Object value = values[i];
-			s.append(value);
-			if (i < values.length - 1) {
-				s.append(delim);
-			}
-		}
-		return s.toString();
-	}
-	
 	private static String getText(Locale locale, String key, Object... args) {
 		ResourceBundle bundle = ResourceBundleUtil.getBundle("cubby-admin-messages", locale);
 		return Messages.getText(bundle, key, args);
