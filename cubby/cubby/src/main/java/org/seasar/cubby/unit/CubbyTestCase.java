@@ -15,13 +15,9 @@
  */
 package org.seasar.cubby.unit;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
+import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import java.lang.reflect.Field;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
@@ -119,9 +115,6 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	/** ルーティング */
 	private Router router;
 
-	/** フィルターチェイン */
-	private final MockFilterChain filterChain = new MockFilterChain();
-
 	/** ActionProcessor */
 	private ActionProcessor actionProcessor;
 
@@ -162,7 +155,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		routing(orginalPath);
 		setupThreadContext();
 		return actionProcessor
-				.process(getRequest(), getResponse(), filterChain);
+				.process(getRequest(), getResponse());
 	}
 
 	/**
@@ -193,6 +186,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 				.getInternalForwardPath();
 		final MockHttpServletRequest internalForwardRequest = this
 				.getServletContext().createRequest(internalForwardPath);
+		getRequest().setAttribute(ATTR_ROUTINGS, internalForwardInfo.getOnSubmitRoutings());
 		Beans.copy(internalForwardRequest, getRequest()).execute();
 		final Field servletPathField = ClassUtil.getDeclaredField(getRequest()
 				.getClass(), "servletPath");
@@ -210,21 +204,6 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 							.getQueryString()));
 		}
 		return internalForwardPath;
-	}
-
-	/**
-	 * モックのFilterChain。
-	 * 
-	 * @author agata
-	 */
-	private static class MockFilterChain implements FilterChain {
-		/**
-		 * {@inheritDoc}
-		 */
-		public void doFilter(final ServletRequest request,
-				final ServletResponse response) throws IOException,
-				ServletException {
-		}
 	}
 
 }

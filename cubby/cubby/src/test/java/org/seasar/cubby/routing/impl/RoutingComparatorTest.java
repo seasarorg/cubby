@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
-import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.routing.impl.PathResolverImpl.RoutingComparator;
 
 public class RoutingComparatorTest extends TestCase {
@@ -45,32 +44,30 @@ public class RoutingComparatorTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		routing1 = new RoutingImpl(null, null, null, asList(new String[0]),
-				Pattern.compile("/foo/bar"), new RequestMethod[] { GET }, true,
-				Integer.MAX_VALUE);
+				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE, true);
 		routing1d = new RoutingImpl(null, null, null, asList(new String[0]),
-				Pattern.compile("/foo/bar"), new RequestMethod[] { GET }, true,
-				Integer.MAX_VALUE);
+				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE, true);
 		routing2 = new RoutingImpl(null, null, null,
 				asList(new String[] { "p1" }), Pattern.compile("/foo/bar/a"),
-				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+				GET, null, Integer.MAX_VALUE, true);
 		routing3 = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/bbb"),
-				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+				"p1", "p2" }), Pattern.compile("/foo/bar/bbb"), GET, null,
+				Integer.MAX_VALUE, true);
 		routing4 = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
-				new RequestMethod[] { GET }, true, Integer.MAX_VALUE);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), GET, null,
+				Integer.MAX_VALUE, true);
 		routing5 = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
-				new RequestMethod[] { POST }, true, Integer.MAX_VALUE);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), POST, null,
+				Integer.MAX_VALUE, true);
 		routing5d = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc"),
-				new RequestMethod[] { POST, GET }, true, Integer.MAX_VALUE);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), POST, null,
+				Integer.MAX_VALUE, true);
 		routing6 = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"),
-				new RequestMethod[] { POST, GET }, false, 1);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 1,
+				false);
 		routing6d = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"),
-				new RequestMethod[] { POST, GET }, false, 0);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 0,
+				false);
 	}
 
 	public void testDuplicate() {

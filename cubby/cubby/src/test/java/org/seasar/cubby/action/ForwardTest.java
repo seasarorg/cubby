@@ -16,12 +16,14 @@
 package org.seasar.cubby.action;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
@@ -93,11 +95,30 @@ public class ForwardTest extends S2TestCase {
 		assertEquals("/absolute/path.jsp", forward.getPath());
 	}
 
-	public void testForwardByClassAndMethodName() {
-		Forward forward = new Forward(MockAction.class, "dummy1");
-		String expect = CubbyUtils.getInternalForwardPath(MockAction.class,
-				"dummy1");
-		assertEquals(expect, forward.getPath());
+	@SuppressWarnings("unchecked")
+	public void testForwardByClassAndMethodName() throws Exception {
+		MockServletContext servletContext = this.getServletContext();
+		servletContext.setServletContextName("/cubby");
+		MockHttpServletRequest request = this.getRequest();
+		MockHttpServletResponse response = this.getResponse();
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+
+		Forward forward = new Forward(MockAction.class, "dummy2");
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
+					public void assertDispatchPath(String path) {
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, path);
+					}
+				}), response);
+		Map<String, Routing> routings = (Map<String, Routing>) request
+				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
+		assertNotNull(routings);
+		assertEquals(1, routings.size());
+		Routing routing = routings.get(null);
+		assertNotNull(routing);
+		assertEquals(MockAction.class, routing.getActionClass());
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2", null);
+		assertEquals(forwardMethod, routing.getMethod());
 	}
 
 	interface Asserter {

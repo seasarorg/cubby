@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.routing;
 
+import java.util.Map;
+
 /**
  * 内部フォワード情報です。
  * 
@@ -31,17 +33,23 @@ public interface InternalForwardInfo {
 	String getInternalForwardPath();
 
 	/**
-	 * 内部フォワード先のアクションクラス名を取得します。
 	 * 
-	 * @return 内部フォワード先のアクションクラス名
+	 * @return
 	 */
-	String getActionClassName();
-
-	/**
-	 * 内部フォワード先のアクションメソッド名を取得します。
-	 * 
-	 * @return 内部フォワード先のアクションメソッド名
-	 */
-	String getMethodName();
+	Map<String, Routing> getOnSubmitRoutings();
+//
+//	/**
+//	 * 内部フォワード先のアクションクラス名を取得します。
+//	 * 
+//	 * @return 内部フォワード先のアクションクラス名
+//	 */
+//	String getActionClassName();
+//
+//	/**
+//	 * 内部フォワード先のアクションメソッド名を取得します。
+//	 * 
+//	 * @return 内部フォワード先のアクションメソッド名
+//	 */
+//	String getMethodName();
 
 }

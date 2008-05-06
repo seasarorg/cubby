@@ -79,8 +79,19 @@ public interface PathResolver {
 	 * @param parameters
 	 *            パラメータ
 	 * @return リダイレクト用のパス
+	 * @since 1.1.0
 	 */
 	String toRidirectPath(final Class<? extends Action> actionClass,
 			String methodName, Map<String, String[]> parameters);
+
+	/**
+	 * 内部フォワードパスを構築します。
+	 * 
+	 * @param parameters
+	 *            パラメータ
+	 * @return 内部フォワードパス
+	 * @since 1.1.0
+	 */
+	String buildInternalForwardPath(Map<String, String[]> parameters);
 
 }

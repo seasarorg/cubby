@@ -30,9 +30,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.cubby.util.CubbyUtils;
 
@@ -86,8 +83,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final Map<String, Object[]> parameterMap = parseRequest(request);
-		request.setAttribute(ATTR_PARAMS, parameterMap);
+		final Map<String, Object[]> parameterMap = CubbyUtils.getAttribute(request, ATTR_PARAMS);
 
 		final Action action = getAction(invocation);
 		action.initialize();
@@ -106,22 +102,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 		}
 
 		return result;
-	}
-
-	/**
-	 * リクエストをパースしてパラメータを取り出し、{@link Map}に変換して返します。
-	 * 
-	 * @param request
-	 *            リクエスト
-	 * @return リクエストパラメータの{@link Map}
-	 */
-	private Map<String, Object[]> parseRequest(final HttpServletRequest request) {
-		final CubbyConfiguration configuration = ThreadContext
-				.getConfiguration();
-		final RequestParser requestParser = configuration.getRequestParser();
-		final Map<String, Object[]> parameterMap = requestParser
-				.getParameterMap(request);
-		return parameterMap;
 	}
 
 }

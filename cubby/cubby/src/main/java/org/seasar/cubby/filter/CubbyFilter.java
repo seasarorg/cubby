@@ -26,6 +26,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.framework.container.SingletonS2Container;
@@ -80,13 +81,17 @@ public class CubbyFilter implements Filter {
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {
 		try {
-			final HttpServletRequest request = (HttpServletRequest) req;
+			final HttpServletRequest request = new CubbyHttpServletRequestWrapper(
+					(HttpServletRequest) req);
 			final HttpServletResponse response = (HttpServletResponse) res;
 			ThreadContext.setRequest(request);
 
 			final ActionProcessor processor = SingletonS2Container
 					.getComponent(ActionProcessor.class);
-			processor.process(request, response, chain);
+			final ActionResult result = processor.process(request, response);
+			if (result == null) {
+				chain.doFilter(request, response);
+			}
 		} catch (final Throwable e) {
 			if (e instanceof IOException) {
 				throw (IOException) e;

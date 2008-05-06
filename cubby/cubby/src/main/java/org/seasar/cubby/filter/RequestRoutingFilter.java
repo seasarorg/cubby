@@ -15,9 +15,12 @@
  */
 package org.seasar.cubby.filter;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -33,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
@@ -40,8 +44,7 @@ import org.seasar.framework.util.StringUtil;
 /**
  * リクエストされたURLを適切なアクションに振り分けるフィルタ。
  * <p>
- * {@link Router} によって {@link InternalForwardInfo}
- * を抽出し、そこに保持された情報をもとにフォワードします。
+ * {@link Router} によって {@link InternalForwardInfo} を抽出し、そこに保持された情報をもとにフォワードします。
  * </p>
  * 
  * @author baba
@@ -117,9 +120,9 @@ public class RequestRoutingFilter implements Filter {
 	 * マッチするパターンがなかった場合はフィルタチェインで次のフィルタに処理を移譲します。
 	 * </p>
 	 * 
-	 * @param request
+	 * @param req
 	 *            リクエスト
-	 * @param response
+	 * @param res
 	 *            レスポンス
 	 * @param chain
 	 *            フィルタチェイン
@@ -130,21 +133,27 @@ public class RequestRoutingFilter implements Filter {
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
 	 * @see CubbyFilter
 	 */
-	public void doFilter(final ServletRequest request,
-			final ServletResponse response, final FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(final ServletRequest req, final ServletResponse res,
+			final FilterChain chain) throws IOException, ServletException {
+		final HttpServletRequest request = (HttpServletRequest) req;
+		final HttpServletResponse response = (HttpServletResponse) res;
 
 		final Router router = SingletonS2Container.getComponent(Router.class);
 
-		final InternalForwardInfo internalForwardInfo = router.routing(
-				(HttpServletRequest) request, (HttpServletResponse) response,
-				ignorePathPatterns);
+		final InternalForwardInfo internalForwardInfo = router.routing(request,
+				response, ignorePathPatterns);
 		if (internalForwardInfo != null) {
 			final String internalForwardPath = internalForwardInfo
 					.getInternalForwardPath();
 			if (logger.isDebugEnabled()) {
 				logger.log("DCUB0001", new Object[] { internalForwardPath });
 			}
+			final Map<String, Routing> onSubmitRoutings = internalForwardInfo
+					.getOnSubmitRoutings();
+			if (logger.isDebugEnabled()) {
+				logger.log("DCUB0015", new Object[] { onSubmitRoutings });
+			}
+			request.setAttribute(ATTR_ROUTINGS, onSubmitRoutings);
 			final RequestDispatcher requestDispatcher = request
 					.getRequestDispatcher(internalForwardPath);
 			requestDispatcher.forward(request, response);

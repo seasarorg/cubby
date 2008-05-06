@@ -15,16 +15,26 @@
  */
 package org.seasar.cubby.action;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.StringUtil;
 
 /**
@@ -65,8 +75,15 @@ public class Forward extends AbstractActionResult {
 	/** ロガー。 */
 	private static final Logger logger = Logger.getLogger(Forward.class);
 
+	/** 空のパラメータ。 */
+	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
+			.emptyMap();
+
 	/** フォワード先のパス。 */
 	private final String path;
+
+	/** ルーティング。 */
+	private final Map<String, Routing> routings;
 
 	/**
 	 * インスタンスを生成します。
@@ -76,6 +93,29 @@ public class Forward extends AbstractActionResult {
 	 */
 	public Forward(final String path) {
 		this.path = path;
+		this.routings = null;
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            アクションメソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @since 1.1.0
+	 */
+	public Forward(final Class<? extends Action> actionClass,
+			final String methodName, final Map<String, String[]> parameters) {
+		final PathResolver pathResolver = SingletonS2Container
+				.getComponent(PathResolver.class);
+		this.path = pathResolver.buildInternalForwardPath(parameters);
+		final Method method = ClassUtil.getMethod(actionClass, methodName,
+				new Class[0]);
+		final Routing routing = new ForwardRouting(actionClass, method);
+		this.routings = Collections.singletonMap(null, routing);
 	}
 
 	/**
@@ -89,7 +129,7 @@ public class Forward extends AbstractActionResult {
 	 */
 	public Forward(final Class<? extends Action> actionClass,
 			final String methodName) {
-		this(CubbyUtils.getInternalForwardPath(actionClass, methodName));
+		this(actionClass, methodName, EMPTY_PARAMETERS);
 	}
 
 	/**
@@ -119,14 +159,17 @@ public class Forward extends AbstractActionResult {
 		} else {
 			absolutePath = "/" + actionDirectory + "/" + this.path;
 		}
+		if (this.routings != null) {
+			request.setAttribute(ATTR_ROUTINGS, this.routings);
+		}
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0001", new String[] { absolutePath });
+			logger.log("DCUB0001", new Object[] { absolutePath, routings });
 		}
 		final RequestDispatcher dispatcher = request
 				.getRequestDispatcher(absolutePath);
 		dispatcher.forward(request, response);
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0002", new String[] { absolutePath });
+			logger.log("DCUB0002", new Object[] { absolutePath });
 		}
 		action.postrender();
 
@@ -142,6 +185,110 @@ public class Forward extends AbstractActionResult {
 	@Override
 	public void prerender(final Action action) {
 		action.prerender();
+	}
+
+	/**
+	 * アクションメソッドへフォワードするためのルーティング。
+	 * 
+	 * @author baba
+	 * @since 1.1.0
+	 */
+	private static class ForwardRouting implements Routing {
+
+		/** アクションクラス。 */
+		private Class<? extends Action> actionClass;
+
+		/** アクションメソッド。 */
+		private Method method;
+
+		/**
+		 * {@inheritDoc}
+		 */
+		private ForwardRouting(final Class<? extends Action> actionClass,
+				final Method method) {
+			this.actionClass = actionClass;
+			this.method = method;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Class<? extends Action> getActionClass() {
+			return actionClass;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Method getMethod() {
+			return method;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public String getActionPath() {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public List<String> getUriParameterNames() {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Pattern getPattern() {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public RequestMethod getRequestMethod() {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public String getOnSubmit() {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public int getPriority() {
+			return 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isAuto() {
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isAcceptable(final String requestMethod) {
+			return true;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public String toString() {
+			return new StringBuilder().append("[").append(method).append("]")
+					.toString();
+		}
+
 	}
 
 }

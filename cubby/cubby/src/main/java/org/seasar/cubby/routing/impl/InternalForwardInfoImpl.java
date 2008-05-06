@@ -28,14 +28,11 @@ import org.seasar.cubby.routing.Routing;
  */
 class InternalForwardInfoImpl implements InternalForwardInfo {
 
-	/** 内部フォワード先のパス */
+	/** 内部フォワード先のパス。 */
 	private final String internalForwardPath;
 
-	/** 内部フォワード先のアクションクラス名 */
-	private final String actionClassName;
-
-	/** 内部フォワード先のアクションメソッド名 */
-	private final String methodName;
+	/** リクエストパラメータ名と対応するルーティングのマッピング。 */
+	private final Map<String, Routing> onSubmitRoutings;
 
 	/**
 	 * インスタンス化します。
@@ -48,10 +45,9 @@ class InternalForwardInfoImpl implements InternalForwardInfo {
 	 *            URI パラメータ
 	 */
 	public InternalForwardInfoImpl(final String internalForwardPath,
-			final Routing routing, final Map<String, String> uriParameters) {
+			final Map<String, Routing> onSubmitRoutings) {
 		this.internalForwardPath = internalForwardPath;
-		this.actionClassName = routing.getActionClass().getCanonicalName();
-		this.methodName = routing.getMethod().getName();
+		this.onSubmitRoutings = onSubmitRoutings;
 	}
 
 	/**
@@ -64,15 +60,8 @@ class InternalForwardInfoImpl implements InternalForwardInfo {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getActionClassName() {
-		return actionClassName;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getMethodName() {
-		return methodName;
+	public Map<String, Routing> getOnSubmitRoutings() {
+		return onSubmitRoutings;
 	}
 
 }

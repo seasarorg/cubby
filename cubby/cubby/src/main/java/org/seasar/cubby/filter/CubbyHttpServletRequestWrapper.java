@@ -72,9 +72,6 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  */
 public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	/** アクション。 */
-	private final Action action;
-
 	/**
 	 * インスタンス化します。
 	 * 
@@ -83,10 +80,8 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 * @param context
 	 *            アクションのコンテキスト
 	 */
-	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
-			final Action action) {
+	public CubbyHttpServletRequestWrapper(final HttpServletRequest request) {
 		super(request);
-		this.action = action;
 	}
 
 	/**
@@ -100,15 +95,10 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		final Object attribute;
 		if (ATTR_CONTEXT_PATH.equals(name)) {
 			attribute = this.getContextPath();
-		} else if (ATTR_ACTION.equals(name)) {
-			if (action == null) {
-				attribute = super.getAttribute(name);
-			} else {
-				attribute = action;
-			}
 		} else if (ATTR_MESSAGES.equals(name)) {
 			attribute = ThreadContext.getMessagesMap();
 		} else {
+			final Action action = (Action) super.getAttribute(ATTR_ACTION);
 			if (action != null) {
 				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 						.getClass());
@@ -144,6 +134,7 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		attributeNames.add(ATTR_ACTION);
 		attributeNames.add(ATTR_MESSAGES);
 
+		final Action action = (Action) super.getAttribute(ATTR_ACTION);
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());

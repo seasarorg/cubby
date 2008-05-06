@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.routing.impl;
 
+import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -41,7 +44,6 @@ import org.seasar.cubby.util.QueryStringBuilder;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.ArrayUtil;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
@@ -101,7 +103,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/**
 	 * ルーティング情報を取得します。
 	 * 
-	 * @return
+	 * @return ルーティング情報
 	 */
 	public List<Routing> getRoutings() {
 		initialize();
@@ -188,10 +190,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
 		if (requestMethods == null || requestMethods.length == 0) {
-			this.add(actionPath, actionClass, method,
-					CubbyUtils.DEFAULT_ACCEPT_ANNOTATION.value(), false);
+			for (final RequestMethod requestMethod : CubbyUtils.DEFAULT_ACCEPT_ANNOTATION
+					.value()) {
+				this.add(actionPath, actionClass, method, requestMethod, false);
+			}
 		} else {
-			this.add(actionPath, actionClass, method, requestMethods, false);
+			for (final RequestMethod requestMethod : requestMethods) {
+				this.add(actionPath, actionClass, method, requestMethod, false);
+			}
 		}
 	}
 
@@ -211,7 +217,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 */
 	private void add(final String actionPath,
 			final Class<? extends Action> actionClass, final Method method,
-			final RequestMethod[] requestMethods, final boolean auto) {
+			final RequestMethod requestMethod, final boolean auto) {
 
 		final Matcher matcher = URI_PARAMETER_MATCHING_PATTERN
 				.matcher(actionPath);
@@ -233,11 +239,14 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		uriRegex = "^" + uriRegex + "$";
 		final Pattern pattern = Pattern.compile(uriRegex);
 
+		final String onSubmit = CubbyUtils.getOnSubmit(method);
+
 		final int priority = auto ? CubbyUtils.getPriority(method)
 				: priorityCounter++;
+
 		final Routing routing = new RoutingImpl(actionClass, method,
-				actionPath, uriParameterNames, pattern, requestMethods, auto,
-				priority);
+				actionPath, uriParameterNames, pattern, requestMethod,
+				onSubmit, priority, auto);
 
 		if (routings.containsKey(routing)) {
 			final Routing duplication = routings.get(routing);
@@ -282,53 +291,64 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 *            リクエストのメソッド
 	 * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
 	 */
-	public InternalForwardInfo findInternalForwardInfo(final String path,
+	private InternalForwardInfo findInternalForwardInfo(final String path,
 			final String requestMethod) {
-		for (final Routing routing : routings.values()) {
+		final Iterator<Routing> iterator = routings.values().iterator();
+		while (iterator.hasNext()) {
+			final Routing routing = iterator.next();
 			final Matcher matcher = routing.getPattern().matcher(path);
 			if (matcher.find()) {
 				if (routing.isAcceptable(requestMethod)) {
-					final Map<String, String> uriParameters = new HashMap<String, String>();
+					final Map<String, Routing> onSubmitRoutings = new HashMap<String, Routing>();
+					onSubmitRoutings.put(routing.getOnSubmit(), routing);
+					while (iterator.hasNext()) {
+						final Routing anotherRouting = iterator.next();
+						if (routing.getPattern().pattern().equals(
+								anotherRouting.getPattern().pattern())
+								&& routing.getRequestMethod().equals(
+										anotherRouting.getRequestMethod())) {
+							onSubmitRoutings.put(anotherRouting.getOnSubmit(),
+									anotherRouting);
+						}
+					}
+
+					final Map<String, String[]> uriParameters = new HashMap<String, String[]>();
 					for (int i = 0; i < matcher.groupCount(); i++) {
 						final String name = routing.getUriParameterNames().get(
 								i);
 						final String value = matcher.group(i + 1);
-						uriParameters.put(name, value);
+						uriParameters.put(name, new String[] { value });
 					}
-					final String inernalFowardPath = buildInternalForwardPathWithQueryString(
-							routing, uriParameters);
-					final InternalForwardInfoImpl internalForwardInfo = new InternalForwardInfoImpl(
-							inernalFowardPath, routing, uriParameters);
+					final String inernalFowardPath = buildInternalForwardPath(uriParameters);
+
+					final InternalForwardInfo internalForwardInfo = new InternalForwardInfoImpl(
+							inernalFowardPath, onSubmitRoutings);
+
 					return internalForwardInfo;
 				}
 			}
 		}
+
 		return null;
 	}
 
 	/**
-	 * 内部フォワードパスを構築します。
-	 * 
-	 * @param routing
-	 *            ルーティング
-	 * @param uriParameters
-	 *            URI パラメータ
-	 * @return 内部フォワードパス
+	 * {@inheritDoc}
 	 */
-	private String buildInternalForwardPathWithQueryString(
-			final Routing routing, final Map<String, String> uriParameters) {
+	public String buildInternalForwardPath(
+			final Map<String, String[]> parameters) {
 		final StringBuilder builder = new StringBuilder(100);
-		builder.append(CubbyUtils.getInternalForwardPath(routing
-				.getActionClass(), routing.getMethod().getName()));
-		if (!uriParameters.isEmpty()) {
+		builder.append(INTERNAL_FORWARD_DIRECTORY);
+		if (parameters != null && !parameters.isEmpty()) {
 			builder.append("?");
 			final QueryStringBuilder query = new QueryStringBuilder();
-			final String encoding = PathResolverImpl.this.uriEncoding;
-			if (!StringUtil.isEmpty(encoding)) {
-				query.setEncode(encoding);
+			if (!StringUtil.isEmpty(uriEncoding)) {
+				query.setEncode(uriEncoding);
 			}
-			for (final Entry<String, String> entry : uriParameters.entrySet()) {
-				query.addParam(entry.getKey(), entry.getValue());
+			for (final Entry<String, String[]> entry : parameters.entrySet()) {
+				for (final String parameter : entry.getValue()) {
+					query.addParam(entry.getKey(), parameter);
+				}
 			}
 			builder.append(query.toString());
 		}
@@ -397,16 +417,22 @@ public class PathResolverImpl implements PathResolver, Disposable {
 			if (compare != 0) {
 				return compare;
 			}
-			final RequestMethod[] requestMethods1 = routing1
-					.getRequestMethods();
-			final RequestMethod[] requestMethods2 = routing2
-					.getRequestMethods();
-			for (final RequestMethod requestMethod : requestMethods1) {
-				if (ArrayUtil.contains(requestMethods2, requestMethod)) {
-					return 0;
-				}
+			compare = routing1.getRequestMethod().compareTo(
+					routing2.getRequestMethod());
+			if (compare != 0) {
+				return compare;
 			}
-			return 1;
+			if (routing1.getOnSubmit() == routing2.getOnSubmit()) {
+				compare = 0;
+			} else if (routing1.getOnSubmit() == null) {
+				compare = -1;
+			} else if (routing2.getOnSubmit() == null) {
+				compare = 1;
+			} else {
+				compare = routing1.getOnSubmit().compareTo(
+						routing2.getOnSubmit());
+			}
+			return compare;
 		}
 	}
 
@@ -459,8 +485,9 @@ public class PathResolverImpl implements PathResolver, Disposable {
 							method);
 					final RequestMethod[] acceptableRequestMethods = CubbyUtils
 							.getAcceptableRequestMethods(clazz, method);
-					add(actionPath, clazz, method, acceptableRequestMethods,
-							true);
+					for (final RequestMethod requestMethod : acceptableRequestMethods) {
+						add(actionPath, clazz, method, requestMethod, true);
+					}
 				}
 			}
 		}
@@ -519,7 +546,8 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 		if (!copyOfParameters.isEmpty()) {
 			final QueryStringBuilder builder = new QueryStringBuilder();
-			for (Entry<String, String[]> entry : copyOfParameters.entrySet()) {
+			for (final Entry<String, String[]> entry : copyOfParameters
+					.entrySet()) {
 				for (final String value : entry.getValue()) {
 					builder.addParam(entry.getKey(), value);
 				}
@@ -543,7 +571,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 */
 	private Routing findRouting(final Class<? extends Action> actionClass,
 			final String methodName) {
-		for (Routing routing : routings.values()) {
+		for (final Routing routing : routings.values()) {
 			if (actionClass.equals(routing.getActionClass())
 					&& methodName.equals(routing.getMethod().getName())) {
 				return routing;
