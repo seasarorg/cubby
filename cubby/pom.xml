@@ -17,6 +17,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
           <additionalBuildcommands>
             <buildCommand>
               <name>org.seasar.kijimuna.core.builder</name>
