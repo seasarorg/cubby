@@ -24,4 +24,9 @@
 
 	<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
 
+	<!-- メッセージの振る舞い -->
+	<component class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
+		<property name="baseName">"messages"</property>
+	</component>
+
 </components>

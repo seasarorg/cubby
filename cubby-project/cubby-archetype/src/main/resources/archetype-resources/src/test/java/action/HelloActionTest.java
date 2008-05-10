@@ -26,8 +26,8 @@ public class HelloActionTest extends CubbyTestCase {
 	
 	public void testMessage_validationError() throws Exception {
 		ActionResult result = processAction("/hello/message");
-		assertPathEquals(Forward.class, "input.jsp", result);
-		assertEquals("name1", action.name);
+		assertPathEquals(Forward.class, "index.jsp", result);
+		assertNull(action.name);
 		assertEquals(0, action.getErrors().getOthers().size());
 		assertEquals(1, action.getErrors().getFields().size());
 		assertEquals(1, action.getErrors().getFields().get("name").size());
