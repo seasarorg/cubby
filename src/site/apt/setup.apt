@@ -279,7 +279,7 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
 
  [[3]]RequestRoutingFilter
 
-      リクエストされた URL から、以下で述べる CubbyFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。
+      リクエストされた URL から、以下で述べる RequestRoutingFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。
       このマッピングはアクションクラスに @Path アノテーションをつけることで変更できます。
 
       また、処理の対象外とする URL を ignorePathPattern で指定できます。
@@ -424,7 +424,7 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
 
       Cubby アプリケーション全体の設定です。
       任意で作成して、app.dicon からインクルードしてください。
-      現在はデフォルトの日付フォーマットとファイルアップロード用の設定を指定できます。
+      現在はデフォルトの日付フォーマットとファイルアップロード用の設定、メッセージの振る舞いを指定できます。
 
 +------------------------------------------------------+
 <?xml version="1.0" encoding="UTF-8"?>
@@ -453,6 +453,11 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
 
 	<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
 
+	<!-- メッセージの振る舞い -->
+	<component class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
+		<property name="baseName">"messages"</property>
+	</component>
+
 </components>
 +------------------------------------------------------+
 
@@ -464,6 +469,9 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
       Cubby のバリデータが出力するメッセージもここに定義します。
 
       デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。
+
+      デフォルトでは messages.properties を使用しますが、app-cubby.dicon に org.seasar.controller.MessagesBehaviour を実装したクラスを定義することで、
+      リソースバンドルの取得方法などを変更することができます。
 
 +------------------------------------------------------+
 valid.required={0}は必須です。
