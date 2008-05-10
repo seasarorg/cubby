@@ -15,16 +15,15 @@
  */
 package org.seasar.cubby.controller;
 
-import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
-
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.SingletonS2Container;
-import org.seasar.framework.util.ResourceBundleUtil;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
  * 実行スレッドのコンテキスト情報です。
@@ -33,6 +32,9 @@ import org.seasar.framework.util.ResourceBundleUtil;
  * @since 1.0.0
  */
 public class ThreadContext {
+
+	/** デフォルトのメッセージのふるまい。 */
+	private static final MessagesBehaviour DEFAULT_MESSAGES_BEHAVIOUR = new DefaultMessagesBehaviour();
 
 	/** ThreadContext を保存するスレッドローカル。 */
 	private static final ThreadLocal<ThreadContext> CONTEXT = new ThreadLocal<ThreadContext>() {
@@ -86,17 +88,13 @@ public class ThreadContext {
 	 */
 	public static ResourceBundle getMessagesResourceBundle() {
 		final ThreadContext context = CONTEXT.get();
-		if (context.resourceBundle == null) {
-			final Locale locale;
-			if (context.request == null) {
-				locale = Locale.getDefault();
-			} else {
-				locale = context.request.getLocale();
-			}
-			context.resourceBundle = ResourceBundleUtil.getBundle(RES_MESSAGES,
-					locale);
+		if (context.messagesResourceBundle == null) {
+			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
+			context.messagesResourceBundle = messagesBehaviour
+					.getBundle(context.request == null ? null : context.request
+							.getLocale());
 		}
-		return context.resourceBundle;
+		return context.messagesResourceBundle;
 	}
 
 	/**
@@ -105,13 +103,36 @@ public class ThreadContext {
 	 * 
 	 * @return メッセージの {@link Map}
 	 */
-	public static Map<?, ?> getMessagesMap() {
+	public static Map<String, String> getMessagesMap() {
 		final ThreadContext context = CONTEXT.get();
 		if (context.messages == null) {
-			final ResourceBundle resourceBundle = getMessagesResourceBundle();
-			context.messages = ResourceBundleUtil.convertMap(resourceBundle);
+			final ResourceBundle bundle = getMessagesResourceBundle();
+			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
+			context.messages = messagesBehaviour.toMap(bundle);
 		}
 		return context.messages;
+	}
+
+	/**
+	 * メッセージ表示用リソースバンドルの振る舞いを取得します。
+	 * 
+	 * @param context
+	 *            実行スレッドのコンテキスト情報
+	 * @return メッセージ表示用リソースバンドルの振る舞い
+	 */
+	private static MessagesBehaviour getMessagesBehaviour(
+			final ThreadContext context) {
+		if (context.messagesBehaviour == null) {
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
+			if (container.hasComponentDef(MessagesBehaviour.class)) {
+				context.messagesBehaviour = (MessagesBehaviour) container
+						.getComponent(MessagesBehaviour.class);
+			} else {
+				context.messagesBehaviour = DEFAULT_MESSAGES_BEHAVIOUR;
+			}
+		}
+		return context.messagesBehaviour;
 	}
 
 	/**
@@ -123,10 +144,13 @@ public class ThreadContext {
 	/** リクエスト。 */
 	private HttpServletRequest request;
 
-	/** リソースバンドル。 */
-	private ResourceBundle resourceBundle = null;
+	/** メッセージのリソースバンドル。 */
+	private ResourceBundle messagesResourceBundle = null;
 
 	/** メッセージの {@link Map} */
-	private Map<?, ?> messages = null;
+	private Map<String, String> messages = null;
+
+	/** メッセージ表示用リソースバンドルの振る舞い。 */
+	private MessagesBehaviour messagesBehaviour;
 
 }
