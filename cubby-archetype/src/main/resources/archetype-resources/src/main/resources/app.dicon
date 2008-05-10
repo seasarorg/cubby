@@ -4,9 +4,13 @@
 <components>
 	<include path="convention.dicon"/>
 	<include path="aop.dicon"/>
+#if ($use-s2dao.matches("(?i)y|yes|true|on"))
 	<include path="dao.dicon"/>
+#end
 	<include path="dxo.dicon"/>
 	<include path="routing.dicon"/>
 	<include path="cubby.dicon"/>
+#if ($use-s2jdbc.matches("(?i)y|yes|true|on"))
 	<include path="s2jdbc.dicon"/>
+#end
 </components>

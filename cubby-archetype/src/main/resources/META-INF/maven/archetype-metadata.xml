@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="cubby-archetype">
+  <requiredProperties>
+    <requiredProperty key="cubby-version">
+      <defaultValue>1.1.0-SNAPSHOT</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="s2container-version">
+      <defaultValue>2.4.25</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="s2dao-version">
+      <defaultValue>1.0.48</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="use-s2dao">
+      <defaultValue>true</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="use-s2jdbc">
+      <defaultValue>true</defaultValue>
+    </requiredProperty>
+  </requiredProperties>
+  <fileSets>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*.dicon</include>
+        <include>**/*.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="ISO-8859-1">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*.jsp</include>
+        <include>**/*.html</include>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*.css</include>
+        <include>**/*.js</include>
+        <include>**/*.mayaa</include>
+        <include>**/*.gif</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/test/resources</directory>
+      <includes>
+        <include>**/*.dicon</include>
+        <include>**/*.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="ISO-8859-1">
+      <directory>src/test/resources</directory>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</archetype-descriptor>
