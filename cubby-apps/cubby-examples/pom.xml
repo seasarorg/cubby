@@ -31,7 +31,7 @@
         <plugin>
           <artifactId>maven-eclipse-plugin</artifactId>
           <configuration>
-            <wtpversion>1.5</wtpversion>
+            <wtpversion>2.0</wtpversion>
           </configuration>
         </plugin>
       </plugins>
@@ -122,9 +122,7 @@
     </repository>
     <repository>
       <id>maven-snapshot.seasar.org</id>
-      <name>
-        The Seasar Foundation Maven2 Snapshot Repository
-      </name>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
       <url>http://maven.seasar.org/maven2-snapshot</url>
     </repository>
     <repository>
