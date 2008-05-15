@@ -150,10 +150,12 @@ mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディ�
       プロジェクトのディレクトリに移動して以下のコマンドを実行してください。
 
 +------------------------------------------------------+
-mvn eclipse:eclipse
+mvn eclipse:eclipse -DdownloadSources=true
 +------------------------------------------------------+
 
       Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。
+      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。
+      eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。
 
  [[3]]プロジェクトのインポート
 
