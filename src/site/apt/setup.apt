@@ -3,7 +3,7 @@
   --------
   baba
   --------
-  2008-03-01
+  2008-05-15
   --------
 
 {目次}
@@ -137,8 +137,9 @@ mvn war:inplace
 
  [[1]]ワークスペースのクラスパス変数
 
-      Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。\
+      Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。
       以下のコマンドを実行してください。
+      この作業はワークスペースごとに１度行えば、次回からは必要ありません。
 
 +------------------------------------------------------+
 mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディレクトリ 例 "C:/eclipse/workspace")
@@ -150,10 +151,12 @@ mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディ�
       プロジェクトのディレクトリに移動して以下のコマンドを実行してください。
 
 +------------------------------------------------------+
-mvn eclipse:eclipse
+mvn eclipse:eclipse -DdownloadSources=true
 +------------------------------------------------------+
 
-      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。
+      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。\
+      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。\
+      eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。
 
  [[3]]プロジェクトのインポート
 
@@ -161,9 +164,50 @@ mvn eclipse:eclipse
 
       [[1]]File(ファイル)メニュー → Import(インポート)を選択します。
 
-      [[2]]Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。
+      [[2]]General(共通) → Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。
 
-      [[3]]プロジェクトのディレクトリを指定します。
+      [[3]]Select root directory(ルートディレクトリの選択)でプロジェクトのルートディレクトリを指定します。
+
+      [[4]]Finish(終了)を押します。
+
+      []
+
+      プロジェクトがインポートされます。
+
+ [[4]]WTPのServer設定
+
+      WTPのServer設定が行われていない場合、以下の手順でServerとしてTomcat 5.5(or 6.0)を設定します。
+
+      [[1]]Window(ウィンドウ)メニュー → Show View(ビューの表示) → Other...(その他)を選択します。
+
+      [[2]]Server → Serversを選択 → OK。Serversビューが表示されます。
+
+      [[3]]Serversビューの上で右クリック → New → Server を選択。
+      
+      [[4]]Apache → Tomcat v5.5 Serverを選択 → Nextを選択。
+
+      [[5]]Tomcat installation directoryでTomcatのルートディレクトリを選択 → Nextを選択。
+
+      [[6]]「cubby-examples-hello」プロジェクトをConfigred ProjectにAdd。
+      
+      [[7]]Finishを選択。
+      
+      []
+
+      ServerビューにTomcatが追加されます。
+
+ [[5]]WTPからTomcatを起動する。
+ 
+      [[1]]ServersビューのTomcatを選択して、右クリック → Startを選択。
+      
+      []
+
+      Tomcatが起動して、ログがコンソールに出力されます。
+
+ [[6]]WTP環境でHotDeployの設定を有効にする。 
+
+      {{{http://d.hatena.ne.jp/uriyuri/20080328/1206694040}http://d.hatena.ne.jp/uriyuri/20080328/1206694040}}の設定を行うことで、
+      WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。
 
 []
 

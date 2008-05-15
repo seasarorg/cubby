@@ -4,12 +4,14 @@
   agata
   baba
   --------
-  2008-03-14
+  2008-05-15
   --------
 
 {目次}
 
  *{{{#Todo_アプリケーションの概要}Todo アプリケーションの概要}}
+
+ *{{{#アプリケーションの雛形作成}アプリケーションの雛形作成}}
 
  *{{{#ログイン画面の作成}ログイン画面の作成}}
 
@@ -40,9 +42,53 @@
  ログイン画面、一覧画面、詳細画面、追加・編集画面、確認画面を持つシンプルなアプリケーションです。
  このチュートリアルはCubby のサンプル war の「Todoサンプルアプリケーション」から実行できます。
 
+{アプリケーションの雛形作成}
+
+ 雛形作成の詳細は{{{setup.html#Maven2_によるプロジェクトの雛形作成}Maven2 によるプロジェクトの雛形作成}}をご覧ください。\
+ Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。
+ Eclipseのワークスペースディレクトリにターミナル（コマンドプロンプト）で移動して、以下のコマンドを入力してください。
+
++------------------------------------------------------+
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
++------------------------------------------------------+
+
+   コマンド入力後、いくつかの質問に回答していきます。
+
++------------------------------------------------------+
+Choose archetype:
+1: remote -> cubby-archetype (Cubby 1.0.0)
+Choose a number:  (1):
++------------------------------------------------------+
+
+   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。
+   以下、groupId,artifactId,version,packageを入力します。
+
++------------------------------------------------------+
+Define value for groupId: : org.seasar.cubby.examples
+Define value for artifactId: : cubby-examples-todo
+Define value for version: : 1.0-SNAPSHOT
+Define value for package: : org.seasar.cubby.examples.todo
+
+Confirm properties configuration:
+groupId: org.seasar.cubby.examples
+artifactId: cubby-examples-hello
+version: 1.0-SNAPSHOT
+package: org.seasar.cubby.examples.hello
+ Y: :
++------------------------------------------------------+
+
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。
+   プロジェクトの雛形として「cubby-examples-todo」ディレクトリが作成されます。
+
+*{Eclipseへの取り込み}
+
+ {{{setup.html#Eclipse_を使った開発}Eclipse を使った開発}}に従って、「cubby-examples-todo」プロジェクトのEclipseへの取り込みとWTPの設定を行います。
+ 設定が終わったらWTPからTomcatを起動します。\
+ ブラウザで {{http://localhost:8080/cubby-examples-todo/}} にアクセスして、トップページが表示されることを確認してください。
+ 
 {ログイン画面の作成}
 
- ログイン画面のActionクラスとJSPを作成します。
+ ログイン画面のActionクラス(LoginAction.java)とユーザクラス(User.java)、ログイン用のJSP(login.jsp)を作成します。
  まずはバリデーションなしで作成します。
  アクションにログイン画面を表示する「indexメソッド」とログイン処理を行う「process」メソッドを定義します。
  「processメソッド」ではログインに成功した場合一覧画面の「/todo/」にリダイレクトします。
@@ -50,13 +96,16 @@
 
  ログインに失敗した場合、エラーメッセージを追加してログイン画面にフォワードします。
  アクションで発生したエラーやバリデーションエラーはアクションの「errors」フィールドに追加します。
- ここではアクションで発生したエラーを「errors.addActionError("ユーザIDかパスワードが違います。");」
+ ここではアクションで発生したエラーを「errors.add("ユーザIDかパスワードが違います。");」
  で追加しています。
 
  エラーメッセージをHTMLに出力する部品はCubbyでは用意されていません。
  これはエラー画面はアプリケーションにより、表示形式が異なると思われるためです。
  サンプルでは「common/errors.jsp」をエラーメッセージの表示用部品としてインポートして各画面で使用しています。
  こちらを参考に各アプリケーションでのエラー表示部品を作成してください。
+
+ 3つのファイルを作成したら、「http://localhost:8080/cubby-examples-todo/todo/login/」で確認してください。
+ (TomcatではloginというURLは特別に扱われるので、URLの最後に必ずスラッシュを付けて確認してください)
 
  <<ログイン画面>>
 
@@ -65,6 +114,17 @@
  <<LoginAction.java>>
 
 +------------------------------------------------------+
+package org.seasar.cubby.examples.todo.action;
+
+import java.util.Map;
+
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.examples.todo.entity.User;
+
 @Path("todo/login")
 public class LoginAction extends Action {
 
@@ -93,7 +153,7 @@ public class LoginAction extends Action {
       sessionScope.put("user", user);
       return new Redirect("/todo/");
     } else {
-      errors.addActionError("ユーザIDかパスワードが違います。");
+      errors.add("ユーザIDかパスワードが違います。");
       return new Forward("/todo/login.jsp");
     }
   }
@@ -116,7 +176,33 @@ public class LoginAction extends Action {
 }
 +------------------------------------------------------+
 
- <<login.jsp>>
+ <<LoginAction.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.examples.todo.entity;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+	private Integer id;
+	private String name;
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+}
++------------------------------------------------------+
+
+ <<src/main/webapp/todo/login.jsp>>
 
 +------------------------------------------------------+
 ...
@@ -145,7 +231,7 @@ test/testでログインできます。
 ...
 +------------------------------------------------------+
 
- <<errors.jsp>>
+ <<src/main/webapp/common/errors.jsp>>
 
 +------------------------------------------------------+
 <c:if test="${fn:length(allErrors) > 0}">
@@ -164,7 +250,7 @@ test/testでログインできます。
 
  ログイン画面にバリデーションを追加します。
  userId、passwordとも必須にしてみましょう。
- バリデーションを定義する場合、以下3カ所を追記します。
+ バリデーションを定義する場合、以下4カ所を追記します。
  
  * バリデーションルールをアクションのフィールドに定義します。
 
@@ -172,6 +258,7 @@ test/testでログインできます。
 
  * JSP中でバリデーションエラーを表示する記述を追記します。
 
+ * messages.propertiesにフィールド名を追記します。
 
  バリデーションの詳細は{{{validation.html}バリデーションのリファレンス}}を参照下さい。
 
@@ -182,6 +269,13 @@ test/testでログインできます。
  <<LoginAction.java>>
 
 +------------------------------------------------------+
+...
+import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.RequiredValidator;
+...
+
 @Path("todo/login")
 public class LoginAction extends Action {
 
@@ -203,19 +297,11 @@ public class LoginAction extends Action {
 }
 +------------------------------------------------------+
 
- <<errors.jsp>>
+ <<src/main/resources/messages.properties>>
 
 +------------------------------------------------------+
-<c:if test="${fn:length(allErrors) > 0}">
-  <div id="errors" class="errors">
-    <ul>
-    <c:forEach var="error" varStatus="s" items="${allErrors}">
-      <li>${fn:replace(error, "
-", "<br/>")}</li>
-    </c:forEach>
-    </ul>
-  </div>
-</c:if>
+login.userId=ユーザ名
+login.password=パスワード
 +------------------------------------------------------+
 
 *{HttpServletRequestやHttpServletResponseの利用}
