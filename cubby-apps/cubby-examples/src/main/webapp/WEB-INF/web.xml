@@ -100,7 +100,7 @@
     	</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+<!-- trim white spaces(Tomcat 5.5 or higher)
 	<servlet>
 		<servlet-name>jsp</servlet-name>
 		<servlet-class>
@@ -120,7 +120,7 @@
 		</init-param>
 		<load-on-startup>3</load-on-startup>
 	</servlet>
-
+-->
     <servlet>
         <servlet-name>MayaaServlet</servlet-name>
         <servlet-class>org.seasar.mayaa.impl.MayaaServlet</servlet-class>
@@ -131,12 +131,12 @@
         <servlet-name>s2servlet</servlet-name>
         <url-pattern>/s2servlet</url-pattern>
     </servlet-mapping>
-
+<!-- trim white spaces(Tomcat 5.5 or higher)
     <servlet-mapping>
     	<servlet-name>jsp</servlet-name>
     	<url-pattern>*.jsp</url-pattern>
     </servlet-mapping>
-
+-->
     <servlet-mapping>
         <servlet-name>MayaaServlet</servlet-name>
         <url-pattern>*.html</url-pattern>
