@@ -5,7 +5,7 @@
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
   <name>cubby apps</name>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
   <build>
     <defaultGoal>validate</defaultGoal>
     <plugins>
