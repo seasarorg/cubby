@@ -57,7 +57,7 @@
   
   
     
-             最終更新: 2008-04-16
+             最終更新: 2008-05-15
             </div>
       <div class="clear">
         <hr/>
@@ -417,22 +417,43 @@ package: com.example.foo.barapp
 </h3>
 <div class="section"><h4>プロジェクトの設定</h4>
 <p>プロジェクトを Eclipse で開発する場合は、Maven2 で Eclipse のワークスペースやプロジェクトを設定します。</p>
-<ol type="1"><li>ワークスペースのクラスパス変数<p>Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。<br />
-以下のコマンドを実行してください。</p>
+<ol type="1"><li>ワークスペースのクラスパス変数<p>Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。 以下のコマンドを実行してください。 この作業はワークスペースごとに１度行えば、次回からは必要ありません。</p>
 <div class="source"><pre>mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディレクトリ 例 &quot;C:/eclipse/workspace&quot;)</pre>
 </div>
 </li>
 <li>プロジェクト設定ファイル<p>プロジェクトに .project や .classpath などといった Eclipse プロジェクトの設定ファイルを作成します。<br />
 プロジェクトのディレクトリに移動して以下のコマンドを実行してください。</p>
-<div class="source"><pre>mvn eclipse:eclipse</pre>
+<div class="source"><pre>mvn eclipse:eclipse -DdownloadSources=true</pre>
 </div>
-<p>Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。</p>
+<p>Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。<br />
+「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。<br />
+eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。</p>
 </li>
 <li>プロジェクトのインポート<p>プロジェクトを Eclipse のワークスペースへインポートします。</p>
 <ol type="1"><li>File(ファイル)メニュー → Import(インポート)を選択します。</li>
-<li>Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。</li>
-<li>プロジェクトのディレクトリを指定します。</li>
+<li>General(共通) → Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。</li>
+<li>Select root directory(ルートディレクトリの選択)でプロジェクトのルートディレクトリを指定します。</li>
+<li>Finish(終了)を押します。</li>
 </ol>
+<p>プロジェクトがインポートされます。</p>
+</li>
+<li>WTPのServer設定<p>WTPのServer設定が行われていない場合、以下の手順でServerとしてTomcat 5.5(or 6.0)を設定します。</p>
+<ol type="1"><li>Window(ウィンドウ)メニュー → Show View(ビューの表示) → Other...(その他)を選択します。</li>
+<li>Server → Serversを選択 → OK。Serversビューが表示されます。</li>
+<li>Serversビューの上で右クリック → New → Server を選択。</li>
+<li>Apache → Tomcat v5.5 Serverを選択 → Nextを選択。</li>
+<li>Tomcat installation directoryでTomcatのルートディレクトリを選択 → Nextを選択。</li>
+<li>「cubby-examples-hello」プロジェクトをConfigred ProjectにAdd。</li>
+<li>Finishを選択。</li>
+</ol>
+<p>ServerビューにTomcatが追加されます。</p>
+</li>
+<li>WTPからTomcatを起動する。<ol type="1"><li>ServersビューのTomcatを選択して、右クリック → Startを選択。</li>
+</ol>
+<p>Tomcatが起動して、ログがコンソールに出力されます。</p>
+</li>
+<li>WTP環境でHotDeployの設定を有効にする。 <p><a href="http://d.hatena.ne.jp/uriyuri/20080328/1206694040" class="externalLink">http://d.hatena.ne.jp/uriyuri/20080328/1206694040</a>
+の設定を行うことで、 WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。</p>
 </li>
 </ol>
 </div>
@@ -533,7 +554,7 @@ package: com.example.foo.barapp
 &lt;/web-app&gt;</pre>
 </div>
 </li>
-<li>RequestRoutingFilter<p>リクエストされた URL から、以下で述べる CubbyFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。 このマッピングはアクションクラスに @Path アノテーションをつけることで変更できます。</p>
+<li>RequestRoutingFilter<p>リクエストされた URL から、以下で述べる RequestRoutingFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。 このマッピングはアクションクラスに @Path アノテーションをつけることで変更できます。</p>
 <p>また、処理の対象外とする URL を ignorePathPattern で指定できます。 Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。 対象外にするパスを正規表現のカンマ区切りで指定してください。</p>
 <div class="source"><pre>&lt;web-app&gt;
         &lt;filter&gt;
@@ -643,7 +664,7 @@ package: com.example.foo.barapp
 &lt;/components&gt;</pre>
 </div>
 </li>
-<li>app-cubby.dicon<p>Cubby アプリケーション全体の設定です。 任意で作成して、app.dicon からインクルードしてください。 現在はデフォルトの日付フォーマットとファイルアップロード用の設定を指定できます。</p>
+<li>app-cubby.dicon<p>Cubby アプリケーション全体の設定です。 任意で作成して、app.dicon からインクルードしてください。 現在はデフォルトの日付フォーマットとファイルアップロード用の設定、メッセージの振る舞いを指定できます。</p>
 <div class="source"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot;
         &quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
@@ -670,6 +691,11 @@ package: com.example.foo.barapp
 
         &lt;component class=&quot;org.apache.commons.fileupload.servlet.ServletRequestContext&quot; instance=&quot;prototype&quot;/&gt;
 
+        &lt;!-- メッセージの振る舞い --&gt;
+        &lt;component class=&quot;org.seasar.cubby.controller.impl.DefaultMessagesBehaviour&quot;&gt;
+                &lt;property name=&quot;baseName&quot;&gt;&quot;messages&quot;&lt;/property&gt;
+        &lt;/component&gt;
+
 &lt;/components&gt;</pre>
 </div>
 </li>
@@ -679,6 +705,7 @@ package: com.example.foo.barapp
 </h3>
 <ol type="1"><li>messages.properties<p>org.seasar.cubby.util.Messagesで使用する、アプリケーションで表示するメッセージを定義します。 Cubby のバリデータが出力するメッセージもここに定義します。</p>
 <p>デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。</p>
+<p>デフォルトでは messages.properties を使用しますが、app-cubby.dicon に org.seasar.controller.MessagesBehaviour を実装したクラスを定義することで、 リソースバンドルの取得方法などを変更することができます。</p>
 <div class="source"><pre>valid.required={0}は必須です。
 valid.maxLength={0}は{1}文字以下で入力してください。
 valid.number={0}は数値のみで入力してください。

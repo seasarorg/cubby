@@ -59,7 +59,7 @@
   
   
     
-             最終更新: 2008-04-16
+             最終更新: 2008-05-15
             </div>
       <div class="clear">
         <hr/>
@@ -455,26 +455,26 @@ The following document contains the results of a JDepend metric analysis. The va
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.controller">org.seasar.cubby.controller</a>
 </td>
-<td>8</td>
-<td>2</td>
-<td>6</td>
 <td>9</td>
-<td>8</td>
-<td>75.0%</td>
-<td>47.0%</td>
-<td>22.0%</td>
+<td>2</td>
+<td>7</td>
+<td>9</td>
+<td>9</td>
+<td>78.0%</td>
+<td>50.0%</td>
+<td>28.0%</td>
 <td>1</td>
 </tr>
 <tr class="a"><td><a href="#org.seasar.cubby.controller.impl">org.seasar.cubby.controller.impl</a>
 </td>
-<td>7</td>
-<td>7</td>
+<td>8</td>
+<td>8</td>
 <td>0</td>
-<td>0</td>
+<td>1</td>
 <td>19</td>
 <td>0.0%</td>
-<td>100.0%</td>
-<td>0.0%</td>
+<td>95.0%</td>
+<td>5.0%</td>
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.customizer">org.seasar.cubby.customizer</a>
@@ -844,10 +844,10 @@ org.seasar.framework.exception<br />
 <th>Distance</th>
 </tr>
 <tr class="b"><td>9</td>
-<td>8</td>
-<td>75.0%</td>
-<td>47.0%</td>
-<td>22.0%</td>
+<td>9</td>
+<td>78.0%</td>
+<td>50.0%</td>
+<td>28.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="a"><th>Abstract Classes</th>
@@ -860,6 +860,7 @@ org.seasar.cubby.controller.ActionDef<br />
 org.seasar.cubby.controller.ActionDefBuilder<br />
 org.seasar.cubby.controller.ActionProcessor<br />
 org.seasar.cubby.controller.CubbyConfiguration<br />
+org.seasar.cubby.controller.MessagesBehaviour<br />
 org.seasar.cubby.controller.RequestParser<br />
 </td>
 <td>org.seasar.cubby.controller.ThreadContext<br />
@@ -881,8 +882,9 @@ java.util<br />
 javax.servlet<br />
 javax.servlet.http<br />
 org.seasar.cubby.action<br />
+org.seasar.cubby.controller.impl<br />
 org.seasar.framework.container<br />
-org.seasar.framework.util<br />
+org.seasar.framework.container.factory<br />
 </td>
 </tr>
 </table>
@@ -894,11 +896,11 @@ org.seasar.framework.util<br />
 <th>Instability</th>
 <th>Distance</th>
 </tr>
-<tr class="b"><td>0</td>
+<tr class="b"><td>1</td>
 <td>19</td>
 <td>0.0%</td>
-<td>100.0%</td>
-<td>0.0%</td>
+<td>95.0%</td>
+<td>5.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="a"><th>Abstract Classes</th>
@@ -913,10 +915,11 @@ org.seasar.cubby.controller.impl.ActionDefBuilderImpl<br />
 org.seasar.cubby.controller.impl.ActionDefImpl<br />
 org.seasar.cubby.controller.impl.ActionProcessorImpl<br />
 org.seasar.cubby.controller.impl.CubbyConfigurationImpl<br />
+org.seasar.cubby.controller.impl.DefaultMessagesBehaviour<br />
 org.seasar.cubby.controller.impl.DefaultRequestParserImpl<br />
 org.seasar.cubby.controller.impl.MultipartRequestParserImpl<br />
 </td>
-<td><i>None</i>
+<td>org.seasar.cubby.controller<br />
 </td>
 <td>java.io<br />
 java.lang<br />
