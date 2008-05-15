@@ -138,7 +138,8 @@ mvn war:inplace
  [[1]]ワークスペースのクラスパス変数
 
       Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。\
-      以下のコマンドを実行してください。
+      以下のコマンドを実行してください。\
+      この作業はワークスペースごとに１度行えば、次回からは必要ありません。
 
 +------------------------------------------------------+
 mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディレクトリ 例 "C:/eclipse/workspace")
@@ -153,8 +154,8 @@ mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディ�
 mvn eclipse:eclipse -DdownloadSources=true
 +------------------------------------------------------+
 
-      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。
-      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。
+      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。\
+      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。\
       eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。
 
  [[3]]プロジェクトのインポート
