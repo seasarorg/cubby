@@ -4,12 +4,14 @@
   agata
   baba
   --------
-  2008-03-01
+  2008-05-15
   --------
 
 {目次}
 
  *{{{#Hello_アプリケーションの概要}Hello アプリケーションの概要}}
+
+ *{{{#アプリケーションの雛形作成}アプリケーションの雛形作成}}
 
  *{{{#アクションクラスの作成}アクションクラスの作成}}
 
@@ -30,10 +32,55 @@
 
 [images/hello_result.png]結果画面
 
+{アプリケーションの雛形作成}
+
+ 雛形作成の詳細は{{{setup.html#Maven2_によるプロジェクトの雛形作成}Maven2 によるプロジェクトの雛形作成}}をご覧ください。\
+ Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。
+ Eclipseのワークスペースディレクトリにターミナル（コマンドプロンプト）で移動して、以下のコマンドを入力してください。
+
++------------------------------------------------------+
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
++------------------------------------------------------+
+
+   コマンド入力後、いくつかの質問に回答していきます。
+
++------------------------------------------------------+
+Choose archetype:
+1: remote -> cubby-archetype (Cubby 1.0.0)
+Choose a number:  (1):
++------------------------------------------------------+
+
+   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。\
+   以下、groupId,artifactId,version,packageを入力します。
+
++------------------------------------------------------+
+Define value for groupId: : org.seasar.cubby.examples
+Define value for artifactId: : cubby-examples-hello
+Define value for version: : 1.0-SNAPSHOT
+Define value for package: : org.seasar.cubby.examples.hello
+
+Confirm properties configuration:
+groupId: org.seasar.cubby.examples
+artifactId: cubby-examples-hello
+version: 1.0-SNAPSHOT
+package: org.seasar.cubby.examples.hello
+ Y: :
++------------------------------------------------------+
+
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。\
+   プロジェクトの雛形として「cubby-examples-hello」ディレクトリが作成されます。
+
+*{Eclipseへの取り込み}
+
+ {{{setup.html#Eclipse_を使った開発}Eclipse を使った開発}}に従って、「cubby-examples-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。
+ 設定が終わったらWTPからTomcatを起動します。\
+ ブラウザで {{http://localhost:8080/cubby-examples-hello/}} にアクセスして、トップページが表示されることを確認してください。
+ 
 {アクションクラスの作成}
 
  アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
- ここでは HelloAction クラスを作成します。
+ ここでは  「org.seasar.cubby.examples.hello.HelloAction」 クラスを作成します。
+ (既に雛形で同名のクラスが作成されているので、いったん削除します)\
  このクラスには２つのアクションメソッド(index, message)があります。
  index は入力画面「input.jsp」の表示用、message は入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。
  １アクションメソッドは１リクエスト(URL)に対応します。
@@ -62,11 +109,10 @@
  <<HelloAction.java>>
 
 +------------------------------------------------------+
-package org.seasar.cubby.examples.hello;
+package org.seasar.cubby.examples.hello.action;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 
 public class HelloAction extends Action {
@@ -94,7 +140,7 @@ public class HelloAction extends Action {
  入力フィールドはカスタムタグを使用して出力します。
  （\<t:input type="text" name="name"/\>）
 
- <</hello/input.jsp>>
+ <<src/main/webapp/hello/input.jsp>>
 
 +------------------------------------------------------+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -114,7 +160,7 @@ public class HelloAction extends Action {
 </html>
 +------------------------------------------------------+
 
- <</hello/result.jsp>>
+ <<src/main/webapp/hello/result.jsp>>
 
 +------------------------------------------------------+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -134,4 +180,4 @@ public class HelloAction extends Action {
  
 {ブラウザで確認する}
 
- ブラウザで {{http://localhost:8080/cubby-examples/hello/}} にアクセスします。
+ ブラウザで {{http://localhost:8080/cubby-examples-hello/hello/}} にアクセスします。
