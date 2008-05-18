@@ -42,8 +42,6 @@ public interface ActionProcessor {
 	 *            リクエスト
 	 * @param response
 	 *            レスポンス
-	 * @param chain
-	 *            フィルターチェイン
 	 * @return アクションメソッドの戻り値。リクエストに応じたアクションメソッドが見つからなかった場合は <code>null</code>
 	 * @throws Exception
 	 *             アクションの実行時に例外が発生した場合

@@ -47,8 +47,6 @@ public interface ValidationProcessor {
 	 *            アクションクラス
 	 * @param method
 	 *            メソッド
-	 * @param errors
-	 *            アクションのエラー
 	 * @throws ValidationException
 	 *             入力検証にエラーがあった場合
 	 */
@@ -56,7 +54,8 @@ public interface ValidationProcessor {
 			Class<? extends Action> actionClass, Method method);
 
 	/**
-	 * {@link #process()} で発生した {@link ValidationException} を処理します。
+	 * {@link #process(HttpServletRequest, Action, Class, Method)} で発生した
+	 * {@link ValidationException} を処理します。
 	 * <p>
 	 * <ul>
 	 * <li>{@link ValidationException} にメッセージが指定されていた場合はそれを

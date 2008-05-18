@@ -28,7 +28,7 @@ import org.seasar.cubby.routing.Routing;
 public interface RoutingsDispatcher {
 
 	/**
-	 * 指定されたルーティングの {@Map} からリクエストパラメータに応じたルーティングを割り当てます。
+	 * 指定されたルーティングの {@link Map} からリクエストパラメータに応じたルーティングを割り当てます。
 	 * <p>
 	 * リクエストパラメータに応じたルーティングがない場合は <code>null</code> を返します。
 	 * </p>
