@@ -115,9 +115,11 @@ public class RequestRoutingFilter implements Filter {
 	/**
 	 * フィルタリングを行います。
 	 * <p>
-	 * リクエストされた URI に対応する内部フォワード用のパスが {@link Router} から取得できた場合は、
-	 * その内部フォワード用のパスへフォワードします。フォワード先は {@link CubbyFilter} が処理することを期待します。
-	 * マッチするパターンがなかった場合はフィルタチェインで次のフィルタに処理を移譲します。
+	 * リクエストされた URI に対応する内部フォワード情報が {@link Router} から取得できた場合は、そこに設定されている
+	 * {@link InternalForwardInfo#getOnSubmitRoutings()} をリクエストに設定し、
+	 * {@link InternalForwardInfo#getInternalForwardPath()} へフォワードします。 フォワード先は
+	 * {@link CubbyFilter} が処理することを期待します。 URI
+	 * に対応する内部フォワード情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を移譲します。
 	 * </p>
 	 * 
 	 * @param req

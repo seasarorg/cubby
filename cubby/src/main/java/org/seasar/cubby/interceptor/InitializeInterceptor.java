@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.dxo.FormDxo;
@@ -73,8 +72,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
-	 * <li>{@link Action#parseRequest(HttpServletRequest)}を呼び出してリクエストをパースしてリクエストパラメータをパースします。パース後、リクエストの属性
-	 * {@link CubbyConstants#ATTR_PARAMS} に設定。</li>
 	 * <li>{@link Action#initialize()}を呼び出してアクションを初期化します。</li>
 	 * <li>アクションメソッドを呼び出します。</li>
 	 * <li>{@link ActionResult#prerender(Action)}を呼び出します。</li>

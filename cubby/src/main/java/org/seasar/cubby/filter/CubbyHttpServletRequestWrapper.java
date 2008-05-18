@@ -77,8 +77,6 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 * 
 	 * @param request
 	 *            ラップするリクエスト
-	 * @param context
-	 *            アクションのコンテキスト
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request) {
 		super(request);

@@ -33,23 +33,10 @@ public interface InternalForwardInfo {
 	String getInternalForwardPath();
 
 	/**
+	 * リクエストパラメータ名とルーティングのマッピングを取得します。
 	 * 
-	 * @return
+	 * @return OnSubmit リクエストパラメータ名とルーティングのマッピング
 	 */
 	Map<String, Routing> getOnSubmitRoutings();
-//
-//	/**
-//	 * 内部フォワード先のアクションクラス名を取得します。
-//	 * 
-//	 * @return 内部フォワード先のアクションクラス名
-//	 */
-//	String getActionClassName();
-//
-//	/**
-//	 * 内部フォワード先のアクションメソッド名を取得します。
-//	 * 
-//	 * @return 内部フォワード先のアクションメソッド名
-//	 */
-//	String getMethodName();
 
 }

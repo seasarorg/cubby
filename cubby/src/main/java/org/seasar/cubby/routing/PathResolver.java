@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
 
 /**
@@ -52,22 +51,25 @@ public interface PathResolver {
 	List<Routing> getRoutings();
 
 	/**
-	 * ルーティング情報を手動登録します。 手動登録の場合、優先度は0から連番で設定されます。
-	 * 
-	 * @see {@link Path#priority()} 自動設定の際のプライオリティ
+	 * ルーティング情報を手動登録します。
+	 * <p>
+	 * 手動登録の場合、優先度は0から連番で設定されます。
+	 * </p>
 	 * 
 	 * @param actionPath
 	 *            アクションのパス
 	 * @param actionClass
 	 *            アクションクラス
-	 * @param method
-	 *            アクションメソッド
-	 * @param erequestMethodsquestMethods
-	 *            リクエストメソッド。<code>null</code>の場合、{@link RequestMethod#GET},{@link RequestMethod#POST}がデフォルト値として設定されます。
+	 * @param methodName
+	 *            アクションメソッド名
+	 * @param requestMethods
+	 *            リクエストメソッド。<code>null</code> の場合、{@link RequestMethod#GET},{@link RequestMethod#POST}
+	 *            がデフォルト値として設定されます。
+	 * @see org.seasar.cubby.action.Path#priority() 自動設定の際のプライオリティ
 	 */
 	void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
-			final RequestMethod... erequestMethodsquestMethods);
+			final RequestMethod... requestMethods);
 
 	/**
 	 * 指定されたアクションクラス、メソッド名、パラメータからリダイレクト用のパスへ変換します。

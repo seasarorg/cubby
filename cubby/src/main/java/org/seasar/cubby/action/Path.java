@@ -125,8 +125,9 @@ public @interface Path {
 	 * <p>
 	 * 手動でバインディングの設定が追加された場合、優先度は0から順番に振られます。手動追加よりも自動設定の優先度を上げたい場合は、負の値を設定してください。
 	 * </p>
+	 * @return アクションメソッドのバインディング時の優先度
 	 * @see PathResolver#add(String, Class, String, RequestMethod...) 手動によるバインディング設定の追加
-	 * @return
 	 */
 	int priority() default Integer.MAX_VALUE;
+
 }
