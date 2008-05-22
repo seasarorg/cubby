@@ -32,6 +32,26 @@
           <artifactId>maven-eclipse-plugin</artifactId>
           <configuration>
             <wtpversion>2.0</wtpversion>
+          <additionalConfig>
+            <file>
+              <name>.settings/org.eclipse.core.resources.prefs</name>
+              <content>
+              <![CDATA[
+eclipse.preferences.version=1
+encoding/<project>=UTF-8
+              ]]>
+              </content>
+            </file>
+            <file>
+              <name>.settings/org.eclipse.core.runtime.prefs</name>
+              <content>
+              <![CDATA[
+eclipse.preferences.version=1
+line.separator=\n
+              ]]>
+              </content>
+            </file>
+          </additionalConfig>
           </configuration>
         </plugin>
       </plugins>
@@ -222,7 +242,12 @@
     <dependency>
       <groupId>org.apache.abdera</groupId>
       <artifactId>abdera-parser</artifactId>
-      <version>0.3.0-incubating</version>
-    </dependency> 
+      <version>0.4.0-incubating</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.abdera</groupId>
+      <artifactId>abdera-server</artifactId>
+      <version>0.4.0-incubating</version>
+    </dependency>
   </dependencies>
 </project>
