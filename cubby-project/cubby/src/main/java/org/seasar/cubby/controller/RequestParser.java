@@ -36,4 +36,22 @@ public interface RequestParser {
 	 */
 	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 
+	/**
+	 * このリクエスト解析器が解析可能なリクエストかを示します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 * @return 解析可能なリクエストの場合は <code>true</code>、そうでない場合は <code>false</code>
+	 * @since 1.1.0
+	 */
+	boolean isParsable(HttpServletRequest request);
+
+	/**
+	 * 優先順位を取得します。
+	 * 
+	 * @return
+	 * @since 1.1.0
+	 */
+	int getPriority();
+
 }

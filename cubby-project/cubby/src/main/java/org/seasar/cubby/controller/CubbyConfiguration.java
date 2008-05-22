@@ -26,13 +26,6 @@ import org.seasar.cubby.action.FormatPattern;
 public interface CubbyConfiguration {
 
 	/**
-	 * リクエストのパーサを取得します。
-	 * 
-	 * @return リクエストのパーサ
-	 */
-	RequestParser getRequestParser();
-
-	/**
 	 * フォーマットのパターンを取得します。
 	 * 
 	 * @return フォーマットのパターン
