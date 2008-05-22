@@ -102,7 +102,7 @@ encoding/<project>=UTF-8
               <content>
               <![CDATA[
 eclipse.preferences.version=1
-line.separator=\r\n
+line.separator=\n
               ]]>
               </content>
             </file>
