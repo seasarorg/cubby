@@ -7,7 +7,8 @@
   <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <link href="${contextPath}/css/prettify.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <script src="${contextPath}/js/prettify.js" type="text/javascript"></script> 
-  <script src="js/jquery-1.2.5.min.js" type="text/javascript" ></script>
+  <script src="${contextPath}/js/jquery-1.2.5.min.js" type="text/javascript" ></script>
+  <script src="${contextPath}/js/jquery.highlight-1.js" type="text/javascript" ></script>
   <title>Snippets</title>
 </head>
 <body>
@@ -44,7 +45,7 @@ function search() {
     $.each(snippets, function(i,snippet){
       var li = $("<li/>");
       li.appendTo(div);
-      $("<a/>").attr("href", "${contextPath}/${langPath}/" + snippet.id).text(snippet.title).appendTo(li);
+      $("<a/>").attr("href", "${contextPath}/${langPath}/" + snippet.id + "?query=" + query).text(snippet.title).appendTo(li);
       var code = "";
       var count = 0;
       $.each(snippet.content.split("\n"), function(j, line) {
@@ -56,10 +57,12 @@ function search() {
           }
         }
       });
-      $("<pre class=\"prettyprint\"/>").text(code).appendTo(li);
+      var pre = $("<pre class=\"prettyprint\"/>").text(code);
+      pre.appendTo(li);
     });
     $("#result").html(div);
     prettyPrint();
+    $.highlight($("#result").get(0), query.toUpperCase());
   });
 }
 

@@ -36,6 +36,7 @@ public class SnippetAction extends BaseAction {
 	public List<Comment> comments;
 	public String text;
 	public String name;
+	public String query;
 	
 	@Path("/{langPath}/{id,[0-9]+}")
 	public ActionResult index() {

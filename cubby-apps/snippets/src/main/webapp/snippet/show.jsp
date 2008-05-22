@@ -7,6 +7,8 @@
   <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <link href="${contextPath}/css/prettify.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <script src="${contextPath}/js/prettify.js" type="text/javascript"></script> 
+  <script src="${contextPath}/js/jquery-1.2.5.min.js" type="text/javascript" ></script>
+  <script src="${contextPath}/js/jquery.highlight-1.js" type="text/javascript" ></script>
   <title>Snippets</title>
 </head>
 <body onload="prettyPrint()">
@@ -19,10 +21,12 @@
 <c:import url="/common/lang_list.jsp"/>
 </div>
 <div id="main">
+<div id="code">
 <h2>${title}(${updated})</h2>
 <pre class="prettyprint">
 ${content}
 </pre>
+</code>
 <h4>comments</h4>
 <c:forEach var="c" items="${comments}">
 	<li>${c.name} ${c.text}(${c.updated})</li>
@@ -33,5 +37,10 @@ ${content}
 <t:input name="comment" type="submit" value="Post"/>
 </t:form>
 </div>
+<script type="text/javascript">
+$(function(){
+  $.highlight($("#code").get(0), "${query}".toUpperCase());
+});
+</script>
 </body>
 </html>

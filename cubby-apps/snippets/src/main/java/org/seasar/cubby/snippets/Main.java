@@ -1,9 +1,7 @@
 package org.seasar.cubby.snippets;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
