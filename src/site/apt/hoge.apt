@@ -1,0 +1,33 @@
+Cubby はリクエストパラメータをフォームオブジェクトにバインドする前に、
+リクエストパラメータを一度 Map<String, String[]> に変換します。
+
+org.seasar.cubby.controller.RequestParser の実装クラスをコンテナに登録しておくことによって、
+リクエストから Map<String, String[]> へ変換する処理をカスタマイズすることができます。
+複数のインスタンスがコンテナに登録された場合、送信されたリクエストを処理するインスタンスを決定するために、
+このクラスはリクエストを処理できるか判断するメソッド(isParsable)と、優先順位を返すメソッド(getPriority)を持っています。
+優先順位が低い順に isParsable でリクエストを判断し、最初に true を返したインスタンスによってリクエストを処理します。
+
+たとえば、RESTful なサービスを提供する際にXMLデータが送信されてくる application/atom+xml 形式のリクエストを独自のクラスで処理するための
+クラスを使用することができます。
+
+
+
+標準では以下の実装クラスを用意しています。
+
+DefaultRequestParserImpl
+
+デフォルトの RequestParser です。
+特に何も設定を行わない場合にはこのクラスですべてのリクエストを解析します。
+デフォルトの RequestParser として動作するために、メソッド isParsable() は常にtrue を返し、
+メソッド getParameterMap() は、ServletRequest#getParameterMap() の結果をそのまま返します。
+そして、優先順位を一番低くするために優先順位のデフォルト値として Integer#MAX_VALUE が設定されます。
+cubby.dicon に登録されているので常にコンテナに登録されます。
+
+MultipartRequestParserImpl
+
+このクラスは commons-fileupload によって multipart リクエストの解析を行います。
+HTMLフォームからファイルをアップロードする時などに使用する multipart/form-data 形式のリクエストを処理するためにはこのクラスを使用してください。
+form タグの enctype が multipart/form-data のリクエストのときに isParsable() は true を返し、このクラスによってリクエストが解析されます。
+優先順位のデフォルト値として DefaultRequestParser よりひとつ少ない値が設定されます。
+app-cubby.dicon にこのクラスと ServerFileUpload、ServletRequestContext を設定することで使用可能になります。
+
