@@ -3,6 +3,10 @@
 "http://www.seasar.org/dtd/components.dtd">
 <components>
 
+	<component class="org.seasar.cubby.controller.impl.RequestParserSelectorImpl" />
+
+	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
+
 	<component class="org.seasar.cubby.controller.impl.MultipartRequestParserImpl" />
 
 	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
@@ -15,5 +19,9 @@
 	</component>
 
 	<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
+
+	<component class="org.seasar.cubby.controller.impl.RequestParserSelectorImplTest$MyRequestParserImpl">
+		<property name="priority">1</property>
+	</component>
 
 </components>

@@ -29,10 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.controller.RequestParserSelector;
 import org.seasar.cubby.controller.RoutingsDispatcher;
-import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.cubby.routing.Routing;
@@ -58,6 +57,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/** リクエストパラメータに応じたルーティングを割り当てるためのクラス。 */
 	private RoutingsDispatcher routingsDispatcher;
 
+	/** リクエスト解析器。 */
+	private RequestParserSelector requestParserSelector;
+
 	/**
 	 * リクエストパラメータに応じたルーティングを割り当てるためのクラスを設定します。
 	 * 
@@ -67,6 +69,17 @@ public class ActionProcessorImpl implements ActionProcessor {
 	public void setRoutingsDispatcher(
 			final RoutingsDispatcher routingsDispatcher) {
 		this.routingsDispatcher = routingsDispatcher;
+	}
+
+	/**
+	 * リクエスト解析器セレクタを設定します。
+	 * 
+	 * @param requestParserSelector
+	 *            リクエスト解析器
+	 */
+	public void setRequestParserSelector(
+			final RequestParserSelector requestParserSelector) {
+		this.requestParserSelector = requestParserSelector;
 	}
 
 	/**
@@ -145,9 +158,14 @@ public class ActionProcessorImpl implements ActionProcessor {
 	 * @return リクエストパラメータの{@link Map}
 	 */
 	private Map<String, Object[]> parseRequest(final HttpServletRequest request) {
-		final CubbyConfiguration configuration = ThreadContext
-				.getConfiguration();
-		final RequestParser requestParser = configuration.getRequestParser();
+		final RequestParser requestParser = requestParserSelector
+				.select(request);
+		if (requestParser == null) {
+			throw new NullPointerException("requestParser");
+		}
+		if (logger.isDebugEnabled()) {
+			logger.log("DCUB0016", new Object[] { requestParser });
+		}
 		final Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		return parameterMap;

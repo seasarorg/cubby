@@ -51,8 +51,14 @@ import org.seasar.framework.util.StringUtil;
  */
 public class MultipartRequestParserImpl implements RequestParser {
 
+	/** デフォルトの優先順位。 */
+	static final int DEFAULT_PRIORITY = DefaultRequestParserImpl.DEFAULT_PRIORITY - 1;
+
 	/** コンテナ。 */
 	private final S2Container container;
+
+	/** 優先順位。 */
+	private int priority = DEFAULT_PRIORITY;
 
 	/**
 	 * インスタンス化します。
@@ -129,7 +135,8 @@ public class MultipartRequestParserImpl implements RequestParser {
 			if (e instanceof SizeLimitExceededException) {
 				final SizeLimitExceededException sle = (SizeLimitExceededException) e;
 				messageCode = "ECUB0202";
-				args = new Object[] { sle.getPermittedSize(), sle.getActualSize() };
+				args = new Object[] { sle.getPermittedSize(),
+						sle.getActualSize() };
 			} else {
 				messageCode = "ECUB0201";
 				args = new Object[] { e };
@@ -185,6 +192,39 @@ public class MultipartRequestParserImpl implements RequestParser {
 			parameterMap.put(entry.getKey(), values.toArray(valueArray));
 		}
 		return parameterMap;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isParsable(final HttpServletRequest request) {
+		final S2Container root = container.getRoot();
+		if (root.hasComponentDef(RequestContext.class)) {
+			final RequestContext requestContext = (RequestContext) root
+					.getComponent(RequestContext.class);
+			return FileUpload.isMultipartContent(requestContext);
+		}
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * デフォルトの優先順位は {@link DefaultRequestParserImpl#DEFAULT_PRIORITY} - 1 です。
+	 * </p>
+	 */
+	public int getPriority() {
+		return priority;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @param priority
+	 *            優先順位
+	 */
+	public void setPriority(final int priority) {
+		this.priority = priority;
 	}
 
 }
