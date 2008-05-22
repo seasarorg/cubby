@@ -8,7 +8,6 @@ import org.seasar.cubby.action.Json;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.snippets.entity.Language;
 import org.seasar.cubby.snippets.entity.Snippet;
-import org.seasar.framework.util.JSONSerializer;
 
 public class LanguageAction extends BaseAction {
 
