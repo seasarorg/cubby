@@ -9,36 +9,6 @@
   <version>${version}</version>
   <build>
     <finalName>${artifactId}</finalName>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.cargo</groupId>
-          <artifactId>cargo-maven2-plugin</artifactId>
-          <configuration>
-            <container>
-              <containerId>tomcat5x</containerId>
-              <zipUrlInstaller>
-                <url>http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.26/bin/apache-tomcat-5.5.26.zip</url>
-              </zipUrlInstaller>
-            </container>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <configuration>
-            <wtpversion>2.0</wtpversion>
-          	<downloadSources>true</downloadSources>
-          	<downloadJavadocs>true</downloadJavadocs>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -49,8 +19,44 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <wtpversion>2.0</wtpversion>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+          <additionalConfig>
+            <file>
+              <name>.settings/org.eclipse.core.resources.prefs</name>
+              <content>
+              <![CDATA[
+eclipse.preferences.version=1
+encoding/<project>=UTF-8
+              ]]>
+              </content>
+            </file>
+            <file>
+              <name>.settings/org.eclipse.core.runtime.prefs</name>
+              <content>
+              <![CDATA[
+eclipse.preferences.version=1
+line.separator=\n
+              ]]>
+              </content>
+            </file>
+          </additionalConfig>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
+        <configuration>
+          <container>
+            <containerId>tomcat5x</containerId>
+            <zipUrlInstaller>
+              <url>http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.26/bin/apache-tomcat-5.5.26.zip</url>
+            </zipUrlInstaller>
+          </container>
+        </configuration>
         <executions>
           <execution>
             <id>tomcat-start</id>
