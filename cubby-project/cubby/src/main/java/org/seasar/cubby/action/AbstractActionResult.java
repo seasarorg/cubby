@@ -15,12 +15,11 @@
  */
 package org.seasar.cubby.action;
 
-import java.lang.reflect.Method;
 
 /**
  * {@link ActionResult} の抽象クラス。
  * <p>
- * 空の {@link ActionResult#prerender(Action, Method)} を実装します。
+ * 空の {@link ActionResult#prerender(Action)} を実装します。
  * </p>
  * 
  * @author baba
