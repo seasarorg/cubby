@@ -511,7 +511,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toRidirectPath(final Class<? extends Action> actionClass,
+	public String toRedirectPath(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
 		final Routing routing = findRouting(actionClass, methodName);
 		final String actionPath = routing.getActionPath();
@@ -572,9 +572,11 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	private Routing findRouting(final Class<? extends Action> actionClass,
 			final String methodName) {
 		for (final Routing routing : routings.values()) {
-			if (actionClass.equals(routing.getActionClass())
-					&& methodName.equals(routing.getMethod().getName())) {
-				return routing;
+			if (actionClass.getCanonicalName().equals(
+					routing.getActionClass().getCanonicalName())) {
+				if (methodName.equals(routing.getMethod().getName())) {
+					return routing;
+				}
 			}
 		}
 		throw new ActionRuntimeException("ECUB0103", new Object[] {

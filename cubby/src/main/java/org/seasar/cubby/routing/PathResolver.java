@@ -83,7 +83,7 @@ public interface PathResolver {
 	 * @return リダイレクト用のパス
 	 * @since 1.1.0
 	 */
-	String toRidirectPath(final Class<? extends Action> actionClass,
+	String toRedirectPath(final Class<? extends Action> actionClass,
 			String methodName, Map<String, String[]> parameters);
 
 	/**
