@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
@@ -13,15 +12,19 @@
 
   <tag>
     <description>
+      <![CDATA[
       HTML の form タグを出力します。
-input/select/textarea タグで参照するフォームオブジェクトを指定します。
+	  input/select/textarea タグで参照するフォームオブジェクトを指定します。
+ 	  ]]>
     </description>
     <name>form</name>
     <tag-class>org.seasar.cubby.tags.FormTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>
+    	<![CDATA[
         フォームオブジェクトを指定します。
+		]]>
       </description>
       <name>value</name>
       <required>true</required>
@@ -30,6 +33,7 @@ input/select/textarea タグで参照するフォームオブジェクトを指�
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
+    	<![CDATA[
 (JSP)
 &lt;t:form value="${action}"&gt;
   ...
@@ -39,12 +43,15 @@ input/select/textarea タグで参照するフォームオブジェクトを指�
 &lt;form&gt;
   ...
 &lt;/form&gt;
+		]]>
     </example>
   </tag>
 
   <tag>
     <description>
+      <![CDATA[
       HTML の input タグを出力します。
+      ]]>
     </description>
     <name>input</name>
     <tag-class>org.seasar.cubby.tags.InputTag</tag-class>
@@ -60,8 +67,10 @@ input/select/textarea タグで参照するフォームオブジェクトを指�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
-この属性の値は name 属性としてそのまま出力されます。
+        この属性の値は name 属性としてそのまま出力されます。
+        ]]>
       </description>
       <name>name</name>
       <required>true</required>
@@ -70,9 +79,11 @@ input/select/textarea タグで参照するフォームオブジェクトを指�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         この属性の値は value 属性としてそのまま出力されます。
-指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
-type 属性が radio/checkbox の場合は、この値と name 属性で指定したフォームオブジェクトのプロパティから取得した値(もしくは checkedValue で指定した値)が一致した場合には checked 属性が true になりますので、必ず指定するようにしてください。
+        指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
+        type 属性が radio/checkbox の場合は、この値と name 属性で指定したフォームオブジェクトのプロパティから取得した値(もしくは checkedValue で指定した値)が一致した場合には checked 属性が true になりますので、必ず指定するようにしてください。
+        ]]>
       </description>
       <name>value</name>
       <required>false</required>
@@ -81,8 +92,10 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         type 属性が radio/checkbox の場合に、フォームオブジェクトの値よりも優先的に比較対象となる値を指定します。
-この値と value 属性の値が一致した場合には checked 属性が true になります。
+        この値と value 属性の値が一致した場合には checked 属性が true になります。
+        ]]>
       </description>
       <name>checkedValue</name>
       <required>false</required>
@@ -91,7 +104,9 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         name 属性で指定したフォームオブジェクトのプロパティに複数の値がある場合に、何番目の要素なのかを指定します。
+        ]]>
       </description>
       <name>index</name>
       <required>false</required>
@@ -100,11 +115,13 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
+      <![CDATA[
 (JSP)
 &lt;t:input name="title"/&gt;
 
 (実行結果)
 &lt;input name="title" value="Todo Title"/&gt;
+      ]]>
     </example>
   </tag>
 
@@ -117,8 +134,10 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     <body-content>scriptless</body-content>
     <attribute>
       <description>
+        <![CDATA[
         selected 属性を付加する option タグを決めるための値を取得するプロパティ名を指定します。
-この属性の値は name 属性としてそのまま出力されます。
+        この属性の値は name 属性としてそのまま出力されます。
+        ]]>
       </description>
       <name>name</name>
       <required>true</required>
@@ -127,8 +146,10 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         option タグの内容を表すリストを指定します。
-配列や java.util.Collection、java.util.Map 型が指定できます。
+        配列や java.util.Collection、java.util.Map 型が指定できます。
+        ]]>
       </description>
       <name>items</name>
       <required>true</required>
@@ -137,8 +158,10 @@ type 属性が radio/checkbox の場合は、この値と name 属性で指定�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         items 属性で指定したリストの要素から、option タグの表示文字列として使用するプロパティ名を指定します。
-items 属性で指定した型が java.util.Map の場合は無視されます。
+        items 属性で指定した型が java.util.Map の場合は無視されます。
+        ]]>
       </description>
       <name>labelProperty</name>
       <required>false</required>
@@ -147,8 +170,10 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         items 属性で指定したリストの要素から、option タグの値として使用するプロパティ名を指定します。
-items 属性で指定した型が java.util.Map の場合は無視されます。
+        items 属性で指定した型が java.util.Map の場合は無視されます。
+        ]]>
       </description>
       <name>valueProperty</name>
       <required>false</required>
@@ -157,8 +182,10 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         空白の option タグを出力するかどうかを指定します。
-省略した場合は true と見なして先頭に空白の option タグが出力されます。
+        省略した場合は true と見なして先頭に空白の option タグが出力されます。
+        ]]>
       </description>
       <name>emptyOption</name>
       <required>false</required>
@@ -167,8 +194,10 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         空白の option タグの表示文字列を指定します。
-省略した場合は何も表示されません。
+        省略した場合は何も表示されません。
+        ]]>
       </description>
       <name>emptyOptionLabel</name>
       <required>false</required>
@@ -177,6 +206,7 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
+      <![CDATA[
 (JSP)
 &lt;t:select name="typeId" items="${todoTypes}" labelProperty="name" valueProperty="id"/&gt;
 
@@ -185,6 +215,7 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
   &lt;option name="1"&gt;TodoType 1&lt;/option&gt;
   &lt;option name="2"&gt;TodoType 2&lt;/option&gt;
 &lt;/select&gt;
+      ]]>
     </example>
   </tag>
 
@@ -197,8 +228,10 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     <body-content>scriptless</body-content>
     <attribute>
       <description>
+        <![CDATA[
         value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
-この属性の値は name 属性としてそのまま出力されます。
+        この属性の値は name 属性としてそのまま出力されます。
+        ]]>
       </description>
       <name>name</name>
       <required>true</required>
@@ -207,8 +240,10 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         この属性の値は value 属性としてそのまま出力されます。
-指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
+        指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。
+        ]]>
       </description>
       <name>value</name>
       <required>false</required>
@@ -217,7 +252,9 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <attribute>
       <description>
+        <![CDATA[
         name 属性で指定したフォームオブジェクトのプロパティに複数の値がある場合に、何番目の要素なのかを指定します。
+        ]]>
       </description>
       <name>index</name>
       <required>false</required>
@@ -226,26 +263,32 @@ items 属性で指定した型が java.util.Map の場合は無視されます�
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
+      <![CDATA[
 (JSP)
 &lt;t:textarea name="memo"/&gt;
 
 (実行結果)
 &lt;textarea name="memo"&gt;Memo 1&lt;/textarea&gt;
+      ]]>
     </example>
   </tag>
 
   <tag>
     <description>
+      <![CDATA[
       2重サブミット防止用の input タグ(type="hidden")を出力します。
+      ]]>
     </description>
     <name>token</name>
     <tag-class>org.seasar.cubby.tags.TokenTag</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <description>
+        <![CDATA[
         value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。
-この属性の値は name 属性としてそのまま出力されます。
-name 属性が省略された場合の初期値は「cubby.token」です。
+        この属性の値は name 属性としてそのまま出力されます。
+        name 属性が省略された場合の初期値は「cubby.token」です。
+        ]]>
       </description>
       <name>name</name>
       <required>false</required>
@@ -254,6 +297,7 @@ name 属性が省略された場合の初期値は「cubby.token」です。
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
+      <![CDATA[
 (JSP)
 &lt;t:form value="${action}"&gt;
   &lt;t:token / &gt;
@@ -281,7 +325,61 @@ public class TokenAction extends Action {
   }
         
 }
+      ]]>
     </example>
+  </tag>
+
+  <tag>
+    <description>
+    </description>
+    <name>link</name>
+    <tag-class>org.seasar.cubby.tags.LinkTag</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <name>tag</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>attribute</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>action</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>method</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <dynamic-attributes>true</dynamic-attributes>
+    <example>
+    </example>
+  </tag>
+
+  <tag>
+    <name>linkparam</name>
+    <tag-class>org.seasar.cubby.tags.LinkparamTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
   </tag>
 
 </taglib>
