@@ -14,15 +14,15 @@
 <ul>
 	<li>
 		<t:link tag="a" attribute="href"
-				action="org.seasar.cubby.examples.other.web.link.LinkAction"
-				method="foo">
+				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionmethod="foo">
 			simple hyper reference
 		</t:link>
 	</li>
 	<li>
 		<t:link tag="a" attribute="href"
-				action="org.seasar.cubby.examples.other.web.link.LinkAction"
-				method="bar">
+				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionmethod="bar">
 			<t:linkparam name="id" value="123" />
 			<t:linkparam name="token" value="abc" />
 			hyper reference with parameters
@@ -30,13 +30,13 @@
 	</li>
 	<li>
 		<t:link tag="a" attribute="href"
-				action="org.seasar.cubby.examples.other.web.link.LinkAction"
-				method="bar">
+				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionmethod="bar">
 			<t:linkparam name="id" value="456" />
 			<t:linkparam name="token" value="def" />
 			<t:link tag="img" attribute="src"
-					action="org.seasar.cubby.examples.other.web.link.ImageAction"
-					method="image">
+					actionclass="org.seasar.cubby.examples.other.web.link.ImageAction"
+					actionmethod="image">
 				<t:linkparam name="token" value="nested link" />
 			</t:link>
 		</t:link>
