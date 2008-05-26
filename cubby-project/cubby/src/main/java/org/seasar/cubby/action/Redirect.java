@@ -110,7 +110,7 @@ public class Redirect extends AbstractActionResult {
 			final String methodName, final Map<String, String[]> parameters) {
 		final PathResolver pathResolver = SingletonS2Container
 				.getComponent(PathResolver.class);
-		final String redirectPath = pathResolver.toRidirectPath(actionClass,
+		final String redirectPath = pathResolver.toRedirectPath(actionClass,
 				methodName, parameters);
 		this.path = redirectPath;
 	}
