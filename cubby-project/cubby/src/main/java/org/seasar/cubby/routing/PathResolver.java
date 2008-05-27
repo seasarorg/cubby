@@ -72,7 +72,7 @@ public interface PathResolver {
 			final RequestMethod... requestMethods);
 
 	/**
-	 * 指定されたアクションクラス、メソッド名、パラメータからリダイレクト用のパスへ変換します。
+	 * 指定されたアクションクラス、メソッド名、パラメータからパスを逆引きします。
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
@@ -83,7 +83,7 @@ public interface PathResolver {
 	 * @return リダイレクト用のパス
 	 * @since 1.1.0
 	 */
-	String toRedirectPath(final Class<? extends Action> actionClass,
+	String reverseLookup(final Class<? extends Action> actionClass,
 			String methodName, Map<String, String[]> parameters);
 
 	/**

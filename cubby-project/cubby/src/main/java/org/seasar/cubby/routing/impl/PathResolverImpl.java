@@ -18,8 +18,10 @@ package org.seasar.cubby.routing.impl;
 import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -511,7 +513,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toRedirectPath(final Class<? extends Action> actionClass,
+	public String reverseLookup(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
 		final Routing routing = findRouting(actionClass, methodName);
 		final String actionPath = routing.getActionPath();
@@ -541,11 +543,18 @@ public class PathResolverImpl implements PathResolver, Disposable {
 						new Object[] { actionPath, uriParameterName, value,
 								uriParameterRegex });
 			}
-			redirectPath = StringUtil.replace(redirectPath, matcher.group(1),
-					value);
+			try {
+				final String encodedValue = URLEncoder.encode(value,
+						uriEncoding);
+				redirectPath = StringUtil.replace(redirectPath, matcher
+						.group(1), encodedValue);
+			} catch (UnsupportedEncodingException e) {
+				throw new IORuntimeException(e);
+			}
 		}
 		if (!copyOfParameters.isEmpty()) {
 			final QueryStringBuilder builder = new QueryStringBuilder();
+			builder.setEncode(uriEncoding);
 			for (final Entry<String, String[]> entry : copyOfParameters
 					.entrySet()) {
 				for (final String value : entry.getValue()) {
