@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.tags;
 
-import java.io.IOException;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
@@ -58,10 +56,10 @@ public class LinkparamTag extends SimpleTagSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doTag() throws JspException, IOException {
-		final LinkTag linkTag = (LinkTag) findAncestorWithClass(this,
-				LinkTag.class);
-		linkTag.addParameter(name, value);
+	public void doTag() throws JspException {
+		final HasParameter hasParameter = (HasParameter) findAncestorWithClass(
+				this, HasParameter.class);
+		hasParameter.addParameter(name, value);
 	}
 
 }

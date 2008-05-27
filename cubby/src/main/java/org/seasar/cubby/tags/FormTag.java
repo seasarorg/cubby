@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -42,19 +43,20 @@ import org.seasar.framework.container.SingletonS2Container;
  * @author baba
  * @since 1.0.0
  */
-public class FormTag extends BodyTagSupport implements DynamicAttributes {
+public class FormTag extends BodyTagSupport implements DynamicAttributes,
+		HasParameter {
 
-	private static final long serialVersionUID = 3997441280451382093L;
+	/** シリアルバージョン UID */
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * DynamicAttributes
-	 */
+	/** DynamicAttributes */
 	private final Map<String, Object> attrs = new HashMap<String, Object>();
 
-	/**
-	 * フォームのバインディング対象のBean。
-	 */
+	/** フォームのバインディング対象のBean。 */
 	private Object value;
+
+	/** リンク用の補助クラス。 */
+	private LinkSupport linkSupport = new LinkSupport();
 
 	/**
 	 * {@inheritDoc} DynamicAttributeをセットします。
@@ -84,23 +86,70 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 	}
 
 	/**
-	 * 開始タグ
+	 * アクションクラスを設定します。
+	 * 
+	 * @param actionclass
+	 *            アクションクラス
+	 */
+	public void setActionclass(final String actionclass) {
+		linkSupport.setActionclass(actionclass);
+	}
+
+	/**
+	 * アクションメソッドを設定します。
+	 * 
+	 * @param actionmethod
+	 *            アクションメソッド
+	 */
+	public void setActionmethod(final String actionmethod) {
+		linkSupport.setActionmethod(actionmethod);
+	}
+
+	/**
+	 * リクエストパラメータを追加します。
+	 * 
+	 * @param name
+	 *            パラメータ名
+	 * @param value
+	 *            値
+	 */
+	public void addParameter(final String name, final String value) {
+		linkSupport.addParameter(name, value);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int doStartTag() throws JspException {
 		final Map<String, String[]> outputValues = bindFormToOutputValues(this.value);
 		pageContext.setAttribute(ATTR_OUTPUT_VALUES, outputValues,
 				PageContext.PAGE_SCOPE);
+		return EVAL_BODY_BUFFERED;
+	}
 
-		final JspWriter out = pageContext.getOut();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int doAfterBody() throws JspException {
+		if (linkSupport.isLinkable()) {
+			final String contextPath = (String) pageContext.getAttribute(
+					ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
+			final String link = contextPath + linkSupport.getPath();
+			attrs.put("action", link);
+		}
+
+		final JspWriter out = getPreviousOut();
 		try {
 			out.write("<form ");
 			out.write(toAttr(getDynamicAttribute()));
 			out.write(">");
+			getBodyContent().writeOut(out);
 		} catch (final IOException e) {
 			throw new JspException(e);
 		}
-		return EVAL_BODY_INCLUDE;
+		return EVAL_PAGE;
 	}
 
 	private Map<String, String[]> bindFormToOutputValues(final Object value) {
@@ -118,7 +167,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 	}
 
 	/**
-	 * 終了タグ
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int doEndTag() throws JspException {
@@ -130,4 +179,5 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes {
 		pageContext.removeAttribute(ATTR_OUTPUT_VALUES, PageContext.PAGE_SCOPE);
 		return EVAL_PAGE;
 	}
+
 }

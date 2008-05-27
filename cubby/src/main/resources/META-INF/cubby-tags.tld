@@ -31,6 +31,18 @@
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.Object</type>
     </attribute>
+    <attribute>
+      <name>actionclass</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <name>actionmethod</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
     	<![CDATA[
