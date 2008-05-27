@@ -33,7 +33,7 @@
 				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
 				actionmethod="bar">
 			<t:linkparam name="id" value="456" />
-			<t:linkparam name="token" value="def" />
+			<t:linkparam name="token" value="d/e f" />
 			<t:link tag="img" attribute="src"
 					actionclass="org.seasar.cubby.examples.other.web.link.ImageAction"
 					actionmethod="image">
@@ -41,7 +41,25 @@
 			</t:link>
 		</t:link>
 	</li>
+	<li>
+		<t:form method="POST" value="${action}"
+				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionmethod="bar">
+			<t:linkparam name="id" value="7890" />
+			<fieldset>
+				<legend>form ("action" attribute)</legend>
+				<label for="token">token:</label><t:input name="token" type="text" />
+				<t:input name="submit" value="submit" type="submit" />
+				<t:link tag="img" attribute="src"
+						actionclass="org.seasar.cubby.examples.other.web.link.ImageAction"
+						actionmethod="image">
+					<t:linkparam name="token" value="@ link in form" />
+				</t:link>
+			</fieldset>
+		</t:form>
+	</li>
 </ul>
+<hr/>
 <ul>
 <li>id : ${id}</li>
 <li>token : ${token}</li>
