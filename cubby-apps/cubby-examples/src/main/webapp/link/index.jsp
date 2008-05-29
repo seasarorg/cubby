@@ -13,14 +13,14 @@
 <h1>クラス名＋メソッド名でのリンク</h1>
 <ul>
 	<li>
-		<t:link tag="a" attribute="href"
+		<t:link tag="a" attr="href"
 				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
 				actionMethod="foo">
 			simple hyper reference
 		</t:link>
 	</li>
 	<li>
-		<t:link tag="a" attribute="href"
+		<t:link tag="a" attr="href"
 				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
 				actionMethod="bar">
 			<t:param name="id" value="123" />
@@ -29,12 +29,12 @@
 		</t:link>
 	</li>
 	<li>
-		<t:link tag="a" attribute="href"
+		<t:link tag="a" attr="href"
 				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
 				actionMethod="bar">
 			<t:param name="id" value="456" />
 			<t:param name="token" value="d/e f" />
-			<t:link tag="img" attribute="src"
+			<t:link tag="img" attr="src"
 					actionClass="org.seasar.cubby.examples.other.web.link.ImageAction"
 					actionMethod="image">
 				<t:param name="token" value="nested link" />
@@ -50,7 +50,7 @@
 				<legend>form ("action" attribute)</legend>
 				<label for="token">token:</label><t:input name="token" type="text" />
 				<t:input name="submit" value="submit" type="submit" />
-				<t:link tag="img" attribute="src"
+				<t:link tag="img" attr="src"
 						actionClass="org.seasar.cubby.examples.other.web.link.ImageAction"
 						actionMethod="image">
 					<t:param name="token" value="@ link in form" />
