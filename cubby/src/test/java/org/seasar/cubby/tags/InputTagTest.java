@@ -164,7 +164,6 @@ public class InputTagTest extends JspTagTestCase {
 		tag.setValue("value1");
 		tag.setCheckedValue("value1");
 		tag.doTag();
-System.out.println("ここ");
 		System.out.println(context.getResult());
 
 		Element element = getResultAsElementFromContext();
