@@ -21,6 +21,7 @@ import java.io.StringReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 
@@ -47,8 +48,8 @@ public class FormTagTest extends S2TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-        include(getClass().getName().replace('.', '/') + ".dicon");
-        jspBody = new MockJspFragment();
+		include(getClass().getName().replace('.', '/') + ".dicon");
+		jspBody = new MockJspFragment();
 		context = new MockJspContext();
 		jspBody.setJspContext(context);
 		tag = new FormTag();
@@ -85,6 +86,9 @@ public class FormTagTest extends S2TestCase {
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.doStartTag();
+		tag.setBodyContent(new MockBodyContent(context.getOut()));
+		tag.doInitBody();
+		tag.doAfterBody();
 		tag.doEndTag();
 
 		System.out.println(context.getResult());
@@ -94,8 +98,8 @@ public class FormTagTest extends S2TestCase {
 		assertEquals(message, 1, element.getAttributes().size());
 		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
-//		assertEquals("フォームオブジェクトが指定",
-//				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
+		// assertEquals("フォームオブジェクトが指定",
+		// "<form action=\"/todo/save\" >\n</form>\n", context.getResult());
 	}
 
 	public void testDoTag2() throws Exception {
@@ -104,12 +108,20 @@ public class FormTagTest extends S2TestCase {
 
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
+		tag.doStartTag();
+		BodyContent bodyContent = (MockBodyContent) context.pushBody();
+		tag.setBodyContent(bodyContent);
+		tag.doInitBody();
+
 		TextareaTag textareaTag = new TextareaTag();
-		setupSimpleTag(textareaTag);
+		textareaTag.setJspBody(jspBody);
+		textareaTag.setJspContext(context);
 		textareaTag.setName("stringField");
 		jspBody.addChildTag(textareaTag);
-		tag.doStartTag();
 		textareaTag.doTag();
+
+		tag.doAfterBody();
+		context.popBody();
 		tag.doEndTag();
 
 		System.out.println(context.getResult());
@@ -123,10 +135,10 @@ public class FormTagTest extends S2TestCase {
 		assertEquals(message, 1, child.getAttributes().size());
 		assertEquals(message, "stringField", child.getAttributeValue("name"));
 		assertEquals(message, "value1", child.getValue());
-//		assertEquals("フォームオブジェクトが指定、子要素がある場合",
-//				"<form action=\"/todo/save\" >\n" +
-//				"<textarea name=\"stringField\" >value1</textarea>\n" +
-//				"</form>\n", context.getResult());
+		// assertEquals("フォームオブジェクトが指定、子要素がある場合",
+		// "<form action=\"/todo/save\" >\n" +
+		// "<textarea name=\"stringField\" >value1</textarea>\n" +
+		// "</form>\n", context.getResult());
 	}
 
 	public void testDoTagEmptyBody() throws Exception {
@@ -136,6 +148,9 @@ public class FormTagTest extends S2TestCase {
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.doStartTag();
+		tag.setBodyContent(new MockBodyContent(context.getOut()));
+		tag.doInitBody();
+		tag.doAfterBody();
 		tag.doEndTag();
 
 		System.out.println(context.getResult());
@@ -144,8 +159,8 @@ public class FormTagTest extends S2TestCase {
 		String message = "Bodyが空の場合";
 		assertEquals(message, 1, element.getAttributes().size());
 		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
-//		assertEquals("Bodyが空の場合",
-//				"<form action=\"/todo/save\" >\n</form>\n", context.getResult());
+		// assertEquals("Bodyが空の場合",
+		// "<form action=\"/todo/save\" >\n</form>\n", context.getResult());
 	}
 
 }
