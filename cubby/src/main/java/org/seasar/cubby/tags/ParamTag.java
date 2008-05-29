@@ -19,12 +19,12 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 /**
- * リクエストパラメータを指定するためのカスタムタグです。
+ * パラメータを指定するためのカスタムタグです。
  * 
  * @author baba
  * @since 1.1.0
  */
-public class LinkparamTag extends SimpleTagSupport {
+public class ParamTag extends SimpleTagSupport {
 
 	/** パラメータ名。 */
 	private String name;

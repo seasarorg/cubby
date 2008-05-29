@@ -35,11 +35,11 @@ import org.seasar.framework.container.SingletonS2Container;
  */
 class LinkSupport {
 
-	/** アクションクラス。 */
-	private String actionclass;
+	/** アクションクラス名。 */
+	private String actionClassName;
 
-	/** アクションメソッド。 */
-	private String actionmethod;
+	/** アクションメソッド名。 */
+	private String actionMethodName;
 
 	/** リクエストパラメータの {@link Map} */
 	private final Map<String, List<String>> parameters = new HashMap<String, List<String>>();
@@ -47,21 +47,21 @@ class LinkSupport {
 	/**
 	 * アクションクラスを設定します。
 	 * 
-	 * @param actionclass
-	 *            アクションクラス
+	 * @param actionClassName
+	 *            アクションクラス名
 	 */
-	public void setActionclass(final String actionclass) {
-		this.actionclass = actionclass;
+	public void setActionClassName(final String actionClassName) {
+		this.actionClassName = actionClassName;
 	}
 
 	/**
 	 * アクションメソッドを設定します。
 	 * 
-	 * @param actionmethod
-	 *            アクションメソッド
+	 * @param actionMethodName
+	 *            アクションメソッド名
 	 */
-	public void setActionmethod(final String actionmethod) {
-		this.actionmethod = actionmethod;
+	public void setActionMethodName(final String actionMethodName) {
+		this.actionMethodName = actionMethodName;
 	}
 
 	/**
@@ -108,7 +108,7 @@ class LinkSupport {
 	public String getPath() throws JspTagException {
 		final Class<? extends Action> actionClass;
 		try {
-			actionClass = forName(actionclass);
+			actionClass = forName(actionClassName);
 		} catch (final ClassNotFoundException e) {
 			throw new JspTagException(e);
 		}
@@ -116,7 +116,7 @@ class LinkSupport {
 		final PathResolver pathResolver = SingletonS2Container
 				.getComponent(PathResolver.class);
 		final String path = pathResolver.reverseLookup(actionClass,
-				actionmethod, getParameters());
+				actionMethodName, getParameters());
 
 		return path;
 	}
@@ -127,7 +127,7 @@ class LinkSupport {
 	 * @return リンク可能な場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
 	public boolean isLinkable() {
-		return actionclass != null && actionmethod != null;
+		return actionClassName != null && actionMethodName != null;
 	}
 
 	/**
