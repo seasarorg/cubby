@@ -16,8 +16,8 @@
 	<li><a href="components/">コンポーネント一覧</a></li>
 	<li><a href="mayaa/components">コンポーネント一覧(Mayaa版)</a></li>
 	<li><a href="components/array">配列</a></li>
-	<li><a href="dispatch/">複数ボタンのフォーム(&#64;OnSubmit)</a></li>
-	<li><a href="link/">クラス名＋メソッド名でのリンク</a></li>
+	<li><a href="dispatch/">複数ボタンのフォーム(&#64;OnSubmit)</a>(v1.1.0以降)</li>
+	<li><a href="link/">クラス名＋メソッド名でのリンク</a>(v1.1.0以降)</li>
 	<li><a href="fileupload/">ファイルアップロード</a></li>
 	<li><a href="fileupload2/">ファイルアップロード (入力ストリーム)</a></li>
 	<li><a href="fileupload3/">ファイルアップロード (バイト配列)</a></li>
