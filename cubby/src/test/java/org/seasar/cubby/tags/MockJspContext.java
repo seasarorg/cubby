@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -31,6 +32,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
+import javax.servlet.jsp.tagext.BodyContent;
 
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
@@ -39,26 +41,31 @@ import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
 public class MockJspContext extends PageContext {
 
-	private MockServletContext servletContext = new MockServletContextImpl("cubby");
-	private MockHttpServletRequest request = new MockHttpServletRequestImpl(servletContext, "/mock");
-	private MockJspWriter writer = new MockJspWriter();
-	private Map<Integer, Map<String, Object>> attributes = new HashMap<Integer, Map<String,Object>>();
-	private int[] FIND_ATTRIBUTE_SEQ = { PageContext.PAGE_SCOPE, PageContext.REQUEST_SCOPE, PageContext.SESSION_SCOPE, PageContext.APPLICATION_SCOPE };
-	
+	private MockServletContext servletContext = new MockServletContextImpl(
+			"cubby");
+	private MockHttpServletRequest request = new MockHttpServletRequestImpl(
+			servletContext, "/mock");
+	private JspWriter writer = new MockJspWriter();
+	private Stack<JspWriter> outStack = new Stack<JspWriter>();
+	private Map<Integer, Map<String, Object>> attributes = new HashMap<Integer, Map<String, Object>>();
+	private int[] FIND_ATTRIBUTE_SEQ = { PageContext.PAGE_SCOPE,
+			PageContext.REQUEST_SCOPE, PageContext.SESSION_SCOPE,
+			PageContext.APPLICATION_SCOPE };
+
 	public MockJspContext() {
 		for (int scope : FIND_ATTRIBUTE_SEQ) {
 			attributes.put(scope, new HashMap<String, Object>());
 		}
 	}
-	
+
 	public MockJspWriter getMockJspWriter() {
-		return this.writer;
+		return (MockJspWriter) this.writer;
 	}
-	
+
 	public String getResult() {
 		return getMockJspWriter().getResult();
 	}
-	
+
 	@Override
 	public Object findAttribute(String name) {
 		Object value = null;
@@ -103,7 +110,7 @@ public class MockJspContext extends PageContext {
 	@Override
 	public JspWriter getOut() {
 		// TODO 自動生成されたメソッド・スタブ
-		return writer ;
+		return writer;
 	}
 
 	@Override
@@ -135,7 +142,7 @@ public class MockJspContext extends PageContext {
 	public void forward(String relativeUrlPath) throws ServletException,
 			IOException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
@@ -183,28 +190,28 @@ public class MockJspContext extends PageContext {
 	public void handlePageException(Exception e) throws ServletException,
 			IOException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void handlePageException(Throwable t) throws ServletException,
 			IOException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void include(String relativeUrlPath) throws ServletException,
 			IOException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void include(String relativeUrlPath, boolean flush)
 			throws ServletException, IOException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
@@ -213,13 +220,24 @@ public class MockJspContext extends PageContext {
 			boolean needsSession, int bufferSize, boolean autoFlush)
 			throws IOException, IllegalStateException, IllegalArgumentException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void release() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
+	}
+
+	public JspWriter popBody() {
+		writer = outStack.pop();
+		return writer;
+	}
+
+	public BodyContent pushBody() {
+		outStack.push(writer);
+		writer = new MockBodyContent(writer);
+		return (BodyContent) writer;
 	}
 
 }

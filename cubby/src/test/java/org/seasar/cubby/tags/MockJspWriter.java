@@ -23,8 +23,9 @@ import javax.servlet.jsp.JspWriter;
 
 public class MockJspWriter extends JspWriter {
 
-	StringWriter writer = new StringWriter();
-	PrintWriter printWriter = new PrintWriter(writer);
+	private StringWriter writer = new StringWriter();
+
+	private PrintWriter printWriter = new PrintWriter(writer);
 	
 	public MockJspWriter() {
 		this(0, true);
@@ -170,4 +171,8 @@ public class MockJspWriter extends JspWriter {
 		printWriter.write(cbuf, off, len);
 	}
 
+	@Override
+	public String toString() {
+		return writer.toString();
+	}
 }
