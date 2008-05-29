@@ -66,21 +66,21 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 	/**
 	 * アクションクラスを設定します。
 	 * 
-	 * @param actionclass
+	 * @param actionClass
 	 *            アクションクラス
 	 */
-	public void setActionclass(final String actionclass) {
-		linkSupport.setActionclass(actionclass);
+	public void setActionClass(final String actionClass) {
+		linkSupport.setActionClassName(actionClass);
 	}
 
 	/**
 	 * アクションメソッドを設定します。
 	 * 
-	 * @param actionmethod
+	 * @param actionMethod
 	 *            アクションメソッド
 	 */
-	public void setActionmethod(final String actionmethod) {
-		linkSupport.setActionmethod(actionmethod);
+	public void setActionMethod(final String actionMethod) {
+		linkSupport.setActionMethodName(actionMethod);
 	}
 
 	/**
