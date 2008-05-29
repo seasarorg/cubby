@@ -41,7 +41,7 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 	private String tag;
 
 	/** リンクする URL を出力する属性。 */
-	private String attribute;
+	private String attr;
 
 	/**
 	 * 出力するタグを設定します。
@@ -56,11 +56,11 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 	/**
 	 * リンクする URL を出力する属性を設定します。
 	 * 
-	 * @param attribute
+	 * @param attr
 	 *            リンクする URL を出力する属性
 	 */
-	public void setAttribute(final String attribute) {
-		this.attribute = attribute;
+	public void setAttr(final String attr) {
+		this.attr = attr;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 		final String contextPath = (String) getJspContext().getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		final String link = contextPath + linkSupport.getPath();
-		getDynamicAttribute().put(attribute, link);
+		getDynamicAttribute().put(attr, link);
 
 		final JspWriter out = getJspContext().getOut();
 		out.write("<");
