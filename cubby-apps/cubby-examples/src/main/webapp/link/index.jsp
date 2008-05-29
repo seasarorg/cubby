@@ -14,46 +14,46 @@
 <ul>
 	<li>
 		<t:link tag="a" attribute="href"
-				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
-				actionmethod="foo">
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="foo">
 			simple hyper reference
 		</t:link>
 	</li>
 	<li>
 		<t:link tag="a" attribute="href"
-				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
-				actionmethod="bar">
-			<t:linkparam name="id" value="123" />
-			<t:linkparam name="token" value="abc" />
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="bar">
+			<t:param name="id" value="123" />
+			<t:param name="token" value="abc" />
 			hyper reference with parameters
 		</t:link>
 	</li>
 	<li>
 		<t:link tag="a" attribute="href"
-				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
-				actionmethod="bar">
-			<t:linkparam name="id" value="456" />
-			<t:linkparam name="token" value="d/e f" />
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="bar">
+			<t:param name="id" value="456" />
+			<t:param name="token" value="d/e f" />
 			<t:link tag="img" attribute="src"
-					actionclass="org.seasar.cubby.examples.other.web.link.ImageAction"
-					actionmethod="image">
-				<t:linkparam name="token" value="nested link" />
+					actionClass="org.seasar.cubby.examples.other.web.link.ImageAction"
+					actionMethod="image">
+				<t:param name="token" value="nested link" />
 			</t:link>
 		</t:link>
 	</li>
 	<li>
 		<t:form method="POST" value="${action}"
-				actionclass="org.seasar.cubby.examples.other.web.link.LinkAction"
-				actionmethod="bar">
-			<t:linkparam name="id" value="7890" />
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="bar">
+			<t:param name="id" value="7890" />
 			<fieldset>
 				<legend>form ("action" attribute)</legend>
 				<label for="token">token:</label><t:input name="token" type="text" />
 				<t:input name="submit" value="submit" type="submit" />
 				<t:link tag="img" attribute="src"
-						actionclass="org.seasar.cubby.examples.other.web.link.ImageAction"
-						actionmethod="image">
-					<t:linkparam name="token" value="@ link in form" />
+						actionClass="org.seasar.cubby.examples.other.web.link.ImageAction"
+						actionMethod="image">
+					<t:param name="token" value="@ link in form" />
 				</t:link>
 			</fieldset>
 		</t:form>
