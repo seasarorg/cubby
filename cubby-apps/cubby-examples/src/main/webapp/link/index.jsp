@@ -18,6 +18,7 @@
 				actionMethod="foo">
 			hyper reference (simple)
 		</t:link>
+		- link to "<t:link actionClass="org.seasar.cubby.examples.other.web.link.LinkAction" actionMethod="foo" />"
 	</li>
 	<li>
 		<t:link tag="a" attr="href"
@@ -27,6 +28,10 @@
 			<t:param name="token" value="abc" />
 			hyper reference (with parameters)
 		</t:link>
+		- link to "<t:link actionClass="org.seasar.cubby.examples.other.web.link.LinkAction" actionMethod="bar">
+			<t:param name="id" value="123" />
+			<t:param name="token" value="abc" />
+		</t:link>"
 	</li>
 	<li>
 		<t:link tag="a" attr="href"
