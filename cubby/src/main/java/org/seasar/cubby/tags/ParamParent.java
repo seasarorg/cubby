@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
-interface HasParameter {
+interface ParamParent {
 
 	void addParameter(String name, String value);
 

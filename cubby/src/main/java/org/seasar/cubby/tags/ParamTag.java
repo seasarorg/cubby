@@ -15,8 +15,13 @@
  */
 package org.seasar.cubby.tags;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
+import org.seasar.framework.message.MessageFormatter;
 
 /**
  * パラメータを指定するためのカスタムタグです。
@@ -56,10 +61,22 @@ public class ParamTag extends SimpleTagSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doTag() throws JspException {
-		final HasParameter hasParameter = (HasParameter) findAncestorWithClass(
-				this, HasParameter.class);
-		hasParameter.addParameter(name, value);
+	public void doTag() throws JspException, IOException {
+		final ParamParent parent = (ParamParent) findAncestorWithClass(
+				this, ParamParent.class);
+		if (parent == null) {
+			throw new JspException(MessageFormatter.getSimpleMessage(
+					"ECUB1004", null));
+		}
+		final String value;
+		if (this.value == null) {
+			StringWriter writer = new StringWriter();
+			getJspBody().invoke(writer);
+			value = writer.toString().trim();
+		} else {
+			value = this.value;
+		}
+		parent.addParameter(name, value);
 	}
 
 }

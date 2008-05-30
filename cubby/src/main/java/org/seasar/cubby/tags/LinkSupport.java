@@ -147,4 +147,12 @@ class LinkSupport {
 		return (Class<T>) Class.forName(className);
 	}
 
+	/**
+	 * リソースを開放します。
+	 */
+	public void release() {
+		this.actionClassName = null;
+		this.actionMethodName = null;
+	}
+
 }

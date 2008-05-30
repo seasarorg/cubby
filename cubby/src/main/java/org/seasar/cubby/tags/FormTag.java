@@ -44,7 +44,7 @@ import org.seasar.framework.container.SingletonS2Container;
  * @since 1.0.0
  */
 public class FormTag extends BodyTagSupport implements DynamicAttributes,
-		HasParameter {
+		ParamParent {
 
 	/** シリアルバージョン UID */
 	private static final long serialVersionUID = 1L;
@@ -178,6 +178,14 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		}
 		pageContext.removeAttribute(ATTR_OUTPUT_VALUES, PageContext.PAGE_SCOPE);
 		return EVAL_PAGE;
+	}
+
+	@Override
+	public void release() {
+		linkSupport.release();
+		attrs.clear();
+		value = null;
+		super.release();
 	}
 
 }

@@ -516,7 +516,7 @@ public class TokenAction extends Action {
     </description>
     <name>param</name>
     <tag-class>org.seasar.cubby.tags.ParamTag</tag-class>
-    <body-content>empty</body-content>
+    <body-content>scriptless</body-content>
     <attribute>
       <description>
         <![CDATA[
@@ -532,10 +532,13 @@ public class TokenAction extends Action {
       <description>
         <![CDATA[
         パラメータの値です。
+        <p>
+        この属性が指定されていない場合はボディ部を値として使用します。
+        </p>
         ]]>
       </description>
       <name>value</name>
-      <required>true</required>
+      <required>false</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
     </attribute>
