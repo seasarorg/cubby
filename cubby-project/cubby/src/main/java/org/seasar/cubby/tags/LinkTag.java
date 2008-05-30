@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspFragment;
 
 /**
  * 指定されたアクションクラス、アクションメソッドへリンクする URL を特定の属性にもつタグを出力するカスタムタグです。
@@ -32,7 +33,7 @@ import javax.servlet.jsp.PageContext;
  * @since 1.1.0
  */
 public class LinkTag extends DynamicAttributesTagSupport implements
-		HasParameter {
+		ParamParent {
 
 	/** リンクの補助クラス。 */
 	private final LinkSupport linkSupport = new LinkSupport();
@@ -100,24 +101,36 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 	 */
 	@Override
 	public void doTag() throws JspException, IOException {
-		final StringWriter writer = new StringWriter();
-		this.getJspBody().invoke(writer);
+		final String body;
+		final JspFragment jspBody = this.getJspBody();
+		if (jspBody != null) {
+			final StringWriter writer = new StringWriter();
+			jspBody.invoke(writer);
+			body = writer.toString();
+		} else {
+			body = "";
+		}
 
 		final String contextPath = (String) getJspContext().getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		final String link = contextPath + linkSupport.getPath();
-		getDynamicAttribute().put(attr, link);
 
 		final JspWriter out = getJspContext().getOut();
-		out.write("<");
-		out.write(tag);
-		out.write(" ");
-		out.write(toAttr(getDynamicAttribute()));
-		out.write(">");
-		out.write(writer.toString());
-		out.write("</");
-		out.write(tag);
-		out.write(">");
+		if (tag == null) {
+			out.write(link);
+			out.write(body);
+		} else {
+			getDynamicAttribute().put(attr, link);
+			out.write("<");
+			out.write(tag);
+			out.write(" ");
+			out.write(toAttr(getDynamicAttribute()));
+			out.write(">");
+			out.write(body);
+			out.write("</");
+			out.write(tag);
+			out.write(">");
+		}
 	}
 
 }
