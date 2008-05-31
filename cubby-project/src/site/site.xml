@@ -94,6 +94,11 @@
 				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 			</item>
+			<item name="リンク集" href="/link.html" collapse="true">
+				<item name="JSP" href="/link.html#JSP" />
+				<item name="Maven2" href="/link.html#Maven2" />
+				<item name="Eclipse WTP" href="/link.html#Eclipse WTP" />
+			</item>
 			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
 			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
 		</menu>
