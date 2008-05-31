@@ -1,0 +1,42 @@
+  --------
+  リンク集
+  --------
+  agata
+  --------
+  2008-05-31
+  --------
+
+{目次}
+
+ *{{{#JSP}JSP}}
+
+ *{{{#Maven2}Maven2}}
+
+ *{{{#Eclipse WTP}Eclipse WTP}}
+
+{JSP}
+
+ * {{{http://jcp.org/aboutJava/communityprocess/final/jsr152/}JSP 2.0 仕様書}}(英語)
+
+ * {{{http://java.sun.com/products/jsp/jstl/}JSTL 仕様書}}(英語)
+
+ * {{{http://lab.moyo.biz/recipes/java/jsp/jstl/}JSTL リファレンス}}(日本語)
+
+{Maven2}
+
+ * {{{http://maven.apache.org/}Maven Project Site}}(英語)
+
+ * {{{http://www.nulab.co.jp/kousei/chapter1/01.html}構成管理入門(ヌーラボ)}}(日本語)
+
+ * {{{http://www.techscore.com/tech/ApacheJakarta/Maven/index.html}Maven2(TECHSCORE)}}(日本語)
+
+ * {{{http://wiki.fdiary.net/maven2/?CookBook}Maven2のTipsを集めるWiki - CookBook}}(日本語)
+
+{Eclipse WTP}
+
+ * {{{http://www.eclipse.org/webtools/}Web Tools Platform (WTP) Project}}(英語)
+
+ * {{{http://www.atmarkit.co.jp/fjava/special/maven2_02/maven2_02_1.html}@IT Eclipse WTPを使ったWebアプリでもカンタンMaven}}(日本語)
+
+ * {{{http://codezine.jp/a/article/aid/2321.aspx}CodeZine Eclipse Web Tools PlatformとMavenの統合}}(日本語)
+ 

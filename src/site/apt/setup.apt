@@ -3,7 +3,7 @@
   --------
   baba
   --------
-  2008-05-15
+  2008-05-31
   --------
 
 {目次}
@@ -39,6 +39,7 @@
 
  Cubby は {{{http://maven.apache.org/}Maven2}} の {{{http://maven.apache.org/plugins/maven-archetype-plugin/}archetype コンテナ}}を用意していますので、これを使用してプロジェクトの雛形を作成することをおすすめします。
  データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。
+ Maven2についての技術情報は、{{{link.html#Maven2}リンク集}}をご覧ください。
 
 *{Maven2 によるプロジェクトの雛形作成}
 
