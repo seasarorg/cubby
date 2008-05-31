@@ -31,7 +31,8 @@
 {前提}
 
  Cubby は S2Container2.4 の {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy}SMART Deploy}} 環境下で動作させることを前提としています。
- ソースコードのパッケージ構成は {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage}SMART Deploy 推奨のパッケージ構成}}としてください。
+ ソースコードのパッケージ構成は {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage}SMART Deploy 推奨のパッケージ構成}}としてください。\
+ また、Cubby を 初めて利用される方は一度サンプル war を{{{download.html}ダウンロード}}して動かしながら、Cubbyのドキュメントとサンプルのソースを確認しながら学習するとよいでしょう。
 
 []
 
