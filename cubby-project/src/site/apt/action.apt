@@ -106,15 +106,17 @@
 
  [[2]]テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。
 
- [[3]]アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。
+ [[3]]setUpメソッドで app.dicon を読み込み、 Seasar2 で管理されるコンポーネント(テスト対象のアクションを含む)を初期化します。
 
- [[4]]テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。
+ [[4]]アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。
 
- [[5]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}} にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
+ [[5]]テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。
+
+ [[6]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}} にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
  
- [[6]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#processAction}}で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。
+ [[7]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#processAction}}で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。
 
- [[7]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
+ [[8]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
 
  <<HelloActionTest.java>>
  
