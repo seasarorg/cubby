@@ -24,7 +24,7 @@ import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
-public class TextareaTagTest extends JspTagTestCase {
+public class TextareaTagTest extends SimpleTagTestCase {
 
 	TextareaTag tag;
 	

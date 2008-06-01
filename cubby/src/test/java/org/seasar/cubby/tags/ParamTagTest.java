@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-public class ParamTagTest extends JspTagTestCase {
+public class ParamTagTest extends SimpleTagTestCase {
 
 	private ParamTag tag;
 

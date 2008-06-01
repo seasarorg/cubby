@@ -27,7 +27,7 @@ import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
-public class SelectTagTest extends JspTagTestCase {
+public class SelectTagTest extends SimpleTagTestCase {
 
 	SelectTag tag;
 	List<ItemBean> items = new ArrayList<ItemBean>();

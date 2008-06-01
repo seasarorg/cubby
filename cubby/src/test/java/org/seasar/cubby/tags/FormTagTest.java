@@ -15,116 +15,92 @@
  */
 package org.seasar.cubby.tags;
 
-import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.SimpleTag;
+import javax.servlet.jsp.tagext.JspTag;
 
-import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.dxo.FormDxo;
-import org.seasar.extension.unit.S2TestCase;
 
-public class FormTagTest extends S2TestCase {
-
-	protected MockJspFragment jspBody;
-
-	protected MockJspContext context;
+public class FormTagTest extends AbstractStandardTagTestCase {
 
 	public HttpServletRequest request;
 
-	FormTag tag;
+	public FormTag tag;
 
-	FormDxo formDxo;
+	public FormDxo formDxo;
 
 	@Override
 	protected void setUp() throws Exception {
-		super.setUp();
 		include(getClass().getName().replace('.', '/') + ".dicon");
-		jspBody = new MockJspFragment();
-		context = new MockJspContext();
-		jspBody.setJspContext(context);
+		super.setUp();
 		tag = new FormTag();
 		setupBodyTag(tag);
 		setupErrors(context);
+		context.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/brabra",
+				PageContext.REQUEST_SCOPE);
 	}
 
-	protected void setupSimpleTag(SimpleTag tag) {
-		tag.setJspBody(jspBody);
-		tag.setJspContext(context);
-	}
-
-	protected void setupBodyTag(BodyTag tag) {
-		tag.setPageContext(context);
-	}
-
-	protected Element getResultAsElementFromContext() throws JDOMException,
-			IOException {
-		String result = context.getResult();
-		Document document = new SAXBuilder().build(new StringReader(result));
-		Element element = document.getRootElement();
-		return element;
-	}
-
-	public void setupErrors(JspContext context) {
-		ActionErrorsImpl errors = new ActionErrorsImpl();
-		context.setAttribute("errors", errors, PageContext.REQUEST_SCOPE);
-	}
-
-	public void testDoTag1() throws Exception {
+	public void testDoTagNoChild() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
-		tag.doStartTag();
-		tag.setBodyContent(new MockBodyContent(context.getOut()));
-		tag.doInitBody();
-		tag.doAfterBody();
-		tag.doEndTag();
+		doLifecycle(tag);
 
 		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n</form>\n"
 
 		Element element = getResultAsElementFromContext();
 		String message = "フォームオブジェクトが指定";
 		assertEquals(message, 1, element.getAttributes().size());
 		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
-		// assertEquals("フォームオブジェクトが指定",
-		// "<form action=\"/todo/save\" >\n</form>\n", context.getResult());
 	}
 
-	public void testDoTag2() throws Exception {
+	public void testDoTagEmptyBody() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
-		tag.doStartTag();
-		BodyContent bodyContent = (MockBodyContent) context.pushBody();
-		tag.setBodyContent(bodyContent);
-		tag.doInitBody();
 
-		TextareaTag textareaTag = new TextareaTag();
-		textareaTag.setJspBody(jspBody);
-		textareaTag.setJspContext(context);
-		textareaTag.setName("stringField");
-		jspBody.addChildTag(textareaTag);
-		textareaTag.doTag();
-
-		tag.doAfterBody();
-		context.popBody();
-		tag.doEndTag();
+		doLifecycle(tag);
 
 		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n</form>\n"
+
+		Element element = getResultAsElementFromContext();
+		String message = "Bodyが空の場合";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
+	}
+
+	public void testDoTagWithTextAreaTag() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+
+		tag.setValue(form);
+		tag.setDynamicAttribute(null, "action", "/todo/save");
+		doLifecycle(tag, new ChildrenFactory() {
+
+			public List<JspTag> create() {
+				TextareaTag textareaTag = new TextareaTag();
+				textareaTag.setName("stringField");
+				return Arrays.asList(new JspTag[] { textareaTag });
+			}
+
+		});
+
+		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n" +
+		// "<textarea name=\"stringField\" >value1</textarea>\n" +
+		// "</form>\n"
 
 		Element element = getResultAsElementFromContext();
 		String message = "フォームオブジェクトが指定、子要素がある場合";
@@ -135,32 +111,104 @@ public class FormTagTest extends S2TestCase {
 		assertEquals(message, 1, child.getAttributes().size());
 		assertEquals(message, "stringField", child.getAttributeValue("name"));
 		assertEquals(message, "value1", child.getValue());
-		// assertEquals("フォームオブジェクトが指定、子要素がある場合",
-		// "<form action=\"/todo/save\" >\n" +
-		// "<textarea name=\"stringField\" >value1</textarea>\n" +
-		// "</form>\n", context.getResult());
 	}
 
-	public void testDoTagEmptyBody() throws Exception {
+	public void testDoTagWithSpecifiedAction() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
 		tag.setValue(form);
-		tag.setDynamicAttribute(null, "action", "/todo/save");
-		tag.doStartTag();
-		tag.setBodyContent(new MockBodyContent(context.getOut()));
-		tag.doInitBody();
-		tag.doAfterBody();
-		tag.doEndTag();
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("foo");
+		doLifecycle(tag);
 
 		System.out.println(context.getResult());
+		// "<form action=\"/brabra/mockFormTagTest/bar/123?token=abc\" >\n" +
+		// "</form>\n", context.getResult());
 
 		Element element = getResultAsElementFromContext();
-		String message = "Bodyが空の場合";
+		String message = "アクションクラス、メソッド指定";
 		assertEquals(message, 1, element.getAttributes().size());
-		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
-		// assertEquals("Bodyが空の場合",
-		// "<form action=\"/todo/save\" >\n</form>\n", context.getResult());
+		assertEquals(message, "/brabra/mockFormTagTest/foo", element
+				.getAttributeValue("action"));
+		assertEquals(message, 0, element.getChildren().size());
+	}
+
+	public void testDoTagWithSpecifiedActionAndParam() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+
+		tag.setValue(form);
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("bar");
+		doLifecycle(tag, new ChildrenFactory() {
+
+			public List<JspTag> create() {
+				ParamTag paramTag1 = new ParamTag();
+				paramTag1.setName("id");
+				paramTag1.setValue("123");
+				ParamTag paramTag2 = new ParamTag();
+				paramTag2.setName("token");
+				paramTag2.setValue("abc");
+				return Arrays.asList(new JspTag[] { paramTag1, paramTag2 });
+			}
+
+		});
+
+		System.out.println(context.getResult());
+		// "<form action=\"/brabra/mockFormTagTest/bar/123?token=abc\" >\n" +
+		// "</form>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "アクションクラス、メソッド指定、paramタグあり";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/brabra/mockFormTagTest/bar/123?token=abc",
+				element.getAttributeValue("action"));
+		assertEquals(message, 0, element.getChildren().size());
+	}
+
+	public void testDoTagWithTextAreaAndSpecifiedActionAndParam()
+			throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+
+		tag.setValue(form);
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("bar");
+		doLifecycle(tag, new ChildrenFactory() {
+
+			public List<JspTag> create() {
+				ParamTag paramTag1 = new ParamTag();
+				paramTag1.setName("id");
+				paramTag1.setValue("123");
+				ParamTag paramTag2 = new ParamTag();
+				paramTag2.setName("token");
+				paramTag2.setValue("abc");
+				InputTag inputTag = new InputTag();
+				inputTag.setType("text");
+				inputTag.setName("stringField");
+				return Arrays.asList(new JspTag[] { paramTag1, paramTag2,
+						inputTag });
+			}
+
+		});
+
+		System.out.println(context.getResult());
+		// "<form action=\"/brabra/mockFormTagTest/bar/123?token=abc\" >\n" +
+		// "</form>\n", context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "アクションクラス、メソッド指定、paramタグあり";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "/brabra/mockFormTagTest/bar/123?token=abc",
+				element.getAttributeValue("action"));
+		assertEquals(message, 1, element.getChildren().size());
+		Element child = element.getChild("input");
+		assertEquals(message, 3, child.getAttributes().size());
+		assertEquals(message, "text", child.getAttributeValue("type"));
+		assertEquals(message, "stringField", child.getAttributeValue("name"));
+		assertEquals(message, "value1", child.getAttributeValue("value"));
+		assertEquals(message, "", child.getValue());
 	}
 
 }

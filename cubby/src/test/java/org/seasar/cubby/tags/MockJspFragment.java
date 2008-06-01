@@ -23,18 +23,19 @@ import java.util.List;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.JspFragment;
+import javax.servlet.jsp.tagext.JspTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 
 public class MockJspFragment extends JspFragment {
 
 	private JspContext context;
-	private String  body = "";
-	private List<SimpleTag> childTags = new ArrayList<SimpleTag>();
-	
+	private String body = "";
+	private List<JspTag> children = new ArrayList<JspTag>();
+
 	public void setJspContext(JspContext context) {
 		this.context = context;
 	}
-	
+
 	@Override
 	public JspContext getJspContext() {
 		return context;
@@ -43,9 +44,14 @@ public class MockJspFragment extends JspFragment {
 	@Override
 	public void invoke(Writer out) throws JspException, IOException {
 		out.write(body);
-		for (SimpleTag tag : childTags) {
-			tag.setJspContext(getJspContext());
-			tag.doTag();
+		for (JspTag child : children) {
+			if (child instanceof SimpleTag) {
+				SimpleTag simpleTag = (SimpleTag) child;
+				simpleTag.setJspContext(getJspContext());
+				simpleTag.doTag();
+			} else {
+				throw new UnsupportedOperationException();
+			}
 		}
 	}
 
@@ -53,7 +59,7 @@ public class MockJspFragment extends JspFragment {
 		this.body = body;
 	}
 
-	public void addChildTag(SimpleTag childTag) {
-		childTags.add(childTag);
+	public void addChild(JspTag child) {
+		children.add(child);
 	}
 }

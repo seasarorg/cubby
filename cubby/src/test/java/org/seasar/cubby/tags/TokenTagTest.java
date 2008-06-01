@@ -23,7 +23,7 @@ import org.seasar.cubby.util.TokenHelper;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
 import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
-public class TokenTagTest extends JspTagTestCase {
+public class TokenTagTest extends SimpleTagTestCase {
 
 	TokenTag tag;
 
