@@ -20,8 +20,6 @@ import java.io.StringReader;
 
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.SimpleTag;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -30,9 +28,19 @@ import org.jdom.input.SAXBuilder;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.extension.unit.S2TestCase;
 
-abstract public class JspTagTestCase extends S2TestCase {
+abstract class AbstractTagTestCase extends S2TestCase {
+
 	protected MockJspFragment jspBody;
+
 	protected MockJspContext context;
+
+	public AbstractTagTestCase() {
+		super();
+	}
+
+	public AbstractTagTestCase(String name) {
+		super(name);
+	}
 
 	@Override
 	protected void setUp() throws Exception {
@@ -40,16 +48,6 @@ abstract public class JspTagTestCase extends S2TestCase {
 		jspBody = new MockJspFragment();
 		context = new MockJspContext();
 		jspBody.setJspContext(context);
-	}
-
-	
-	protected void setupSimpleTag(SimpleTag tag) {
-		tag.setJspBody(jspBody);
-		tag.setJspContext(context);
-	}
-
-	protected void setupBodyTag(BodyTag tag) {
-		tag.setPageContext(context);
 	}
 
 	protected Element getResultAsElementFromContext() throws JDOMException,

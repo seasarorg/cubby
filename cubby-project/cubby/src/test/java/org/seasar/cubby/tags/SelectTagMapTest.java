@@ -25,7 +25,7 @@ import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
-public class SelectTagMapTest extends JspTagTestCase {
+public class SelectTagMapTest extends SimpleTagTestCase {
 
 	SelectTag tag;
 	Map<Integer, String> items = new LinkedHashMap<Integer, String>();

@@ -26,9 +26,9 @@ import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
-public class InputTagTest extends JspTagTestCase {
+public class InputTagTest extends SimpleTagTestCase {
 
-	InputTag tag;
+	private InputTag tag;
 
 	@Override
 	protected void setUp() throws Exception {

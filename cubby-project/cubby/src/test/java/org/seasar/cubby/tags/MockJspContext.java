@@ -103,13 +103,11 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public ExpressionEvaluator getExpressionEvaluator() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public JspWriter getOut() {
-		// TODO 自動生成されたメソッド・スタブ
 		return writer;
 	}
 
