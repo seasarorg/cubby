@@ -19,6 +19,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
 
 import java.lang.reflect.Field;
 
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
@@ -27,6 +28,7 @@ import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
 import org.seasar.framework.beans.util.Beans;
+import org.seasar.framework.container.assembler.AutoPropertyAssembler;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.unit.S2TigerTestCase;
@@ -152,6 +154,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 */
 	protected ActionResult processAction(final String orginalPath)
 			throws Exception {
+		reassemble();
 		routing(orginalPath);
 		setupThreadContext();
 		return actionProcessor
@@ -205,5 +208,31 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		}
 		return internalForwardPath;
 	}
-
+	
+	/**
+	 * {@link CubbyTestCase}を検証するテストクラスのフィールドの{@link Action}に対して、
+	 * Cubbyの暗黙オブジェクト(paramsなど)をセットします。<p>
+	 * 暗黙オブジェクトのSeasar2内での生成タイミングと、Actionの生成タイミングの関係で、
+	 * 本番時はアクションセットされる暗黙オブジェクトが、テストではセットされないため、
+	 * このメソッドを呼び出して、セットしています。<p>
+	 * このメソッドはアクションメソッドの実行をエミュレートする{@link CubbyTestCase#processAction(String)}の先頭から
+	 * 呼び出されるため、通常のアクションのテストでは利用者が明示的に呼び出すことは少ないでしょう。
+	 */
+    protected void reassemble() {
+    	// CubbyTestCaseの下位クラスのフィールド中の、
+    	// Action型のフィールドの値に自動プロパティバインディングを行う
+        for (Class<?> clazz = getClass(); clazz != CubbyTestCase.class
+                && clazz != null; clazz = clazz.getSuperclass()) {
+            final Field[] fields = clazz.getDeclaredFields();
+            for (Field f : fields) {
+                if (Action.class.isAssignableFrom(f.getType())
+                        && getContainer().hasComponentDef(f.getType())) {
+                    final Object component = getComponent(f.getType());
+                    final AutoPropertyAssembler assembler = 
+                    	new AutoPropertyAssembler(getComponentDef(f.getType()));
+                    assembler.assemble(component);
+                }
+            }
+        }
+    }
 }
