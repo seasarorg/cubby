@@ -62,8 +62,8 @@ public class ParamTag extends SimpleTagSupport {
 	 */
 	@Override
 	public void doTag() throws JspException, IOException {
-		final ParamParent parent = (ParamParent) findAncestorWithClass(
-				this, ParamParent.class);
+		final ParamParent parent = (ParamParent) findAncestorWithClass(this,
+				ParamParent.class);
 		if (parent == null) {
 			throw new JspException(MessageFormatter.getSimpleMessage(
 					"ECUB1004", null));

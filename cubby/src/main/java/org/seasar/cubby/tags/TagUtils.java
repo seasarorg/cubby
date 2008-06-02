@@ -17,7 +17,6 @@ package org.seasar.cubby.tags;
 
 import static java.lang.Boolean.TRUE;
 import static javax.servlet.jsp.PageContext.REQUEST_SCOPE;
-import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
@@ -26,7 +25,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspContext;
-import javax.servlet.jsp.PageContext;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
@@ -239,20 +237,6 @@ class TagUtils {
 	private static boolean isValidationFail(final JspContext context) {
 		return TRUE.equals(context.getAttribute(ATTR_VALIDATION_FAIL,
 				REQUEST_SCOPE));
-	}
-
-	/**
-	 * 指定されたJSPコンテキストから&lt;t:form&gt;タグによって設定されたフォームへの出力値の{@link Map}を取得します。
-	 * 
-	 * @param context
-	 *            JSPコンテキスト
-	 * @return フォームへの出力値の{@link Map}
-	 */
-	@SuppressWarnings("unchecked")
-	public static Map<String, String[]> outputValues(final JspContext context) {
-		final Map<String, String[]> outputValues = (Map<String, String[]>) context
-				.getAttribute(ATTR_OUTPUT_VALUES, PageContext.PAGE_SCOPE);
-		return outputValues;
 	}
 
 	/**
