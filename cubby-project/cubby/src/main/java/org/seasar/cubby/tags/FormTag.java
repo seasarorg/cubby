@@ -16,7 +16,6 @@
 package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
-import static org.seasar.cubby.CubbyConstants.ATTR_OUTPUT_VALUES;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
@@ -57,6 +56,9 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 
 	/** リンク用の補助クラス。 */
 	private LinkSupport linkSupport = new LinkSupport();
+
+	/** フォームへ出力する値の{@ilnk {@link Map} */
+	private Map<String, String[]> outputValues;
 
 	/**
 	 * {@inheritDoc} DynamicAttributeをセットします。
@@ -122,9 +124,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		final Map<String, String[]> outputValues = bindFormToOutputValues(this.value);
-		pageContext.setAttribute(ATTR_OUTPUT_VALUES, outputValues,
-				PageContext.PAGE_SCOPE);
+		this.outputValues = bindFormToOutputValues(this.value);
 		return EVAL_BODY_BUFFERED;
 	}
 
@@ -176,7 +176,6 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		} catch (final IOException e) {
 			throw new JspException(e);
 		}
-		pageContext.removeAttribute(ATTR_OUTPUT_VALUES, PageContext.PAGE_SCOPE);
 		return EVAL_PAGE;
 	}
 
@@ -185,7 +184,17 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		linkSupport.release();
 		attrs.clear();
 		value = null;
+		outputValues = null;
 		super.release();
+	}
+
+	/**
+	 * フォームの値を復元するための{@link Map}を取得します。
+	 * 
+	 * @return フォームの値を復元するための{@link Map}
+	 */
+	Map<String, String[]> getOutputValues() {
+		return outputValues;
 	}
 
 }

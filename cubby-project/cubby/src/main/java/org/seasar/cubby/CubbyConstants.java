@@ -65,11 +65,6 @@ public class CubbyConstants {
 	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
 
 	/**
-	 * フォームの値を復元する際にリクエスト属性に一時的に作成する値の名前。
-	 */
-	public static final String ATTR_OUTPUT_VALUES = "org.seasar.cubby.outputValues";
-
-	/**
 	 * トークンのMapをセッションに保存する名前。
 	 */
 	public static final String ATTR_TOKEN = "org.seasar.cubby.token";

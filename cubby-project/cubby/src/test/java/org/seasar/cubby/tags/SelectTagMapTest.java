@@ -19,10 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.servlet.jsp.PageContext;
-
 import org.jdom.Element;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
 public class SelectTagMapTest extends SimpleTagTestCase {
@@ -44,7 +41,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag1() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);
@@ -88,7 +85,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag2() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("integerArrayField", new String[] { "1", "3" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("integerArrayField");
 		tag.setDynamicAttribute(null, "size", "5");
 		tag.setItems(items);
@@ -133,7 +130,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag4() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setItems(items);
 		tag.setEmptyOption(false);
@@ -172,7 +169,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag5() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setItems(items);
 		tag.setEmptyOptionLabel("empty label");
@@ -215,7 +212,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag11() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);
@@ -260,7 +257,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag12() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);
@@ -305,7 +302,7 @@ public class SelectTagMapTest extends SimpleTagTestCase {
 	public void testDoTag13() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 		tag.setDynamicAttribute(null, "id", "stringField");
 		tag.setItems(items);

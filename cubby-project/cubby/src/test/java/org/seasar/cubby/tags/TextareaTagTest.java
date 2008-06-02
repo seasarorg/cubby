@@ -21,7 +21,6 @@ import java.util.Map;
 import javax.servlet.jsp.PageContext;
 
 import org.jdom.Element;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.framework.util.StringUtil;
 
 public class TextareaTagTest extends SimpleTagTestCase {
@@ -38,6 +37,7 @@ public class TextareaTagTest extends SimpleTagTestCase {
 	}
 
 	public void testDoTag1() throws Exception {
+		tag.setParent(new MockFormTag(null));
 		tag.setName("content");
 		tag.setValue("value1");
 //		tag.setDynamicAttribute(null, "name", "content");
@@ -57,7 +57,7 @@ public class TextareaTagTest extends SimpleTagTestCase {
 		form.setStringField("value1");
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "value1" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		context.setAttribute("__form", form, PageContext.REQUEST_SCOPE);
 		tag.setName("stringField");
 //		tag.setDynamicAttribute(null, "name", "stringField");
@@ -73,7 +73,7 @@ public class TextareaTagTest extends SimpleTagTestCase {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 		Map<String, String[]> map = new HashMap<String, String[]>();
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map, PageContext.PAGE_SCOPE);
+		tag.setParent(new MockFormTag(map));
 		tag.setName("stringField");
 //		tag.setDynamicAttribute(null, "name", "stringField");
 		tag.doTag();

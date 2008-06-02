@@ -37,7 +37,9 @@ public class InputTagTest extends SimpleTagTestCase {
 		setupSimpleTag(tag);
 		setupErrors(context);
 		setUpParams(context);
-		setUpOutputValues(context);
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put("stringField", new String[] { "outputValue" });
+		tag.setParent(new MockFormTag(map));
 	}
 
 	void setUpParams(JspContext context) {
@@ -45,13 +47,6 @@ public class InputTagTest extends SimpleTagTestCase {
 		map.put("stringField", new String[] { "paramsValue" });
 		context.setAttribute(CubbyConstants.ATTR_PARAMS, map,
 				PageContext.REQUEST_SCOPE);
-	}
-
-	void setUpOutputValues(JspContext context) {
-		Map<String, String[]> map = new HashMap<String, String[]>();
-		map.put("stringField", new String[] { "outputValue" });
-		context.setAttribute(CubbyConstants.ATTR_OUTPUT_VALUES, map,
-				PageContext.PAGE_SCOPE);
 	}
 
 	void setValidationFail() {

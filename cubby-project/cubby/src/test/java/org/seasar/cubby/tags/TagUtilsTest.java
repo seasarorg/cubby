@@ -233,12 +233,6 @@ public class TagUtilsTest extends TestCase {
     }
     
     @SuppressWarnings("unchecked")
-    public void testOutputValues() throws Throwable {
-        Map result = TagUtils.outputValues(new MockJspContext());
-        assertNull("result", result);
-    }
-    
-    @SuppressWarnings("unchecked")
     public void testToAttr() throws Throwable {
         String result = TagUtils.toAttr(new HashMap(100, 100.0F));
         assertEquals("result", "", result);
@@ -289,15 +283,6 @@ public class TagUtilsTest extends TestCase {
         }
     }
 
-    public void testOutputValuesThrowsNullPointerException() throws Throwable {
-        try {
-            TagUtils.outputValues(null);
-            fail("Expected NullPointerException to be thrown");
-        } catch (NullPointerException ex) {
-            assertNull("ex.getMessage()", ex.getMessage());
-        }
-    }
-    
     public void testToAttrThrowsNullPointerException() throws Throwable {
         try {
             TagUtils.toAttr(null);

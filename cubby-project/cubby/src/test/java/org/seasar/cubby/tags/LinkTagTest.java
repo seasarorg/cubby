@@ -118,4 +118,5 @@ public class LinkTagTest extends SimpleTagTestCase {
 				element.getAttributeValue("src"));
 		assertEquals(message, 0, element.getChildren().size());
 	}
+
 }

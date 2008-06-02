@@ -18,7 +18,6 @@ package org.seasar.cubby.tags;
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
-import static org.seasar.cubby.tags.TagUtils.outputValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
@@ -85,7 +84,14 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
 		final Map<String, Object> dyn = this.getDynamicAttribute();
-		final Map<String, String[]> outputValues = outputValues(context);
+		final Map<String, String[]> outputValues;
+		final FormTag formTag = (FormTag) findAncestorWithClass(this,
+				FormTag.class);
+		if (formTag == null) {
+			outputValues = null;
+		} else {
+			outputValues = formTag.getOutputValues();
+		}
 
 		if (this.index == null) {
 			if (!errors.getFields().get(this.name).isEmpty()) {
