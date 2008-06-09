@@ -11,6 +11,7 @@
 		<src>./images/logo.gif</src>
 		<alt>Cubby</alt>
 	</bannerLeft>
+	<version position="right" />
 	<publishDate format="yyyy-MM-dd" position="right" />
 	<body>
 		<breadcrumbs>
@@ -89,15 +90,19 @@
 				<item name="Cubby と Mayaa の使い分け"
 					href="/mayaa.html#Cubby_と_Mayaa_の使い分け" />
 			</item>
+			<item name="カスタマイズ" href="/customize.html"
+				collapse="true">
+				<item name="リクエストのパース" href="/customize.html#リクエストのパース" />
+			</item>
 			<item name="Tips集" href="/tips.html" collapse="true">
 				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
 				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 			</item>
 			<item name="リンク集" href="/link.html" collapse="true">
-				<item name="JSP" href="/link.html#JSP" />
+				<item name="Servlet/JSP" href="/link.html#ServletJSP" />
 				<item name="Maven2" href="/link.html#Maven2" />
-				<item name="Eclipse WTP" href="/link.html#Eclipse WTP" />
+				<item name="Eclipse WTP" href="/link.html#Eclipse_WTP" />
 			</item>
 			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
 			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
