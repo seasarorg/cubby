@@ -89,7 +89,7 @@ public class LoginAction extends Action {
  {{{cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html}ArrayFieldValidator}} を実装しているクラスが配列全体を検証するバリデータとなっています。
 
 *----------------------+--------------------------------------+
-| <<クラス名>>          | <<説明>>                              |
+|| クラス名            || 説明                                |
 *----------------------+--------------------------------------+
 |{{{cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMaxSizeValidator.html}ArrayMaxSizeValidator}}      |配列の最大サイズを検証します。            |
 *----------------------+--------------------------------------+

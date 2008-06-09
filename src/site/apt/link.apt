@@ -8,13 +8,15 @@
 
 {目次}
 
- *{{{#JSP}JSP}}
+ *{{{#ServletJSP}Servlet/JSP}}
 
  *{{{#Maven2}Maven2}}
 
- *{{{#Eclipse WTP}Eclipse WTP}}
+ *{{{#Eclipse_WTP}Eclipse WTP}}
 
-{JSP}
+{Servlet/JSP}
+
+ * {{{http://jcp.org/aboutJava/communityprocess/final/jsr154/}Servlet 2.4 仕様書}}(英語)
 
  * {{{http://jcp.org/aboutJava/communityprocess/final/jsr152/}JSP 2.0 仕様書}}(英語)
 
@@ -39,4 +41,3 @@
  * {{{http://www.atmarkit.co.jp/fjava/special/maven2_02/maven2_02_1.html}@IT Eclipse WTPを使ったWebアプリでもカンタンMaven}}(日本語)
 
  * {{{http://codezine.jp/a/article/aid/2321.aspx}CodeZine Eclipse Web Tools PlatformとMavenの統合}}(日本語)
- 
