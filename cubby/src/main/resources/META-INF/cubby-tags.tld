@@ -45,7 +45,6 @@
         URL 埋め込みパラメータやクエリ文字列のパラメータが必要な場合は t:param タグをボディ部に指定してください。
         指定方法は t:link タグと同様です。
         </p>
-        </ul>
         ]]>
       </description>
       <name>actionClass</name>
