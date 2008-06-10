@@ -50,7 +50,7 @@
       <name>actionClass</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
-      <type>java.lang.String</type>
+      <type>java.lang.Class</type>
     </attribute>
     <attribute>
       <description>
@@ -444,7 +444,7 @@ public class TokenAction extends Action {
       <name>attr</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
-      <type>java.lang.String</type>
+      <type>java.lang.Class</type>
     </attribute>
     <attribute>
       <description>
