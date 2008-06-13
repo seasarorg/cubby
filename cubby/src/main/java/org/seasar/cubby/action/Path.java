@@ -52,12 +52,16 @@ import org.seasar.cubby.routing.PathResolver;
  * 	}
  * 
  * 	&#064;Path(&quot;/{id}/edit&quot;)
- * 	// {id}部分をリクエストパラメータに追加
+ * 	// {id}部分をリクエストパラメータに追加。
+ *  // {id}部分の正規表現は省略されているためデフォルトの「[0-9a-zA-Z]+」。
+ *  //　priority(優先度)はデフォルト値の「Integer.MAX_VALUE」。
  * 	public ActionResult m4() {
  * 	}
  * 
- * 	&#064;Path(&quot;/{userId,a-z}/edit&quot;)
- * 	// {userId}部分をリクエストパラメータに追加。ユーザID部分は小文字アルファベットのみ。
+ * 	&#064;Path(&quot;/{userId,[a-z]+}/edit&quot;, priprity=0)
+ * 	// {userId}部分をリクエストパラメータに追加。
+ *  // {userId}部分の正規表現は「[a-z]+」のため小文字アルファベットのみ。
+ *  //　priority(優先度)は「0」のため、m4メソッドよりも先に適用される。
  * 	public ActionResult m5() {
  * 	}
  * }
@@ -105,7 +109,7 @@ public @interface Path {
 	 * </p>
 	 * <p>
 	 * 正規表現にマッチした場合、マッチした箇所が指定されたパラメータ名に追加され、アクションメソッドが実行されます。
-	 * 正規表現は省略可能です。省略した場合「0-9a-zA-Z」と同じ意味になります。
+	 * 正規表現は省略可能です。省略した場合「[a-zA-Z0-9]+」と同じ意味になります。
 	 * </p>
 	 * <p>
 	 * アクションメソッドのパスは「パスの正規表現+{@link Accept リクエストメソッド}」で一意に特定できなければいけません。
