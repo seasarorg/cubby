@@ -118,7 +118,7 @@
 
  [[4]]アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。
 
- [[5]]テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。
+ [[5]]リクエストパラメータのセットなど、テストに必要な初期化処理は各テストメソッド用のセットアップメソッドで行います。メソッド名は setup から始めます。
 
  [[6]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}} にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
  
@@ -152,10 +152,13 @@ public class HelloActionTest extends CubbyTestCase {
 		// 結果のチェック
 		assertPathEquals(Forward.class, "input.jsp", result);
 	}
-	
-	public void testMessage() throws Exception {
+
+	public void setupMessage() {
 	    // リクエストパラメータのセット
 		getRequest().addParameter("name", "name1");
+	}
+	
+	public void testMessage() throws Exception {
 		// アクションの実行
 		ActionResult result = processAction("/hello/message");
 		// 結果のチェック
