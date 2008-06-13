@@ -79,7 +79,9 @@
 			<item name="JSP" href="/jsp.html" collapse="true">
 				<item name="JSP" href="/jsp.html#JSP" />
 				<item name="暗黙オブジェクト" href="/jsp.html#暗黙オブジェクト" />
-				<item name="カスタムタグ" href="/jsp.html#カスタムタグ" />
+				<item name="カスタムタグ" href="/jsp.html#カスタムタグ">
+					<item name="タグリファレンス" href="/cubby/tagreference.html" />
+				</item>
 				<item name="ファンクション" href="/jsp.html#ファンクション" />
 				<item name="JSP 共通ヘッダー" href="/jsp.html#SP_共通ヘッダー" />
 			</item>

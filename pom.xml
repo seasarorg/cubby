@@ -314,6 +314,9 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
       <plugin>
         <groupId>net.sourceforge.maven-taglib</groupId>
         <artifactId>maven-taglib-plugin</artifactId>
+        <configuration>
+          <parseHtml>true</parseHtml>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
