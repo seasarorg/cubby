@@ -33,7 +33,6 @@ import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.RequestParserSelector;
 import org.seasar.cubby.controller.RoutingsDispatcher;
 import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.SingletonS2Container;
@@ -116,9 +115,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 			throw new ActionRuntimeException("ECUB0101",
 					new Object[] { method });
 		}
-		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request);
-		result.execute(action, actionClass, method, wrappedRequest, response);
+		result.execute(action, actionClass, method, request, response);
 		return result;
 	}
 
