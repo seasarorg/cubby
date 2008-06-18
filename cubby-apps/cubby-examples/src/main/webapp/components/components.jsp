@@ -72,7 +72,7 @@
 <span>${messages['msg.sample1']}</span><br/>
 <span>${f:out(messages['msg.sample1'])}</span>
 <br/>
-<input type="submit" value="登録"/>
+<t:input type="submit" name="submit" value="登録"/>
 </t:form>
 </body>
 </html>
