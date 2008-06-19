@@ -80,8 +80,7 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public Object getAttribute(String name) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return getAttribute(name, PageContext.PAGE_SCOPE);
 	}
 
 	@Override
@@ -128,7 +127,7 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public void setAttribute(String name, Object value) {
-		throw new UnsupportedOperationException();
+		setAttribute(name, value, PageContext.PAGE_SCOPE);
 	}
 
 	@Override
