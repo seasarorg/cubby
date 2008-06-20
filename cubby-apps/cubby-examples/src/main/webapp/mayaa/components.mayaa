@@ -13,7 +13,9 @@
 	<m:write m:id="errorMessage" value="${error}" />
 
 	<!-- form -->
-	<t:form m:id="form" method="post" action="./components" value="${formDto}" />
+	<t:form m:id="form" method="post" action="./components" value="${formDto}">
+		<m:doBody/>
+	</t:form>
 
 	<!-- text -->
 	<t:input m:id="userName" type="text" name="userName" id="userName" />
