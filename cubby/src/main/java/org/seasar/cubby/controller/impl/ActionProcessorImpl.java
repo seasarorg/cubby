@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionProcessor;
+import org.seasar.cubby.controller.ActionResultWrapper;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.RequestParserSelector;
 import org.seasar.cubby.controller.RoutingsDispatcher;
@@ -84,7 +85,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult process(final HttpServletRequest request,
+	public ActionResultWrapper process(final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
 		final Map<String, Routing> routings = CubbyUtils.getAttribute(request,
 				ATTR_ROUTINGS);
@@ -110,13 +111,14 @@ public class ActionProcessorImpl implements ActionProcessor {
 		}
 		final Action action = SingletonS2Container.getComponent(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
-		final ActionResult result = invoke(action, method);
-		if (result == null) {
+		final ActionResult actionResult = invoke(action, method);
+		if (actionResult == null) {
 			throw new ActionRuntimeException("ECUB0101",
 					new Object[] { method });
 		}
-		result.execute(action, actionClass, method, request, response);
-		return result;
+		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
+				actionResult, action, actionClass, method);
+		return actionResultWrapper;
 	}
 
 	/**

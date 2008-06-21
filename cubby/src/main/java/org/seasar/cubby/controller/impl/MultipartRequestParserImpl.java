@@ -218,7 +218,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * 優先順位を設定します。
 	 * 
 	 * @param priority
 	 *            優先順位

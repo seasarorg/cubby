@@ -21,7 +21,6 @@ import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.util.IteratorEnumeration;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -70,7 +70,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  * @author baba
  * @since 1.0.0
  */
-public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
+class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	/**
 	 * インスタンス化します。
@@ -149,30 +149,6 @@ public class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 			attributeNames.add(defaultAttributeNames.nextElement());
 		}
 		return new IteratorEnumeration(attributeNames.iterator());
-	}
-
-	private static class IteratorEnumeration<T> implements Enumeration<T> {
-
-		private final Iterator<T> iterator;
-
-		private IteratorEnumeration(final Iterator<T> iterator) {
-			this.iterator = iterator;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasMoreElements() {
-			return iterator.hasNext();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public T nextElement() {
-			return iterator.next();
-		}
-
 	}
 
 }

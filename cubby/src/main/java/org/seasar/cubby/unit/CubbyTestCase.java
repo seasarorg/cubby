@@ -155,7 +155,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		routing(orginalPath);
 		setupThreadContext();
 		return actionProcessor
-				.process(getRequest(), getResponse());
+				.process(getRequest(), getResponse()).getActionResult();
 	}
 
 	/**

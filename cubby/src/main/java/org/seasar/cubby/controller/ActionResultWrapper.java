@@ -21,32 +21,31 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.ActionResult;
 
 /**
- * リクエストのパスを元にアクションメソッドを決定して実行するクラスです。
+ * {@link org.seasar.cubby.action.ActionResult} のラッパです。
  * 
- * @author agata
- * @since 1.0.0
+ * @author baba
+ * @since 1.1.0
  */
-public interface ActionProcessor {
+public interface ActionResultWrapper {
 
 	/**
-	 * リクエストを元にアクションメソッドを決定して実行します。
-	 * <p>
-	 * <ul>
-	 * <li>リクエストを元に実行するアクションとそのアクションメソッドを決定します。</li>
-	 * <li>アクションメソッドを実行します。</li>
-	 * <li>アクションメソッドの実行結果である{@link ActionResult}を実行します。</li>
-	 * </ul>
-	 * </p>
+	 * ラップされた {@link org.seasar.cubby.action.ActionResult} を実行します。
 	 * 
 	 * @param request
 	 *            リクエスト
 	 * @param response
 	 *            レスポンス
-	 * @return アクションメソッドの戻り値。リクエストに応じたアクションメソッドが見つからなかった場合は <code>null</code>
 	 * @throws Exception
-	 *             アクションの実行時に例外が発生した場合
+	 *             {@link org.seasar.cubby.action.ActionResult} の実行で例外が発生した場合
 	 */
-	ActionResultWrapper process(HttpServletRequest request,
-			HttpServletResponse response) throws Exception;
+	void execute(HttpServletRequest request, HttpServletResponse response)
+			throws Exception;
+
+	/**
+	 * ラップされた {@link org.seasar.cubby.action.ActionResult} を取得します。
+	 * 
+	 * @return ラップされた {@link org.seasar.cubby.action.ActionResult}
+	 */
+	ActionResult getActionResult();
 
 }
