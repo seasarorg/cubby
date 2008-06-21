@@ -49,7 +49,7 @@ public interface RequestParser {
 	/**
 	 * 優先順位を取得します。
 	 * 
-	 * @return
+	 * @return 優先順位
 	 * @since 1.1.0
 	 */
 	int getPriority();

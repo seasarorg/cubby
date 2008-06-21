@@ -57,7 +57,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	/** リンク用の補助クラス。 */
 	private LinkSupport linkSupport = new LinkSupport();
 
-	/** フォームへ出力する値の{@ilnk {@link Map} */
+	/** フォームへ出力する値の {@link Map} */
 	private Map<String, String[]> outputValues;
 
 	/**

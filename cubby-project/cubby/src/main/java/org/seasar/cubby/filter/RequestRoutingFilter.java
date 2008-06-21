@@ -52,14 +52,14 @@ import org.seasar.framework.util.StringUtil;
  */
 public class RequestRoutingFilter implements Filter {
 
-	/** ロガー */
+	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(RequestRoutingFilter.class);
 
-	/** ルーティングの対象外とするパスの初期パラメータ名 */
+	/** ルーティングの対象外とするパスの初期パラメータ名。 */
 	public static final String IGNORE_PATH_PATTERN = "ignorePathPattern";
 
-	/** ルーティングの対象外とするパスの正規表現パターンのリスト */
+	/** ルーティングの対象外とするパスの正規表現パターンのリスト。 */
 	private final List<Pattern> ignorePathPatterns = new ArrayList<Pattern>();
 
 	/**
