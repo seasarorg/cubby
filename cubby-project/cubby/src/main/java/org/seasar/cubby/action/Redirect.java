@@ -161,10 +161,26 @@ public class Redirect extends AbstractActionResult {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
 			if (StringUtil.isEmpty(actionDirectory)) {
-				absolutePath = contextPath + "/" + this.path;
+				final StringBuilder builder = new StringBuilder();
+				builder.append(contextPath);
+				if (!contextPath.endsWith("/")) {
+					builder.append("/");
+				}
+				builder.append(this.path);
+				absolutePath = builder.toString();
 			} else {
-				absolutePath = contextPath + "/" + actionDirectory + "/"
-						+ this.path;
+				final StringBuilder builder = new StringBuilder();
+				builder.append(contextPath);
+				if (!contextPath.endsWith("/")
+						&& !actionDirectory.startsWith("/")) {
+					builder.append("/");
+				}
+				builder.append(actionDirectory);
+				if (!actionDirectory.endsWith("/")) {
+					builder.append("/");
+				}
+				builder.append(this.path);
+				absolutePath = builder.toString();
 			}
 		}
 		if (logger.isDebugEnabled()) {
