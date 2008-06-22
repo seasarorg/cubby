@@ -148,16 +148,27 @@ public class Forward extends AbstractActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		final String actionDirectory = CubbyUtils
-				.getActionDirectory(actionClass);
 
 		final String absolutePath;
 		if (this.path.startsWith("/")) {
 			absolutePath = this.path;
-		} else if (StringUtil.isEmpty(actionDirectory)) {
-			absolutePath = "/" + this.path;
 		} else {
-			absolutePath = "/" + actionDirectory + "/" + this.path;
+			final String actionDirectory = CubbyUtils
+					.getActionDirectory(actionClass);
+			if (StringUtil.isEmpty(actionDirectory)) {
+				absolutePath = "/" + this.path;
+			} else {
+				final StringBuilder builder = new StringBuilder();
+				if (!actionDirectory.startsWith("/")) {
+					builder.append("/");
+				}
+				builder.append(actionDirectory);
+				if (!actionDirectory.endsWith("/")) {
+					builder.append("/");
+				}
+				builder.append(this.path);
+				absolutePath = builder.toString();
+			}
 		}
 		if (this.routings != null) {
 			request.setAttribute(ATTR_ROUTINGS, this.routings);
