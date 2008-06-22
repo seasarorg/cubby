@@ -28,17 +28,20 @@ public class HelloActionTest extends CubbyTestCase {
     	// diconファイルの読み込み
         include("app.dicon");
     }
-    
+
 	public void testIndex() throws Exception {
 		// アクションの実行
 		ActionResult result = processAction("/hello/");
 		// 結果のチェック
 		assertPathEquals(Forward.class, "input.jsp", result);
 	}
-	
-	public void testMessage() throws Exception {
+
+	public void setUpMessage() {
 	    // リクエストパラメータのセット
 		getRequest().addParameter("name", "name1");
+	}
+
+	public void testMessage() throws Exception {
 		// アクションの実行
 		ActionResult result = processAction("/hello/message");
 		// 結果のチェック
