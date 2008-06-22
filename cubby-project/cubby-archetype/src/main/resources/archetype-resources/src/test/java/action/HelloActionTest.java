@@ -5,19 +5,23 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.unit.CubbyTestCase;
 
 public class HelloActionTest extends CubbyTestCase {
-	private HelloAction action;
-	
-    protected void setUp() throws Exception {
-        include("app.dicon");
-    }
-    
+
+	public HelloAction action;
+
+	protected void setUp() throws Exception {
+		include("app.dicon");
+	}
+
 	public void testIndex() throws Exception {
 		ActionResult result = processAction("/hello/");
 		assertPathEquals(Forward.class, "index.jsp", result);
 	}
-	
-	public void testMessage() throws Exception {
+
+	public void setUpMessage() {
 		getRequest().addParameter("name", "name1");
+	}
+
+	public void testMessage() throws Exception {
 		ActionResult result = processAction("/hello/message");
 		assertPathEquals(Forward.class, "hello.jsp", result);
 		assertEquals("name1", action.name);
@@ -35,4 +39,5 @@ public class HelloActionTest extends CubbyTestCase {
 		assertNull(action.name);
 		assertNull(action.message);
 	}
+
 }
