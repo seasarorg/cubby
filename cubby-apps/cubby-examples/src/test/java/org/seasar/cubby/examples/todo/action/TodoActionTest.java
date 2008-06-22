@@ -17,33 +17,36 @@ package org.seasar.cubby.examples.todo.action;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.examples.H2ScriptRunner;
 import org.seasar.cubby.examples.ScriptRunner;
+import org.seasar.cubby.examples.todo.entity.User;
 import org.seasar.cubby.unit.CubbyTestCase;
 
 public class TodoActionTest extends CubbyTestCase {
 
 	private TodoAction action;
-	
-    protected void setUp() throws Exception {
-        include("app.dicon");
+
+	protected void setUp() throws Exception {
+		include("app.dicon");
 		ScriptRunner scriptRunner = new H2ScriptRunner();
 		scriptRunner.execute("ddl.sql");
-    }
+	}
 
-    @Override
-    protected void setUpAfterBindFields() throws Throwable {
-    	super.setUpAfterBindFields();
-		getRequest().addParameter("userId", "test");
-		getRequest().addParameter("password", "test");
-		// 後続のテストを実行するためにログインアクションを実行
-		assertPathEquals(Redirect.class, "/todo/", processAction("/todo/login/process"));
-    }
-    
+	public void setUpShow() throws Exception {
+		emulateLogin();
+	}
+
+	private void emulateLogin() throws Exception {
+		User user = new User();
+		user.setId("mock");
+		user.setName("mock");
+		user.setPassword("mock");
+		getRequest().getSession().setAttribute("user", user);
+	}
+
 	public void testShow() throws Exception {
-        this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
-        // CoolURIの場合のテスト
+		this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
+		// CoolURIの場合のテスト
 		ActionResult result = processAction("/todo/1");
 		assertPathEquals(Forward.class, "show.jsp", result);
 		assertEquals(new Integer(1), action.id);

@@ -37,17 +37,23 @@ public class LoginActionTest extends CubbyTestCase {
 				processAction("/todo/login/"));
 	}
 
-	public void testLogin() throws Exception {
+	public void setUpLogin() {
 		getRequest().addParameter("userId", "test");
 		getRequest().addParameter("password", "test");
+	}
+
+	public void testLogin() throws Exception {
 		assertPathEquals(Redirect.class, "/todo/",
 				processAction("/todo/login/process"));
 		assertNotNull(action.sessionScope.get("user"));
 	}
 
-	public void testLogin_authError() throws Exception {
+	public void setUpLogin_authError() {
 		getRequest().addParameter("userId", "test");
 		getRequest().addParameter("password", "dummy");
+	}
+
+	public void testLogin_authError() throws Exception {
 		assertPathEquals(Forward.class, "/todo/login.jsp",
 				processAction("/todo/login/process"));
 		assertEquals(0, action.getErrors().getOthers().size());
