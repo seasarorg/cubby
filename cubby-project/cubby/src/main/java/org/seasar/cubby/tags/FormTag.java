@@ -148,18 +148,19 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doAfterBody() throws JspException {
+		final String contextPath = (String) pageContext.getAttribute(
+				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		if (linkSupport.isLinkable()) {
-			final String contextPath = (String) pageContext.getAttribute(
-					ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
-			final String url;
-			if (encodeURL) {
-				final HttpServletResponse response = (HttpServletResponse) pageContext
-						.getResponse();
-				url = response.encodeURL(contextPath + linkSupport.getPath());
-			} else {
-				url = contextPath + linkSupport.getPath();
-			}
+			final String url = contextPath + linkSupport.getPath();
 			attrs.put("action", url);
+		}
+
+		if (encodeURL && attrs.containsKey("action")) {
+			final String url = (String) attrs.get("action");
+			final HttpServletResponse response = (HttpServletResponse) pageContext
+					.getResponse();
+			final String encodedUrl = response.encodeURL(url);
+			attrs.put("action", encodedUrl);
 		}
 
 		final JspWriter out = getPreviousOut();
