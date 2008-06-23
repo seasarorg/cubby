@@ -67,6 +67,14 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
+ * <p>
+ * 通常は {@link HttpServletResponse#encodeRedirectURL(String)} によってエンコードされた URL にリダイレクトするため、URL にセッション ID が埋め込まれます。
+ * URL にセッション ID を埋め込みたくない場合は、noEncodeURL() を使用してください。
+ * 
+ * <pre>
+ * return new Redirect(&quot;/todo/list&quot;).noEnocdeURL();
+ * </pre>
+ * </p>
  * 
  * @author baba
  * @since 1.0.0
@@ -148,15 +156,37 @@ public class Redirect extends AbstractActionResult {
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 
-		final String absolutePath;
+		final String url = calculateRedirectURL(this.path, actionClass, request);
+		final String encoded = encodeURL(url, response);
+		if (logger.isDebugEnabled()) {
+			logger.log("DCUB0003", new String[] { encoded });
+		}
+		response.sendRedirect(encoded);
+	}
+
+	/**
+	 * リダイレクトする URL を計算します。
+	 * 
+	 * @param path
+	 *            パス
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param request
+	 *            リクエスト
+	 * @return URL
+	 */
+	protected String calculateRedirectURL(final String path,
+			final Class<? extends Action> actionClass,
+			final HttpServletRequest request) {
+		final String redirectURL;
 		final String contextPath;
 		if ("/".equals(request.getContextPath())) {
 			contextPath = "";
 		} else {
 			contextPath = request.getContextPath();
 		}
-		if (this.path.startsWith("/")) {
-			absolutePath = contextPath + this.path;
+		if (path.startsWith("/")) {
+			redirectURL = contextPath + path;
 		} else {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
@@ -166,8 +196,8 @@ public class Redirect extends AbstractActionResult {
 				if (!contextPath.endsWith("/")) {
 					builder.append("/");
 				}
-				builder.append(this.path);
-				absolutePath = builder.toString();
+				builder.append(path);
+				redirectURL = builder.toString();
 			} else {
 				final StringBuilder builder = new StringBuilder();
 				builder.append(contextPath);
@@ -179,14 +209,47 @@ public class Redirect extends AbstractActionResult {
 				if (!actionDirectory.endsWith("/")) {
 					builder.append("/");
 				}
-				builder.append(this.path);
-				absolutePath = builder.toString();
+				builder.append(path);
+				redirectURL = builder.toString();
 			}
 		}
-		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0003", new String[] { absolutePath });
-		}
-		response.sendRedirect(absolutePath);
+		return redirectURL;
+	}
+
+	/**
+	 * URL をエンコードします。
+	 * 
+	 * @param url
+	 *            URL
+	 * @param response
+	 *            レスポンス
+	 * @return エンコードされた URL
+	 */
+	protected String encodeURL(final String url,
+			final HttpServletResponse response) {
+		return response.encodeRedirectURL(url);
+	}
+
+	/**
+	 * {@link HttpServletResponse#encodeRedirectURL(String)}
+	 * によってエンコードせずにリダイレクトします。
+	 * <p>
+	 * URL 埋め込みのセッション ID を出力したくない場合に使用してください。
+	 * </p>
+	 * 
+	 * @return リダイレクトする URL
+	 * @since 1.1.0
+	 */
+	public ActionResult noEncodeURL() {
+		return new Redirect(path) {
+
+			@Override
+			protected String encodeURL(final String url,
+					final HttpServletResponse response) {
+				return url;
+			}
+
+		};
 	}
 
 }

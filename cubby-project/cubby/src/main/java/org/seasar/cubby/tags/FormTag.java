@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -53,6 +54,9 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 
 	/** フォームのバインディング対象のBean。 */
 	private Object value;
+
+	/** 出力する URL を {@link HttpServletResponse#encodeURL(String)} でエンコードするか。 */
+	private boolean encodeURL = true;
 
 	/** リンク用の補助クラス。 */
 	private LinkSupport linkSupport = new LinkSupport();
@@ -108,6 +112,17 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
+	 * 出力する URL を {@link HttpServletResponse#encodeURL(String)} でエンコードするかを設定します。
+	 * 
+	 * @param encodeURL
+	 *            出力する URL を {@link HttpServletResponse#encodeURL(String)}
+	 *            でエンコードする場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
+	public void setEncodeURL(boolean encodeURL) {
+		this.encodeURL = encodeURL;
+	}
+
+	/**
 	 * リクエストパラメータを追加します。
 	 * 
 	 * @param name
@@ -136,8 +151,15 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		if (linkSupport.isLinkable()) {
 			final String contextPath = (String) pageContext.getAttribute(
 					ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
-			final String link = contextPath + linkSupport.getPath();
-			attrs.put("action", link);
+			final String url;
+			if (encodeURL) {
+				final HttpServletResponse response = (HttpServletResponse) pageContext
+						.getResponse();
+				url = response.encodeURL(contextPath + linkSupport.getPath());
+			} else {
+				url = contextPath + linkSupport.getPath();
+			}
+			attrs.put("action", url);
 		}
 
 		final JspWriter out = getPreviousOut();

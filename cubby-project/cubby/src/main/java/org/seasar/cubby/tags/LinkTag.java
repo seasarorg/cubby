@@ -21,6 +21,7 @@ import static org.seasar.cubby.tags.TagUtils.toAttr;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -32,8 +33,7 @@ import javax.servlet.jsp.tagext.JspFragment;
  * @author baba
  * @since 1.1.0
  */
-public class LinkTag extends DynamicAttributesTagSupport implements
-		ParamParent {
+public class LinkTag extends DynamicAttributesTagSupport implements ParamParent {
 
 	/** リンクの補助クラス。 */
 	private final LinkSupport linkSupport = new LinkSupport();
@@ -43,6 +43,9 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 
 	/** リンクする URL を出力する属性。 */
 	private String attr;
+
+	/** 出力する URL を {@link HttpServletResponse#encodeURL(String)} でエンコードするか。 */
+	private boolean encodeURL = true;
 
 	/**
 	 * 出力するタグを設定します。
@@ -85,6 +88,17 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 	}
 
 	/**
+	 * 出力する URL を {@link HttpServletResponse#encodeURL(String)} でエンコードするかを設定します。
+	 * 
+	 * @param encodeURL
+	 *            出力する URL を {@link HttpServletResponse#encodeURL(String)}
+	 *            でエンコードする場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
+	public void setEncodeURL(boolean encodeURL) {
+		this.encodeURL = encodeURL;
+	}
+
+	/**
 	 * リクエストパラメータを追加します。
 	 * 
 	 * @param name
@@ -113,14 +127,21 @@ public class LinkTag extends DynamicAttributesTagSupport implements
 
 		final String contextPath = (String) getJspContext().getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
-		final String link = contextPath + linkSupport.getPath();
+		final String url;
+		if (encodeURL) {
+			final HttpServletResponse response = (HttpServletResponse) getPageContext()
+					.getResponse();
+			url = response.encodeURL(contextPath + linkSupport.getPath());
+		} else {
+			url = contextPath + linkSupport.getPath();
+		}
 
 		final JspWriter out = getJspContext().getOut();
 		if (tag == null) {
-			out.write(link);
+			out.write(url);
 			out.write(body);
 		} else {
-			getDynamicAttribute().put(attr, link);
+			getDynamicAttribute().put(attr, url);
 			out.write("<");
 			out.write(tag);
 			out.write(" ");
