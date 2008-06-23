@@ -66,6 +66,17 @@
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
     </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。
+        ]]>
+      </description>
+      <name>encodeURL</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Boolean</type>
+    </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
       <![CDATA[
@@ -467,6 +478,17 @@ public class TokenAction extends Action {
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。
+        ]]>
+      </description>
+      <name>encodeURL</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Boolean</type>
     </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>

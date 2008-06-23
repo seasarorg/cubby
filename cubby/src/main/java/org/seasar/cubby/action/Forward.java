@@ -149,14 +149,41 @@ public class Forward extends AbstractActionResult {
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 
+		final String forwardPath = calculateForwardPath(this.path, actionClass);
+		if (this.routings != null) {
+			request.setAttribute(ATTR_ROUTINGS, this.routings);
+		}
+		if (logger.isDebugEnabled()) {
+			logger.log("DCUB0001", new Object[] { forwardPath, routings });
+		}
+		final RequestDispatcher dispatcher = request
+				.getRequestDispatcher(forwardPath);
+		dispatcher.forward(request, response);
+		if (logger.isDebugEnabled()) {
+			logger.log("DCUB0002", new Object[] { forwardPath });
+		}
+		action.postrender();
+
+		action.getFlash().clear();
+	}
+
+	/**
+	 * フォワードするパスを計算します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @return フォワードするパス
+	 */
+	protected String calculateForwardPath(final String path,
+			final Class<? extends Action> actionClass) {
 		final String absolutePath;
-		if (this.path.startsWith("/")) {
-			absolutePath = this.path;
+		if (path.startsWith("/")) {
+			absolutePath = path;
 		} else {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
 			if (StringUtil.isEmpty(actionDirectory)) {
-				absolutePath = "/" + this.path;
+				absolutePath = "/" + path;
 			} else {
 				final StringBuilder builder = new StringBuilder();
 				if (!actionDirectory.startsWith("/")) {
@@ -166,25 +193,11 @@ public class Forward extends AbstractActionResult {
 				if (!actionDirectory.endsWith("/")) {
 					builder.append("/");
 				}
-				builder.append(this.path);
+				builder.append(path);
 				absolutePath = builder.toString();
 			}
 		}
-		if (this.routings != null) {
-			request.setAttribute(ATTR_ROUTINGS, this.routings);
-		}
-		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0001", new Object[] { absolutePath, routings });
-		}
-		final RequestDispatcher dispatcher = request
-				.getRequestDispatcher(absolutePath);
-		dispatcher.forward(request, response);
-		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0002", new Object[] { absolutePath });
-		}
-		action.postrender();
-
-		action.getFlash().clear();
+		return absolutePath;
 	}
 
 	/**

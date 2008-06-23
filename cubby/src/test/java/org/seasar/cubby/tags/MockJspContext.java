@@ -36,6 +36,8 @@ import javax.servlet.jsp.tagext.BodyContent;
 
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
+import org.seasar.framework.mock.servlet.MockHttpServletResponse;
+import org.seasar.framework.mock.servlet.MockHttpServletResponseImpl;
 import org.seasar.framework.mock.servlet.MockServletContext;
 import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
@@ -45,6 +47,7 @@ public class MockJspContext extends PageContext {
 			"cubby");
 	private MockHttpServletRequest request = new MockHttpServletRequestImpl(
 			servletContext, "/mock");
+	private MockHttpServletResponse response = new MockHttpServletResponseImpl(request);
 	private JspWriter writer = new MockJspWriter();
 	private Stack<JspWriter> outStack = new Stack<JspWriter>();
 	private Map<Integer, Map<String, Object>> attributes = new HashMap<Integer, Map<String, Object>>();
@@ -161,8 +164,7 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public ServletResponse getResponse() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return response;
 	}
 
 	@Override
@@ -173,14 +175,12 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public ServletContext getServletContext() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return servletContext;
 	}
 
 	@Override
 	public HttpSession getSession() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return request.getSession();
 	}
 
 	@Override
