@@ -207,22 +207,20 @@ public class CubbyUtils {
 	}
 
 	/**
-	 * リクエストのURIからコンテキストパスを除いたパスを返します。
+	 * リクエストの URI からコンテキストパスを除いたパスを返します。
 	 * 
 	 * @param request
 	 *            リクエスト
 	 * @return コンテキストパスを除いたパス
 	 */
 	public static String getPath(final HttpServletRequest request) {
-		final String uri = request.getRequestURI();
-		final String contextPath = request.getContextPath();
-		final String path;
-		if ("/".equals(contextPath)) {
-			path = uri;
-		} else {
-			path = uri.substring(contextPath.length());
+		final StringBuilder builder = new StringBuilder();
+		builder.append(request.getServletPath());
+		final String pathInfo = request.getPathInfo();
+		if (pathInfo != null) {
+			builder.append(pathInfo);
 		}
-		return path;
+		return builder.toString();
 	}
 
 	/**
