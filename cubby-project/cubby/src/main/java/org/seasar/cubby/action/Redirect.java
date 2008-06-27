@@ -16,6 +16,8 @@
 package org.seasar.cubby.action;
 
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
@@ -68,12 +71,14 @@ import org.seasar.framework.util.StringUtil;
  * 
  * </p>
  * <p>
- * 通常は {@link HttpServletResponse#encodeRedirectURL(String)} によってエンコードされた URL にリダイレクトするため、URL にセッション ID が埋め込まれます。
- * URL にセッション ID を埋め込みたくない場合は、noEncodeURL() を使用してください。
+ * 通常は {@link HttpServletResponse#encodeRedirectURL(String)} によってエンコードされた URL
+ * にリダイレクトするため、URL にセッション ID が埋め込まれます。 URL にセッション ID を埋め込みたくない場合は、noEncodeURL()
+ * を使用してください。
  * 
  * <pre>
  * return new Redirect(&quot;/todo/list&quot;).noEnocdeURL();
  * </pre>
+ * 
  * </p>
  * 
  * @author baba
@@ -91,6 +96,12 @@ public class Redirect extends AbstractActionResult {
 	/** リダイレクト先のパス。 */
 	private final String path;
 
+	/** リダイレクト先のプロトコル。 */
+	private final String protocol;
+
+	/** リダイレクト先のポート。 */
+	private final int port;
+
 	/**
 	 * インスタンスを生成します。
 	 * 
@@ -98,11 +109,57 @@ public class Redirect extends AbstractActionResult {
 	 *            リダイレクト先のパス
 	 */
 	public Redirect(final String path) {
-		this.path = path;
+		this(path, null);
 	}
 
 	/**
 	 * インスタンスを生成します。
+	 * 
+	 * @param path
+	 *            リダイレクト先のパス
+	 * @param protocol
+	 *            リダイレクト先のプロトコル
+	 * @since 1.1.0
+	 */
+	public Redirect(final String path, final String protocol) {
+		this(path, protocol, -1);
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param path
+	 *            リダイレクト先のパス
+	 * @param protocol
+	 *            リダイレクト先のプロトコル
+	 * @param port
+	 *            リダイレクト先のポート
+	 * @since 1.1.0
+	 */
+	public Redirect(final String path, final String protocol, final int port) {
+		this.path = path;
+		this.protocol = protocol;
+		this.port = port;
+	}
+
+	/**
+	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            メソッド名
+	 * @throws org.seasar.cubby.exception.ActionRuntimeException
+	 *             リダイレクト先パスの構築に失敗した場合
+	 * @since 1.1.0
+	 */
+	public Redirect(final Class<? extends Action> actionClass,
+			final String methodName) {
+		this(actionClass, methodName, EMPTY_PARAMETERS);
+	}
+
+	/**
+	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
@@ -116,27 +173,57 @@ public class Redirect extends AbstractActionResult {
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
-		final PathResolver pathResolver = SingletonS2Container
-				.getComponent(PathResolver.class);
-		final String redirectPath = pathResolver.reverseLookup(actionClass,
-				methodName, parameters);
-		this.path = redirectPath;
+		this(actionClass, methodName, parameters, null);
 	}
 
 	/**
-	 * インスタンスを生成します。
+	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param methodName
 	 *            メソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @param protocol
+	 *            リダイレクト先のプロトコル
 	 * @throws org.seasar.cubby.exception.ActionRuntimeException
 	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
-			final String methodName) {
-		this(actionClass, methodName, EMPTY_PARAMETERS);
+			final String methodName, final Map<String, String[]> parameters,
+			final String protocol) {
+		this(actionClass, methodName, parameters, protocol, -1);
+	}
+
+	/**
+	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            メソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @param protocol
+	 *            リダイレクト先のプロトコル
+	 * @param port
+	 *            リダイレクト先のポート
+	 * @throws org.seasar.cubby.exception.ActionRuntimeException
+	 *             リダイレクト先パスの構築に失敗した場合
+	 * @since 1.1.0
+	 */
+	public Redirect(final Class<? extends Action> actionClass,
+			final String methodName, final Map<String, String[]> parameters,
+			final String protocol, final int port) {
+		final PathResolver pathResolver = SingletonS2Container
+				.getComponent(PathResolver.class);
+		final String redirectPath = pathResolver.reverseLookup(actionClass,
+				methodName, parameters);
+		this.path = redirectPath;
+		this.protocol = protocol;
+		this.port = port;
 	}
 
 	/**
@@ -155,13 +242,13 @@ public class Redirect extends AbstractActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
-
-		final String url = calculateRedirectURL(this.path, actionClass, request);
-		final String encoded = encodeURL(url, response);
+		final String redirectURL = calculateRedirectURL(this.path, actionClass,
+				request);
+		final String encodedRedirectURL = encodeURL(redirectURL, response);
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0003", new String[] { encoded });
+			logger.log("DCUB0003", new String[] { encodedRedirectURL });
 		}
-		response.sendRedirect(encoded);
+		response.sendRedirect(encodedRedirectURL);
 	}
 
 	/**
@@ -178,7 +265,31 @@ public class Redirect extends AbstractActionResult {
 	protected String calculateRedirectURL(final String path,
 			final Class<? extends Action> actionClass,
 			final HttpServletRequest request) {
-		final String redirectURL;
+		try {
+			final String redirectURL = new URL(path).toExternalForm();
+			return redirectURL;
+		} catch (MalformedURLException e) {
+			final String redirectURL = calculateInternalRedirectURL(path,
+					actionClass, request);
+			return redirectURL;
+		}
+	}
+
+	/**
+	 * リダイレクトする URL を計算します。
+	 * 
+	 * @param path
+	 *            パス
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param request
+	 *            リクエスト
+	 * @return URL
+	 */
+	private String calculateInternalRedirectURL(final String path,
+			final Class<? extends Action> actionClass,
+			final HttpServletRequest request) {
+		final String redirectPath;
 		final String contextPath;
 		if ("/".equals(request.getContextPath())) {
 			contextPath = "";
@@ -186,7 +297,7 @@ public class Redirect extends AbstractActionResult {
 			contextPath = request.getContextPath();
 		}
 		if (path.startsWith("/")) {
-			redirectURL = contextPath + path;
+			redirectPath = contextPath + path;
 		} else {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
@@ -197,7 +308,7 @@ public class Redirect extends AbstractActionResult {
 					builder.append("/");
 				}
 				builder.append(path);
-				redirectURL = builder.toString();
+				redirectPath = builder.toString();
 			} else {
 				final StringBuilder builder = new StringBuilder();
 				builder.append(contextPath);
@@ -210,10 +321,28 @@ public class Redirect extends AbstractActionResult {
 					builder.append("/");
 				}
 				builder.append(path);
-				redirectURL = builder.toString();
+				redirectPath = builder.toString();
 			}
 		}
-		return redirectURL;
+
+		if (protocol == null) {
+			return redirectPath;
+		} else {
+			try {
+				final URL currentURL = new URL(request.getRequestURL()
+						.toString());
+				final String redirectProtocol = this.protocol == null ? currentURL
+						.getProtocol()
+						: this.protocol;
+				final int redirectPort = this.port < 0 ? currentURL.getPort()
+						: this.port;
+				final URL redirectURL = new URL(redirectProtocol, currentURL
+						.getHost(), redirectPort, redirectPath);
+				return redirectURL.toExternalForm();
+			} catch (MalformedURLException e) {
+				throw new IORuntimeException(e);
+			}
+		}
 	}
 
 	/**
@@ -224,6 +353,7 @@ public class Redirect extends AbstractActionResult {
 	 * @param response
 	 *            レスポンス
 	 * @return エンコードされた URL
+	 * @see HttpServletResponse#encodeRedirectURL(String)
 	 */
 	protected String encodeURL(final String url,
 			final HttpServletResponse response) {
