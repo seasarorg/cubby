@@ -33,7 +33,7 @@ public class IteratorEnumeration<E> implements Enumeration<E> {
 	private final Iterator<E> iterator;
 
 	/**
-	 * 指定された{@link Iterator イテレータ}をラップした{@ilnk Enumeration 列挙}をインスタンス化します。
+	 * 指定された{@link Iterator イテレータ}をラップした{@link Enumeration 列挙}をインスタンス化します。
 	 * 
 	 * @param iterator
 	 *            イテレータ
