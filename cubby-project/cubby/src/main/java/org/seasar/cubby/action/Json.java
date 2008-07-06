@@ -58,7 +58,7 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @since 1.0.0
  */
-public class Json extends AbstractActionResult {
+public class Json implements ActionResult {
 
 	private Object bean;
 

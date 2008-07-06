@@ -66,11 +66,15 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
+ * <p>
+ * フォワード前には {@link Action#prerender(Method)} を実行します。 フォワード後には
+ * {@link Action#postrender(Method)} を実行し、フラッシュメッセージをクリアします。
+ * </p>
  * 
  * @author baba
  * @since 1.0.0
  */
-public class Forward extends AbstractActionResult {
+public class Forward implements ActionResult {
 
 	/** ロガー。 */
 	private static final Logger logger = Logger.getLogger(Forward.class);
@@ -148,6 +152,7 @@ public class Forward extends AbstractActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
+		action.prerender(method);
 
 		final String forwardPath = calculateForwardPath(this.path, actionClass);
 		if (this.routings != null) {
@@ -162,7 +167,8 @@ public class Forward extends AbstractActionResult {
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0002", new Object[] { forwardPath });
 		}
-		action.postrender();
+
+		action.postrender(method);
 
 		action.getFlash().clear();
 	}
@@ -198,17 +204,6 @@ public class Forward extends AbstractActionResult {
 			}
 		}
 		return absolutePath;
-	}
-
-	/**
-	 * フォワード前の処理を行います。
-	 * <p>
-	 * {@link Action#prerender()} を実行します。
-	 * </p>
-	 */
-	@Override
-	public void prerender(final Action action) {
-		action.prerender();
 	}
 
 	/**

@@ -47,12 +47,4 @@ public interface ActionResult {
 			Method method, HttpServletRequest request,
 			HttpServletResponse response) throws Exception;
 
-	/**
-	 * フォワード直前の処理を実行します。
-	 * 
-	 * @param action
-	 *            アクション
-	 */
-	void prerender(Action action);
-
 }

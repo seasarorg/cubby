@@ -72,20 +72,22 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
-	 * <li>{@link Action#initialize()}を呼び出してアクションを初期化します。</li>
+	 * <li>{@link Action#initialize(Method)} を呼び出してアクションを初期化します。</li>
+	 * <li>{@link FormDxo#convert(Map, Object)}
+	 * によってリクエストパラメータをフォームオブジェクトにバインドします。</li>
 	 * <li>アクションメソッドを呼び出します。</li>
-	 * <li>{@link ActionResult#prerender(Action)}を呼び出します。</li>
 	 * <li>メソッドの実行結果を返します。</li>
 	 * </ul>
 	 * </p>
 	 */
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
-		final Map<String, Object[]> parameterMap = CubbyUtils.getAttribute(request, ATTR_PARAMS);
+		final Map<String, Object[]> parameterMap = CubbyUtils.getAttribute(
+				request, ATTR_PARAMS);
 
 		final Action action = getAction(invocation);
-		action.initialize();
 		final Class<? extends Action> actionClass = getActionClass(invocation);
 		final Method method = getMethod(invocation);
+		action.initialize(method);
 		final Object formBean = CubbyUtils.getFormBean(action, actionClass,
 				method);
 		if (formBean != null) {
@@ -93,10 +95,6 @@ public class InitializeInterceptor implements MethodInterceptor {
 		}
 
 		final ActionResult result = (ActionResult) invocation.proceed();
-
-		if (result != null) {
-			result.prerender(action);
-		}
 
 		return result;
 	}
