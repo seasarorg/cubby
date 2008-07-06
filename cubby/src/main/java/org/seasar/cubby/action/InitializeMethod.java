@@ -15,13 +15,26 @@
  */
 package org.seasar.cubby.action;
 
-import junit.framework.TestCase;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class DirectTest extends TestCase {
+/**
+ * アクションメソッド実行前にアクションを初期化するためのメソッドを指定します。
+ * 
+ * @author baba
+ * @since 1.1.0
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.METHOD })
+public @interface InitializeMethod {
 
-	public void testExecute() throws Exception {
-		Direct direct = new Direct();
-		direct.execute(null, null, null, null, null);
-	}
+	/**
+	 * メソッド名。
+	 * 
+	 * @return メソッド名
+	 */
+	String value();
 
 }

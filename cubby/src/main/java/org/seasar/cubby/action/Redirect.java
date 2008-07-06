@@ -84,7 +84,7 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @since 1.0.0
  */
-public class Redirect extends AbstractActionResult {
+public class Redirect implements ActionResult {
 
 	/** ロガー。 */
 	private static final Logger logger = Logger.getLogger(Redirect.class);

@@ -47,11 +47,10 @@ public class ForwardTest extends S2TestCase {
 		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
 		Forward forward = new Forward("path.jsp");
-		forward.prerender(action);
-		assertTrue(action.isPrerendered());
 		forward.execute(action, MockAction.class, method,
 				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
+						assertTrue(action.isPrerendered());
 						assertEquals("/mock/path.jsp", path);
 					}
 				}), response);

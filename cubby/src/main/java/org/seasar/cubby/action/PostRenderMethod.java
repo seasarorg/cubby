@@ -15,25 +15,26 @@
  */
 package org.seasar.cubby.action;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * {@link ActionResult} の抽象クラス。
- * <p>
- * 空の {@link ActionResult#prerender(Action)} を実装します。
- * </p>
+ * アクションメソッドからのフォワード後に実行するメソッドを指定します。
  * 
  * @author baba
- * @since 1.0.0
+ * @since 1.1.0
  */
-abstract class AbstractActionResult implements ActionResult {
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.METHOD })
+public @interface PostRenderMethod {
 
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * 何も行いません。
-	 * </p>
+	 * メソッド名。
+	 * 
+	 * @return メソッド名
 	 */
-	public void prerender(final Action action) {
-	}
+	String value();
 
 }

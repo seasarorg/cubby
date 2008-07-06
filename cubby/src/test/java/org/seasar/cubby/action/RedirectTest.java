@@ -48,7 +48,6 @@ public class RedirectTest extends S2TestCase {
 				null);
 
 		final Redirect redirect = new Redirect("path.jsp");
-		redirect.prerender(action);
 		assertFalse(action.isPrerendered());
 		redirect.execute(action, MockAction.class, method, request,
 				new RequestDispatcherAssertionWrapper(response, new Asserter() {
@@ -56,6 +55,7 @@ public class RedirectTest extends S2TestCase {
 						assertEquals("/cubby/mock/path.jsp", path);
 					}
 				}));
+		assertFalse(action.isPrerendered());
 		assertFalse(action.isPostrendered());
 	}
 
@@ -68,7 +68,6 @@ public class RedirectTest extends S2TestCase {
 				null);
 
 		final Redirect redirect = new Redirect("path.jsp", "https");
-		redirect.prerender(action);
 		assertFalse(action.isPrerendered());
 		redirect.execute(action, MockAction.class, method, request,
 				new RequestDispatcherAssertionWrapper(response, new Asserter() {
@@ -77,6 +76,7 @@ public class RedirectTest extends S2TestCase {
 								path);
 					}
 				}));
+		assertFalse(action.isPrerendered());
 		assertFalse(action.isPostrendered());
 	}
 
@@ -89,7 +89,6 @@ public class RedirectTest extends S2TestCase {
 				null);
 
 		final Redirect redirect = new Redirect("path.jsp", "http", 8080);
-		redirect.prerender(action);
 		assertFalse(action.isPrerendered());
 		redirect.execute(action, MockAction.class, method, request,
 				new RequestDispatcherAssertionWrapper(response, new Asserter() {
@@ -99,6 +98,7 @@ public class RedirectTest extends S2TestCase {
 								path);
 					}
 				}));
+		assertFalse(action.isPrerendered());
 		assertFalse(action.isPostrendered());
 	}
 

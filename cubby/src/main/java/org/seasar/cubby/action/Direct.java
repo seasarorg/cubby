@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author baba
  * @since 1.0.0
  */
-public class Direct extends AbstractActionResult {
+public class Direct implements ActionResult {
 
 	/**
 	 * インスタンスを生成します。
