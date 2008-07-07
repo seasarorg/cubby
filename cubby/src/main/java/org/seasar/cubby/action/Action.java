@@ -79,8 +79,9 @@ public abstract class Action {
 
 	/**
 	 * アクションメソッドの実行前に呼ばれます。
-	 * <p> {{@link #initialize()} の実行後、指定されたアクションメソッドに {@link InitializeMethod}
-	 * でメソッド名が指定されている場合、そのメソッドを呼び出します。
+	 * <p>
+	 * 指定されたアクションメソッドに {@link InitializeMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。
+	 * そうでない場合は {{@link #initialize()} を呼び出します。
 	 * </p>
 	 * <p>
 	 * パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。
@@ -90,17 +91,21 @@ public abstract class Action {
 	 *            アクションメソッド
 	 * @since 1.1.0
 	 */
-	public void initialize(final Method actionMethod) {
+	public void invokeInitializeMethod(final Method actionMethod) {
 		this.initialize();
 		if (actionMethod.isAnnotationPresent(InitializeMethod.class)) {
-			final InitializeMethod initialize = actionMethod
+			final InitializeMethod initializeMethod = actionMethod
 					.getAnnotation(InitializeMethod.class);
-			invoke(initialize.value());
+			final String methodName = initializeMethod.value();
+			this.invoke(methodName);
+		} else {
+			this.initialize();
 		}
 	}
 
 	/**
-	 * アクションメソッドの実行前に {@ilnk #initialize(Method)} から呼ばれます。
+	 * アクションメソッドが {@link InitializeMethod} で装飾されていない場合に
+	 * {@link #invokeInitializeMethod(Method)} から呼ばれるメソッドです。
 	 */
 	protected void initialize() {
 	}
@@ -108,8 +113,8 @@ public abstract class Action {
 	/**
 	 * フォーワードの直前に呼ばれます。
 	 * <p>
-	 * {@link #prerender()} の実行後、指定されたアクションメソッドが {@link PreRenderMethod}
-	 * で装飾されている場合はそのメソッドを呼び出します。
+	 * 指定されたアクションメソッドが {@link PreRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。
+	 * そうでない場合は {@link #prerender()} を呼び出します。
 	 * </p>
 	 * <p>
 	 * 対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。
@@ -119,17 +124,20 @@ public abstract class Action {
 	 *            アクションメソッド
 	 * @since 1.1.0
 	 */
-	public void prerender(final Method actionMethod) {
-		this.prerender();
+	public void invokePreRenderMethod(final Method actionMethod) {
 		if (actionMethod.isAnnotationPresent(PreRenderMethod.class)) {
-			final PreRenderMethod prerender = actionMethod
+			final PreRenderMethod preRenderMethod = actionMethod
 					.getAnnotation(PreRenderMethod.class);
-			invoke(prerender.value());
+			final String methodName = preRenderMethod.value();
+			this.invoke(methodName);
+		} else {
+			this.prerender();
 		}
 	}
 
 	/**
-	 * フォーワードの直前に {@link #prerender(Method)} から呼ばれます。
+	 * アクションメソッドが {@link PreRenderMethod} で装飾されていない場合に
+	 * {@link #invokePreRenderMethod(Method)} から呼ばれるメソッドです。
 	 */
 	protected void prerender() {
 	}
@@ -137,8 +145,8 @@ public abstract class Action {
 	/**
 	 * フォワードの直後に呼ばれます。
 	 * <p>
-	 * 指定されたアクションメソッドが {@link PostRenderMethod} で装飾されている場合はそのメソッドを呼び出します。
-	 * {@link #postrender()} を実行します。
+	 * 指定されたアクションメソッドが {@link PostRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。
+	 * そうでない場合は {@link #postrender()} を呼び出します。
 	 * </p>
 	 * <p>
 	 * 通常はあまり使用することはないでしょう。
@@ -148,17 +156,20 @@ public abstract class Action {
 	 *            アクションメソッド
 	 * @since 1.1.0
 	 */
-	public void postrender(final Method actionMethod) {
+	public void invokePostRenderMethod(final Method actionMethod) {
 		if (actionMethod.isAnnotationPresent(PostRenderMethod.class)) {
-			final PostRenderMethod postrender = actionMethod
+			final PostRenderMethod postRenderMethod = actionMethod
 					.getAnnotation(PostRenderMethod.class);
-			invoke(postrender.value());
+			final String methodName = postRenderMethod.value();
+			this.invoke(methodName);
+		} else {
+			this.postrender();
 		}
-		this.postrender();
 	}
 
 	/**
-	 * フォワードの直後に {@link #postrender(Method)} 呼ばれます。
+	 * アクションメソッドが {@link PostRenderMethod} で装飾されていない場合に
+	 * {@link #invokePostRenderMethod(Method)} から呼ばれるメソッドです。
 	 */
 	protected void postrender() {
 	}
@@ -171,9 +182,9 @@ public abstract class Action {
 	 * @since 1.1.0
 	 */
 	protected void invoke(final String methodName) {
-		final Method prerenderMethod = ClassUtil.getMethod(this.getClass(),
-				methodName, null);
-		MethodUtil.invoke(prerenderMethod, this, null);
+		final Method method = ClassUtil.getMethod(this.getClass(), methodName,
+				null);
+		MethodUtil.invoke(method, this, null);
 	}
 
 }

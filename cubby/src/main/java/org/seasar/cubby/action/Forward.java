@@ -67,8 +67,8 @@ import org.seasar.framework.util.StringUtil;
  * 
  * </p>
  * <p>
- * フォワード前には {@link Action#prerender(Method)} を実行します。 フォワード後には
- * {@link Action#postrender(Method)} を実行し、フラッシュメッセージをクリアします。
+ * フォワード前には {@link Action#invokePreRenderMethod(Method)} を実行します。 フォワード後には
+ * {@link Action#invokePostRenderMethod(Method)} を実行し、フラッシュメッセージをクリアします。
  * </p>
  * 
  * @author baba
@@ -152,7 +152,7 @@ public class Forward implements ActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		action.prerender(method);
+		action.invokePreRenderMethod(method);
 
 		final String forwardPath = calculateForwardPath(this.path, actionClass);
 		if (this.routings != null) {
@@ -168,7 +168,7 @@ public class Forward implements ActionResult {
 			logger.log("DCUB0002", new Object[] { forwardPath });
 		}
 
-		action.postrender(method);
+		action.invokePostRenderMethod(method);
 
 		action.getFlash().clear();
 	}
