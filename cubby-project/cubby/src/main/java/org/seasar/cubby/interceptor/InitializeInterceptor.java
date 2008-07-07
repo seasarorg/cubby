@@ -72,7 +72,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * <p>
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
-	 * <li>{@link Action#initialize(Method)} を呼び出してアクションを初期化します。</li>
+	 * <li>{@link Action#invokeInitializeMethod(Method)} を呼び出してアクションを初期化します。</li>
 	 * <li>{@link FormDxo#convert(Map, Object)}
 	 * によってリクエストパラメータをフォームオブジェクトにバインドします。</li>
 	 * <li>アクションメソッドを呼び出します。</li>
@@ -87,7 +87,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 		final Action action = getAction(invocation);
 		final Class<? extends Action> actionClass = getActionClass(invocation);
 		final Method method = getMethod(invocation);
-		action.initialize(method);
+		action.invokeInitializeMethod(method);
 		final Object formBean = CubbyUtils.getFormBean(action, actionClass,
 				method);
 		if (formBean != null) {
