@@ -163,8 +163,17 @@ class TagUtils {
 		final Object value;
 
 		if (isValidationFail(context)) {
-			final Object[] values = paramValues(context, name);
-			value = value(values, index);
+			if (specifiedValue == null) {
+				final Object[] values = paramValues(context, name);
+				value = value(values, index);
+			} else {
+				final Object[] values = paramValues(context, name);
+				if (values.length == 0) {
+					value = specifiedValue;
+				} else {
+					value = value(values, index);
+				}
+			}
 		} else {
 			if (specifiedValue == null) {
 				final Object[] values = formValues(outputValuesMap, name);
