@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-05-15
+             最終更新: 2008-07-09
             </div>
       <div class="clear">
         <hr/>
@@ -335,42 +335,27 @@ baba" />
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a>
-</h2>
-<ul><li><a href="#バリデーション">バリデーション</a>
-</li>
-<li><a href="#バリデーションの定義">バリデーションの定義</a>
-<ul><li><a href="#定義済みバリデーション">定義済みバリデーション</a>
-</li>
-<li><a href="#バリデーションのエラーメッセージ">バリデーションのエラーメッセージ</a>
-</li>
-<li><a href="#バリデーションルールのコピー">バリデーションルールのコピー</a>
-</li>
+        <div class="section"><h2><a name="目次">目次</a></h2>
+<ul><li><a href="#バリデーション">バリデーション</a></li>
+<li><a href="#バリデーションの定義">バリデーションの定義</a><ul><li><a href="#定義済みバリデーション">定義済みバリデーション</a></li>
+<li><a href="#バリデーションのエラーメッセージ">バリデーションのエラーメッセージ</a></li>
+<li><a href="#バリデーションルールのコピー">バリデーションルールのコピー</a></li>
 </ul>
 </li>
-<li><a href="#独自バリデーションの定義">独自バリデーションの定義</a>
-<ul><li><a href="#リクエストパラメータのバリデーション">リクエストパラメータのバリデーション</a>
-</li>
-<li><a href="#業務ロジックによるバリデーション">業務ロジックによるバリデーション</a>
-</li>
+<li><a href="#独自バリデーションの定義">独自バリデーションの定義</a><ul><li><a href="#リクエストパラメータのバリデーション">リクエストパラメータのバリデーション</a></li>
+<li><a href="#業務ロジックによるバリデーション">業務ロジックによるバリデーション</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section"><h2><a name="バリデーション">バリデーション</a>
-</h2>
+<div class="section"><h2><a name="バリデーション">バリデーション</a></h2>
 <p>Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。</p>
 <p>フォームから入力された値は HttpServletRequest#getParameterValues で返される値が String の配列であることからもわかるように、 全ての値は配列として取得できます。この配列に対してバリデーションを行います。</p>
 <p>また、それ以外にもフォームオブジェクトやデータベースを参照する独自のバリデーションをプログラム上に定義することができます。</p>
 </div>
-<div class="section"><h2><a name="バリデーションの定義">バリデーションの定義</a>
-</h2>
+<div class="section"><h2><a name="バリデーションの定義">バリデーションの定義</a></h2>
 <p>バリデーションの定義は Java コードで記述します。以下のように、アクションメソッドに対してバリデーションのルールを定義します。</p>
-<ol type="1"><li>アクションに<a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html">ValidationRules</a>
-型のプロパティを用意し、 定義したバリデーションのルールを取得できるようにします。<p>以下のように<a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html">DefaultValidationRules</a>
-を継承して、 <a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()">initialize</a>
-メソッドをオーバーライドし、そのメソッドの中で <a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))">add</a>
-メソッドを用いて フォームのフィールドごとにバリデーションのルールを追加します。</p>
+<ol type="1"><li>アクションに<a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html">ValidationRules</a>型のプロパティを用意し、 定義したバリデーションのルールを取得できるようにします。<p>以下のように<a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html">DefaultValidationRules</a>を継承して、 <a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#initialize()">initialize</a>メソッドをオーバーライドし、そのメソッドの中で <a href="cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#add(java.lang.String,%20org.seasar.cubby.validator.Validator...))">add</a>メソッドを用いて フォームのフィールドごとにバリデーションのルールを追加します。</p>
 <div class="source"><pre>public class LoginAction extends Action {
 
   // バリデーションのルール
@@ -387,11 +372,7 @@ baba" />
   ...</pre>
 </div>
 </li>
-<li>アクションメソッドにアノテーション<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html">@Validation</a>
-を定義し、<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html#rules()">rules</a>
-でアクションメソッドと[[1]]で定義したバリデーションルールのプロパティを関連付けます。<p>入力検証でエラーを検出した場合は、アクションのプロパティ<a href="cubby/apidocs/org/seasar/cubby/action/Action.html#errors">errors</a>
-にメッセージが設定され、<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()">errorPage</a>
-で指定されたページに遷移します。</p>
+<li>アクションメソッドにアノテーション<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html">@Validation</a>を定義し、<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html#rules()">rules</a>でアクションメソッドと[[1]]で定義したバリデーションルールのプロパティを関連付けます。<p>入力検証でエラーを検出した場合は、アクションのプロパティ<a href="cubby/apidocs/org/seasar/cubby/action/Action.html#errors">errors</a>にメッセージが設定され、<a href="cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()">errorPage</a>で指定されたページに遷移します。</p>
 <div class="source"><pre>  // プロパティ「validationRules」をバリデーションのルールとして使用します。
   // 検証エラー発生時は「confirm.jsp」に遷移します。
   @Form
@@ -404,77 +385,57 @@ baba" />
 </div>
 </li>
 </ol>
-<div class="section"><h3><a name="定義済みバリデーション">定義済みバリデーション</a>
-</h3>
+<div class="section"><h3><a name="定義済みバリデーション">定義済みバリデーション</a></h3>
 <p>Cubbyで定義済みのバリデーションクラスは以下のものがあります。</p>
-<p><a href="cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a>
- を実装しているクラスがひとつの要素を検証するバリデータ、 <a href="cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html">ArrayFieldValidator</a>
- を実装しているクラスが配列全体を検証するバリデータとなっています。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>クラス名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<p><a href="cubby/apidocs/index.html?org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a> を実装しているクラスがひとつの要素を検証するバリデータ、 <a href="cubby/apidocs/index.html?org/seasar/cubby/validator/ArrayFieldValidator.html">ArrayFieldValidator</a> を実装しているクラスが配列全体を検証するバリデータとなっています。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>クラス名</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMaxSizeValidator.html">ArrayMaxSizeValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMaxSizeValidator.html">ArrayMaxSizeValidator</a></td>
 <td align="left">配列の最大サイズを検証します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMinSizeValidator.html">ArrayMinSizeValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/ArrayMinSizeValidator.html">ArrayMinSizeValidator</a></td>
 <td align="left">配列の最小サイズを検証します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/DateFormatValidator.html">DateFormatValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/DateFormatValidator.html">DateFormatValidator</a></td>
 <td align="left">日付に対する検証を行います。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/EmailValidator.html">EmailValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/EmailValidator.html">EmailValidator</a></td>
 <td align="left">Eメールアドレスに対する検証を行います。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/EqualsValidator.html">EqualsValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/EqualsValidator.html">EqualsValidator</a></td>
 <td align="left">指定した文字列と等しいかどうかを検証します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/FileRegexpValidator.html">FileRegexpValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/FileRegexpValidator.html">FileRegexpValidator</a></td>
 <td align="left">ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/MaxLengthValidator.html">MaxLengthValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/MaxLengthValidator.html">MaxLengthValidator</a></td>
 <td align="left">最大文字数を検証します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/NumberValidator.html">NumberValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/NumberValidator.html">NumberValidator</a></td>
 <td align="left">数値かどうかを検証します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RangeLengthValidator.html">RangeLengthValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RangeLengthValidator.html">RangeLengthValidator</a></td>
 <td align="left">文字列の長さの範囲を指定して検証します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RangeValidator.html">RangeValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RangeValidator.html">RangeValidator</a></td>
 <td align="left">数値の範囲を指定して検証します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RegexpValidator.html">RegexpValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RegexpValidator.html">RegexpValidator</a></td>
 <td align="left">指定された正規表現にマッチするか検証します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html">RequiredValidator</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html">RequiredValidator</a></td>
 <td align="left">必須検証します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/TokenValidator.html">TokenValidator</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/validator/validators/TokenValidator.html">TokenValidator</a></td>
 <td align="left">2重サブミットを検証します。</td>
 </tr>
 </tbody>
 <caption>定義済みバリデーションクラス一覧</caption>
 </table>
-<p>詳細は<a href="cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html">APIドキュメント</a>
-をご覧下さい。</p>
+<p>詳細は<a href="cubby/apidocs/index.html?org/seasar/cubby/validator/validators/package-summary.html">APIドキュメント</a>をご覧下さい。</p>
 </div>
-<div class="section"><h3><a name="バリデーションのエラーメッセージ">バリデーションのエラーメッセージ</a>
-</h3>
+<div class="section"><h3><a name="バリデーションのエラーメッセージ">バリデーションのエラーメッセージ</a></h3>
 <p>バリデーションのエラーメッセージは以下のルールで作成されます。</p>
 <ul><li>メッセージキーを指定しない場合、パラメータ名がエラーメッセージ中の項目名のメッセージキーとして使用されます。</li>
 <li>メッセージキーを指定する場合、指定されたメッセージキーがエラーメッセージ中の項目名のメッセージキーとして使用されます。</li>
@@ -516,8 +477,7 @@ baba" />
 </li>
 </ul>
 </div>
-<div class="section"><h3><a name="バリデーションルールのコピー">バリデーションルールのコピー</a>
-</h3>
+<div class="section"><h3><a name="バリデーションルールのコピー">バリデーションルールのコピー</a></h3>
 <p>ほとんどが同じでいくつかの項目が異なる複数のルールを作りたい場合、以下のように他のルールをコピーして使用することができます。</p>
 <div class="source"><pre>public class LoginAction extends Action {
 
@@ -554,20 +514,13 @@ baba" />
 </div>
 </div>
 </div>
-<div class="section"><h2><a name="独自バリデーションの定義">独自バリデーションの定義</a>
-</h2>
-<div class="section"><h3><a name="リクエストパラメータのバリデーション">リクエストパラメータのバリデーション</a>
-</h3>
-<p>リクエストパラメータのバリデーションを独自に作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a>
- または<a href="cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html">ArrayFieldValidator</a>
-を実装して作成します。<br />
-実装の方法は<a href="cubby/xref/org/seasar/cubby/validator/validators/package-summary.html">それぞれのインターフェイスの実装クラス</a>
-を参照してください。</p>
+<div class="section"><h2><a name="独自バリデーションの定義">独自バリデーションの定義</a></h2>
+<div class="section"><h3><a name="リクエストパラメータのバリデーション">リクエストパラメータのバリデーション</a></h3>
+<p>リクエストパラメータのバリデーションを独自に作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ScalarFieldValidator.html">ScalarFieldValidator</a> または<a href="cubby/apidocs/org/seasar/cubby/validator/ArrayFieldValidator.html">ArrayFieldValidator</a>を実装して作成します。<br />
+実装の方法は<a href="cubby/xref/org/seasar/cubby/validator/validators/package-summary.html">それぞれのインターフェイスの実装クラス</a>を参照してください。</p>
 </div>
-<div class="section"><h3><a name="業務ロジックによるバリデーション">業務ロジックによるバリデーション</a>
-</h3>
-<p>データベースアクセスなどの業務ロジックによるバリデーションを作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a>
-を実装して作成してください。</p>
+<div class="section"><h3><a name="業務ロジックによるバリデーション">業務ロジックによるバリデーション</a></h3>
+<p>データベースアクセスなどの業務ロジックによるバリデーションを作成するには<a href="cubby/apidocs/org/seasar/cubby/validator/ValidationRule.html">ValidationRule</a>を実装して作成してください。</p>
 <div class="source"><pre>
   public String userId;
   public String password;

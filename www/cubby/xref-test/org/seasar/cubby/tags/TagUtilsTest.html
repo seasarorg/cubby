@@ -243,81 +243,66 @@
 <a name="233" href="#233">233</a>     }
 <a name="234" href="#234">234</a>     
 <a name="235" href="#235">235</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="236" href="#236">236</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testOutputValues() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="237" href="#237">237</a>         Map result = TagUtils.outputValues(<strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/tags/MockJspContext.html">MockJspContext</a>());
-<a name="238" href="#238">238</a>         assertNull(<span class="jxr_string">"result"</span>, result);
+<a name="236" href="#236">236</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttr() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="237" href="#237">237</a>         String result = TagUtils.toAttr(<strong class="jxr_keyword">new</strong> HashMap(100, 100.0F));
+<a name="238" href="#238">238</a>         assertEquals(<span class="jxr_string">"result"</span>, <span class="jxr_string">""</span>, result);
 <a name="239" href="#239">239</a>     }
 <a name="240" href="#240">240</a>     
 <a name="241" href="#241">241</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="242" href="#242">242</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttr() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="243" href="#243">243</a>         String result = TagUtils.toAttr(<strong class="jxr_keyword">new</strong> HashMap(100, 100.0F));
-<a name="244" href="#244">244</a>         assertEquals(<span class="jxr_string">"result"</span>, <span class="jxr_string">""</span>, result);
-<a name="245" href="#245">245</a>     }
-<a name="246" href="#246">246</a>     
-<a name="247" href="#247">247</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="248" href="#248">248</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttr1() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="249" href="#249">249</a>         Map map = <strong class="jxr_keyword">new</strong> HashMap(100, 100.0F);
-<a name="250" href="#250">250</a>         map.put(<span class="jxr_string">"testString"</span>, <strong class="jxr_keyword">new</strong> Integer(-32));
-<a name="251" href="#251">251</a>         String result = TagUtils.toAttr(map);
-<a name="252" href="#252">252</a>         assertEquals(<span class="jxr_string">"result"</span>, <span class="jxr_string">"testString=\&quot;-32\&quot; "</span>, result);
-<a name="253" href="#253">253</a>     }
-<a name="254" href="#254">254</a>     
-<a name="255" href="#255">255</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddClassNameThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="256" href="#256">256</a>         <strong class="jxr_keyword">try</strong> {
-<a name="257" href="#257">257</a>             TagUtils.addClassName(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"testTagUtilsClassName"</span>);
-<a name="258" href="#258">258</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
-<a name="259" href="#259">259</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
-<a name="260" href="#260">260</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
-<a name="261" href="#261">261</a>         }
-<a name="262" href="#262">262</a>     }
-<a name="263" href="#263">263</a>     
-<a name="264" href="#264">264</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testErrorsThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="265" href="#265">265</a>         <strong class="jxr_keyword">try</strong> {
-<a name="266" href="#266">266</a>             TagUtils.errors(<strong class="jxr_keyword">null</strong>);
-<a name="267" href="#267">267</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
-<a name="268" href="#268">268</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
-<a name="269" href="#269">269</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
-<a name="270" href="#270">270</a>         }
-<a name="271" href="#271">271</a>     }
-<a name="272" href="#272">272</a>     
-<a name="273" href="#273">273</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsClassCastException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="274" href="#274">274</a>         <strong class="jxr_keyword">char</strong>[] values = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">char</strong>[2];
-<a name="275" href="#275">275</a>         <strong class="jxr_keyword">try</strong> {
-<a name="276" href="#276">276</a>             TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
-<a name="277" href="#277">277</a>             fail(<span class="jxr_string">"Expected ClassCastException to be thrown"</span>);
-<a name="278" href="#278">278</a>         } <strong class="jxr_keyword">catch</strong> (ClassCastException ex) {
-<a name="279" href="#279">279</a>             assertEquals(<span class="jxr_string">"ex.getClass()"</span>, ClassCastException.<strong class="jxr_keyword">class</strong>, ex.getClass());
-<a name="280" href="#280">280</a>         }
-<a name="281" href="#281">281</a>     }
-<a name="282" href="#282">282</a>     
-<a name="283" href="#283">283</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="284" href="#284">284</a>         <strong class="jxr_keyword">try</strong> {
-<a name="285" href="#285">285</a>             TagUtils.contains(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"testTagUtilsValue"</span>);
-<a name="286" href="#286">286</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
-<a name="287" href="#287">287</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
-<a name="288" href="#288">288</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
-<a name="289" href="#289">289</a>         }
-<a name="290" href="#290">290</a>     }
-<a name="291" href="#291">291</a> 
-<a name="292" href="#292">292</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testOutputValuesThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="293" href="#293">293</a>         <strong class="jxr_keyword">try</strong> {
-<a name="294" href="#294">294</a>             TagUtils.outputValues(<strong class="jxr_keyword">null</strong>);
-<a name="295" href="#295">295</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
-<a name="296" href="#296">296</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
-<a name="297" href="#297">297</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
-<a name="298" href="#298">298</a>         }
-<a name="299" href="#299">299</a>     }
-<a name="300" href="#300">300</a>     
-<a name="301" href="#301">301</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttrThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
-<a name="302" href="#302">302</a>         <strong class="jxr_keyword">try</strong> {
-<a name="303" href="#303">303</a>             TagUtils.toAttr(<strong class="jxr_keyword">null</strong>);
-<a name="304" href="#304">304</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
-<a name="305" href="#305">305</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
-<a name="306" href="#306">306</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
-<a name="307" href="#307">307</a>         }
-<a name="308" href="#308">308</a>     }
-<a name="309" href="#309">309</a> }
-<a name="310" href="#310">310</a> 
+<a name="242" href="#242">242</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttr1() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="243" href="#243">243</a>         Map map = <strong class="jxr_keyword">new</strong> HashMap(100, 100.0F);
+<a name="244" href="#244">244</a>         map.put(<span class="jxr_string">"testString"</span>, <strong class="jxr_keyword">new</strong> Integer(-32));
+<a name="245" href="#245">245</a>         String result = TagUtils.toAttr(map);
+<a name="246" href="#246">246</a>         assertEquals(<span class="jxr_string">"result"</span>, <span class="jxr_string">"testString=\&quot;-32\&quot; "</span>, result);
+<a name="247" href="#247">247</a>     }
+<a name="248" href="#248">248</a>     
+<a name="249" href="#249">249</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddClassNameThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="250" href="#250">250</a>         <strong class="jxr_keyword">try</strong> {
+<a name="251" href="#251">251</a>             TagUtils.addClassName(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"testTagUtilsClassName"</span>);
+<a name="252" href="#252">252</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
+<a name="253" href="#253">253</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
+<a name="254" href="#254">254</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
+<a name="255" href="#255">255</a>         }
+<a name="256" href="#256">256</a>     }
+<a name="257" href="#257">257</a>     
+<a name="258" href="#258">258</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testErrorsThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="259" href="#259">259</a>         <strong class="jxr_keyword">try</strong> {
+<a name="260" href="#260">260</a>             TagUtils.errors(<strong class="jxr_keyword">null</strong>);
+<a name="261" href="#261">261</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
+<a name="262" href="#262">262</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
+<a name="263" href="#263">263</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
+<a name="264" href="#264">264</a>         }
+<a name="265" href="#265">265</a>     }
+<a name="266" href="#266">266</a>     
+<a name="267" href="#267">267</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsClassCastException() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="268" href="#268">268</a>         <strong class="jxr_keyword">char</strong>[] values = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">char</strong>[2];
+<a name="269" href="#269">269</a>         <strong class="jxr_keyword">try</strong> {
+<a name="270" href="#270">270</a>             TagUtils.contains(values, <span class="jxr_string">"testTagUtilsValue"</span>);
+<a name="271" href="#271">271</a>             fail(<span class="jxr_string">"Expected ClassCastException to be thrown"</span>);
+<a name="272" href="#272">272</a>         } <strong class="jxr_keyword">catch</strong> (ClassCastException ex) {
+<a name="273" href="#273">273</a>             assertEquals(<span class="jxr_string">"ex.getClass()"</span>, ClassCastException.<strong class="jxr_keyword">class</strong>, ex.getClass());
+<a name="274" href="#274">274</a>         }
+<a name="275" href="#275">275</a>     }
+<a name="276" href="#276">276</a>     
+<a name="277" href="#277">277</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsCheckedThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="278" href="#278">278</a>         <strong class="jxr_keyword">try</strong> {
+<a name="279" href="#279">279</a>             TagUtils.contains(<strong class="jxr_keyword">null</strong>, <span class="jxr_string">"testTagUtilsValue"</span>);
+<a name="280" href="#280">280</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
+<a name="281" href="#281">281</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
+<a name="282" href="#282">282</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
+<a name="283" href="#283">283</a>         }
+<a name="284" href="#284">284</a>     }
+<a name="285" href="#285">285</a> 
+<a name="286" href="#286">286</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testToAttrThrowsNullPointerException() <strong class="jxr_keyword">throws</strong> Throwable {
+<a name="287" href="#287">287</a>         <strong class="jxr_keyword">try</strong> {
+<a name="288" href="#288">288</a>             TagUtils.toAttr(<strong class="jxr_keyword">null</strong>);
+<a name="289" href="#289">289</a>             fail(<span class="jxr_string">"Expected NullPointerException to be thrown"</span>);
+<a name="290" href="#290">290</a>         } <strong class="jxr_keyword">catch</strong> (NullPointerException ex) {
+<a name="291" href="#291">291</a>             assertNull(<span class="jxr_string">"ex.getMessage()"</span>, ex.getMessage());
+<a name="292" href="#292">292</a>         }
+<a name="293" href="#293">293</a>     }
+<a name="294" href="#294">294</a> }
+<a name="295" href="#295">295</a> 
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

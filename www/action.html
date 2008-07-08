@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-05-15
+             最終更新: 2008-07-09
             </div>
       <div class="clear">
         <hr/>
@@ -335,153 +335,107 @@ baba" />
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a>
-</h2>
-<ul><li><a href="#アクション">アクション</a>
-</li>
-<li><a href="#アクションの定義">アクションの定義</a>
-<ul><li><a href="#アクションクラス">アクションクラス</a>
-</li>
-<li><a href="#アクションメソッド">アクションメソッド</a>
-</li>
-<li><a href="#ActionResult">ActionResult</a>
-</li>
-<li><a href="#アノテーション">アノテーション</a>
-</li>
-<li><a href="#事前処理事後処理">事前処理・事後処理</a>
-</li>
+        <div class="section"><h2><a name="目次">目次</a></h2>
+<ul><li><a href="#アクション">アクション</a></li>
+<li><a href="#アクションの定義">アクションの定義</a><ul><li><a href="#アクションクラス">アクションクラス</a></li>
+<li><a href="#アクションメソッド">アクションメソッド</a></li>
+<li><a href="#ActionResult">ActionResult</a></li>
+<li><a href="#アノテーション">アノテーション</a></li>
+<li><a href="#事前処理事後処理">事前処理・事後処理</a></li>
 </ul>
 </li>
-<li><a href="#アクションのテスト">アクションのテスト</a>
-</li>
+<li><a href="#アクションのテスト">アクションのテスト</a></li>
 </ul>
 </div>
-<div class="section"><h2><a name="アクション">アクション</a>
-</h2>
+<div class="section"><h2><a name="アクション">アクション</a></h2>
 <p>アクションとは特定の URI へのリクエストに対応する処理で、Cubby のユーザーが実装する部分です。<br />
 URI に対応するメソッドをアクションメソッド、アクションメソッドが定義されたクラスをアクションクラスといいます。</p>
 </div>
-<div class="section"><h2><a name="アクションの定義">アクションの定義</a>
-</h2>
-<div class="section"><h3><a name="アクションクラス">アクションクラス</a>
-</h3>
-<p><a href="cubby/apidocs/org/seasar/cubby/action/Action.html">Action</a>
- を継承し、〜Action という名前のクラスをアクションクラスとして認識します。</p>
+<div class="section"><h2><a name="アクションの定義">アクションの定義</a></h2>
+<div class="section"><h3><a name="アクションクラス">アクションクラス</a></h3>
+<p><a href="cubby/apidocs/org/seasar/cubby/action/Action.html">Action</a> を継承し、〜Action という名前のクラスをアクションクラスとして認識します。</p>
 </div>
-<div class="section"><h3><a name="アクションメソッド">アクションメソッド</a>
-</h3>
-<p>アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が <a href="cubby/apidocs/org/seasar/cubby/action/ActionResult.html">ActionResult</a>
- のメソッドをアクションメソッドとして認識します。<br />
+<div class="section"><h3><a name="アクションメソッド">アクションメソッド</a></h3>
+<p>アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が <a href="cubby/apidocs/org/seasar/cubby/action/ActionResult.html">ActionResult</a> のメソッドをアクションメソッドとして認識します。<br />
 このメソッドは AOP によってエンハンスされ、メソッド実行時に以下の処理が実行されるようになります。</p>
-<ul><li>アクションの初期化やリクエストパラメータからフォームオブジェクトへのバインド (<a href="cubby/apidocs/org/seasar/cubby/interceptor/InitializeInterceptor.html">InitializeInterceptor</a>
-)</li>
-<li>入力検証 (<a href="cubby/apidocs/org/seasar/cubby/interceptor/ValidationInterceptor.html">ValidationInterceptor</a>
-)</li>
+<ul><li>アクションの初期化やリクエストパラメータからフォームオブジェクトへのバインド (<a href="cubby/apidocs/org/seasar/cubby/interceptor/InitializeInterceptor.html">InitializeInterceptor</a>)</li>
+<li>入力検証 (<a href="cubby/apidocs/org/seasar/cubby/interceptor/ValidationInterceptor.html">ValidationInterceptor</a>)</li>
 </ul>
 <p>これらは AOP によってメソッド自体がエンハンスされるため、アクションメソッドの中から他のアクションメソッドを呼び出した場合も上記の処理が実行されます。</p>
 </div>
-<div class="section"><h3><a name="ActionResult">ActionResult</a>
-</h3>
-<p>以下のクラスは <a href="cubby/apidocs/org/seasar/cubby/action/ActionResult.html">ActionResult</a>
- を実装するクラスで、アクションメソッドの戻り値として使用できます。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>クラス名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<div class="section"><h3><a name="ActionResult">ActionResult</a></h3>
+<p>以下のクラスは <a href="cubby/apidocs/org/seasar/cubby/action/ActionResult.html">ActionResult</a> を実装するクラスで、アクションメソッドの戻り値として使用できます。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>クラス名</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Forward.html">Forward</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Forward.html">Forward</a></td>
 <td align="left">指定されたパスにフォワードします。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Redirect.html">Redirect</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Redirect.html">Redirect</a></td>
 <td align="left">指定されたパスにリダイレクトします。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Direct.html">Direct</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Direct.html">Direct</a></td>
 <td align="left">何も処理を行いません。アクションメソッド中でレスポンスに直接書き込みます。ファイルや画像をブラウザに返す時に使用します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Json.html">Json</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Json.html">Json</a></td>
 <td align="left">指定されたオブジェクトを Json 形式に変換してレスポンスを返します。</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section"><h3><a name="アノテーション">アノテーション</a>
-</h3>
+<div class="section"><h3><a name="アノテーション">アノテーション</a></h3>
 <p>アクションクラスやアクションメソッドに以下のアノテーションを指定することで、アクションのメタ情報を設定することができます。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>アノテーション名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
-<td align="left"><b>省略した場合</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>アノテーション名</b></td>
+<td align="left"><b>説明</b></td>
+<td align="left"><b>省略した場合</b></td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Path.html">@Path</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Path.html">@Path</a></td>
 <td align="left">アクションメソッドに対応する URI を指定します。</td>
 <td align="left">XxxAction#yyyy() の場合は /xxx/yyyy になります。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Accept.html">@Accept</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Accept.html">@Accept</a></td>
 <td align="left">アクションメソッドが受け付ける HTTP メソッドを指定します。</td>
 <td align="left">GET と POST に対応するメソッドになります。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Form.html">@Form</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Form.html">@Form</a></td>
 <td align="left">リクエストパラメータをバインドするオブジェクトを指定します。</td>
 <td align="left">アクションクラスのインスタンスになります。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Validation.html">@Validation</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Validation.html">@Validation</a></td>
 <td align="left">入力検証を定義したプロパティを指定します。</td>
 <td align="left">入力検証を行いません。</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section"><h3><a name="事前処理事後処理">事前処理・事後処理</a>
-</h3>
+<div class="section"><h3><a name="事前処理事後処理">事前処理・事後処理</a></h3>
 <p>アクションクラスにある以下のメソッドをオーバーライドすることで、アクションメソッド実行の前後にフック処理を記述することができます。<br />
-また、アクションメソッド実行の前後に処理を組み込みたい場合は、<a href="http://s2container.seasar.org/2.4/ja/aop.html" class="externalLink">Seasar の AOP</a>
- を使用して処理をフックします。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>メソッド名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+また、アクションメソッド実行の前後に処理を組み込みたい場合は、<a href="http://s2container.seasar.org/2.4/ja/aop.html" class="externalLink">Seasar の AOP</a> を使用して処理をフックします。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>メソッド名</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()">Action#initialize</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()">Action#initialize</a></td>
 <td align="left">アクションメソッドの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。</td>
 </tr>
-<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()">Action#prerender</a>
-</td>
+<tr class="a"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()">Action#prerender</a></td>
 <td align="left">フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()">Action#postrender</a>
-</td>
+<tr class="b"><td align="left"><a href="cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()">Action#postrender</a></td>
 <td align="left">フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div class="section"><h2><a name="アクションのテスト">アクションのテスト</a>
-</h2>
-<p>アクションの単体テストは <a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html">CubbyTestCase</a>
- を使用します。 Seasar の S2Unit の機能を全て使用できるので <a href="http://s2container.seasar.org/2.4/ja/S2Unit.html" class="externalLink">SeasarのS2Unitのドキュメント</a>
-も合わせてご覧ください。</p>
+<div class="section"><h2><a name="アクションのテスト">アクションのテスト</a></h2>
+<p>アクションの単体テストは <a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html">CubbyTestCase</a> を使用します。 Seasar の S2Unit の機能を全て使用できるので <a href="http://s2container.seasar.org/2.4/ja/S2Unit.html" class="externalLink">SeasarのS2Unitのドキュメント</a>も合わせてご覧ください。</p>
 <ol type="1"><li>CubbyTestCase を継承して、XXXXTest を作成します。 </li>
 <li>テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。</li>
 <li>アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。</li>
 <li>テストメソッドの先頭で、パラメータのセットなど初期化処理を行います。</li>
-<li><a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)">CubbyTestCase#processAction</a>
- にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。</li>
-<li>戻り値を<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)">CubbyTestCase#processAction</a>
-で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。</li>
-<li>必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。<p><b>HelloActionTest.java</b>
-</p>
+<li><a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)">CubbyTestCase#processAction</a> にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。</li>
+<li>戻り値を<a href="cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)">CubbyTestCase#processAction</a>で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。</li>
+<li>必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。<p><b>HelloActionTest.java</b></p>
 <div class="source"><pre>package org.seasar.cubby.examples.other.web.hello;
 
 import org.seasar.cubby.action.ActionResult;
@@ -518,8 +472,7 @@ public class HelloActionTest extends CubbyTestCase {
         }       
 }</pre>
 </div>
-<p><b>TodoActionTest.java</b>
-</p>
+<p><b>TodoActionTest.java</b></p>
 <div class="source"><pre>package org.seasar.cubby.examples.todo.action;
 
 import org.seasar.cubby.action.ActionResult;

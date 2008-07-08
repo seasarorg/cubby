@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-05-15
+             最終更新: 2008-07-09
             </div>
       <div class="clear">
         <hr/>
@@ -339,32 +339,21 @@ baba" />
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a>
-</h2>
-<ul><li><a href="#Hello_アプリケーションの概要">Hello アプリケーションの概要</a>
-</li>
-<li><a href="#アプリケーションの雛形作成">アプリケーションの雛形作成</a>
-</li>
-<li><a href="#アクションクラスの作成">アクションクラスの作成</a>
-</li>
-<li><a href="#{JSP_の作成">JSP の作成</a>
-</li>
-<li><a href="#ブラウザで確認する">ブラウザで確認する</a>
-</li>
+        <div class="section"><h2><a name="目次">目次</a></h2>
+<ul><li><a href="#Hello_アプリケーションの概要">Hello アプリケーションの概要</a></li>
+<li><a href="#アプリケーションの雛形作成">アプリケーションの雛形作成</a></li>
+<li><a href="#アクションクラスの作成">アクションクラスの作成</a></li>
+<li><a href="#{JSP_の作成">JSP の作成</a></li>
+<li><a href="#ブラウザで確認する">ブラウザで確認する</a></li>
 </ul>
 </div>
-<div class="section"><h2><a name="Hello_アプリケーションの概要">Hello アプリケーションの概要</a>
-</h2>
+<div class="section"><h2><a name="Hello_アプリケーションの概要">Hello アプリケーションの概要</a></h2>
 <p>入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。 このチュートリアルはCubby のサンプル war の「Hello World」から実行できます。</p>
-<p><b>入力画面</b>
-</p>
-<img src="images/hello_input.png" alt="入力画面" /><p><b>結果画面</b>
-</p>
+<p><b>入力画面</b></p>
+<img src="images/hello_input.png" alt="入力画面" /><p><b>結果画面</b></p>
 <img src="images/hello_result.png" alt="結果画面" /></div>
-<div class="section"><h2><a name="アプリケーションの雛形作成">アプリケーションの雛形作成</a>
-</h2>
-<p>雛形作成の詳細は<a href="setup.html#Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>
-をご覧ください。<br />
+<div class="section"><h2><a name="アプリケーションの雛形作成">アプリケーションの雛形作成</a></h2>
+<p>雛形作成の詳細は<a href="setup.html#Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>をご覧ください。<br />
 Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。 Eclipseのワークスペースディレクトリにターミナル（コマンドプロンプト）で移動して、以下のコマンドを入力してください。</p>
 <div class="source"><pre>mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org </pre>
 </div>
@@ -389,24 +378,17 @@ package: org.seasar.cubby.examples.hello
 </div>
 <p>いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。<br />
 プロジェクトの雛形として「cubby-examples-hello」ディレクトリが作成されます。</p>
-<div class="section"><h3><a name="Eclipseへの取り込み">Eclipseへの取り込み</a>
-</h3>
-<p><a href="setup.html#Eclipse_を使った開発">Eclipse を使った開発</a>
-に従って、「cubby-examples-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。 設定が終わったらWTPからTomcatを起動します。<br />
-ブラウザで <a href="http://localhost:8080/cubby-examples-hello/" class="externalLink">http://localhost:8080/cubby-examples-hello/</a>
- にアクセスして、トップページが表示されることを確認してください。</p>
+<div class="section"><h3><a name="Eclipseへの取り込み">Eclipseへの取り込み</a></h3>
+<p><a href="setup.html#Eclipse_を使った開発">Eclipse を使った開発</a>に従って、「cubby-examples-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。 設定が終わったらWTPからTomcatを起動します。<br />
+ブラウザで <a href="http://localhost:8080/cubby-examples-hello/" class="externalLink">http://localhost:8080/cubby-examples-hello/</a> にアクセスして、トップページが表示されることを確認してください。</p>
 </div>
 </div>
-<div class="section"><h2><a name="アクションクラスの作成">アクションクラスの作成</a>
-</h2>
+<div class="section"><h2><a name="アクションクラスの作成">アクションクラスの作成</a></h2>
 <p>アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。 ここでは 「org.seasar.cubby.examples.hello.HelloAction」 クラスを作成します。 (既に雛形で同名のクラスが作成されているので、いったん削除します)<br />
 このクラスには２つのアクションメソッド(index, message)があります。 index は入力画面「input.jsp」の表示用、message は入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。 １アクションメソッドは１リクエスト(URL)に対応します。 URL は特に指定がない場合「アクションクラス名から Action を取って小文字にしたもの + メソッド名」となります。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>メソッド</b>
-</td>
-<td align="left"><b>URL</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>メソッド</b></td>
+<td align="left"><b>URL</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="b"><td align="left">HelloAction#index</td>
 <td align="left">/hello</td>
@@ -426,8 +408,7 @@ package: org.seasar.cubby.examples.hello
 <p>リクエストパラメータはアクションクラスのプロパティに設定されます。<br />
 この場合、リクエストパラメータ「name」が HelloAction のプロパティ「name」にバインディングされます。<br />
 リクエストパラメータをバインドするオブジェクトは、@Formアノテーションを指定することで変更できます。</p>
-<p><b>HelloAction.java</b>
-</p>
+<p><b>HelloAction.java</b></p>
 <div class="source"><pre>package org.seasar.cubby.examples.hello.action;
 
 import org.seasar.cubby.action.Action;
@@ -448,14 +429,12 @@ public class HelloAction extends Action {
 }</pre>
 </div>
 </div>
-<div class="section"><h2><a name="JSP_の作成">JSP の作成</a>
-</h2>
+<div class="section"><h2><a name="JSP_の作成">JSP の作成</a></h2>
 <p>入力画面用の「input.jsp」とメッセージ出力画面用の「result.jsp」を作成します。<br />
 input.jsp では、Cubby のカスタムタグを使って、フォームを作成します。<br />
 「&lt;form ... value=&quot;${action}&quot;&gt;」では、フォームにバインディングするオブジェクトを指定しています。 ${action}はフォワード時に使用したアクションそのものを意味します。アクション自体がフォームのバインディング対象の場合はvalue属性は省略可能です。 (つまり、この例では value 属性を書く必要はありません。)</p>
 <p>入力フィールドはカスタムタグを使用して出力します。 （&lt;t:input type=&quot;text&quot; name=&quot;name&quot;/&gt;）</p>
-<p><b>src/main/webapp/hello/input.jsp</b>
-</p>
+<p><b>src/main/webapp/hello/input.jsp</b></p>
 <div class="source"><pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
 &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;ja&quot; xml:lang=&quot;ja&quot;&gt;
 &lt;head&gt;
@@ -472,8 +451,7 @@ input.jsp では、Cubby のカスタムタグを使って、フォームを作�
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
-<p><b>src/main/webapp/hello/result.jsp</b>
-</p>
+<p><b>src/main/webapp/hello/result.jsp</b></p>
 <div class="source"><pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
 &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;ja&quot; xml:lang=&quot;ja&quot;&gt;
 &lt;head&gt;
@@ -486,13 +464,10 @@ input.jsp では、Cubby のカスタムタグを使って、フォームを作�
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
-<p>また、<a href="jsp.html#JSP_共通ヘッダー">JSP 共通ヘッダー</a>
-を使用することによって、JSP 先頭の taglib ディレクティブを省略しています。</p>
+<p>また、<a href="jsp.html#JSP_共通ヘッダー">JSP 共通ヘッダー</a>を使用することによって、JSP 先頭の taglib ディレクティブを省略しています。</p>
 </div>
-<div class="section"><h2><a name="ブラウザで確認する">ブラウザで確認する</a>
-</h2>
-<p>ブラウザで <a href="http://localhost:8080/cubby-examples-hello/hello/" class="externalLink">http://localhost:8080/cubby-examples-hello/hello/</a>
- にアクセスします。</p>
+<div class="section"><h2><a name="ブラウザで確認する">ブラウザで確認する</a></h2>
+<p>ブラウザで <a href="http://localhost:8080/cubby-examples-hello/hello/" class="externalLink">http://localhost:8080/cubby-examples-hello/hello/</a> にアクセスします。</p>
 </div>
 
       </div>

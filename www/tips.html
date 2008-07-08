@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-05-15
+             最終更新: 2008-07-09
             </div>
       <div class="clear">
         <hr/>
@@ -335,22 +335,15 @@ baba" />
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a>
-</h2>
-<ul><li><a href="#ファイルアップロード">ファイルアップロード</a>
-</li>
-<li><a href="#共通アクション">共通アクション</a>
-</li>
-<li><a href="#画面部品のインポート">画面部品のインポート</a>
-</li>
+        <div class="section"><h2><a name="目次">目次</a></h2>
+<ul><li><a href="#ファイルアップロード">ファイルアップロード</a></li>
+<li><a href="#共通アクション">共通アクション</a></li>
+<li><a href="#画面部品のインポート">画面部品のインポート</a></li>
 </ul>
 </div>
-<div class="section"><h2><a name="ファイルアップロード">ファイルアップロード</a>
-</h2>
-<p>ファイルアップロードは以下のようにorg.apache.commons.fileupload.FileItemの型で受け取ることができます。 アップロードを使用するには<a href="setup.html">app-cubby.diconの設定</a>
-を行っておく必要があります。</p>
-<p><b>アップロード用のJSP</b>
-</p>
+<div class="section"><h2><a name="ファイルアップロード">ファイルアップロード</a></h2>
+<p>ファイルアップロードは以下のようにorg.apache.commons.fileupload.FileItemの型で受け取ることができます。 アップロードを使用するには<a href="setup.html">app-cubby.diconの設定</a>を行っておく必要があります。</p>
+<p><b>アップロード用のJSP</b></p>
 <div class="source"><pre>&lt;t:form method=&quot;post&quot; action=&quot;${contextPath}/fileupload/upload&quot; enctype=&quot;multipart/form-data&quot;
         value=&quot;${form}&quot;&gt;
 &lt;h1&gt;ファイルアップロード&lt;/h1&gt;
@@ -361,8 +354,7 @@ baba" />
 &lt;input type=&quot;submit&quot; value=&quot;アップロード&quot;/&gt;
 &lt;/t:form&gt;</pre>
 </div>
-<p><b>アップロードを処理するアクションクラス</b>
-</p>
+<p><b>アップロードを処理するアクションクラス</b></p>
 <div class="source"><pre>import org.apache.commons.fileupload.FileItem;
 ...
 public class FileUploadAction extends Action {
@@ -383,8 +375,7 @@ public class FileUploadAction extends Action {
         }       
 }</pre>
 </div>
-<p><b>アップロード結果を表示するクラス</b>
-</p>
+<p><b>アップロード結果を表示するクラス</b></p>
 <div class="source"><pre>...
 &lt;h2&gt;ファイルアップロード結果&lt;/h2&gt;
 &lt;label for=&quot;file&quot;&gt;File:&lt;/label&gt;
@@ -394,11 +385,9 @@ public class FileUploadAction extends Action {
 ...</pre>
 </div>
 </div>
-<div class="section"><h2><a name="共通アクション">共通アクション</a>
-</h2>
+<div class="section"><h2><a name="共通アクション">共通アクション</a></h2>
 <p>アクションクラスの共通的な処理は、以下のように共通アクションに記述し、継承して個々のアクションクラスから利用すると便利です。 共通アクションには本当に共通的な処理のみ置いてください。いくつかのアクションクラスや特定のユースケースのみで使用するような処理は、Service/Logic/Helper/Utilクラスなどを用意して共通処理を移譲したほうが良い場合が多いです。 Cubbyでは、あえてBeseActionのような共通の便利機能を用意していません。それぞれのプロジェクトにおいて、必要な共通アクションを自由に作成することを推奨します。</p>
-<p><b>共通アクション</b>
-</p>
+<p><b>共通アクション</b></p>
 <div class="source"><pre>// 共通アクションクラス
 public class BaseAction extend Action {
   ...
@@ -417,14 +406,11 @@ private clsss TodoAction extend BaseAction {
 }</pre>
 </div>
 </div>
-<div class="section"><h2><a name="画面部品のインポート">画面部品のインポート</a>
-</h2>
+<div class="section"><h2><a name="画面部品のインポート">画面部品のインポート</a></h2>
 <p>Cubby では 共通の画面部品（他のフレームワークではコンポーネントなどと呼ばれます）を何もサポートしませんが、 画面部品が必要な場合、以下のように「JSTLのc:importタグ」+「JSP標準のスクリプトレット」＋「Seasar2 の SingletonS2Container」を使って 画面部品を作成することを推奨します。</p>
 <p>画面部品では、引数を元にデータベースへの検索などを行いたい場合があります。 その場合、画面部品のJSPページの先頭に画面描画に必要な情報取得のスクリプトレットを記述します。 通常はSeasar2を使用する場合、スクリプトレット中でLogicクラスやDaoのメソッドを実行すれば良いでしょう。 スクリプトレットは多用するとメンテナンス性が落ちますので、画面部品の先頭でのみで限定的に使用することをおすすめします。</p>
-<p>なお、Eclipseの<a href="http://www.eclipse.org/webtools/" class="externalLink">WTP(Web Tools Platform)</a>
-プラグインを使用するとスクリプトレット中の「Javaコードの補完」「import文の自動設定」「コンパイルエラーの表示」などほぼ完璧に行ってくれます。 スクリプトレットでも通常のJavaコード同様にさくさく開発できるのでぜひ導入してみてください。</p>
-<p><b>import(単純な場合)：メイン画面</b>
-</p>
+<p>なお、Eclipseの<a href="http://www.eclipse.org/webtools/" class="externalLink">WTP(Web Tools Platform)</a>プラグインを使用するとスクリプトレット中の「Javaコードの補完」「import文の自動設定」「コンパイルエラーの表示」などほぼ完璧に行ってくれます。 スクリプトレットでも通常のJavaコード同様にさくさく開発できるのでぜひ導入してみてください。</p>
+<p><b>import(単純な場合)：メイン画面</b></p>
 <div class="source"><pre>&lt;h2&gt;1.c:importを使用したサンプル&lt;br/&gt;
 （S2やDBデータと絡まない単純なパターン）&lt;/h2&gt;
 &lt;c:import url=&quot;img.jsp&quot;&gt;
@@ -438,20 +424,17 @@ private clsss TodoAction extend BaseAction {
         &lt;c:param name=&quot;imageUrl&quot; value=&quot;http://www.seasar.org/images/seasar_banner.gif&quot;/&gt;
 &lt;/c:import&gt;</pre>
 </div>
-<p><b>import（単純な場合）：画面部品(img.jsp)</b>
-</p>
+<p><b>import（単純な場合）：画面部品(img.jsp)</b></p>
 <div class="source"><pre>${param.imageUrl}:&lt;br/&gt;
 &lt;img src=&quot;${param.imageUrl}&quot; width=&quot;${param.x}&quot; height=&quot;${param.y}&quot;/&gt;&lt;br/&gt;
 &lt;hr/&gt;</pre>
 </div>
-<p><b>import（Seasar2のDaoを利用)：メイン画面</b>
-</p>
+<p><b>import（Seasar2のDaoを利用)：メイン画面</b></p>
 <div class="source"><pre>&lt;h2&gt;2.c:importを使用したサンプル&lt;br/&gt;
 （S2やDBデータを読み込み先のJSPのスクリプトレットで直接使用(WTPの使用をおすすめ)）&lt;/h2&gt;
 &lt;c:import url=&quot;import_scriptlet.jsp&quot;/&gt;</pre>
 </div>
-<p><b>import（Seasar2のDaoを利用)：画面部品(import_scriptlet.jsp)</b>
-</p>
+<p><b>import（Seasar2のDaoを利用)：画面部品(import_scriptlet.jsp)</b></p>
 <div class="source"><pre>&lt;%@page import=&quot;java.util.List&quot;%&gt;
 &lt;%@page import=&quot;org.seasar.framework.container.SingletonS2Container&quot;%&gt;
 &lt;%@page import=&quot;org.seasar.cubby.examples.todo.dao.TodoTypeDao&quot;%&gt;

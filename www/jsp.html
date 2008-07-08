@@ -58,7 +58,7 @@ baba" />
   
   
     
-             最終更新: 2008-05-15
+             最終更新: 2008-07-09
             </div>
       <div class="clear">
         <hr/>
@@ -343,61 +343,37 @@ baba" />
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a>
-</h2>
-<ul><li><a href="#JSP">JSP</a>
-</li>
-<li><a href="#暗黙オブジェクト">暗黙オブジェクト</a>
-</li>
-<li><a href="#カスタムタグ">カスタムタグ</a>
-<ul><li><a href="#form">form</a>
-</li>
-<li><a href="#input">input</a>
-</li>
-<li><a href="#select">select</a>
-</li>
-<li><a href="#textarea">textarea</a>
-</li>
-<li><a href="#token">token</a>
-</li>
+        <div class="section"><h2><a name="目次">目次</a></h2>
+<ul><li><a href="#JSP">JSP</a></li>
+<li><a href="#暗黙オブジェクト">暗黙オブジェクト</a></li>
+<li><a href="#カスタムタグ">カスタムタグ</a><ul><li><a href="#form">form</a></li>
+<li><a href="#input">input</a></li>
+<li><a href="#select">select</a></li>
+<li><a href="#textarea">textarea</a></li>
+<li><a href="#token">token</a></li>
 </ul>
 </li>
-<li><a href="#ファンクション">ファンクション</a>
-<ul><li><a href="#out">out</a>
-</li>
-<li><a href="#dateFormat">dateFormat</a>
-</li>
-<li><a href="#odd">odd</a>
-</li>
-<li><a href="#contains">contains</a>
-</li>
-<li><a href="#containsKey">containsKey</a>
-</li>
-<li><a href="#containsValue">containsValue</a>
-</li>
+<li><a href="#ファンクション">ファンクション</a><ul><li><a href="#out">out</a></li>
+<li><a href="#dateFormat">dateFormat</a></li>
+<li><a href="#odd">odd</a></li>
+<li><a href="#contains">contains</a></li>
+<li><a href="#containsKey">containsKey</a></li>
+<li><a href="#containsValue">containsValue</a></li>
 </ul>
 </li>
-<li><a href="#JSP_共通ヘッダー">JSP 共通ヘッダー</a>
-</li>
+<li><a href="#JSP_共通ヘッダー">JSP 共通ヘッダー</a></li>
 </ul>
 </div>
-<div class="section"><h2><a name="JSP">JSP</a>
-</h2>
+<div class="section"><h2><a name="JSP">JSP</a></h2>
 <p>Cubby のビューは JSP で作成します。</p>
 </div>
-<div class="section"><h2><a name="暗黙オブジェクト">暗黙オブジェクト</a>
-</h2>
+<div class="section"><h2><a name="暗黙オブジェクト">暗黙オブジェクト</a></h2>
 <p>アクションからフォワードされた JSP では、以下の暗黙オブジェクトを使用することができます。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>スコープ</b>
-</td>
-<td align="left"><b>セットされるタイミング</b>
-</td>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b></td>
+<td align="left"><b>説明</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>スコープ</b></td>
+<td align="left"><b>セットされるタイミング</b></td>
 </tr>
 <tr class="b"><td align="left">action</td>
 <td align="left">forward したアクションのオブジェクト</td>
@@ -442,60 +418,45 @@ baba" />
 <caption>暗黙オブジェクト一覧</caption>
 </table>
 </div>
-<div class="section"><h2><a name="カスタムタグ">カスタムタグ</a>
-</h2>
+<div class="section"><h2><a name="カスタムタグ">カスタムタグ</a></h2>
 <p>Cubby のカスタムタグはフォーム値の表示・復元・バリデーション結果の反映に使用します。 以下のタグライブラリ宣言を行うことでカスタムタグが使用できます。</p>
 <div class="source"><pre>&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/tags&quot; prefix=&quot;t&quot; %&gt;</pre>
 </div>
 <p>Cubby のカスタムタグは、全て JSP2.0 の Dynamic-Attribute に対応しています。 カスタムタグに定義されていない属性はそのまま素直に出力されます。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>用途</b>
-</td>
-<td align="left"><b>タグ名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>用途</b></td>
+<td align="left"><b>タグ名</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="a"><td align="left">入力フォーム作成</td>
-<td align="left"><a href="#form">form</a>
-</td>
+<td align="left"><a href="#form">form</a></td>
 <td align="left">form タグを出力します。</td>
 </tr>
 <tr class="b"><td align="left">入力フォーム作成</td>
-<td align="left"><a href="#input">input</a>
-</td>
+<td align="left"><a href="#input">input</a></td>
 <td align="left">input タグを出力します。</td>
 </tr>
 <tr class="a"><td align="left">入力フォーム作成</td>
-<td align="left"><a href="#select">select</a>
-</td>
+<td align="left"><a href="#select">select</a></td>
 <td align="left">select タグと option タグを出力します。</td>
 </tr>
 <tr class="b"><td align="left">入力フォーム作成</td>
-<td align="left"><a href="#textarea">textarea</a>
-</td>
+<td align="left"><a href="#textarea">textarea</a></td>
 <td align="left">textarea タグを出力します。</td>
 </tr>
 <tr class="a"><td align="left">2重サブミット防止</td>
-<td align="left"><a href="#token">token</a>
-</td>
+<td align="left"><a href="#token">token</a></td>
 <td align="left">2重サブミットを防止します。</td>
 </tr>
 </tbody>
 <caption>カスタムタグ一覧</caption>
 </table>
-<div class="section"><h3><a name="form">form</a>
-</h3>
+<div class="section"><h3><a name="form">form</a></h3>
 <p>HTML の form タグを出力します。 Cubby の input/select/textarea タグで参照するフォーム用オブジェクトを指定するために使用します。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>EL式の使用</b>
-</td>
-<td align="left"><b>必須</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>EL式の使用</b></td>
+<td align="left"><b>必須</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="a"><td align="left">value</td>
 <td align="left">Object</td>
@@ -505,32 +466,24 @@ baba" />
 </tr>
 </tbody>
 </table>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;t:form value=&quot;${action}&quot;&gt;
   ...
 &lt;t:/form&gt;</pre>
 </div>
-<p><b>結果</b>
-</p>
+<p><b>結果</b></p>
 <div class="source"><pre>&lt;form&gt;
   ...
 &lt;/form&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="input">input</a>
-</h3>
+<div class="section"><h3><a name="input">input</a></h3>
 <p>HTML の input タグを出力します。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>EL式の使用</b>
-</td>
-<td align="left"><b>必須</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>EL式の使用</b></td>
+<td align="left"><b>必須</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="a"><td align="left">name</td>
 <td align="left">String</td>
@@ -570,28 +523,20 @@ type 属性が radio/checkbox の場合は必ず指定してください。</td>
 </tr>
 </tbody>
 </table>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;t:input name=&quot;title&quot;/&gt;</pre>
 </div>
-<p><b>結果</b>
-</p>
+<p><b>結果</b></p>
 <div class="source"><pre>&lt;input name=&quot;title&quot; value=&quot;Todo Title&quot;/&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="select">select</a>
-</h3>
+<div class="section"><h3><a name="select">select</a></h3>
 <p>HTML の select タグと option タグを出力します。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>EL式の使用</b>
-</td>
-<td align="left"><b>必須</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>EL式の使用</b></td>
+<td align="left"><b>必須</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="a"><td align="left">name</td>
 <td align="left">String</td>
@@ -634,31 +579,23 @@ type 属性が radio/checkbox の場合は必ず指定してください。</td>
 </tr>
 </tbody>
 </table>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;t:select name=&quot;typeId&quot; items=&quot;${todoTypes}&quot; labelProperty=&quot;name&quot; valueProperty=&quot;id&quot;/&gt;</pre>
 </div>
-<p><b>結果</b>
-</p>
+<p><b>結果</b></p>
 <div class="source"><pre>&lt;select name=&quot;typeId&quot;&gt;
   &lt;option name=&quot;1&quot;&gt;TodoType 1&lt;/option&gt;
   &lt;option name=&quot;2&quot;&gt;TodoType 2&lt;/option&gt;
 &lt;/select&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="textarea">textarea</a>
-</h3>
+<div class="section"><h3><a name="textarea">textarea</a></h3>
 <p>HTML の textarea タグを出力します。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>EL式の使用</b>
-</td>
-<td align="left"><b>必須</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>属性名</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>EL式の使用</b></td>
+<td align="left"><b>必須</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="b"><td align="left">name</td>
 <td align="left">String</td>
@@ -675,52 +612,40 @@ type 属性が radio/checkbox の場合は必ず指定してください。</td>
 </tr>
 </tbody>
 </table>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;t:textarea name=&quot;memo&quot;/&gt;</pre>
 </div>
-<p><b>結果</b>
-</p>
+<p><b>結果</b></p>
 <div class="source"><pre>&lt;textarea name=&quot;memo&quot;&gt;Memo 1&lt;/textarea&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="token">token</a>
-</h3>
+<div class="section"><h3><a name="token">token</a></h3>
 <p>2重サブミットを防止します。</p>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b>
-</td>
-<td align="left"><b>型</b>
-</td>
-<td align="left"><b>EL式の使用</b>
-</td>
-<td align="left"><b>必須</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>属性名</b></td>
+<td align="left"><b>型</b></td>
+<td align="left"><b>EL式の使用</b></td>
+<td align="left"><b>必須</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
 <tr class="a"><td align="left">name</td>
 <td align="left">String</td>
 <td align="left">○</td>
 <td align="left">×</td>
-<td align="left"><i>input type=&quot;hidden&quot;/</i>
-タグのname属性を指定します。通常は省略可能です。省略した場合、nameの属性名は「cubby.token」になります。</td>
+<td align="left"><i>input type=&quot;hidden&quot;/</i>タグのname属性を指定します。通常は省略可能です。省略した場合、nameの属性名は「cubby.token」になります。</td>
 </tr>
 </tbody>
 </table>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;t:form value=&quot;${action}&quot;&gt;
   &lt;t:token / &gt;
 &lt;t:/form&gt;</pre>
 </div>
-<p><b>結果</b>
-</p>
+<p><b>結果</b></p>
 <div class="source"><pre>&lt;form&gt;
   &lt;input type=&quot;hidden&quot; name=&quot;cubby.token&quot; value=&quot;ランダムな文字列...&quot;&gt;
 &lt;/form&gt;</pre>
 </div>
-<p><b>アクション</b>
-</p>
+<p><b>アクション</b></p>
 <div class="source"><pre>public class TokenAction extends Action {
   ...
   public ValidationRules validation = new DefaultValidationRules() {
@@ -740,64 +665,49 @@ type 属性が radio/checkbox の場合は必ず指定してください。</td>
 </div>
 </div>
 </div>
-<div class="section"><h2><a name="ファンクション">ファンクション</a>
-</h2>
+<div class="section"><h2><a name="ファンクション">ファンクション</a></h2>
 <p>Cubby では JSP2.0 のファンクションを用意しています。 以下のタグライブラリ宣言を行うことでファンクションが使用できます。</p>
 <div class="source"><pre>&lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/functions&quot; prefix=&quot;f&quot; %&gt;</pre>
 </div>
-<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>ファンクション名</b>
-</td>
-<td align="left"><b>説明</b>
-</td>
+<table class="bodyTable"><tbody><tr class="b"><td align="left"><b>ファンクション名</b></td>
+<td align="left"><b>説明</b></td>
 </tr>
-<tr class="a"><td align="left"><a href="#out">out</a>
-</td>
+<tr class="a"><td align="left"><a href="#out">out</a></td>
 <td align="left">HTML をエスケープします。</td>
 </tr>
-<tr class="b"><td align="left"><a href="#dateFormat">dateFormat</a>
-</td>
+<tr class="b"><td align="left"><a href="#dateFormat">dateFormat</a></td>
 <td align="left">Date 型のオブジェクトをフォーマットして出力します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="#odd">odd</a>
-</td>
+<tr class="a"><td align="left"><a href="#odd">odd</a></td>
 <td align="left">指定したカンマ区切りの文字列をインデックス値でサイクルして出力します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="#contains">contains</a>
-</td>
+<tr class="b"><td align="left"><a href="#contains">contains</a></td>
 <td align="left">配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。</td>
 </tr>
-<tr class="a"><td align="left"><a href="#containsKey">containsKey</a>
-</td>
+<tr class="a"><td align="left"><a href="#containsKey">containsKey</a></td>
 <td align="left">Map に指定したキーが含まれるかどうかを判定します。</td>
 </tr>
-<tr class="b"><td align="left"><a href="#containsValue">containsValue</a>
-</td>
+<tr class="b"><td align="left"><a href="#containsValue">containsValue</a></td>
 <td align="left">Map に指定したキーが含まれるかどうかを判定します。</td>
 </tr>
 </tbody>
 <caption>ファンクション一覧</caption>
 </table>
-<div class="section"><h3><a name="out">out</a>
-</h3>
+<div class="section"><h3><a name="out">out</a></h3>
 <p>HTML をエスケープします。JSTL の out タグの代わりに使用します。 EL 式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこの function を使用します。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>${f:out(user.name)}さんこんにちは</pre>
 </div>
 </div>
-<div class="section"><h3><a name="dateFormat">dateFormat</a>
-</h3>
+<div class="section"><h3><a name="dateFormat">dateFormat</a></h3>
 <p>Date 型のオブジェクトをフォーマットして出力します。JSTL の dateFormat タグの代わりに使用します。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>${f:dateFormat(todo.limitDate, &quot;yyyy-MM-dd&quot;)}</pre>
 </div>
 </div>
-<div class="section"><h3><a name="odd">odd</a>
-</h3>
+<div class="section"><h3><a name="odd">odd</a></h3>
 <p>指定したカンマ区切りの文字列をインデックス値でサイクルして出力します。 主に行毎に色分けする場合にCSSのクラス名を出力する場合に使用します。 下記の例では、status.indexを2で割って余りが0の場合「odd」、1の場合「even」が出力されます。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;c:forEach var=&quot;todo&quot; items=&quot;${action.todoList}&quot; varStatus=&quot;status&quot;&gt;
   &lt;tr class=&quot;${f:odd(status.index, 'odd,even')}&quot;&gt;
     ...
@@ -805,45 +715,37 @@ type 属性が radio/checkbox の場合は必ず指定してください。</td>
 &lt;/c:forEach&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="contains">contains</a>
-</h3>
+<div class="section"><h3><a name="contains">contains</a></h3>
 <p>配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;c:if test=&quot;${f:contains(idlist, '1001')}&quot;&gt;
   ...
 &lt;/c:if&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="containsKey">containsKey</a>
-</h3>
+<div class="section"><h3><a name="containsKey">containsKey</a></h3>
 <p>Map に指定したキーが含まれるかどうかを判定します。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;c:if test=&quot;${f:containsKey(idmap, '1001')}&quot;&gt;
   ...
 &lt;/c:if&gt;</pre>
 </div>
 </div>
-<div class="section"><h3><a name="containsValue">containsValue</a>
-</h3>
+<div class="section"><h3><a name="containsValue">containsValue</a></h3>
 <p>Map に指定した値が含まれるかどうかを判定します。</p>
-<p><b>使用例</b>
-</p>
+<p><b>使用例</b></p>
 <div class="source"><pre>&lt;c:if test=&quot;${f:containsValue(idmap, '値1')}&quot;&gt;
   ...
 &lt;/c:if&gt;</pre>
 </div>
 </div>
 </div>
-<div class="section"><h2><a name="JSP_共通ヘッダー">JSP 共通ヘッダー</a>
-</h2>
+<div class="section"><h2><a name="JSP_共通ヘッダー">JSP 共通ヘッダー</a></h2>
 <p>JSP のページディレクティブや taglib ディレクティブは、各 JSP には記述せずにヘッダーファイルをインクルードして設定することを推奨します。<br />
 Servlet 2.4/JSP 2.0 の web.xml の設定として「include-prelude」ディレクティブが用意されていますので、これを使用してヘッダーファイルのインクルードを行います。</p>
 <p>2分間チュートリアルの JSP は、共通ヘッダーを使用しているので、JSP の先頭に taglib ディレクティブの宣言がありません。<br />
 実際は、以下の「header.jsp」の内容が JSP の先頭に自動的に付加されてから、コンパイル・実行されています。</p>
-<p><b>/common/header.jsp</b>
-</p>
+<p><b>/common/header.jsp</b></p>
 <div class="source"><pre>&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot; %&gt;
 &lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
 &lt;%@ taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;
@@ -851,8 +753,7 @@ Servlet 2.4/JSP 2.0 の web.xml の設定として「include-prelude」ディレ
 &lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/tags&quot; prefix=&quot;t&quot; %&gt;
 &lt;%@ taglib uri=&quot;http://www.seasar.org/cubby/functions&quot; prefix=&quot;f&quot; %&gt;</pre>
 </div>
-<p><b>web.xml</b>
-</p>
+<p><b>web.xml</b></p>
 <div class="source"><pre>&lt;/web-app&gt;
   ...
   &lt;jsp-config&gt;
