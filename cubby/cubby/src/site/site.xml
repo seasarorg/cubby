@@ -3,7 +3,7 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.4</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
