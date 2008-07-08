@@ -208,6 +208,14 @@ mvn eclipse:eclipse -DdownloadSources=true
 
       {{{http://d.hatena.ne.jp/uriyuri/20080328/1206694040}http://d.hatena.ne.jp/uriyuri/20080328/1206694040}}の設定を行うことで、
       WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。
+      ワーキングフォルダをPublishingしない設定でMayaaを使用する場合、CubbyやJSTLのTLDファイルをMayaaが見つけることができないため、ProcessorNotInjectedExceptionが発生してしまう問題があります。
+      回避策としては、以下のコマンドを1回実行します。これにより、pom.xmlに定義されたJARファイルが「src/webapp/WEB-INF/lib」にコピーされ、
+      MayaaがTDLファイルを見つけ出すことができるようになります。
+      注意点として、pom.xmlの依存ライブラリを変更したら、コマンドを再実行して「src/webapp/WEB-INF/lib」以下のJARファイルを最新にする必要があります。
+
++------------------------------------------------------+
+mvn war:inplace
++------------------------------------------------------+
 
 []
 
