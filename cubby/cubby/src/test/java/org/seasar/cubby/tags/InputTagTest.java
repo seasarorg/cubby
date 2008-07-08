@@ -406,4 +406,26 @@ System.out.println("ここ");
 		// context.getResult());
 	}
 
+	public void testDoTagAttributeNotEscape() throws Exception {
+		tag.setType("checkbox");
+		tag.setName("stringField");
+		tag.setValue("outputValue");
+		tag.setDynamicAttribute(null, "onclick", "doSubmit('button');");
+		tag.doTag();
+
+		System.out.println(context.getResult());
+
+		Element element = getResultAsElementFromContext();
+		String message = "valueが指定";
+		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertEquals(message, 5, element.getAttributes().size());
+		assertEquals(message, "checkbox", element.getAttributeValue("type"));
+		assertEquals(message, "outputValue", element.getAttributeValue("value"));
+		assertEquals(message, "stringField", element.getAttributeValue("name"));
+		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "doSubmit('button');", element.getAttributeValue("onclick"));
+		// コメントアウトを外して確認すること
+		//assertEquals("valueが指定",
+		//"<input type=\"checkbox\" name=\"stringField\" value=\"outputValue\" onclick=\"doSubmit('button');\"  checked=\"true\"/>", context.getResult());
+	}
 }

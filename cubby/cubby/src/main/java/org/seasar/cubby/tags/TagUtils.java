@@ -30,7 +30,6 @@ import javax.servlet.jsp.PageContext;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.util.StringUtil;
 
 /**
@@ -271,7 +270,7 @@ class TagUtils {
 			}
 			builder.append(key);
 			builder.append("=\"");
-			builder.append(CubbyUtils.escapeHtml(entry.getValue()));
+			builder.append(entry.getValue());
 			builder.append("\" ");
 		}
 		return builder.toString();
