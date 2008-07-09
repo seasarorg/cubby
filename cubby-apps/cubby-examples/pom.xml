@@ -6,7 +6,7 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-examples</artifactId>
   <packaging>war</packaging>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <build>
     <finalName>cubby-examples</finalName>
     <pluginManagement>
@@ -148,7 +148,7 @@
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.container</groupId>
