@@ -181,7 +181,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 * @param response
 	 *            レスポンス
 	 * @return 内部フォワードパス
-	 * @since 1.1.0
+	 * @since 1.0.5
 	 */
 	protected String routing(final MockHttpServletRequest request,
 			final MockHttpServletResponse response) {
