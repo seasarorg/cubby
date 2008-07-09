@@ -17,6 +17,11 @@ package org.seasar.cubby.unit;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -60,9 +65,12 @@ import org.seasar.framework.util.StringUtil;
  * 		assertPathEquals(Forward.class, &quot;input.jsp&quot;, result);
  * 	}
  * 
- * 	public void testMessage() throws Exception {
+ * 	public void setUpMessage() {
  * 		// リクエストパラメータのセット
  * 		getRequest().addParameter(&quot;name&quot;, &quot;name1&quot;);
+ * 	}
+ * 
+ * 	public void testMessage() throws Exception {
  * 		// アクションの実行
  * 		ActionResult result = processAction(&quot;/hello/message&quot;);
  * 		// 結果のチェック
@@ -75,22 +83,19 @@ import org.seasar.framework.util.StringUtil;
  * 
  * <pre>
  * public class TodoActionTest extends CubbyTestCase {
+ * 
  * 	private TodoAction action;
  * 
- * 	protected void setUp() throws Exception {
- * 		include(&quot;app.dicon&quot;);
- * 		RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
- * 		listener.requestInitialized(null);
+ * 	public void setUpShow() throws Exception {
+ * 		emulateLogin();
  * 	}
  * 
- * 	&#064;Override
- * 	protected void setUpAfterBindFields() throws Throwable {
- * 		super.setUpAfterBindFields();
- * 		getRequest().addParameter(&quot;userId&quot;, &quot;test&quot;);
- * 		getRequest().addParameter(&quot;password&quot;, &quot;test&quot;);
- * 		// 後続のテストを実行するためにログインアクションを実行
- * 		assertPathEquals(Redirect.class, &quot;/todo/&quot;,
- * 				processAction(&quot;/todo/login/process&quot;));
+ * 	private void emulateLogin() throws Exception {
+ * 		User user = new User();
+ * 		user.setId(&quot;mock&quot;);
+ * 		user.setName(&quot;mock&quot;);
+ * 		user.setPassword(&quot;mock&quot;);
+ * 		getRequest().getSession().setAttribute(&quot;user&quot;, user);
  * 	}
  * 
  * 	public void testShow() throws Exception {
@@ -152,17 +157,91 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	/**
 	 * アクションメソッドを実行します。
 	 * 
-	 * @param orginalPath
-	 *            パス
-	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合、null
+	 * @param request
+	 *            リクエスト
+	 * @param response
+	 *            レスポンス
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
 	 * @throws Exception
 	 */
-	protected ActionResult processAction(final String orginalPath)
+	protected ActionResult processAction(final String originalPath)
 			throws Exception {
-		routing(orginalPath);
+		final MockHttpServletRequest request = getRequest();
+		setServletPath(request, originalPath);
+		final MockHttpServletResponse response = getResponse();
+		routing(request, response);
 		setupThreadContext();
-		return actionProcessor
-				.process(getRequest(), getResponse(), filterChain);
+		final ActionResult actionResult = actionProcessor.process(request,
+				response, filterChain);
+		return actionResult;
+	}
+
+	/**
+	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 * @param response
+	 *            レスポンス
+	 * @return 内部フォワードパス
+	 * @since 1.0.5
+	 */
+	protected String routing(final MockHttpServletRequest request,
+			final MockHttpServletResponse response) {
+		final InternalForwardInfo internalForwardInfo = router.routing(request,
+				response);
+		if (internalForwardInfo == null) {
+			fail(request.getServletPath() + " could not mapping to action");
+		}
+		final String internalForwardPath = internalForwardInfo
+				.getInternalForwardPath();
+		final MockHttpServletRequest internalForwardRequest = this
+				.getServletContext().createRequest(internalForwardPath);
+		request.setAttribute("javax.servlet.forward.request_uri", request
+				.getRequestURI());
+		request.setAttribute("javax.servlet.forward.context_path", request
+				.getContextPath());
+		request.setAttribute("javax.servlet.forward.servlet_path", request
+				.getServletPath());
+		request.setAttribute("javax.servlet.forward.path_info", request
+				.getPathInfo());
+		request.setAttribute("javax.servlet.forward.query_string", request
+				.getQueryString());
+		final String servletPath = internalForwardRequest.getServletPath();
+		setServletPath(request, servletPath);
+		request.setQueryString(internalForwardRequest.getQueryString());
+		if (StringUtil.isNotBlank(internalForwardRequest.getQueryString())) {
+			final Map<String, List<String>> pathParameters = parseQueryString(internalForwardRequest
+					.getQueryString());
+			for (final Entry<String, List<String>> entry : pathParameters
+					.entrySet()) {
+				final String name = entry.getKey();
+				for (final String value : entry.getValue()) {
+					request.addParameter(name, value);
+				}
+			}
+		}
+		return internalForwardPath;
+	}
+
+	/**
+	 * 指定されたモックリクエストのサーブレットパスを設定します。
+	 * 
+	 * @param request
+	 *            リクエスト
+	 * @param servletPath
+	 *            サーブレットパス
+	 */
+	private static void setServletPath(final MockHttpServletRequest request,
+			final String servletPath) {
+		final Field servletPathField = ClassUtil.getDeclaredField(request
+				.getClass(), "servletPath");
+		servletPathField.setAccessible(true);
+		try {
+			servletPathField.set(request, servletPath);
+		} catch (final Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	/**
@@ -173,19 +252,46 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	}
 
 	/**
+	 * クエリ文字列をパースして {@link Map} へ変換します。
+	 * 
+	 * @param queryString
+	 *            クエリ文字列
+	 * @return クエリ文字列をパースした {@link Map}
+	 */
+	private Map<String, List<String>> parseQueryString(final String queryString) {
+		final Map<String, List<String>> params = new HashMap<String, List<String>>();
+		final String[] tokens = queryString.split("&");
+		for (final String token : tokens) {
+			final String[] param = token.split("=");
+			final String name = param[0];
+			final String value = param[1];
+			final List<String> values;
+			if (params.containsKey(name)) {
+				values = params.get(name);
+			} else {
+				values = new ArrayList<String>();
+				params.put(name, values);
+			}
+			values.add(value);
+		}
+		return params;
+	}
+
+	/**
 	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
 	 * 
 	 * @param orginalPath
 	 *            オリジナルパス
 	 * @return 内部フォワードパス
 	 */
+	@Deprecated
 	@SuppressWarnings( { "unchecked", "deprecation" })
 	protected String routing(final String orginalPath) {
-		final MockHttpServletRequest request = this.getServletContext()
+		final MockHttpServletRequest originalRequest = this.getServletContext()
 				.createRequest(orginalPath);
 		final MockHttpServletResponse response = this.getResponse();
-		final InternalForwardInfo internalForwardInfo = router.routing(request,
-				response);
+		final InternalForwardInfo internalForwardInfo = router.routing(
+				originalRequest, response);
 		if (internalForwardInfo == null) {
 			fail(orginalPath + " could not mapping to action");
 		}
@@ -193,20 +299,21 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 				.getInternalForwardPath();
 		final MockHttpServletRequest internalForwardRequest = this
 				.getServletContext().createRequest(internalForwardPath);
-		Beans.copy(internalForwardRequest, getRequest()).execute();
-		final Field servletPathField = ClassUtil.getDeclaredField(getRequest()
+		final MockHttpServletRequest request = getRequest();
+		Beans.copy(internalForwardRequest, request).execute();
+		final Field servletPathField = ClassUtil.getDeclaredField(request
 				.getClass(), "servletPath");
 		servletPathField.setAccessible(true);
 		try {
-			servletPathField.set(getRequest(), internalForwardRequest
+			servletPathField.set(request, internalForwardRequest
 					.getServletPath());
 		} catch (final Exception ex) {
 			throw new RuntimeException(ex);
 		}
-
+		request.setQueryString(internalForwardRequest.getQueryString());
 		if (StringUtil.isNotBlank(internalForwardRequest.getQueryString())) {
-			getRequest().getParameterMap().putAll(
-					javax.servlet.http.HttpUtils.parseQueryString(getRequest()
+			request.getParameterMap().putAll(
+					javax.servlet.http.HttpUtils.parseQueryString(request
 							.getQueryString()));
 		}
 		return internalForwardPath;
@@ -226,5 +333,4 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 				ServletException {
 		}
 	}
-
 }
