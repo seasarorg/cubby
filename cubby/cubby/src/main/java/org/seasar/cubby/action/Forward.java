@@ -16,14 +16,19 @@
 package org.seasar.cubby.action;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.util.QueryStringBuilder;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
@@ -56,6 +61,10 @@ public class Forward extends AbstractActionResult {
 
 	private static final Logger logger = Logger.getLogger(Forward.class);
 
+	/** 空のパラメータ。 */
+	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
+			.emptyMap();
+
 	private final String path;
 
 	/**
@@ -66,6 +75,55 @@ public class Forward extends AbstractActionResult {
 	 */
 	public Forward(final String path) {
 		this.path = path;
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            アクションメソッド名
+	 * @param parameters
+	 *            パラメータ
+	 * @since 1.0.5
+	 */
+	public Forward(final Class<? extends Action> actionClass,
+			String methodName, final Map<String, String[]> parameters) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("/");
+		builder.append(CubbyConstants.INTERNAL_FORWARD_DIRECTORY);
+		builder.append("/");
+		builder.append(actionClass.getCanonicalName());
+		builder.append("/");
+		builder.append(methodName);
+		if (parameters != null && !parameters.isEmpty()) {
+			builder.append("?");
+			final QueryStringBuilder queryString = new QueryStringBuilder();
+			for (final Entry<String, String[]> parameter : parameters
+					.entrySet()) {
+				final String name = parameter.getKey();
+				for (final String value : parameter.getValue()) {
+					queryString.addParam(name, value);
+				}
+			}
+			builder.append(queryString.toString());
+		}
+		this.path = builder.toString();
+	}
+
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param methodName
+	 *            アクションメソッド名
+	 * @since 1.0.5
+	 */
+	public Forward(final Class<? extends Action> actionClass,
+			final String methodName) {
+		this(actionClass, methodName, EMPTY_PARAMETERS);
 	}
 
 	/**
