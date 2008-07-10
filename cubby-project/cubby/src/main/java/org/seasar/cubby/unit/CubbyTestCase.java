@@ -151,12 +151,11 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	/**
 	 * アクションメソッドを実行します。
 	 * 
-	 * @param request
-	 *            リクエスト
-	 * @param response
-	 *            レスポンス
+	 * @param originalPath
+	 *            オリジナルパス
 	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
 	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
 	 */
 	protected ActionResult processAction(final String originalPath)
 			throws Exception {
