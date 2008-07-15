@@ -82,7 +82,7 @@ public class InputTagTest extends SimpleTagTestCase {
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "outputValue", element.getAttributeValue("value"));
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
-		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "checked", element.getAttributeValue("checked"));
 		// assertEquals("valueが指定",
 		// "<input type=\"checkbox\" value=\"value1\" name=\"stringField\"
 		// checked=\"true\"/>\n", context.getResult());
@@ -145,7 +145,7 @@ public class InputTagTest extends SimpleTagTestCase {
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
-		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "checked", element.getAttributeValue("checked"));
 		// assertEquals("valueが指定",
 		// "<input type=\"checkbox\" value=\"value1\" name=\"stringField\"
 		// />\n", context.getResult());
@@ -190,7 +190,7 @@ public class InputTagTest extends SimpleTagTestCase {
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
-		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "checked", element.getAttributeValue("checked"));
 		// assertEquals("valueが指定",
 		// "<input type=\"checkbox\" value=\"value1\" name=\"stringField\"
 		// checked=\"true\"/>\n", context.getResult());
@@ -245,7 +245,7 @@ public class InputTagTest extends SimpleTagTestCase {
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "outputValue", element.getAttributeValue("value"));
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
-		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "checked", element.getAttributeValue("checked"));
 		// assertEquals("valueが指定",
 		// "<input type=\"checkbox\" value=\"value1\" name=\"stringField\"
 		// checked=\"true\"/>\n", context.getResult());
@@ -288,7 +288,7 @@ public class InputTagTest extends SimpleTagTestCase {
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));
 		assertEquals(message, "stringField", element.getAttributeValue("name"));
-		assertEquals(message, "true", element.getAttributeValue("checked"));
+		assertEquals(message, "checked", element.getAttributeValue("checked"));
 		// assertEquals("valueが指定",
 		// "<input type=\"checkbox\" value=\"value1\" name=\"stringField\"
 		// checked=\"true\"/>\n", context.getResult());
