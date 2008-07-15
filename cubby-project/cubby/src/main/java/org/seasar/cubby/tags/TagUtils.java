@@ -248,18 +248,23 @@ class TagUtils {
 				REQUEST_SCOPE));
 	}
 
+	public static final Object REMOVE_ATTRIBUTE = new Object();
+
 	/**
-	 * 指定された{@link Map}をHTMLタグの属性へ変換します。
+	 * 指定された {@link Map} を HTML タグの属性へ変換します。
+	 * <p>
+	 * map 中の値が {@link #REMOVE_ATTRIBUTE} の場合、その属性は結果から除外します。
+	 * </p>
 	 * 
 	 * @param map
 	 *            属性のマップ
-	 * @return HTMLタグの属性
+	 * @return HTML タグの属性
 	 */
 	public static String toAttr(final Map<String, Object> map) {
 		final StringBuilder builder = new StringBuilder();
 		for (final Entry<String, Object> entry : map.entrySet()) {
 			final String key = entry.getKey();
-			if ("value".equals(key) || "checkedValue".equals(key)) {
+			if (entry.getValue() == REMOVE_ATTRIBUTE) {
 				continue;
 			}
 			builder.append(key);
@@ -320,7 +325,7 @@ class TagUtils {
 	}
 
 	/**
-	 * Dynamic-Attributesに指定されたclass属性を追加します。
+	 * Dynamic-Attributes に指定された class 属性を追加します。
 	 * 
 	 * @param dyn
 	 *            Dynamic-Attributes
