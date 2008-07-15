@@ -28,7 +28,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.util.CubbyFunctions;
 
 /**
  * textareaを出力するタグ

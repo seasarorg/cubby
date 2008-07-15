@@ -32,7 +32,6 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.util.CubbyFunctions;
 import org.seasar.framework.message.MessageFormatter;
 import org.seasar.framework.util.ArrayUtil;
 
@@ -187,7 +186,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			return "";
 		}
 		if (contains(values, value)) {
-			return "checked=\"true\"";
+			return "checked=\"checked\"";
 		} else {
 			return "";
 		}

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.util;
+package org.seasar.cubby.tags;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -21,14 +21,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.seasar.cubby.util.CubbyUtils;
+
 /**
- * CubbyのJSP EL functionsを提供します。
+ * Cubby の JSP functions を提供します。
  * 
  * @author baba
  * @since 1.0.0
- * @deprecated {@link org.seasar.cubby.tags.CubbyFunctions} を使用してください。
  */
-@Deprecated
 public class CubbyFunctions {
 
 	/**
@@ -144,6 +144,26 @@ public class CubbyFunctions {
 		} else {
 			return "";
 		}
+	}
+
+	/**
+	 * 第1引数の条件が true のときは第2引数を属性の値として出力し、第1引数の条件が false のときは属性自体を出力しません。
+	 * <p>
+	 * 条件によって disabled や checked などの属性の出力する・しないを制御したい場合に使用します。
+	 * 出力する・しないの制御はカスタムタグで行うので、t:input/t:select/t:textarea と組み合わせて使用してください。
+	 * </p>
+	 * 
+	 * @param condition
+	 *            属性を出力する条件
+	 * @param value
+	 * @return condition が <code>true</code> の場合は value、そうでない場合は
+	 *         {@link TagUtils#REMOVE_ATTRIBUTE}
+	 */
+	public static Object ifrender(final Boolean condition, final Object value) {
+		if (condition) {
+			return value;
+		}
+		return TagUtils.REMOVE_ATTRIBUTE;
 	}
 
 }

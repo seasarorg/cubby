@@ -15,7 +15,7 @@
     <description>配列やコレクションに指定したオブジェクトが含まれるかどうかを判定します。</description>
     <name>contains</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.Boolean contains( java.lang.Object, java.lang.Object )
@@ -30,7 +30,7 @@
     <description>Map に指定したキーが含まれるかどうかを判定します。</description>
     <name>containsKey</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.Boolean containsKey( java.util.Map, java.lang.Object )
@@ -45,7 +45,7 @@
     <description>Map に指定した値が含まれるかどうかを判定します。</description>
     <name>containsValue</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.Boolean containsValue( java.util.Map, java.lang.Object )
@@ -64,7 +64,7 @@
     </description>
     <name>odd</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.String odd( java.lang.Integer, java.lang.String )
@@ -83,7 +83,7 @@
     </description>
     <name>out</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.String out( java.lang.Object )
@@ -97,7 +97,7 @@
     </description>
     <name>dateFormat</name>
     <function-class>
-      org.seasar.cubby.util.CubbyFunctions
+      org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
       java.lang.String dateFormat( java.lang.Object, java.lang.String )
@@ -105,4 +105,18 @@
     <example>${f:dateFormat(todo.limitDate, "yyyy-MM-dd")}</example>
   </function>
 
+  <function>
+    <description>
+      第1引数の条件が true のときは第2引数を属性の値として出力し、第1引数の条件が false のときは属性自体を出力しません。
+      条件によって disabled や checked などの属性の出力する・しないを制御したい場合に使用します。
+      出力する・しないの制御はカスタムタグで行うので、t:input/t:select/t:textarea と組み合わせて使用してください。
+    </description>
+    <name>ifrender</name>
+    <function-class>
+      org.seasar.cubby.tags.CubbyFunctions
+    </function-class>
+    <function-signature>
+      java.lang.Object element ( java.lang.Boolean, java.lang.Object )
+    </function-signature>
+  </function>
 </taglib>
