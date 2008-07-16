@@ -116,7 +116,7 @@
       org.seasar.cubby.tags.CubbyFunctions
     </function-class>
     <function-signature>
-      java.lang.Object element ( java.lang.Boolean, java.lang.Object )
+      java.lang.Object ifrender ( java.lang.Boolean, java.lang.Object )
     </function-signature>
   </function>
 </taglib>
