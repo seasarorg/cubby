@@ -16,7 +16,7 @@ function loadTextFromString() {
 	new Ajax.Request("textFromString", {
 		method: 'get', 
 		onComplete: function(req) {
-			$("textFromStringResult").innerText = req.responseText;
+			$("textFromStringResult").innerHTML = req.responseText;
 		}
 	});
 }
@@ -25,7 +25,7 @@ function loadJsonFromBean() {
 		method: 'get', 
 		onComplete: function(req) {
 			eval("var obj = " + req.responseText);
-			$("jsonFromBeanResult").innerText = obj.text;
+			$("jsonFromBeanResult").innerHTML = obj.text;
 		}
 	});
 }
@@ -34,7 +34,7 @@ function loadJsonFromMap() {
 		method: 'get', 
 		onComplete: function(req) {
 			eval("var obj = " + req.responseText);
-			$("jsonFromMapResult").innerText = obj.text;
+			$("jsonFromMapResult").innerHTML = obj.text;
 		}
 	});
 }
@@ -43,7 +43,7 @@ function loadJsonFromCollection() {
 		method: 'get', 
 		onComplete: function(req) {
 			eval("var array = " + req.responseText);
-			$("jsonFromCollectionResult").innerText = array.join(",");
+			$("jsonFromCollectionResult").innerHTML = array.join(",");
 		}
 	});
 }
