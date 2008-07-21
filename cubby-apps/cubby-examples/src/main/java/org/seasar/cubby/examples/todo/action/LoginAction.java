@@ -15,14 +15,18 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES;
+
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.UserDao;
 import org.seasar.cubby.examples.todo.entity.User;
@@ -62,8 +66,10 @@ public class LoginAction extends Action {
 
 	// ----------------------------------------------[Attribute]
 
+	@RequestParameter
 	public String userId;
 
+	@RequestParameter
 	public String password;
 
 	// ----------------------------------------------[Action Method]
@@ -71,6 +77,7 @@ public class LoginAction extends Action {
 	/**
 	 * ログイン画面表示処理(/todo/login/)
 	 */
+	@Form(binding = false)
 	public ActionResult index() {
 		return new Forward("/todo/login.jsp");
 	}
@@ -78,6 +85,7 @@ public class LoginAction extends Action {
 	/**
 	 * ログイン処理(/todo/login/process)
 	 */
+	@Form(type = ONLY_SPECIFIED_PROPERTIES)
 	@Validation(rules = "loginValidation", errorPage = "/todo/login.jsp")
 	public ActionResult process() {
 		return new Redirect("/todo/");
@@ -98,6 +106,7 @@ public class LoginAction extends Action {
 	}
 
 	@Path("/todo/logout")
+	@Form(binding = false)
 	@InvalidateSession
 	public ActionResult logout() {
 		return new Redirect("/todo/login/");
