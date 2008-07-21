@@ -18,6 +18,7 @@ package org.seasar.cubby.tags;
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
+import static org.seasar.cubby.tags.TagUtils.getOutputValues;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -140,14 +141,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
 		final Map<String, Object> dyn = this.getDynamicAttribute();
-		final Map<String, String[]> outputValues;
-		final FormTag formTag = (FormTag) findAncestorWithClass(this,
-				FormTag.class);
-		if (formTag == null) {
-			outputValues = null;
-		} else {
-			outputValues = formTag.getOutputValues();
-		}
+		final String[] outputValues = getOutputValues(this, this.name);
 
 		if (!errors.getFields().get(this.name).isEmpty()) {
 			addClassName(dyn, "fieldError");

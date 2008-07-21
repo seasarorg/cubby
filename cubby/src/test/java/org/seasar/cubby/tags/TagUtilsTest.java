@@ -59,58 +59,50 @@ public class TagUtilsTest extends TestCase {
 	public void testFormValue() throws Throwable {
 		Integer specifiedValue = -2;
 		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
-				new HashMap<String, String[]>(), "testTagUtilsName", 2,
-				specifiedValue);
+				new String[0], "testTagUtilsName", 2, specifiedValue);
 		assertEquals("result", specifiedValue, result);
 	}
 
 	public void testFormValue1() throws Throwable {
 		String[] strings = new String[3];
 		strings[0] = "testString";
-		Map<String, String[]> outputValuesMap = new HashMap<String, String[]>();
-		outputValuesMap.put("testString", strings);
 		String result = (String) TagUtils.formValue(new MockJspContext(),
-				outputValuesMap, "testString", 0, null);
+				strings, "testString", 0, null);
 		assertEquals("result", "testString", result);
 	}
 
 	public void testFormValue2() throws Throwable {
 		Integer specifiedValue = new Integer(0);
 		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
-				new HashMap<String, String[]>(), "testTagUtilsName", 0,
-				specifiedValue);
+				new String[0], "testTagUtilsName", 0, specifiedValue);
 		assertSame("result", specifiedValue, result);
 	}
 
 	public void testFormValue3() throws Throwable {
 		String result = (String) TagUtils.formValue(new MockJspContext(),
-				new HashMap<String, String[]>(), "testTagUtilsName", 1, null);
+				new String[0], "testTagUtilsName", 1, null);
 		assertEquals("result", "", result);
 	}
 
 	public void testFormValue4() throws Throwable {
-		String result = (String) TagUtils
-				.formValue(new MockJspContext(),
-						new HashMap<String, String[]>(), "testTagUtilsName",
-						null, null);
+		String result = (String) TagUtils.formValue(new MockJspContext(),
+				new String[0], "testTagUtilsName", null, null);
 		assertEquals("result", "", result);
 	}
 
 	public void testFormValue5() throws Throwable {
 		Boolean specifiedValue = Boolean.FALSE;
 		Boolean result = (Boolean) TagUtils.formValue(new MockJspContext(),
-				new HashMap<String, String[]>(), "testTagUtilsName",
-				new Integer(-1), specifiedValue);
+				new String[0], "testTagUtilsName", new Integer(-1),
+				specifiedValue);
 		assertSame("result", specifiedValue, result);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testFormValue6() throws Throwable {
 		String[] strings = new String[3];
-		Map outputValuesMap = new HashMap();
-		outputValuesMap.put("testString", strings);
-		Object result = TagUtils.formValue(new MockJspContext(),
-				outputValuesMap, "testString", new Integer(0), null);
+		Object result = TagUtils.formValue(new MockJspContext(), strings,
+				"testString", new Integer(0), null);
 		assertNull("result", result);
 	}
 
@@ -118,8 +110,8 @@ public class TagUtilsTest extends TestCase {
 		MockJspContext context = new MockJspContext();
 		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
 				PageContext.REQUEST_SCOPE);
-		String result = (String) TagUtils.formValue(context,
-				new HashMap<String, String[]>(), "testString", 0, null);
+		String result = (String) TagUtils.formValue(context, new String[0],
+				"testString", 0, null);
 		assertEquals("result", "", result);
 	}
 
@@ -127,8 +119,8 @@ public class TagUtilsTest extends TestCase {
 		MockJspContext context = new MockJspContext();
 		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
 				PageContext.REQUEST_SCOPE);
-		String result = (String) TagUtils.formValue(context,
-				new HashMap<String, String[]>(), "testString", 0, "aaa");
+		String result = (String) TagUtils.formValue(context, new String[0],
+				"testString", 0, "aaa");
 		assertEquals("result", "aaa", result);
 	}
 
@@ -140,8 +132,7 @@ public class TagUtilsTest extends TestCase {
 		params.put("testString", new String[] { "bbb" });
 		context.setAttribute(CubbyConstants.ATTR_PARAMS, params,
 				PageContext.REQUEST_SCOPE);
-		HashMap<String, String[]> outputValuesMap = new HashMap<String, String[]>();
-		String result = (String) TagUtils.formValue(context, outputValuesMap,
+		String result = (String) TagUtils.formValue(context, new String[0],
 				"testString", 0, "aaa");
 		assertEquals("result", "bbb", result);
 	}
@@ -218,28 +209,23 @@ public class TagUtilsTest extends TestCase {
 		assertTrue("result", result);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues() throws Throwable {
 		String[] strings = new String[2];
-		Map outputValuesMap = new HashMap();
-		outputValuesMap.put("testString", strings);
 		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), outputValuesMap, "testString", null);
+				new MockJspContext(), strings, "testString", null);
 		assertSame("result", strings, result);
 		assertNull("strings[0]", strings[0]);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues1() throws Throwable {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new HashMap(), "testTagUtilsName", null);
+				new String[0], "testTagUtilsName", null);
 		assertEquals("result.length", 0, result.length);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues2() throws Throwable {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new HashMap(), "testTagUtilsName", "testTagUtilsCheckedValue");
+				new String[0], "testTagUtilsName", "testTagUtilsCheckedValue");
 		assertEquals("result.length", 1, result.length);
 		assertEquals("result[0]", "testTagUtilsCheckedValue", result[0]);
 	}
@@ -258,28 +244,24 @@ public class TagUtilsTest extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues5() throws Throwable {
-		Map outputValuesMap = new HashMap();
 		String[] strings = new String[0];
-		outputValuesMap.put("testString", strings);
 		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), outputValuesMap, "testString");
+				new MockJspContext(), strings, "testString");
 		assertSame("result", strings, result);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues6() throws Throwable {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new HashMap(), "testTagUtilsName");
+				new String[0], "testTagUtilsName");
 		assertEquals("result.length", 0, result.length);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues7() throws Throwable {
-		Map outputValuesMap = new HashMap();
 		String[] strings = new String[3];
-		outputValuesMap.put("testString", strings);
 		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), outputValuesMap, "testString");
+				new MockJspContext(), strings, "testString");
 		assertSame("result", strings, result);
 		assertNull("strings[0]", strings[0]);
 	}

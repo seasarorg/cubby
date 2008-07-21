@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.dxo.FormDxo;
 import org.seasar.extension.dxo.annotation.impl.TigerAnnotationReader;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.util.StringUtil;
@@ -30,7 +29,6 @@ import org.seasar.framework.util.StringUtil;
  * 日付関連の処理を{@link CubbyConfiguration}から取得した{@link FormatPattern}へ移譲します。
  * </p>
  * 
- * @see FormDxo
  * @author baba
  * @since 1.0.0
  */
