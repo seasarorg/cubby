@@ -8,7 +8,7 @@
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <t:form method="post" action="${contextPath}/fileupload3/upload" enctype="multipart/form-data"
-	value="${form}">
+	value="${action}">
 
 <h1>ファイルアップロード - バイト配列</h1>
 <c:import url="/common/errors.jsp"/>

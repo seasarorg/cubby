@@ -8,7 +8,7 @@
 <body>
 [<a href="${contextPath}/">戻る</a>]
 <t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data"
-	value="${form}">
+	value="${action}">
 
 <h1>ファイルアップロード</h1>
 拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
