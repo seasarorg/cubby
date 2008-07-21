@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.action;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -92,5 +93,11 @@ public @interface Form {
 	 * </p>
 	 */
 	boolean binding() default true;
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	RequestParameterBindingType type() default ALL_PROPERTIES;
 
 }

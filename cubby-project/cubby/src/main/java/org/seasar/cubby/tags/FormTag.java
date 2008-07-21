@@ -19,7 +19,6 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +29,8 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
-import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.framework.container.SingletonS2Container;
 
 /**
@@ -61,8 +61,8 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	/** リンク用の補助クラス。 */
 	private LinkSupport linkSupport = new LinkSupport();
 
-	/** フォームへ出力する値の {@link Map} */
-	private Map<String, String[]> outputValues;
+	/** フォームオブジェクトのラッパー。 */
+	private FormWrapper formWrapper;
 
 	/**
 	 * {@inheritDoc} DynamicAttributeをセットします。
@@ -139,7 +139,9 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		this.outputValues = bindFormToOutputValues(this.value);
+		final FormWrapperFactory formWrapperFactory = SingletonS2Container
+				.getComponent(FormWrapperFactory.class);
+		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;
 	}
 
@@ -175,20 +177,6 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		return EVAL_PAGE;
 	}
 
-	private Map<String, String[]> bindFormToOutputValues(final Object value) {
-		final Map<String, String[]> outputValues;
-		if (value == null) {
-			outputValues = Collections.emptyMap();
-		} else {
-			final FormDxo formDxo = SingletonS2Container
-					.getComponent(FormDxo.class);
-			final Map<String, String[]> map = new HashMap<String, String[]>();
-			formDxo.convert(value, map);
-			outputValues = map;
-		}
-		return outputValues;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -207,17 +195,20 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		linkSupport.release();
 		attrs.clear();
 		value = null;
-		outputValues = null;
+		formWrapper = null;
 		super.release();
 	}
 
 	/**
-	 * フォームの値を復元するための{@link Map}を取得します。
+	 * フォームへ出力する値を取得します。
 	 * 
-	 * @return フォームの値を復元するための{@link Map}
+	 * @param name
+	 *            フィールド名
+	 * @return フォームへ出力する値
+	 * @since 1.1.0
 	 */
-	Map<String, String[]> getOutputValues() {
-		return outputValues;
+	public String[] getValues(final String name) {
+		return formWrapper.getValues(name);
 	}
 
 }

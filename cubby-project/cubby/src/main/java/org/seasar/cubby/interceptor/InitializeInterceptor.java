@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.interceptor;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.CubbyConstants.*;
 import static org.seasar.cubby.interceptor.InterceptorUtils.getAction;
 import static org.seasar.cubby.interceptor.InterceptorUtils.getActionClass;
 import static org.seasar.cubby.interceptor.InterceptorUtils.getMethod;
@@ -29,7 +29,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.cubby.util.CubbyUtils;
 
 /**
@@ -44,8 +44,8 @@ public class InitializeInterceptor implements MethodInterceptor {
 	/** リクエスト。 */
 	private HttpServletRequest request;
 
-	/** リクエストパラメータとフォームオブジェクトを変換する DXO */
-	private FormDxo formDxo;
+	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
+	private RequestParameterBinder requestParameterBinder;
 
 	/**
 	 * リクエストを設定します。
@@ -58,13 +58,14 @@ public class InitializeInterceptor implements MethodInterceptor {
 	}
 
 	/**
-	 * リクエストパラメータとフォームオブジェクトを変換する DXO を設定します。
+	 * リクエストパラメータをオブジェクトへバインドするクラスを設定します。
 	 * 
-	 * @param formDxo
-	 *            リクエストパラメータとフォームオブジェクトを変換する DXO
+	 * @param requestParameterBinder
+	 *            リクエストパラメータをオブジェクトへバインドするクラス
 	 */
-	public void setFormDxo(final FormDxo formDxo) {
-		this.formDxo = formDxo;
+	public void setRequestParameterBinder(
+			final RequestParameterBinder requestParameterBinder) {
+		this.requestParameterBinder = requestParameterBinder;
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 	 * 以下のようなフローでアクションメソッドを実行します。
 	 * <ul>
 	 * <li>{@link Action#invokeInitializeMethod(Method)} を呼び出してアクションを初期化します。</li>
-	 * <li>{@link FormDxo#convert(Map, Object)}
+	 * <li>{@link RequestParameterBinder#bind(Map, Object, Method)}
 	 * によってリクエストパラメータをフォームオブジェクトにバインドします。</li>
 	 * <li>アクションメソッドを呼び出します。</li>
 	 * <li>メソッドの実行結果を返します。</li>
@@ -88,14 +89,12 @@ public class InitializeInterceptor implements MethodInterceptor {
 		final Class<? extends Action> actionClass = getActionClass(invocation);
 		final Method method = getMethod(invocation);
 		action.invokeInitializeMethod(method);
-		final Object formBean = CubbyUtils.getFormBean(action, actionClass,
-				method);
-		if (formBean != null) {
-			formDxo.convert(parameterMap, formBean);
+		final Object form = CubbyUtils.getFormBean(action, actionClass, method);
+		if (form != null) {
+			requestParameterBinder.bind(parameterMap, form, method);
 		}
 
 		final ActionResult result = (ActionResult) invocation.proceed();
-
 		return result;
 	}
 

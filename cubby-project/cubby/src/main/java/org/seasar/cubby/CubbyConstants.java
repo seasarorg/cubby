@@ -52,7 +52,7 @@ public class CubbyConstants {
 	/**
 	 * パラメータオブジェクトのリクエストの属性中の名前。
 	 */
-	public static final String ATTR_PARAMS = "params";
+	public static final String ATTR_PARAMS = "org.seasar.cubby.params";
 
 	/**
 	 * 内部フォワード時にルーティング情報を引き渡すための名前。

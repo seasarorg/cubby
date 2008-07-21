@@ -33,6 +33,7 @@ import org.seasar.framework.util.ClassUtil;
  * @author baba
  * @since 1.0.0
  */
+@Deprecated
 public class FormDxoImpl implements FormDxo {
 
 	/** {@link Converter コンバータ}のファクトリクラス。 */

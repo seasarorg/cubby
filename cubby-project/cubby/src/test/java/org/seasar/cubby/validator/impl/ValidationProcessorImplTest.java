@@ -16,8 +16,10 @@
 package org.seasar.cubby.validator.impl;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.validator.ValidationException;
@@ -35,6 +37,8 @@ public class ValidationProcessorImplTest extends S2TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+		params = new HashMap<String, Object[]>();
+		getRequest().setAttribute(CubbyConstants.ATTR_PARAMS, params);
 	}
 
 	public void testProcess1() {

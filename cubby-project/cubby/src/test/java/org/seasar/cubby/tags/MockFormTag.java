@@ -14,8 +14,8 @@ public class MockFormTag extends FormTag {
 	}
 
 	@Override
-	Map<String, String[]> getOutputValues() {
-		return outputValues;
+	public String[] getValues(String name) {
+		return outputValues.get(name);
 	}
 
 }

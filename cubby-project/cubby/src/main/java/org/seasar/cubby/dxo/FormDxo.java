@@ -23,6 +23,7 @@ import java.util.Map;
  * @author baba
  * @since 1.0.0
  */
+@Deprecated
 public interface FormDxo {
 
 	/**

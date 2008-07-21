@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.tagext.SimpleTag;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
@@ -76,40 +78,40 @@ class TagUtils {
 		return values;
 	}
 
-	/**
-	 * フォーム値の{@link Map}から指定されたフィールドの値を取得します。
-	 * 
-	 * @param valuesMap
-	 *            フォーム値の{@link Map}
-	 * @param name
-	 *            フィールド名
-	 * @return フィールドの値
-	 */
-	private static Object[] formValues(final Map<String, String[]> valuesMap,
-			final String name) {
-		final Object[] values;
-		if (valuesMap == null || !valuesMap.containsKey(name)) {
-			values = new Object[0];
-		} else {
-			values = valuesMap.get(name);
-		}
-		return values;
-	}
+	// /**
+	// * フォーム値の{@link Map}から指定されたフィールドの値を取得します。
+	// *
+	// * @param valuesMap
+	// * フォーム値の{@link Map}
+	// * @param name
+	// * フィールド名
+	// * @return フィールドの値
+	// */
+	// private static Object[] formValues(final Map<String, String[]> valuesMap,
+	// final String name) {
+	// final Object[] values;
+	// if (valuesMap == null || !valuesMap.containsKey(name)) {
+	// values = new Object[0];
+	// } else {
+	// values = valuesMap.get(name);
+	// }
+	// return values;
+	// }
 
 	/**
 	 * 指定されたフィールド名に対応するフォームのフィールドへの出力値を取得します。
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValuesMap
-	 *            フォームへ出力する値の{@link Map}
+	 * @param outputValues
+	 *            フォームへ出力する値
 	 * @param name
 	 *            フィールド名
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object[] multipleFormValues(final JspContext context,
-			final Map<String, String[]> outputValuesMap, final String name) {
-		return multipleFormValues(context, outputValuesMap, name, null);
+			final String[] outputValues, final String name) {
+		return multipleFormValues(context, outputValues, name, null);
 	}
 
 	/**
@@ -117,8 +119,8 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValuesMap
-	 *            フォームへ出力する値の{@link Map}
+	 * @param outputValues
+	 *            フォームへ出力する値
 	 * @param name
 	 *            フィールド名
 	 * @param checkedValue
@@ -126,7 +128,7 @@ class TagUtils {
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object[] multipleFormValues(final JspContext context,
-			final Map<String, String[]> outputValuesMap, final String name,
+			final String[] outputValues, final String name,
 			final String checkedValue) {
 		final Object[] values;
 		if (isValidationFail(context)) {
@@ -134,8 +136,10 @@ class TagUtils {
 		} else {
 			if (checkedValue != null) {
 				values = new Object[] { checkedValue };
+			} else if (outputValues == null) {
+				values = paramValues(context, name);
 			} else {
-				values = formValues(outputValuesMap, name);
+				values = outputValues;
 			}
 		}
 		return values;
@@ -147,7 +151,7 @@ class TagUtils {
 	 * @param context
 	 *            JSPコンテキスト
 	 * @param outputValuesMap
-	 *            フォームへ出力する値の{@link Map}
+	 *            フォームへ出力する値
 	 * @param name
 	 *            フィールド名
 	 * @param index
@@ -157,7 +161,7 @@ class TagUtils {
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object formValue(final JspContext context,
-			final Map<String, String[]> outputValuesMap, final String name,
+			final String[] outputValues, final String name,
 			final Integer index, final Object specifiedValue) {
 		final Object value;
 
@@ -174,11 +178,13 @@ class TagUtils {
 				}
 			}
 		} else {
-			if (specifiedValue == null) {
-				final Object[] values = formValues(outputValuesMap, name);
+			if (specifiedValue != null) {
+				value = specifiedValue;
+			} else if (outputValues == null) {
+				final Object[] values = paramValues(context, name);
 				value = value(values, index);
 			} else {
-				value = specifiedValue;
+				value = value(outputValues, index);
 			}
 		}
 
@@ -341,6 +347,26 @@ class TagUtils {
 			classValue = classValue + " " + className;
 		}
 		dyn.put("class", classValue);
+	}
+
+	/**
+	 * 指定されたタグの親の {@ilnk FormTag} を検索し、そこから指定されたフィールド名の値を取得します。
+	 * 
+	 * @param tag
+	 *            タグ
+	 * @param name
+	 *            フィールド名
+	 * @return 指定されたフィールド名の値
+	 */
+	public static String[] getOutputValues(final SimpleTag tag,
+			final String name) {
+		final FormTag formTag = (FormTag) SimpleTagSupport
+				.findAncestorWithClass(tag, FormTag.class);
+		if (formTag == null) {
+			return null;
+		}
+		final String[] outputValues = formTag.getValues(name);
+		return outputValues;
 	}
 
 }

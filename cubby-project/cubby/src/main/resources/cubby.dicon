@@ -35,6 +35,8 @@
 		<property name="includeApplicationConverters">true</property>
 	</component>
 	<component class="org.seasar.cubby.dxo.impl.RequestParameterAnnotationReader"/>
-	<component class="org.seasar.cubby.dxo.impl.FormDxoImpl"/>
+	<!--component class="org.seasar.cubby.dxo.impl.FormDxoImpl"/-->
+	<component class="org.seasar.cubby.controller.impl.RequestParameterBinderImpl"/>
+	<component class="org.seasar.cubby.controller.impl.FormWrapperFactoryImpl"/>
 
 </components>

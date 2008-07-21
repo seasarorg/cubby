@@ -37,7 +37,7 @@ public class TextareaTagTest extends SimpleTagTestCase {
 	}
 
 	public void testDoTag1() throws Exception {
-		tag.setParent(new MockFormTag(null));
+		tag.setParent(new MockFormTag(new HashMap<String, String[]>()));
 		tag.setName("content");
 		tag.setValue("value1");
 //		tag.setDynamicAttribute(null, "name", "content");

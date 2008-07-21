@@ -13,27 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.dxo.impl;
+package org.seasar.cubby.controller.impl;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.cubby.dxo.FormDxo;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.extension.unit.S2TestCase;
+import org.seasar.framework.util.ClassUtil;
 
 /**
  * 
- * @author agata
  * @author baba
  */
-public class FormDxoImplTest extends S2TestCase {
+public class RequestParameterBinderImplTest extends S2TestCase {
 
-	public FormDxo formDxo;
+	public RequestParameterBinder requestParameterBinder;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -41,35 +43,10 @@ public class FormDxoImplTest extends S2TestCase {
 		include(getClass().getName().replace('.', '/') + ".dicon");
 	}
 
-	public void testBeanToMapNullSource() {
-		TestBean bean = null;
-		Map<String, String[]> map = new HashMap<String, String[]>();
-		formDxo.convert(bean, map);
-	}
-
 	public void testMapToBeanNullSource() {
 		TestBean bean = new TestBean();
-		Map<String, Object[]> map = null;
-		formDxo.convert(map, bean);
-	}
-
-	public void testBeanToMap() {
-		Calendar cal = Calendar.getInstance();
-		cal.set(2006, 0, 1);
-
-		TestBean bean = new TestBean();
-		bean.setDate(cal.getTime());
-		bean.setNum1(5);
-		bean.setNum2(new Integer[] { 2, 3, 4 });
-		bean.setNum3(Arrays.asList(new String[] { "abc", "def" }));
-
-		Map<String, String[]> map = new HashMap<String, String[]>();
-
-		formDxo.convert(bean, map);
-		assertTrue(map.containsKey("date"));
-		String[] values = map.get("date");
-		assertEquals(1, values.length);
-		assertEquals("2006-01-01", values[0]);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(null, bean, method);
 	}
 
 	public void testMapToBean() {
@@ -78,7 +55,8 @@ public class FormDxoImplTest extends S2TestCase {
 
 		TestBean bean = new TestBean();
 
-		formDxo.convert(map, bean);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, bean, method);
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -94,7 +72,8 @@ public class FormDxoImplTest extends S2TestCase {
 
 		TestBean bean = new TestBean();
 
-		formDxo.convert(map, bean);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, bean, method);
 		assertNotNull(bean.getNum1());
 		assertEquals(Integer.valueOf(1), bean.getNum1());
 		assertNotNull(bean.getNum2());
@@ -112,7 +91,8 @@ public class FormDxoImplTest extends S2TestCase {
 
 		TestBean bean = new TestBean();
 
-		formDxo.convert(map, bean);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, bean, method);
 		assertNotNull(bean.getNum2());
 		assertEquals(2, bean.getNum2().length);
 		assertEquals(Integer.valueOf(1), bean.getNum2()[0]);
@@ -129,11 +109,26 @@ public class FormDxoImplTest extends S2TestCase {
 
 		TestBean bean = new TestBean();
 
-		formDxo.convert(map, bean);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, bean, method);
 		assertEquals(3, bean.getNum2().length);
 		assertEquals(Integer.valueOf(1), bean.getNum2()[0]);
 		assertEquals(null, bean.getNum2()[1]);
 		assertEquals(Integer.valueOf(2), bean.getNum2()[2]);
+	}
+
+	public void testMapToBean_MultiValueIncludesNullValue() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("num3", new String[] { "zzz", null, "xxx" });
+
+		TestBean bean = new TestBean();
+
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, bean, method);
+		assertEquals(3, bean.getNum3().size());
+		assertEquals("zzz", bean.getNum3().get(0));
+		assertNull(bean.getNum3().get(1));
+		assertEquals("xxx", bean.getNum3().get(2));
 	}
 
 	public void testNoCloneableObject() {
@@ -143,7 +138,8 @@ public class FormDxoImplTest extends S2TestCase {
 
 		NoDefaultConstructorBeanHolder dest = new NoDefaultConstructorBeanHolder();
 
-		formDxo.convert(map, dest);
+		Method method = getActionMethod("foo");
+		requestParameterBinder.bind(map, dest, method);
 		assertNotNull(dest.bean);
 		assertSame(bean, dest.bean);
 	}
@@ -201,6 +197,16 @@ public class FormDxoImplTest extends S2TestCase {
 
 		public NoDefaultConstructorBean(String prop1) {
 			this.prop1 = prop1;
+		}
+	}
+
+	private Method getActionMethod(String methodName) {
+		return ClassUtil.getMethod(MockAction.class, methodName, null);
+	}
+
+	private class MockAction extends Action {
+		public ActionResult foo() {
+			return null;
 		}
 	}
 }

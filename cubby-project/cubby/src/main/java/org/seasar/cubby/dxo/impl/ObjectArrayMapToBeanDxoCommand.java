@@ -35,6 +35,7 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @since 1.0.0
  */
+@Deprecated
 class ObjectArrayMapToBeanDxoCommand extends MapToBeanDxoCommand {
 
 	@SuppressWarnings("unchecked")

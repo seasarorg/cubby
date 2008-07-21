@@ -33,6 +33,7 @@ import org.seasar.extension.dxo.converter.ConverterFactory;
  * @author baba
  * @since 1.0.0
  */
+@Deprecated
 class BeanToStringArrayMapDxoCommand extends BeanToMapDxoCommand {
 
 	/**
