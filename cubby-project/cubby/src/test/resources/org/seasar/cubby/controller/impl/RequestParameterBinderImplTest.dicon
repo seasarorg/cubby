@@ -2,7 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components.dtd">
 <components>
-	<include path="dxo.dicon"/>
 	<include path="cubby.dicon"/>
 	<include path="app-cubby.dicon"/>
 </components>
