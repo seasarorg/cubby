@@ -15,7 +15,8 @@
  */
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.*;
+import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,7 +28,7 @@ import java.lang.annotation.Target;
  * <pre>
  * public class FooAction {
  * 
- *  // コンテナの機能によって自動的にインジェクションされる想定です。
+ * 	// コンテナの機能によって自動的にインジェクションされる想定です。
  * 	public BarDto BarDto;
  * 
  * 	// -&gt; アクション自身(FooAction)のプロパティにバインディングします。
@@ -44,10 +45,10 @@ import java.lang.annotation.Target;
  * 	public ActionResult m3() {
  * 	}
  * 
- *  // バインディングしません。
+ * 	// バインディングしません。
  * 	&#064;Form(binding = false)
- *  public ActionResult m4() {
- *  }
+ * 	public ActionResult m4() {
+ * 	}
  * }
  * 
  * &#064;Form(&quot;barDto&quot;)
@@ -95,8 +96,7 @@ public @interface Form {
 	boolean binding() default true;
 
 	/**
-	 * TODO
-	 * @return
+	 * リクエストパラメータからフォームオブジェクトへのバインディング方法を指定します。
 	 */
 	RequestParameterBindingType type() default ALL_PROPERTIES;
 

@@ -32,7 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.StringUtil;
@@ -113,7 +114,9 @@ public class Forward implements ActionResult {
 	 */
 	public Forward(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
-		final PathResolver pathResolver = SingletonS2Container
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final PathResolver pathResolver = (PathResolver) container
 				.getComponent(PathResolver.class);
 		this.path = pathResolver.buildInternalForwardPath(parameters);
 		final Method method = ClassUtil.getMethod(actionClass, methodName,

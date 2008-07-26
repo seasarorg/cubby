@@ -36,7 +36,8 @@ import org.seasar.cubby.controller.RoutingsDispatcher;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
 
 /**
@@ -109,7 +110,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 			logger.log("DCUB0004", new Object[] { request.getRequestURI() });
 			logger.log("DCUB0005", new Object[] { method });
 		}
-		final Action action = SingletonS2Container.getComponent(actionClass);
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final Action action = (Action) container.getComponent(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 		final ActionResult actionResult = invoke(action, method);
 		if (actionResult == null) {

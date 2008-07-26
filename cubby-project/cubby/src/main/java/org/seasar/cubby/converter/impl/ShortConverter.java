@@ -13,19 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.seasar.cubby.converter.impl;
 
 /**
+ * {@link Short}への変換を行うコンバータです。
  * 
  * @author baba
  * @since 1.1.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.FIELD })
-public @interface RequestParameter {
+public class ShortConverter extends AbstractNumberConverter {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Class<?> getConversionClass() {
+		return Short.class;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Number convert(final Number number) {
+		return new Short(number.shortValue());
+	}
+
 }

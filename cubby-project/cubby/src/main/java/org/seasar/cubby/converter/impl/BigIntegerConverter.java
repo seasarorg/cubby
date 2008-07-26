@@ -13,19 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action;
+package org.seasar.cubby.converter.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.math.BigInteger;
 
 /**
+ * {@link BigInteger}への変換を行うコンバータです。
  * 
  * @author baba
  * @since 1.1.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.FIELD })
-public @interface RequestParameter {
+public class BigIntegerConverter extends AbstractNumberConverter {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Class<?> getConversionClass() {
+		return BigInteger.class;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Number convert(final Number number) {
+		return new BigInteger(number.toString());
+	}
+
 }

@@ -37,7 +37,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 
@@ -140,19 +141,20 @@ public class RequestRoutingFilter implements Filter {
 		final HttpServletRequest request = (HttpServletRequest) req;
 		final HttpServletResponse response = (HttpServletResponse) res;
 
-		final Router router = SingletonS2Container.getComponent(Router.class);
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final Router router = (Router) container.getComponent(Router.class);
 
 		final InternalForwardInfo internalForwardInfo = router.routing(request,
 				response, ignorePathPatterns);
 		if (internalForwardInfo != null) {
 			final String internalForwardPath = internalForwardInfo
 					.getInternalForwardPath();
-			if (logger.isDebugEnabled()) {
-				logger.log("DCUB0001", new Object[] { internalForwardPath });
-			}
 			final Map<String, Routing> onSubmitRoutings = internalForwardInfo
 					.getOnSubmitRoutings();
 			if (logger.isDebugEnabled()) {
+				logger.log("DCUB0001", new Object[] { internalForwardPath,
+						onSubmitRoutings });
 				logger.log("DCUB0015", new Object[] { onSubmitRoutings });
 			}
 			request.setAttribute(ATTR_ROUTINGS, onSubmitRoutings);

@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
@@ -78,7 +77,10 @@ public class ThreadContext {
 	 * @return Cubby の全体的な設定情報
 	 */
 	public static CubbyConfiguration getConfiguration() {
-		return SingletonS2Container.getComponent(CubbyConfiguration.class);
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		return (CubbyConfiguration) container
+				.getComponent(CubbyConfiguration.class);
 	}
 
 	/**
