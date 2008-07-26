@@ -18,12 +18,10 @@ package org.seasar.cubby.controller.impl;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.extension.dxo.converter.ConversionContext;
-import org.seasar.extension.dxo.converter.Converter;
-import org.seasar.extension.dxo.converter.ConverterFactory;
+import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.converter.ConverterFactory;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -39,9 +37,6 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 	/** コンバータのファクトリクラス。 */
 	private ConverterFactory converterFactory;
 
-	/** Cubby の全体的な設定情報。 */
-	private CubbyConfiguration cubbyConfiguration;
-
 	/**
 	 * コンバータのファクトリクラスを設定します。
 	 * 
@@ -53,23 +48,10 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 	}
 
 	/**
-	 * Cubby の全体的な設定情報を設定します。
-	 * 
-	 * @param cubbyConfiguration
-	 *            Cubby の全体的な設定情報
-	 */
-	public void setCubbyConfiguration(
-			final CubbyConfiguration cubbyConfiguration) {
-		this.cubbyConfiguration = cubbyConfiguration;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public FormWrapper create(final Object form) {
-		final ConversionContext context = new ConversionContextImpl(
-				converterFactory, cubbyConfiguration);
-		final FormWrapper formObject = new FormWrapperImpl(form, context);
+		final FormWrapper formObject = new FormWrapperImpl(form);
 		return formObject;
 	}
 
@@ -84,9 +66,6 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		/** フォームオブジェクト */
 		private final Object form;
 
-		/** 変換中のコンテキスト。 */
-		private ConversionContext context;
-
 		/**
 		 * インスタンス化します。
 		 * 
@@ -95,9 +74,8 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		 * @param context
 		 *            変換中のコンテキスト
 		 */
-		private FormWrapperImpl(Object form, final ConversionContext context) {
+		private FormWrapperImpl(final Object form) {
 			this.form = form;
-			this.context = context;
 		}
 
 		/**
@@ -114,26 +92,55 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			}
 			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(name);
 			final Object value = propertyDesc.getValue(this.form);
-			if (value == null || value instanceof String[]) {
+			if (value == null) {
+				return null;
+			} else if (value instanceof String[]) {
 				return (String[]) value;
 			} else {
-				final ConverterFactory converterFactory = context
-						.getConverterFactory();
-				if (value.getClass().isArray() || value instanceof Collection) {
-					final Converter converter = converterFactory.getConverter(
-							value.getClass(), String[].class);
-					final String[] convertedValue = (String[]) converter
-							.convert(value, String[].class, context);
-					return convertedValue;
+				if (value.getClass().isArray()) {
+					final int length = Array.getLength(value);
+					final String[] array = (String[]) Array.newInstance(
+							String.class, length);
+					for (int i = 0; i < length; i++) {
+						final Object element = Array.get(value, i);
+						final String converted = convert(element);
+						Array.set(array, i, converted);
+					}
+					return array;
+				} else if (value instanceof Collection) {
+					final Collection<?> collection = (Collection<?>) value;
+					final String[] array = (String[]) Array.newInstance(
+							String.class, collection.size());
+					int i = 0;
+					for (final Object element : collection) {
+						final String converted = convert(element);
+						Array.set(array, i++, converted);
+					}
+					return array;
 				} else {
-					final Converter converter = converterFactory.getConverter(
-							value.getClass(), String.class);
 					final String[] array = (String[]) Array.newInstance(
 							String.class, 1);
-					Array.set(array, 0, converter.convert(value, String.class,
-							context));
+					final String converted = convert(value);
+					Array.set(array, 0, converted);
 					return array;
 				}
+			}
+		}
+
+		/**
+		 * 指定されたオブジェクトを文字列に変換します。
+		 * 
+		 * @param value
+		 *            値
+		 * @return <code>value</code>を変換した文字列
+		 */
+		private String convert(final Object value) {
+			final Converter converter = converterFactory.getConverter(value
+					.getClass());
+			if (converter == null) {
+				return value.toString();
+			} else {
+				return converter.convertToString(value);
 			}
 		}
 

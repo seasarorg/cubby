@@ -28,8 +28,8 @@ public interface FormWrapperFactory {
 	/**
 	 * {@link FormWrapper} を生成します。
 	 * 
-	 * @param form
-	 * @return
+	 * @param form フォームオブジェクト
+	 * @return {@link FormWrapper}
 	 */
 	FormWrapper create(Object form);
 

@@ -13,39 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.dxo.converter.impl;
+package org.seasar.cubby.converter.impl;
 
 import org.apache.commons.fileupload.FileItem;
+import org.seasar.cubby.converter.Converter;
 
 /**
- * {@link FileItem}から{@link FileItem}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
+ * {@link FileItem}から byte の配列へ変換する{@link Converter}です。
  * 
  * @author baba
  * @since 1.0.0
  */
-public class FileItemConverter extends AbstractFileItemConverter {
+public class ByteArrayFileItemConverter extends AbstractFileItemConverter {
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @return {@link FileItem}のクラスを返します。
+	 * @return byteの配列のクラスを返します。
 	 */
-	@SuppressWarnings("unchecked")
-	public Class getDestClass() {
-		return FileItem.class;
+	public Class<?> getConversionClass() {
+		return byte[].class;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * 指定された{@link FileItem}をそのまま返します。
+	 * 指定された{@link FileItem}から取得したbyte配列を返します。
 	 * </p>
 	 * 
-	 * @return 指定された{@link FileItem}
+	 * @return 指定された{@link FileItem}から取得した byte 配列
+	 * @see FileItem#get()
 	 */
 	@Override
 	protected Object convert(final FileItem fileItem) {
-		return fileItem;
+		return fileItem.get();
 	}
 
 }

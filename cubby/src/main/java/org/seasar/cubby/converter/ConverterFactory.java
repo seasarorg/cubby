@@ -13,19 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.seasar.cubby.converter;
 
 /**
+ * {@link Converter コンバータ}のファクトリクラスです。
  * 
  * @author baba
  * @since 1.1.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.FIELD })
-public @interface RequestParameter {
+public interface ConverterFactory {
+
+	/**
+	 * <code>converterType</code>への変換が可能なコンバータを返します。
+	 * <p>
+	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
+	 * </p>
+	 * 
+	 * @param converterType
+	 *            変換先のクラス
+	 * 
+	 * @return コンバータ
+	 */
+	Converter getConverter(Class<?> converterType);
+
 }

@@ -13,33 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.dxo.converter.impl;
+package org.seasar.cubby.converter.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
+import org.seasar.cubby.converter.Converter;
 import org.seasar.framework.log.Logger;
 
 /**
- * {@link FileItem}から{@link InputStream}へ変換する{@link org.seasar.extension.dxo.converter.Converter}です。
+ * {@link FileItem}から{@link InputStream}へ変換する{@link Converter}です。
  * 
  * @author baba
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class InputStreamConverter extends AbstractFileItemConverter {
+public class InputStreamFileItemConverter extends AbstractFileItemConverter {
 
 	/** ロガー。 */
 	private static final Logger logger = Logger
-			.getLogger(InputStreamConverter.class);
+			.getLogger(InputStreamFileItemConverter.class);
 
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @return {@link InputStream}のクラスを返します。
 	 */
-	@SuppressWarnings("unchecked")
-	public Class getDestClass() {
+	public Class<?> getConversionClass() {
 		return InputStream.class;
 	}
 

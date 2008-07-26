@@ -15,21 +15,25 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.controller.RequestParameterBinder;
-import org.seasar.extension.dxo.converter.ConversionContext;
-import org.seasar.extension.dxo.converter.Converter;
-import org.seasar.extension.dxo.converter.ConverterFactory;
+import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.converter.ConverterFactory;
 import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.ParameterizedClassDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 
@@ -44,28 +48,15 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/** コンバータのファクトリクラス。 */
 	private ConverterFactory converterFactory;
 
-	/** Cubby の全体的な設定情報。 */
-	private CubbyConfiguration cubbyConfiguration;
-
 	/**
 	 * コンバータのファクトリクラスを設定します。
 	 * 
 	 * @param converterFactory
 	 *            コンバータのファクトリクラス
 	 */
-	public void setConverterFactory(final ConverterFactory converterFactory) {
+	public void setConverterFactory(
+			final ConverterFactory converterFactory) {
 		this.converterFactory = converterFactory;
-	}
-
-	/**
-	 * Cubby の全体的な設定情報を設定します。
-	 * 
-	 * @param cubbyConfiguration
-	 *            Cubby の全体的な設定情報
-	 */
-	public void setCubbyConfiguration(
-			final CubbyConfiguration cubbyConfiguration) {
-		this.cubbyConfiguration = cubbyConfiguration;
 	}
 
 	/**
@@ -76,8 +67,6 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (parameterMap == null) {
 			return;
 		}
-		final ConversionContext context = new ConversionContextImpl(
-				converterFactory, cubbyConfiguration);
 		final BeanDesc destBeanDesc = BeanDescFactory.getBeanDesc(dest
 				.getClass());
 		for (final Entry<String, Object[]> entry : parameterMap.entrySet()) {
@@ -87,35 +76,96 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 						.getPropertyDesc(sourceName);
 				if (destPropertyDesc.isReadable()
 						&& destPropertyDesc.isWritable()) {
-					final Object[] values = entry.getValue();
-					final Class<?> destClass = destPropertyDesc
-							.getPropertyType();
 					if (!isBindToAllProperties(method)) {
 						final RequestParameter requestParameter = getRequestParameterAnnotation(destPropertyDesc);
 						if (requestParameter == null) {
 							continue;
 						}
 					}
-					if (destClass.isArray()
-							|| Collection.class.isAssignableFrom(destClass)) {
-						final Class<?> sourceClass = values.getClass();
-						final Converter converter = converterFactory
-								.getConverter(sourceClass, destClass);
-						final Object convertedValue = converter.convert(values,
-								destClass, context);
-						destPropertyDesc.setValue(dest, convertedValue);
-					} else {
-						final Object value = values[0];
-						final Class<?> sourceClass = value.getClass();
-						final Converter converter = converterFactory
-								.getConverter(sourceClass, destClass);
-						final Object convertedValue = converter.convert(value,
-								destClass, context);
-						destPropertyDesc.setValue(dest, convertedValue);
+
+					try {
+						final Object value = convert(entry.getValue(),
+								destPropertyDesc);
+						destPropertyDesc.setValue(dest, value);
+					} catch (Exception e) {
+						destPropertyDesc.setValue(dest, null);
 					}
 				}
 			}
 		}
+	}
+
+	private Object convert(final Object[] values,
+			final PropertyDesc destPropertyDesc) {
+		final Class<?> destClass = destPropertyDesc.getPropertyType();
+
+		final Converter converter = converterFactory
+				.getConverter(destClass);
+		if (converter != null) {
+			return converter.convertToObject(values[0]);
+		}
+
+		if (destClass.isArray()) {
+			return convertToArray(values, destClass);
+		}
+		if (List.class.isAssignableFrom(destClass)) {
+			final List<Object> list = new ArrayList<Object>();
+			convertToCollection(values, destClass, list, destPropertyDesc
+					.getParameterizedClassDesc());
+			return list;
+		}
+		if (Set.class.isAssignableFrom(destClass)) {
+			final Set<Object> set = new HashSet<Object>();
+			convertToCollection(values, destClass, set, destPropertyDesc
+					.getParameterizedClassDesc());
+			return set;
+		}
+		return convertToScalar(values[0], destClass);
+	}
+
+	private Object convertToArray(final Object[] source,
+			final Class<?> destClass) {
+		final Class<?> destComponentType = destClass.getComponentType();
+		final Object dest = Array.newInstance(destComponentType, source.length);
+		for (int i = 0; i < source.length; i++) {
+			final Object convertedValue = convertToScalar(source[i],
+					destComponentType);
+			Array.set(dest, i, convertedValue);
+		}
+		return dest;
+	}
+
+	private void convertToCollection(final Object[] source,
+			final Class<?> destClass, final Collection<Object> dest,
+			final ParameterizedClassDesc parameterizedClassDesc) {
+		if (parameterizedClassDesc == null) {
+			for (final Object value : source) {
+				dest.add(value);
+			}
+		} else {
+			final Class<?> destElementType = parameterizedClassDesc
+					.getArguments()[0].getRawClass();
+			for (final Object value : source) {
+				final Object convertedValue = convertToScalar(value,
+						destElementType);
+				dest.add(convertedValue);
+			}
+		}
+	}
+
+	private Object convertToScalar(final Object source, final Class<?> destClass) {
+		if (source == null) {
+			return null;
+		}
+		if (destClass.isAssignableFrom(source.getClass())) {
+			return source;
+		}
+		final Converter converter = converterFactory
+				.getConverter(destClass);
+		if (converter == null) {
+			return null;
+		}
+		return converter.convertToObject(source);
 	}
 
 	/**

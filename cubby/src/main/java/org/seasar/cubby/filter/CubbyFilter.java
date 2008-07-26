@@ -29,7 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.controller.ActionResultWrapper;
 import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
 
 /**
@@ -62,7 +63,7 @@ public class CubbyFilter implements Filter {
 	/**
 	 * フィルター処理。
 	 * <p>
-	 * リクエストの処理を{@link SingletonS2Container コンテナ}から取得した{@link ActionProcessor}に委譲します。
+	 * リクエストの処理を{@link SingletonS2ContainerFactory#getContainer() コンテナ}から取得した{@link ActionProcessor}に委譲します。
 	 * </p>
 	 * 
 	 * @param req
@@ -83,7 +84,9 @@ public class CubbyFilter implements Filter {
 		final HttpServletResponse response = (HttpServletResponse) res;
 		ThreadContext.setRequest(request);
 		try {
-			final ActionProcessor processor = SingletonS2Container
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
+			final ActionProcessor processor = (ActionProcessor) container
 					.getComponent(ActionProcessor.class);
 			final ActionResultWrapper actionResultWrapper = processor.process(
 					request, response);

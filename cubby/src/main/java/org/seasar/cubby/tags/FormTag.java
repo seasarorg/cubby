@@ -31,7 +31,8 @@ import javax.servlet.jsp.tagext.DynamicAttributes;
 
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
  * フォームを出力するタグライブラリ。
@@ -139,7 +140,9 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		final FormWrapperFactory formWrapperFactory = SingletonS2Container
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final FormWrapperFactory formWrapperFactory = (FormWrapperFactory) container
 				.getComponent(FormWrapperFactory.class);
 		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;
