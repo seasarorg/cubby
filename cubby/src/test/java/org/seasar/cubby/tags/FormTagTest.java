@@ -24,15 +24,12 @@ import javax.servlet.jsp.tagext.JspTag;
 
 import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.dxo.FormDxo;
 
 public class FormTagTest extends AbstractStandardTagTestCase {
 
 	public HttpServletRequest request;
 
 	public FormTag tag;
-
-	public FormDxo formDxo;
 
 	@Override
 	protected void setUp() throws Exception {

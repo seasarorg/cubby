@@ -15,6 +15,12 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,11 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.InputStreamUtil;
 
 /**
  * 
@@ -131,17 +139,28 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertEquals("xxx", bean.getNum3().get(2));
 	}
 
-	public void testNoCloneableObject() {
+	public void testConvertFileItem() throws UnsupportedEncodingException {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
-		NoDefaultConstructorBean bean = new NoDefaultConstructorBean("1");
-		map.put("bean", new Object[] { bean });
+		map.put("file", new Object[] { new MockFileItem("123") });
+		map.put("bytefile", new Object[] { new MockFileItem("456") });
+		map.put("bytefiles", new Object[] { new MockFileItem("abc"), new MockFileItem("def") });
+		map.put("input", new Object[] { new MockFileItem("QQ") });
 
-		NoDefaultConstructorBeanHolder dest = new NoDefaultConstructorBeanHolder();
+		FileItemHolder dest = new FileItemHolder();
 
 		Method method = getActionMethod("foo");
 		requestParameterBinder.bind(map, dest, method);
-		assertNotNull(dest.bean);
-		assertSame(bean, dest.bean);
+		String encoding = "UTF-8";
+		assertNotNull(dest.file);
+		assertEquals("123", new String(dest.file.get(), encoding));
+		assertNotNull(dest.bytefile);
+		assertEquals("456", new String(dest.bytefile, encoding));
+		assertNotNull(dest.bytefiles);
+		assertEquals(2, dest.bytefiles.length);
+		assertEquals("abc", new String(dest.bytefiles[0], encoding));
+		assertEquals("def", new String(dest.bytefiles[1], encoding));
+		assertNotNull(dest.input);
+		assertEquals("QQ", new String(InputStreamUtil.getBytes(dest.input), encoding));
 	}
 
 	public static class TestBean {
@@ -188,18 +207,6 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 	}
 
-	public static class NoDefaultConstructorBeanHolder {
-		public NoDefaultConstructorBean bean;
-	}
-
-	public static class NoDefaultConstructorBean {
-		public String prop1;
-
-		public NoDefaultConstructorBean(String prop1) {
-			this.prop1 = prop1;
-		}
-	}
-
 	private Method getActionMethod(String methodName) {
 		return ClassUtil.getMethod(MockAction.class, methodName, null);
 	}
@@ -209,4 +216,84 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 			return null;
 		}
 	}
+
+	static class MockFileItem implements FileItem {
+
+		private static final long serialVersionUID = 1L;
+
+		private String name;
+
+		public MockFileItem(String name) {
+			this.name = name;
+		}
+
+		public void delete() {
+		}
+
+		public byte[] get() {
+			try {
+				return name.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException();
+			}
+		}
+
+		public String getContentType() {
+			return null;
+		}
+
+		public String getFieldName() {
+			return null;
+		}
+
+		public InputStream getInputStream() throws IOException {
+			return new ByteArrayInputStream(get());
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public OutputStream getOutputStream() throws IOException {
+			return null;
+		}
+
+		public long getSize() {
+			return 0;
+		}
+
+		public String getString() {
+			return null;
+		}
+
+		public String getString(String encoding)
+				throws UnsupportedEncodingException {
+			return null;
+		}
+
+		public boolean isFormField() {
+			return false;
+		}
+
+		public boolean isInMemory() {
+			return false;
+		}
+
+		public void setFieldName(String name) {
+		}
+
+		public void setFormField(boolean state) {
+		}
+
+		public void write(File file) throws Exception {
+		}
+	}
+
+	public static class FileItemHolder {
+		public FileItem file;
+		public byte[] bytefile;
+		public byte[][] bytefiles;
+		public InputStream input;
+	}
+
 }
