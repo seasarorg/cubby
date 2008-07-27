@@ -189,7 +189,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 				throw new IllegalStateException(type.toString());
 			}
 		} else {
-			allProperties = true;
+			allProperties = false;
 		}
 		return allProperties;
 	}
