@@ -35,14 +35,14 @@ public class CalendarConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Calendar.class;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value) {
+	public Object convertToObject(final Object value, final Class<?> objectType) {
 		if (value == null) {
 			return null;
 		}

@@ -135,8 +135,8 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		 * @return <code>value</code>を変換した文字列
 		 */
 		private String convert(final Object value) {
-			final Converter converter = converterFactory.getConverter(value
-					.getClass());
+			final Converter converter = converterFactory.getConverter(
+					null, value.getClass());
 			if (converter == null) {
 				return value.toString();
 			} else {

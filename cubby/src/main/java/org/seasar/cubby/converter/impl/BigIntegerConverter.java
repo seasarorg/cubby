@@ -28,7 +28,7 @@ public class BigIntegerConverter extends AbstractNumberConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return BigInteger.class;
 	}
 

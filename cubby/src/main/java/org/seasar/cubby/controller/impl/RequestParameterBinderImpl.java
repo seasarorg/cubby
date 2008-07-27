@@ -98,9 +98,10 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			final PropertyDesc destPropertyDesc) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
-		final Converter converter = converterFactory.getConverter(destClass);
+		final Converter converter = converterFactory.getConverter(values[0]
+				.getClass(), destClass);
 		if (converter != null) {
-			return converter.convertToObject(values[0]);
+			return converter.convertToObject(values[0], destClass);
 		}
 
 		if (destClass.isArray()) {
@@ -158,11 +159,12 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (destClass.isAssignableFrom(source.getClass())) {
 			return source;
 		}
-		final Converter converter = converterFactory.getConverter(destClass);
+		final Converter converter = converterFactory.getConverter(source
+				.getClass(), destClass);
 		if (converter == null) {
 			return null;
 		}
-		return converter.convertToObject(source);
+		return converter.convertToObject(source, destClass);
 	}
 
 	/**

@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import org.seasar.cubby.converter.Converter;
 
 /**
  * 列挙定数へ変換するコンバータです。
@@ -23,12 +22,12 @@ import org.seasar.cubby.converter.Converter;
  * @author baba
  * @since 1.1.0
  */
-public class EnumConverter implements Converter {
+public class EnumConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Enum.class;
 	}
 
@@ -36,12 +35,12 @@ public class EnumConverter implements Converter {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public Object convertToObject(final Object value) {
+	public Object convertToObject(final Object value, final Class<?> objectType) {
 		if (value == null) {
 			return null;
 		}
 		final String name = value.toString();
-		return Enum.valueOf((Class<? extends Enum>) value.getClass(), name);
+		return Enum.valueOf((Class<? extends Enum>) objectType, name);
 	}
 
 	/**

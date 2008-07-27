@@ -26,7 +26,7 @@ public class LongConverter extends AbstractNumberConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Long.class;
 	}
 

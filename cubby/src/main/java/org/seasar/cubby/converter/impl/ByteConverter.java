@@ -19,13 +19,14 @@ package org.seasar.cubby.converter.impl;
  * {@link Byte}への変換を行うコンバータです。
  * 
  * @author baba
+ * @since 1.1.0
  */
 public class ByteConverter extends AbstractNumberConverter {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Byte.class;
 	}
 

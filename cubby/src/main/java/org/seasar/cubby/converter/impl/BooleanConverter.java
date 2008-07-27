@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import org.seasar.cubby.converter.Converter;
 
 /**
  * {@link Boolean}への変換を行うコンバータです。
@@ -27,7 +26,7 @@ import org.seasar.cubby.converter.Converter;
  * @author baba
  * @since 1.1.0
  */
-public class BooleanConverter implements Converter {
+public class BooleanConverter extends AbstractConverter {
 
 	/** <code>true</code>に評価する文字列の配列です。 */
 	private static final String[] TRUE_STRINGS = new String[] { "yes", "y",
@@ -36,14 +35,14 @@ public class BooleanConverter implements Converter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Boolean.class;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value) {
+	public Object convertToObject(final Object value, final Class<?> objectType) {
 		if (value == null) {
 			return null;
 		}

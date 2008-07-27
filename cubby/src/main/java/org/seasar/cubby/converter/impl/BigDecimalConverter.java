@@ -28,7 +28,7 @@ public class BigDecimalConverter extends AbstractNumberConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return BigDecimal.class;
 	}
 
