@@ -26,7 +26,7 @@ public class DoubleConverter extends AbstractNumberConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Double.class;
 	}
 

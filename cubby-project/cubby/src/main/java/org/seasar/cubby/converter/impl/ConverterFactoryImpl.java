@@ -34,19 +34,6 @@ import org.seasar.framework.util.DisposableUtil;
  */
 public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 
-	/** プリミティブ型の配列クラスとラッパー型の配列クラスのマッピング */
-	protected static Map<Class<?>, Class<?>> PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY = new HashMap<Class<?>, Class<?>>();
-	static {
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(boolean[].class, Boolean[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(char[].class, Character[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(byte[].class, Byte[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(short[].class, Short[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(int[].class, Integer[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(long[].class, Long[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(float[].class, Float[].class);
-		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(double[].class, Double[].class);
-	}
-
 	/** インスタンスが初期化済みであることを示します。 */
 	protected boolean initialized;
 
@@ -101,52 +88,42 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Converter getConverter(final Class<?> conversionClass) {
+	public Converter getConverter(final Class<?> parameterType,
+			final Class<?> objectType) {
 		initialize();
 		final Class<?> destType = ClassUtil
-				.getWrapperClassIfPrimitive(conversionClass);
-		final String cacheKey = destType.getName();
+				.getWrapperClassIfPrimitive(objectType);
+		final String cacheKey = parameterType.getName() + destType.getName();
 		final Converter converter = converterCache.get(cacheKey);
 		if (converter != null) {
 			return converter;
 		}
-		return detectConverter(destType);
+		return detectConverter(parameterType, destType);
 	}
 
-	private Converter detectConverter(final Class<?> conversionClass) {
-		final Converter converter = getDistanceTable(conversionClass);
-		final String cacheKey = conversionClass.getName();
+	private Converter detectConverter(final Class<?> parameterType,
+			final Class<?> objectType) {
+		final Converter converter = getDistanceTable(parameterType, objectType);
+		final String cacheKey = parameterType.getName() + objectType.getName();
 		converterCache.put(cacheKey, converter);
 		return converter;
 	}
 
-	private Converter getDistanceTable(final Class<?> conversionClass) {
+	private Converter getDistanceTable(final Class<?> parameterType,
+			final Class<?> objectType) {
 		final Map<Integer, Converter> distanceTable = new TreeMap<Integer, Converter>();
 		for (final Converter converter : converters) {
-			if (!canConvert(conversionClass, converter)) {
+			if (!converter.canConvert(parameterType, objectType)) {
 				continue;
 			}
-			final int distance = getDistance(converter.getConversionClass(),
-					conversionClass);
+			final int distance = getDistance(converter.getObjectType(),
+					objectType);
 			distanceTable.put(distance, converter);
 		}
 		if (distanceTable.isEmpty()) {
 			return null;
 		}
 		return distanceTable.values().iterator().next();
-	}
-
-	private boolean canConvert(final Class<?> conversionClass,
-			final Converter converter) {
-		if (!converter.getConversionClass().isAssignableFrom(conversionClass)) {
-			final Class<?> wrapperArray = PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY
-					.get(conversionClass);
-			if (wrapperArray != null) {
-				return canConvert(wrapperArray, converter);
-			}
-			return false;
-		}
-		return true;
 	}
 
 	private int getDistance(final Class<?> assigner, final Class<?> assignee) {

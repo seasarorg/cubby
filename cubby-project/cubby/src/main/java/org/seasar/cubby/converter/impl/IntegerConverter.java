@@ -26,7 +26,7 @@ public class IntegerConverter extends AbstractNumberConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return Integer.class;
 	}
 

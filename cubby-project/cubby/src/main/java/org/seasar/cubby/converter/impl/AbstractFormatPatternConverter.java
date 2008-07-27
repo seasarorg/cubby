@@ -2,9 +2,8 @@ package org.seasar.cubby.converter.impl;
 
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.converter.Converter;
 
-public abstract class AbstractFormatPatternConverter implements Converter {
+public abstract class AbstractFormatPatternConverter extends AbstractConverter {
 
 	private FormatPattern formatPattern;
 

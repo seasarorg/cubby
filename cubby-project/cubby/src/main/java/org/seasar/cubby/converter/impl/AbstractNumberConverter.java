@@ -17,28 +17,21 @@ package org.seasar.cubby.converter.impl;
 
 import java.math.BigDecimal;
 
-import org.seasar.cubby.converter.Converter;
-
 /**
- * {@link String 文字列}から{@link Number 数}への変換を行うコンバータの抽象クラスです。
+ * {@link Number 数}への変換を行うコンバータの抽象クラスです。
  * <p>
- * 変換は次のように行われます。
+ * 変換元のオブジェクトの文字列表現を値とする{@link BigDecimal}からサブクラスが変換した結果を変換先とします。
  * </p>
- * <ul>
- * <li>変換元のオブジェクトが{@link Number}なら、サブクラスによる変換結果を変換先とします。</li>
- * <li>変換元のオブジェクトが{@link CharSequence}なら、それを値とする{@link BigDecimal}からサブクラスが変換した結果を変換先とします。</li>
- * <li>変換元のオブジェクトが{@link Boolean}なら、変換元が<code>true</code>なら1、<code>false</code>なら0を変換先とします。</li>
- * <li>変換元のオブジェクトが列挙なら、その序数を変換先とします。</li>
- * </ul>
  * 
  * @author baba
+ * @since 1.1.0
  */
-public abstract class AbstractNumberConverter implements Converter {
+public abstract class AbstractNumberConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value) {
+	public Object convertToObject(final Object value, final Class<?> objectType) {
 		if (value == null) {
 			return null;
 		}

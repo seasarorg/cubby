@@ -16,7 +16,6 @@
 package org.seasar.cubby.converter.impl;
 
 import org.apache.commons.fileupload.FileItem;
-import org.seasar.cubby.converter.Converter;
 
 /**
  * {@link FileItem}を他の型のオブジェクトに変換するクラスの抽象クラスです。
@@ -24,12 +23,23 @@ import org.seasar.cubby.converter.Converter;
  * @author baba
  * @since 1.1.0
  */
-public abstract class AbstractFileItemConverter implements Converter {
+public abstract class AbstractFileItemConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value) {
+	@Override
+	public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+		if (!FileItem.class.isAssignableFrom(parameterType)) {
+			return false;
+		}
+		return super.canConvert(parameterType, objectType);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object convertToObject(final Object value, final Class<?> objectType) {
 		if (value == null) {
 			return null;
 		}

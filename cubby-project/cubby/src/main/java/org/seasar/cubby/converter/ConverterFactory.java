@@ -34,6 +34,6 @@ public interface ConverterFactory {
 	 * 
 	 * @return コンバータ
 	 */
-	Converter getConverter(Class<?> converterType);
+	Converter getConverter(Class<?> parameterType, Class<?> objectType);
 
 }

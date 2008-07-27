@@ -31,7 +31,7 @@ public class ByteArrayFileItemConverter extends AbstractFileItemConverter {
 	 * 
 	 * @return byteの配列のクラスを返します。
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return byte[].class;
 	}
 

@@ -39,7 +39,7 @@ public class InputStreamFileItemConverter extends AbstractFileItemConverter {
 	 * 
 	 * @return {@link InputStream}のクラスを返します。
 	 */
-	public Class<?> getConversionClass() {
+	public Class<?> getObjectType() {
 		return InputStream.class;
 	}
 
