@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,8 +54,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @param converterFactory
 	 *            コンバータのファクトリクラス
 	 */
-	public void setConverterFactory(
-			final ConverterFactory converterFactory) {
+	public void setConverterFactory(final ConverterFactory converterFactory) {
 		this.converterFactory = converterFactory;
 	}
 
@@ -99,8 +98,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			final PropertyDesc destPropertyDesc) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
-		final Converter converter = converterFactory
-				.getConverter(destClass);
+		final Converter converter = converterFactory.getConverter(destClass);
 		if (converter != null) {
 			return converter.convertToObject(values[0]);
 		}
@@ -115,7 +113,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
-			final Set<Object> set = new HashSet<Object>();
+			final Set<Object> set = new LinkedHashSet<Object>();
 			convertToCollection(values, destClass, set, destPropertyDesc
 					.getParameterizedClassDesc());
 			return set;
@@ -160,8 +158,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (destClass.isAssignableFrom(source.getClass())) {
 			return source;
 		}
-		final Converter converter = converterFactory
-				.getConverter(destClass);
+		final Converter converter = converterFactory.getConverter(destClass);
 		if (converter == null) {
 			return null;
 		}
