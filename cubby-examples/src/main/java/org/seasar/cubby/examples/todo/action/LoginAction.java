@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES;
-
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
@@ -85,7 +83,6 @@ public class LoginAction extends Action {
 	/**
 	 * ログイン処理(/todo/login/process)
 	 */
-	@Form(type = ONLY_SPECIFIED_PROPERTIES)
 	@Validation(rules = "loginValidation", errorPage = "/todo/login.jsp")
 	public ActionResult process() {
 		return new Redirect("/todo/");

@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES;
-
 import java.util.List;
 
 import org.seasar.cubby.action.Action;
@@ -90,7 +88,6 @@ public class TodoAction extends Action {
 	 * 詳細表示処理(/todo/{id})
 	 */
 	@Path("{id,[0-9]+}")
-	@Form(binding = false)
 	public ActionResult show() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDxo.convert(todo, this);
@@ -100,7 +97,6 @@ public class TodoAction extends Action {
 	/**
 	 * 追加表示処理(/todo/create)
 	 */
-	@Form(binding = false)
 	public ActionResult create() {
 		return new Forward("edit.jsp");
 	}
@@ -108,7 +104,6 @@ public class TodoAction extends Action {
 	/**
 	 * 編集表示処理(/todo/edit)
 	 */
-	@Form(binding = false)
 	public ActionResult edit() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDxo.convert(todo, this);
@@ -118,7 +113,6 @@ public class TodoAction extends Action {
 	/**
 	 * 確認表示処理(/todo/confirm)
 	 */
-	@Form(type = ONLY_SPECIFIED_PROPERTIES)
 	@Validation(rules = "validation", errorPage = "edit.jsp")
 	public ActionResult confirm() {
 		TodoType todoType = todoTypeDao.selectById(this.typeId);
@@ -137,7 +131,6 @@ public class TodoAction extends Action {
 	/**
 	 * 保存処理(/todo/save)
 	 */
-	@Form(type = ONLY_SPECIFIED_PROPERTIES)
 	@Validation(rules = "validation", errorPage = "confirm.jsp")
 	public ActionResult save() {
 		if (this.id == null) {
@@ -155,7 +148,6 @@ public class TodoAction extends Action {
 	/**
 	 * 削除処理(/todo/delete)
 	 */
-	@Form(type = ONLY_SPECIFIED_PROPERTIES)
 	public ActionResult delete() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDao.delete(todo);

@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.examples.other.web.components;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class MayaaComponentsAction extends Action {
 		colors = getColors();
 	}
 	
-	@Form("formDto")
+	@Form(value = "formDto", type = ALL_PROPERTIES)
 	@Validation(rules="validation", errorPage="components.html")
 	public ActionResult components() {
 		return new Forward("components.html");

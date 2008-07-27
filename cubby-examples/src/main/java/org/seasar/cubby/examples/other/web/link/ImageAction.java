@@ -28,11 +28,13 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.RequestParameter;
 
 public class ImageAction extends Action {
 
 	public HttpServletResponse response;
 
+	@RequestParameter
 	public String token;
 
 	@Path("/link/{token,.*}.png")

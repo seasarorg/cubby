@@ -18,6 +18,7 @@ package org.seasar.cubby.examples.other.web.token;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
@@ -35,6 +36,7 @@ public class TokenAction extends Action {
 		}
 	};
 
+	@RequestParameter
 	public String name;
 	
 	public ActionResult index() {
