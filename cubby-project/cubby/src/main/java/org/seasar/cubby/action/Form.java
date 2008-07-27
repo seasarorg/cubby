@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
+import static org.seasar.cubby.action.RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -97,7 +97,8 @@ public @interface Form {
 
 	/**
 	 * リクエストパラメータからフォームオブジェクトへのバインディング方法を指定します。
+	 * @since 1.1.0
 	 */
-	RequestParameterBindingType type() default ALL_PROPERTIES;
+	RequestParameterBindingType type() default ONLY_SPECIFIED_PROPERTIES;
 
 }
