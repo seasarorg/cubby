@@ -18,9 +18,11 @@ package org.seasar.cubby.examples.other.web.hello;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.RequestParameter;
 
 public class HelloAction extends Action {
 
+	@RequestParameter
 	public String name;
 
 	public ActionResult index() {

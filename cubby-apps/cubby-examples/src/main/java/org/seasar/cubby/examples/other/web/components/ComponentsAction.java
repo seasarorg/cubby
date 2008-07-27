@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.examples.other.web.components;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class ComponentsAction extends Action {
 		colors = getColors();
 	}
 	
-	@Form("formDto")
+	@Form(value = "formDto", type = ALL_PROPERTIES)
 	@Validation(rules="validation", errorPage="components.jsp")
 	public ActionResult index() {
 		return new Forward("components.jsp");

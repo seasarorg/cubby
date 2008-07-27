@@ -19,11 +19,14 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
+import org.seasar.cubby.action.RequestParameter;
 
 public class LinkAction extends Action {
 
+	@RequestParameter
 	public Integer id;
 
+	@RequestParameter
 	public String token;
 
 	public ActionResult index() {
