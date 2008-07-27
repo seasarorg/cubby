@@ -20,7 +20,7 @@ import org.seasar.cubby.converter.Converter;
 /**
  * 任意のオブジェクトから{@link Character}への変換を行うコンバータです。
  * <p>
- * 変換元のオブジェクトの文字列表現が1文字の文字列の場合は先頭の文字を表す{@link Character}へ変換します。 そうでない場合は
+ * 変換元のオブジェクトの文字列表現の先頭の文字を表す{@link Character}へ変換します。 そうでない場合は
  * <code>null</code> とします。
  * </p>
  * 
@@ -56,9 +56,6 @@ public class CharacterConverter implements Converter {
 	protected Object toCharacter(final String value) {
 		if (value == null || value.length() == 0) {
 			return 0;
-		}
-		if (value.length() > 1) {
-			return null;
 		}
 		return value.charAt(0);
 	}
