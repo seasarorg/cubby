@@ -28,6 +28,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -160,8 +161,6 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("bytes1", new Object[] { "34", "56" });
 		map.put("byte2", new Object[] { "98" });
 		map.put("bytes2", new Object[] { "76", "54" });
-		map.put("calendar", new Object[] { "2008-7-28 12:34:56" });
-		map.put("calendars", new Object[] { "2008-8-14 13:45:24", "2008-10-30 23:44:00" });
 		map.put("char1", new Object[] { "a" });
 		map.put("chars1", new Object[] { "b", "c" });
 		map.put("char2", new Object[] { "d" });
@@ -195,12 +194,14 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("sqltime", new Object[] { "12:34:56" });
 		map.put("sqltimes", new Object[] { "13:45:24", "23:44:00" });
 		map.put("sqltimestamp", new Object[] { "2008-7-28 12:34:56" });
-		map.put("sqltimestamps", new Object[] { "2008-8-14 13:45:24", "2008-10-30 23:44:00" });
+		map.put("sqltimestamps", new Object[] { "2008-8-14 13:45:24",
+				"2008-10-30 23:44:00" });
 
 		ConvertersDto dto = new ConvertersDto();
 
 		Method method = getActionMethod("foo");
 		requestParameterBinder.bind(map, dto, method);
+
 		assertNotNull(dto.decimal);
 		assertTrue(new BigDecimal("12.3").compareTo(dto.decimal) == 0);
 
@@ -233,46 +234,158 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertTrue(dto.bools2[1]);
 		assertFalse(dto.bools2[2]);
 
-//		map.put("byte1", new Object[] { "12" });
-//		map.put("bytes1", new Object[] { "34", "56" });
-//		map.put("byte2", new Object[] { "98" });
-//		map.put("bytes2", new Object[] { "76", "54" });
-//		map.put("calendar", new Object[] { "2008-7-28 12:34:56" });
-//		map.put("calendars", new Object[] { "2008-8-14 13:45:24", "2008-10-30 23:44:00" });
-//		map.put("char1", new Object[] { "a" });
-//		map.put("chars1", new Object[] { "b", "c" });
-//		map.put("char2", new Object[] { "d" });
-//		map.put("chars2", new Object[] { "e", "f" });
-//		map.put("date", new Object[] { "2008-7-28" });
-//		map.put("dates", new Object[] { "2008-8-14", "2008-10-30" });
-//		map.put("double1", new Object[] { "1.2" });
-//		map.put("doubles1", new Object[] { "3.4", "5.6" });
-//		map.put("double2", new Object[] { "9.8" });
-//		map.put("doubles2", new Object[] { "7.6", "5.4" });
-//		map.put("en", new Object[] { "VALUE1" });
-//		map.put("ens", new Object[] { "VALUE2", "VALUE3" });
-//		map.put("float1", new Object[] { "1.2" });
-//		map.put("floats1", new Object[] { "3.4", "5.6" });
-//		map.put("float2", new Object[] { "9.8" });
-//		map.put("floats2", new Object[] { "7.6", "5.4" });
-//		map.put("int1", new Object[] { "12" });
-//		map.put("ints1", new Object[] { "34", "56" });
-//		map.put("int2", new Object[] { "98" });
-//		map.put("ints2", new Object[] { "76", "54" });
-//		map.put("long1", new Object[] { "12" });
-//		map.put("longs1", new Object[] { "34", "56" });
-//		map.put("long2", new Object[] { "98" });
-//		map.put("longs2", new Object[] { "76", "54" });
-//		map.put("short1", new Object[] { "12" });
-//		map.put("shorts1", new Object[] { "34", "56" });
-//		map.put("short2", new Object[] { "98" });
-//		map.put("shorts2", new Object[] { "76", "54" });
-//		map.put("sqldate", new Object[] { "2008-7-28" });
-//		map.put("sqldates", new Object[] { "2008-8-14", "2008-10-30" });
-//		map.put("sqltime", new Object[] { "12:34:56" });
-//		map.put("sqltimes", new Object[] { "13:45:24", "23:44:00" });
-//		map.put("sqltimestamp", new Object[] { "2008-7-28 12:34:56" });
-//		map.put("sqltimestamps", new Object[] { "2008-8-14 13:45:24", "2008-10-30 23:44:00" });
+		assertNotNull(dto.byte1);
+		assertEquals(new Byte((byte) 12), dto.byte1);
+
+		assertNotNull(dto.bytes1);
+		assertEquals(2, dto.bytes1.length);
+		assertEquals(new Byte((byte) 34), dto.bytes1[0]);
+		assertEquals(new Byte((byte) 56), dto.bytes1[1]);
+
+		assertEquals((byte) 98, dto.byte2);
+
+		assertNotNull(dto.bytes2);
+		assertEquals(2, dto.bytes2.length);
+		assertEquals((byte) 76, dto.bytes2[0]);
+		assertEquals((byte) 54, dto.bytes2[1]);
+
+		assertNotNull(dto.char1);
+		assertEquals(new Character('a'), dto.char1);
+
+		assertNotNull(dto.chars1);
+		assertEquals(2, dto.chars1.length);
+		assertEquals(new Character('b'), dto.chars1[0]);
+		assertEquals(new Character('c'), dto.chars1[1]);
+
+		assertNotNull(dto.char2);
+		assertEquals('d', dto.char2);
+
+		assertNotNull(dto.chars2);
+		assertEquals(2, dto.chars2.length);
+		assertEquals('e', dto.chars2[0]);
+		assertEquals('f', dto.chars2[1]);
+
+		assertNotNull(dto.date);
+		assertEquals(new Date(fromDateToMillis(2008, 7, 28)), dto.date);
+
+		assertNotNull(dto.dates);
+		assertEquals(2, dto.dates.length);
+		assertEquals(new Date(fromDateToMillis(2008, 8, 14)), dto.dates[0]);
+		assertEquals(new Date(fromDateToMillis(2008, 10, 30)), dto.dates[1]);
+
+		assertNotNull(dto.double1);
+		assertEquals(new Double(1.2d), dto.double1);
+
+		assertNotNull(dto.doubles1);
+		assertEquals(2, dto.doubles1.length);
+		assertEquals(new Double(3.4d), dto.doubles1[0]);
+		assertEquals(new Double(5.6d), dto.doubles1[1]);
+
+		assertEquals(9.8d, dto.double2);
+
+		assertNotNull(dto.doubles2);
+		assertEquals(2, dto.doubles2.length);
+		assertEquals(7.6d, dto.doubles2[0]);
+		assertEquals(5.4d, dto.doubles2[1]);
+
+		assertNotNull(dto.en);
+		assertSame(ExEnum.VALUE1, dto.en);
+
+		assertNotNull(dto.ens);
+		assertEquals(2, dto.ens.length);
+		assertSame(ExEnum.VALUE2, dto.ens[0]);
+		assertSame(ExEnum.VALUE3, dto.ens[1]);
+
+		assertNotNull(dto.float1);
+		assertEquals(new Float(1.2f), dto.float1);
+
+		assertNotNull(dto.floats1);
+		assertEquals(2, dto.floats1.length);
+		assertEquals(new Float(3.4f), dto.floats1[0]);
+		assertEquals(new Float(5.6f), dto.floats1[1]);
+
+		assertEquals(9.8f, dto.float2);
+
+		assertNotNull(dto.floats2);
+		assertEquals(2, dto.floats2.length);
+		assertEquals(7.6f, dto.floats2[0]);
+		assertEquals(5.4f, dto.floats2[1]);
+
+		assertNotNull(dto.int1);
+		assertEquals(new Integer(12), dto.int1);
+
+		assertNotNull(dto.ints1);
+		assertEquals(2, dto.ints1.length);
+		assertEquals(new Integer(34), dto.ints1[0]);
+		assertEquals(new Integer(56), dto.ints1[1]);
+
+		assertEquals(98, dto.int2);
+
+		assertNotNull(dto.ints2);
+		assertEquals(2, dto.ints2.length);
+		assertEquals(76, dto.ints2[0]);
+		assertEquals(54, dto.ints2[1]);
+
+		assertNotNull(dto.long1);
+		assertEquals(new Long(12l), dto.long1);
+
+		assertNotNull(dto.longs1);
+		assertEquals(2, dto.longs1.length);
+		assertEquals(new Long(34l), dto.longs1[0]);
+		assertEquals(new Long(56l), dto.longs1[1]);
+
+		assertEquals(98l, dto.long2);
+
+		assertNotNull(dto.longs2);
+		assertEquals(2, dto.longs2.length);
+		assertEquals(76l, dto.longs2[0]);
+		assertEquals(54l, dto.longs2[1]);
+
+		assertNotNull(dto.short1);
+		assertEquals(new Short((short) 12), dto.short1);
+
+		assertNotNull(dto.shorts1);
+		assertEquals(2, dto.shorts1.length);
+		assertEquals(new Short((short) 34), dto.shorts1[0]);
+		assertEquals(new Short((short) 56), dto.shorts1[1]);
+
+		assertEquals((short) 98, dto.short2);
+
+		assertNotNull(dto.shorts2);
+		assertEquals(2, dto.shorts2.length);
+		assertEquals((short) 76, dto.shorts2[0]);
+		assertEquals((short) 54, dto.shorts2[1]);
+
+		assertNotNull(dto.sqldate);
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 7, 28)),
+				dto.sqldate);
+
+		assertNotNull(dto.sqldates);
+		assertEquals(2, dto.sqldates.length);
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 8, 14)),
+				dto.sqldates[0]);
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 10, 30)),
+				dto.sqldates[1]);
+
+		assertNotNull(dto.sqltime);
+		assertEquals(new Time(fromTimeToMillis(12, 34, 56)), dto.sqltime);
+
+		assertNotNull(dto.sqltimes);
+		assertEquals(2, dto.sqltimes.length);
+		assertEquals(new Time(fromTimeToMillis(13, 45, 24)), dto.sqltimes[0]);
+		assertEquals(new Time(fromTimeToMillis(23, 44, 00)), dto.sqltimes[1]);
+
+		assertNotNull(dto.sqltimestamp);
+		assertEquals(new Timestamp(fromTimestampToMillis(2008, 7, 28, 12, 34,
+				56)), dto.sqltimestamp);
+
+		assertNotNull(dto.sqltimestamps);
+		assertEquals(2, dto.sqltimestamps.length);
+		assertEquals(new Timestamp(fromTimestampToMillis(2008, 8, 14, 13, 45,
+				24)), dto.sqltimestamps[0]);
+		assertEquals(new Timestamp(fromTimestampToMillis(2008, 10, 30, 23, 44,
+				00)), dto.sqltimestamps[1]);
+
 		System.out.println(dto);
 	}
 
@@ -340,8 +453,6 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		public Byte[] bytes1;
 		public byte byte2;
 		public byte[] bytes2;
-		public Calendar calendar;
-		public Calendar[] calendars;
 		public Character char1;
 		public Character[] chars1;
 		public char char2;
@@ -357,7 +468,7 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		public Float float1;
 		public Float[] floats1;
 		public float float2;
-		public float floats2;
+		public float[] floats2;
 		public Integer int1;
 		public Integer[] ints1;
 		public int int2;
@@ -462,4 +573,52 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		}
 	}
 
+	private static final Map<Integer, Integer> MONTHS;
+	static {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(1, Calendar.JANUARY);
+		map.put(2, Calendar.FEBRUARY);
+		map.put(3, Calendar.MARCH);
+		map.put(4, Calendar.APRIL);
+		map.put(5, Calendar.MAY);
+		map.put(6, Calendar.JUNE);
+		map.put(7, Calendar.JULY);
+		map.put(8, Calendar.AUGUST);
+		map.put(9, Calendar.SEPTEMBER);
+		map.put(10, Calendar.OCTOBER);
+		map.put(11, Calendar.NOVEMBER);
+		map.put(12, Calendar.DECEMBER);
+		MONTHS = Collections.unmodifiableMap(map);
+	}
+
+	private static long fromDateToMillis(int year, int month, int date) {
+		Calendar c = Calendar.getInstance();
+		c.clear();
+		c.set(Calendar.YEAR, year);
+		c.set(Calendar.MONTH, MONTHS.get(month));
+		c.set(Calendar.DATE, date);
+		return c.getTimeInMillis();
+	}
+
+	private static long fromTimeToMillis(int hour, int minute, int second) {
+		Calendar c = Calendar.getInstance();
+		c.clear();
+		c.set(Calendar.HOUR, hour);
+		c.set(Calendar.MINUTE, minute);
+		c.set(Calendar.SECOND, second);
+		return c.getTimeInMillis();
+	}
+
+	private static long fromTimestampToMillis(int year, int month, int date,
+			int hour, int minute, int second) {
+		Calendar c = Calendar.getInstance();
+		c.clear();
+		c.set(Calendar.YEAR, year);
+		c.set(Calendar.MONTH, MONTHS.get(month));
+		c.set(Calendar.DATE, date);
+		c.set(Calendar.HOUR, hour);
+		c.set(Calendar.MINUTE, minute);
+		c.set(Calendar.SECOND, second);
+		return c.getTimeInMillis();
+	}
 }
