@@ -17,6 +17,8 @@ package org.seasar.cubby.converter.impl;
 
 import java.math.BigDecimal;
 
+import org.seasar.cubby.converter.ConversionHelper;
+
 /**
  * {@link Number 数}への変換を行うコンバータの抽象クラスです。
  * <p>
@@ -31,21 +33,12 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
 		return convert(value.toString());
 	}
-
-	/**
-	 * 数値を変換して返します。
-	 * 
-	 * @param number
-	 *            変換元の数値
-	 * @return 変換結果の数値
-	 */
-	protected abstract Number convert(Number number);
 
 	/**
 	 * 数を表す文字列から数値に変換して返します。
@@ -65,11 +58,20 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
 		return value.toString();
 	}
+
+	/**
+	 * 数値を変換して返します。
+	 * 
+	 * @param number
+	 *            変換元の数値
+	 * @return 変換結果の数値
+	 */
+	protected abstract Number convert(Number number);
 
 }

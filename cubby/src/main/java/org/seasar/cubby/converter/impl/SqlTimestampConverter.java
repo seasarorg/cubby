@@ -18,9 +18,10 @@ package org.seasar.cubby.converter.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 
+import org.seasar.cubby.converter.ConversionHelper;
 
 /**
- * 任意のオブジェクトから{@link java.sql.Timestamp}への変換を行うコンバータです。
+ * {@link java.sql.Timestamp}への変換を行うコンバータです。
  * <p>
  * 変換元のオブジェクトの文字列表現をフォーマットに従って{@link java.sql.Timestamp}に変換した結果を変換先とします。
  * </p>
@@ -28,7 +29,7 @@ import java.text.ParseException;
  * @author baba
  * @since 1.1.0
  */
-public class SqlTimestampConverter extends AbstractFormatPatternConverter {
+public class SqlTimestampConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -40,11 +41,13 @@ public class SqlTimestampConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = getFormatPattern().getTimestampFormat();
+		final DateFormat dateFormat = helper.getFormatPattern()
+				.getTimestampFormat();
 		return toTimestamp((String) value, dateFormat);
 	}
 
@@ -72,11 +75,12 @@ public class SqlTimestampConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = getFormatPattern().getTimestampFormat();
+		final DateFormat formatter = helper.getFormatPattern()
+				.getTimestampFormat();
 		return formatter.format((java.sql.Timestamp) value);
 	}
 

@@ -15,44 +15,37 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.CubbyConfiguration;
 import org.seasar.cubby.converter.ConversionHelper;
 
-
 /**
- * 列挙定数へ変換するコンバータです。
+ * 変換のヘルパクラスの実装。
  * 
  * @author baba
  * @since 1.1.0
  */
-public class EnumConverter extends AbstractConverter {
+public class ConversionHelperImpl implements ConversionHelper {
+
+	/** 日付や時刻のフォーマットパターンを保持するクラス。 */
+	private FormatPattern formatPattern;
 
 	/**
-	 * {@inheritDoc}
+	 * 設定情報を設定します。
+	 * 
+	 * @param cubbyConfiguration
+	 *            設定情報
 	 */
-	public Class<?> getObjectType() {
-		return Enum.class;
+	public void setCubbyConfiguration(
+			final CubbyConfiguration cubbyConfiguration) {
+		this.formatPattern = cubbyConfiguration.getFormatPattern();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
-	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
-		if (value == null) {
-			return null;
-		}
-		final String name = value.toString();
-		return Enum.valueOf((Class<? extends Enum>) objectType, name);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
-		if (value == null) {
-			return null;
-		}
-		return Enum.class.cast(value).name();
+	public FormatPattern getFormatPattern() {
+		return formatPattern;
 	}
 
 }

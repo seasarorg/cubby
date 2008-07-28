@@ -51,19 +51,26 @@ public interface Converter {
 	 * 
 	 * @param value
 	 *            変換元のオブジェクト
+	 * @param objectType
+	 *            値の型
+	 * @param helper
+	 *            変換のヘルパクラス
 	 * 
 	 * @return <code>value</code>を変換したオブジェクト
 	 */
-	Object convertToObject(Object value, Class<?> objectType);
+	Object convertToObject(Object value, Class<?> objectType,
+			ConversionHelper helper);
 
 	/**
 	 * このコンバータがサポートしているクラスのインスタンスである<code>value</code>を文字列に変換します。
 	 * 
 	 * @param value
 	 *            変換元のオブジェクト
+	 * @param helper
+	 *            変換のヘルパクラス
 	 * 
 	 * @return <code>value</code>を変換した文字列
 	 */
-	String convertToString(Object value);
+	String convertToString(Object value, ConversionHelper helper);
 
 }

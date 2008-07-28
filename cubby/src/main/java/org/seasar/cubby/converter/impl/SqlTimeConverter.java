@@ -18,9 +18,10 @@ package org.seasar.cubby.converter.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 
+import org.seasar.cubby.converter.ConversionHelper;
 
 /**
- * 任意のオブジェクトから{@link java.sql.Time}への変換を行うコンバータです。
+ * {@link java.sql.Time}への変換を行うコンバータです。
  * <p>
  * 変換元のオブジェクトの文字列表現をフォーマットに従って{@link java.sql.Time}に変換した結果を変換先とします。
  * </p>
@@ -28,7 +29,7 @@ import java.text.ParseException;
  * @author baba
  * @since 1.1.0
  */
-public class SqlTimeConverter extends AbstractFormatPatternConverter {
+public class SqlTimeConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -40,11 +41,12 @@ public class SqlTimeConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = getFormatPattern().getTimeFormat();
+		final DateFormat dateFormat = helper.getFormatPattern().getTimeFormat();
 		return toTime((String) value, dateFormat);
 	}
 
@@ -72,11 +74,11 @@ public class SqlTimeConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = getFormatPattern().getTimeFormat();
+		final DateFormat formatter = helper.getFormatPattern().getTimeFormat();
 		return formatter.format((java.sql.Time) value);
 	}
 

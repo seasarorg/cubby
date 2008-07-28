@@ -25,6 +25,8 @@
 
 	<!-- converter -->
 	<component class="org.seasar.cubby.converter.impl.ConverterFactoryImpl" />
+	<component class="org.seasar.cubby.converter.impl.ConversionHelperImpl" />
+	
 	<component class="org.seasar.cubby.converter.impl.BigDecimalConverter" />
 	<component class="org.seasar.cubby.converter.impl.BigIntegerConverter" />
 	<component class="org.seasar.cubby.converter.impl.BooleanConverter" />

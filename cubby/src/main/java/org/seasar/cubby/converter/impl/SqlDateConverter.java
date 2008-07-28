@@ -18,9 +18,10 @@ package org.seasar.cubby.converter.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 
+import org.seasar.cubby.converter.ConversionHelper;
 
 /**
- * 任意のオブジェクトから{@link java.sql.Date}への変換を行うコンバータです。
+ * {@link java.sql.Date}への変換を行うコンバータです。
  * <p>
  * 変換元のオブジェクトの文字列表現をフォーマットに従って{@link java.sql.Date}に変換した結果を変換先とします。
  * </p>
@@ -28,7 +29,7 @@ import java.text.ParseException;
  * @author baba
  * @since 1.1.0
  */
-public class SqlDateConverter extends AbstractFormatPatternConverter {
+public class SqlDateConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -40,11 +41,12 @@ public class SqlDateConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = getFormatPattern().getDateFormat();
+		final DateFormat dateFormat = helper.getFormatPattern().getDateFormat();
 		return toDate((String) value, dateFormat);
 	}
 
@@ -72,11 +74,11 @@ public class SqlDateConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = getFormatPattern().getDateFormat();
+		final DateFormat formatter = helper.getFormatPattern().getDateFormat();
 		return formatter.format((java.sql.Date) value);
 	}
 

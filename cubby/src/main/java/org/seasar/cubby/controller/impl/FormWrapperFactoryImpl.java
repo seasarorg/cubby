@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
+import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.ConverterFactory;
 import org.seasar.framework.beans.BeanDesc;
@@ -37,6 +38,9 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 	/** コンバータのファクトリクラス。 */
 	private ConverterFactory converterFactory;
 
+	/** 変換のヘルパクラス。 */
+	private ConversionHelper conversionHelper;
+
 	/**
 	 * コンバータのファクトリクラスを設定します。
 	 * 
@@ -45,6 +49,16 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 	 */
 	public void setConverterFactory(final ConverterFactory converterFactory) {
 		this.converterFactory = converterFactory;
+	}
+
+	/**
+	 * 変換のヘルパクラスを設定します。
+	 * 
+	 * @param conversionHelper
+	 *            変換のヘルパクラス
+	 */
+	public void setConversionHelper(final ConversionHelper conversionHelper) {
+		this.conversionHelper = conversionHelper;
 	}
 
 	/**
@@ -135,12 +149,12 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		 * @return <code>value</code>を変換した文字列
 		 */
 		private String convert(final Object value) {
-			final Converter converter = converterFactory.getConverter(
-					null, value.getClass());
+			final Converter converter = converterFactory.getConverter(null,
+					value.getClass());
 			if (converter == null) {
 				return value.toString();
 			} else {
-				return converter.convertToString(value);
+				return converter.convertToString(value, conversionHelper);
 			}
 		}
 

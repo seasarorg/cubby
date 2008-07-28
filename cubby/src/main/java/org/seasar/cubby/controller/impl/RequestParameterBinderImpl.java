@@ -30,6 +30,7 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.controller.RequestParameterBinder;
+import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.ConverterFactory;
 import org.seasar.framework.beans.BeanDesc;
@@ -48,6 +49,9 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/** コンバータのファクトリクラス。 */
 	private ConverterFactory converterFactory;
 
+	/** 変換のヘルパクラス。 */
+	private ConversionHelper conversionHelper;
+
 	/**
 	 * コンバータのファクトリクラスを設定します。
 	 * 
@@ -56,6 +60,16 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 */
 	public void setConverterFactory(final ConverterFactory converterFactory) {
 		this.converterFactory = converterFactory;
+	}
+
+	/**
+	 * 変換のヘルパクラスを設定します。
+	 * 
+	 * @param conversionHelper
+	 *            変換のヘルパクラス
+	 */
+	public void setConversionHelper(final ConversionHelper conversionHelper) {
+		this.conversionHelper = conversionHelper;
 	}
 
 	/**
@@ -101,7 +115,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		final Converter converter = converterFactory.getConverter(values[0]
 				.getClass(), destClass);
 		if (converter != null) {
-			return converter.convertToObject(values[0], destClass);
+			return converter.convertToObject(values[0], destClass,
+					conversionHelper);
 		}
 
 		if (destClass.isArray()) {
@@ -164,7 +179,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (converter == null) {
 			return null;
 		}
-		return converter.convertToObject(source, destClass);
+		return converter.convertToObject(source, destClass, conversionHelper);
 	}
 
 	/**
