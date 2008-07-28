@@ -93,7 +93,7 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 		initialize();
 		final Class<?> destType = ClassUtil
 				.getWrapperClassIfPrimitive(objectType);
-		final String cacheKey = parameterType.getName() + destType.getName();
+		final String cacheKey = cacheKey(parameterType, destType);
 		final Converter converter = converterCache.get(cacheKey);
 		if (converter != null) {
 			return converter;
@@ -104,9 +104,17 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 	private Converter detectConverter(final Class<?> parameterType,
 			final Class<?> objectType) {
 		final Converter converter = getDistanceTable(parameterType, objectType);
-		final String cacheKey = parameterType.getName() + objectType.getName();
+		final String cacheKey = cacheKey(parameterType, objectType);
 		converterCache.put(cacheKey, converter);
 		return converter;
+	}
+
+	private static String cacheKey(final Class<?> parameterType,
+			final Class<?> objectType) {
+		if (parameterType == null) {
+			return objectType.getName();
+		}
+		return parameterType.getName() + objectType.getName();
 	}
 
 	private Converter getDistanceTable(final Class<?> parameterType,

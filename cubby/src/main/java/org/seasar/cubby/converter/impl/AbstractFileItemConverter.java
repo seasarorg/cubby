@@ -30,6 +30,9 @@ public abstract class AbstractFileItemConverter extends AbstractConverter {
 	 */
 	@Override
 	public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+		if (parameterType == null) {
+			return false;
+		}
 		if (!FileItem.class.isAssignableFrom(parameterType)) {
 			return false;
 		}

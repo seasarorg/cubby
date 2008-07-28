@@ -30,7 +30,6 @@
 	<component class="org.seasar.cubby.converter.impl.BooleanConverter" />
 	<component class="org.seasar.cubby.converter.impl.ByteArrayFileItemConverter" />
 	<component class="org.seasar.cubby.converter.impl.ByteConverter" />
-	<component class="org.seasar.cubby.converter.impl.CalendarConverter" />
 	<component class="org.seasar.cubby.converter.impl.CharacterConverter" />
 	<component class="org.seasar.cubby.converter.impl.DateConverter" />
 	<component class="org.seasar.cubby.converter.impl.DoubleConverter" />
