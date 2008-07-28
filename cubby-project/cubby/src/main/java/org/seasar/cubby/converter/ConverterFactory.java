@@ -29,7 +29,9 @@ public interface ConverterFactory {
 	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
 	 * </p>
 	 * 
-	 * @param converterType
+	 * @param parameterType
+	 *            リクエストパラメータの型
+	 * @param objectType
 	 *            変換先のクラス
 	 * 
 	 * @return コンバータ
