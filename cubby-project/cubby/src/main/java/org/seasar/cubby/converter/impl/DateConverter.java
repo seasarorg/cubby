@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.seasar.cubby.converter.ConversionHelper;
 
 /**
  * 任意のオブジェクトから{@link Date}への変換を行うコンバータです。
@@ -29,7 +30,7 @@ import java.util.Date;
  * @author baba
  * @since 1.1.0
  */
-public class DateConverter extends AbstractFormatPatternConverter {
+public class DateConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -41,11 +42,12 @@ public class DateConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = getFormatPattern().getDateFormat();
+		final DateFormat dateFormat = helper.getFormatPattern().getDateFormat();
 		return toDate(value.toString(), dateFormat);
 	}
 
@@ -72,11 +74,11 @@ public class DateConverter extends AbstractFormatPatternConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = getFormatPattern().getDateFormat();
+		final DateFormat formatter = helper.getFormatPattern().getDateFormat();
 		return formatter.format((Date) value);
 	}
 

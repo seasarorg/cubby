@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import org.seasar.cubby.converter.ConversionHelper;
+
 /**
  * 任意のオブジェクトから{@link Character}への変換を行うコンバータです。
  * <p>
@@ -37,7 +39,7 @@ public class CharacterConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -61,7 +63,7 @@ public class CharacterConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

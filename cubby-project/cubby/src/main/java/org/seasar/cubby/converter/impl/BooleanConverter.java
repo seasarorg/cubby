@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import org.seasar.cubby.converter.ConversionHelper;
+
 
 /**
  * {@link Boolean}への変換を行うコンバータです。
@@ -42,7 +44,7 @@ public class BooleanConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType) {
+	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -68,7 +70,7 @@ public class BooleanConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value) {
+	public String convertToString(final Object value, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
