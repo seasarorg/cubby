@@ -91,7 +91,7 @@ public class InitializeInterceptor implements MethodInterceptor {
 		action.invokeInitializeMethod(method);
 		final Object form = CubbyUtils.getFormBean(action, actionClass, method);
 		if (form != null) {
-			requestParameterBinder.bind(parameterMap, form, method);
+			requestParameterBinder.bind(parameterMap, form, actionClass, method);
 		}
 
 		final ActionResult result = (ActionResult) invocation.proceed();

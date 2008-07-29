@@ -18,6 +18,8 @@ package org.seasar.cubby.controller;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.seasar.cubby.action.Action;
+
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスです。
  * 
@@ -33,9 +35,12 @@ public interface RequestParameterBinder {
 	 *            リクエストパラメータの{@link Map}
 	 * @param dest
 	 *            リクエストパラメータをバインドするオブジェクト
+	 * @param actionClass
+	 *            アクションクラス
 	 * @param method
 	 *            アクションメソッド
 	 */
-	void bind(Map<String, Object[]> parameterMap, Object dest, Method method);
+	void bind(Map<String, Object[]> parameterMap, Object dest,
+			Class<? extends Action> actionClass, Method method);
 
 }
