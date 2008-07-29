@@ -414,7 +414,7 @@ public class CubbyUtils {
 	 *         <code>null</code>
 	 * @since 1.0.2
 	 */
-	private static Form getForm(final Class<?> actionClass, final Method method) {
+	public static Form getForm(final Class<?> actionClass, final Method method) {
 		final Form form;
 		if (method.isAnnotationPresent(Form.class)) {
 			form = method.getAnnotation(Form.class);

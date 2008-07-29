@@ -16,6 +16,7 @@
 package org.seasar.cubby.controller.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,11 +41,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.util.ClassUtil;
-import org.seasar.framework.util.InputStreamUtil;
 
 /**
  * 
@@ -62,8 +62,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 	public void testMapToBeanNullSource() {
 		FormDto dto = new FormDto();
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(null, dto, method);
+		requestParameterBinder.bind(null, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 	}
 
 	public void testMapToBean() {
@@ -72,8 +72,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -88,8 +88,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		assertNotNull(dto.num1);
 		assertEquals(Integer.valueOf(1), dto.num1);
 		assertNotNull(dto.num2);
@@ -107,8 +107,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		assertNotNull(dto.num2);
 		assertEquals(2, dto.num2.length);
 		assertEquals(Integer.valueOf(1), dto.num2[0]);
@@ -125,8 +125,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		assertEquals(3, dto.num2.length);
 		assertEquals(Integer.valueOf(1), dto.num2[0]);
 		assertEquals(null, dto.num2[1]);
@@ -139,8 +139,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		assertEquals(3, dto.num3.size());
 		assertEquals("zzz", dto.num3.get(0));
 		assertNull(dto.num3.get(1));
@@ -199,8 +199,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		ConvertersDto dto = new ConvertersDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 
 		assertNotNull(dto.decimal);
 		assertTrue(new BigDecimal("12.3").compareTo(dto.decimal) == 0);
@@ -401,8 +401,8 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FileItemDto dto = new FileItemDto();
 
-		Method method = getActionMethod("foo");
-		requestParameterBinder.bind(map, dto, method);
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
 		String encoding = "UTF-8";
 		assertNotNull(dto.file);
 		assertEquals("123", new String(dto.file.get(), encoding));
@@ -418,19 +418,113 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertEquals("GHI", new String(it.next(), encoding));
 		assertEquals("JKL", new String(it.next(), encoding));
 		assertNotNull(dto.input);
-		assertEquals("QQ", new String(InputStreamUtil.getBytes(dto.input),
-				encoding));
+		assertEquals("QQ", new String(getBytes(dto.input), encoding));
 	}
 
-	private Method getActionMethod(String methodName) {
-		return ClassUtil.getMethod(MockAction.class, methodName, null);
+	public void testBindTypeDefault() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "noAnnotated"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNull(dto.noRequestParameter);
+	}
+
+	public void testBindTypeAllProperties() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "all"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNotNull(dto.noRequestParameter);
+		assertEquals("def", dto.noRequestParameter);
+	}
+
+	public void testBindTypeOnlySpecifiedProperties() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "specified"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNull(dto.noRequestParameter);
+	}
+
+	public void testBindTypeDefaultOnClass() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction2.class, actionMethod(
+				MockAction2.class, "noAnnotated"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNotNull(dto.noRequestParameter);
+		assertEquals("def", dto.noRequestParameter);
+	}
+
+	public void testBindTypeOnlySpecifiedPropertiesOnClass() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction2.class, actionMethod(
+				MockAction2.class, "specified"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNull(dto.noRequestParameter);
+	}
+
+	private Method actionMethod(Class<? extends Action> actionClass,
+			String methodName) {
+		try {
+			return actionClass.getMethod(methodName);
+		} catch (NoSuchMethodException ex) {
+			throw new RuntimeException();
+		}
 	}
 
 	private class MockAction extends Action {
 		@Form(type = RequestParameterBindingType.ALL_PROPERTIES)
-		public ActionResult foo() {
+		public ActionResult all() {
 			return null;
 		}
+
+		@Form(type = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
+		public ActionResult specified() {
+			return null;
+		}
+
+		public ActionResult noAnnotated() {
+			return null;
+		}
+	}
+
+	@Form(type = RequestParameterBindingType.ALL_PROPERTIES)
+	private class MockAction2 extends Action {
+		@Form(type = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
+		public ActionResult specified() {
+			return null;
+		}
+
+		public ActionResult noAnnotated() {
+			return null;
+		}
+	}
+
+	public static class FormDto2 {
+		@RequestParameter
+		public String hasRequestParameter;
+
+		public String noRequestParameter;
 	}
 
 	public static class FormDto {
@@ -621,4 +715,28 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		c.set(Calendar.SECOND, second);
 		return c.getTimeInMillis();
 	}
+
+	private static final byte[] getBytes(InputStream is) {
+		byte[] bytes = null;
+		byte[] buf = new byte[8192];
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int n = 0;
+			while ((n = is.read(buf, 0, buf.length)) != -1) {
+				baos.write(buf, 0, n);
+			}
+			bytes = baos.toByteArray();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return bytes;
+	}
+
 }

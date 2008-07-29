@@ -54,10 +54,10 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 	}
 
 	/**
-	 * S2コンテナを設定します。
+	 * コンテナを設定します。
 	 * 
 	 * @param container
-	 *            S2コンテナ
+	 *            コンテナ
 	 */
 	public void setContainer(final S2Container container) {
 		this.container = container.getRoot();

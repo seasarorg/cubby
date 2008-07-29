@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
@@ -33,6 +34,7 @@ import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.ConverterFactory;
+import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.ParameterizedClassDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -76,7 +78,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * {@inheritDoc}
 	 */
 	public void bind(final Map<String, Object[]> parameterMap,
-			final Object dest, final Method method) {
+			final Object dest, final Class<? extends Action> actionClass,
+			final Method method) {
 		if (parameterMap == null) {
 			return;
 		}
@@ -89,7 +92,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 						.getPropertyDesc(sourceName);
 				if (destPropertyDesc.isReadable()
 						&& destPropertyDesc.isWritable()) {
-					if (!isBindToAllProperties(method)) {
+					if (!isBindToAllProperties(actionClass, method)) {
 						final RequestParameter requestParameter = getRequestParameterAnnotation(destPropertyDesc);
 						if (requestParameter == null) {
 							continue;
@@ -108,6 +111,15 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		}
 	}
 
+	/**
+	 * 指定されたリクエストパラメータの値を出力先のプロパティの型に変換します。
+	 * 
+	 * @param values
+	 *            リクエストパラメータの値
+	 * @param destPropertyDesc
+	 *            出力先のプロパティの定義
+	 * @return 変換された値
+	 */
 	private Object convert(final Object[] values,
 			final PropertyDesc destPropertyDesc) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
@@ -120,66 +132,93 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		}
 
 		if (destClass.isArray()) {
-			return convertToArray(values, destClass);
+			return convertToArray(values, destClass.getComponentType());
 		}
 		if (List.class.isAssignableFrom(destClass)) {
 			final List<Object> list = new ArrayList<Object>();
-			convertToCollection(values, destClass, list, destPropertyDesc
+			convertToCollection(values, list, destPropertyDesc
 					.getParameterizedClassDesc());
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
 			final Set<Object> set = new LinkedHashSet<Object>();
-			convertToCollection(values, destClass, set, destPropertyDesc
+			convertToCollection(values, set, destPropertyDesc
 					.getParameterizedClassDesc());
 			return set;
 		}
 		return convertToScalar(values[0], destClass);
 	}
 
-	private Object convertToArray(final Object[] source,
-			final Class<?> destClass) {
-		final Class<?> destComponentType = destClass.getComponentType();
-		final Object dest = Array.newInstance(destComponentType, source.length);
-		for (int i = 0; i < source.length; i++) {
-			final Object convertedValue = convertToScalar(source[i],
-					destComponentType);
+	/**
+	 * 指定された値を指定された要素の型の配列に変換します。
+	 * 
+	 * @param values
+	 *            変換する値
+	 * @param componentType
+	 *            要素の型
+	 * @return 変換後の値
+	 */
+	private Object convertToArray(final Object[] values,
+			final Class<?> componentType) {
+		final Object dest = Array.newInstance(componentType, values.length);
+		for (int i = 0; i < values.length; i++) {
+			final Object convertedValue = convertToScalar(values[i],
+					componentType);
 			Array.set(dest, i, convertedValue);
 		}
 		return dest;
 	}
 
-	private void convertToCollection(final Object[] source,
-			final Class<?> destClass, final Collection<Object> dest,
+	/**
+	 * 指定された値を変換してコレクションに追加します。
+	 * 
+	 * @param values
+	 *            変換する値
+	 * @param collection
+	 *            コレクション
+	 * @param parameterizedClassDesc
+	 *            パラメタ化された要素の定義
+	 */
+	private void convertToCollection(final Object[] values,
+			final Collection<Object> collection,
 			final ParameterizedClassDesc parameterizedClassDesc) {
 		if (parameterizedClassDesc == null) {
-			for (final Object value : source) {
-				dest.add(value);
+			for (final Object value : values) {
+				collection.add(value);
 			}
 		} else {
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
-			for (final Object value : source) {
+			for (final Object value : values) {
 				final Object convertedValue = convertToScalar(value,
 						destElementType);
-				dest.add(convertedValue);
+				collection.add(convertedValue);
 			}
 		}
 	}
 
-	private Object convertToScalar(final Object source, final Class<?> destClass) {
-		if (source == null) {
+	/**
+	 * 指定された値を指定された型に変換します。
+	 * 
+	 * @param value
+	 *            変換する値
+	 * @param destClass
+	 *            変換する型
+	 * @return 変換後の値
+	 */
+	private Object convertToScalar(final Object value, final Class<?> destClass) {
+		if (value == null) {
 			return null;
 		}
-		if (destClass.isAssignableFrom(source.getClass())) {
-			return source;
+		if (destClass.isAssignableFrom(value.getClass())) {
+			return value;
 		}
-		final Converter converter = converterFactory.getConverter(source
+		final Converter converter = converterFactory.getConverter(value
 				.getClass(), destClass);
 		if (converter == null) {
 			return null;
 		}
-		return converter.convertToObject(source, destClass, conversionHelper);
+		return converter.convertToObject(value, destClass, conversionHelper);
 	}
 
 	/**
@@ -190,25 +229,22 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @return オブジェクトのすべてのプロパティにリクエストパラメータをバインドする場合は <code>true</code>、そうでない場合は
 	 *         <code>false</code>
 	 */
-	private static boolean isBindToAllProperties(final Method method) {
-		final boolean allProperties;
-		if (method.isAnnotationPresent(Form.class)) {
-			final Form form = method.getAnnotation(Form.class);
-			final RequestParameterBindingType type = form.type();
-			switch (type) {
-			case ALL_PROPERTIES:
-				allProperties = true;
-				break;
-			case ONLY_SPECIFIED_PROPERTIES:
-				allProperties = false;
-				break;
-			default:
-				throw new IllegalStateException(type.toString());
-			}
-		} else {
-			allProperties = false;
+	private static boolean isBindToAllProperties(
+			final Class<? extends Action> actionClass, final Method method) {
+		final Form form = CubbyUtils.getForm(actionClass, method);
+		if (form == null) {
+			return false;
 		}
-		return allProperties;
+
+		final RequestParameterBindingType type = form.type();
+		switch (type) {
+		case ALL_PROPERTIES:
+			return true;
+		case ONLY_SPECIFIED_PROPERTIES:
+			return false;
+		default:
+			throw new IllegalStateException(type.toString());
+		}
 	}
 
 	/**
