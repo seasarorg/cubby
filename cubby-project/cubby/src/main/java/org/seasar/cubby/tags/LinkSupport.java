@@ -153,9 +153,10 @@ class LinkSupport {
 	/**
 	 * リソースを開放します。
 	 */
-	public void release() {
+	public void clear() {
 		this.actionClassName = null;
 		this.actionMethodName = null;
+		this.parameters.clear();
 	}
 
 }

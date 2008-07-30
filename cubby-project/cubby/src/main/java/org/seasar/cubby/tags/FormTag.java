@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
@@ -60,7 +61,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	private boolean encodeURL = true;
 
 	/** リンク用の補助クラス。 */
-	private LinkSupport linkSupport = new LinkSupport();
+	private final LinkSupport linkSupport = new LinkSupport();
 
 	/** フォームオブジェクトのラッパー。 */
 	private FormWrapper formWrapper;
@@ -119,7 +120,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 *            出力する URL を {@link HttpServletResponse#encodeURL(String)}
 	 *            でエンコードする場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
-	public void setEncodeURL(boolean encodeURL) {
+	public void setEncodeURL(final boolean encodeURL) {
 		this.encodeURL = encodeURL;
 	}
 
@@ -152,7 +153,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int doAfterBody() throws JspException {
+	public int doEndTag() throws JspException {
 		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		if (linkSupport.isLinkable()) {
@@ -168,38 +169,31 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 			attrs.put("action", encodedUrl);
 		}
 
-		final JspWriter out = getPreviousOut();
+		final JspWriter out = pageContext.getOut();
 		try {
 			out.write("<form ");
 			out.write(toAttr(getDynamicAttribute()));
 			out.write(">");
-			getBodyContent().writeOut(out);
+			final BodyContent bodyContent = getBodyContent();
+			if (bodyContent != null) {
+				bodyContent.writeOut(out);
+			}
+			out.write("</form>");
 		} catch (final IOException e) {
 			throw new JspException(e);
 		}
+		reset();
 		return EVAL_PAGE;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * このタグをリセットします。
 	 */
-	@Override
-	public int doEndTag() throws JspException {
-		try {
-			pageContext.getOut().write("</form>");
-		} catch (final IOException e) {
-			throw new JspException(e);
-		}
-		return EVAL_PAGE;
-	}
-
-	@Override
-	public void release() {
-		linkSupport.release();
+	private void reset() {
+		linkSupport.clear();
 		attrs.clear();
 		value = null;
 		formWrapper = null;
-		super.release();
 	}
 
 	/**
