@@ -16,7 +16,6 @@
 package org.seasar.cubby.tags;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 
 import javax.servlet.jsp.JspException;
@@ -42,7 +41,7 @@ abstract class AbstractStandardTagTestCase extends AbstractTagTestCase {
 		if (tag instanceof BodyTag) {
 			BodyTag bodyTag = (BodyTag) tag;
 			if (reuslt == BodyTag.EVAL_BODY_BUFFERED) {
-				BodyContent bodyContent = (MockBodyContent) context.pushBody();
+				BodyContent bodyContent = context.pushBody();
 				bodyTag.setBodyContent(bodyContent);
 			}
 			bodyTag.doInitBody();
@@ -62,7 +61,7 @@ abstract class AbstractStandardTagTestCase extends AbstractTagTestCase {
 					}
 				}
 			}
-			jspBody.invoke(new StringWriter());
+			jspBody.invoke(context.getOut());
 			bodyTag.doAfterBody();
 			if (reuslt == BodyTag.EVAL_BODY_BUFFERED) {
 				context.popBody();

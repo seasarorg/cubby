@@ -19,13 +19,16 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
-import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.JspFragment;
+import javax.servlet.jsp.tagext.BodyContent;
+import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.DynamicAttributes;
 
 /**
  * 指定されたアクションクラス、アクションメソッドへリンクする URL を特定の属性にもつタグを出力するカスタムタグです。
@@ -33,7 +36,14 @@ import javax.servlet.jsp.tagext.JspFragment;
  * @author baba
  * @since 1.1.0
  */
-public class LinkTag extends DynamicAttributesTagSupport implements ParamParent {
+public class LinkTag extends BodyTagSupport implements DynamicAttributes,
+		ParamParent {
+
+	/** シリアルバージョン UID */
+	private static final long serialVersionUID = 1L;
+
+	/** DynamicAttributes */
+	private final Map<String, Object> attrs = new HashMap<String, Object>();
 
 	/** リンクの補助クラス。 */
 	private final LinkSupport linkSupport = new LinkSupport();
@@ -46,6 +56,14 @@ public class LinkTag extends DynamicAttributesTagSupport implements ParamParent 
 
 	/** 出力する URL を {@link HttpServletResponse#encodeURL(String)} でエンコードするか。 */
 	private boolean encodeURL = true;
+
+	/**
+	 * {@inheritDoc} DynamicAttributeをセットします。
+	 */
+	public void setDynamicAttribute(final String uri, final String localName,
+			final Object value) throws JspException {
+		this.attrs.put(localName, value);
+	}
 
 	/**
 	 * 出力するタグを設定します。
@@ -94,7 +112,7 @@ public class LinkTag extends DynamicAttributesTagSupport implements ParamParent 
 	 *            出力する URL を {@link HttpServletResponse#encodeURL(String)}
 	 *            でエンコードする場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
-	public void setEncodeURL(boolean encodeURL) {
+	public void setEncodeURL(final boolean encodeURL) {
 		this.encodeURL = encodeURL;
 	}
 
@@ -114,44 +132,65 @@ public class LinkTag extends DynamicAttributesTagSupport implements ParamParent 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doTag() throws JspException, IOException {
-		final String body;
-		final JspFragment jspBody = this.getJspBody();
-		if (jspBody != null) {
-			final StringWriter writer = new StringWriter();
-			jspBody.invoke(writer);
-			body = writer.toString();
-		} else {
-			body = "";
-		}
+	public int doStartTag() throws JspException {
+		return EVAL_BODY_BUFFERED;
+	}
 
-		final String contextPath = (String) getJspContext().getAttribute(
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int doEndTag() throws JspException {
+		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		final String url;
 		if (encodeURL) {
-			final HttpServletResponse response = (HttpServletResponse) getPageContext()
+			final HttpServletResponse response = (HttpServletResponse) pageContext
 					.getResponse();
 			url = response.encodeURL(contextPath + linkSupport.getPath());
 		} else {
 			url = contextPath + linkSupport.getPath();
 		}
 
-		final JspWriter out = getJspContext().getOut();
-		if (tag == null) {
-			out.write(url);
-			out.write(body);
-		} else {
-			getDynamicAttribute().put(attr, url);
-			out.write("<");
-			out.write(tag);
-			out.write(" ");
-			out.write(toAttr(getDynamicAttribute()));
-			out.write(">");
-			out.write(body);
-			out.write("</");
-			out.write(tag);
-			out.write(">");
+		try {
+			final JspWriter out = pageContext.getOut();
+			if (tag == null) {
+				out.write(url);
+				final BodyContent bodyContent = getBodyContent();
+				if (bodyContent != null) {
+					bodyContent.writeOut(out);
+				}
+			} else {
+				attrs.put(attr, url);
+				out.write("<");
+				out.write(tag);
+				out.write(" ");
+				out.write(toAttr(attrs));
+				out.write(">");
+				final BodyContent bodyContent = getBodyContent();
+				if (bodyContent != null) {
+					bodyContent.writeOut(out);
+				}
+				out.write("</");
+				out.write(tag);
+				out.write(">");
+			}
+		} catch (final IOException e) {
+			throw new JspException(e);
 		}
+		reset();
+		return EVAL_PAGE;
+	}
+
+	/**
+	 * このタグをリセットします。
+	 */
+	private void reset() {
+		linkSupport.clear();
+		attrs.clear();
+		tag = null;
+		attr = null;
+		encodeURL = true;
 	}
 
 }

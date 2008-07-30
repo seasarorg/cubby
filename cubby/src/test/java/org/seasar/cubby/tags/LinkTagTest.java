@@ -15,12 +15,16 @@
  */
 package org.seasar.cubby.tags;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.JspTag;
 
 import org.jdom.Element;
 import org.seasar.cubby.CubbyConstants;
 
-public class LinkTagTest extends SimpleTagTestCase {
+public class LinkTagTest extends AbstractStandardTagTestCase {
 
 	private LinkTag tag;
 
@@ -29,7 +33,8 @@ public class LinkTagTest extends SimpleTagTestCase {
 		include(getClass().getName().replace('.', '/') + ".dicon");
 		super.setUp();
 		tag = new LinkTag();
-		setupSimpleTag(tag);
+		setupBodyTag(tag);
+		setupErrors(context);
 		context.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/brabra",
 				PageContext.REQUEST_SCOPE);
 	}
@@ -37,7 +42,7 @@ public class LinkTagTest extends SimpleTagTestCase {
 	public void testDoTag() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("foo");
-		tag.doTag();
+		doLifecycle(tag);
 
 		System.out.println(context.getResult());
 
@@ -48,19 +53,19 @@ public class LinkTagTest extends SimpleTagTestCase {
 	public void testDoTagWithParam() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("bar");
-		ParamTag paramTag1 = new ParamTag();
-		paramTag1.setParent(tag);
-		paramTag1.setName("id");
-		paramTag1.setValue("123");
-		setupSimpleTag(paramTag1);
-		ParamTag paramTag2 = new ParamTag();
-		paramTag2.setParent(tag);
-		paramTag2.setName("token");
-		paramTag2.setValue("abc");
-		setupSimpleTag(paramTag2);
-		jspBody.addChild(paramTag1);
-		jspBody.addChild(paramTag2);
-		tag.doTag();
+		doLifecycle(tag, new ChildrenFactory() {
+			public List<JspTag> create() {
+				ParamTag paramTag1 = new ParamTag();
+				paramTag1.setParent(tag);
+				paramTag1.setName("id");
+				paramTag1.setValue("123");
+				ParamTag paramTag2 = new ParamTag();
+				paramTag2.setParent(tag);
+				paramTag2.setName("token");
+				paramTag2.setValue("abc");
+				return Arrays.asList(new JspTag[] { paramTag1, paramTag2 });
+			}
+		});
 
 		System.out.println(context.getResult());
 
@@ -75,7 +80,7 @@ public class LinkTagTest extends SimpleTagTestCase {
 		tag.setTag("a");
 		tag.setAttr("href");
 		jspBody.setBody("body");
-		tag.doTag();
+		doLifecycle(tag);
 
 		System.out.println(context.getResult());
 
@@ -94,19 +99,19 @@ public class LinkTagTest extends SimpleTagTestCase {
 		tag.setActionMethod("bar");
 		tag.setTag("img");
 		tag.setAttr("src");
-		ParamTag paramTag1 = new ParamTag();
-		paramTag1.setParent(tag);
-		paramTag1.setName("id");
-		paramTag1.setValue("123");
-		setupSimpleTag(paramTag1);
-		ParamTag paramTag2 = new ParamTag();
-		paramTag2.setParent(tag);
-		paramTag2.setName("token");
-		paramTag2.setValue("abc");
-		setupSimpleTag(paramTag2);
-		jspBody.addChild(paramTag1);
-		jspBody.addChild(paramTag2);
-		tag.doTag();
+		doLifecycle(tag, new ChildrenFactory() {
+			public List<JspTag> create() {
+				ParamTag paramTag1 = new ParamTag();
+				paramTag1.setParent(tag);
+				paramTag1.setName("id");
+				paramTag1.setValue("123");
+				ParamTag paramTag2 = new ParamTag();
+				paramTag2.setParent(tag);
+				paramTag2.setName("token");
+				paramTag2.setValue("abc");
+				return Arrays.asList(new JspTag[] { paramTag1, paramTag2 });
+			}
+		});
 
 		System.out.println(context.getResult());
 
