@@ -123,6 +123,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.examples.todo.entity.User;
 
 @Path("todo/login")
@@ -132,8 +133,8 @@ public class LoginAction extends Action {
   // サンプルではPropertyInterTypeを使用しているのでアクセサメソッドは自動生成されます。
 
   public Map<String, Object> sessionScope;
-  public String userId;
-  public String password;
+  public @RequestParameter String userId;
+  public @RequestParameter String password;
 
   // ----------------------------------------------[Action Method]
 
@@ -514,11 +515,11 @@ public class TodoAction extends Action {
 
   // ----------------------------------------------[Attribute]
 
-  public Integer id;
-  public String text;
-  public String memo;
-  public Integer typeId;
-  public String limitDate;
+  public @RequestParameter Integer id;
+  public @RequestParameter String text;
+  public @RequestParameter String memo;
+  public @RequestParameter Integer typeId;
+  public @RequestParameter String limitDate;
   public TodoType todoType;
 
   // ----------------------------------------------[Action Method]
