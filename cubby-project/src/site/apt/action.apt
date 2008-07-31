@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-03-01
+  2008-07-31
   --------
 
 {目次}
@@ -16,6 +16,8 @@
   *{{{#アクションクラス}アクションクラス}}
 
   *{{{#アクションメソッド}アクションメソッド}}
+
+  *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
 
   *{{{#ActionResult}ActionResult}}
 
@@ -68,15 +70,17 @@
   のインスタンスが格納されます。
 
   そして、上記の Map をフォームオブジェクトへバインドします。\
-  デフォルトではアクションのプロパティのうち、@RequestParameter がついたプロパティに同名のリクエストパラメータをバインドします。\
+  デフォルトではアクションのプロパティのうち、
+  {{{cubby/apidocs/org/seasar/cubby/action/RequestParameter}@RequestParameter}}
+  がついたプロパティに同名のリクエストパラメータをバインドします。\
   {{{cubby/apidocs/org/seasar/cubby/action/Form.html#bindingType()}@Form#bindingType}}
   でバインディングの方法を指定することで、以下の挙動から選択することができます。
 
-  * 全プロパティをバインド対象とする (ALL_PROPERTIES)
+  * 全プロパティをバインド対象とする ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#ALL_PROPERTIES}ALL_PROPERTIES)}})
 
-  * @RequestParameter がついたプロパティをバインド対象とする (ONLY_SPECIFIED_PROPERTIES)
+  * {{{cubby/apidocs/org/seasar/cubby/action/RequestParameter}@RequestParameter}} がついたプロパティをバインド対象とする ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#ONLY_SPECIFIED_PROPERTIES}ONLY_SPECIFIED_PROPERTIES)}})
 
-  * バインドしない (NONE)
+  * バインドしない ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#NONE}NONE)}})
 
   * {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}} で修飾して bindingType を指定しない場合は ALL_PROPERTIES と同様に全プロパティをバインド対象とする
 
