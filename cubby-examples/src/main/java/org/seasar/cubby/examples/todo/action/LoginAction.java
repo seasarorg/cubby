@@ -15,9 +15,10 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
+
 import java.util.Map;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
