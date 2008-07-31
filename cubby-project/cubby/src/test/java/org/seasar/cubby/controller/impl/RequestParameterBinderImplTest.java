@@ -421,7 +421,7 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertEquals("QQ", new String(getBytes(dto.input), encoding));
 	}
 
-	public void testBindTypeDefault() {
+	public void testBindTypeNoAnnotated() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
@@ -431,6 +431,19 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertNotNull(dto.hasRequestParameter);
 		assertEquals("abc", dto.hasRequestParameter);
 		assertNull(dto.noRequestParameter);
+	}
+
+	public void testBindTypeNoBindingType() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("hasRequestParameter", new Object[] { "abc" });
+		map.put("noRequestParameter", new Object[] { "def" });
+		FormDto2 dto = new FormDto2();
+		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
+				MockAction.class, "noBindingType"));
+		assertNotNull(dto.hasRequestParameter);
+		assertEquals("abc", dto.hasRequestParameter);
+		assertNotNull(dto.noRequestParameter);
+		assertEquals("def", dto.noRequestParameter);
 	}
 
 	public void testBindTypeAllProperties() {
@@ -458,7 +471,7 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		assertNull(dto.noRequestParameter);
 	}
 
-	public void testBindTypeDefaultOnClass() {
+	public void testBindTypeNoAnnotatedOnClass() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
@@ -500,6 +513,11 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		@Form(bindingType = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
 		public ActionResult specified() {
+			return null;
+		}
+
+		@Form
+		public ActionResult noBindingType() {
 			return null;
 		}
 

@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES;
+import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,25 +24,9 @@ import java.lang.annotation.Target;
 
 /**
  * アクションメソッド呼び出し時にリクエストパラメータがバインドされるオブジェクトや方法を指定します。
- * <p>
- * このアノテーションをつけない場合の挙動が 1.0.x と 1.1.x で異なるのでご注意ください。 <table> <thead>
- * <tr>
- * <th>バージョン</th>
- * <th>バインド対象のオブジェクト</th>
- * <th>バインド対象のプロパティ</th>
- * </tr>
- * </thead> <tbody>
- * <tr>
- * <td>1.0.x</td>
- * <td>アクション</td>
- * <td>すべてのプロパティ</td>
- * <tr>
- * <td>1.1.x</td>
- * <td>アクション</td>
- * <td>&#64;RequestParameter で修飾されたプロパティ</td>
- * </tbody> </table>
- * </p>
  * 
+ * <p>
+ * この注釈によって、どのようにリクエストパラメータがバインドされるかが変わります。
  * <pre>
  * import static org.seasar.cubby.action.RequestParameterBindingType.*;
  * 
@@ -66,7 +50,8 @@ import java.lang.annotation.Target;
  * 	public ActionResult m03() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	// リクエストパラメータを barDto の全プロパティにバインドします。
+ *  // よく使用するパターンです。
  * 	&#064;Form(&quot;barDto&quot;)
  * 	public ActionResult m11() {
  * 	}
@@ -78,7 +63,6 @@ import java.lang.annotation.Target;
  * 	}
  * 
  * 	// リクエストパラメータを barDto の全プロパティにバインドします。
- *  // よく使用するパターンです。
  * 	&#064;Form(value = &quot;barDto&quot;,
  *             bindingType = ALL_PROPERTIES)
  * 	public ActionResult m13() {
@@ -89,7 +73,12 @@ import java.lang.annotation.Target;
  * 	public ActionResult m21() {
  * 	}
  * }
+ * </pre>
+ * </p>
  * 
+ * <p>
+ * クラスとメソッドの両方に注釈をつけた場合は、メソッドの注釈が優先されます。
+ * <pre>
  * &#064;Form(&quot;barDto&quot;)
  * // 全アクションメソッドに対して一括でバインディングの指定を行います。
  * public class Foo2Action {
@@ -108,7 +97,33 @@ import java.lang.annotation.Target;
  * 	}
  * }
  * </pre>
+ * </p>
  * 
+ * <p>
+ * このアノテーションをつけない場合の挙動が 1.0.x と 1.1.x で異なるのでご注意ください。
+ * <table>
+ * <thead>
+ * <tr>
+ * <th>バージョン</th>
+ * <th>バインド対象のオブジェクト</th>
+ * <th>バインド対象のプロパティ</th>
+ * </tr>
+ * </thead>
+ * <tbody>
+ * <tr>
+ * <td>1.0.x</td>
+ * <td>アクション</td>
+ * <td>すべてのプロパティ</td>
+ * </tr>
+ * <tr>
+ * <td>1.1.x</td>
+ * <td>アクション</td>
+ * <td>&#64;RequestParameter で修飾されたプロパティ</td>
+ * </tr>
+ * </tbody>
+ * </table>
+ * </p>
+ *
  * @author agata
  * @since 1.0.0
  * @see RequestParameter
@@ -144,6 +159,6 @@ public @interface Form {
 	 * 
 	 * @since 1.1.0
 	 */
-	RequestParameterBindingType bindingType() default ONLY_SPECIFIED_PROPERTIES;
+	RequestParameterBindingType bindingType() default ALL_PROPERTIES;
 
 }
