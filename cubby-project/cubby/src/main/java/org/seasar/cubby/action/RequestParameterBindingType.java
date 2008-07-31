@@ -24,13 +24,18 @@ package org.seasar.cubby.action;
 public enum RequestParameterBindingType {
 
 	/**
-	 * フォームオブジェクトの全プロパティをバインディング対象とします。
+	 * フォームオブジェクトの全プロパティをバインド対象とします。
 	 */
 	ALL_PROPERTIES,
 
 	/**
-	 * フォームオブジェクトのプロパティのうち、{@link RequestParameter}が指定されたメソッドのみをバインディング対象とします。
+	 * フォームオブジェクトのプロパティのうち、{@link RequestParameter}が指定されたメソッドのみをバインド対象とします。
 	 */
-	ONLY_SPECIFIED_PROPERTIES;
+	ONLY_SPECIFIED_PROPERTIES,
+
+	/**
+	 * バインディングを行いません。
+	 */
+	NONE;
 
 }

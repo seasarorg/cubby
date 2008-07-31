@@ -493,12 +493,12 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 	}
 
 	private class MockAction extends Action {
-		@Form(type = RequestParameterBindingType.ALL_PROPERTIES)
+		@Form(bindingType = RequestParameterBindingType.ALL_PROPERTIES)
 		public ActionResult all() {
 			return null;
 		}
 
-		@Form(type = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
+		@Form(bindingType = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
 		public ActionResult specified() {
 			return null;
 		}
@@ -508,9 +508,9 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		}
 	}
 
-	@Form(type = RequestParameterBindingType.ALL_PROPERTIES)
+	@Form(bindingType = RequestParameterBindingType.ALL_PROPERTIES)
 	private class MockAction2 extends Action {
-		@Form(type = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
+		@Form(bindingType = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
 		public ActionResult specified() {
 			return null;
 		}

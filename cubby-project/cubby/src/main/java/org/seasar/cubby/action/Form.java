@@ -23,31 +23,70 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * リクエストパラメータがバインディングされるオブジェクトを指定します。
+ * アクションメソッド呼び出し時にリクエストパラメータがバインドされるオブジェクトや方法を指定します。
+ * <p>
+ * このアノテーションをつけない場合の挙動が 1.0.x と 1.1.x で異なるのでご注意ください。 <table> <thead>
+ * <tr>
+ * <th>バージョン</th>
+ * <th>バインド対象のオブジェクト</th>
+ * <th>バインド対象のプロパティ</th>
+ * </tr>
+ * </thead> <tbody>
+ * <tr>
+ * <td>1.0.x</td>
+ * <td>アクション</td>
+ * <td>すべてのプロパティ</td>
+ * <tr>
+ * <td>1.1.x</td>
+ * <td>アクション</td>
+ * <td>&#64;RequestParameter で修飾されたプロパティ</td>
+ * </tbody> </table>
+ * </p>
  * 
  * <pre>
+ * import static org.seasar.cubby.action.RequestParameterBindingType.*;
+ * 
  * public class FooAction {
  * 
  * 	// コンテナの機能によって自動的にインジェクションされる想定です。
- * 	public BarDto BarDto;
+ * 	public BarDto barDto;
  * 
- * 	// -&gt; アクション自身(FooAction)のプロパティにバインディングします。
- * 	public ActionResult m1() {
+ * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティにバインドします。
+ *  // よく使用するパターンです。
+ * 	public ActionResult m01() {
  * 	}
  * 
- * 	// -&gt; アクション自身(FooAction)のプロパティにバインディングします。
- * 	&#064;Form
- * 	public ActionResult m2() {
+ * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	&#064;Form(bindingType = ONLY_SPECIFIED_PROPERTIES)
+ * 	public ActionResult m02() {
  * 	}
  * 
- * 	// barDto のプロパティにバインディングします。
+ * 	// -&gt; アクション(FooAction)の全プロパティにバインドします。
+ * 	&#064;Form(bindingType = ALL_PROPERTIES)
+ * 	public ActionResult m03() {
+ * 	}
+ * 
+ * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティにバインドします。
  * 	&#064;Form(&quot;barDto&quot;)
- * 	public ActionResult m3() {
+ * 	public ActionResult m11() {
  * 	}
  * 
- * 	// バインディングしません。
- * 	&#064;Form(binding = false)
- * 	public ActionResult m4() {
+ * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	&#064;Form(&quot;barDto&quot;
+ *             bindingType = ONLY_SPECIFIED_PROPERTIES)
+ * 	public ActionResult m12() {
+ * 	}
+ * 
+ * 	// リクエストパラメータを barDto の全プロパティにバインドします。
+ *  // よく使用するパターンです。
+ * 	&#064;Form(value = &quot;barDto&quot;,
+ *             bindingType = ALL_PROPERTIES)
+ * 	public ActionResult m13() {
+ * 	}
+ * 
+ * 	// リクエストパラメータをバインドしません。
+ * 	&#064;Form(bindingType = NONE)
+ * 	public ActionResult m21() {
  * 	}
  * }
  * 
@@ -59,19 +98,21 @@ import java.lang.annotation.Target;
  * 
  * 	public BazDto bazDto;
  * 
- * 	// barDto のプロパティにバインディングします (クラスでの指定が有効なため)。
- * 	public ActionResult m1() {
+ * 	// リクエストパラメータを barDto のプロパティにバインドします (クラスでの指定が有効なため)。
+ * 	public ActionResult m01() {
  * 	}
  * 
  * 	&#064;Form(&quot;bazDto&quot;)
- * 	// bazDto のプロパティにバインディングします（アクションメソッドでの指定が優先されるため）。
- * 	public ActionResult m2() {
+ * 	// リクエストパラメータを bazDto のプロパティにバインドします（アクションメソッドでの指定が優先されるため）。
+ * 	public ActionResult m02() {
  * 	}
  * }
  * </pre>
  * 
  * @author agata
  * @since 1.0.0
+ * @see RequestParameter
+ * @see RequestParameterBindingType
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
@@ -92,13 +133,17 @@ public @interface Form {
 	 * <p>
 	 * <code>false</code> が指定された場合はフォームオブジェクトへのバインディングを行いません。
 	 * </p>
+	 * 
+	 * @deprecated {@link RequestParameterBindingType#NONE} を使用するようにしてください。
 	 */
+	@Deprecated
 	boolean binding() default true;
 
 	/**
 	 * リクエストパラメータからフォームオブジェクトへのバインディング方法を指定します。
+	 * 
 	 * @since 1.1.0
 	 */
-	RequestParameterBindingType type() default ONLY_SPECIFIED_PROPERTIES;
+	RequestParameterBindingType bindingType() default ONLY_SPECIFIED_PROPERTIES;
 
 }

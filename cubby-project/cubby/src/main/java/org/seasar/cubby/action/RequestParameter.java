@@ -21,9 +21,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * リクエストパラメータのバインド対象であることを表す注釈です。
+ * <p>
+ * 以下のいずれかの場合に、この注釈で修飾されたプロパティがリクエストパラメータをバインドする対象になります。
+ * <ul>
+ * <li>アクションメソッド(またはクラス)が {@link Form} で修飾されていない</li>
+ * <li>アクションメソッド(またはクラス)が {@link Form} で修飾されていて、{@link Form#bindingType()} に
+ * {@link RequestParameterBindingType#ONLY_SPECIFIED_PROPERTIES} が指定されている</li>
+ * </ul>
+ * </p>
  * 
  * @author baba
  * @since 1.1.0
+ * @see Form
+ * @see RequestParameterBindingType
+ * @see RequestParameterBindingType#ONLY_SPECIFIED_PROPERTIES
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.FIELD })
