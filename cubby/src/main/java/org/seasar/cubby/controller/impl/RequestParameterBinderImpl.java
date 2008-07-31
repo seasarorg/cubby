@@ -236,7 +236,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			return false;
 		}
 
-		final RequestParameterBindingType type = form.type();
+		final RequestParameterBindingType type = form.bindingType();
 		switch (type) {
 		case ALL_PROPERTIES:
 			return true;

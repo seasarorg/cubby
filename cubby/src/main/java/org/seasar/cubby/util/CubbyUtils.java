@@ -18,6 +18,7 @@ package org.seasar.cubby.util;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Accept;
@@ -378,27 +379,32 @@ public class CubbyUtils {
 	 *             <code>null</code> だった場合
 	 * @since 1.0.2
 	 */
+	@SuppressWarnings("deprecation")
 	public static Object getFormBean(final Action action,
 			final Class<?> actionClass, final Method method) {
-		final Object formBean;
 		final Form form = getForm(actionClass, method);
-		if (form != null && !form.binding()) {
-			formBean = null;
-		} else {
-			if (form == null || Form.THIS.equals(form.value())) {
-				formBean = action;
-			} else {
-				final String propertyName = form.value();
-				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
-						.getClass());
-				final PropertyDesc propertyDesc = beanDesc
-						.getPropertyDesc(propertyName);
-				formBean = propertyDesc.getValue(action);
-				if (formBean == null) {
-					throw new ActionRuntimeException("ECUB0102",
-							new Object[] { propertyName });
-				}
-			}
+		if (form == null) {
+			return action;
+		}
+		if (!form.binding()) {
+			return null;
+		}
+		if (form.bindingType() == NONE) {
+			return null;
+		}
+		if (Form.THIS.equals(form.value())) {
+			return action;
+		}
+
+		final String propertyName = form.value();
+		final BeanDesc beanDesc = BeanDescFactory
+				.getBeanDesc(action.getClass());
+		final PropertyDesc propertyDesc = beanDesc
+				.getPropertyDesc(propertyName);
+		final Object formBean = propertyDesc.getValue(action);
+		if (formBean == null) {
+			throw new ActionRuntimeException("ECUB0102",
+					new Object[] { propertyName });
 		}
 		return formBean;
 	}
