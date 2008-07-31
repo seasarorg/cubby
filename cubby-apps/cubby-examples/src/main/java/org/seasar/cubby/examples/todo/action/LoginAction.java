@@ -17,6 +17,7 @@ package org.seasar.cubby.examples.todo.action;
 
 import java.util.Map;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
@@ -75,7 +76,7 @@ public class LoginAction extends Action {
 	/**
 	 * ログイン画面表示処理(/todo/login/)
 	 */
-	@Form(binding = false)
+	@Form(bindingType = NONE)
 	public ActionResult index() {
 		return new Forward("/todo/login.jsp");
 	}
@@ -103,7 +104,7 @@ public class LoginAction extends Action {
 	}
 
 	@Path("/todo/logout")
-	@Form(binding = false)
+	@Form(bindingType = NONE)
 	@InvalidateSession
 	public ActionResult logout() {
 		return new Redirect("/todo/login/");

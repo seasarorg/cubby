@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.examples.other.web.components;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +30,9 @@ import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
 
 public class ComponentsAction extends Action {
-	
+
 	// ----------------------------------------------[DI Filed]
-	
+
 	// ----------------------------------------------[Attribute]
 
 	public ValidationRules validation = new DefaultValidationRules() {
@@ -59,15 +57,15 @@ public class ComponentsAction extends Action {
 		hobbies = getHobbies();
 		colors = getColors();
 	}
-	
-	@Form(value = "formDto", type = ALL_PROPERTIES)
-	@Validation(rules="validation", errorPage="components.jsp")
+
+	@Form(value = "formDto")
+	@Validation(rules = "validation", errorPage = "components.jsp")
 	public ActionResult index() {
 		return new Forward("components.jsp");
 	}
 
 	// ----------------------------------------------[Helper Method]
-	
+
 	private java.util.List<Hobby> getHobbies() {
 		Hobby h1 = new Hobby();
 		h1.name = "料理";
