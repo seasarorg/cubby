@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
+
 import java.util.List;
 
 import org.seasar.cubby.action.Action;
@@ -123,7 +125,7 @@ public class TodoAction extends Action {
 	/**
 	 * 編集画面に戻る処理(/todo/confirm_back)
 	 */
-	@Form(binding = false)
+	@Form(bindingType = NONE)
 	public ActionResult confirm_back() {
 		return new Forward("edit.jsp");
 	}

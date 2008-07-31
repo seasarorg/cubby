@@ -18,7 +18,6 @@ package org.seasar.cubby.examples.todo.action;
 import java.text.DateFormat;
 import java.util.List;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
@@ -72,7 +71,7 @@ public class TodoListAction extends Action {
 	/**
 	 * 一覧の表示(/todo/)
 	 */
-	@Form(value = "todoConditionDto", type = ALL_PROPERTIES)
+	@Form(value = "todoConditionDto")
 	@Validation(rules = "validation", errorPage = "list.jsp")
 	public ActionResult index() {
 		this.todoList = todoDao.selectByCondition(todoConditionDto);

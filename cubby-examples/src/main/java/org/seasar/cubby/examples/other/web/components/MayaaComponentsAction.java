@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.examples.other.web.components;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.ALL_PROPERTIES;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,15 +59,15 @@ public class MayaaComponentsAction extends Action {
 		hobbies = getHobbies();
 		colors = getColors();
 	}
-	
-	@Form(value = "formDto", type = ALL_PROPERTIES)
-	@Validation(rules="validation", errorPage="components.html")
+
+	@Form(value = "formDto")
+	@Validation(rules = "validation", errorPage = "components.html")
 	public ActionResult components() {
 		return new Forward("components.html");
 	}
 
 	// ----------------------------------------------[Helper Method]
-	
+
 	private java.util.List<Hobby> getHobbies() {
 		Hobby h1 = new Hobby();
 		h1.name = "料理";
