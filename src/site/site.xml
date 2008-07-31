@@ -101,6 +101,7 @@
 				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 			</item>
+			<item name="移行ガイド" href="/migration.html" />
 			<item name="リンク集" href="/link.html" collapse="true">
 				<item name="Servlet/JSP" href="/link.html#ServletJSP" />
 				<item name="Maven2" href="/link.html#Maven2" />
