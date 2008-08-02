@@ -28,7 +28,8 @@ import org.seasar.framework.util.StringUtil;
  * JSON 形式のレスポンスを返す {@link ActionResult} です。
  * <p>
  * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP
- * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。
+ * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。 JavaBean/
+ * {@link Map}/配列/{@link Collection}などがコンストラクタに渡すことができます。
  * </p>
  * <p>
  * 使用例1 : JSON 形式のレスポンスを返す
@@ -48,12 +49,23 @@ import org.seasar.framework.util.StringUtil;
  * </pre>
  * 
  * </p>
+ * <p>
+ * 使用例3 : コンテントタイプと文字コードを指定して JSON 形式のレスポンスを返す。<br>
+ * セットされるコンテントタイプは"text/javascript+json; charset=Shift_JIS"になります。
  * 
- * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)</a>
+ * <pre>
+ * MyBean bean = ...;
+ * return new Json(bean).contentType(&quot;text/javascript+json&quot;).encoding(&quot;Shift_JIS&quot;);
+ * </pre>
+ * 
+ * </p>
+ * 
+ * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)< /a>
  * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON
- *      with Padding)</a>
+ *      * with Padding)< /a>
  * @see JSONSerializer#serialize(Object)
  * @author baba
+ * @author agata
  * @since 1.0.0
  */
 public class Json extends AbstractActionResult {
@@ -61,6 +73,10 @@ public class Json extends AbstractActionResult {
 	private Object bean;
 
 	private String calllback;
+
+	private String contentType = "text/javascript";
+
+	private String encoding = "utf-8";
 
 	/**
 	 * JSON 形式でレスポンスを返すインスタンスを生成します。
@@ -104,13 +120,59 @@ public class Json extends AbstractActionResult {
 	}
 
 	/**
+	 * コンテントタイプをセットします。
+	 * 
+	 * @param contentType
+	 *            コンテントタイプ。(例："text/javascript+json")
+	 * @return {@link Json}
+	 */
+	public Json contentType(String contentType) {
+		this.contentType = contentType;
+		return this;
+	}
+
+	/**
+	 * コンテントタイプを取得します。
+	 * 
+	 * @return コンテントタイプ
+	 */
+	public String getContentType() {
+		return this.contentType;
+	}
+
+	/**
+	 * エンコーディングをセットします。
+	 * <p>
+	 * セットされたエンコーディングはコンテントタイプのcharsetとして使用されます。
+	 * </p>
+	 * 
+	 * @param encoding
+	 *            エンコーディング。　（例："Shift_JIS" ）
+	 * @return {@link Json}
+	 */
+	public Json encoding(String encoding) {
+		this.encoding = encoding;
+		return this;
+	}
+
+	/**
+	 * エンコーディングを取得します。
+	 * 
+	 * @return エンコーディング
+	 */
+	public String getEncoding() {
+		return this.encoding;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public void execute(final ActionContext context,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
-
-		response.setContentType("text/javascript; charset=utf-8");
+		response.setCharacterEncoding(this.encoding);
+		response
+				.setContentType(this.contentType + "; charset=" + this.encoding);
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
@@ -141,5 +203,4 @@ public class Json extends AbstractActionResult {
 		builder.append(");");
 		return builder.toString();
 	}
-
 }
