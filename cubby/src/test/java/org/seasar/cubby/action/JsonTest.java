@@ -17,6 +17,9 @@ package org.seasar.cubby.action;
 
 import java.lang.reflect.Method;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.Scriptable;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
@@ -31,9 +34,13 @@ public class JsonTest extends S2TestCase {
 		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
 		Json json = createBean();
-		json.execute(action, MockAction.class, method , request, response);
-		assertEquals("text/javascript; charset=utf-8", response.getContentType());
-		assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
+		json.execute(action, MockAction.class, method, request, response);
+		assertEquals("text/javascript; charset=utf-8", response
+				.getContentType());
+		// assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
+		Hoge result = evaluate(response.getResponseString());
+		assertEquals("カビー", result.getName());
+		assertEquals(new Integer(30), result.getAge());
 	}
 
 	public void testExecuteWithContentTypeAndEncoding() throws Exception {
@@ -42,12 +49,17 @@ public class JsonTest extends S2TestCase {
 		MockHttpServletResponse response = this.getResponse();
 		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
-		Json json = createBean().contentType("text/javascript+json").encoding("Shift_JIS");
-		json.execute(action, MockAction.class, method , request, response);
+		Json json = createBean().contentType("text/javascript+json").encoding(
+				"Shift_JIS");
+		json.execute(action, MockAction.class, method, request, response);
 		assertEquals("text/javascript+json", json.getContentType());
 		assertEquals("Shift_JIS", json.getEncoding());
-		assertEquals("text/javascript+json; charset=Shift_JIS", response.getContentType());
-		assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
+		assertEquals("text/javascript+json; charset=Shift_JIS", response
+				.getContentType());
+		// assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
+		Hoge result = evaluate(response.getResponseString());
+		assertEquals("カビー", result.getName());
+		assertEquals(new Integer(30), result.getAge());
 	}
 
 	private Json createBean() {
@@ -58,20 +70,38 @@ public class JsonTest extends S2TestCase {
 		return json;
 	}
 
+	private static Hoge evaluate(String responseString) {
+		ContextFactory contextFactory = new ContextFactory();
+		Context context = contextFactory.enterContext();
+		Scriptable scope = context.initStandardObjects();
+		Hoge result = new Hoge();
+		scope.put("result", scope, result);
+		String source = "var data = eval(" + responseString + ");"
+				+ "result.name = data.name;" + "result.age = data.age";
+		context.evaluateString(scope, source, null, 0, null);
+		Context.exit();
+		return result;
+	}
+
 	public static class Hoge {
 		private String name;
 		private Integer age;
+
 		public String getName() {
 			return name;
 		}
+
 		public void setName(String name) {
 			this.name = name;
 		}
+
 		public Integer getAge() {
 			return age;
 		}
+
 		public void setAge(Integer age) {
 			this.age = age;
 		}
 	}
+
 }
