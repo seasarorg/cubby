@@ -283,7 +283,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 * @return 内部フォワードパス
 	 */
 	@Deprecated
-	@SuppressWarnings( { "unchecked", "deprecation" })
+	@SuppressWarnings( { "unchecked" })
 	protected String routing(final String orginalPath) {
 		final MockHttpServletRequest originalRequest = this.getServletContext()
 				.createRequest(orginalPath);
