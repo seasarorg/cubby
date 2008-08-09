@@ -65,12 +65,19 @@ public class CubbyAdminServlet extends HttpServlet {
 			final HttpServletResponse response) throws ServletException,
 			IOException {
 		final String remoteAddr = request.getRemoteAddr();
-		if (!remoteAddr.equals("127.0.0.1")) {
+		if (!isLoopBackAddress(remoteAddr)) {
 			return;
 		}
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		render(request, response);
+	}
+
+	private boolean isLoopBackAddress(final String remoteAddr) {
+		// NOTE:
+		// MacOSX 10.5 + Tomcat 6ではループバックアドレスが
+		// 「0:0:0:0:0:0:0:1%0」となるため、startWithを使い判定を行う
+		return remoteAddr.equals("127.0.0.1") || remoteAddr.startsWith("0:0:0:0:0:0:0:1");
 	}
 
 	private void render(final HttpServletRequest request,
