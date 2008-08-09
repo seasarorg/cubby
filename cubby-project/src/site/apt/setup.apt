@@ -1,0 +1,562 @@
+  --------
+  セットアップ
+  --------
+  baba
+  --------
+  2008-05-31
+  --------
+
+{目次}
+
+ *{{{#前提}前提}}
+
+ *{{{#プロジェクトの作成}プロジェクトの作成}}
+
+  *{{{#Maven2_によるプロジェクトの雛形作成}Maven2 によるプロジェクトの雛形作成}}
+
+  *{{{#Tomcat_の起動}Tomcat の起動}}
+
+  *{{{#Eclipse_を使った開発}Eclipse を使った開発}}
+
+ *{{{#各種ファイル}各種ファイル}}
+
+  *{{{#必要なライブラリ_WEB-INFlib}必要なライブラリ (WEB-INF/lib)}}
+
+  *{{{#デプロイメント記述子_WEB-INFweb.xml}デプロイメント記述子 (WEB-INF/web.xml)}}
+
+  *{{{#diconファイル_WEB-INFclasses}diconファイル (WEB-INF/classes)}}
+
+  *{{{#プロパティファイル_WEB-INFclasses}プロパティファイル (WEB-INF/classes)}}
+
+{前提}
+
+ Cubby は S2Container2.4 の {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy}SMART Deploy}} 環境下で動作させることを前提としています。
+ ソースコードのパッケージ構成は {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage}SMART Deploy 推奨のパッケージ構成}}としてください。\
+ また、Cubby を 初めて利用される方は一度サンプル war を{{{download.html}ダウンロード}}して動かしながら、Cubbyのドキュメントとサンプルのソースを確認しながら学習するとよいでしょう。
+
+[]
+
+{プロジェクトの作成}
+
+ Cubby は {{{http://maven.apache.org/}Maven2}} の {{{http://maven.apache.org/plugins/maven-archetype-plugin/}archetype コンテナ}}を用意していますので、これを使用してプロジェクトの雛形を作成することをおすすめします。
+ データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。
+ Maven2についての技術情報は、{{{link.html#Maven2}リンク集}}をご覧ください。
+
+*{Maven2 によるプロジェクトの雛形作成}
+
+~~ Maven2 のインストール後、以下のいずれかの方法でプロジェクトの雛形を作成します。
+~~
+~~ [[1]] 作成するプロジェクトの情報をコマンドのオプションで指定する
+~~
+~~+------------------------------------------------------+
+~~mvn archetype:generate \
+~~-DgroupId=(作成するプロジェクトのグループID 例 : com.example.foo) \
+~~-DartifactId=(作成するプロジェクトのアーティファクトID 例 : barapp) \
+~~-Dversion=(作成するプロジェクトのバージョン 例 : 1.0-SNAPSHOT) \
+~~-DarchetypeGroupId=org.seasar.cubby \
+~~-DarchetypeArtifactId=cubby-archetype \
+~~-DarchetypeVersion=(Cubby Archetype PluginのバージョンでCubbyのバージョンと連動しています。 例：1.0.0) \
+~~-DarchetypeRepository=http://maven.seasar.org/maven2/
+~~(実際には1行で入力してください)
+~~+------------------------------------------------------+
+~~
+~~ [[2]] 作成するプロジェクトの情報をインタラクティブに指定する
+
+ Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。\
+ (ここで使用する mvn archetype:generate の実行には Maven 2.0.7 以降が必要です。)
+
+   まずは以下のコマンドを入力してください。
+
++------------------------------------------------------+
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
++------------------------------------------------------+
+
+   コマンド入力後、いくつかの質問に回答していきます。
+
++------------------------------------------------------+
+Choose archetype:
+1: remote -> cubby-archetype (Cubby 1.0.0)
+Choose a number:  (1):
++------------------------------------------------------+
+
+   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。
+
++------------------------------------------------------+
+Define value for groupId: :
++------------------------------------------------------+
+
+   作成するプロジェクトのグループIDを入力してください。 例 : com.example.foo
+
++------------------------------------------------------+
+Define value for artifactId: :
++------------------------------------------------------+
+
+   作成するプロジェクトのアーティファクトIDを入力してください。 例 : barapp
+
++------------------------------------------------------+
+Define value for version: :
++------------------------------------------------------+
+
+   作成するプロジェクトのバージョンを入力してください。 例 : 1.0-SNAPSHOT
+
++------------------------------------------------------+
+Define value for package: :
++------------------------------------------------------+
+
+   作成するプロジェクトのパッケージを入力してください。 例 : com.example.foo.barapp
+
++------------------------------------------------------+
+Confirm properties configuration:
+groupId: com.example.foo
+artifactId: barapp
+version: 1.0-SNAPSHOT
+package: com.example.foo.barapp
+ Y: :
++------------------------------------------------------+
+
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。
+
+*{Tomcat の起動}
+
+ プロジェクトのディレクトリで以下のコマンドを実行すると Tomcat が起動し、ブラウザで「http://localhost:8080/(アーティファクトID)/」にアクセスすることで、雛形アプリケーションの動作を確認できます。
+
++------------------------------------------------------+
+mvn tomcat:run
++------------------------------------------------------+
+
+ Mayaaを使用する場合は依存する jarファイルを「src/main/webapps/WEB-INF」以下に配備する必要があります。
+ プロジェクトのディレクトリで以下のコマンドを実行し、jarファイルを配備してからTomcatを実行してください。
+ (EclipseからWTP等で実行する場合は不要です)
+
++------------------------------------------------------+
+mvn war:inplace
++------------------------------------------------------+
+
+*{Eclipse を使った開発}
+
+**プロジェクトの設定
+
+ プロジェクトを Eclipse で開発する場合は、Maven2 で Eclipse のワークスペースやプロジェクトを設定します。
+
+ [[1]]ワークスペースのクラスパス変数
+
+      Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。
+      以下のコマンドを実行してください。
+      この作業はワークスペースごとに１度行えば、次回からは必要ありません。
+
++------------------------------------------------------+
+mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディレクトリ 例 "C:/eclipse/workspace")
++------------------------------------------------------+
+
+ [[2]]プロジェクト設定ファイル
+
+      プロジェクトに .project や .classpath などといった Eclipse プロジェクトの設定ファイルを作成します。\
+      プロジェクトのディレクトリに移動して以下のコマンドを実行してください。
+
++------------------------------------------------------+
+mvn eclipse:eclipse -DdownloadSources=true
++------------------------------------------------------+
+
+      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。\
+      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。\
+      eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。
+
+ [[3]]プロジェクトのインポート
+
+      プロジェクトを Eclipse のワークスペースへインポートします。
+
+      [[1]]File(ファイル)メニュー → Import(インポート)を選択します。
+
+      [[2]]General(共通) → Existing Project Into Workspace (既存プロジェクトをワークスペースへ) を選択します。
+
+      [[3]]Select root directory(ルートディレクトリの選択)でプロジェクトのルートディレクトリを指定します。
+
+      [[4]]Finish(終了)を押します。
+
+      []
+
+      プロジェクトがインポートされます。
+
+ [[4]]WTPのServer設定
+
+      WTPのServer設定が行われていない場合、以下の手順でServerとしてTomcat 5.5(or 6.0)を設定します。
+
+      [[1]]Window(ウィンドウ)メニュー → Show View(ビューの表示) → Other...(その他)を選択します。
+
+      [[2]]Server → Serversを選択 → OK。Serversビューが表示されます。
+
+      [[3]]Serversビューの上で右クリック → New → Server を選択。
+      
+      [[4]]Apache → Tomcat v5.5 Serverを選択 → Nextを選択。
+
+      [[5]]Tomcat installation directoryでTomcatのルートディレクトリを選択 → Nextを選択。
+
+      [[6]]「cubby-examples-hello」プロジェクトをConfigred ProjectにAdd。
+      
+      [[7]]Finishを選択。
+      
+      []
+
+      ServerビューにTomcatが追加されます。
+
+ [[5]]WTPからTomcatを起動する。
+ 
+      [[1]]ServersビューのTomcatを選択して、右クリック → Startを選択。
+      
+      []
+
+      Tomcatが起動して、ログがコンソールに出力されます。
+
+ [[6]]WTP環境でHotDeployの設定を有効にする。 
+
+      {{{http://d.hatena.ne.jp/uriyuri/20080328/1206694040}http://d.hatena.ne.jp/uriyuri/20080328/1206694040}}の設定を行うことで、
+      WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。
+
+[]
+
+**コードテンプレート
+
+  以下のコードテンプレート設定を Eclipse にインポートすることで「アクションメソッドのコード雛形作成」「バリデーションフィールドのコード雛形作成」が行えます。 
+
+  [[1]]コードテンプレート定義ファイル「{{{./eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml}cubby-eclipse-code-templates-1.0.0.xml}}」をダウンロードします。
+
+  [[2]]Eclipse の設定を開きます。(Windowsなら「ウインドウ(Window)->設定(Preference)」、MacOSXなら「Eclipse」->設定(Preference)」)
+
+  [[3]]「Java->エディタ(Editor)->テンプレート(Templates)」を選択し、「インポート(Import)」ボタンをクリックします。
+
+  [[4]]1.でダウンロードしたコードテンプレート定義ファイルを選択します。
+
+  [[5]]以下のコードテンプレートによるコード補完が Java エディタ上で使用できるようになります。「cu」と入力して「コントロールキー＋スペースキー」を押してみてください。
+
+*------------------------*------------------------------------*
+| 補完名                 | 内容                               |
+*------------------------*------------------------------------*
+| cubby_action_method    | アクションメソッドの雛形作成       |
+*------------------------*------------------------------------*
+| cubby_validation_field | バリデーションフィールドの雛形作成 |
+*------------------------*------------------------------------*
+コードテンプレート
+
+[]
+
+{各種ファイル}
+
+ ディレクトリに配備する必要があるファイルを説明します。
+ Maven2 を使わずにプロジェクトを作成するときも参考にしてください。
+
+*{必要なライブラリ (WEB-INF/lib)}
+
+ {{{cubby/dependencies.html}依存関係}}を参照してください。
+ WEB-INF/lib 以下に配備します。
+
+ 主な依存ライブラリを以下にあげます。
+
+ * cubby-*.jar
+
+   Cubby 本体です。
+
+ * s2-framework-*.jar、s2-extension-*.jar、s2-tiger-*.jar
+
+   Seasar2 です。Cubby1.0.0-RC2以降ではs2-2.4.22以降を使用する必要があります。
+
+*-----------*-------------*
+| Cubby     | Seasar2     |
+*-----------*-------------*
+| 1.0.0     | 2.4.22以上  |
+*-----------*-------------*
+| 1.0.0-RC2 | 2.4.22以上  |
+*-----------*-------------*
+| 1.0.0-RC1 | 2.4.21      |
+*-----------*-------------*
+| 0.9.2     | 2.4.17      |
+*-----------*-------------*
+CubbyとSeasar2のバージョンの推奨の組み合わせ
+
+ * commons-fileupload-*.jar、commons-io-*.jar
+
+   ファイルアップロード機能で使用されます。
+
+*{デプロイメント記述子 (WEB-INF/web.xml)}
+
+ Cubby はサーブレットフィルタとして動作します。
+ web.xml にサーブレットフィルタとフィルタマッピングを追加します。
+ 登録する際は以下の順序で登録してください。
+
+ [[1]]SendErrorFilter (任意)
+
+      \*.jsp ファイルなど、直接アクセスされたくないファイルへのアクセスを制御するフィルターです。\
+      この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>sendErrorFilter</filter-name>
+        <filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
+        <init-param>
+            <param-name>statusCode</param-name>
+            <param-value>404</param-value>
+        </init-param>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>sendErrorFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+ [[2]]S2ContainerFilter (必須)
+
+      Cubby 内部では{{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>s2Filter</filter-name>
+        <filter-class>org.seasar.framework.container.filter.S2ContainerFilter</filter-class>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>s2Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+ [[3]]HotdeployFilter
+
+      {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy}Hot deploy}} を使用する場合は HotdeployFilter を定義します。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>hotdeployFilter</filter-name>
+        <filter-class>org.seasar.framework.container.hotdeploy.HotdeployFilter</filter-class>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>hotdeployFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+ [[4]]RequestRoutingFilter (必須)
+
+      リクエストされた URL から、以下で述べる RequestRoutingFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。
+      このマッピングはアクションクラスに @Path アノテーションをつけることで変更できます。
+
+      また、処理の対象外とする URL を ignorePathPattern で指定できます。
+      Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
+      対象外にするパスを正規表現のカンマ区切りで指定してください。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>requestRoutingFilter</filter-name>
+        <filter-class>org.seasar.cubby.filter.RequestRoutingFilter</filter-class>
+        <init-param>
+            <param-name>ignorePathPattern</param-name>
+            <param-value>/css/.*,/js/.*,/img/.*</param-value>
+        </init-param>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>requestRoutingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+ [[5]]CubbyFilter (必須)
+
+      Cubby の主な処理を行うフィルタです。
+      リクエストされた URL をパースしてアクションメソッドを起動します。
+
+      たとえば、以下のURLならば
+      > http://(ホスト)/(コンテキストパス)/aaa/bbb/ccc
+      *アクションクラスのコンポーネント名 : aaa_bbb
+      *メソッド名 : ccc
+      となります。
+
+      対象のコンポーネントが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>cubbyFilter</filter-name>
+        <filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>cubbyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+*{diconファイル (WEB-INF/classes)}
+
+ [[1]]app.dicon
+
+      以下の dicon ファイルをインクルードしてください。
+
+      * dxo.dicon (S2Extension の jar ファイルに含まれます)
+
+      * routing.dicon、cubby.dicon (Cubby の jar ファイルに含まれます)
+
+      * app-cubby.dicon (必要な場合に作成してください。必須ではありません)
+
+      []
+
++------------------------------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+	<include path="convention.dicon"/>
+	<include path="aop.dicon"/>
+	<include path="dxo.dicon"/>
+	<include path="routing.dicon"/>
+	<include path="cubby.dicon"/>
+	<include path="app-cubby.dicon"/>
+</components>
++------------------------------------------------------+
+
+ [[2]]convention.dicon
+      
+      {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage}dicon ファイルの設定例}}を参考に、ルートパッケージを設定してください。
+
+ [[3]]creator.dicon
+      
+      {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#Creator}dicon ファイルの設定例}}を参考に、ActionCreator を設定してください。
+
+ [[4]]customizer.dicon
+
+      Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。
+      cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。
+
+      アクションメソッドでトランザクションの制御が必要な場合もここで定義してください。
+      org.seasar.cubby.customizer.ActionMethodCustomizer は、アクションメソッドのみが対象になるカスタマイザです。
+
+      JSP の ELでは public フィールドをアクセスできないので、プロパティを public フィールドにしているばあいは PropertyInterType を適用してアクセサメソッドが生成されるようにしてください。
+
++------------------------------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN" 
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+  <include path="default-customizer.dicon"/>
+  <include path="cubby-customizer.dicon"/>
+
+  <component name="propertyInterTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
+    <property name="interTypeName">"aop.propertyInterType"</property>
+  </component>
+
+  <component name="actionCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+
+    <!-- アクセサメソッドの生成 -->
+    <initMethod name="addCustomizer"><arg>propertyInterTypeCustomizer</arg></initMethod>
+
+    <initMethod name="addCustomizer">
+      <arg>traceCustomizer</arg>
+    </initMethod>
+
+    <!-- トランザクションの設定 -->
+    <initMethod name="addCustomizer">
+      <arg>
+        <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+          <initMethod name="addInterceptorName">
+            <arg>"j2ee.requiredTx"</arg>
+          </initMethod>
+          <property name="pointcut">".*"</property>
+        </component>
+      </arg>
+    </initMethod>
+
+    <!-- Cubby の前処理 -->
+    <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
+
+    <!-- Cubby のバリデーション -->
+    <initMethod name="addCustomizer"><arg>cubby.validationCustomizer</arg></initMethod>
+
+  </component>
+</components>
++------------------------------------------------------+
+
+ [[5]]app-cubby.dicon
+
+      Cubby アプリケーション全体の設定です。
+      任意で作成して、app.dicon からインクルードしてください。
+      現在はデフォルトの日付フォーマットとファイルアップロード用の設定、メッセージの振る舞いを指定できます。
+
++------------------------------------------------------+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="app-cubby">
+
+	<!-- 日付フォーマットの設定 -->
+	<component class="org.seasar.cubby.action.impl.FormatPatternImpl">
+		<property name="datePattern">"yyyy-MM-dd"</property>
+		<property name="timePattern">"HH:mm:ss"</property>
+		<property name="timestampPattern">"yyyy-MM-dd HH:mm:ss"</property>
+	</component>
+
+	<!-- ファイルアップロードの設定 -->
+	<component class="org.seasar.cubby.controller.impl.MultipartRequestParserImpl" />
+
+	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
+		<property name="fileItemFactory">
+			<component class="org.apache.commons.fileupload.disk.DiskFileItemFactory">
+				<property name="sizeThreshold">4096</property>
+			</component>
+		</property>
+		<property name="fileSizeMax">10000000</property>
+	</component>
+
+	<component class="org.apache.commons.fileupload.servlet.ServletRequestContext" instance="prototype"/>
+
+	<!-- メッセージの振る舞い -->
+	<component class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
+		<property name="baseName">"messages"</property>
+	</component>
+
+</components>
++------------------------------------------------------+
+
+*{プロパティファイル (WEB-INF/classes)}
+
+ [[1]]messages.properties
+
+      org.seasar.cubby.util.Messagesで使用する、アプリケーションで表示するメッセージを定義します。
+      Cubby のバリデータが出力するメッセージもここに定義します。
+
+      デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。
+
+      デフォルトでは messages.properties を使用しますが、app-cubby.dicon に org.seasar.controller.MessagesBehaviour を実装したクラスを定義することで、
+      リソースバンドルの取得方法などを変更することができます。
+
++------------------------------------------------------+
+valid.required={0}は必須です。
+valid.maxLength={0}は{1}文字以下で入力してください。
+valid.number={0}は数値のみで入力してください。
+valid.equals={0}は{1}を入力してください。
+valid.range={0}は{1}〜{2}の間で入力してください。
+valid.dateFormat={0}の日付の形式が正しくありません。
+valid.regexp={0}に不正な文字が入力されました。
+valid.rangeLength={0}は{1}文字以上{2}文字以下で入力してください。
+valid.maxSize={0}は{1}以下選択してください。
+valid.minSize={0}は{1}以上選択してください。
+valid.fileRegexp={0}のファイル名が不正です。
+valid.email={0}のメールアドレスの形式が正しくありません。
++------------------------------------------------------+

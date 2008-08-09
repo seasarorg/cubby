@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="cubby">
+
+	<component name="initializeCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+		<property name="interceptorName">"initializeInterceptor"</property>
+		<property name="pointcut">".*"</property>
+		<property name="useLookupAdapter">true</property>
+	</component>
+
+	<component name="validationCustomizer" class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+		<property name="interceptorName">"validationInterceptor"</property>
+		<property name="pointcut">".*"</property>
+		<property name="useLookupAdapter">true</property>
+	</component>
+
+</components>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="cubby.dicon" />
+	<include path="app-cubby.dicon" />
+	<include path="routing.dicon" />
+	<component name="sample1" class="org.seasar.cubby.seasar.Sample1Controller"/>
+	<component name="sample2" class="org.seasar.cubby.seasar.Sample2Controller"/>
+</components>

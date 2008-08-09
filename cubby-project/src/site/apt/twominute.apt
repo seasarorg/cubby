@@ -1,0 +1,185 @@
+  --------
+  2分間チュートリアル
+  --------
+  agata
+  baba
+  --------
+  2008-05-15
+  --------
+
+{目次}
+
+ *{{{#Hello_アプリケーションの概要}Hello アプリケーションの概要}}
+
+ *{{{#アプリケーションの雛形作成}アプリケーションの雛形作成}}
+
+ *{{{#アクションクラスの作成}アクションクラスの作成}}
+
+ *{{{#{JSP_の作成}JSP の作成}}
+
+ *{{{#ブラウザで確認する}ブラウザで確認する}}
+
+{Hello アプリケーションの概要}
+
+ 入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
+ このチュートリアルはCubby のサンプル war の「Hello World」から実行できます。
+
+ <<入力画面>>
+
+[images/hello_input.png]入力画面
+
+ <<結果画面>>
+
+[images/hello_result.png]結果画面
+
+{アプリケーションの雛形作成}
+
+ 雛形作成の詳細は{{{setup.html#Maven2_によるプロジェクトの雛形作成}Maven2 によるプロジェクトの雛形作成}}をご覧ください。\
+ Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。
+ Eclipseのワークスペースディレクトリにターミナル（コマンドプロンプト）で移動して、以下のコマンドを入力してください。
+
++------------------------------------------------------+
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
++------------------------------------------------------+
+
+   コマンド入力後、いくつかの質問に回答していきます。
+
++------------------------------------------------------+
+Choose archetype:
+1: remote -> cubby-archetype (Cubby 1.0.0)
+Choose a number:  (1):
++------------------------------------------------------+
+
+   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。\
+   以下、groupId,artifactId,version,packageを入力します。
+
++------------------------------------------------------+
+Define value for groupId: : org.seasar.cubby.examples
+Define value for artifactId: : cubby-examples-hello
+Define value for version: : 1.0-SNAPSHOT
+Define value for package: : org.seasar.cubby.examples.hello
+
+Confirm properties configuration:
+groupId: org.seasar.cubby.examples
+artifactId: cubby-examples-hello
+version: 1.0-SNAPSHOT
+package: org.seasar.cubby.examples.hello
+ Y: :
++------------------------------------------------------+
+
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。\
+   プロジェクトの雛形として「cubby-examples-hello」ディレクトリが作成されます。
+
+*{Eclipseへの取り込み}
+
+ {{{setup.html#Eclipse_を使った開発}Eclipse を使った開発}}に従って、「cubby-examples-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。
+ 設定が終わったらWTPからTomcatを起動します。\
+ ブラウザで {{http://localhost:8080/cubby-examples-hello/}} にアクセスして、トップページが表示されることを確認してください。
+ 
+{アクションクラスの作成}
+
+ アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
+ ここでは  「org.seasar.cubby.examples.hello.HelloAction」 クラスを作成します。
+ (既に雛形で同名のクラスが作成されているので、いったん削除します)\
+ このクラスには２つのアクションメソッド(index, message)があります。
+ index は入力画面「input.jsp」の表示用、message は入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。
+ １アクションメソッドは１リクエスト(URL)に対応します。
+ URL は特に指定がない場合「アクションクラス名から Action を取って小文字にしたもの + メソッド名」となります。
+
+*---------------------+----------------+--------------------------------------------------------------------+
+|| メソッド           || URL           || 説明                                                              |
+*---------------------+----------------+--------------------------------------------------------------------+
+| HelloAction#index   | /hello         | "/" + "hello" + "/" + ""                                           |
+|                     |                | メソッド名indexだけは特別な意味で「URLなし」という意味になります。 |
+*---------------------+----------------+--------------------------------------------------------------------+
+| HelloAction#message | /hello/message | "/" + "hello" + "/" + "message"                                    |
+*---------------------+----------------+--------------------------------------------------------------------+
+アクションメソッドと URL の対応
+
+[images/hello_diagram.png]URL とアクションメソッド、JSPの関係
+
+ アクションメソッドの戻り値は「ActionResult」です。\
+ ここでは、フォワードしてJSPを表示するために、new Forward("input.jsp")となります。\
+ これにより、「/hello/input.jsp」にフォワードします。
+
+ リクエストパラメータはアクションクラスのプロパティに設定されます。\
+ この場合、リクエストパラメータ「name」が HelloAction のプロパティ「name」にバインディングされます。\
+ リクエストパラメータをバインドするオブジェクトは、@Formアノテーションを指定することで変更できます。
+
+ <<HelloAction.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.examples.hello.action;
+
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.RequestParameter;
+
+public class HelloAction extends Action {
+
+	@RequestParameter
+	public String name;
+
+	public ActionResult index() {
+		return new Forward("input.jsp");
+	}
+
+	public ActionResult message() {
+		return new Forward("result.jsp");
+	}
+}
++------------------------------------------------------+
+
+{JSP の作成}
+
+ 入力画面用の「input.jsp」とメッセージ出力画面用の「result.jsp」を作成します。\
+ input.jsp では、Cubby のカスタムタグを使って、フォームを作成します。\
+ 「\<form ... value="$\{action\}"\>」では、フォームにバインディングするオブジェクトを指定しています。
+ $\{action\}はフォワード時に使用したアクションそのものを意味します。アクション自体がフォームのバインディング対象の場合はvalue属性は省略可能です。
+ (つまり、この例では value 属性を書く必要はありません。)
+
+ 入力フィールドはカスタムタグを使用して出力します。
+ （\<t:input type="text" name="name"/\>）
+
+ <<src/main/webapp/hello/input.jsp>>
+
++------------------------------------------------------+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Hello World - 入力画面</title>
+</head>
+<body>
+<h1>Hello World - 入力画面</h1>
+<t:form action="message" value="${action}">
+	あなたの名前:
+	<t:input type="text" name="name"/>
+	<input type="submit" value="送信"/>
+</t:form>
+</body>
+</html>
++------------------------------------------------------+
+
+ <<src/main/webapp/hello/result.jsp>>
+
++------------------------------------------------------+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Hello World - 出力画面</title>
+</head>
+<body>
+<h1>Hello World - 出力画面</h1>
+こんにちは、${action.name}さん。
+</body>
+</html>
++------------------------------------------------------+
+
+ また、{{{jsp.html#JSP_共通ヘッダー}JSP 共通ヘッダー}}を使用することによって、JSP 先頭の taglib ディレクティブを省略しています。
+ 
+{ブラウザで確認する}
+
+ ブラウザで {{http://localhost:8080/cubby-examples-hello/hello/}} にアクセスします。

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cubby Tomcat55 Support">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+		<version>1.1.0-rc1</version>
+	</skin>
+	<bannerLeft>
+		<name>Cubby</name>
+		<href>../index.html</href>
+		<src>../images/logo.gif</src>
+		<alt>Cubby</alt>
+	</bannerLeft>
+	<body>
+		<breadcrumbs>
+			<item name="${project.name}" href="/index.html"/>
+		</breadcrumbs>
+
+		${reports}
+
+		${modules}
+
+	</body>
+</project>
