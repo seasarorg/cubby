@@ -1,0 +1,43 @@
+body{
+	background-color:#99cc99;
+}
+div.body{
+	width:80%;
+	margin:0px auto
+}
+div.balloon1, div.balloon2, div.balloon3, div.balloon4{
+	background-color:#ffffff;
+	margin:0 200px 0 auto;
+}
+div.balloon1{
+	padding:10px;
+	margin-right:200px;
+}
+div.balloon2{
+	font-size:80%;
+	width:150px;
+	margin-top:8px
+}
+div.balloon3{
+	font-size:60%;
+	width:75px;
+	margin-top:6px;
+}
+div.balloon4{
+	font-size:50%;
+	width:30px;
+	margin-top:5px;
+}
+
+div.member{
+	width:230px;
+	margin:5px 0 0 auto;
+	font-size:150%;
+	font-weight:bold;
+}
+div.member img{
+	vertical-align: middle;
+}
+span.comment{
+	font-size:200%;
+}

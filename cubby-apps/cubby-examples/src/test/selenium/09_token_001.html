@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>09_token_001</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">09_token_001</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/cubby-examples/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=2重サブミット防止（token）</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Hello World - 入力画面</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>I am Token</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Hello World - 出力画面</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>こんにちは、I am Tokenさん。</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Hello World - 入力画面</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>データが2重にサブミットされたか、不正な経路からのアクセスです。このまま登録するとデータが2重に登録される可能性があります。</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
