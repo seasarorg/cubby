@@ -121,7 +121,5 @@
 
 		${reports}
 
-		${modules}
-
 	</body>
 </project>
