@@ -15,12 +15,17 @@
  */
 package org.seasar.cubby.tags;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.util.CubbyUtils;
 
 /**
@@ -166,4 +171,26 @@ public class CubbyFunctions {
 		return TagUtils.REMOVE_ATTRIBUTE;
 	}
 
+	/**
+	 * 文字列を Base64 でエンコードします。
+	 * <p>
+	 * JSTL の url タグの代わりに使用します。
+	 * {@code HttpServletRequest#getCharacterEncoding()}で取得した文字コードでエンコードされます。
+	 * </p>
+	 * <p>
+	 * 例：<br/>
+	 * 		${f:url('abc あいう'))} -> abc+%E3%81%82%E3%81%84%E3%81%86
+	 * </p>
+	 * 
+	 * @param str
+	 *            エンコードする文字列
+	 * @return エンコードされた文字列
+	 * @see HttpServletRequest#setCharacterEncoding(String)
+	 * @see HttpServletRequest#getCharacterEncoding()
+	 * @throws UnsupportedEncodingException 
+	 */
+	public static String url(final Object str) throws UnsupportedEncodingException {
+		String enc = ThreadContext.getRequest().getCharacterEncoding();
+		return str == null ? "" : URLEncoder.encode(str.toString(), enc);
+	}
 }

@@ -93,6 +93,21 @@
 
   <function>
     <description>
+      文字列 をBase64形式でエンコードします。JSTL の url タグの代わりに使用します。 
+      HttpServletRequest#getCharacterEncoding()で取得した文字コードでエンコードされます。
+    </description>
+    <name>url</name>
+    <function-class>
+      org.seasar.cubby.tags.CubbyFunctions
+    </function-class>
+    <function-signature>
+      java.lang.String url( java.lang.Object )
+    </function-signature>
+    <example>${f:url(wiki.pageName)}</example>
+  </function>
+
+  <function>
+    <description>
       Date 型のオブジェクトをフォーマットして出力します。JSTL の dateFormat タグの代わりに使用します。
     </description>
     <name>dateFormat</name>
