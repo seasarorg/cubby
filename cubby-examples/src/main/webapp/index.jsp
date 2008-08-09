@@ -159,7 +159,16 @@ CubbyでJSONによるAjaxのサンプルです。
 &dirs=WEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fsourceviewer
 ">ソース表示</a>)
 </dd>
+<dt><a href="cubby-admin">Cubby Adminツール</a></dt>
+<dd>
+Cubby Adminツールです。アプリケーションのルーティング情報などをテストするツールなどがあります。web.xmlにCubbyAdminServletを登録して利用します。
+(<a href="sourceviewer/?title=Cubby%20Admin%20Tool
+&dirs=WEB-INF%2Fweb.xml
+">ソース表示</a>)
+</dd>
 </dl>
+
+
 <!--
 	<li><a href="whiteboard/">ホワイトボード</a></li>
 -->
