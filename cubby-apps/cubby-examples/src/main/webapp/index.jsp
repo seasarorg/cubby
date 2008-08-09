@@ -151,20 +151,26 @@ CubbyでJSONによるAjaxのサンプルです。
 &dirs=WEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fajax
 ">ソース表示</a>)
 </dd>
-<dt><a href="sourceviewer/?title=Source%20Viewer&dirs=sourceviewer&dirs=WEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fsourceviewer">ソースビューア</a></dt>
-<dd>
-このサンプルで使用されているソースビューア自身です。テキスト形式のAjaxレスポンスを使用しています。
-(<a href="sourceviewer/?title=Source%20Viewer
+<dt><a href="sourceviewer/?title=Source%20Viewer
 &dirs=sourceviewer
 &dirs=WEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fsourceviewer
-">ソース表示</a>)
+">ソースビューア</a></dt>
+<dd>
+このサンプルで使用されているソースビューア自身のソースコードです。テキスト形式のAjaxレスポンスを使用しています。
+</dd>
+<dt><a href="sourceviewer/?title=Action%20TestCase
+&dirs=WEB-INF%2Fsrc%2Ftest%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fhello
+&dirs=WEB-INF%2Fsrc%2Ftest%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Ftodo%2Faction
+">Actionのテスト</a></dt>
+<dd>
+JUnitでCubbyのActionクラスをテストするサンプルソースです。
 </dd>
 <dt><a href="cubby-admin">Cubby Adminツール</a></dt>
 <dd>
 Cubby Adminツールです。アプリケーションのルーティング情報などをテストするツールなどがあります。web.xmlにCubbyAdminServletを登録して利用します。
 (<a href="sourceviewer/?title=Cubby%20Admin%20Tool
 &dirs=WEB-INF%2Fweb.xml
-">ソース表示</a>)
+">web.xml</a>)
 </dd>
 </dl>
 
