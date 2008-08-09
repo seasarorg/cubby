@@ -24,7 +24,6 @@
 </body>
 <script type="text/javascript">
 function loadSource(currentElem, path) {
-try {
 	Element.getElementsByClassName('paths', 'selected').each(function(elem, index) {
 		Element.removeClassName(elem, 'selected');
 	});
@@ -39,9 +38,6 @@ try {
 				prettyPrint();
 			}
 		});	
-} catch (e){
-	alert(e);
-}
 }
 </script>
 </html>
