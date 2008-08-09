@@ -15,6 +15,8 @@
  
  *{{{#画面部品のインポート}画面部品のインポート}}
 
+ *{{{#管理ツールの利用}管理ツールの利用}}
+
 {ファイルアップロード}
 
  ファイルアップロードは以下のようにorg.apache.commons.fileupload.FileItemの型で受け取ることができます。
@@ -163,3 +165,42 @@ ${param.imageUrl}:<br/>
 </c:forEach>
 <hr />
 +------------------------------------------------------+
+
+{管理ツールの利用}
+
+ 以下の設定をおこなうことで、Cubbyで作成したアプリケーションのルーティング情報の一覧、URIの適用テストを行える管理ツールを利用できます。
+
+  [[1]]管理ツールのJARを利用可能にします。pom.xmlに以下のdependencyを追加します。(Cubby1.1.0-rc1以降のMaven2 archetypeで生成されたプロジェクトには自動的に追加済みです。)
+
++------------------------------------------------------+
+...
+<dependency>
+  <groupId>org.seasar.cubby</groupId>
+  <artifactId>cubby-admin</artifactId>
+  <version>1.1.0-rc1</version>
+</dependency>
+...
++------------------------------------------------------+
+
+  [[2]]web.xmlにCubbyAdminServletを定義します。(Cubby1.1.0-rc1以降のMaven2 archetypeで生成されたプロジェクトには自動的に追加済みです。)
+
++------------------------------------------------------+
+...
+    <servlet>
+        <servlet-name>cubbyAdminServlet</servlet-name>
+        <servlet-class>org.seasar.cubby.admin.servlet.CubbyAdminServlet</servlet-class>
+    </servlet>
+...
+    <servlet-mapping>
+        <servlet-name>cubbyAdminServlet</servlet-name>
+        <url-pattern>/cubby-admin</url-pattern>
+    </servlet-mapping>
+...
++------------------------------------------------------+
+
+  [[3]]Tomcat を起動し、ブラウザで「http://localhost:8080/コンテキストパス/cubby-admin)/」にアクセスすることで、管理ツールが利用できます。
+
+[images/admin_tool.png]管理ツール
+
+[]
+
