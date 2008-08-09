@@ -40,6 +40,10 @@ th {
 	padding: 5px;
 }
 
+.selected {
+	background: #ffff99;
+}
+
 body {
 	margin: 5px;
 	padding: 5px;

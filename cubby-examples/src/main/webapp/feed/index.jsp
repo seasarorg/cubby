@@ -6,7 +6,7 @@
   <title>Cubby Examples - Atom</title>
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
-  <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <link rel="alternate" type="application/atom+xml" title="Cubby Examples - Atom" 
   	href="http://localhost:8080/cubby-examples/feed/atom" />
 
