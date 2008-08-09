@@ -90,6 +90,7 @@ class RoutingSection implements Section {
 		out.println(th(messages.getString("lbl.requestMethod")));
 		out.println(th(messages.getString("lbl.actionMethod")));
 		out.println(th(messages.getString("lbl.pathParams")));
+		out.println(th(messages.getString("lbl.priority")));
 		out.println("</thead>");
 		out.println("<tbody>");
 		int no = 1;
@@ -129,6 +130,7 @@ class RoutingSection implements Section {
 				} else {
 					out.println(td(pathParameters));
 				}
+				out.println(td(routing.getPriority()));
 				out.println("</tr>");
 			}
 			no++;
