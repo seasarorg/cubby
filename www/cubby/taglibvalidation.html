@@ -38,7 +38,7 @@
 
   
     
-  
+            
   
     
             <div class="xleft">
@@ -56,10 +56,11 @@
 
   
     
-  
+            
   
     
-             最終更新: 2008-07-09
+             最終更新: 2008-08-10
+              &nbsp;| バージョン: 1.1.0-rc1
             </div>
       <div class="clear">
         <hr/>
@@ -72,7 +73,7 @@
 
   
     
-  
+            
   
     
                    <h5>プロジェクト文書</h5>
@@ -207,7 +208,7 @@
 
   
     
-  
+            
   
     
         </div>
@@ -241,7 +242,24 @@
 <th>tld declares</th>
 <th>tag declares</th>
 </tr>
-<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="b"><td><img src="images/icon_error_sml.gif" alt="error" /></td>
+<td>actionClass<br />
+<b>Error in attribute type: tld declares [java.lang.Class], class declares [java.lang.String]</b></td>
+<td>Class</td>
+<td>String</td>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>actionMethod</td>
+<td>String</td>
+<td>String</td>
+</tr>
+<tr class="b"><td><img src="images/icon_error_sml.gif" alt="error" /></td>
+<td>encodeURL<br />
+<b>Error in attribute type: tld declares [java.lang.Boolean], class declares [boolean]</b></td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>value</td>
 <td>Object</td>
 <td>Object</td>
@@ -249,46 +267,121 @@
 </table>
 </div>
 <div class="section"><h3>&lt;t:input&gt;</h3>
-<table class="bodyTable"><tr class="a"><th>found</th>
+<table class="bodyTable"><tr class="b"><th>found</th>
 <th>loadable</th>
 <th>extends TagSupport/TagExtraInfo</th>
 <th>class</th>
 </tr>
-<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>org.seasar.cubby.tags.InputTag</td>
 </tr>
 </table>
-<table class="bodyTable"><tr class="a"><th>-</th>
+<table class="bodyTable"><tr class="b"><th>-</th>
 <th>attribute name</th>
 <th>tld declares</th>
 <th>tag declares</th>
 </tr>
-<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>checkedValue</td>
 <td>String</td>
 <td>String</td>
 </tr>
-<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>index</td>
 <td>Integer</td>
 <td>Integer</td>
 </tr>
-<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>name</td>
 <td>String</td>
 <td>String</td>
 </tr>
-<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>type</td>
+<td>String</td>
+<td>String</td>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>value</td>
+<td>Object</td>
+<td>Object</td>
+</tr>
+</table>
+</div>
+<div class="section"><h3>&lt;t:link&gt;</h3>
+<table class="bodyTable"><tr class="b"><th>found</th>
+<th>loadable</th>
+<th>extends TagSupport/TagExtraInfo</th>
+<th>class</th>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>org.seasar.cubby.tags.LinkTag</td>
+</tr>
+</table>
+<table class="bodyTable"><tr class="b"><th>-</th>
+<th>attribute name</th>
+<th>tld declares</th>
+<th>tag declares</th>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>actionClass</td>
+<td>String</td>
+<td>String</td>
+</tr>
+<tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>actionMethod</td>
+<td>String</td>
+<td>String</td>
+</tr>
+<tr class="a"><td><img src="images/icon_error_sml.gif" alt="error" /></td>
+<td>attr<br />
+<b>Error in attribute type: tld declares [java.lang.Class], class declares [java.lang.String]</b></td>
+<td>Class</td>
+<td>String</td>
+</tr>
+<tr class="b"><td><img src="images/icon_error_sml.gif" alt="error" /></td>
+<td>encodeURL<br />
+<b>Error in attribute type: tld declares [java.lang.Boolean], class declares [boolean]</b></td>
+<td>Boolean</td>
+<td>-</td>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>tag</td>
+<td>String</td>
+<td>String</td>
+</tr>
+</table>
+</div>
+<div class="section"><h3>&lt;t:param&gt;</h3>
+<table class="bodyTable"><tr class="b"><th>found</th>
+<th>loadable</th>
+<th>extends TagSupport/TagExtraInfo</th>
+<th>class</th>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>org.seasar.cubby.tags.ParamTag</td>
+</tr>
+</table>
+<table class="bodyTable"><tr class="b"><th>-</th>
+<th>attribute name</th>
+<th>tld declares</th>
+<th>tag declares</th>
+</tr>
+<tr class="a"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
+<td>name</td>
 <td>String</td>
 <td>String</td>
 </tr>
 <tr class="b"><td><img src="images/icon_success_sml.gif" alt="success" /></td>
 <td>value</td>
-<td>Object</td>
-<td>Object</td>
+<td>String</td>
+<td>String</td>
 </tr>
 </table>
 </div>
@@ -417,7 +510,7 @@
 
   
     
-  
+            
   
     
   </div>

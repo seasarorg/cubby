@@ -78,13 +78,13 @@
 <td>type</td><td>true</td><td>true</td><td><code>java.lang.String</code></td><td>この属性の値は type 属性としてそのまま出力されます。</td>
 </tr>
 <tr valign="top">
-<td>name</td><td>true</td><td>true</td><td><code>java.lang.String</code></td><td>value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。 この属性の値は name 属性としてそのまま出力されます。</td>
+<td>name</td><td>true</td><td>true</td><td><code>java.lang.String</code></td><td>value 属性として出力する値を取得するフォームオブジェクトのプロパティ名を指定します。 <p> この属性の値は name 属性としてそのまま出力されます。 </p></td>
 </tr>
 <tr valign="top">
-<td>value</td><td>false</td><td>true</td><td><code>java.lang.Object</code></td><td>この属性の値は value 属性としてそのまま出力されます。 指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。 type 属性が radio/checkbox の場合は、この値と name 属性で指定したフォームオブジェクトのプロパティから取得した値(もしくは checkedValue で指定した値)が一致した場合には checked 属性が true になりますので、必ず指定するようにしてください。</td>
+<td>value</td><td>false</td><td>true</td><td><code>java.lang.Object</code></td><td>この属性の値は value 属性としてそのまま出力されます。 指定しなかった場合は name 属性で指定したフォームオブジェクトのプロパティから取得した値が value 属性として出力されます。 <p> type 属性が radio/checkbox の場合は、この値と name 属性で指定したフォームオブジェクトのプロパティから取得した値(もしくは checkedValue で指定した値)が一致した場合には checked 属性が true になりますので、必ず指定するようにしてください。 </p></td>
 </tr>
 <tr valign="top">
-<td>checkedValue</td><td>false</td><td>true</td><td><code>java.lang.String</code></td><td>type 属性が radio/checkbox の場合に、フォームオブジェクトの値よりも優先的に比較対象となる値を指定します。 この値と value 属性の値が一致した場合には checked 属性が true になります。</td>
+<td>checkedValue</td><td>false</td><td>true</td><td><code>java.lang.String</code></td><td>type 属性が radio/checkbox の場合に、フォームオブジェクトの値よりも優先的に比較対象となる値を指定します。 <p> この値と value 属性の値が一致した場合には checked 属性が true になります。 </p></td>
 </tr>
 <tr valign="top">
 <td>index</td><td>false</td><td>true</td><td><code>java.lang.Integer</code></td><td>name 属性で指定したフォームオブジェクトのプロパティに複数の値がある場合に、何番目の要素なのかを指定します。</td>

@@ -95,7 +95,13 @@
 <td width="15%" nowrap align="right"><code>java.lang.String</code></td><td width="15%" nowrap><code><b><a href="out.fn.html">out</a></b>(  java.lang.Object )</code></td><td>HTML をエスケープします。JSTL の out タグの代わりに使用します。 EL 式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこの function を使用します。</td>
 </tr>
 <tr bgcolor="white" class="TableRowColor">
+<td width="15%" nowrap align="right"><code>java.lang.String</code></td><td width="15%" nowrap><code><b><a href="url.fn.html">url</a></b>(  java.lang.Object )</code></td><td>文字列 をBase64形式でエンコードします。JSTL の url タグの代わりに使用します。 HttpServletRequest#getCharacterEncoding()で取得した文字コードでエンコードされます。</td>
+</tr>
+<tr bgcolor="white" class="TableRowColor">
 <td width="15%" nowrap align="right"><code>java.lang.String</code></td><td width="15%" nowrap><code><b><a href="dateFormat.fn.html">dateFormat</a></b>(  java.lang.Object, java.lang.String )</code></td><td>Date 型のオブジェクトをフォーマットして出力します。JSTL の dateFormat タグの代わりに使用します。</td>
+</tr>
+<tr bgcolor="white" class="TableRowColor">
+<td width="15%" nowrap align="right"><code>java.lang.Object</code></td><td width="15%" nowrap><code><b><a href="ifrender.fn.html">ifrender</a></b>(  java.lang.Boolean, java.lang.Object )</code></td><td>第1引数の条件が true のときは第2引数を属性の値として出力し、第1引数の条件が false のときは属性自体を出力しません。 条件によって disabled や checked などの属性の出力する・しないを制御したい場合に使用します。 出力する・しないの制御はカスタムタグで行うので、t:input/t:select/t:textarea と組み合わせて使用してください。</td>
 </tr>
 </table>
               &nbsp;

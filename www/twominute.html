@@ -40,7 +40,7 @@ baba" />
 
   
     
-  
+            
   
     
             <div class="xleft">
@@ -55,10 +55,11 @@ baba" />
 
   
     
-  
+            
   
     
-             最終更新: 2008-07-09
+             最終更新: 2008-08-10
+              &nbsp;| バージョン: 1.1.0-rc1
             </div>
       <div class="clear">
         <hr/>
@@ -71,7 +72,7 @@ baba" />
 
   
     
-  
+            
   
     
                    <h5>ドキュメント</h5>
@@ -197,6 +198,8 @@ baba" />
       
             
       
+                  
+      
             
       
               
@@ -219,6 +222,16 @@ baba" />
                 
               
       
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
             
       
             
@@ -226,6 +239,22 @@ baba" />
               
         <li class="collapsed">
                     <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="migration.html">移行ガイド</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
                 </li>
               
     <li class="none">
@@ -298,29 +327,6 @@ baba" />
                     <a href="project-reports.html">プロジェクトレポート</a>
                 </li>
           </ul>
-              <h5>モジュール</h5>
-            <ul>
-              
-    <li class="none">
-                    <a href="cubby/index.html">Cubby</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-skin/index.html">Cubby Skin</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-dist/index.html">Cubby Distribution</a>
-          </li>
-          </ul>
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
@@ -332,7 +338,7 @@ baba" />
 
   
     
-  
+            
   
     
         </div>
@@ -386,9 +392,9 @@ package: org.seasar.cubby.examples.hello
 <div class="section"><h2><a name="アクションクラスの作成">アクションクラスの作成</a></h2>
 <p>アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。 ここでは 「org.seasar.cubby.examples.hello.HelloAction」 クラスを作成します。 (既に雛形で同名のクラスが作成されているので、いったん削除します)<br />
 このクラスには２つのアクションメソッド(index, message)があります。 index は入力画面「input.jsp」の表示用、message は入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。 １アクションメソッドは１リクエスト(URL)に対応します。 URL は特に指定がない場合「アクションクラス名から Action を取って小文字にしたもの + メソッド名」となります。</p>
-<table class="bodyTable"><tbody><tr class="a"><td align="left"><b>メソッド</b></td>
-<td align="left"><b>URL</b></td>
-<td align="left"><b>説明</b></td>
+<table class="bodyTable"><tbody><tr class="a"><th align="left">メソッド</th>
+<th align="left">URL</th>
+<th align="left">説明</th>
 </tr>
 <tr class="b"><td align="left">HelloAction#index</td>
 <td align="left">/hello</td>
@@ -414,18 +420,20 @@ package: org.seasar.cubby.examples.hello
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.RequestParameter;
 
 public class HelloAction extends Action {
 
-  public String name;
+        @RequestParameter
+        public String name;
 
-  public ActionResult index() {
-    return new Forward(&quot;input.jsp&quot;);
-  }
+        public ActionResult index() {
+                return new Forward(&quot;input.jsp&quot;);
+        }
 
-  public ActionResult message() {
-    return new Forward(&quot;result.jsp&quot;);
-  }
+        public ActionResult message() {
+                return new Forward(&quot;result.jsp&quot;);
+        }
 }</pre>
 </div>
 </div>
@@ -486,7 +494,7 @@ input.jsp では、Cubby のカスタムタグを使って、フォームを作�
 
   
     
-  
+            
   
     
   </div>

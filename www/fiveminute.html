@@ -40,7 +40,7 @@ baba" />
 
   
     
-  
+            
   
     
             <div class="xleft">
@@ -55,10 +55,11 @@ baba" />
 
   
     
-  
+            
   
     
-             最終更新: 2008-07-09
+             最終更新: 2008-08-10
+              &nbsp;| バージョン: 1.1.0-rc1
             </div>
       <div class="clear">
         <hr/>
@@ -71,7 +72,7 @@ baba" />
 
   
     
-  
+            
   
     
                    <h5>ドキュメント</h5>
@@ -209,6 +210,8 @@ baba" />
       
             
       
+                  
+      
             
       
               
@@ -231,6 +234,16 @@ baba" />
                 
               
       
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
             
       
             
@@ -238,6 +251,22 @@ baba" />
               
         <li class="collapsed">
                     <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="migration.html">移行ガイド</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
                 </li>
               
     <li class="none">
@@ -310,29 +339,6 @@ baba" />
                     <a href="project-reports.html">プロジェクトレポート</a>
                 </li>
           </ul>
-              <h5>モジュール</h5>
-            <ul>
-              
-    <li class="none">
-                    <a href="cubby/index.html">Cubby</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-skin/index.html">Cubby Skin</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-dist/index.html">Cubby Distribution</a>
-          </li>
-          </ul>
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
@@ -344,7 +350,7 @@ baba" />
 
   
     
-  
+            
   
     
         </div>
@@ -420,6 +426,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.examples.todo.entity.User;
 
 @Path(&quot;todo/login&quot;)
@@ -429,8 +436,8 @@ public class LoginAction extends Action {
   // サンプルではPropertyInterTypeを使用しているのでアクセサメソッドは自動生成されます。
 
   public Map&lt;String, Object&gt; sessionScope;
-  public String userId;
-  public String password;
+  public @RequestParameter String userId;
+  public @RequestParameter String password;
 
   // ----------------------------------------------[Action Method]
 
@@ -744,11 +751,11 @@ public class TodoListAction extends Action {
 
   // ----------------------------------------------[Attribute]
 
-  public Integer id;
-  public String text;
-  public String memo;
-  public Integer typeId;
-  public String limitDate;
+  public @RequestParameter Integer id;
+  public @RequestParameter String text;
+  public @RequestParameter String memo;
+  public @RequestParameter Integer typeId;
+  public @RequestParameter String limitDate;
   public TodoType todoType;
 
   // ----------------------------------------------[Action Method]
@@ -995,7 +1002,7 @@ public class TodoListAction extends Action {
 
   
     
-  
+            
   
     
   </div>

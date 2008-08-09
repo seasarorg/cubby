@@ -40,7 +40,7 @@ baba" />
 
   
     
-  
+            
   
     
             <div class="xleft">
@@ -55,10 +55,11 @@ baba" />
 
   
     
-  
+            
   
     
-             最終更新: 2008-07-09
+             最終更新: 2008-08-10
+              &nbsp;| バージョン: 1.1.0-rc1
             </div>
       <div class="clear">
         <hr/>
@@ -71,7 +72,7 @@ baba" />
 
   
     
-  
+            
   
     
                    <h5>ドキュメント</h5>
@@ -179,6 +180,8 @@ baba" />
       
             
       
+                  
+      
             
       
               
@@ -201,6 +204,16 @@ baba" />
                 
               
       
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
             
       
             
@@ -221,8 +234,28 @@ baba" />
     <li class="none">
                     <a href="tips.html#画面部品のインポート">画面部品のインポート</a>
           </li>
+                  
+    <li class="none">
+                    <a href="tips.html#管理ツールの利用">管理ツールの利用</a>
+          </li>
               </ul>
         </li>
+              
+    <li class="none">
+                    <a href="migration.html">移行ガイド</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
+                </li>
               
     <li class="none">
                     <a href="cubby/apidocs/index.html">JavaDoc</a>
@@ -294,29 +327,6 @@ baba" />
                     <a href="project-reports.html">プロジェクトレポート</a>
                 </li>
           </ul>
-              <h5>モジュール</h5>
-            <ul>
-              
-    <li class="none">
-                    <a href="cubby/index.html">Cubby</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-skin/index.html">Cubby Skin</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-dist/index.html">Cubby Distribution</a>
-          </li>
-          </ul>
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
@@ -328,7 +338,7 @@ baba" />
 
   
     
-  
+            
   
     
         </div>
@@ -339,6 +349,7 @@ baba" />
 <ul><li><a href="#ファイルアップロード">ファイルアップロード</a></li>
 <li><a href="#共通アクション">共通アクション</a></li>
 <li><a href="#画面部品のインポート">画面部品のインポート</a></li>
+<li><a href="#管理ツールの利用">管理ツールの利用</a></li>
 </ul>
 </div>
 <div class="section"><h2><a name="ファイルアップロード">ファイルアップロード</a></h2>
@@ -452,6 +463,33 @@ private clsss TodoAction extend BaseAction {
 &lt;hr /&gt;</pre>
 </div>
 </div>
+<div class="section"><h2><a name="管理ツールの利用">管理ツールの利用</a></h2>
+<p>以下の設定をおこなうことで、Cubbyで作成したアプリケーションのルーティング情報の一覧、URIの適用テストを行える管理ツールを利用できます。</p>
+<ol type="1"><li>管理ツールのJARを利用可能にします。pom.xmlに以下のdependencyを追加します。(Cubby1.1.0-rc1以降のMaven2 archetypeで生成されたプロジェクトには自動的に追加済みです。)<div class="source"><pre>...
+&lt;dependency&gt;
+  &lt;groupId&gt;org.seasar.cubby&lt;/groupId&gt;
+  &lt;artifactId&gt;cubby-admin&lt;/artifactId&gt;
+  &lt;version&gt;1.1.0-rc1&lt;/version&gt;
+&lt;/dependency&gt;
+...</pre>
+</div>
+</li>
+<li>web.xmlにCubbyAdminServletを定義します。(Cubby1.1.0-rc1以降のMaven2 archetypeで生成されたプロジェクトには自動的に追加済みです。)<div class="source"><pre>...
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;cubbyAdminServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.seasar.cubby.admin.servlet.CubbyAdminServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+...
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;cubbyAdminServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/cubby-admin&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+...</pre>
+</div>
+</li>
+<li>Tomcat を起動し、ブラウザで「http://localhost:8080/コンテキストパス/cubby-admin)/」にアクセスすることで、管理ツールが利用できます。<img src="images/admin_tool.png" alt="管理ツール" /></li>
+</ol>
+</div>
 
       </div>
     </div>
@@ -469,7 +507,7 @@ private clsss TodoAction extend BaseAction {
 
   
     
-  
+            
   
     
   </div>

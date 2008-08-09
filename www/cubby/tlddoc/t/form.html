@@ -41,11 +41,11 @@
 <font size="-1">Cubby tags</font>
 <br>
             Tag form</h2>
-<hr>HTML の form タグを出力します。 input/select/textarea タグで参照するフォームオブジェクトを指定します。<br>
+<hr>HTML の form タグを出力します。 <p> t:input/t:select/t:textarea タグで参照するフォームオブジェクトを指定します。 </p><br>
 <p></p>
 <b>Example:</b>
 <br>
-<pre>(JSP) &lt;t:form value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form&gt; ... &lt;/form&gt;</pre>
+<pre>[1] action 属性を JSP 上で指定する (JSP) &lt;t:form action="${contextPath}/foo/bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var"&amp;&gt; ... &lt;/form&gt; [2] action 属性をクラス、メソッドで指定する (JSP) &lt;t:form actionClass="com.example.action.FooAction" actionMethod="bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var" &gt; ... &lt;/form&gt;</pre>
 <p></p>
 <hr>
 <table border="1" cellpadding="3" cellspacing="0" width="100%">
@@ -76,6 +76,15 @@
 </tr>
 <tr valign="top">
 <td>value</td><td>true</td><td>true</td><td><code>java.lang.Object</code></td><td>フォームオブジェクトを指定します。</td>
+</tr>
+<tr valign="top">
+<td>actionClass</td><td>false</td><td>true</td><td><code>java.lang.Class</code></td><td>アクションクラス、メソッドから action 属性を生成するためのアクションクラスを FQCN で指定します。 <p> この属性を指定した場合は、必ず actionMethod 属性も指定してください。 JSP 上に action 属性が指定してあった場合はこの属性から生成した URL で上書きされます。 </p> <p> URL 埋め込みパラメータやクエリ文字列のパラメータが必要な場合は t:param タグをボディ部に指定してください。 指定方法は t:link タグと同様です。 </p></td>
+</tr>
+<tr valign="top">
+<td>actionMethod</td><td>false</td><td>true</td><td><code>java.lang.String</code></td><td>アクションクラス、メソッドから action 属性を生成するためのアクションメソッドを指定します。 <p> この属性を指定した場合は、必ず actionClass 属性も指定してください。 </p></td>
+</tr>
+<tr valign="top">
+<td>encodeURL</td><td>false</td><td>true</td><td><code>java.lang.Boolean</code></td><td>出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。</td>
 </tr>
 </table>
 <br>

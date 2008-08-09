@@ -40,7 +40,7 @@ baba" />
 
   
     
-  
+            
   
     
             <div class="xleft">
@@ -55,10 +55,11 @@ baba" />
 
   
     
-  
+            
   
     
-             最終更新: 2008-07-09
+             最終更新: 2008-08-10
+              &nbsp;| バージョン: 1.1.0-rc1
             </div>
       <div class="clear">
         <hr/>
@@ -71,7 +72,7 @@ baba" />
 
   
     
-  
+            
   
     
                    <h5>ドキュメント</h5>
@@ -179,6 +180,8 @@ baba" />
       
             
       
+                  
+      
             
       
               
@@ -215,6 +218,16 @@ baba" />
                 
               
       
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
             
       
             
@@ -222,6 +235,22 @@ baba" />
               
         <li class="collapsed">
                     <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="migration.html">移行ガイド</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
                 </li>
               
     <li class="none">
@@ -294,29 +323,6 @@ baba" />
                     <a href="project-reports.html">プロジェクトレポート</a>
                 </li>
           </ul>
-              <h5>モジュール</h5>
-            <ul>
-              
-    <li class="none">
-                    <a href="cubby/index.html">Cubby</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-archetype/index.html">Cubby Archetype</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-tomcat55-support/index.html">Cubby Tomcat5.5 Support</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-skin/index.html">Cubby Skin</a>
-          </li>
-              
-    <li class="none">
-                    <a href="cubby-dist/index.html">Cubby Distribution</a>
-          </li>
-          </ul>
                                            <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
             <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
           </a>
@@ -328,7 +334,7 @@ baba" />
 
   
     
-  
+            
   
     
         </div>
@@ -344,8 +350,21 @@ baba" />
 <div class="section"><h2><a name="Mayaa">Mayaa</a></h2>
 <p>HTML をテンプレートとしてビューを作成したい場合、HTML テンプレートエンジンである<a href="http://mayaa.seasar.org" class="externalLink">Mayaa</a>と連携することができます。</p>
 <p>以下、Mayaaとの連携方法を示します。<br />
-動作は Cubby 0.9.2、Mayaa-1.1.15で確認しています。Mayaaのバージョンが1.1.14以下の場合動作しません。<br />
-また、Cubby のサンプル war に「Mayaa との連携のサンプル」がありますのでそちらも参照ください。</p>
+動作は Cubby 1.1.0、Mayaa-1.1.18で確認しています。<br />
+Cubby のバージョンとそれに対応する Mayaa の必須バージョンは以下の表で確認してください。</p>
+<table class="bodyTable"><tbody><tr class="a"><th align="left">Cubby</th>
+<th align="left">Mayaa</th>
+</tr>
+<tr class="b"><td align="left">1.1.x 系</td>
+<td align="left">&gt;= 1.1.18</td>
+</tr>
+<tr class="a"><td align="left">1.0.x 系</td>
+<td align="left">&gt;= 1.1.15</td>
+</tr>
+</tbody>
+<caption>Mayaa の必須バージョン </caption>
+</table>
+<p>また、Cubby のサンプル war に「Mayaa との連携のサンプル」がありますのでそちらも参照ください。</p>
 </div>
 <div class="section"><h2><a name="Mayaa_と連携するための設定">Mayaa と連携するための設定</a></h2>
 <ol type="1"><li>Mayaa の依存 jar ファイルを追加する<p>Mayaa が依存する jar ファイルを全て追加します。Maven2 を使用している場合は dependencies ディレクティブに Mayaa を追加するだけでOKです。</p>
@@ -495,7 +514,9 @@ baba" />
   &lt;m:write m:id=&quot;errorMessage&quot; value=&quot;${error}&quot; /&gt;
 
   &lt;!-- form --&gt;
-  &lt;t:form m:id=&quot;form&quot; method=&quot;post&quot; action=&quot;./components&quot; value=&quot;${formDto}&quot; /&gt;
+  &lt;t:form m:id=&quot;form&quot; method=&quot;post&quot; action=&quot;./components&quot; value=&quot;${formDto}&quot;&gt;
+    &lt;m:doBody/&gt;
+  &lt;/t:form&gt;
 
   &lt;!-- text --&gt;
   &lt;t:input m:id=&quot;userName&quot; type=&quot;text&quot; name=&quot;userName&quot; id=&quot;userName&quot; /&gt;
@@ -561,7 +582,7 @@ baba" />
 
   
     
-  
+            
   
     
   </div>
