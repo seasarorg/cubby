@@ -12,6 +12,9 @@
 <div id="banner">
 <img src="./img/logo.gif" alt="Cubby" />
 </div>
-<a href="hello">HelloAction</a>
+<ul>
+<li><a href="hello">HelloAction</a></li>
+<li><a href="cubby-admin">Admin Tool</a></li>
+</ul>
 </body>
 </html>

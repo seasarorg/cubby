@@ -107,6 +107,11 @@ Define value for package: :
 
 +------------------------------------------------------+
 Confirm properties configuration:
+cubby-version: 1.1.0-rc1
+s2container-version: 2.4.26
+s2dao-version: 1.0.48
+use-s2dao: false
+use-s2jdbc: true
 groupId: com.example.foo
 artifactId: barapp
 version: 1.0-SNAPSHOT
@@ -114,7 +119,10 @@ package: com.example.foo.barapp
  Y: :
 +------------------------------------------------------+
 
-   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。\
+   s2container などのライブラリのバージョン、S2Dao/S2JDBCを使用するかどうかの設定を変更する場合はここで N を選択して再度設定を入力してください。
+   再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）
+   デフォルトでは上記のように S2JDBC を使用、 S2Dao を使用しない設定になっています。
 
 *{Tomcat の起動}
 
