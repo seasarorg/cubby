@@ -5,13 +5,13 @@
       <defaultValue>1.1.0-rc1</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2container-version">
-      <defaultValue>2.4.25</defaultValue>
+      <defaultValue>2.4.26</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2dao-version">
       <defaultValue>1.0.48</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-s2dao">
-      <defaultValue>true</defaultValue>
+      <defaultValue>false</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-s2jdbc">
       <defaultValue>true</defaultValue>

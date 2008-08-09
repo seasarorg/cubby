@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+        version="2.4">
 
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
@@ -11,10 +11,12 @@
             <param-name>statusCode</param-name>
             <param-value>404</param-value>
         </init-param>
+        <!-- 
         <init-param>
             <param-name>ignorePathPattern</param-name>
             <param-value>.*/index.jsp</param-value>
         </init-param>
+        -->
 	</filter>
 
     <filter>
@@ -121,9 +123,10 @@
     </servlet>
 
     <servlet>
-        <servlet-name>cubbyservlet</servlet-name>
-        <servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+        <servlet-name>cubbyAdminServlet</servlet-name>
+        <servlet-class>org.seasar.cubby.admin.servlet.CubbyAdminServlet</servlet-class>
     </servlet>
+
 <!-- trim white spaces(Tomcat 5.5 or higher)
     <servlet>
         <servlet-name>jsp</servlet-name>
@@ -151,9 +154,10 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>cubbyservlet</servlet-name>
-        <url-pattern>/cubbyservlet</url-pattern>
+        <servlet-name>cubbyAdminServlet</servlet-name>
+        <url-pattern>/cubby-admin</url-pattern>
     </servlet-mapping>
+
 <!-- trim white spaces(Tomcat 5.5 or higher)
     <servlet-mapping>
         <servlet-name>jsp</servlet-name>
@@ -167,7 +171,7 @@
     -->
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file/>
     </welcome-file-list>
 
     <jsp-config>
@@ -177,6 +181,9 @@
             <page-encoding>UTF-8</page-encoding>
             <scripting-invalid>false</scripting-invalid>
             <include-prelude>/common/header.jsp</include-prelude>
+            <!-- trim white spaces (JSP 2.1 or higher)
+            <trim-directive-whitespaces>true</trim-directive-whitespaces>
+            -->
         </jsp-property-group>
     </jsp-config>
 
