@@ -3,7 +3,7 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>1.1.0-SNAPSHOT</version>
+		<version>1.1.0-rc1</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
@@ -100,6 +100,7 @@
 				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
 				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
+				<item name="管理ツールの利用" href="/tips.html#管理ツールの利用" />
 			</item>
 			<item name="移行ガイド" href="/migration.html" />
 			<item name="リンク集" href="/link.html" collapse="true">
