@@ -10,3 +10,11 @@
 	clear: both;
 	border: none;
 }
+
+.fieldError {
+	background-color:pink;
+}
+
+#errors {
+	color:red;	
+}
