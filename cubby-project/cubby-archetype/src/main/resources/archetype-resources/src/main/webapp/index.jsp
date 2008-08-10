@@ -5,12 +5,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
-  <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
+  <link href="${contextPath}/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
   <title>Cuuby archetype sample app : index</title>
 </head>
 <body>
 <div id="banner">
-<img src="./img/logo.gif" alt="Cubby" />
+<img src="${contextPath}/img/logo.gif" alt="Cubby" />
 </div>
 <ul>
 <li><a href="hello">HelloAction</a></li>
