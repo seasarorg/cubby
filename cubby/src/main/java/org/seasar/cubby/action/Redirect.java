@@ -374,7 +374,7 @@ public class Redirect implements ActionResult {
 	 * @since 1.1.0
 	 */
 	public ActionResult noEncodeURL() {
-		return new Redirect(path) {
+		return new Redirect(path, protocol, port) {
 
 			@Override
 			protected String encodeURL(final String url,
