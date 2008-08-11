@@ -25,6 +25,8 @@ import java.util.Map;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.exception.ActionRuntimeException;
+import org.seasar.framework.util.StringUtil;
 
 /**
  * 入力検証を保持するクラスです。
@@ -180,6 +182,9 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 * </p>
 	 */
 	public ActionResult fail(final String errorPage) {
+		if (StringUtil.isEmpty(errorPage)) {
+			throw new ActionRuntimeException("ECUB0106");
+		}
 		return new Forward(errorPage);
 	}
 
@@ -221,6 +226,14 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	@Deprecated
 	public List<ValidationRule> getRules() {
 		return phaseValidationRulesMap.get(getValidationPhases().get(0));
+	}
+
+	public boolean isFail(String name) {
+		return false;
+	}
+
+	public boolean isFail(ValidationRule rule) {
+		return false;
 	}
 
 }

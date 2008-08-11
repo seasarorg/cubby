@@ -42,7 +42,7 @@ public @interface Validation {
 	/**
 	 * 入力検証でエラーがあった場合にフォワードするパスを指定します。
 	 */
-	String errorPage();
+	String errorPage() default "";
 
 	/**
 	 * 入力検証の定義を取得するプロパティ名を指定します。
