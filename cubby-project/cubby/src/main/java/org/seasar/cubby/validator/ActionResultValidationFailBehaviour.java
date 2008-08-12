@@ -27,7 +27,7 @@ import org.seasar.cubby.action.ActionResult;
  * @author baba
  * @since 1.1.0
  */
-public class ActionResultValidationFailBehaviour implements
+class ActionResultValidationFailBehaviour implements
 		ValidationFailBehaviour, Serializable {
 
 	/** シリアルバージョンUID。 */

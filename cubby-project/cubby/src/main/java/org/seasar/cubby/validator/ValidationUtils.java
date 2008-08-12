@@ -24,6 +24,7 @@ import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 
 /**
+ * バリデーションのユーティリティクラスです。
  * 
  * @author baba
  * @since 1.1.0
