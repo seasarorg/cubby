@@ -25,7 +25,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
 
-public class ErrorPageValidationFailBehaviour implements
+class ErrorPageValidationFailBehaviour implements
 		ValidationFailBehaviour, Serializable {
 
 	/** シリアルバージョンUID。 */
