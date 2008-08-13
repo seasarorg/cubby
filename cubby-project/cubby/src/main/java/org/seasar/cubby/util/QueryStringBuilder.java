@@ -41,12 +41,38 @@ public class QueryStringBuilder {
 	/**
 	 * パラメータ文字列
 	 */
-	private StringBuilder sb = new StringBuilder();
+	private StringBuilder queryString = new StringBuilder();
 
 	/**
 	 * エンコード
 	 */
 	private String encode = "UTF-8";
+
+	/** 
+	 * URI部分
+	 */
+	private final String baseUri;
+
+	/**
+	 * URI部分なしでインスタンスを生成します。
+	 * <p>
+	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI部分は付加されません。
+	 * </p>
+	 */
+	public QueryStringBuilder() {
+		this(null);
+	}
+
+	/**
+	 * URI部分を指定してインスタンスを生成します。
+	 * <p>
+	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI部分と「?」が付加されます。
+	 * </p>
+	 * @param baseUri URI部分
+	 */
+	public QueryStringBuilder(String baseUrl) {
+		this.baseUri = baseUrl;
+	}
 
 	/**
 	 * エンコードをセットします。
@@ -81,7 +107,17 @@ public class QueryStringBuilder {
 	 */
 	@Override
 	public String toString() {
-		return sb.toString();
+		if (this.baseUri == null) {
+			return queryString.toString();
+		} else {
+			StringBuilder baseUrlBuf = new StringBuilder(this.baseUri);
+			if (baseUrlBuf.indexOf("?") == -1) {
+				baseUrlBuf.append("?");
+			} else if (queryString.indexOf("?") < queryString.length()) {
+				baseUrlBuf.append("&");
+			}
+			return baseUrlBuf.toString() + queryString.toString();
+		}
 	}
 
 	/**
@@ -93,14 +129,14 @@ public class QueryStringBuilder {
 	 *            値
 	 */
 	private void appendParams(final String name, final Object value) {
-		if (sb.length() > 0) {
-			sb.append("&");
+		if (queryString.length() > 0) {
+			queryString.append("&");
 		}
 		try {
-			sb.append(URLEncoder.encode(name, encode));
-			sb.append("=");
+			queryString.append(URLEncoder.encode(name, encode));
+			queryString.append("=");
 			if (value != null) {
-				sb.append(URLEncoder.encode(value.toString(), encode));
+				queryString.append(URLEncoder.encode(value.toString(), encode));
 			}
 		} catch (final UnsupportedEncodingException e) {
 			throw new IORuntimeException(e);
