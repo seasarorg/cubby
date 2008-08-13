@@ -47,6 +47,7 @@
             <phase>site</phase>
             <configuration>
               <tasks>
+	              <replace file="target/site/tagreference.html" token="Tag reference report." value="タグリファレンス"/>
 	              <replace file="target/site/tagreference.html" token="Tag reference sheet" value="タグリファレンス"/>
 	              <replace file="target/site/tagreference.html" token="Tag library reference for the following tag libraries:" value="次のタグライブラリのリファレンスです。"/>
 	              <replace file="target/site/tagreference.html" token="Required attributes are marked with a &lt;b&gt;*&lt;/b&gt;" value="*が付く属性は必須です。"/>
