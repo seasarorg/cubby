@@ -94,6 +94,11 @@ public class ForwardTest extends S2TestCase {
 		assertEquals("/absolute/path.jsp", forward.getPath());
 	}
 
+	public void testParam() throws Exception {
+		Forward forward = new Forward("/absolute/path.jsp").param("value1", "123").param("value2", "456");
+		assertEquals("/absolute/path.jsp?value1=123&value2=456", forward.getPath());
+	}
+
 	@SuppressWarnings("unchecked")
 	public void testForwardByClassAndMethodName() throws Exception {
 		MockServletContext servletContext = this.getServletContext();
@@ -107,6 +112,32 @@ public class ForwardTest extends S2TestCase {
 				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
 						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, path);
+					}
+				}), response);
+		Map<String, Routing> routings = (Map<String, Routing>) request
+				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
+		assertNotNull(routings);
+		assertEquals(1, routings.size());
+		Routing routing = routings.get(null);
+		assertNotNull(routing);
+		assertEquals(MockAction.class, routing.getActionClass());
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2", null);
+		assertEquals(forwardMethod, routing.getMethod());
+	}
+
+	@SuppressWarnings("unchecked")
+	public void testForwardByClassAndMethodNameWithParam() throws Exception {
+		MockServletContext servletContext = this.getServletContext();
+		servletContext.setServletContextName("/cubby");
+		MockHttpServletRequest request = this.getRequest();
+		MockHttpServletResponse response = this.getResponse();
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+
+		Forward forward = new Forward(MockAction.class, "dummy2").param("value1", "123").param("value2", "456");
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
+					public void assertDispatchPath(String path) {
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY + "?value1=123&value2=456", path);
 					}
 				}), response);
 		Map<String, Routing> routings = (Map<String, Routing>) request
