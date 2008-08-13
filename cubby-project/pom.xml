@@ -257,6 +257,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
           <encoding>UTF-8</encoding>
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
+          <stylesheetfile>${basedir}/../src/site/stylesheet.css</stylesheetfile>
           <links>
             <link>http://java.sun.com/javaee/5/docs/api/</link>
             <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
