@@ -503,7 +503,7 @@ public class TokenAction extends Action {
 [2] URL を a タグに出力
 (JSP)
 <t:link actionClass="com.example.action.FooAction" actionMethod="bar"
-        tag="a" attribute="href">
+        tag="a" attr="href">
     link to action
 </t:link>
 
@@ -515,7 +515,7 @@ public class TokenAction extends Action {
 [3] パラメータ指定 (アクションメソッドに @Path("baz/{id}") という指定があった場合)
 (JSP)
 <t:link actionClass="com.example.action.FooAction" actionMethod="bar"
-        tag="a" attribute="href">
+        tag="a" attr="href">
     <t:param name="id" value="123" />
     <t:param name="token" value="abc" />
     link to action
