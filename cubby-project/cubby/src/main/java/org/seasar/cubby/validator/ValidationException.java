@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.validator;
 
+import org.seasar.cubby.action.ActionResult;
+
 /**
  * 入力検証に失敗した場合に後続の入力検証を実行しないようにするためにスローする例外です。
  * 
@@ -26,57 +28,53 @@ public class ValidationException extends RuntimeException {
 	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 1L;
 
-	/** メッセージ。 */
-	private final String message;
+	/** 入力検証でエラーがあった場合の振る舞い。 */
+	private final ValidationFailBehaviour behaviour;
 
-	/** フィールド名。 */
-	private final String[] fieldNames;
+	/**
+	 * 新規例外を構築します。
+	 */
+	public ValidationException(final ValidationFailBehaviour behaviour) {
+		this.behaviour = behaviour;
+	}
 
 	/**
 	 * 新規例外を構築します。
 	 */
 	public ValidationException() {
-		this(null);
+		this(new ErrorPageValidationFailBehaviour());
 	}
 
 	/**
 	 * 新規例外を構築します。
 	 * 
-	 * @param message
+	 * @param errorMessage
 	 *            メッセージ
 	 * @param fieldNames
 	 *            フィールド名
 	 */
-	public ValidationException(String message, String... fieldNames) {
-		this.message = message;
-		this.fieldNames = fieldNames;
+	public ValidationException(final String errorMessage,
+			final String... fieldNames) {
+		this(new ErrorPageValidationFailBehaviour(errorMessage, fieldNames));
 	}
 
 	/**
-	 * この例外がメッセージを含むかを示します。
+	 * 新規例外を構築します。
 	 * 
-	 * @return この例外がメッセージを含む場合は <code>true</code>、そうでない場合は <code>false</code>
+	 * @param actionResult
+	 *            エラーページの遷移などを行う {@link ActionResult}
 	 */
-	public boolean hasMessage() {
-		return message != null;
+	public ValidationException(final ActionResult actionResult) {
+		this(new ActionResultValidationFailBehaviour(actionResult));
 	}
 
 	/**
-	 * メッセージを取得します。
+	 * 入力検証でエラーがあった場合の振る舞いを取得します。
 	 * 
-	 * @return メッセージ
+	 * @return 入力検証でエラーがあった場合の振る舞い
 	 */
-	public String getMessage() {
-		return message;
-	}
-
-	/**
-	 * フィールド名を取得します。
-	 * 
-	 * @return フィールド名
-	 */
-	public String[] getFieldNames() {
-		return fieldNames;
+	public ValidationFailBehaviour getBehaviour() {
+		return behaviour;
 	}
 
 }

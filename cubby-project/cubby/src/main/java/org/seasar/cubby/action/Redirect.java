@@ -406,14 +406,12 @@ public class Redirect implements ActionResult {
 	 * @since 1.1.0
 	 */
 	public ActionResult noEncodeURL() {
-		return new Redirect(getPath()) {
-
+		return new Redirect(path, protocol, port) {
 			@Override
 			protected String encodeURL(final String url,
 					final HttpServletResponse response) {
 				return url;
 			}
-
 		};
 	}
 	
