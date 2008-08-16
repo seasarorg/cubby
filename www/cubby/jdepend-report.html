@@ -59,8 +59,8 @@
             
   
     
-             最終更新: 2008-08-10
-              &nbsp;| バージョン: 1.1.0-rc1
+             最終更新: 2008-08-17
+              &nbsp;| バージョン: 1.1.0-rc2
             </div>
       <div class="clear">
         <hr/>
@@ -337,11 +337,11 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>3</td>
 <td>3</td>
 <td>0</td>
-<td>3</td>
+<td>4</td>
 <td>2</td>
 <td>0.0%</td>
-<td>40.0%</td>
-<td>60.000004%</td>
+<td>33.0%</td>
+<td>67.0%</td>
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.filter">org.seasar.cubby.filter</a></td>
@@ -422,14 +422,14 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>1</td>
 </tr>
 <tr class="a"><td><a href="#org.seasar.cubby.validator">org.seasar.cubby.validator</a></td>
-<td>18</td>
-<td>10</td>
-<td>8</td>
+<td>22</td>
+<td>13</td>
+<td>9</td>
 <td>3</td>
-<td>6</td>
-<td>44.0%</td>
-<td>67.0%</td>
-<td>11.0%</td>
+<td>11</td>
+<td>41.0%</td>
+<td>79.0%</td>
+<td>19.0%</td>
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.validator.impl">org.seasar.cubby.validator.impl</a></td>
@@ -437,7 +437,7 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>9</td>
+<td>7</td>
 <td>0.0%</td>
 <td>100.0%</td>
 <td>0.0%</td>
@@ -883,11 +883,11 @@ org.seasar.framework.util<br />
 <th>Instability</th>
 <th>Distance</th>
 </tr>
-<tr class="a"><td>3</td>
+<tr class="a"><td>4</td>
 <td>2</td>
 <td>0.0%</td>
-<td>40.0%</td>
-<td>60.000004%</td>
+<td>33.0%</td>
+<td>67.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="b"><th>Abstract Classes</th>
@@ -903,6 +903,7 @@ org.seasar.cubby.exception.FileUploadRuntimeException<br />
 <td>org.seasar.cubby.controller.impl<br />
 org.seasar.cubby.routing.impl<br />
 org.seasar.cubby.util<br />
+org.seasar.cubby.validator<br />
 </td>
 <td>java.lang<br />
 org.seasar.framework.exception<br />
@@ -1249,10 +1250,10 @@ org.seasar.framework.util<br />
 <th>Distance</th>
 </tr>
 <tr class="a"><td>3</td>
-<td>6</td>
-<td>44.0%</td>
-<td>67.0%</td>
-<td>11.0%</td>
+<td>11</td>
+<td>41.0%</td>
+<td>79.0%</td>
+<td>19.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="b"><th>Abstract Classes</th>
@@ -1264,12 +1265,15 @@ org.seasar.framework.util<br />
 org.seasar.cubby.validator.DefaultValidationRules<br />
 org.seasar.cubby.validator.FieldValidationRule$ValidationInvoker<br />
 org.seasar.cubby.validator.ScalarFieldValidator<br />
+org.seasar.cubby.validator.ValidationFailBehaviour<br />
 org.seasar.cubby.validator.ValidationProcessor<br />
 org.seasar.cubby.validator.ValidationRule<br />
 org.seasar.cubby.validator.ValidationRules<br />
 org.seasar.cubby.validator.Validator<br />
 </td>
-<td>org.seasar.cubby.validator.FieldValidationRule<br />
+<td>org.seasar.cubby.validator.ActionResultValidationFailBehaviour<br />
+org.seasar.cubby.validator.ErrorPageValidationFailBehaviour<br />
+org.seasar.cubby.validator.FieldValidationRule<br />
 org.seasar.cubby.validator.FieldValidationRule$ArrayFieldValidationInvoker<br />
 org.seasar.cubby.validator.FieldValidationRule$ScalarFieldValidationInvoker<br />
 org.seasar.cubby.validator.MessageHelper<br />
@@ -1279,17 +1283,23 @@ org.seasar.cubby.validator.MessageInfo$MessageBuilder<br />
 org.seasar.cubby.validator.ValidationContext<br />
 org.seasar.cubby.validator.ValidationException<br />
 org.seasar.cubby.validator.ValidationPhase<br />
+org.seasar.cubby.validator.ValidationUtils<br />
 </td>
 <td>org.seasar.cubby.interceptor<br />
 org.seasar.cubby.validator.impl<br />
 org.seasar.cubby.validator.validators<br />
 </td>
-<td>java.lang<br />
+<td>java.io<br />
+java.lang<br />
 java.lang.reflect<br />
 java.util<br />
 javax.servlet.http<br />
 org.seasar.cubby.action<br />
+org.seasar.cubby.exception<br />
 org.seasar.cubby.util<br />
+org.seasar.framework.beans<br />
+org.seasar.framework.beans.factory<br />
+org.seasar.framework.util<br />
 </td>
 </tr>
 </table>
@@ -1301,7 +1311,7 @@ org.seasar.cubby.util<br />
 <th>Distance</th>
 </tr>
 <tr class="a"><td>0</td>
-<td>9</td>
+<td>7</td>
 <td>0.0%</td>
 <td>100.0%</td>
 <td>0.0%</td>
@@ -1323,8 +1333,6 @@ javax.servlet.http<br />
 org.seasar.cubby.action<br />
 org.seasar.cubby.util<br />
 org.seasar.cubby.validator<br />
-org.seasar.framework.beans<br />
-org.seasar.framework.beans.factory<br />
 </td>
 </tr>
 </table>

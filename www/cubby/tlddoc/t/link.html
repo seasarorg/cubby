@@ -45,7 +45,7 @@
 <p></p>
 <b>Example:</b>
 <br>
-<pre>[1] URL をそのまま出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" /&gt; (実行結果) /(contextPath)/foo/bar [2] URL を a タグに出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attribute="href"&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/bar"&gt; link to action &lt;/a&gt; [3] パラメータ指定 (アクションメソッドに @Path("baz/{id}") という指定があった場合) (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attribute="href"&gt; &lt;t:param name="id" value="123" /&gt; &lt;t:param name="token" value="abc" /&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/baz/123&amp;token=abc"&gt; link to action &lt;/a&gt;</pre>
+<pre>[1] URL をそのまま出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" /&gt; (実行結果) /(contextPath)/foo/bar [2] URL を a タグに出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/bar"&gt; link to action &lt;/a&gt; [3] パラメータ指定 (アクションメソッドに @Path("baz/{id}") という指定があった場合) (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; &lt;t:param name="id" value="123" /&gt; &lt;t:param name="token" value="abc" /&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/baz/123&amp;token=abc"&gt; link to action &lt;/a&gt;</pre>
 <p></p>
 <hr>
 <table border="1" cellpadding="3" cellspacing="0" width="100%">

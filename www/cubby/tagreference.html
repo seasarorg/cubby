@@ -13,7 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Cubby - Tag reference report.</title>
+    <title>Cubby - タグリファレンス</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -59,8 +59,8 @@
             
   
     
-             最終更新: 2008-08-10
-              &nbsp;| バージョン: 1.1.0-rc1
+             最終更新: 2008-08-17
+              &nbsp;| バージョン: 1.1.0-rc2
             </div>
       <div class="clear">
         <hr/>
@@ -215,21 +215,21 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>Tag reference sheet</h2>
-<p>Tag library reference for the following tag libraries:</p>
+        <div class="section"><h2>タグリファレンス</h2>
+<p>次のタグライブラリのリファレンスです。</p>
 <ul><li><a href="#cubby-functions.tld">Cubby functions (cubby-functions.tld)</a> - uri: http://www.seasar.org/cubby/functions</li>
 <li><a href="#cubby-tags.tld">Cubby tags (cubby-tags.tld)</a> - uri: http://www.seasar.org/cubby/tags</li>
 </ul>
 </div>
 <a name="cubby-functions.tld"></a><div class="section"><h2>Cubby functions</h2>
 <p>Cubby functions</p>
-<p>This is version 1.0.</p>
+<p>タグのバージョン:1.0.</p>
 <ul></ul>
-<p>Required attributes are marked with a <b>*</b></p>
+<p>*が付く属性は必須です。</p>
 </div>
 <a name="cubby-tags.tld"></a><div class="section"><h2>Cubby tags</h2>
 <p>Cubby tag library</p>
-<p>This is version 1.0.</p>
+<p>タグのバージョン:1.0.</p>
 <ul><li><a href="#t:form">form</a> 
       
       HTML の form タグを出力します。
@@ -272,7 +272,7 @@
       
     </li>
 </ul>
-<p>Required attributes are marked with a <b>*</b></p>
+<p>*が付く属性は必須です。</p>
 <a name="t:form"></a><div class="section"><h3>&lt;t:form&gt;</h3>
 
       
@@ -282,8 +282,8 @@
       </p>
 
       
-    <p>Can contain: JSP</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができます。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 [1] action 属性を JSP 上で指定する
@@ -311,10 +311,10 @@
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="a"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="a"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="b"><td>actionClass</td>
 <td>
@@ -370,8 +370,8 @@
       
       HTML の input タグを出力します。
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 (JSP)
@@ -383,10 +383,10 @@
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="b"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="b"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="a"><td>checkedValue</td>
 <td>
@@ -453,8 +453,8 @@
       </p>
 
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 [1] URL をそのまま出力
@@ -467,7 +467,7 @@
 [2] URL を a タグに出力
 (JSP)
 &lt;t:link actionClass=&quot;com.example.action.FooAction&quot; actionMethod=&quot;bar&quot;
-        tag=&quot;a&quot; attribute=&quot;href&quot;&gt;
+        tag=&quot;a&quot; attr=&quot;href&quot;&gt;
     link to action
 &lt;/t:link&gt;
 
@@ -479,7 +479,7 @@
 [3] パラメータ指定 (アクションメソッドに @Path(&quot;baz/{id}&quot;) という指定があった場合)
 (JSP)
 &lt;t:link actionClass=&quot;com.example.action.FooAction&quot; actionMethod=&quot;bar&quot;
-        tag=&quot;a&quot; attribute=&quot;href&quot;&gt;
+        tag=&quot;a&quot; attr=&quot;href&quot;&gt;
     &lt;t:param name=&quot;id&quot; value=&quot;123&quot; /&gt;
     &lt;t:param name=&quot;token&quot; value=&quot;abc&quot; /&gt;
     link to action
@@ -493,10 +493,10 @@
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="b"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="b"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="a"><td><b>actionClass*</b></td>
 <td>
@@ -554,11 +554,11 @@
       
       t:form、t:link のボディ部でパラメータを指定するためのタグです。
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="b"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="b"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="a"><td><b>name*</b></td>
 <td>
@@ -588,8 +588,8 @@
       
       HTML の select タグと option タグを出力します。
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 (JSP)
@@ -604,10 +604,10 @@
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="a"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="a"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="b"><td>emptyOption</td>
 <td>
@@ -689,8 +689,8 @@
       
       HTML の textarea タグを出力します。
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 (JSP)
@@ -702,10 +702,10 @@
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="b"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="b"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="a"><td>index</td>
 <td>
@@ -747,8 +747,8 @@
       
       2重サブミット防止用の input タグ(type=&quot;hidden&quot;)を出力します。
       
-    <p>Can contain: scriptless</p>
-<div class="section"><h4>Example</h4>
+    <p>このタグは子要素にスクリプトレットを含むことができません。</p>
+<div class="section"><h4>例</h4>
 <div class="source"><pre>
       
 (JSP)
@@ -782,10 +782,10 @@ public class TokenAction extends Action {
     </pre>
 </div>
 </div>
-<div class="section"><h4>Attributes</h4>
-<table class="bodyTable"><tr class="b"><th>Name</th>
-<th>Description</th>
-<th>Type</th>
+<div class="section"><h4>属性</h4>
+<table class="bodyTable"><tr class="b"><th>属性名</th>
+<th>説明</th>
+<th>型</th>
 </tr>
 <tr class="a"><td>name</td>
 <td>
