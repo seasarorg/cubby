@@ -9,6 +9,7 @@ import org.seasar.cubby.action.Path;
 import org.seasar.cubby.cubbitter.Constants;
 import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.EntryService;
+import org.seasar.cubby.cubbitter.util.FeedUtils;
 import org.seasar.cubby.util.Messages;
 
 import com.sun.syndication.io.FeedException;

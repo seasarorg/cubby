@@ -16,6 +16,7 @@ import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.AuthenticationException;
 import org.seasar.cubby.cubbitter.service.BasicAuthenticationService;
 import org.seasar.cubby.cubbitter.service.EntryService;
+import org.seasar.cubby.cubbitter.util.FeedUtils;
 import org.seasar.cubby.util.Messages;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationException;
