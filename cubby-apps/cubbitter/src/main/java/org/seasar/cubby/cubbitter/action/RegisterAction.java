@@ -10,7 +10,6 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.dto.AjaxDto;
 import org.seasar.cubby.cubbitter.entity.Account;
-import org.seasar.cubby.cubbitter.service.AccountService;
 import org.seasar.cubby.util.Messages;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.MessageHelper;
