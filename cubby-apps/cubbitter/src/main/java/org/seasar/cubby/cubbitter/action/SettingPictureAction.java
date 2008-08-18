@@ -13,7 +13,6 @@ import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.cubbitter.dao.ImageDao;
 import org.seasar.cubby.cubbitter.entity.Image;
 import org.seasar.cubby.cubbitter.util.ImageUtils;
 import org.seasar.cubby.util.Messages;
@@ -24,8 +23,6 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 
 @Path("setting/picture")
 public class SettingPictureAction extends AbstractAction {
-
-	public ImageDao imageDao;
 
 	@RequestParameter
 	public FileItem file;
