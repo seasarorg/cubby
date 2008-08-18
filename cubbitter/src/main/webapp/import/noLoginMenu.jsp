@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <div id="menu">
 <div class="round box">
 <a href="${contextPath}/top" id="logo" class="roundA"><img src="${contextPath}/image/logo.png" alt="cubbitter" title="cubbitter" /></a>

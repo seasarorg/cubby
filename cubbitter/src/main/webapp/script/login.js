@@ -2,37 +2,46 @@
 
 Event.observe(window, "load", addEventLogin, false);
 
-function addEventLogin(){
-	if($("loginButton")){
-		$("loginButton").onclick = login;
+function addEventLogin() {
+	var loginButton = $("loginButton");
+	if (loginButton) {
+		loginButton.onclick = login;
 	}
 }
 
 // ログイン処理
-function login(){
-	try{
-		if($F("memberName").length < 1){
+function login() {
+	var loginName = $F("loginName");
+	var loginPassword = $F("loginPassword");
+	try {
+		if (loginName.length < 1) {
 			alert("ユーザIDを入力してください。");
 			return false;
 		}
-		if($F("password").length < 1){
+		if (loginPassword.length < 1) {
 			alert("パスワードを入力してください。");
 			return false;
 		}
-		var url = contextPath + "/login/check?memberName=" + encodeURIComponent($F("memberName")) + "&password=" + encodeURIComponent($F("password"));
-		new Ajax.Request(url, {method:"get", onSuccess:checkLoginResult, onFailure:errorFunc});
-	}catch(e){
+		var url = contextPath + "/login/check?loginName="
+				+ encodeURIComponent(loginName) + "&loginPassword="
+				+ encodeURIComponent(loginPassword);
+		new Ajax.Request(url, {
+			method :"get",
+			onSuccess :checkLoginResult,
+			onFailure :errorFunc
+		});
+	} catch (e) {
 		alert(e.toString());
 	}
 	return false;
 }
 
 // ログインチェック結果
-function checkLoginResult(httpObj){
+function checkLoginResult(httpObj) {
 	var ret = eval("(" + httpObj.responseText + ")");
-	if(ret.isError){
+	if (ret.isError) {
 		alert(ret.errorMessage);
-	}else{
+	} else {
 		$("loginForm").submit();
 	}
 }
