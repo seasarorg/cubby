@@ -40,8 +40,6 @@ public class RegisterAction extends AbstractAction {
 		}
 	};
 
-	public AccountService accountService;
-
 	@RequestParameter
 	public String regMemberName;
 
