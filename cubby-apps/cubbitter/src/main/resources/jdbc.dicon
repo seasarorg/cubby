@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
-	"http://www.seasar.org/dtd/components21.dtd">
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="jdbc">
 	<include path="jta.dicon"/>
-	<include path="jdbc-extension.dicon"/>
-	
-	<!-- LIMIT OFFSET句を使ったSQL書き換えによるページング処理用設定 -->
-	<component name="pagingSqlRewriter" class="org.seasar.dao.pager.LimitOffsetPagingSqlRewriter"/>
-	
+	<include path="jdbc-extension.dicon"
+		condition="@org.seasar.framework.util.ResourceUtil@isExist('convention.dicon')"/>
+
 	<component class="org.seasar.extension.jdbc.impl.BasicResultSetFactory"/>
 	<!--
 	<component class="org.seasar.extension.jdbc.impl.OracleResultSetFactory"/>
@@ -88,21 +86,51 @@
 		</initMethod>
 	</component>
 	-->
-
-	<!-- for PostgreSQL -->
 	
+	<!-- for DB2 -->
+	<!--
+	<component name="xaDataSource"
+		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
+		<property name="driverClassName">
+			"com.ibm.db2.jcc.DB2Driver"
+		</property>
+		<property name="URL">
+			"jdbc:db2://foo.bar.com:50000/SAMPLE"
+		</property>
+		<property name="user">"db2user"</property>
+		<property name="password">"db2password"</property>
+		<initMethod name="addProperty">
+			<arg>"currentSchema"</arg>
+			<arg>"SCHEMA"</arg>
+		</initMethod>
+	</component>
+	-->
+	
+	<!-- for PostgreSQL -->
+	<!--
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"org.postgresql.Driver"
         </property>
         <property name="URL">
-          "jdbc:postgresql://localhost/postgres?protocolVersion=2"
+          "jdbc:postgresql://localhost/TEST"
+        </property>
+        <property name="user">"xxxx"</property>
+        <property name="password">"xxxx"</property>
+    </component>
+    -->
+	<component name="xaDataSource"
+		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
+		<property name="driverClassName">
+			"org.postgresql.Driver"
+        </property>
+        <property name="URL">
+          "jdbc:postgresql://localhost/cubbitter?protocolVersion=2"
         </property>
         <property name="user">"postgres"</property>
         <property name="password">"postgres"</property>
     </component>
-    
 
 	<!-- MySQL
 	- MySQL4.0以下でマルチバイト文字を扱う場合には，URL指定の後に，

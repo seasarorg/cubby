@@ -4,15 +4,14 @@
 <components>
 	<include path="convention.dicon" />
 	<include path="aop.dicon" />
-	<include path="dao.dicon" />
 	<include path="dxo.dicon" />
+	<include path="kuina-dao.dicon" />
 	<include path="routing.dicon" />
 	<include path="cubby.dicon" />
 	<include path="app-cubby.dicon"/>
+	<include path="transaction.dicon"/>
 
-	<component name="commentPagerLimit" class="java.lang.Integer"><arg>30</arg></component>
-	<component name="memberPagerLimit" class="java.lang.Integer"><arg>30</arg></component>
+	<component class="org.seasar.cubby.cubbitter.converter.AccountConverter"/>
+	<component class="org.seasar.cubby.cubbitter.converter.EntryConverter"/>
 
-	
-	
 </components>

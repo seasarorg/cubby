@@ -2,7 +2,9 @@
 	margin:0;
 	padding:0;
 	font-size:100%;
-	font-family: "MS UI Gothic";
+/*
+		font-family: "MS UI Gothic";
+*/
 	word-break: break-all;
 }
 body{
@@ -83,7 +85,10 @@ img.iconL{
 	top: 0;
 	width: 195px;
 	padding: 5px;
+
 	font-weight:bold;
+
+	font-size: small;
 }
 
 /* ÉÅÉjÉÖÅ[ */
@@ -108,7 +113,9 @@ img.iconL{
 }
 #menu a.menu:hover{
 	color: #ffffff;
+/*
 	background-color:#339966;
+*/
 }
 #menu input{
 	font-weight: normal;

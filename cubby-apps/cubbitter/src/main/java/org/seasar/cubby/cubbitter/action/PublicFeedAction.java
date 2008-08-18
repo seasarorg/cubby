@@ -1,48 +1,65 @@
 package org.seasar.cubby.cubbitter.action;
 
+import java.io.IOException;
+import java.util.List;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
-import org.seasar.cubby.cubbitter.dao.CommentDao;
-import org.seasar.cubby.cubbitter.dto.MyPagerConditionDto;
+import org.seasar.cubby.action.Path;
+import org.seasar.cubby.cubbitter.Constants;
+import org.seasar.cubby.cubbitter.entity.Entry;
+import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.util.Messages;
 
-public class PublicFeedAction extends FeedAction {
-	
-	// ----------------------------------------------[DI Field]
-	
-	public CommentDao commentDao;
-	
-	// ----------------------------------------------[Action Method]
-	
-	public ActionResult rss1() throws Exception {
-		initCommon();
-		writeRss1Feed();
-		return new Direct();
-	}
+import com.sun.syndication.io.FeedException;
+
+@Path("/")
+public class PublicFeedAction extends AbstractAction {
+
+	public EntryService entryService;
 
 	public ActionResult rss2() throws Exception {
-		initCommon();
-		writeRss2Feed();
+		new FeedWriter() {
+
+			@Override
+			void writeEntries(String title, String description,
+					List<Entry> entries) throws IOException, FeedException {
+				FeedUtils.writeRss2Feed(title, description, entries, request,
+						response);
+			}
+
+		}.write();
 		return new Direct();
 	}
 
 	public ActionResult atom() throws Exception {
-		initCommon();
-		writeAtomFeed();
+		new FeedWriter() {
+
+			@Override
+			void writeEntries(String title, String description,
+					List<Entry> entries) throws IOException, FeedException {
+				FeedUtils.writeAtomFeed(title, description, entries, request,
+						response);
+			}
+
+		}.write();
 		return new Direct();
 	}
 
-	// ----------------------------------------------[Private Method]
-	
-	/** 共通初期化 */
-	private void initCommon() {
-		title = Messages.getText("feed.public.title");
-		description = Messages.getText("feed.public.description");
-		// データ取得
-		MyPagerConditionDto dto = new MyPagerConditionDto();
-		dto.setLimit(commentPagerLimit);
-		dto.setPageNo(1);
-		commentList = commentDao.getPublicCommentList(dto, -1);
+	private abstract class FeedWriter {
+
+		void write() throws IOException, FeedException {
+			String title = Messages.getText("feed.public.title");
+			String description = Messages.getText("feed.public.description");
+			List<Entry> entries = entryService.getPublicEntries();
+			if (entries.size() > Constants.FEEDS_MAX_RESULT) {
+				entries = entries.subList(0, Constants.FEEDS_MAX_RESULT);
+			}
+			writeEntries(title, description, entries);
+		}
+
+		abstract void writeEntries(String title, String description,
+				List<Entry> entries) throws IOException, FeedException;
 	}
+
 }

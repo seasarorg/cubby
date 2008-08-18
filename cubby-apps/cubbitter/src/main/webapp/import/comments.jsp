@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <div class="smileyOnOff">
 	<img src="${contextPath}/image/smiley/regular_smile.gif" id="changeSmileyButton" class="toggleButtonOff" alt="絵文字を表示する" title="絵文字を表示する" />
 </div>
