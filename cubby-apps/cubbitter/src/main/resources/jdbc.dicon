@@ -39,19 +39,17 @@
 	-->
 
 	<!-- for H2 -->
-	<!--
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:h2:tcp://localhost:9092/demo"
+			"jdbc:h2:~/cubbitter"
 		</property>
 		<property name="user">"sa"</property>
-		<property name="password">""</property>
+		<property name="password">"sa"</property>
 	</component>
-	-->
 
 	<!-- for Derby -->
 	<!--
@@ -120,17 +118,6 @@
         <property name="password">"xxxx"</property>
     </component>
     -->
-	<component name="xaDataSource"
-		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
-		<property name="driverClassName">
-			"org.postgresql.Driver"
-        </property>
-        <property name="URL">
-          "jdbc:postgresql://localhost/cubbitter?protocolVersion=2"
-        </property>
-        <property name="user">"postgres"</property>
-        <property name="password">"postgres"</property>
-    </component>
 
 	<!-- MySQL
 	- MySQL4.0以下でマルチバイト文字を扱う場合には，URL指定の後に，

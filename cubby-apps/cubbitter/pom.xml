@@ -141,9 +141,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>8.3-603.jdbc3</version>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.0.77</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
