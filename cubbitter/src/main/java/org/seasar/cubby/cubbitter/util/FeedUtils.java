@@ -1,4 +1,4 @@
-package org.seasar.cubby.cubbitter.action;
+package org.seasar.cubby.cubbitter.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
