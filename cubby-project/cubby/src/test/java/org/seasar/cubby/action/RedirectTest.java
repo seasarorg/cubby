@@ -242,6 +242,13 @@ public class RedirectTest extends S2TestCase {
 		assertEquals("/routing/test/123/456?value3=789", redirect.getPath());
 	}
 
+	public void testRedirectByClassAndMethod5() throws Exception {
+		final Redirect redirect1 = new Redirect(MockAction.class, "index");
+		assertEquals("/routing/", redirect1.getPath());
+		final Redirect redirect2 = new Redirect(MockAction.class);
+		assertEquals("/routing/", redirect2.getPath());
+	}
+
 	public void testRedirectByClassAndMethodFailureNoRouting() throws Exception {
 		try {
 			new Redirect(MockAction.class, "none").getPath();

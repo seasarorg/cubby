@@ -151,7 +151,18 @@ public class Forward implements ActionResult {
 	}
 
 	/**
-	 * インスタンスを生成します。
+	 * 指定されたアクションクラスのindexメソッドへフォワードするインスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @since 1.1.0
+	 */
+	public Forward(final Class<? extends Action> actionClass) {
+		this(actionClass, "index");
+	}
+
+	/**
+	 * 指定されたアクションメソッドへフォワードするインスタンスを生成します。
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
