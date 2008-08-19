@@ -53,4 +53,7 @@ public class MockAction extends Action {
 		return null;
 	}
 
+	public ActionResult index() {
+		return null;
+	}
 }

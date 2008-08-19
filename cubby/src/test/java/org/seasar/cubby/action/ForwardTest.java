@@ -126,6 +126,32 @@ public class ForwardTest extends S2TestCase {
 	}
 
 	@SuppressWarnings("unchecked")
+	public void testForwardByClassAndIndex() throws Exception {
+		MockServletContext servletContext = this.getServletContext();
+		servletContext.setServletContextName("/cubby");
+		MockHttpServletRequest request = this.getRequest();
+		MockHttpServletResponse response = this.getResponse();
+		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+
+		Forward forward = new Forward(MockAction.class);
+		forward.execute(action, MockAction.class, method,
+				new RequestDispatcherAssertionWrapper(request, new Asserter() {
+					public void assertDispatchPath(String path) {
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, path);
+					}
+				}), response);
+		Map<String, Routing> routings = (Map<String, Routing>) request
+				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
+		assertNotNull(routings);
+		assertEquals(1, routings.size());
+		Routing routing = routings.get(null);
+		assertNotNull(routing);
+		assertEquals(MockAction.class, routing.getActionClass());
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "index", null);
+		assertEquals(forwardMethod, routing.getMethod());
+	}
+
+	@SuppressWarnings("unchecked")
 	public void testForwardByClassAndMethodNameWithParam() throws Exception {
 		MockServletContext servletContext = this.getServletContext();
 		servletContext.setServletContextName("/cubby");

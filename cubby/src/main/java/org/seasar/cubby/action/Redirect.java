@@ -163,6 +163,19 @@ public class Redirect implements ActionResult {
 	}
 
 	/**
+	 * 指定されたアクションクラスのindexメソッドへリダイレクトするインスタンスを生成します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 * @throws org.seasar.cubby.exception.ActionRuntimeException
+	 *             リダイレクト先パスの構築に失敗した場合
+	 * @since 1.1.0
+	 */
+	public Redirect(final Class<? extends Action> actionClass) {
+		this(actionClass, "index");
+	}
+
+	/**
 	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。
 	 * 
 	 * @param actionClass
