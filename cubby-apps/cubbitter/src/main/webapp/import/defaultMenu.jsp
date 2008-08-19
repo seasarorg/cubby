@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <div id="menu">
 <div class="round box">
-<a href="${contextPath}/home/" id="logo" class="roundA"><img src="${contextPath}/image/logo.png" alt="cubbitter" title="cubbitter" /></a>
+<a href="${contextPath}/" id="logo" class="roundA"><img src="${contextPath}/image/logo.png" alt="cubbitter" title="cubbitter" /></a>
 <t:form action="${contextPath}/search/" method="get" value="">
 	<t:input type="text" id="member" name="keyword" />
 	<input type="submit" value="検索" class="buttonS" />
