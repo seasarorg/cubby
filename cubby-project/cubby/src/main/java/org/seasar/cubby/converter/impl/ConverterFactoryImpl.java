@@ -15,13 +15,19 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
+import org.seasar.cubby.controller.ClassDetector;
+import org.seasar.cubby.controller.DetectClassProcessor;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.ConverterFactory;
 import org.seasar.framework.container.S2Container;
+import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
@@ -32,23 +38,29 @@ import org.seasar.framework.util.DisposableUtil;
  * @author baba
  * @since 1.1.0
  */
-public class ConverterFactoryImpl implements ConverterFactory, Disposable {
+public class ConverterFactoryImpl implements ConverterFactory, DetectClassProcessor,
+		Disposable {
 
 	/** インスタンスが初期化済みであることを示します。 */
-	protected boolean initialized;
+	private boolean initialized;
 
-	/** このファクトリを管理しているS2コンテナです。 */
-	protected S2Container container;
+	/** このファクトリを管理しているコンテナです。 */
+	private S2Container container;
 
-	/** S2コンテナに登録されているコンバータの配列です。 */
-	protected Converter[] converters;
+	/** 命名規約。 */
+	private NamingConvention namingConvention;
+
+	/** クラスパスを走査してクラスを検出するクラス。 */
+	private ClassDetector classDetector;
+
+	/** コンバータのセットです。 */
+	private Set<Converter> converters = new LinkedHashSet<Converter>();
 
 	/** コンバータのキャッシュです。 */
-	protected Map<String, Converter> converterCache = new HashMap<String, Converter>();
+	private Map<String, Converter> converterCache = new HashMap<String, Converter>();
 
 	/**
 	 * <code>ConverterFactoryImpl</code>のインスタンスを構築します。
-	 * 
 	 */
 	public ConverterFactoryImpl() {
 	}
@@ -64,13 +76,38 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 	}
 
 	/**
+	 * 命名規約を設定します。
+	 * 
+	 * @param namingConvention
+	 *            命名規約
+	 */
+	public void setNamingConvention(final NamingConvention namingConvention) {
+		this.namingConvention = namingConvention;
+	}
+
+	/**
+	 * クラスパスを走査してクラスを検出するクラスを設定します。
+	 * 
+	 * @param classDetector
+	 *            クラスパスを走査してクラスを設定します。
+	 */
+	public void setClassDetector(final ClassDetector classDetector) {
+		this.classDetector = classDetector;
+	}
+
+	/**
 	 * インスタンスを初期化します。
 	 */
 	public void initialize() {
 		if (initialized) {
 			return;
 		}
-		converters = (Converter[]) container.findAllComponents(Converter.class);
+		classDetector.detect();
+
+		for (final Converter converter : Converter[].class.cast(container
+				.findAllComponents(Converter.class))) {
+			converters.add(converter);
+		}
 		DisposableUtil.add(this);
 		initialized = true;
 	}
@@ -80,7 +117,7 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 	 * 
 	 */
 	public void dispose() {
-		converters = null;
+		converters.clear();
 		converterCache.clear();
 		initialized = false;
 	}
@@ -161,6 +198,40 @@ public class ConverterFactoryImpl implements ConverterFactory, Disposable {
 			final Class<?> assignee) {
 		return !assigner.isInterface() && assignee.isInterface()
 				&& assignee.isAssignableFrom(assigner);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたパッケージ名、クラス名から導出されるクラスがコンバータだった場合はファクトリにコンバータを登録します。
+	 * </p>
+	 */
+	public void processClass(final String packageName,
+			final String shortClassName) {
+		if (shortClassName.indexOf('$') != -1) {
+			return;
+		}
+		final String className = ClassUtil.concatName(packageName,
+				shortClassName);
+		if (!namingConvention.isTargetClassName(className)) {
+			return;
+		}
+		if (!className.endsWith(namingConvention.getConverterSuffix())) {
+			return;
+		}
+		final Class<?> clazz = ClassUtil.forName(className);
+		if (namingConvention.isSkipClass(clazz)) {
+			return;
+		}
+		if ((clazz.getModifiers() & Modifier.ABSTRACT) != 0) {
+			return;
+		}
+		if (!Converter.class.isAssignableFrom(clazz)) {
+			return;
+		}
+		final Converter converter = Converter.class.cast(container
+				.getComponent(clazz));
+		converters.add(converter);
 	}
 
 }
