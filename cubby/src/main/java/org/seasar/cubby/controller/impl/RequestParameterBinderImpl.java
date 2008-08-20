@@ -136,14 +136,12 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		}
 		if (List.class.isAssignableFrom(destClass)) {
 			final List<Object> list = new ArrayList<Object>();
-			convertToCollection(values, list, destPropertyDesc
-					.getParameterizedClassDesc());
+			convertToCollection(values, list, destPropertyDesc);
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
 			final Set<Object> set = new LinkedHashSet<Object>();
-			convertToCollection(values, set, destPropertyDesc
-					.getParameterizedClassDesc());
+			convertToCollection(values, set, destPropertyDesc);
 			return set;
 		}
 		return convertToScalar(values[0], destClass);
@@ -176,23 +174,24 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 *            変換する値
 	 * @param collection
 	 *            コレクション
-	 * @param parameterizedClassDesc
-	 *            パラメタ化された要素の定義
+	 * @param propertyDesc
+	 *            プロパティの定義
 	 */
 	private void convertToCollection(final Object[] values,
-			final Collection<Object> collection,
-			final ParameterizedClassDesc parameterizedClassDesc) {
-		if (parameterizedClassDesc == null) {
-			for (final Object value : values) {
-				collection.add(value);
-			}
-		} else {
+			final Collection<Object> collection, final PropertyDesc propertyDesc) {
+		if (propertyDesc.isParameterized()) {
+			ParameterizedClassDesc parameterizedClassDesc = propertyDesc
+					.getParameterizedClassDesc();
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
 			for (final Object value : values) {
 				final Object convertedValue = convertToScalar(value,
 						destElementType);
 				collection.add(convertedValue);
+			}
+		} else {
+			for (final Object value : values) {
+				collection.add(value);
 			}
 		}
 	}
