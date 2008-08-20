@@ -103,7 +103,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 						final Object value = convert(entry.getValue(),
 								destPropertyDesc);
 						destPropertyDesc.setValue(dest, value);
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						destPropertyDesc.setValue(dest, null);
 					}
 				}
@@ -180,7 +180,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	private void convertToCollection(final Object[] values,
 			final Collection<Object> collection, final PropertyDesc propertyDesc) {
 		if (propertyDesc.isParameterized()) {
-			ParameterizedClassDesc parameterizedClassDesc = propertyDesc
+			final ParameterizedClassDesc parameterizedClassDesc = propertyDesc
 					.getParameterizedClassDesc();
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
