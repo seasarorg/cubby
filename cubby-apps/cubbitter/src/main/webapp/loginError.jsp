@@ -19,9 +19,7 @@
 	</div>
 </div>
 
-<c:import url="/import/noLoginMenu.jsp">
-	<c:param name="hiddenLoginBox" value="true" />
-</c:import>
+<c:import url="/import/defaultMenu.jsp" />
 
 </body>
 

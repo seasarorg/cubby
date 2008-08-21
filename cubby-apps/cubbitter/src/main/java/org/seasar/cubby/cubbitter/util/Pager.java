@@ -1,28 +1,42 @@
 package org.seasar.cubby.cubbitter.util;
 
-import java.util.List;
+public class Pager {
 
-public class Pager<T> {
+	private final boolean prev, next;
 
-	private boolean prev, next;
+	private final int prevPageNo, nextPageNo;
 
-	private List<T> subList;
+	private final int firstResult, maxResults;
 
-	public Pager(List<T> list, int pageNo, int maxResults) {
+	public Pager(long count, int pageNo, int maxResults) {
 		this.prev = pageNo > 1;
-		this.next = pageNo * maxResults < list.size();
-
-		int fromIndex = (pageNo - 1) * maxResults;
-		if (list.size() < fromIndex) {
-			fromIndex = 0;
-		}
-		int toIndex;
-		if (next) {
-			toIndex = fromIndex + maxResults;
+		this.next = pageNo * maxResults < count;
+		if (prev) {
+			prevPageNo = pageNo - 1;
 		} else {
-			toIndex = list.size();
+			prevPageNo = 1;
 		}
-		this.subList = list.subList(fromIndex, toIndex);
+		if (next) {
+			nextPageNo = pageNo + 1;
+		} else {
+			nextPageNo = (int) count / maxResults;
+		}
+
+		int firstResult = (pageNo - 1) * maxResults;
+		if (count < firstResult) {
+			this.firstResult = 0;
+		} else {
+			this.firstResult = firstResult;
+		}
+		this.maxResults = maxResults;
+	}
+
+	public int getFirstResult() {
+		return firstResult;
+	}
+
+	public int getMaxResults() {
+		return maxResults;
 	}
 
 	public boolean isPrev() {
@@ -33,8 +47,12 @@ public class Pager<T> {
 		return next;
 	}
 
-	public List<T> subList() {
-		return subList;
+	public int getPrevPageNo() {
+		return prevPageNo;
+	}
+
+	public int getNextPageNo() {
+		return nextPageNo;
 	}
 
 }

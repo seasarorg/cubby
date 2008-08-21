@@ -24,7 +24,7 @@ public class AccountFriendAction extends AbstractAccountAction {
 
 	public List<Entry> entries;
 
-	public Pager<Entry> pager;
+	public Pager pager;
 
 	public ValidationRules validationRules = new DefaultValidationRules() {
 
@@ -38,10 +38,10 @@ public class AccountFriendAction extends AbstractAccountAction {
 
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
-		List<Entry> entries = entryService.getFollowingEntries(account);
-		pager = new Pager<Entry>(entries, pageNo, Constants.ENTRIES_MAX_RESULT);
-		this.entries = pager.subList();
+		long count = entryService.getFriendsCountByAccount(account);
+		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
+		this.entries = entryService.findFriendsByAccount(account, pager
+				.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/friends/index.jsp");
 	}
-
 }

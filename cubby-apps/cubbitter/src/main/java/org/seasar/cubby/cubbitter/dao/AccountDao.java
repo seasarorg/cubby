@@ -17,8 +17,11 @@ public interface AccountDao extends GenericDao<Account, Long> {
 			@ParameterName("password") String password);
 
 	@QueryName("Account.findByKeyword")
-	List<Account> findByKeyword(@ParameterName("keyword")String keyword,
+	List<Account> findByKeyword(@ParameterName("keyword") String keyword,
 			@FirstResult @ParameterName("firstResult") Integer firstResult,
 			@MaxResults @ParameterName("maxResults") Integer maxResults);
+
+	@QueryName("Account.getCountByKeyword")
+	long getCountByKeyword(@ParameterName("keyword") String string);
 
 }

@@ -10,8 +10,6 @@ import org.seasar.cubby.cubbitter.entity.Account;
 
 public class AccountService {
 
-	private static final int MAX_RESULTS = 20;
-
 	private static final String LOGIN_ACCOUNT_ID = "loginAccountId";
 
 	public AccountDao accountDao;
@@ -92,11 +90,13 @@ public class AccountService {
 		}
 	}
 
-	public List<Account> findByKeyword(final String keyword, int pageNo) {
-		int firstResult = (pageNo - 1) * MAX_RESULTS;
-		int maxResults = MAX_RESULTS;
+	public List<Account> findByKeyword(final String keyword, int firstResult, int maxResults) {
 		return accountDao.findByKeyword("%" + keyword + "%", firstResult,
 				maxResults);
+	}
+
+	public long getCountByKeyword(final String keyword) {
+		return accountDao.getCountByKeyword("%" + keyword + "%");
 	}
 
 	public void persist(Account account) {

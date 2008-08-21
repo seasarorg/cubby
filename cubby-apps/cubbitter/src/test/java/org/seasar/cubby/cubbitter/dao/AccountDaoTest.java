@@ -34,7 +34,7 @@ public class AccountDaoTest {
 		List<Account> aa = new ArrayList<Account>();
 		aa.add(account);
 		aa.addAll(account.getFollowings());
-		List<Entry> com = entryDao.findByAccounts(aa);
+		List<Entry> com = entryDao.findByAccounts(aa, 0, 999);
 		System.out.println(com);
 		for (Entry c : com) {
 			List<Entry> fav = c.getAccount().getFavorites();

@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +22,10 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "ACCOUNT")
-@NamedQuery(name = "Account.findByKeyword", query = "SELECT a FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword")
+@NamedQueries({
+	@NamedQuery(name = "Account.findByKeyword", query = "SELECT a FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword ORDER BY a.name"),
+	@NamedQuery(name = "Account.getCountByKeyword" ,query = "SELECT COUNT(*) FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword"),
+})
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;

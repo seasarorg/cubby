@@ -62,6 +62,7 @@ public class RegisterAction extends AbstractAction {
 		account.setOpen(true);
 		accountService.persist(account);
 		accountService.login(account);
+		loginAccount = account;
 
 		return new Forward("result.jsp");
 	}

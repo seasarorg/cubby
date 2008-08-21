@@ -38,7 +38,7 @@ public class AccountEntryAction extends AbstractAccountAction {
 
 	public List<Entry> entries;
 
-	public Pager<Entry> pager;
+	public Pager pager;
 
 	public ValidationRules indexValidationRules = new DefaultValidationRules() {
 
@@ -52,9 +52,14 @@ public class AccountEntryAction extends AbstractAccountAction {
 
 	@Validation(rules = "indexValidationRules")
 	public ActionResult index() {
-		List<Entry> entries = account.getEntries();
-		pager = new Pager<Entry>(entries, pageNo, Constants.ENTRIES_MAX_RESULT);
-		this.entries = pager.subList();
+		long count = entryService.getCountByAccount(account);
+		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
+		entries = entryService.findByAccount(account, pager.getFirstResult(),
+				pager.getMaxResults());
+		// List<Entry> entries = account.getEntries();
+		// pager = new Pager<Entry>(entries, pageNo,
+		// Constants.ENTRIES_MAX_RESULT);
+		// this.entries = pager.subList();
 		return new Forward("/account/entry/index.jsp");
 	}
 
@@ -87,8 +92,7 @@ public class AccountEntryAction extends AbstractAccountAction {
 		Matcher matcher = pattern.matcher(text);
 		if (matcher.find()) {
 			String replyAccountName = matcher.group(1);
-			Account replyaAccount = accountService
-					.findByName(replyAccountName);
+			Account replyaAccount = accountService.findByName(replyAccountName);
 			if (replyaAccount != null) {
 				replyaAccount.getReplies().add(entry);
 			}

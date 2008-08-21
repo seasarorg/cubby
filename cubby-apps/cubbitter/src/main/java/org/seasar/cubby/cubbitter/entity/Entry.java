@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,7 +23,22 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "ENTRY")
-@NamedQuery(name = "Entry.findByAccounts", query = "SELECT e FROM Entry AS e WHERE e.account IN (:accounts) ORDER BY e.post DESC")
+@NamedQueries( {
+		@NamedQuery(name = "Entry.findByOpen", query = "SELECT e FROM Entry AS e WHERE e.account.open = :open ORDER BY e.post DESC"),
+		@NamedQuery(name = "Entry.getCountByOpen", query = "SELECT COUNT(*) FROM Entry AS e WHERE e.account.open = :open"),
+
+		@NamedQuery(name = "Entry.findByAccounts", query = "SELECT e FROM Entry AS e WHERE e.account IN (:accounts) ORDER BY e.post DESC"),
+		@NamedQuery(name = "Entry.getCountByAccounts", query = "SELECT COUNT(*) FROM Entry AS e WHERE e.account IN (:accounts)"),
+
+		@NamedQuery(name = "Entry.findByAccount", query = "SELECT e FROM Entry AS e WHERE e.account = :account ORDER BY e.post DESC"),
+		@NamedQuery(name = "Entry.getCountByAccount", query = "SELECT COUNT(*) FROM Entry AS e WHERE e.account = :account"),
+
+		@NamedQuery(name = "Entry.findFavoritesByAccount", query = "SELECT e FROM Account AS a JOIN a.favorites AS e WHERE a = :account ORDER BY e.post DESC"),
+		@NamedQuery(name = "Entry.getFavoritesCountByAccount", query = "SELECT COUNT(*) FROM Account AS a JOIN a.favorites AS e WHERE a = :account"),
+
+		@NamedQuery(name = "Entry.findRepliesByAccount", query = "SELECT e FROM Account AS a JOIN a.replies AS e WHERE a = :account ORDER BY e.post DESC"),
+		@NamedQuery(name = "Entry.getRepliesCountByAccount", query = "SELECT COUNT(*) FROM Account AS a JOIN a.replies AS e WHERE a = :account")
+})
 public class Entry implements Serializable {
 
 	private static final long serialVersionUID = 1L;

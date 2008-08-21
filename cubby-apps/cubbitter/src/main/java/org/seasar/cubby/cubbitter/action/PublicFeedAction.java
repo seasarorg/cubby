@@ -52,10 +52,8 @@ public class PublicFeedAction extends AbstractAction {
 		void write() throws IOException, FeedException {
 			String title = Messages.getText("feed.public.title");
 			String description = Messages.getText("feed.public.description");
-			List<Entry> entries = entryService.getPublicEntries();
-			if (entries.size() > Constants.FEEDS_MAX_RESULT) {
-				entries = entries.subList(0, Constants.FEEDS_MAX_RESULT);
-			}
+			List<Entry> entries = entryService.findPublic(0,
+					Constants.FEEDS_MAX_RESULT);
 			writeEntries(title, description, entries);
 		}
 

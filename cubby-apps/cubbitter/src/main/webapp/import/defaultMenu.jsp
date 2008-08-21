@@ -64,16 +64,18 @@
 			</li>
 		</c:if>
 		<li><a href="${contextPath}/${account.name}/following/" class="menu">${account.name}がフォロー</a></li>
-		<li>
-			<ul class="following">
-			<c:forEach var="following" varStatus="s" items="${account.followings}">
-				<li>
-					<a href="${contextPath}/${following.name}/" title="${f:out(following.fullName)}">
-					<img src="${contextPath}/${following.name}/small.jpg" class="iconS" alt="${f:out(following.fullName)}" />
-				</li>
-			</c:forEach>
-			</ul>
-		</li>
+		<c:if test="${!empty account.followings}">
+			<li>
+				<ul class="following">
+				<c:forEach var="following" items="${account.followings}">
+					<li>
+						<a href="${contextPath}/${following.name}/" title="${f:out(following.fullName)}">
+						<img src="${contextPath}/${following.name}/small.jpg" class="iconS" alt="${f:out(following.fullName)}" />
+					</li>
+				</c:forEach>
+				</ul>
+			</li>
+		</c:if>
 		<li><a href="${contextPath}/${account.name}/follower/" class="menu">${account.name}をフォロー</a></li>
 		<li><a href="${contextPath}/${account.name}/favorite/" class="menu">${account.name}のお気に入り</a></li>
 	</ul>
