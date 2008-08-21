@@ -21,12 +21,13 @@ public class IndexAction extends AbstractAction {
 
 	public List<Entry> entries;
 
-	public Pager<Entry> pager;
+	public Pager pager;
 
 	public ActionResult index() {
-		List<Entry> entries = entryService.getPublicEntries();
-		pager = new Pager<Entry>(entries, pageNo, Constants.ENTRIES_MAX_RESULT);
-		this.entries = pager.subList();
+		long count = entryService.getPublicCount();
+		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
+		entries = entryService.findPublic(pager.getFirstResult(), pager
+				.getMaxResults());
 		return new Forward("index.jsp");
 	}
 

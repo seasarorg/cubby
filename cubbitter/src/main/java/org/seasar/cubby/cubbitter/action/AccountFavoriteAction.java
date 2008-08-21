@@ -11,12 +11,15 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.Constants;
 import org.seasar.cubby.cubbitter.entity.Entry;
+import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.cubbitter.util.Pager;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
 @Path("{account,[0-9a-zA-Z_]+}/favorite")
 public class AccountFavoriteAction extends AbstractAccountAction {
+
+	public EntryService entryService;
 
 	@RequestParameter
 	public Entry entry;
@@ -26,7 +29,7 @@ public class AccountFavoriteAction extends AbstractAccountAction {
 
 	public List<Entry> entries;
 
-	public Pager<Entry> pager;
+	public Pager pager;
 
 	public ValidationRules validationRules = new DefaultValidationRules() {
 
@@ -40,9 +43,10 @@ public class AccountFavoriteAction extends AbstractAccountAction {
 
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
-		List<Entry> entries = account.getFavorites();
-		pager = new Pager<Entry>(entries, pageNo, Constants.ENTRIES_MAX_RESULT);
-		this.entries = pager.subList();
+		long count = entryService.getFavoritesCountByAccount(account);
+		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
+		entries = entryService.findFavoritesByAccount(loginAccount, pager
+				.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/favorite/index.jsp");
 	}
 

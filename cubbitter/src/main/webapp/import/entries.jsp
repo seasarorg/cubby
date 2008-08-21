@@ -12,14 +12,14 @@
 			<c:if test="${entry.account.open || f:contains(account.followings, entry.account)}">
 				<tr>
 					<td class="icon">
-						<a href="${contextPath}/${entry.account.name}/">
+						<a href="${contextPath}/${entry.account.name}/entry/">
 							<img src="${contextPath}/${entry.account.name}/medium.jpg" class="iconM"
 								alt="${f:out(entry.account.fullName)}"
 								title="${f:out(entry.account.fullName)}" />
 						</a>
 					</td>
 					<td class="comment">
-						<a href="${contextPath}/${entry.account.name}/" title="${f:out(entry.account.fullName)}" class="memberName">${entry.account.name}</a>
+						<a href="${contextPath}/${entry.account.name}/entry/" title="${f:out(entry.account.fullName)}" class="memberName">${entry.account.name}</a>
 						<span class="comment">${f:out(entry.text)}</span>
 						&nbsp;
 						<a class="time" href="${contextPath}/entry/${entry.id}">
@@ -55,10 +55,17 @@
 <c:if test="${!empty pager}">
 	<div class="pager">
 		<c:if test="${pager.prev}">
-			<a href="?pageNo=${pageNo - 1}" style="border: 1px solid #ccc; padding: 3px">&lt;&lt;前</a>
+			<c:choose>
+				<c:when test="${pager.prevPageNo == 1}">
+					<a href="." style="border: 1px solid #ccc; padding: 3px">&lt;&lt;前</a>
+				</c:when>
+				<c:otherwise>
+					<a href="?pageNo=${pager.prevPageNo}" style="border: 1px solid #ccc; padding: 3px">&lt;&lt;前</a>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 		<c:if test="${pager.next}">
-			<a href="?pageNo=${pageNo + 1}" style="border: 1px solid #ccc; padding: 3px">次&gt;&gt;</a>
+			<a href="?pageNo=${pager.nextPageNo}" style="border: 1px solid #ccc; padding: 3px">次&gt;&gt;</a>
 		</c:if>
 	</div>
 </c:if>

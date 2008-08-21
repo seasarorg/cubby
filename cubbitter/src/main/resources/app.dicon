@@ -10,8 +10,4 @@
 	<include path="cubby.dicon" />
 	<include path="app-cubby.dicon"/>
 	<include path="transaction.dicon"/>
-
-	<component class="org.seasar.cubby.cubbitter.converter.AccountConverter"/>
-	<component class="org.seasar.cubby.cubbitter.converter.EntryConverter"/>
-
 </components>

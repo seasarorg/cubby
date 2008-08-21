@@ -11,7 +11,6 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.EntryService;
-import org.seasar.cubby.cubbitter.util.Pager;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
@@ -24,8 +23,6 @@ public class AccountAction extends AbstractAccountAction {
 	public int pageNo = 1;
 
 	public List<Entry> entries;
-
-	public Pager<Entry> pager;
 
 	public ValidationRules validationRules = new DefaultValidationRules() {
 

@@ -92,12 +92,23 @@
 </tr>
 </c:forEach>
 </table>
-<%--
-<div class="pager">
-	<c:if test="${pagerViewHelper.prev}"><a href="${contextPath}/following/search/${pageNo-1}/${encodeKeyword}" style="border:1px solid #ccc; padding:3px">&lt;&lt; 前</a></c:if>
-	<c:if test="${pagerViewHelper.next}"><a href="${contextPath}/following/search/${pageNo+1}/${encodeKeyword}" style="border:1px solid #ccc; padding:3px">次 &gt;&gt;</a></c:if>
-</div>
---%>
+<c:if test="${!empty pager}">
+	<div class="pager">
+		<c:if test="${pager.prev}">
+			<c:choose>
+				<c:when test="${pager.prevPageNo == 1}">
+					<a href="?keyword=${keyword}" style="border: 1px solid #ccc; padding: 3px">&lt;&lt;前</a>
+				</c:when>
+				<c:otherwise>
+					<a href="?keyword=${keyword}&pageNo=${pager.prevPageNo}" style="border: 1px solid #ccc; padding: 3px">&lt;&lt;前</a>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
+		<c:if test="${pager.next}">
+			<a href="?keyword=${keyword}&pageNo=${pager.nextPageNo}" style="border: 1px solid #ccc; padding: 3px">次&gt;&gt;</a>
+		</c:if>
+	</div>
+</c:if>
 
 </div>
 
