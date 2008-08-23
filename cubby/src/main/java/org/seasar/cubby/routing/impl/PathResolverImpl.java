@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.controller.ClassDetector;
 import org.seasar.cubby.controller.DetectClassProcessor;
@@ -406,6 +407,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		 * <p>
 		 * また、大小関係は以下のようになります。
 		 * <ul>
+		 * <li>優先度(@link {@link Path#priority()})が小さい順</li>
 		 * <li>URI 埋め込みパラメータが少ない順</li>
 		 * <li>正規表現の順(@link {@link String#compareTo(String)})</li>
 		 * </ul>
