@@ -39,9 +39,6 @@
 		<c:when test="${f:contains(account.requests, loginAccount)}">
 			&nbsp;<span class="alert1">* 追加リクエスト中 *</span>
 		</c:when>
-		<c:when test="${!f:contains(loginAccount.followings, account) && !f:contains(loginAccount.followings, account)}">
-			&nbsp;<a href="${contextPath}/${loginAccount.name}/following/add/${account.name}?r=${r}" class="action">追加</a>
-		</c:when>
 	</c:choose>
 	
 	<table class="searchAttribute">

@@ -17,7 +17,7 @@ import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.cubbitter.util.Pager;
-import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.util.Messages;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
@@ -40,12 +40,11 @@ public class AccountEntryAction extends AbstractAccountAction {
 
 	public Pager pager;
 
-	public ValidationRules indexValidationRules = new DefaultValidationRules() {
+	public ValidationRules indexValidationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
-			add(DATA_CONSTRAINT, new FollowerOnlyValidationRule());
+			addAll(accountValidationRules);
 		}
 
 	};
@@ -56,18 +55,20 @@ public class AccountEntryAction extends AbstractAccountAction {
 		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
 		entries = entryService.findByAccount(account, pager.getFirstResult(),
 				pager.getMaxResults());
-		// List<Entry> entries = account.getEntries();
-		// pager = new Pager<Entry>(entries, pageNo,
-		// Constants.ENTRIES_MAX_RESULT);
-		// this.entries = pager.subList();
+		if (!account.isOpen() && !account.equals(loginAccount)) {
+			if (loginAccount == null
+					|| !loginAccount.getFollowings().contains(account)) {
+				notice(Messages.getText("member.msg.noFollowing"));
+			}
+		}
 		return new Forward("/account/entry/index.jsp");
 	}
 
-	public ValidationRules entryValidation = new DefaultValidationRules() {
+	public ValidationRules entryValidation = new AbstractValidationRules() {
 		@Override
 		public void initialize() {
+			addAll(accountValidationRules);
 			add("text", new RequiredValidator(), new MaxLengthValidator(140));
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}
 	};
@@ -99,10 +100,10 @@ public class AccountEntryAction extends AbstractAccountAction {
 		}
 	}
 
-	public ValidationRules removeValidation = new DefaultValidationRules() {
+	public ValidationRules removeValidation = new AbstractValidationRules() {
 		@Override
 		public void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}
 	};

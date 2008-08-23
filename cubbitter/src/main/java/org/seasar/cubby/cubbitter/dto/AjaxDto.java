@@ -1,12 +1,12 @@
 package org.seasar.cubby.cubbitter.dto;
 
-/** Ajaxでのデータチェック戻り値用クラス */
+import java.util.ArrayList;
+import java.util.List;
+
 public class AjaxDto {
 
-	/** エラーかどうか */
-	public boolean isError;
+	public boolean error;
 
-	/** エラーメッセージ */
-	public String errorMessage;
+	public List<String> messages = new ArrayList<String>();
 
 }

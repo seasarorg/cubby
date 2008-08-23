@@ -9,7 +9,6 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
@@ -53,7 +52,7 @@ public class SettingProfileAction extends AbstractAction {
 		return new Forward("index.jsp");
 	}
 
-	public ValidationRules validationRules = new DefaultValidationRules(
+	public ValidationRules validationRules = new AbstractValidationRules(
 			"setting.") {
 
 		@Override

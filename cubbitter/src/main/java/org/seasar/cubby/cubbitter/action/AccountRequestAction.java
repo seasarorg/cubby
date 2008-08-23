@@ -1,9 +1,5 @@
 package org.seasar.cubby.cubbitter.action;
 
-/** 
- * 承認リクエスト用Actionクラス
- */
-
 import static org.seasar.cubby.cubbitter.util.SendErrors.NOT_FOUND;
 
 import org.seasar.cubby.action.ActionResult;
@@ -13,7 +9,6 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
 @Path("{account,[0-9a-zA-Z_]+}/request")
@@ -22,11 +17,11 @@ public class AccountRequestAction extends AbstractAccountAction {
 	@RequestParameter
 	public Account requestAccount;
 
-	public ValidationRules validationRules = new DefaultValidationRules() {
+	public ValidationRules validationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}
 

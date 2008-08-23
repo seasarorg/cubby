@@ -9,7 +9,6 @@ import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.Constants;
 import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.cubbitter.util.Pager;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
@@ -25,7 +24,7 @@ public class SearchAction extends AbstractAction {
 
 	public Pager pager;
 
-	public ValidationRules searchValidation = new DefaultValidationRules(
+	public ValidationRules searchValidation = new AbstractValidationRules(
 			"search.") {
 		@Override
 		public void initialize() {

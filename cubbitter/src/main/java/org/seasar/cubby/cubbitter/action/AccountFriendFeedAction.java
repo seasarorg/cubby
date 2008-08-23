@@ -18,7 +18,6 @@ import org.seasar.cubby.cubbitter.service.BasicAuthenticationService;
 import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.cubbitter.util.FeedUtils;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
@@ -32,11 +31,11 @@ public class AccountFriendFeedAction extends AbstractAccountAction {
 
 	public EntryService entryService;
 
-	public ValidationRules validationRules = new DefaultValidationRules() {
+	public ValidationRules validationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new BasicAuthenticationValidationRule());
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}

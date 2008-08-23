@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 
 <c:import url="/import/htmlHeader.jsp">
-	<c:param name="title" value="追加リクエスト" />
+	<c:param name="title" value="フォロー要求" />
 </c:import>
 
 <body id="setting">
@@ -11,12 +11,12 @@
 <div id="content">
 <div class="wrap">
 
-<h1 class="roundTop">追加リクエスト</h1>
+<h1 class="roundTop">フォロー要求</h1>
 
 <div class="box">
 	<c:choose>
 		<c:when test="${empty account.requests}">
-			<div class="message">追加リクエストはありません。</div>
+			<div class="message">フォロー要求はありません。</div>
 		</c:when>
 		<c:otherwise>
 			<table class="comments">

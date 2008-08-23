@@ -17,31 +17,20 @@ function addLoginEvent() {
 }
 
 function validate() {
-	var form = $('loginForm');
-	var name = form.loginName.value;
-	var password = form.loginPassword.value;
-
-	var messages = new Array();
-	if (name.length == 0) {
-		messages.push('ユーザIDを入力してください。');
-	}
-	if (password.length == 0) {
-		messages.push('パスワードを入力してください。');
-	}
-	if (messages.length > 0) {
-		showLoginErrorMessages(messages);
-		return;
-	}
-
 	var url = contextPath + '/login/check';
+	var loginForm = $('loginForm');
+	var name = loginForm.loginName.value;
+	var password = loginForm.loginPassword.value;
 	new Ajax.Request(url, {
 		method :'post',
 		parameters :'loginName=' + name + '&loginPassword=' + password,
 		onSuccess : function(xmlhttp) {
 			var result = eval('(' + xmlhttp.responseText + ')');
-			var messages = new Array();
-			if (result.isError) {
-				messages.push(result.errorMessage);
+			var messages;
+			if (result.error) {
+				messages = result.messages;
+			} else {
+				messages = new Array();
 			}
 			showLoginErrorMessages(messages);
 		},

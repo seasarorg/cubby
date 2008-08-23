@@ -19,13 +19,6 @@
 		<c:otherwise>
 			<img src="${contextPath}/${account.name}/large.jpg" class="iconL" alt="${account.name}" />
 			${account.name}さんのひとりごと
-			<c:if test="${!empty loginAccount && account != loginAccount && !f:contains(loginAccount.followings, account)}">
-				<c:choose>
-					<c:when test="${f:contains(account.requests, loginAccount)}">&nbsp;<span class="alert1">*追加リクエスト中*</span>&nbsp;<a href="${contextPath}/${loginAccount.name}/following/remove/${account.name}?r=${r}" class="action">解除</a></c:when>
-					<c:when test="${account.open}">&nbsp;<a href="${contextPath}/${loginAccount.name}/following/add/${account.name}?r=${r}" class="action">メンバーに追加</a></c:when>
-					<c:otherwise>&nbsp;<a href="${contextPath}/${loginAccount.name}/following/add/${account.name}?r=${r}" class="action">追加リクエスト</a></c:otherwise>
-				</c:choose>
-			</c:if>
 		</c:otherwise>
 	</c:choose>
 </h1>

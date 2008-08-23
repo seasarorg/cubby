@@ -10,7 +10,6 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RangeLengthValidator;
@@ -29,7 +28,7 @@ public class SettingPasswordAction extends AbstractAction {
 		return new Forward("index.jsp");
 	}
 
-	public ValidationRules validationRules = new DefaultValidationRules(
+	public ValidationRules validationRules = new AbstractValidationRules(
 			"setting.") {
 
 		@Override

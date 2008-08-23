@@ -32,7 +32,7 @@
 <col style="width:130px" />
 <col style="width:auto" />
 <tr>
-	<th>${messages['setting.memberName']}</th>
+	<th>${messages['setting.name']}</th>
 	<td>
 		<t:input type="text" name="name" id="name" />
 		<span id="alertNameChar" class="alert1">英数字または"_"のみ使用できます。</span>
@@ -43,7 +43,7 @@
 	<td><t:input type="text" name="fullName" id="fullName" /></td>
 </tr>
 <tr>
-	<th>${messages['setting.email']}</th>
+	<th>${messages['setting.mail']}</th>
 	<td><t:input type="text" name="mail" id="mail" /></td>
 </tr>
 <tr>

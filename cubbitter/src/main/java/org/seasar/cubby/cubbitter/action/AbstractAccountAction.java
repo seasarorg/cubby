@@ -10,13 +10,14 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
+import org.seasar.cubby.validator.ValidationRules;
 
 public class AbstractAccountAction extends AbstractAction {
 
 	@RequestParameter
 	public Account account;
 
-	protected class ExistAccountValidationRule implements ValidationRule {
+	private class ExistAccountValidationRule implements ValidationRule {
 
 		public void apply(Map<String, Object[]> params, Object form,
 				ActionErrors errors) throws ValidationException {
@@ -51,4 +52,12 @@ public class AbstractAccountAction extends AbstractAction {
 
 	}
 
+	protected ValidationRules accountValidationRules = new AbstractValidationRules() {
+
+		@Override
+		protected void initialize() {
+			add(RESOURCE, new ExistAccountValidationRule());
+		}
+		
+	};
 }
