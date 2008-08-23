@@ -1,47 +1,77 @@
-/// ログインチェック処理 ///
+Event.observe(window, "load", addLoginEvent, false);
 
-Event.observe(window, "load", addEventLogin, false);
+var loginable = false;
 
-function addEventLogin() {
-	var loginButton = $("loginButton");
-	if (loginButton) {
-		loginButton.onclick = login;
-	}
-}
+function addLoginEvent() {
+	var loginForm = $('loginForm');
+	$('loginButton').disable();
 
-// ログイン処理
-function login() {
-	var loginName = $F("loginName");
-	var loginPassword = $F("loginPassword");
-	try {
-		if (loginName.length < 1) {
-			alert("ユーザIDを入力してください。");
+	Event.observe(loginForm, 'submit', function() {
+		if (!loginable) {
 			return false;
 		}
-		if (loginPassword.length < 1) {
-			alert("パスワードを入力してください。");
-			return false;
-		}
-		var url = contextPath + "/login/check?loginName="
-				+ encodeURIComponent(loginName) + "&loginPassword="
-				+ encodeURIComponent(loginPassword);
-		new Ajax.Request(url, {
-			method :"get",
-			onSuccess :checkLoginResult,
-			onFailure :errorFunc
-		});
-	} catch (e) {
-		alert(e.toString());
-	}
-	return false;
+	});
+	new Form.Observer(loginForm, 1, function(element, value) {
+		validate();
+	});
 }
 
-// ログインチェック結果
-function checkLoginResult(httpObj) {
-	var ret = eval("(" + httpObj.responseText + ")");
-	if (ret.isError) {
-		alert(ret.errorMessage);
+function validate() {
+	var form = $('loginForm');
+	var name = form.loginName.value;
+	var password = form.loginPassword.value;
+
+	var messages = new Array();
+	if (name.length == 0) {
+		messages.push('ユーザIDを入力してください。');
+	}
+	if (password.length == 0) {
+		messages.push('パスワードを入力してください。');
+	}
+	if (messages.length > 0) {
+		showLoginErrorMessages(messages);
+		return;
+	}
+
+	var url = contextPath + '/login/check';
+	new Ajax.Request(url, {
+		method :'post',
+		parameters :'loginName=' + name + '&loginPassword=' + password,
+		onSuccess : function(xmlhttp) {
+			var result = eval('(' + xmlhttp.responseText + ')');
+			var messages = new Array();
+			if (result.isError) {
+				messages.push(result.errorMessage);
+			}
+			showLoginErrorMessages(messages);
+		},
+		onFailure :errorFunc
+	});
+}
+
+function showLoginErrorMessages(messages) {
+	var loginButton = $('loginButton');
+	if (messages.length > 0) {
+		loginable = false;
+		if (!loginButton.disabled) {
+			loginButton.disable();
+		}
 	} else {
-		$("loginForm").submit();
+		loginable = true;
+		if (loginButton.disabled) {
+			loginButton.enable();
+		}
 	}
+
+	var messageList = $('loginErrorMessageList');
+	while (messageList.firstChild != null) {
+		messageList.removeChild(messageList.firstChild);
+	}
+	messages.each( function(message) {
+		var element = new Element('li', {
+			class :'loginErrorMessage'
+		}).update(message);
+		messageList.insert(element);
+	});
+
 }

@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="検索結果" />
-	<c:param name="jsFiles" value="comments" />
 </c:import>
 
 <body>
@@ -13,24 +12,7 @@
 <div class="wrap">
 <h1 class="roundTop">"${keyword}"の検索結果</h1>
 
-<%--
-<div id="submenu">
-	<ul id="nav">
-		<li><a href="${contextPath}/following/" class="roundTopA">あなたがフォローしている人</a></li>
-		<li><a href="${contextPath}/follower/" class="roundTopA">あなたをフォローしている人</a></li>
-	</ul>
-</div>
-
-<br style="clear:both" />
---%>
-
 <div class="box">
-<%--
-<t:form action="${contextPath}/following/search" method="post" value="${action}" id="memsearch">
-	<t:input type="text" name="keyword" id="keyword" />
-	<input type="submit" value="探す" class="buttonS" />
-</t:form>
---%>
 
 <c:import url="/import/errorList.jsp" />
 
@@ -115,7 +97,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 

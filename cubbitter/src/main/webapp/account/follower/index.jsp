@@ -34,11 +34,6 @@
 								<c:if test="${f:contains(follower.requests, account)}">
 									&nbsp;<a href="${contextPath}/${account.name}/follower/${follower.name}/add?r=${r}" class="action">承認</a>
 								</c:if>
-<%--
-									<c:if test="${empty follower.request}">
-										&nbsp;<a href="${contextPath}/followers/add/${item.memberId}" class="action">追加</a>
-									</c:if>
---%>
 							</td>
 						</tr>
 					</table>
@@ -51,7 +46,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 

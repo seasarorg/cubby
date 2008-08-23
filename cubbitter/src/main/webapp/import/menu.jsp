@@ -13,11 +13,23 @@
 			<li>
 				<t:form action="${contextPath}/login/" method="post" value="" id="loginForm">
 				<table>
-				<tr><th>ユーザID</th><td><t:input type="text" name="loginName" id="memberName" /></td></tr>
-				<tr><th>パスワード</th><td><t:input type="password" name="loginPassword" id="password" /></td></tr>
-				<tr><th>&nbsp;</th><td><input type="submit" value="ログイン" id="loginButton" /></td></tr>
+					<tr>
+						<th>ユーザID</th>
+						<td><t:input type="text" name="loginName" id="loginName" /></td>
+					</tr>
+					<tr>
+						<th>パスワード</th>
+						<td><t:input type="password" name="loginPassword"
+							id="loginPassword" /></td>
+					</tr>
 				</table>
-				</t:form>
+				<div id="loginButtonBox">
+					<t:input type="submit" name="login" value="ログイン" id="loginButton" />
+				</div>
+				<div id="loginErrorMessageBox">
+					<ul id="loginErrorMessageList"></ul>
+				</div>
+			</t:form>
 			</li>
 			<li><a href="${contextPath}/register/" class="roundA menu">新規登録</a></li>
 		</c:when>
@@ -82,3 +94,6 @@
 </c:if>
 </div>
 </div>
+<c:if test="${empty loginAccount}">
+<script type="text/javascript" src="${contextPath}/script/login.js"></script>
+</c:if>

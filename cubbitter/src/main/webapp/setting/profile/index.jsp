@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="設定 - プロフィール" />
-	<c:param name="jsFiles" value="memberNameCheck" />
 </c:import>
 
 <body id="setting">
@@ -37,7 +36,6 @@
 	<td>
 		<t:input type="text" name="name" id="name" />
 		<span id="alertNameChar" class="alert1">英数字または"_"のみ使用できます。</span>
-		<span id="alertNameOverlap" class="alert2" style="display:none"></span>
 	</td>
 </tr>
 <tr>
@@ -81,7 +79,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 

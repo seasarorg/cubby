@@ -17,15 +17,6 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 
 public class LoginAction extends Action {
 
-	public ValidationRules loginValidation = new DefaultValidationRules(
-			"login.") {
-		@Override
-		public void initialize() {
-			add("loginName", new RequiredValidator());
-			add("loginPassword", new RequiredValidator());
-		}
-	};
-
 	public AccountService accountService;
 
 	@RequestParameter
@@ -34,7 +25,16 @@ public class LoginAction extends Action {
 	@RequestParameter
 	public String loginPassword;
 
-	@Validation(rules = "loginValidation", errorPage = "/loginError.jsp")
+	public ValidationRules loginValidationRules = new DefaultValidationRules(
+			"login.") {
+		@Override
+		public void initialize() {
+			add("loginName", new RequiredValidator());
+			add("loginPassword", new RequiredValidator());
+		}
+	};
+
+	@Validation(rules = "loginValidationRules", errorPage = "/loginError.jsp")
 	public ActionResult index() {
 		try {
 			accountService.login(loginName, loginPassword);
@@ -45,6 +45,22 @@ public class LoginAction extends Action {
 		return new Redirect("/" + loginName + "/");
 	}
 
+	public ValidationRules ajaxLoginValidation = new DefaultValidationRules(
+			"login.") {
+		@Override
+		public void initialize() {
+			addAll(loginValidationRules);
+		}
+
+		public ActionResult fail(String errorPage) {
+			AjaxDto dto = new AjaxDto();
+			dto.isError = true;
+			dto.errorMessage = getErrors().getAll().get(0);
+			return new Json(dto);
+		}
+	};
+
+	@Validation(rules = "ajaxLoginValidation")
 	public ActionResult check() {
 		AjaxDto dto = new AjaxDto();
 		if (accountService.isLoginable(loginName, loginPassword)) {

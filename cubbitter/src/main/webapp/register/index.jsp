@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="新規アカウント登録" />
-	<c:param name="jsFiles" value="memberNameCheck" />
 </c:import>
 	
 <body id="register">
@@ -26,17 +25,12 @@
 		<th>ユーザID</th>
 		<td>
 			<t:input id="regMemberName" name="regMemberName" type="text" />
-			<span id="alertNameChar" class="alert1" style="display:none">英数字または"_"のみ使用できます。</span>
-			<span id="alertNameOverlap" class="alert2">a
-				
-			</span><!-- span id="checkedId" style="font-weight:bold"></span>は既に登録されています。  -->
 		</td>
 	</tr>
 	<tr>
 		<th>パスワード</th>
 		<td>
 			<t:input id="regPassword" name="regPassword" type="password" />
-			<span id="alertPasswordChar" class="alert1">6文字以上入力してください。</span>
 		</td>
 	</tr>
 	<tr>
@@ -57,7 +51,7 @@
 </div>
 </div>
 
-<c:import url="/import/noLoginMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 
