@@ -12,7 +12,7 @@
 <script type="text/javascript" src="${contextPath}/script/niftycube.js"></script>
 <script type="text/javascript" src="${contextPath}/script/prototype-1.6.0.2.js"></script>
 <c:forTokens var="file" items="${param.jsFiles}" delims=",">
-	<script type="text/javascript" src="${contextPath}/script/${file}.js"></script>
+	<script type="text/javascript" src="${contextPath}/script/${file}"></script>
 </c:forTokens>
 <script type="text/javascript" src="${contextPath}/script/common.js"></script>
 <title>Cubbitter<c:if test="${!empty param.title}"> - ${param.title}</c:if></title>

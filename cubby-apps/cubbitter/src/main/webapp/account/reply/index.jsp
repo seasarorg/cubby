@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="あなた宛てのひとりごと" />
-	<c:param name="jsFiles" value="comments" />
 </c:import>
 
 <body>
@@ -25,7 +24,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 

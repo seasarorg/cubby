@@ -29,7 +29,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 </body>
 
 </html>

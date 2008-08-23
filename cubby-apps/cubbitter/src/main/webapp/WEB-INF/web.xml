@@ -86,7 +86,6 @@
 		</filter-class>
 		<init-param>
 			<param-name>ignorePathPattern</param-name>
-			<!-- <param-value>/css/.*,/js/.*,/img/.*</param-value>  -->
 			<param-value>/style/.*,/script/.*,/image/.*</param-value>
 		</init-param>
 	</filter>

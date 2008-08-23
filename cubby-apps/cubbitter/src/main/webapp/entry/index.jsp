@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="Comment" />
-	<c:param name="jsFiles" value="comments" />
 	<c:param name="cssFiles" value="comment" />
 </c:import>
 <body>

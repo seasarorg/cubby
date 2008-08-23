@@ -1,4 +1,5 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript" src="${contextPath}/script/entries.js"></script>
 
 <div class="smileyOnOff">
 	<img src="${contextPath}/image/smiley/regular_smile.gif"
@@ -7,8 +8,8 @@
 </div>
 
 <c:if test="${!empty entries}">
-	<table class="comments">
-		<c:forEach var="entry" varStatus="s" items="${entries}">
+	<table class="entries">
+		<c:forEach var="entry" items="${entries}">
 			<c:if test="${entry.account.open || f:contains(account.followings, entry.account)}">
 				<tr>
 					<td class="icon">
@@ -18,9 +19,9 @@
 								title="${f:out(entry.account.fullName)}" />
 						</a>
 					</td>
-					<td class="comment">
+					<td class="entry">
 						<a href="${contextPath}/${entry.account.name}/entry/" title="${f:out(entry.account.fullName)}" class="memberName">${entry.account.name}</a>
-						<span class="comment">${f:out(entry.text)}</span>
+						<span class="entry">${f:out(entry.text)}</span>
 						&nbsp;
 						<a class="time" href="${contextPath}/entry/${entry.id}">
 							<fmt:formatDate value="${entry.post}" pattern="yyyy/MM/dd(E) HH:mm:ss" />

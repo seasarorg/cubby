@@ -1,10 +1,10 @@
 // cookieの有効期限（日）
 var COOKIE_EXPIRE_DAY = 30;
 
-/// コメント変換処理 ///
-Event.observe(window, "load", addEventComments, false);
+// コメント変換処理
+Event.observe(window, "load", addEntriesEvent, false);
 
-function addEventComments(){
+function addEntriesEvent(){
 
 	// 絵文字リスト
 	var smileyList = getSmileyList();
@@ -15,13 +15,13 @@ function addEventComments(){
 	}
 
 	// コンバータ
-	var converterList = Array();
-	converterList.push(new AnchorConverter());
-	converterList = converterList.concat(smileyList);
-	converterList.push(new MemberAnchorConverter());
+	var converters = Array();
+	converters.push(new AnchorConverter());
+	converters = converters.concat(smileyList);
+	converters.push(new ReplyAnchorConverter());
 	
 	// コメントを変換
-	convertComments(converterList);
+	convertEntries(converters);
 
 	// Smiley表示・非表示ボタン
 	if($("changeSmileyButton")){
@@ -36,16 +36,16 @@ function addEventComments(){
 	}
 }
 
-//コメントを置き換える
-function convertComments(converterList){
-	var spans = $$("span.comment");
+// コメントを置き換える
+function convertEntries(converters){
+	var spans = $$("span.entry");
 	for(var i=0; i<spans.length; i++){
-		for(var j=0; j<converterList.length; j++){
-			converterList[j].convert(spans[i]);
+		for(var j=0; j<converters.length; j++){
+			converters[j].convert(spans[i]);
 		}
 	}
 }
-//絵文字コンバータ取得
+// 絵文字コンバータ取得
 function getSmileyList(){
 	var visibleSmiley = true;
 	
@@ -56,10 +56,10 @@ function getSmileyList(){
 		setToggleImageParam($("changeSmileyButton"), "toggleButtonOn", "絵文字を表示しない");
 	}
 	
-	//絵文字リスト取得
+	// 絵文字リスト取得
 	return createSmileyConverterList(visibleSmiley);
 }
-//絵文字入力パネル読み込み
+// 絵文字入力パネル読み込み
 function loadSmileyInputPanel(smileyList){
 	for(var i=0; i<smileyList.length; i++){
 		if(i>0 && smileyList[i-1].image == smileyList[i].image){
@@ -74,7 +74,7 @@ function loadSmileyInputPanel(smileyList){
 	}
 }
 
-//絵文字ON・OFF切り替え時
+// 絵文字ON・OFF切り替え時
 function changeSmileyVisible(event){
 	var button = Event.element(event);
 	
@@ -100,10 +100,10 @@ function changeSmileyVisible(event){
 			if(nodes[j].nodeType == 1){
 				var name = nodes[j].nodeName;
 				if((visible && name == "IMG") || (!visible && name == "SPAN")){
-					//表示する
+					// 表示する
 					nodes[j].style.display = "inline";
 				}else if((visible && name == "SPAN") || (!visible && name == "IMG")){
-					//非表示にする
+					// 非表示にする
 					nodes[j].style.display = "none";
 				}
 			}
@@ -126,7 +126,7 @@ function changeSmileyPanelVisible(event){
 	}
 }
 
-//Cookieに保存する
+// Cookieに保存する
 function setVisibleSmiley(flag){
 	setCookie("visibleSmiley", flag);
 }
@@ -139,7 +139,7 @@ function setCookie(paramName, flag){
     expires = expires.toGMTString();
 　　document.cookie = paramName + "=" + flag + ";path=" + contextPath + ";expires=" + expires;
 }
-//Imageにaltとtitleを設定
+// Imageにaltとtitleを設定
 function setToggleImageParam(image, className, alt){
 	image.className = className;
 	image.alt = alt;
@@ -176,7 +176,7 @@ TagConverter.prototype = {
 			}
 		}
 		
-		//見つからなければ終了
+		// 見つからなければ終了
 		if(node == null){
 			return;
 		}
@@ -220,17 +220,17 @@ AnchorConverter.prototype.createNodeFunc = function(text){
 	return a;
 };
 // *** ユーザIDリンクコンバータ ***
-var MemberAnchorConverter = function(){
+var ReplyAnchorConverter = function(){
 	this.isRegExp = true;
 };
-MemberAnchorConverter.prototype =	new TagConverter();
-MemberAnchorConverter.prototype.pattern = new RegExp("(@[_a-zA-Z0-9]+)");
-MemberAnchorConverter.prototype.createNodeFunc = function(text){
-	var memberName = text.substring(1);
+ReplyAnchorConverter.prototype =	new TagConverter();
+ReplyAnchorConverter.prototype.pattern = new RegExp("(@[_a-zA-Z0-9]+)");
+ReplyAnchorConverter.prototype.createNodeFunc = function(text){
+	var name = text.substring(1);
 	
 	var a = document.createElement("a");
-	a.href = contextPath + "/member/" + memberName;
-	a.appendChild(document.createTextNode(memberName));
+	a.href = contextPath + "/" + name + "/";
+	a.appendChild(document.createTextNode(name));
 	
 	var span = document.createElement("span");
 	span.appendChild(document.createTextNode("@"));
@@ -280,15 +280,15 @@ SmileyConverter.prototype.createImg = function(){
 	return img;
 };
 
-//絵文字の追加
+// 絵文字の追加
 function inputSmileyIcon(event, value){
-	$("commentArea").value = $F("commentArea") + value;
-	$("commentArea").focus();
+	$("entryArea").value = $F("entryArea") + value;
+	$("entryArea").focus();
 }
 
 // reply矢印イベント登録
 function addArrowClickEvent(){
-	//矢印の場所を取得
+	// 矢印の場所を取得
 	var spans = $$("img.reply");
 	for(var i=0; i<spans.length; i++){
 		Event.observe(spans[i], "click", addReplyTo, false);
@@ -310,9 +310,9 @@ function addReplyTo(event, value){
 	}
 	
 	// 元の@～を削除
-	var str = $F("commentArea").replace(/^@[_a-zA-Z0-9]+\s*/, '');
-	$("commentArea").value = "@" + name + " " + str;
-	$("commentArea").focus();
+	var str = $F("entryArea").replace(/^@[_a-zA-Z0-9]+\s*/, '');
+	$("entryArea").value = "@" + name + " " + str;
+	$("entryArea").focus();
 }
 
 

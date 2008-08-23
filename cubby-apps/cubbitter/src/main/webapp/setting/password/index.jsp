@@ -4,7 +4,6 @@
 
 <c:import url="/import/htmlHeader.jsp">
 	<c:param name="title" value="設定 - パスワード変更" />
-	<c:param name="jsFiles" value="memberNameCheck" />
 </c:import>
 
 <body id="passwordSetting">
@@ -36,14 +35,12 @@
 	<th>パスワード</th>
 	<td>
 		<t:input type="password" name="password" id="password" />
-		<span id="alertPasswordChar" class="alert1">6文字以上入力してください。</span>
 	</td>
 </tr>
 <tr>
 	<th>確認パスワード</th>
 	<td>
 		<t:input type="password" name="password2" id="password2" />
-		<span id="alertVerifyPassword" class="alert2" style="display:none">確認パスワードが一致していません。</span>
 	</td>
 </tr>
 <tr>
@@ -62,7 +59,7 @@
 </div>
 </div>
 
-<c:import url="/import/defaultMenu.jsp" />
+<c:import url="/import/menu.jsp" />
 
 </body>
 
