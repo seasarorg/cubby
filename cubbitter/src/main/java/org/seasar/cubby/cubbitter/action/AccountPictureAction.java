@@ -45,7 +45,7 @@ public class AccountPictureAction extends AbstractAccountAction {
 	@Path("large.jpg")
 	@Validation(rules = "validationRules")
 	public ActionResult large() throws IOException {
-		Image image = account.getMediumImage();
+		Image image = account.getLargeImage();
 		writeResponse(response, image, "images/large.jpg");
 		return new Direct();
 	}
