@@ -5,7 +5,6 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
@@ -31,7 +30,7 @@ public class RegisterAction extends AbstractAction {
 		return new Forward("index.jsp");
 	}
 
-	public ValidationRules registerValidationRules = new DefaultValidationRules(
+	public ValidationRules registerValidationRules = new AbstractValidationRules(
 			"register.") {
 		@Override
 		public void initialize() {

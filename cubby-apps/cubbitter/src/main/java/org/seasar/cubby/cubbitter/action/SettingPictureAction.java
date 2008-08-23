@@ -16,7 +16,6 @@ import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Image;
 import org.seasar.cubby.cubbitter.util.ImageUtils;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.FileRegexpValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
@@ -31,7 +30,7 @@ public class SettingPictureAction extends AbstractAction {
 		return new Forward("index.jsp");
 	}
 
-	public ValidationRules validationRules = new DefaultValidationRules(
+	public ValidationRules validationRules = new AbstractValidationRules(
 			"setting.") {
 		@Override
 		public void initialize() {

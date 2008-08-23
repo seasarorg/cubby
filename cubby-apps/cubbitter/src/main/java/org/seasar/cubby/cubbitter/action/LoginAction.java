@@ -1,23 +1,18 @@
 package org.seasar.cubby.cubbitter.action;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Json;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.dto.AjaxDto;
-import org.seasar.cubby.cubbitter.service.AccountService;
 import org.seasar.cubby.cubbitter.service.AuthenticationException;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
-public class LoginAction extends Action {
-
-	public AccountService accountService;
+public class LoginAction extends AbstractAction {
 
 	@RequestParameter
 	public String loginName;
@@ -25,7 +20,7 @@ public class LoginAction extends Action {
 	@RequestParameter
 	public String loginPassword;
 
-	public ValidationRules loginValidationRules = new DefaultValidationRules(
+	public ValidationRules loginValidationRules = new AbstractValidationRules(
 			"login.") {
 		@Override
 		public void initialize() {
@@ -45,7 +40,7 @@ public class LoginAction extends Action {
 		return new Redirect("/" + loginName + "/");
 	}
 
-	public ValidationRules ajaxLoginValidation = new DefaultValidationRules(
+	public ValidationRules ajaxLoginValidation = new AbstractValidationRules(
 			"login.") {
 		@Override
 		public void initialize() {
@@ -54,8 +49,8 @@ public class LoginAction extends Action {
 
 		public ActionResult fail(String errorPage) {
 			AjaxDto dto = new AjaxDto();
-			dto.isError = true;
-			dto.errorMessage = getErrors().getAll().get(0);
+			dto.error = true;
+			dto.messages = getErrors().getAll();
 			return new Json(dto);
 		}
 	};
@@ -64,10 +59,10 @@ public class LoginAction extends Action {
 	public ActionResult check() {
 		AjaxDto dto = new AjaxDto();
 		if (accountService.isLoginable(loginName, loginPassword)) {
-			dto.isError = false;
+			dto.error = false;
 		} else {
-			dto.isError = true;
-			dto.errorMessage = Messages.getText("login.msg.error");
+			dto.error = true;
+			dto.messages.add(Messages.getText("login.msg.error"));
 		}
 
 		return new Json(dto);

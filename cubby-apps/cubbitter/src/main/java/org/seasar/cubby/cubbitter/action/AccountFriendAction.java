@@ -11,7 +11,6 @@ import org.seasar.cubby.cubbitter.Constants;
 import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.cubbitter.util.Pager;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
 @Path("{account,[0-9a-zA-Z_]+}/friend")
@@ -26,11 +25,11 @@ public class AccountFriendAction extends AbstractAccountAction {
 
 	public Pager pager;
 
-	public ValidationRules validationRules = new DefaultValidationRules() {
+	public ValidationRules validationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}
 

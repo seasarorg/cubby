@@ -88,12 +88,15 @@ public class Account implements Serializable {
 	private List<Entry> replies;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "SMALL_IMAGE_ID")
 	private Image smallImage;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "MEDIUM_IMAGE_ID")
 	private Image mediumImage;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "LARGE_IMAGE_ID")
 	private Image largeImage;
 
 	public Long getId() {

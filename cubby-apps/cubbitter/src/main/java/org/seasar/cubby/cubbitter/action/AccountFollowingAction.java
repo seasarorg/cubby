@@ -8,7 +8,6 @@ import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
 @Path("{account,[0-9a-zA-Z_]+}/following")
@@ -20,11 +19,11 @@ public class AccountFollowingAction extends AbstractAccountAction {
 	@RequestParameter
 	public int pageNo = 1;
 
-	public ValidationRules indexValidationRules = new DefaultValidationRules() {
+	public ValidationRules indexValidationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new FollowerOnlyValidationRule());
 		}
 
@@ -35,11 +34,11 @@ public class AccountFollowingAction extends AbstractAccountAction {
 		return new Forward("/account/following/index.jsp");
 	}
 
-	public ValidationRules actionValidationRules = new DefaultValidationRules() {
+	public ValidationRules actionValidationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 			add(DATA_CONSTRAINT, new LoginAccountOnlyValidationRule());
 		}
 

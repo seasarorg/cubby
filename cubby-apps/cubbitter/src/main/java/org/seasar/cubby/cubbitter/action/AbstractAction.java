@@ -3,6 +3,8 @@ package org.seasar.cubby.cubbitter.action;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +15,8 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.cubbitter.service.AccountService;
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationPhase;
 import org.seasar.framework.util.StringUtil;
 
 public class AbstractAction extends Action {
@@ -60,12 +64,39 @@ public class AbstractAction extends Action {
 					"Request parameter 'redirect' is empty");
 		}
 		try {
-			String path = URLDecoder.decode(r, request
-					.getCharacterEncoding());
+			String path = URLDecoder.decode(r, request.getCharacterEncoding());
 			return new Redirect(path);
 		} catch (UnsupportedEncodingException e) {
 			throw new UnsupportedOperationException(e);
 		}
+	}
+
+	protected static abstract class AbstractValidationRules extends
+			DefaultValidationRules {
+
+		public static final ValidationPhase RESOURCE = new ValidationPhase();
+
+		public AbstractValidationRules() {
+			super();
+		}
+
+		public AbstractValidationRules(String resourceKeyPrefix) {
+			super(resourceKeyPrefix);
+		}
+
+		private static final List<ValidationPhase> VALIDATION_PHASES = Arrays
+				.asList(new ValidationPhase[] { RESOURCE, DATA_TYPE,
+						DATA_CONSTRAINT });
+
+		@Override
+		public List<ValidationPhase> getValidationPhases() {
+			return VALIDATION_PHASES;
+		}
+
+	}
+
+	protected void notice(String message) {
+		flash.put("notice", message);
 	}
 
 }

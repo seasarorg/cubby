@@ -12,17 +12,16 @@ import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Image;
-import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 
 @Path("{account,[0-9a-zA-Z_]+}")
 public class AccountPictureAction extends AbstractAccountAction {
 
-	public ValidationRules validationRules = new DefaultValidationRules() {
+	public ValidationRules validationRules = new AbstractValidationRules() {
 
 		@Override
 		protected void initialize() {
-			add(DATA_CONSTRAINT, new ExistAccountValidationRule());
+			addAll(accountValidationRules);
 		}
 
 	};
