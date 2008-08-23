@@ -24,6 +24,7 @@
         </component>
       </arg>
     </initMethod>
+    <!--
     <initMethod name="addCustomizer">
       <arg>
         <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
@@ -38,17 +39,12 @@
             <arg>"org.seasar.cubby.cubbitter"</arg>
             <arg>"^(Top|Login|Member|Register|Picture|PublicFeed|PrivateFeed|Comment)Action$"</arg>
           </initMethod>
-          <!-- 
-          <initMethod name="addIgnoreClassPattern">
-            <arg>"org.seasar.cubby.cubbitter"</arg>
-            <arg>"^TopAction$"</arg>
-          </initMethod>
-          -->
           <property name="pointcut">".*"</property>
           <property name="useLookupAdapter">true</property>
         </component>
       </arg>
     </initMethod>
+    -->
     <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer"><arg>cubby.validationCustomizer</arg></initMethod>
   </component>
@@ -70,7 +66,17 @@
       <arg>traceCustomizer</arg>
     </initMethod>
     <initMethod name="addCustomizer">
-      <arg>s2DaoCustomizer</arg>
+      <arg>kuinaDaoCustomizer</arg>
+    </initMethod>
+    <initMethod name="addCustomizer">
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <initMethod name="addInterceptorName">
+            <arg>"j2ee.requiredTx"</arg>
+          </initMethod>
+          <property name="pointcut">".*"</property>
+        </component>
+      </arg>
     </initMethod>
   </component>
   <component name="dxoCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
