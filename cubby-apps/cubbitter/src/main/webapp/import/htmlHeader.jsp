@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
@@ -11,16 +12,18 @@
 <script type="text/javascript" src="${contextPath}/script/niftycube.js"></script>
 <script type="text/javascript" src="${contextPath}/script/prototype-1.6.0.2.js"></script>
 <c:forTokens var="file" items="${param.jsFiles}" delims=",">
-	<script type="text/javascript" src="${contextPath}/script/${file}.js"></script>
+	<script type="text/javascript" src="${contextPath}/script/${file}"></script>
 </c:forTokens>
 <script type="text/javascript" src="${contextPath}/script/common.js"></script>
 <title>Cubbitter<c:if test="${!empty param.title}"> - ${param.title}</c:if></title>
-<link rel="alternate" type="application/rss+xml" title="Cubbitter - みんなのひとりごと (rss1.0)" href="${contextPath}/publicFeed/rss1">
-<link rel="alternate" type="application/rss+xml" title="Cubbitter - みんなのひとりごと (rss2.0)" href="${contextPath}/publicFeed/rss2">
-<link rel="alternate" type="application/atom+xml" title="Cubbitter - みんなのひとりごと (atom1.0)" href="${contextPath}/publicFeed/atom">
-<c:if test="${!empty sessionScope.user}">
-<link rel="alternate" type="application/rss+xml" title="Cubbitter - メンバーのひとりごと (rss1.0)" href="${contextPath}/privateFeed/rss1">
-<link rel="alternate" type="application/rss+xml" title="Cubbitter - メンバーのひとりごと (rss2.0)" href="${contextPath}/privateFeed/rss2">
-<link rel="alternate" type="application/atom+xml" title="Cubbitter - メンバーのひとりごと (atom1.0)" href="${contextPath}/privateFeed/atom">
+<link rel="alternate" type="application/rss+xml" title="Cubbitter - みんなのひとりごと (rss2.0)" href="${contextPath}/rss2">
+<link rel="alternate" type="application/atom+xml" title="Cubbitter - みんなのひとりごと (atom1.0)" href="${contextPath}/atom">
+<c:if test="${!empty loginAccount}">
+<link rel="alternate" type="application/rss+xml" title="Cubbitter - ともだちのひとりごと (rss2.0)" href="${contextPath}/${loginAccount.name}/friend/rss2">
+<link rel="alternate" type="application/atom+xml" title="Cubbitter - ともだちのひとりごと (atom1.0)" href="${contextPath}/${loginAccount.name}/friend/atom">
+</c:if>
+<c:if test="${!empty account}">
+<link rel="alternate" type="application/rss+xml" title="Cubbitter - ${account.name}ののひとりごと (rss2.0)" href="${contextPath}/${account.name}/entry/rss2">
+<link rel="alternate" type="application/atom+xml" title="Cubbitter - ${account.name}ののひとりごと (atom1.0)" href="${contextPath}/${account.name}/entry//atom">
 </c:if>
 </head>

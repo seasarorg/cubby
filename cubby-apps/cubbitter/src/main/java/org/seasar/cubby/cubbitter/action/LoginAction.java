@@ -1,103 +1,71 @@
 package org.seasar.cubby.cubbitter.action;
 
-/** 
- * ログイン・ログアウト処理用Actionクラス 
- */
-
-import java.util.Map;
-
-
-import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Json;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.cubbitter.dao.MemberDao;
-import org.seasar.cubby.cubbitter.dto.CheckResultDto;
-import org.seasar.cubby.cubbitter.entity.Member;
+import org.seasar.cubby.cubbitter.dto.AjaxDto;
+import org.seasar.cubby.cubbitter.service.AuthenticationException;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.DefaultValidationRules;
-import org.seasar.cubby.validator.ValidationRule;
+import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
-import org.seasar.framework.aop.annotation.InvalidateSession;
 
-public class LoginAction extends Action {
+public class LoginAction extends AbstractAction {
 
-	// ----------------------------------------------[DI Filed]
+	@RequestParameter
+	public String loginName;
 
-	public MemberDao memberDao;
-	public Map<String, Object> sessionScope;
-	
-	// ----------------------------------------------[Attribute]
-	
-	public String memberName;
-	public String password;
+	@RequestParameter
+	public String loginPassword;
 
-	// ----------------------------------------------[Action Method]
+	public ValidationRules loginValidationRules = new AbstractValidationRules(
+			"login.") {
+		@Override
+		public void initialize() {
+			add("loginName", new RequiredValidator());
+			add("loginPassword", new RequiredValidator());
+		}
+	};
 
-	/** ログイン */
-	@Validation(rules = "loginValidation", errorPage = "/top/loginError.jsp")
+	@Validation(rules = "loginValidationRules", errorPage = "/loginError.jsp")
 	public ActionResult index() {
-		return new Redirect("/home/");
+		try {
+			accountService.login(loginName, loginPassword);
+		} catch (AuthenticationException e) {
+			throw new ValidationException(Messages.getText("login.msg.error"),
+					"userId", "password");
+		}
+		return new Redirect("/" + loginName + "/");
 	}
 
-	/** Ajax用チェック処理 */
+	public ValidationRules ajaxLoginValidation = new AbstractValidationRules(
+			"login.") {
+		@Override
+		public void initialize() {
+			addAll(loginValidationRules);
+		}
+
+		public ActionResult fail(String errorPage) {
+			AjaxDto dto = new AjaxDto();
+			dto.error = true;
+			dto.messages = getErrors().getAll();
+			return new Json(dto);
+		}
+	};
+
+	@Validation(rules = "ajaxLoginValidation")
 	public ActionResult check() {
-		CheckResultDto dto = new CheckResultDto();
-		if (getLoginMember() == null) {
-			dto.isError = true;
-			dto.errorMessage = Messages.getText("login.msg.error");
+		AjaxDto dto = new AjaxDto();
+		if (accountService.isLoginable(loginName, loginPassword)) {
+			dto.error = false;
 		} else {
-			dto.isError = false;
+			dto.error = true;
+			dto.messages.add(Messages.getText("login.msg.error"));
 		}
 
 		return new Json(dto);
 	}
 
-	/** ログアウト */
-	@InvalidateSession
-	public ActionResult logout() {
-		return new Redirect("/top/");
-	}
-
-	// ----------------------------------------------[Private Method]
-
-	private Member getLoginMember() {
-		if (memberName == null || password == null) {
-			return null;
-		}
-		Member user = memberDao.getMemberByName(memberName);
-		if (user == null || !user.getPassword().equals(password)) {
-			return null;
-		}
-		return user;
-	}
-
-	// ----------------------------------------------[Validation]
-
-	public ValidationRules loginValidation = new DefaultValidationRules(
-			"login.") {
-		@Override
-		public void initialize() {
-			add("memberName", new RequiredValidator());
-			add("password", new RequiredValidator());
-			add(new UserValidationRule());
-		}
-	};
-
-	/** ログインチェック処理 */
-	private class UserValidationRule implements ValidationRule {
-		public void apply(Map<String, Object[]> params, Object form,
-				ActionErrors errors) {
-			Member user = getLoginMember();
-			if (user == null) {
-				errors.add(Messages.getText("login.msg.error"), "userId",
-						"password");
-			} else {
-				sessionScope.put("user", user);
-			}
-		}
-	}
 }

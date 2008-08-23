@@ -1,38 +1,66 @@
-/// ログインチェック処理 ///
+Event.observe(window, "load", addLoginEvent, false);
 
-Event.observe(window, "load", addEventLogin, false);
+var loginable = false;
 
-function addEventLogin(){
-	if($("loginButton")){
-		$("loginButton").onclick = login;
-	}
-}
+function addLoginEvent() {
+	var loginForm = $('loginForm');
+	$('loginButton').disable();
 
-// ログイン処理
-function login(){
-	try{
-		if($F("memberName").length < 1){
-			alert("ユーザIDを入力してください。");
+	Event.observe(loginForm, 'submit', function() {
+		if (!loginable) {
 			return false;
 		}
-		if($F("password").length < 1){
-			alert("パスワードを入力してください。");
-			return false;
-		}
-		var url = contextPath + "/login/check?memberName=" + encodeURIComponent($F("memberName")) + "&password=" + encodeURIComponent($F("password"));
-		new Ajax.Request(url, {method:"get", onSuccess:checkLoginResult, onFailure:errorFunc});
-	}catch(e){
-		alert(e.toString());
-	}
-	return false;
+	});
+	new Form.Observer(loginForm, 1, function(element, value) {
+		validate();
+	});
 }
 
-// ログインチェック結果
-function checkLoginResult(httpObj){
-	var ret = eval("(" + httpObj.responseText + ")");
-	if(ret.isError){
-		alert(ret.errorMessage);
-	}else{
-		$("loginForm").submit();
+function validate() {
+	var url = contextPath + '/login/check';
+	var loginForm = $('loginForm');
+	var name = loginForm.loginName.value;
+	var password = loginForm.loginPassword.value;
+	new Ajax.Request(url, {
+		method :'post',
+		parameters :'loginName=' + name + '&loginPassword=' + password,
+		onSuccess : function(xmlhttp) {
+			var result = eval('(' + xmlhttp.responseText + ')');
+			var messages;
+			if (result.error) {
+				messages = result.messages;
+			} else {
+				messages = new Array();
+			}
+			showLoginErrorMessages(messages);
+		},
+		onFailure :errorFunc
+	});
+}
+
+function showLoginErrorMessages(messages) {
+	var loginButton = $('loginButton');
+	if (messages.length > 0) {
+		loginable = false;
+		if (!loginButton.disabled) {
+			loginButton.disable();
+		}
+	} else {
+		loginable = true;
+		if (loginButton.disabled) {
+			loginButton.enable();
+		}
 	}
+
+	var messageList = $('loginErrorMessageList');
+	while (messageList.firstChild != null) {
+		messageList.removeChild(messageList.firstChild);
+	}
+	messages.each( function(message) {
+		var element = new Element('li', {
+			class :'loginErrorMessage'
+		}).update(message);
+		messageList.insert(element);
+	});
+
 }
