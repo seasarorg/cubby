@@ -59,8 +59,8 @@
             
   
     
-             最終更新: 2008-08-17
-              &nbsp;| バージョン: 1.1.0-rc2
+             最終更新: 2008-08-26
+              &nbsp;| バージョン: 1.1.0
             </div>
       <div class="clear">
         <hr/>
@@ -279,25 +279,25 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.controller">org.seasar.cubby.controller</a></td>
-<td>12</td>
+<td>14</td>
 <td>2</td>
-<td>10</td>
-<td>8</td>
+<td>12</td>
 <td>9</td>
-<td>83.0%</td>
-<td>52.999996%</td>
+<td>9</td>
+<td>86.0%</td>
+<td>50.0%</td>
 <td>36.0%</td>
 <td>1</td>
 </tr>
 <tr class="a"><td><a href="#org.seasar.cubby.controller.impl">org.seasar.cubby.controller.impl</a></td>
-<td>14</td>
-<td>14</td>
+<td>15</td>
+<td>15</td>
 <td>0</td>
 <td>1</td>
-<td>21</td>
+<td>22</td>
 <td>0.0%</td>
-<td>95.0%</td>
-<td>5.0%</td>
+<td>96.0%</td>
+<td>4.0%</td>
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.converter">org.seasar.cubby.converter</a></td>
@@ -316,7 +316,7 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>19</td>
 <td>3</td>
 <td>0</td>
-<td>13</td>
+<td>14</td>
 <td>14.0%</td>
 <td>100.0%</td>
 <td>14.0%</td>
@@ -378,14 +378,14 @@ The following document contains the results of a JDepend metric analysis. The va
 <td>1</td>
 </tr>
 <tr class="a"><td><a href="#org.seasar.cubby.routing.impl">org.seasar.cubby.routing.impl</a></td>
-<td>13</td>
-<td>11</td>
-<td>2</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
 <td>0</td>
 <td>16</td>
-<td>15.000001%</td>
+<td>0.0%</td>
 <td>100.0%</td>
-<td>15.000001%</td>
+<td>0.0%</td>
 <td>1</td>
 </tr>
 <tr class="b"><td><a href="#org.seasar.cubby.tags">org.seasar.cubby.tags</a></td>
@@ -644,10 +644,10 @@ org.seasar.framework.exception<br />
 <th>Instability</th>
 <th>Distance</th>
 </tr>
-<tr class="a"><td>8</td>
+<tr class="a"><td>9</td>
 <td>9</td>
-<td>83.0%</td>
-<td>52.999996%</td>
+<td>86.0%</td>
+<td>50.0%</td>
 <td>36.0%</td>
 </tr>
 </table>
@@ -658,7 +658,9 @@ org.seasar.framework.exception<br />
 </tr>
 <tr class="a"><td>org.seasar.cubby.controller.ActionProcessor<br />
 org.seasar.cubby.controller.ActionResultWrapper<br />
+org.seasar.cubby.controller.ClassDetector<br />
 org.seasar.cubby.controller.CubbyConfiguration<br />
+org.seasar.cubby.controller.DetectClassProcessor<br />
 org.seasar.cubby.controller.FormWrapper<br />
 org.seasar.cubby.controller.FormWrapperFactory<br />
 org.seasar.cubby.controller.MessagesBehaviour<br />
@@ -674,6 +676,7 @@ org.seasar.cubby.controller.ThreadContext$1<br />
 org.seasar.cubby.converter.impl<br />
 org.seasar.cubby.filter<br />
 org.seasar.cubby.interceptor<br />
+org.seasar.cubby.routing.impl<br />
 org.seasar.cubby.tags<br />
 org.seasar.cubby.unit<br />
 org.seasar.cubby.util<br />
@@ -699,10 +702,10 @@ org.seasar.framework.container.factory<br />
 <th>Distance</th>
 </tr>
 <tr class="a"><td>1</td>
-<td>21</td>
+<td>22</td>
 <td>0.0%</td>
-<td>95.0%</td>
-<td>5.0%</td>
+<td>96.0%</td>
+<td>4.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="b"><th>Abstract Classes</th>
@@ -713,6 +716,7 @@ org.seasar.framework.container.factory<br />
 <tr class="a"><td><i>None</i></td>
 <td>org.seasar.cubby.controller.impl.ActionProcessorImpl<br />
 org.seasar.cubby.controller.impl.ActionResultWrapperImpl<br />
+org.seasar.cubby.controller.impl.ClassDetectorImpl<br />
 org.seasar.cubby.controller.impl.CubbyConfigurationImpl<br />
 org.seasar.cubby.controller.impl.DefaultMessagesBehaviour<br />
 org.seasar.cubby.controller.impl.DefaultRequestParserImpl<br />
@@ -745,6 +749,7 @@ org.seasar.cubby.util<br />
 org.seasar.framework.beans<br />
 org.seasar.framework.beans.factory<br />
 org.seasar.framework.container<br />
+org.seasar.framework.container.cooldeploy<br />
 org.seasar.framework.container.factory<br />
 org.seasar.framework.exception<br />
 org.seasar.framework.log<br />
@@ -792,7 +797,7 @@ org.seasar.cubby.action<br />
 <th>Distance</th>
 </tr>
 <tr class="a"><td>0</td>
-<td>13</td>
+<td>14</td>
 <td>14.0%</td>
 <td>100.0%</td>
 <td>14.0%</td>
@@ -839,6 +844,7 @@ org.seasar.cubby.action<br />
 org.seasar.cubby.controller<br />
 org.seasar.cubby.converter<br />
 org.seasar.framework.container<br />
+org.seasar.framework.convention<br />
 org.seasar.framework.log<br />
 org.seasar.framework.util<br />
 </td>
@@ -1043,9 +1049,9 @@ org.seasar.cubby.action<br />
 </tr>
 <tr class="a"><td>0</td>
 <td>16</td>
-<td>15.000001%</td>
+<td>0.0%</td>
 <td>100.0%</td>
-<td>15.000001%</td>
+<td>0.0%</td>
 </tr>
 </table>
 <table class="bodyTable"><tr class="b"><th>Abstract Classes</th>
@@ -1053,17 +1059,9 @@ org.seasar.cubby.action<br />
 <th>Used by Packages</th>
 <th>Uses Packages</th>
 </tr>
-<tr class="a"><td>org.seasar.cubby.routing.impl.ClassCollector<br />
-org.seasar.cubby.routing.impl.ClassCollector$Strategy<br />
-</td>
-<td>org.seasar.cubby.routing.impl.ClassCollector$1<br />
-org.seasar.cubby.routing.impl.ClassCollector$CodeSourceFileStrategy<br />
-org.seasar.cubby.routing.impl.ClassCollector$FileSystemStrategy<br />
-org.seasar.cubby.routing.impl.ClassCollector$JarFileStrategy<br />
-org.seasar.cubby.routing.impl.ClassCollector$ZipFileStrategy<br />
-org.seasar.cubby.routing.impl.InternalForwardInfoImpl<br />
+<tr class="a"><td><i>None</i></td>
+<td>org.seasar.cubby.routing.impl.InternalForwardInfoImpl<br />
 org.seasar.cubby.routing.impl.PathResolverImpl<br />
-org.seasar.cubby.routing.impl.PathResolverImpl$ActionClassCollector<br />
 org.seasar.cubby.routing.impl.PathResolverImpl$RoutingComparator<br />
 org.seasar.cubby.routing.impl.RouterImpl<br />
 org.seasar.cubby.routing.impl.RoutingImpl<br />
@@ -1074,10 +1072,10 @@ java.lang<br />
 java.lang.reflect<br />
 java.net<br />
 java.util<br />
-java.util.jar<br />
 java.util.regex<br />
 javax.servlet.http<br />
 org.seasar.cubby.action<br />
+org.seasar.cubby.controller<br />
 org.seasar.cubby.exception<br />
 org.seasar.cubby.routing<br />
 org.seasar.cubby.util<br />

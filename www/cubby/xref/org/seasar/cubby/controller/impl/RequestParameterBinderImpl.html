@@ -113,7 +113,7 @@
 <a name="103" href="#103">103</a> 						<strong class="jxr_keyword">final</strong> Object value = convert(entry.getValue(),
 <a name="104" href="#104">104</a> 								destPropertyDesc);
 <a name="105" href="#105">105</a> 						destPropertyDesc.setValue(dest, value);
-<a name="106" href="#106">106</a> 					} <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a name="106" href="#106">106</a> 					} <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> Exception e) {
 <a name="107" href="#107">107</a> 						destPropertyDesc.setValue(dest, <strong class="jxr_keyword">null</strong>);
 <a name="108" href="#108">108</a> 					}
 <a name="109" href="#109">109</a> 				}
@@ -146,144 +146,143 @@
 <a name="136" href="#136">136</a> 		}
 <a name="137" href="#137">137</a> 		<strong class="jxr_keyword">if</strong> (List.<strong class="jxr_keyword">class</strong>.isAssignableFrom(destClass)) {
 <a name="138" href="#138">138</a> 			<strong class="jxr_keyword">final</strong> List&lt;Object&gt; list = <strong class="jxr_keyword">new</strong> ArrayList&lt;Object&gt;();
-<a name="139" href="#139">139</a> 			convertToCollection(values, list, destPropertyDesc
-<a name="140" href="#140">140</a> 					.getParameterizedClassDesc());
-<a name="141" href="#141">141</a> 			<strong class="jxr_keyword">return</strong> list;
-<a name="142" href="#142">142</a> 		}
-<a name="143" href="#143">143</a> 		<strong class="jxr_keyword">if</strong> (Set.<strong class="jxr_keyword">class</strong>.isAssignableFrom(destClass)) {
-<a name="144" href="#144">144</a> 			<strong class="jxr_keyword">final</strong> Set&lt;Object&gt; set = <strong class="jxr_keyword">new</strong> LinkedHashSet&lt;Object&gt;();
-<a name="145" href="#145">145</a> 			convertToCollection(values, set, destPropertyDesc
-<a name="146" href="#146">146</a> 					.getParameterizedClassDesc());
-<a name="147" href="#147">147</a> 			<strong class="jxr_keyword">return</strong> set;
-<a name="148" href="#148">148</a> 		}
-<a name="149" href="#149">149</a> 		<strong class="jxr_keyword">return</strong> convertToScalar(values[0], destClass);
-<a name="150" href="#150">150</a> 	}
-<a name="151" href="#151">151</a> 
-<a name="152" href="#152">152</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="153" href="#153">153</a> <em class="jxr_javadoccomment">	 * 指定された値を指定された要素の型の配列に変換します。</em>
-<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * @param values</em>
-<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
-<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * @param componentType</em>
-<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 *            要素の型</em>
-<a name="159" href="#159">159</a> <em class="jxr_javadoccomment">	 * @return 変換後の値</em>
-<a name="160" href="#160">160</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="161" href="#161">161</a> 	<strong class="jxr_keyword">private</strong> Object convertToArray(<strong class="jxr_keyword">final</strong> Object[] values,
-<a name="162" href="#162">162</a> 			<strong class="jxr_keyword">final</strong> Class&lt;?&gt; componentType) {
-<a name="163" href="#163">163</a> 		<strong class="jxr_keyword">final</strong> Object dest = Array.newInstance(componentType, values.length);
-<a name="164" href="#164">164</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; values.length; i++) {
-<a name="165" href="#165">165</a> 			<strong class="jxr_keyword">final</strong> Object convertedValue = convertToScalar(values[i],
-<a name="166" href="#166">166</a> 					componentType);
-<a name="167" href="#167">167</a> 			Array.set(dest, i, convertedValue);
-<a name="168" href="#168">168</a> 		}
-<a name="169" href="#169">169</a> 		<strong class="jxr_keyword">return</strong> dest;
-<a name="170" href="#170">170</a> 	}
-<a name="171" href="#171">171</a> 
-<a name="172" href="#172">172</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 * 指定された値を変換してコレクションに追加します。</em>
-<a name="174" href="#174">174</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="175" href="#175">175</a> <em class="jxr_javadoccomment">	 * @param values</em>
-<a name="176" href="#176">176</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
-<a name="177" href="#177">177</a> <em class="jxr_javadoccomment">	 * @param collection</em>
-<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">	 *            コレクション</em>
-<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 * @param parameterizedClassDesc</em>
-<a name="180" href="#180">180</a> <em class="jxr_javadoccomment">	 *            パラメタ化された要素の定義</em>
-<a name="181" href="#181">181</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="182" href="#182">182</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> convertToCollection(<strong class="jxr_keyword">final</strong> Object[] values,
-<a name="183" href="#183">183</a> 			<strong class="jxr_keyword">final</strong> Collection&lt;Object&gt; collection,
-<a name="184" href="#184">184</a> 			<strong class="jxr_keyword">final</strong> ParameterizedClassDesc parameterizedClassDesc) {
-<a name="185" href="#185">185</a> 		<strong class="jxr_keyword">if</strong> (parameterizedClassDesc == <strong class="jxr_keyword">null</strong>) {
-<a name="186" href="#186">186</a> 			<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Object value : values) {
-<a name="187" href="#187">187</a> 				collection.add(value);
-<a name="188" href="#188">188</a> 			}
-<a name="189" href="#189">189</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="190" href="#190">190</a> 			<strong class="jxr_keyword">final</strong> Class&lt;?&gt; destElementType = parameterizedClassDesc
-<a name="191" href="#191">191</a> 					.getArguments()[0].getRawClass();
-<a name="192" href="#192">192</a> 			<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Object value : values) {
-<a name="193" href="#193">193</a> 				<strong class="jxr_keyword">final</strong> Object convertedValue = convertToScalar(value,
-<a name="194" href="#194">194</a> 						destElementType);
-<a name="195" href="#195">195</a> 				collection.add(convertedValue);
-<a name="196" href="#196">196</a> 			}
-<a name="197" href="#197">197</a> 		}
-<a name="198" href="#198">198</a> 	}
-<a name="199" href="#199">199</a> 
-<a name="200" href="#200">200</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="201" href="#201">201</a> <em class="jxr_javadoccomment">	 * 指定された値を指定された型に変換します。</em>
-<a name="202" href="#202">202</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 * @param value</em>
-<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
-<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * @param destClass</em>
-<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 *            変換する型</em>
-<a name="207" href="#207">207</a> <em class="jxr_javadoccomment">	 * @return 変換後の値</em>
-<a name="208" href="#208">208</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="209" href="#209">209</a> 	<strong class="jxr_keyword">private</strong> Object convertToScalar(<strong class="jxr_keyword">final</strong> Object value, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; destClass) {
-<a name="210" href="#210">210</a> 		<strong class="jxr_keyword">if</strong> (value == <strong class="jxr_keyword">null</strong>) {
-<a name="211" href="#211">211</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a name="212" href="#212">212</a> 		}
-<a name="213" href="#213">213</a> 		<strong class="jxr_keyword">if</strong> (destClass.isAssignableFrom(value.getClass())) {
-<a name="214" href="#214">214</a> 			<strong class="jxr_keyword">return</strong> value;
-<a name="215" href="#215">215</a> 		}
-<a name="216" href="#216">216</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/converter/Converter.html">Converter</a> converter = converterFactory.getConverter(value
-<a name="217" href="#217">217</a> 				.getClass(), destClass);
-<a name="218" href="#218">218</a> 		<strong class="jxr_keyword">if</strong> (converter == <strong class="jxr_keyword">null</strong>) {
-<a name="219" href="#219">219</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a name="220" href="#220">220</a> 		}
-<a name="221" href="#221">221</a> 		<strong class="jxr_keyword">return</strong> converter.convertToObject(value, destClass, conversionHelper);
-<a name="222" href="#222">222</a> 	}
-<a name="223" href="#223">223</a> 
-<a name="224" href="#224">224</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="225" href="#225">225</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドを実行する際に、オブジェクトのすべてのプロパティにリクエストパラメータをバインドするかを示します。</em>
-<a name="226" href="#226">226</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="227" href="#227">227</a> <em class="jxr_javadoccomment">	 * @param method</em>
-<a name="228" href="#228">228</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
-<a name="229" href="#229">229</a> <em class="jxr_javadoccomment">	 * @return オブジェクトのすべてのプロパティにリクエストパラメータをバインドする場合は &lt;code&gt;true&lt;/code&gt;、そうでない場合は</em>
-<a name="230" href="#230">230</a> <em class="jxr_javadoccomment">	 *         &lt;code&gt;false&lt;/code&gt;</em>
-<a name="231" href="#231">231</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="232" href="#232">232</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isBindToAllProperties(
-<a name="233" href="#233">233</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass, <strong class="jxr_keyword">final</strong> Method method) {
-<a name="234" href="#234">234</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Form.html">Form</a> form = CubbyUtils.getForm(actionClass, method);
-<a name="235" href="#235">235</a> 		<strong class="jxr_keyword">if</strong> (form == <strong class="jxr_keyword">null</strong>) {
-<a name="236" href="#236">236</a> 			<strong class="jxr_keyword">return</strong> false;
-<a name="237" href="#237">237</a> 		}
-<a name="238" href="#238">238</a> 
-<a name="239" href="#239">239</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameterBindingType.html">RequestParameterBindingType</a> type = form.bindingType();
-<a name="240" href="#240">240</a> 		<strong class="jxr_keyword">switch</strong> (type) {
-<a name="241" href="#241">241</a> 		<strong class="jxr_keyword">case</strong> ALL_PROPERTIES:
-<a name="242" href="#242">242</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a name="243" href="#243">243</a> 		<strong class="jxr_keyword">case</strong> ONLY_SPECIFIED_PROPERTIES:
-<a name="244" href="#244">244</a> 			<strong class="jxr_keyword">return</strong> false;
-<a name="245" href="#245">245</a> 		<strong class="jxr_keyword">default</strong>:
-<a name="246" href="#246">246</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(type.toString());
-<a name="247" href="#247">247</a> 		}
-<a name="248" href="#248">248</a> 	}
-<a name="249" href="#249">249</a> 
-<a name="250" href="#250">250</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="251" href="#251">251</a> <em class="jxr_javadoccomment">	 * 指定されたプロパティから {@link RequestParameter} アノテーションを取得します。</em>
-<a name="252" href="#252">252</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="253" href="#253">253</a> <em class="jxr_javadoccomment">	 * @param propertyDesc</em>
-<a name="254" href="#254">254</a> <em class="jxr_javadoccomment">	 *            プロパティの定義</em>
-<a name="255" href="#255">255</a> <em class="jxr_javadoccomment">	 * @return {@link RequestParameter} アノテーション、指定されたプロパティが装飾されていない場合は</em>
-<a name="256" href="#256">256</a> <em class="jxr_javadoccomment">	 *         &lt;code&gt;null&lt;/code&gt;</em>
-<a name="257" href="#257">257</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="258" href="#258">258</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameter.html">RequestParameter</a> getRequestParameterAnnotation(
-<a name="259" href="#259">259</a> 			<strong class="jxr_keyword">final</strong> PropertyDesc propertyDesc) {
-<a name="260" href="#260">260</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameter.html">RequestParameter</a> request;
-<a name="261" href="#261">261</a> 		<strong class="jxr_keyword">if</strong> (propertyDesc.hasWriteMethod()) {
-<a name="262" href="#262">262</a> 			<strong class="jxr_keyword">final</strong> Method method = propertyDesc.getWriteMethod();
-<a name="263" href="#263">263</a> 			<strong class="jxr_keyword">if</strong> (method.isAnnotationPresent(RequestParameter.<strong class="jxr_keyword">class</strong>)) {
-<a name="264" href="#264">264</a> 				request = method.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
-<a name="265" href="#265">265</a> 			} <strong class="jxr_keyword">else</strong> {
-<a name="266" href="#266">266</a> 				<strong class="jxr_keyword">final</strong> Field field = propertyDesc.getField();
-<a name="267" href="#267">267</a> 				request = field.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
-<a name="268" href="#268">268</a> 			}
-<a name="269" href="#269">269</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="270" href="#270">270</a> 			<strong class="jxr_keyword">final</strong> Field field = propertyDesc.getField();
-<a name="271" href="#271">271</a> 			request = field.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
-<a name="272" href="#272">272</a> 		}
-<a name="273" href="#273">273</a> 		<strong class="jxr_keyword">return</strong> request;
-<a name="274" href="#274">274</a> 	}
-<a name="275" href="#275">275</a> 
-<a name="276" href="#276">276</a> }
+<a name="139" href="#139">139</a> 			convertToCollection(values, list, destPropertyDesc);
+<a name="140" href="#140">140</a> 			<strong class="jxr_keyword">return</strong> list;
+<a name="141" href="#141">141</a> 		}
+<a name="142" href="#142">142</a> 		<strong class="jxr_keyword">if</strong> (Set.<strong class="jxr_keyword">class</strong>.isAssignableFrom(destClass)) {
+<a name="143" href="#143">143</a> 			<strong class="jxr_keyword">final</strong> Set&lt;Object&gt; set = <strong class="jxr_keyword">new</strong> LinkedHashSet&lt;Object&gt;();
+<a name="144" href="#144">144</a> 			convertToCollection(values, set, destPropertyDesc);
+<a name="145" href="#145">145</a> 			<strong class="jxr_keyword">return</strong> set;
+<a name="146" href="#146">146</a> 		}
+<a name="147" href="#147">147</a> 		<strong class="jxr_keyword">return</strong> convertToScalar(values[0], destClass);
+<a name="148" href="#148">148</a> 	}
+<a name="149" href="#149">149</a> 
+<a name="150" href="#150">150</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="151" href="#151">151</a> <em class="jxr_javadoccomment">	 * 指定された値を指定された要素の型の配列に変換します。</em>
+<a name="152" href="#152">152</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="153" href="#153">153</a> <em class="jxr_javadoccomment">	 * @param values</em>
+<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
+<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * @param componentType</em>
+<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 *            要素の型</em>
+<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * @return 変換後の値</em>
+<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="159" href="#159">159</a> 	<strong class="jxr_keyword">private</strong> Object convertToArray(<strong class="jxr_keyword">final</strong> Object[] values,
+<a name="160" href="#160">160</a> 			<strong class="jxr_keyword">final</strong> Class&lt;?&gt; componentType) {
+<a name="161" href="#161">161</a> 		<strong class="jxr_keyword">final</strong> Object dest = Array.newInstance(componentType, values.length);
+<a name="162" href="#162">162</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; values.length; i++) {
+<a name="163" href="#163">163</a> 			<strong class="jxr_keyword">final</strong> Object convertedValue = convertToScalar(values[i],
+<a name="164" href="#164">164</a> 					componentType);
+<a name="165" href="#165">165</a> 			Array.set(dest, i, convertedValue);
+<a name="166" href="#166">166</a> 		}
+<a name="167" href="#167">167</a> 		<strong class="jxr_keyword">return</strong> dest;
+<a name="168" href="#168">168</a> 	}
+<a name="169" href="#169">169</a> 
+<a name="170" href="#170">170</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="171" href="#171">171</a> <em class="jxr_javadoccomment">	 * 指定された値を変換してコレクションに追加します。</em>
+<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 * @param values</em>
+<a name="174" href="#174">174</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
+<a name="175" href="#175">175</a> <em class="jxr_javadoccomment">	 * @param collection</em>
+<a name="176" href="#176">176</a> <em class="jxr_javadoccomment">	 *            コレクション</em>
+<a name="177" href="#177">177</a> <em class="jxr_javadoccomment">	 * @param propertyDesc</em>
+<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">	 *            プロパティの定義</em>
+<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="180" href="#180">180</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> convertToCollection(<strong class="jxr_keyword">final</strong> Object[] values,
+<a name="181" href="#181">181</a> 			<strong class="jxr_keyword">final</strong> Collection&lt;Object&gt; collection, <strong class="jxr_keyword">final</strong> PropertyDesc propertyDesc) {
+<a name="182" href="#182">182</a> 		<strong class="jxr_keyword">if</strong> (propertyDesc.isParameterized()) {
+<a name="183" href="#183">183</a> 			<strong class="jxr_keyword">final</strong> ParameterizedClassDesc parameterizedClassDesc = propertyDesc
+<a name="184" href="#184">184</a> 					.getParameterizedClassDesc();
+<a name="185" href="#185">185</a> 			<strong class="jxr_keyword">final</strong> Class&lt;?&gt; destElementType = parameterizedClassDesc
+<a name="186" href="#186">186</a> 					.getArguments()[0].getRawClass();
+<a name="187" href="#187">187</a> 			<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Object value : values) {
+<a name="188" href="#188">188</a> 				<strong class="jxr_keyword">final</strong> Object convertedValue = convertToScalar(value,
+<a name="189" href="#189">189</a> 						destElementType);
+<a name="190" href="#190">190</a> 				collection.add(convertedValue);
+<a name="191" href="#191">191</a> 			}
+<a name="192" href="#192">192</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="193" href="#193">193</a> 			<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Object value : values) {
+<a name="194" href="#194">194</a> 				collection.add(value);
+<a name="195" href="#195">195</a> 			}
+<a name="196" href="#196">196</a> 		}
+<a name="197" href="#197">197</a> 	}
+<a name="198" href="#198">198</a> 
+<a name="199" href="#199">199</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="200" href="#200">200</a> <em class="jxr_javadoccomment">	 * 指定された値を指定された型に変換します。</em>
+<a name="201" href="#201">201</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="202" href="#202">202</a> <em class="jxr_javadoccomment">	 * @param value</em>
+<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 *            変換する値</em>
+<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 * @param destClass</em>
+<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 *            変換する型</em>
+<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 * @return 変換後の値</em>
+<a name="207" href="#207">207</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="208" href="#208">208</a> 	<strong class="jxr_keyword">private</strong> Object convertToScalar(<strong class="jxr_keyword">final</strong> Object value, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; destClass) {
+<a name="209" href="#209">209</a> 		<strong class="jxr_keyword">if</strong> (value == <strong class="jxr_keyword">null</strong>) {
+<a name="210" href="#210">210</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a name="211" href="#211">211</a> 		}
+<a name="212" href="#212">212</a> 		<strong class="jxr_keyword">if</strong> (destClass.isAssignableFrom(value.getClass())) {
+<a name="213" href="#213">213</a> 			<strong class="jxr_keyword">return</strong> value;
+<a name="214" href="#214">214</a> 		}
+<a name="215" href="#215">215</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/converter/Converter.html">Converter</a> converter = converterFactory.getConverter(value
+<a name="216" href="#216">216</a> 				.getClass(), destClass);
+<a name="217" href="#217">217</a> 		<strong class="jxr_keyword">if</strong> (converter == <strong class="jxr_keyword">null</strong>) {
+<a name="218" href="#218">218</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a name="219" href="#219">219</a> 		}
+<a name="220" href="#220">220</a> 		<strong class="jxr_keyword">return</strong> converter.convertToObject(value, destClass, conversionHelper);
+<a name="221" href="#221">221</a> 	}
+<a name="222" href="#222">222</a> 
+<a name="223" href="#223">223</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="224" href="#224">224</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドを実行する際に、オブジェクトのすべてのプロパティにリクエストパラメータをバインドするかを示します。</em>
+<a name="225" href="#225">225</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="226" href="#226">226</a> <em class="jxr_javadoccomment">	 * @param method</em>
+<a name="227" href="#227">227</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
+<a name="228" href="#228">228</a> <em class="jxr_javadoccomment">	 * @return オブジェクトのすべてのプロパティにリクエストパラメータをバインドする場合は &lt;code&gt;true&lt;/code&gt;、そうでない場合は</em>
+<a name="229" href="#229">229</a> <em class="jxr_javadoccomment">	 *         &lt;code&gt;false&lt;/code&gt;</em>
+<a name="230" href="#230">230</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="231" href="#231">231</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isBindToAllProperties(
+<a name="232" href="#232">232</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass, <strong class="jxr_keyword">final</strong> Method method) {
+<a name="233" href="#233">233</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/Form.html">Form</a> form = CubbyUtils.getForm(actionClass, method);
+<a name="234" href="#234">234</a> 		<strong class="jxr_keyword">if</strong> (form == <strong class="jxr_keyword">null</strong>) {
+<a name="235" href="#235">235</a> 			<strong class="jxr_keyword">return</strong> false;
+<a name="236" href="#236">236</a> 		}
+<a name="237" href="#237">237</a> 
+<a name="238" href="#238">238</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameterBindingType.html">RequestParameterBindingType</a> type = form.bindingType();
+<a name="239" href="#239">239</a> 		<strong class="jxr_keyword">switch</strong> (type) {
+<a name="240" href="#240">240</a> 		<strong class="jxr_keyword">case</strong> ALL_PROPERTIES:
+<a name="241" href="#241">241</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a name="242" href="#242">242</a> 		<strong class="jxr_keyword">case</strong> ONLY_SPECIFIED_PROPERTIES:
+<a name="243" href="#243">243</a> 			<strong class="jxr_keyword">return</strong> false;
+<a name="244" href="#244">244</a> 		<strong class="jxr_keyword">default</strong>:
+<a name="245" href="#245">245</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(type.toString());
+<a name="246" href="#246">246</a> 		}
+<a name="247" href="#247">247</a> 	}
+<a name="248" href="#248">248</a> 
+<a name="249" href="#249">249</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="250" href="#250">250</a> <em class="jxr_javadoccomment">	 * 指定されたプロパティから {@link RequestParameter} アノテーションを取得します。</em>
+<a name="251" href="#251">251</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="252" href="#252">252</a> <em class="jxr_javadoccomment">	 * @param propertyDesc</em>
+<a name="253" href="#253">253</a> <em class="jxr_javadoccomment">	 *            プロパティの定義</em>
+<a name="254" href="#254">254</a> <em class="jxr_javadoccomment">	 * @return {@link RequestParameter} アノテーション、指定されたプロパティが装飾されていない場合は</em>
+<a name="255" href="#255">255</a> <em class="jxr_javadoccomment">	 *         &lt;code&gt;null&lt;/code&gt;</em>
+<a name="256" href="#256">256</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="257" href="#257">257</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameter.html">RequestParameter</a> getRequestParameterAnnotation(
+<a name="258" href="#258">258</a> 			<strong class="jxr_keyword">final</strong> PropertyDesc propertyDesc) {
+<a name="259" href="#259">259</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../../org/seasar/cubby/action/RequestParameter.html">RequestParameter</a> request;
+<a name="260" href="#260">260</a> 		<strong class="jxr_keyword">if</strong> (propertyDesc.hasWriteMethod()) {
+<a name="261" href="#261">261</a> 			<strong class="jxr_keyword">final</strong> Method method = propertyDesc.getWriteMethod();
+<a name="262" href="#262">262</a> 			<strong class="jxr_keyword">if</strong> (method.isAnnotationPresent(RequestParameter.<strong class="jxr_keyword">class</strong>)) {
+<a name="263" href="#263">263</a> 				request = method.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
+<a name="264" href="#264">264</a> 			} <strong class="jxr_keyword">else</strong> {
+<a name="265" href="#265">265</a> 				<strong class="jxr_keyword">final</strong> Field field = propertyDesc.getField();
+<a name="266" href="#266">266</a> 				request = field.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
+<a name="267" href="#267">267</a> 			}
+<a name="268" href="#268">268</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="269" href="#269">269</a> 			<strong class="jxr_keyword">final</strong> Field field = propertyDesc.getField();
+<a name="270" href="#270">270</a> 			request = field.getAnnotation(RequestParameter.<strong class="jxr_keyword">class</strong>);
+<a name="271" href="#271">271</a> 		}
+<a name="272" href="#272">272</a> 		<strong class="jxr_keyword">return</strong> request;
+<a name="273" href="#273">273</a> 	}
+<a name="274" href="#274">274</a> 
+<a name="275" href="#275">275</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
