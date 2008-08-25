@@ -1,8 +1,8 @@
 package org.seasar.cubby.cubbitter.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,15 +17,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "ACCOUNT")
-@NamedQueries({
-	@NamedQuery(name = "Account.findByKeyword", query = "SELECT a FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword ORDER BY a.name"),
-	@NamedQuery(name = "Account.getCountByKeyword" ,query = "SELECT COUNT(*) FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword"),
-})
+@NamedQueries( {
+		@NamedQuery(name = "Account.findByKeyword", query = "SELECT a FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword ORDER BY a.name"),
+		@NamedQuery(name = "Account.getCountByKeyword", query = "SELECT COUNT(*) FROM Account AS a WHERE a.name LIKE :keyword OR a.fullName LIKE :keyword") })
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -62,30 +62,32 @@ public class Account implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "REQUESTS", joinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "REQUEST_ACCOUNT_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "REQUEST_ACCOUNT_ID" }))
-	private List<Account> requests;
+	private Set<Account> requests;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "FOLLOWINGS", joinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "FOLLOWING_ACCOUNT_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "FOLLOWING_ACCOUNT_ID" }))
-	private List<Account> followings;
+	private Set<Account> followings;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "FOLLOWERS", joinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "FOLLOWER_ACCOUNT_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "FOLLOWER_ACCOUNT_ID" }))
-	private List<Account> followers;
+	private Set<Account> followers;
 
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Entry> entries;
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {
+			CascadeType.PERSIST, CascadeType.MERGE })
+	@OrderBy("post DESC")
+	private Set<Entry> entries;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "FAVORITES", joinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ENTRY_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "ENTRY_ID" }))
-	private List<Entry> favorites;
+	private Set<Entry> favorites;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "REPLIES", joinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ENTRY_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "ENTRY_ID" }))
-	private List<Entry> replies;
+	private Set<Entry> replies;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SMALL_IMAGE_ID")
@@ -171,69 +173,69 @@ public class Account implements Serializable {
 		this.biography = biography;
 	}
 
-	public List<Account> getRequests() {
+	public Set<Account> getRequests() {
 		if (requests == null) {
-			requests = new ArrayList<Account>();
+			requests = new LinkedHashSet<Account>();
 		}
 		return requests;
 	}
 
-	public void setRequests(List<Account> requests) {
+	public void setRequests(Set<Account> requests) {
 		this.requests = requests;
 	}
 
-	public List<Account> getFollowings() {
+	public Set<Account> getFollowings() {
 		if (followings == null) {
-			followings = new ArrayList<Account>();
+			followings = new LinkedHashSet<Account>();
 		}
 		return followings;
 	}
 
-	public void setFollowings(List<Account> followings) {
+	public void setFollowings(Set<Account> followings) {
 		this.followings = followings;
 	}
 
-	public List<Account> getFollowers() {
+	public Set<Account> getFollowers() {
 		if (followers == null) {
-			followers = new ArrayList<Account>();
+			followers = new LinkedHashSet<Account>();
 		}
 		return followers;
 	}
 
-	public void setFollowers(List<Account> followers) {
+	public void setFollowers(Set<Account> followers) {
 		this.followers = followers;
 	}
 
-	public List<Entry> getEntries() {
+	public Set<Entry> getEntries() {
 		if (entries == null) {
-			entries = new ArrayList<Entry>();
+			entries = new LinkedHashSet<Entry>();
 		}
 		return entries;
 	}
 
-	public void setEntries(List<Entry> entries) {
+	public void setEntries(Set<Entry> entries) {
 		this.entries = entries;
 	}
 
-	public List<Entry> getFavorites() {
+	public Set<Entry> getFavorites() {
 		if (favorites == null) {
-			favorites = new ArrayList<Entry>();
+			favorites = new LinkedHashSet<Entry>();
 		}
 		return favorites;
 	}
 
-	public void setFavorites(List<Entry> favoriteEntries) {
+	public void setFavorites(Set<Entry> favoriteEntries) {
 		this.favorites = favoriteEntries;
 	}
 
-	public List<Entry> getReplies() {
+	public Set<Entry> getReplies() {
 		if (replies == null) {
-			replies = new ArrayList<Entry>();
+			replies = new LinkedHashSet<Entry>();
 		}
 		return replies;
 	}
 
-	public void setReplies(List<Entry> replies) {
+	public void setReplies(Set<Entry> replies) {
 		this.replies = replies;
 	}
 

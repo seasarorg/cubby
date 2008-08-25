@@ -114,8 +114,7 @@ public class AccountEntryAction extends AbstractAccountAction {
 		if (entry == null) {
 			return NOT_FOUND;
 		}
-		List<Entry> entries = account.getEntries();
-		entries.remove(entry);
+		account.getEntries().remove(entry);
 		entryService.remove(entry);
 		return restore();
 	}
