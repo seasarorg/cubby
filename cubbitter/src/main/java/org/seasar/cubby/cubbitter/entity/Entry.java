@@ -2,7 +2,8 @@ package org.seasar.cubby.cubbitter.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,8 +38,7 @@ import javax.persistence.UniqueConstraint;
 		@NamedQuery(name = "Entry.getFavoritesCountByAccount", query = "SELECT COUNT(*) FROM Account AS a JOIN a.favorites AS e WHERE a = :account"),
 
 		@NamedQuery(name = "Entry.findRepliesByAccount", query = "SELECT e FROM Account AS a JOIN a.replies AS e WHERE a = :account ORDER BY e.post DESC"),
-		@NamedQuery(name = "Entry.getRepliesCountByAccount", query = "SELECT COUNT(*) FROM Account AS a JOIN a.replies AS e WHERE a = :account")
-})
+		@NamedQuery(name = "Entry.getRepliesCountByAccount", query = "SELECT COUNT(*) FROM Account AS a JOIN a.replies AS e WHERE a = :account") })
 public class Entry implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -61,7 +61,7 @@ public class Entry implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "FAVORITES", joinColumns = @JoinColumn(name = "ENTRY_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"ACCOUNT_ID", "ENTRY_ID" }))
-	private List<Account> favorites;
+	private Set<Account> favorites;
 
 	public Long getId() {
 		return id;
@@ -95,11 +95,14 @@ public class Entry implements Serializable {
 		this.account = account;
 	}
 
-	public List<Account> getFavorites() {
+	public Set<Account> getFavorites() {
+		if (favorites == null) {
+			this.favorites = new LinkedHashSet<Account>();
+		}
 		return favorites;
 	}
 
-	public void setFavorites(List<Account> favorites) {
+	public void setFavorites(Set<Account> favorites) {
 		this.favorites = favorites;
 	}
 

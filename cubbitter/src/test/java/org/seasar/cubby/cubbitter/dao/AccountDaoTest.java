@@ -2,7 +2,9 @@ package org.seasar.cubby.cubbitter.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -37,7 +39,7 @@ public class AccountDaoTest {
 		List<Entry> com = entryDao.findByAccounts(aa, 0, 999);
 		System.out.println(com);
 		for (Entry c : com) {
-			List<Entry> fav = c.getAccount().getFavorites();
+			Set<Entry> fav = c.getAccount().getFavorites();
 			System.out.println(fav);
 		}
 	}
@@ -60,12 +62,12 @@ public class AccountDaoTest {
 		account2.setName("account2");
 		account2.setFullName("account 2");
 		account2.setPassword("password");
-		List<Account> followingAccounts = new ArrayList<Account>();
+		Set<Account> followingAccounts = new LinkedHashSet<Account>();
 		followingAccounts.add(account1);
 		account2.setFollowings(followingAccounts);
 		accountDao.persist(account2);
 
-		List<Entry> favoriteEntries = new ArrayList<Entry>();
+		Set<Entry> favoriteEntries = new LinkedHashSet<Entry>();
 		favoriteEntries.add(entry1);
 		account2.setFavorites(favoriteEntries);
 
