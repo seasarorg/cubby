@@ -28,6 +28,7 @@
 		<resource>src/main/webapp/hello/hello.jsp</resource>
 		<resource>src/main/webapp/hello/index.jsp</resource>
 		<resource>src/main/webapp/WEB-INF/web.xml</resource>
+		<resource>src/release/resources/env.txt</resource>
 	</resources>
 	<testSources>
 		<source>src/test/java/service/impl/HelloServiceImplTest.java</source>
