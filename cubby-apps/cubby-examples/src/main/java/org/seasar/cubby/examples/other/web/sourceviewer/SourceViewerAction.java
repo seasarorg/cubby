@@ -15,15 +15,15 @@
  */
 package org.seasar.cubby.examples.other.web.sourceviewer;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
@@ -35,29 +35,27 @@ import org.seasar.cubby.action.RequestParameter;
 @Path("sourceviewer")
 public class SourceViewerAction extends Action {
 
-	private static final String[] SOURCE_EXTENSIONS = new String[] {"jsp","java"};
+	public List<SourcePath> paths;
 
-	public List<String> paths;
-	
 	public ServletContext context;
 
 	public HttpServletResponse response;
 
 	@RequestParameter
 	public String[] dirs;
-	
+
 	@RequestParameter
 	public String title;
-	
+
 	@RequestParameter
 	public String path;
-	
+
 	@Form
 	public ActionResult index() {
 		this.paths = collectPaths(this.dirs);
 		return new Forward("index.jsp");
 	}
-	
+
 	@Form
 	public ActionResult getSource() throws Exception {
 		String source = getSource(path);
@@ -67,40 +65,59 @@ public class SourceViewerAction extends Action {
 		return new Direct();
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<String> collectPaths(String[] dirs) {
-		List<String> pathList = new ArrayList<String>();
+	private List<SourcePath> collectPaths(String[] dirs) {
+		List<SourcePath> pathList = new ArrayList<SourcePath>();
 		for (String dir : dirs) {
-			File target = new File(toAbsolutePath(dir));
-			if (target.isFile()) {
-				String path = toRelativePath(target.getAbsolutePath());
-				pathList.add(path);
-			} else if (target.isDirectory()){
-				Collection<File> childFiles = FileUtils.listFiles(target, SOURCE_EXTENSIONS, true);
-				for (File childFile : childFiles) {
-					String path = toRelativePath(childFile.getAbsolutePath());
-					pathList.add(path);
-				}
-			}
+			collect(dir, pathList);
 		}
 		return pathList;
 	}
 
-	private String toAbsolutePath(String relativePath) {
-		return getContextRootPath() + relativePath;
-	}
-
-	private String toRelativePath(String absolutePath) {
-		return absolutePath.substring(getContextRootPath().length());
-	}
-
-	private String getContextRootPath() {
-		return context.getRealPath("/");
+	private void collect(String path, List<SourcePath> sourcePaths) {
+		if (path == null) {
+			sourcePaths.add(new SourcePath(path, false));
+		} else if (path.endsWith("/")) {
+			@SuppressWarnings("unchecked")
+			Set<String> childPaths = context.getResourcePaths(path);
+			if (childPaths == null) {
+				sourcePaths.add(new SourcePath(path, false));
+			} else {
+				for (String childPath : childPaths) {
+					collect(childPath, sourcePaths);
+				}
+			}
+		} else {
+			if (context.getResourceAsStream(path) == null) {
+				sourcePaths.add(new SourcePath(path, false));
+			} else {
+				sourcePaths.add(new SourcePath(path, true));
+			}
+		}
 	}
 
 	private String getSource(String relativePath) throws Exception {
-		File sourceFile = new File(toAbsolutePath(relativePath));
-		return FileUtils.readFileToString(sourceFile, "UTF-8");
+		InputStream input = context.getResourceAsStream(relativePath);
+		return IOUtils.toString(input, "UTF-8");
 	}
-	
+
+	public class SourcePath {
+
+		private String path;
+
+		private boolean visible;
+
+		SourcePath(String path, boolean visible) {
+			this.path = path;
+			this.visible = visible;
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public boolean isVisible() {
+			return visible;
+		}
+
+	}
 }
