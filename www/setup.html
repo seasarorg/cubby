@@ -57,7 +57,7 @@
             
   
     
-             最終更新: 2008-08-26
+             最終更新: 2008-08-27
               &nbsp;| バージョン: 1.1.0
             </div>
       <div class="clear">
@@ -340,28 +340,48 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2><a name="目次">目次</a></h2>
-<ul><li><a href="#前提">前提</a></li>
-<li><a href="#プロジェクトの作成">プロジェクトの作成</a><ul><li><a href="#Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a></li>
-<li><a href="#Tomcat_の起動">Tomcat の起動</a></li>
-<li><a href="#Eclipse_を使った開発">Eclipse を使った開発</a></li>
+        <div class="section"><h2><a name="目次">目次</a>
+</h2>
+<ul><li><a href="#前提">前提</a>
+</li>
+<li><a href="#プロジェクトの作成">プロジェクトの作成</a>
+<ul><li><a href="#Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>
+</li>
+<li><a href="#Tomcat_の起動">Tomcat の起動</a>
+</li>
+<li><a href="#Eclipse_を使った開発">Eclipse を使った開発</a>
+</li>
 </ul>
 </li>
-<li><a href="#各種ファイル">各種ファイル</a><ul><li><a href="#必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a></li>
-<li><a href="#デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a></li>
-<li><a href="#diconファイル_WEB-INFclasses">diconファイル (WEB-INF/classes)</a></li>
-<li><a href="#プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a></li>
+<li><a href="#各種ファイル">各種ファイル</a>
+<ul><li><a href="#必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a>
+</li>
+<li><a href="#デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a>
+</li>
+<li><a href="#diconファイル_WEB-INFclasses">diconファイル (WEB-INF/classes)</a>
+</li>
+<li><a href="#プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section"><h2><a name="前提">前提</a></h2>
-<p>Cubby は S2Container2.4 の <a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy" class="externalLink">SMART Deploy</a> 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage" class="externalLink">SMART Deploy 推奨のパッケージ構成</a>としてください。<br />
-また、Cubby を 初めて利用される方は一度サンプル war を<a href="download.html">ダウンロード</a>して動かしながら、Cubbyのドキュメントとサンプルのソースを確認しながら学習するとよいでしょう。</p>
+<div class="section"><h2><a name="前提">前提</a>
+</h2>
+<p>Cubby は S2Container2.4 の <a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy" class="externalLink">SMART Deploy</a>
+ 環境下で動作させることを前提としています。 ソースコードのパッケージ構成は <a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage" class="externalLink">SMART Deploy 推奨のパッケージ構成</a>
+としてください。<br />
+また、Cubby を 初めて利用される方は一度サンプル war を<a href="download.html">ダウンロード</a>
+して動かしながら、Cubbyのドキュメントとサンプルのソースを確認しながら学習するとよいでしょう。</p>
 </div>
-<div class="section"><h2><a name="プロジェクトの作成">プロジェクトの作成</a></h2>
-<p>Cubby は <a href="http://maven.apache.org/" class="externalLink">Maven2</a> の <a href="http://maven.apache.org/plugins/maven-archetype-plugin/" class="externalLink">archetype コンテナ</a>を用意していますので、これを使用してプロジェクトの雛形を作成することをおすすめします。 データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。 Maven2についての技術情報は、<a href="link.html#Maven2">リンク集</a>をご覧ください。</p>
-<div class="section"><h3><a name="Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a></h3>
+<div class="section"><h2><a name="プロジェクトの作成">プロジェクトの作成</a>
+</h2>
+<p>Cubby は <a href="http://maven.apache.org/" class="externalLink">Maven2</a>
+ の <a href="http://maven.apache.org/plugins/maven-archetype-plugin/" class="externalLink">archetype コンテナ</a>
+を用意していますので、これを使用してプロジェクトの雛形を作成することをおすすめします。 データベースと連携した WEB アプリケーションを作成するための web.xml や pom.xml の基本的な設定が含まれます。 Maven2についての技術情報は、<a href="link.html#Maven2">リンク集</a>
+をご覧ください。</p>
+<div class="section"><h3><a name="Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>
+</h3>
 <p>Maven2 のインストール後、以下のようにプロジェクトの雛形を作成します。<br />
 (ここで使用する mvn archetype:generate の実行には Maven 2.0.7 以降が必要です。)</p>
 <p>まずは以下のコマンドを入力してください。</p>
@@ -398,17 +418,27 @@ package: com.example.foo.barapp
  Y: :</pre>
 </div>
 <p>いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。<br />
-s2container などのライブラリのバージョン、S2Dao/S2JDBCを使用するかどうかの設定を変更する場合はここで N を選択して再度設定を入力してください。 再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。） デフォルトでは上記のように S2JDBC を使用、 S2Dao を使用しない設定になっています。</p>
+s2container などのライブラリのバージョン、S2Dao/S2JDBCを使用するかどうかの設定を変更する場合はここで N を選択して再度設定を入力してください。 再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）<br />
+デフォルトでは上記のように S2JDBC を使用、 S2Dao を使用しない設定になっています。\</p>
 </div>
-<div class="section"><h3><a name="Tomcat_の起動">Tomcat の起動</a></h3>
+<div class="section"><h3><a name="Tomcat_の起動">Tomcat の起動</a>
+</h3>
 <p>プロジェクトのディレクトリで以下のコマンドを実行すると Tomcat が起動し、ブラウザで「http://localhost:8080/(アーティファクトID)/」にアクセスすることで、雛形アプリケーションの動作を確認できます。</p>
 <div class="source"><pre>mvn tomcat:run</pre>
 </div>
 <p>Mayaaを使用する場合は依存する jarファイルを「src/main/webapps/WEB-INF」以下に配備する必要があります。 プロジェクトのディレクトリで以下のコマンドを実行し、jarファイルを配備してからTomcatを実行してください。 (EclipseからWTP等で実行する場合は不要です)</p>
 <div class="source"><pre>mvn war:inplace</pre>
 </div>
+<p>作成されたpom.xmlには、リリース時に設定ファイル等を置き換えてWARを作成するプロファイルが含まれています。<br />
+プロジェクトのディレクトリで以下のプロファイルを指定して(-Pproduction)実行すると、「src/production/resources」にあるファイルが「src/main/resources」のファイルより優先されてWARが作成されます。 初期設定ではリリース向けのlog4j.propertiesとenv.txt(productが設定)WARが作成されるため、Seasar2でHotDeployのままWARを作成する心配がありません。同じ方法でJDBCの接続設定なども切り替えると便利です。<br />
+(参考：<a href="http://maven.apache.org/guides/introduction/introduction-to-profiles.html" class="externalLink">Maven2のプロファイル解説</a>
+、<a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Env" class="externalLink">Seasar2のevn.txtについての説明</a>
+)</p>
+<div class="source"><pre>mvn clean package -Pproduction</pre>
 </div>
-<div class="section"><h3><a name="Eclipse_を使った開発">Eclipse を使った開発</a></h3>
+</div>
+<div class="section"><h3><a name="Eclipse_を使った開発">Eclipse を使った開発</a>
+</h3>
 <div class="section"><h4>プロジェクトの設定</h4>
 <p>プロジェクトを Eclipse で開発する場合は、Maven2 で Eclipse のワークスペースやプロジェクトを設定します。</p>
 <ol type="1"><li>ワークスペースのクラスパス変数<p>Eclipse ワークスペースにビルドパスのクラスパス変数(M2_REPO)を追加します。 以下のコマンドを実行してください。 この作業はワークスペースごとに１度行えば、次回からは必要ありません。</p>
@@ -446,13 +476,15 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 </ol>
 <p>Tomcatが起動して、ログがコンソールに出力されます。</p>
 </li>
-<li>WTP環境でHotDeployの設定を有効にする。 <p><a href="http://d.hatena.ne.jp/uriyuri/20080328/1206694040" class="externalLink">http://d.hatena.ne.jp/uriyuri/20080328/1206694040</a>の設定を行うことで、 WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。</p>
+<li>WTP環境でHotDeployの設定を有効にする。 <p><a href="http://d.hatena.ne.jp/uriyuri/20080328/1206694040" class="externalLink">http://d.hatena.ne.jp/uriyuri/20080328/1206694040</a>
+の設定を行うことで、 WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。</p>
 </li>
 </ol>
 </div>
 <div class="section"><h4>コードテンプレート</h4>
 <p>以下のコードテンプレート設定を Eclipse にインポートすることで「アクションメソッドのコード雛形作成」「バリデーションフィールドのコード雛形作成」が行えます。 </p>
-<ol type="1"><li>コードテンプレート定義ファイル「<a href="./eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml">cubby-eclipse-code-templates-1.0.0.xml</a>」をダウンロードします。</li>
+<ol type="1"><li>コードテンプレート定義ファイル「<a href="./eclipse-code-templates/cubby-eclipse-code-templates-1.0.0.xml">cubby-eclipse-code-templates-1.0.0.xml</a>
+」をダウンロードします。</li>
 <li>Eclipse の設定を開きます。(Windowsなら「ウインドウ(Window)-&gt;設定(Preference)」、MacOSXなら「Eclipse」-&gt;設定(Preference)」)</li>
 <li>「Java-&gt;エディタ(Editor)-&gt;テンプレート(Templates)」を選択し、「インポート(Import)」ボタンをクリックします。</li>
 <li>1.でダウンロードしたコードテンプレート定義ファイルを選択します。</li>
@@ -473,10 +505,13 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 </div>
 </div>
 </div>
-<div class="section"><h2><a name="各種ファイル">各種ファイル</a></h2>
+<div class="section"><h2><a name="各種ファイル">各種ファイル</a>
+</h2>
 <p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p>
-<div class="section"><h3><a name="必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a></h3>
-<p><a href="cubby/dependencies.html">依存関係</a>を参照してください。 WEB-INF/lib 以下に配備します。</p>
+<div class="section"><h3><a name="必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a>
+</h3>
+<p><a href="cubby/dependencies.html">依存関係</a>
+を参照してください。 WEB-INF/lib 以下に配備します。</p>
 <p>主な依存ライブラリを以下にあげます。</p>
 <ul><li>cubby-*.jar<p>Cubby 本体です。</p>
 </li>
@@ -504,7 +539,8 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 </li>
 </ul>
 </div>
-<div class="section"><h3><a name="デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a></h3>
+<div class="section"><h3><a name="デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a>
+</h3>
 <p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p>
 <ol type="1"><li>SendErrorFilter (任意)<p>*.jsp ファイルなど、直接アクセスされたくないファイルへのアクセスを制御するフィルターです。<br />
 この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。</p>
@@ -524,7 +560,8 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
     &lt;/filter-mapping&gt;</pre>
 </div>
 </li>
-<li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request" class="externalLink">リクエストの自動バインディング</a>を使用するので、S2ContainerFilter を定義します。</p>
+<li>S2ContainerFilter (必須)<p>Cubby 内部では<a href="http://s2container.seasar.org/ja/DIContainer.html#request" class="externalLink">リクエストの自動バインディング</a>
+を使用するので、S2ContainerFilter を定義します。</p>
 <div class="source"><pre>    &lt;filter&gt;
         &lt;filter-name&gt;s2Filter&lt;/filter-name&gt;
         &lt;filter-class&gt;org.seasar.framework.container.filter.S2ContainerFilter&lt;/filter-class&gt;
@@ -539,7 +576,8 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
     &lt;/filter-mapping&gt;</pre>
 </div>
 </li>
-<li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy" class="externalLink">Hot deploy</a> を使用する場合は HotdeployFilter を定義します。</p>
+<li>HotdeployFilter<p><a href="http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy" class="externalLink">Hot deploy</a>
+ を使用する場合は HotdeployFilter を定義します。</p>
 <div class="source"><pre>    &lt;filter&gt;
         &lt;filter-name&gt;hotdeployFilter&lt;/filter-name&gt;
         &lt;filter-class&gt;org.seasar.framework.container.hotdeploy.HotdeployFilter&lt;/filter-class&gt;
@@ -589,7 +627,8 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 </li>
 </ol>
 </div>
-<div class="section"><h3><a name="diconファイル_WEB-INFclasses">diconファイル (WEB-INF/classes)</a></h3>
+<div class="section"><h3><a name="diconファイル_WEB-INFclasses">diconファイル (WEB-INF/classes)</a>
+</h3>
 <ol type="1"><li>app.dicon<p>以下の dicon ファイルをインクルードしてください。</p>
 <ul><li>dxo.dicon (S2Extension の jar ファイルに含まれます)</li>
 <li>routing.dicon、cubby.dicon (Cubby の jar ファイルに含まれます)</li>
@@ -608,9 +647,11 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 &lt;/components&gt;</pre>
 </div>
 </li>
-<li>convention.dicon<p><a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage" class="externalLink">dicon ファイルの設定例</a>を参考に、ルートパッケージを設定してください。</p>
+<li>convention.dicon<p><a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage" class="externalLink">dicon ファイルの設定例</a>
+を参考に、ルートパッケージを設定してください。</p>
 </li>
-<li>creator.dicon<p><a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Creator" class="externalLink">dicon ファイルの設定例</a>を参考に、ActionCreator を設定してください。</p>
+<li>creator.dicon<p><a href="http://s2container.seasar.org/2.4/ja/DIContainer.html#Creator" class="externalLink">dicon ファイルの設定例</a>
+を参考に、ActionCreator を設定してください。</p>
 </li>
 <li>customizer.dicon<p>Cubby はアクションクラスのメソッドにインターセプタを適用することで、前処理やバリデーションを行います。 cubby-customizer.dicon (Cubby の jar ファイルに含まれます) をインクルードして、そこで定義されているカスタマイザがアクションクラスに適用されるように設定します。</p>
 <p>アクションメソッドでトランザクションの制御が必要な場合もここで定義してください。 org.seasar.cubby.customizer.ActionMethodCustomizer は、アクションメソッドのみが対象になるカスタマイザです。</p>
@@ -694,7 +735,8 @@ eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上�
 </li>
 </ol>
 </div>
-<div class="section"><h3><a name="プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a></h3>
+<div class="section"><h3><a name="プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a>
+</h3>
 <ol type="1"><li>messages.properties<p>org.seasar.cubby.util.Messagesで使用する、アプリケーションで表示するメッセージを定義します。 Cubby のバリデータが出力するメッセージもここに定義します。</p>
 <p>デフォルトのメッセージは Cubby の jar ファイルに含まれていますので、差し替える場合はクラスパス上で先に検索される場所に置いてください。</p>
 <p>デフォルトでは messages.properties を使用しますが、app-cubby.dicon に org.seasar.controller.MessagesBehaviour を実装したクラスを定義することで、 リソースバンドルの取得方法などを変更することができます。</p>
