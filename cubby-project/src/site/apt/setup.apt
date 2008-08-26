@@ -142,7 +142,7 @@ mvn war:inplace
 
  作成されたpom.xmlには、リリース時に設定ファイル等を置き換えてWARを作成するプロファイルが含まれています。\
  プロジェクトのディレクトリで以下のプロファイルを指定して(-Pproduction)実行すると、「src/production/resources」にあるファイルが「src/main/resources」のファイルより優先されてWARが作成されます。
- 初期設定では「env.txt」に「product」が設定されたWARが作成されるため、Seasar2でHotDeployのままWARを作成する心配がありません。同じ方法でJDBCの接続設定なども切り替えると便利です。\
+ 初期設定ではリリース向けのlog4j.propertiesとenv.txt(productが設定)WARが作成されるため、Seasar2でHotDeployのままWARを作成する心配がありません。同じ方法でJDBCの接続設定なども切り替えると便利です。\
   (参考：{{{http://maven.apache.org/guides/introduction/introduction-to-profiles.html}Maven2のプロファイル解説}}、{{{http://s2container.seasar.org/2.4/ja/DIContainer.html#Env}Seasar2のevn.txtについての説明}})
 
 +------------------------------------------------------+
