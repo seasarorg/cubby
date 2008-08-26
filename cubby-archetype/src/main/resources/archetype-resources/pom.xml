@@ -179,11 +179,23 @@ line.separator=\n
   </dependencies>
   <profiles>
     <profile>
-      <id>release</id>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>production</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
       <build>
         <resources>
           <resource>
-            <directory>src/release/resources</directory>
+            <directory>src/production/resources</directory>
           </resource>
           <resource>
             <directory>src/main/resources</directory>
