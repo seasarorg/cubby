@@ -14,9 +14,21 @@
 <body>
 <h1>Cubby Exmaples - ソースビューア - ${f:out(title)}</h1>
 <ul id="paths">
-<c:forEach var="path" items="${action.paths}">
-<li><a href="javascript:void(0)" onclick="loadSource(this, '${f:out(path)}');">${f:out(path)}</a></li>
-</c:forEach>
+	<c:forEach var="path" items="${action.paths}">
+		<c:choose>
+			<c:when test="${path.visible}">
+				<li>
+					<a href="javascript:void(0)"
+						onclick="loadSource(this, '${f:out(path.path)}');">${f:out(path.path)}</a>
+				</li>
+			</c:when>
+			<c:otherwise>
+				<li>
+					<span>${f:out(path.path)} を参照することができません。</span>
+				</li>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
 </ul>
 <pre id="code" class="prettyprint">
 &nbsp;
