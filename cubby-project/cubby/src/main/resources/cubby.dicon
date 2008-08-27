@@ -3,6 +3,7 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="cubby">
 	<include path="convention.dicon" />
+	<include path="detector.dicon" />
 
 	<!-- action -->
 	<component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" />
@@ -26,7 +27,7 @@
 	<!-- converter -->
 	<component class="org.seasar.cubby.converter.impl.ConverterFactoryImpl" />
 	<component class="org.seasar.cubby.converter.impl.ConversionHelperImpl" />
-	
+
 	<component class="org.seasar.cubby.converter.impl.BigDecimalConverter" />
 	<component class="org.seasar.cubby.converter.impl.BigIntegerConverter" />
 	<component class="org.seasar.cubby.converter.impl.BooleanConverter" />

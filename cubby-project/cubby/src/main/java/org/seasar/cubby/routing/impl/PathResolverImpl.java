@@ -35,7 +35,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
+import org.seasar.cubby.controller.ClassDetector;
+import org.seasar.cubby.controller.DetectClassProcessor;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.exception.DuplicateRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
@@ -59,7 +62,8 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @since 1.0.0
  */
-public class PathResolverImpl implements PathResolver, Disposable {
+public class PathResolverImpl implements PathResolver, DetectClassProcessor,
+		Disposable {
 
 	/** ロガー */
 	private static final Logger logger = Logger
@@ -75,25 +79,26 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	/** デフォルトの URI パラメータ正規表現 */
 	private static final String DEFAULT_URI_PARAMETER_REGEX = "[a-zA-Z0-9]+";
 
-	/** 初期化フラグ */
+	/** インスタンスが初期化済みであることを示します。 */
 	private boolean initialized;
 
-	/** 命名規約 */
+	/** 命名規約。 */
 	private NamingConvention namingConvention;
 
-	/** ルーティングのコンパレータ */
+	/** ルーティングのコンパレータ。 */
 	private final Comparator<Routing> routingComparator = new RoutingComparator();
 
-	/** 登録されたルーティングのマップ */
+	/** 登録されたルーティングのマップ。 */
 	private final Map<Routing, Routing> routings = new TreeMap<Routing, Routing>(
 			routingComparator);
 
-	/** URI のエンコーディング */
+	/** クラスパスを走査してクラスを検出するクラス。 */
+	private ClassDetector classDetector;
+
+	/** URI のエンコーディング。 */
 	private String uriEncoding = DEFAULT_URI_ENCODING;
 
-	/**
-	 * 手動登録用のプライオリティカウンタ
-	 */
+	/** 手動登録用のプライオリティカウンタ。 */
 	private int priorityCounter = 0;
 
 	/**
@@ -114,6 +119,16 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	/**
+	 * クラスパスを走査してクラスを検出するクラスを設定します。
+	 * 
+	 * @param classDetector
+	 *            クラスパスを走査してクラスを設定します。
+	 */
+	public void setClassDetector(final ClassDetector classDetector) {
+		this.classDetector = classDetector;
+	}
+
+	/**
 	 * URI エンコーディングを設定します。
 	 * 
 	 * @param uriEncoding
@@ -127,13 +142,12 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	 * 初期化します。
 	 */
 	public void initialize() {
-		if (!initialized) {
-			final ClassCollector classCollector = new ActionClassCollector();
-			classCollector.collect();
-
-			DisposableUtil.add(this);
-			initialized = true;
+		if (initialized) {
+			return;
 		}
+		classDetector.detect();
+		DisposableUtil.add(this);
+		initialized = true;
 	}
 
 	/**
@@ -393,6 +407,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		 * <p>
 		 * また、大小関係は以下のようになります。
 		 * <ul>
+		 * <li>優先度(@link {@link Path#priority()})が小さい順</li>
 		 * <li>URI 埋め込みパラメータが少ない順</li>
 		 * <li>正規表現の順(@link {@link String#compareTo(String)})</li>
 		 * </ul>
@@ -439,78 +454,6 @@ public class PathResolverImpl implements PathResolver, Disposable {
 	}
 
 	/**
-	 * クラスを収集します。
-	 * 
-	 * @author baba
-	 */
-	class ActionClassCollector extends ClassCollector {
-
-		/**
-		 * デフォルトコンストラクタ。
-		 */
-		public ActionClassCollector() {
-			super(namingConvention);
-		}
-
-		/**
-		 * 指定されたパッケージとクラス名からクラスを検索し、アクションクラスであれば{@link PathResolverImpl}に登録します。
-		 * 
-		 * @param packageName
-		 *            パッケージ名
-		 * @param shortClassName
-		 *            クラス名
-		 */
-		public void processClass(final String packageName,
-				final String shortClassName) {
-			if (shortClassName.indexOf('$') != -1) {
-				return;
-			}
-			final String className = ClassUtil.concatName(packageName,
-					shortClassName);
-			if (!namingConvention.isTargetClassName(className)) {
-				return;
-			}
-			if (!className.endsWith(namingConvention.getActionSuffix())) {
-				return;
-			}
-			final Class<? extends Action> clazz = classForName(className);
-			if (!CubbyUtils.isActionClass(clazz)) {
-				return;
-			}
-			if (namingConvention.isSkipClass(clazz)) {
-				return;
-			}
-
-			for (final Method method : clazz.getMethods()) {
-				if (CubbyUtils.isActionMethod(method)) {
-					final String actionPath = CubbyUtils.getActionPath(clazz,
-							method);
-					final RequestMethod[] acceptableRequestMethods = CubbyUtils
-							.getAcceptableRequestMethods(clazz, method);
-					for (final RequestMethod requestMethod : acceptableRequestMethods) {
-						add(actionPath, clazz, method, requestMethod, true);
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * クラスを取得します。
-	 * 
-	 * @param <T>
-	 *            型
-	 * @param className
-	 *            クラス名
-	 * @return クラス
-	 */
-	@SuppressWarnings("unchecked")
-	private static <T> Class<T> classForName(final String className) {
-		return ClassUtil.forName(className);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public String reverseLookup(final Class<? extends Action> actionClass,
@@ -548,7 +491,7 @@ public class PathResolverImpl implements PathResolver, Disposable {
 						uriEncoding);
 				redirectPath = StringUtil.replace(redirectPath, matcher
 						.group(1), encodedValue);
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				throw new IORuntimeException(e);
 			}
 		}
@@ -590,6 +533,59 @@ public class PathResolverImpl implements PathResolver, Disposable {
 		}
 		throw new ActionRuntimeException("ECUB0103", new Object[] {
 				actionClass, methodName });
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたパッケージ名、クラス名から導出されるクラスがアクションクラスだった場合はルーティングを登録します。
+	 * </p>
+	 */
+	public void processClass(final String packageName,
+			final String shortClassName) {
+		if (shortClassName.indexOf('$') != -1) {
+			return;
+		}
+		final String className = ClassUtil.concatName(packageName,
+				shortClassName);
+		if (!namingConvention.isTargetClassName(className)) {
+			return;
+		}
+		if (!className.endsWith(namingConvention.getActionSuffix())) {
+			return;
+		}
+		final Class<?> clazz = ClassUtil.forName(className);
+		if (namingConvention.isSkipClass(clazz)) {
+			return;
+		}
+		if (!CubbyUtils.isActionClass(clazz)) {
+			return;
+		}
+		final Class<? extends Action> actionClass = cast(clazz);
+
+		for (final Method method : clazz.getMethods()) {
+			if (CubbyUtils.isActionMethod(method)) {
+				final String actionPath = CubbyUtils.getActionPath(actionClass,
+						method);
+				final RequestMethod[] acceptableRequestMethods = CubbyUtils
+						.getAcceptableRequestMethods(clazz, method);
+				for (final RequestMethod requestMethod : acceptableRequestMethods) {
+					add(actionPath, actionClass, method, requestMethod, true);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 指定されたクラスを <code>Class&lt;? extends Action&gt;</code> にキャストします。
+	 * 
+	 * @param clazz
+	 *            クラス
+	 * @return キャストされたクラス
+	 */
+	@SuppressWarnings("unchecked")
+	private static Class<? extends Action> cast(final Class<?> clazz) {
+		return (Class<? extends Action>) clazz;
 	}
 
 }
