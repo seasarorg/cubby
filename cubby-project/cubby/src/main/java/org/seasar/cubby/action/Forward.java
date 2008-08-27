@@ -20,6 +20,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.util.QueryStringBuilder;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.log.Logger;
@@ -66,6 +68,22 @@ import org.seasar.framework.util.StringUtil;
  * return new Forward(TodoListAction.class, &quot;show&quot;);
  * </pre>
  * 
+ * <p>
+ * 使用例3 : フォワード先をクラスとメソッド名で指定(paramメソッドによるパラメータつき)
+ * 
+ * <pre>
+ * return new Forward(TodoListAction.class, &quot;show&quot;).param(&quot;value1&quot;, &quot;12345&quot;);
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * 使用例3 : フォワード先をクラスとメソッド名で指定(Mapによるパラメータつき)
+ * 
+ * <pre>
+ * Map&lt;String, String[]&gt; parameters = new HashMap();
+ * parameters.put(&quot;value1&quot;, new String[] { &quot;12345&quot; });
+ * return new Forward(TodoListAction.class, &quot;show&quot;, parameters);
+ * </pre>
  * </p>
  * <p>
  * フォワード前には {@link Action#invokePreRenderMethod(Method)} を実行します。 フォワード後には
@@ -85,10 +103,19 @@ public class Forward implements ActionResult {
 			.emptyMap();
 
 	/** フォワード先のパス。 */
-	private final String path;
+	private String path;
 
 	/** ルーティング。 */
 	private final Map<String, Routing> routings;
+
+	/** フォワード先のアクションクラス */
+	private Class<? extends Action> actionClass;
+
+	/** フォワード先のアクションクラスのメソッド名 */
+	private String methodName;
+
+	/** フォワード時のパラメータ */
+	private Map<String, String[]> parameters;
 
 	/**
 	 * インスタンスを生成します。
@@ -114,11 +141,9 @@ public class Forward implements ActionResult {
 	 */
 	public Forward(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final PathResolver pathResolver = (PathResolver) container
-				.getComponent(PathResolver.class);
-		this.path = pathResolver.buildInternalForwardPath(parameters);
+		this.actionClass = actionClass;
+		this.methodName = methodName;
+		this.parameters = parameters;
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class[0]);
 		final Routing routing = new ForwardRouting(actionClass, method);
@@ -156,7 +181,23 @@ public class Forward implements ActionResult {
 	 * @return パス
 	 */
 	public String getPath() {
+		if (isReverseLookupRedirect()) {
+			final S2Container container = SingletonS2ContainerFactory
+			.getContainer();
+			final PathResolver pathResolver = (PathResolver) container
+					.getComponent(PathResolver.class);
+			this.path = pathResolver.buildInternalForwardPath(parameters);
+		}
 		return this.path;
+	}
+
+	
+	/**
+	 * アクションクラスを指定したフォワードかどうかを判定します。
+	 * @return アクションクラスを指定したフォワードならtrue
+	 */
+	private boolean isReverseLookupRedirect() {
+		return this.actionClass != null && this.methodName != null && this.parameters != null;
 	}
 
 	/**
@@ -168,7 +209,7 @@ public class Forward implements ActionResult {
 			throws ServletException, IOException {
 		action.invokePreRenderMethod(method);
 
-		final String forwardPath = calculateForwardPath(this.path, actionClass);
+		final String forwardPath = calculateForwardPath(getPath(), actionClass);
 		if (this.routings != null) {
 			request.setAttribute(ATTR_ROUTINGS, this.routings);
 		}
@@ -197,7 +238,7 @@ public class Forward implements ActionResult {
 	protected String calculateForwardPath(final String path,
 			final Class<? extends Action> actionClass) {
 		final String absolutePath;
-		if (path.startsWith("/")) {
+		if (getPath().startsWith("/")) {
 			absolutePath = path;
 		} else {
 			final String actionDirectory = CubbyUtils
@@ -218,6 +259,63 @@ public class Forward implements ActionResult {
 			}
 		}
 		return absolutePath;
+	}
+
+
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValue パラメータの値。{@code Object#toString()}の結果が値として使用されます。
+	 * @return フォワードする URL
+	 */
+	public Forward param(String paramName, Object paramValue) {
+		return param(paramName, new String[] { paramValue.toString() });
+	}
+	
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValues パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
+	 * @return フォワードする URL
+	 */
+	public Forward param(final String paramName, final Object[] paramValues) {
+		return param(paramName, toStringArray(paramValues));
+	}
+
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValues パラメータの値
+	 * @return フォワードする URL
+	 */
+	public Forward param(final String paramName, final String[] paramValues) {
+		if (isReverseLookupRedirect()) {
+			if (this.parameters == EMPTY_PARAMETERS) {
+				this.parameters = new HashMap<String, String[]>();
+			}
+			this.parameters.put(paramName, paramValues);
+		} else {
+			QueryStringBuilder builder = new QueryStringBuilder(this.path);
+			builder.addParam(paramName, paramValues);
+			this.path = builder.toString();
+		}
+		return this;
+	}
+	
+	/**
+	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。
+	 * <p>
+	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。
+	 * </p>
+	 * @param paramValues {@code Object#toString()}型の配列
+	 * @return {@code Object#toString()}型の配列。
+	 */
+	private String[] toStringArray(final Object[] paramValues) {
+		String[] values = new String[paramValues.length];
+		for (int i = 0; i < paramValues.length; i++) {
+			values[i] = paramValues[i].toString();
+		}
+		return values;
 	}
 
 	/**

@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.util.QueryStringBuilder;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.exception.IORuntimeException;
@@ -62,7 +64,15 @@ import org.seasar.framework.util.StringUtil;
  * 
  * </p>
  * <p>
- * 使用例4 : リダイレクト先をクラスとメソッド名で指定(パラメータつき)
+ * 使用例4 : リダイレクト先をクラスとメソッド名で指定(paramメソッドによるパラメータつき)
+ * 
+ * <pre>
+ * return new Redirect(TodoListAction.class, &quot;show&quot;).param(&quot;value1&quot;, &quot;12345&quot;);
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * 使用例5 : リダイレクト先をクラスとメソッド名で指定(Mapによるパラメータつき)
  * 
  * <pre>
  * Map&lt;String, String[]&gt; parameters = new HashMap();
@@ -95,13 +105,22 @@ public class Redirect implements ActionResult {
 			.emptyMap();
 
 	/** リダイレクト先のパス。 */
-	private final String path;
+	private String path;
 
 	/** リダイレクト先のプロトコル。 */
 	private final String protocol;
 
 	/** リダイレクト先のポート。 */
 	private final int port;
+
+	/** リダイレクト先のアクションクラス */
+	private Class<? extends Action> actionClass;
+
+	/** リダイレクト先のアクションクラスのメソッド名 */
+	private String methodName;
+
+	/** リダイレクト時のパラメータ */
+	private Map<String, String[]> parameters;
 
 	/**
 	 * インスタンスを生成します。
@@ -231,13 +250,9 @@ public class Redirect implements ActionResult {
 	public Redirect(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters,
 			final String protocol, final int port) {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final PathResolver pathResolver = (PathResolver) container
-				.getComponent(PathResolver.class);
-		final String redirectPath = pathResolver.reverseLookup(actionClass,
-				methodName, parameters);
-		this.path = redirectPath;
+		this.actionClass = actionClass;
+		this.methodName = methodName;
+		this.parameters = parameters;
 		this.protocol = protocol;
 		this.port = port;
 	}
@@ -248,7 +263,24 @@ public class Redirect implements ActionResult {
 	 * @return パス
 	 */
 	public String getPath() {
+		if (isReverseLookupRedirect()) {
+			final S2Container container = SingletonS2ContainerFactory
+			.getContainer();
+			final PathResolver pathResolver = (PathResolver) container
+			.getComponent(PathResolver.class);
+			final String redirectPath = pathResolver.reverseLookup(actionClass,
+			methodName, parameters);
+			this.path = redirectPath;
+		}
 		return this.path;
+	}
+	
+	/**
+	 * アクションクラスを指定したリダイレクトかどうかを判定します。
+	 * @return アクションクラスを指定したリダイレクトならtrue
+	 */
+	private boolean isReverseLookupRedirect() {
+		return this.actionClass != null && this.methodName != null && this.parameters != null;
 	}
 
 	/**
@@ -258,7 +290,7 @@ public class Redirect implements ActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
-		final String redirectURL = calculateRedirectURL(this.path, actionClass,
+		final String redirectURL = calculateRedirectURL(getPath(), actionClass,
 				request);
 		final String encodedRedirectURL = encodeURL(redirectURL, response);
 		if (logger.isDebugEnabled()) {
@@ -388,14 +420,67 @@ public class Redirect implements ActionResult {
 	 */
 	public ActionResult noEncodeURL() {
 		return new Redirect(path, protocol, port) {
-
 			@Override
 			protected String encodeURL(final String url,
 					final HttpServletResponse response) {
 				return url;
 			}
-
 		};
 	}
+	
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValue パラメータの値。{@code Object#toString()}の結果が値として使用されます。
+	 * @return リダイレクトする URL
+	 */
+	public Redirect param(String paramName, Object paramValue) {
+		return param(paramName, new String[] { paramValue.toString() });
+	}
+	
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValues パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
+	 * @return リダイレクトする URL
+	 */
+	public Redirect param(final String paramName, final Object[] paramValues) {
+		return param(paramName, toStringArray(paramValues));
+	}
 
+	/**
+	 * パラメータを追加します。
+	 * @param paramName パラメータ名
+	 * @param paramValues パラメータの値
+	 * @return リダイレクトする URL
+	 */
+	public Redirect param(final String paramName, final String[] paramValues) {
+		if (isReverseLookupRedirect()) {
+			if (this.parameters == EMPTY_PARAMETERS) {
+				this.parameters = new HashMap<String, String[]>();
+			}
+			this.parameters.put(paramName, paramValues);
+		} else {
+			QueryStringBuilder builder = new QueryStringBuilder(this.path);
+			builder.addParam(paramName, paramValues);
+			this.path = builder.toString();
+		}
+		return this;
+	}
+	
+	/**
+	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。
+	 * <p>
+	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。
+	 * </p>
+	 * @param paramValues {@code Object#toString()}型の配列
+	 * @return {@code Object#toString()}型の配列。
+	 */
+	private String[] toStringArray(final Object[] paramValues) {
+		String[] values = new String[paramValues.length];
+		for (int i = 0; i < paramValues.length; i++) {
+			values[i] = paramValues[i].toString();
+		}
+		return values;
+	}
 }

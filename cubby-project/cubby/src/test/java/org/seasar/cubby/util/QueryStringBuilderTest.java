@@ -27,4 +27,19 @@ public class QueryStringBuilderTest extends TestCase {
 		assertEquals("p1=v1&p2=&p3=v2&p3=v3", query.toString());
 	}
 		
+	public void testToStringWithBaseUrl() throws Exception {		
+		QueryStringBuilder query = new QueryStringBuilder("basePath");
+		query.addParam("p1", "v1");
+		query.addParam("p2", null);
+		query.addParam("p3", new String[] {"v2", "v3"});
+		assertEquals("basePath?p1=v1&p2=&p3=v2&p3=v3", query.toString());
+	}
+
+	public void testToStringWithBaseUrlAndParams() throws Exception {		
+		QueryStringBuilder query = new QueryStringBuilder("basePath?key1=1");
+		query.addParam("p1", "v1");
+		query.addParam("p2", null);
+		query.addParam("p3", new String[] {"v2", "v3"});
+		assertEquals("basePath?key1=1&p1=v1&p2=&p3=v2&p3=v3", query.toString());
+	}
 }
