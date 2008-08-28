@@ -35,21 +35,32 @@
 </pre>
 </body>
 <script type="text/javascript">
-function loadSource(currentElem, path) {
-	Element.getElementsByClassName('paths', 'selected').each(function(elem, index) {
-		Element.removeClassName(elem, 'selected');
-	});
-	Element.addClassName(currentElem, 'selected');
-	var myAjax = new Ajax.Request(
-		'getSource', 
-		{
-			method: 'get', 
-			parameters: { path: path},
-			onComplete: function(req) {
-				$('code').innerHTML = req.responseText.escapeHTML();
+	function loadSource(currentElem, path) {
+		Element.getElementsByClassName('paths', 'selected').each(
+				function(elem, index) {
+					Element.removeClassName(elem, 'selected');
+				});
+		Element.addClassName(currentElem, 'selected');
+		var myAjax = new Ajax.Request('getSource', {
+			method :'get',
+			parameters : {
+				path :path
+			},
+			onComplete : function(req) {
+				var sourceCode = req.responseText;
+				if (Prototype.Browser.IE) {
+					sourceCode = sourceCode.replace(/\x0D\x0A|\x0D|\x0A/g,
+							'\n\r');
+				} else {
+					sourceCode = sourceCode
+							.replace(/\x0D\x0A|\x0D|\x0A/g, '\n');
+				}
+				var code = $('code');
+				code.replaceChild(document.createTextNode(sourceCode),
+						code.firstChild);
 				prettyPrint();
 			}
-		});	
-}
+		});
+	}
 </script>
 </html>
