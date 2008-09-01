@@ -17,7 +17,9 @@
 
 <c:import url="/import/errorList.jsp" />
 
-<c:import url="/import/entries.jsp" />
+<c:import url="/import/entries.jsp">
+	<c:param name="mypage" value="true" />
+</c:import>
 
 </div>
 

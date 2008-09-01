@@ -15,14 +15,18 @@
 <div class="box">
 <c:import url="/import/errorList.jsp" />
 
+<%--
 <t:form action="${contextPath}/${account.name}/entry/add?r=${r}" method="post" value="${action}">
 	<t:textarea name="text" id="entryArea"></t:textarea>
 	<img src="${contextPath}/image/smiley/regular_smile.gif" alt="絵文字一覧の表示" title="絵文字一覧の表示" id="changeSmileyPanelButton" class="toggleButtonOff" />
 	<input type="submit" value="送信" class="buttonS" />
 	<div id="smileyInputPanel" style="display:none;"></div>
 </t:form>
+--%>
 
-<c:import url="/import/entries.jsp" />
+<c:import url="/import/entries.jsp">
+	<c:param name="mypage" value="true" />
+</c:import>
 </div>
 
 </div>

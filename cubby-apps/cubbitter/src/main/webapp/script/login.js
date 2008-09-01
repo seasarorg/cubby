@@ -57,9 +57,9 @@ function showLoginErrorMessages(messages) {
 		messageList.removeChild(messageList.firstChild);
 	}
 	messages.each( function(message) {
-		var element = new Element('li', {
-			class :'loginErrorMessage'
-		}).update(message);
+		var element = new Element('li');
+		element.addClassName('loginErrorMessage');
+		element.update(message);
 		messageList.insert(element);
 	});
 

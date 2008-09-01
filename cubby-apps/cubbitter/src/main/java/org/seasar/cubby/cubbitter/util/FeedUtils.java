@@ -1,6 +1,7 @@
 package org.seasar.cubby.cubbitter.util;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class FeedUtils {
 		SyndFeed syndFeed = new SyndFeedImpl();
 		syndFeed.setFeedType(feedType);
 		syndFeed.setTitle(title);
-		syndFeed.setLink("/");
+		syndFeed.setLink(toAbsolutePath(request, "/"));
 		syndFeed.setDescription(description);
 
 		if (entries.size() > 0) {
@@ -72,8 +73,21 @@ public class FeedUtils {
 		SyndContent description = new SyndContentImpl();
 		description.setValue(content);
 		syndEntry.setDescription(description);
-		syndEntry.setLink(request.getContextPath() + "/entry/" + entry.getId());
+		syndEntry.setLink(toAbsolutePath(request, "/entry/" + entry.getId()));
 		return syndEntry;
+	}
+
+	private static String toAbsolutePath(HttpServletRequest request, String path) {
+		try {
+			final URL currentURL = new URL(request.getRequestURL().toString());
+			final URL redirectURL = new URL(currentURL.getProtocol(),
+					currentURL.getHost(), currentURL.getPort(), request
+							.getContextPath()
+							+ path);
+			return redirectURL.toExternalForm();
+		} catch (IOException e) {
+			throw new IllegalArgumentException(path);
+		}
 	}
 
 }

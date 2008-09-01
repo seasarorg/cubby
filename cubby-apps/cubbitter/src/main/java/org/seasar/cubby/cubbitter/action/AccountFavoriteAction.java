@@ -42,10 +42,11 @@ public class AccountFavoriteAction extends AbstractAccountAction {
 
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
-		long count = entryService.getFavoritesCountByAccount(account);
+		long count = entryService.getFavoritesCountByAccount(account,
+				loginAccount);
 		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
-		entries = entryService.findFavoritesByAccount(loginAccount, pager
-				.getFirstResult(), pager.getMaxResults());
+		entries = entryService.findFavoritesByAccount(account, loginAccount,
+				pager.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/favorite/index.jsp");
 	}
 
