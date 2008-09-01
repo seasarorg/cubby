@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 
 <c:import url="/import/htmlHeader.jsp">
-	<c:param name="title" value="Comment" />
+	<c:param name="title" value="${entry.account.name}: ${entry.text}" />
 	<c:param name="cssFiles" value="comment" />
 </c:import>
 <body>
@@ -38,7 +38,7 @@
 <div class="round balloon3">&nbsp;</div>
 <div class="round balloon4">&nbsp;</div>
 <div class="member">
-	<a href="${contextPath}/member/${entry.account.name}">
+	<a href="${contextPath}/${entry.account.name}/">
 	<img src="${contextPath}/${entry.account.name}/large.jpg" class="iconL" />
 	${entry.account.fullName}</a>
 </div>

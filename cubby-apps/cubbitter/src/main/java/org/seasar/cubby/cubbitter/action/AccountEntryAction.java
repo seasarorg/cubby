@@ -4,9 +4,11 @@ import static org.seasar.cubby.cubbitter.util.SendErrors.NOT_FOUND;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
@@ -18,6 +20,8 @@ import org.seasar.cubby.cubbitter.entity.Entry;
 import org.seasar.cubby.cubbitter.service.EntryService;
 import org.seasar.cubby.cubbitter.util.Pager;
 import org.seasar.cubby.util.Messages;
+import org.seasar.cubby.validator.ValidationException;
+import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
@@ -45,26 +49,40 @@ public class AccountEntryAction extends AbstractAccountAction {
 		@Override
 		protected void initialize() {
 			addAll(accountValidationRules);
+			add(RESOURCE, new ValidationRule() {
+
+				public void apply(Map<String, Object[]> params, Object form,
+						ActionErrors errors) throws ValidationException {
+					if (account.isOpen()) {
+						return;
+					}
+					if (loginAccount != null) {
+						if (account.equals(loginAccount)) {
+							return;
+						}
+						if (loginAccount.getFollowings().contains(account)) {
+							return;
+						}
+					}
+					errors.add(Messages.getText("member.msg.noFollowing"));
+					throw new ValidationException();
+				}
+
+			});
 		}
 
 	};
 
-	@Validation(rules = "indexValidationRules")
+	@Validation(rules = "indexValidationRules", errorPage = "/account/entry/index.jsp")
 	public ActionResult index() {
-		long count = entryService.getCountByAccount(account);
+		long count = entryService.getCountByAccount(account, loginAccount);
 		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
-		entries = entryService.findByAccount(account, pager.getFirstResult(),
-				pager.getMaxResults());
-		if (!account.isOpen() && !account.equals(loginAccount)) {
-			if (loginAccount == null
-					|| !loginAccount.getFollowings().contains(account)) {
-				notice(Messages.getText("member.msg.noFollowing"));
-			}
-		}
+		entries = entryService.findByAccount(account, loginAccount, pager
+				.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/entry/index.jsp");
 	}
 
-	public ValidationRules entryValidation = new AbstractValidationRules() {
+	public ValidationRules addValidation = new AbstractValidationRules() {
 		@Override
 		public void initialize() {
 			addAll(accountValidationRules);
@@ -73,7 +91,7 @@ public class AccountEntryAction extends AbstractAccountAction {
 		}
 	};
 
-	@Validation(rules = "entryValidation", errorPage = "index.jsp")
+	@Validation(rules = "addValidation", errorPage = "index.jsp")
 	public ActionResult add() {
 		text = text.trim();
 		if (text.length() > 0) {

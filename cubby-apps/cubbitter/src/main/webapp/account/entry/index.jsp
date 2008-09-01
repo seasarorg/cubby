@@ -27,7 +27,16 @@
 
 <c:import url="/import/errorList.jsp" />
 
-<c:import url="/import/entries.jsp" />
+<c:choose>
+	<c:when test="${account == loginAccount}">
+		<c:import url="/import/entries.jsp">
+				<c:param name="mypage" value="true" />
+		</c:import>
+	</c:when>
+	<c:otherwise>
+		<c:import url="/import/entries.jsp" />
+	</c:otherwise>
+</c:choose>
 
 </div>
 

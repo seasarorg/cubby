@@ -83,7 +83,9 @@
 					<li>
 						<c:choose>
 							<c:when test="${empty loginAccount}"></c:when>
-							<c:when test="${f:contains(loginAccount.followings, account)}"></c:when>
+							<c:when test="${f:contains(loginAccount.followings, account)}">
+								<a href="${contextPath}/${loginAccount.name}/following/remove/${account.name}?r=${r}" class="action">フォローをやめる</a>
+							</c:when>
 							<c:when test="${f:contains(account.requests, loginAccount)}">
 								<a href="${contextPath}/${loginAccount.name}/following/remove/${account.name}?r=${r}" class="action">フォロー要求を解除</a>
 							</c:when>

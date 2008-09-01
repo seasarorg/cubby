@@ -6,6 +6,7 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubbitter</artifactId>
   <packaging>war</packaging>
+  <name>Cubbitter</name>
   <version>1.1.1-SNAPSHOT</version>
   <build>
     <finalName>cubbitter</finalName>
