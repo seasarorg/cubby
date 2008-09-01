@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+	<package>org.seasar.cubby.cubbitter.entity</package>
+	<entity class="Entry">
+		<named-query name="findPublic">
+			<query><![CDATA[
+				SELECT e FROM Entry AS e
+				WHERE e.account.open = TRUE
+				ORDER BY e.post DESC
+			]]></query>
+		</named-query>
+		<named-query name="getPublicCount">
+			<query><![CDATA[
+				SELECT COUNT(*) FROM Entry AS e
+				WHERE e.account.open = TRUE
+			]]></query>
+		</named-query>
+		<named-query name="findByAccount">
+			<query><![CDATA[
+				SELECT e FROM Entry AS e
+				WHERE e.account = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+				ORDER BY e.post DESC
+			]]></query>
+		</named-query>
+		<named-query name="getCountByAccount">
+			<query><![CDATA[
+				SELECT COUNT(*) FROM Entry AS e
+				WHERE e.account = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+			]]></query>
+		</named-query>
+		<named-query name="findFriendsByAccount">
+			<query><![CDATA[
+				SELECT e FROM Entry AS e
+				WHERE (e.account = :account
+					OR e.account.id IN (
+						SELECT af.id FROM Account AS a INNER JOIN a.followings AS af
+						WHERE a = :account
+					)
+				)
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+				ORDER BY e.post DESC
+			]]></query>
+		</named-query>
+		<named-query name="getFriendsCountByAccount">
+			<query><![CDATA[
+				SELECT COUNT(*) FROM Entry AS e
+				WHERE (e.account = :account
+					OR e.account.id IN (
+						SELECT af.id FROM Account AS a INNER JOIN a.followings AS af
+						WHERE a = :account
+					)
+				)
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+			]]></query>
+		</named-query>
+		<named-query name="findFavoritesByAccount">
+			<query><![CDATA[
+				SELECT e FROM Account AS a INNER JOIN a.favorites AS e
+				WHERE a = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+				ORDER BY e.post DESC
+			]]></query>
+		</named-query>
+		<named-query name="getFavoritesCountByAccount">
+			<query><![CDATA[
+				SELECT COUNT(*) FROM Account AS a INNER JOIN a.favorites AS e
+				WHERE a = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+			]]></query>
+		</named-query>
+		<named-query name="findRepliesByAccount">
+			<query><![CDATA[
+				SELECT e FROM Account AS a INNER JOIN a.replies AS e
+				WHERE a = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+				ORDER BY e.post DESC
+			]]></query>
+		</named-query>
+		<named-query name="getRepliesCountByAccount">
+			<query><![CDATA[
+				SELECT COUNT(*) FROM Account AS a INNER JOIN a.replies AS e
+				WHERE a = :account
+				AND (e.account = :loginAccount
+					OR e.account.open = TRUE
+					OR e.account.id IN (
+						SELECT laf.id FROM Account AS la INNER JOIN la.followings AS laf
+						WHERE la = :loginAccount
+					)
+				)
+			]]></query>
+		</named-query>
+	</entity>
+</entity-mappings>

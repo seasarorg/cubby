@@ -98,8 +98,8 @@ public class AccountEntryFeedAction extends AbstractAccountAction {
 					.getName());
 			String description = Messages.getText("feed.account.description",
 					account.getFullName());
-			List<Entry> entries = entryService.findByAccount(account, 0,
-					Constants.FEEDS_MAX_RESULT);
+			List<Entry> entries = entryService.findByAccount(account,
+					loginAccount, 0, Constants.FEEDS_MAX_RESULT);
 			writeEntries(title, description, entries);
 		}
 

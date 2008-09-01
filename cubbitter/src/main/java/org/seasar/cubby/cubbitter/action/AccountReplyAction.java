@@ -37,10 +37,11 @@ public class AccountReplyAction extends AbstractAccountAction {
 
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
-		long count = entryService.getRepliesCountByAccount(account);
+		long count = entryService.getRepliesCountByAccount(account,
+				loginAccount);
 		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
-		entries = entryService.findRepliesByAccount(account, pager
-				.getFirstResult(), pager.getMaxResults());
+		entries = entryService.findRepliesByAccount(account, loginAccount,
+				pager.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/reply/index.jsp");
 	}
 }

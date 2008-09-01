@@ -49,22 +49,25 @@
 			<tr><th>紹介</th><td>${f:out(account.biography)}</td></tr>
 		</c:if>
 		<tr>
-			<th>最新</th>
-			<c:choose>
-				<%-- 非公開で自分のリストになければコメントは見せない --%>
-				<c:when test="${account.open == false && f:contains(loginAccount.followings, account)}">
-					<td><span class="time">${messages[member.msg.noFollowing]}</span></td>
-				</c:when>
-				<%-- コメントがない場合 --%>
-				<c:when test="${empty account.entries}">
-					<td><span class="comment">${messages[member.msg.noComment]}</span></td>
-				</c:when>
-				<c:otherwise>
-					<c:forEach var="entry" items="${account.entries}" end="0">
-						<td><span class="comment">${f:out(entry.text)}</span>&nbsp;<span class="time">${entry.post}</span></td>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
+			<th scope="col">最新</th>
+			<td>
+				<c:choose>
+					<c:when test="${account != loginAccount || (!account.open && !f:contains(loginAccount.followings, account))}">
+						<span class="time">${messages["member.msg.noFollowing"]}</span>
+					</c:when>
+					<c:when test="${empty account.entries}">
+						<span class="comment">${messages["member.msg.noComment"]}</span>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="entry" items="${account.entries}" end="0">
+							<span class="comment">${f:out(entry.text)}</span>
+							<span class="time">
+								<fmt:formatDate value="${entry.post}" pattern="yyyy/MM/dd(E) HH:mm:ss" />
+							</span>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</td>
 		</tr>
 	</table>
 </td>

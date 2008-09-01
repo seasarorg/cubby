@@ -63,8 +63,8 @@ public class AccountRequestAction extends AbstractAccountAction {
 		if (account.getRequests().size() > 0) {
 			return restore();
 		} else {
-			return new Redirect(AccountAction.class, "index").param("account",
-					account.getName());
+			return new Redirect(AccountAction.class).param("account", account
+					.getName());
 		}
 	}
 

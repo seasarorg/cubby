@@ -16,12 +16,12 @@ public interface AccountDao extends GenericDao<Account, Long> {
 	Account findByNameAndPassword(@ParameterName("name") String name,
 			@ParameterName("password") String password);
 
-	@QueryName("Account.findByKeyword")
+	@QueryName("findByKeyword")
 	List<Account> findByKeyword(@ParameterName("keyword") String keyword,
 			@FirstResult @ParameterName("firstResult") Integer firstResult,
 			@MaxResults @ParameterName("maxResults") Integer maxResults);
 
-	@QueryName("Account.getCountByKeyword")
+	@QueryName("getCountByKeyword")
 	long getCountByKeyword(@ParameterName("keyword") String string);
 
 }

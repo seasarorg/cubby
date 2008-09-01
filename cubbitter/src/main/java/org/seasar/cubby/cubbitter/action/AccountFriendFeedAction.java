@@ -94,8 +94,8 @@ public class AccountFriendFeedAction extends AbstractAccountAction {
 			String title = Messages.getText("feed.friend.title");
 			String description = Messages.getText("feed.friend.description",
 					account.getFullName());
-			List<Entry> entries = entryService.findFriendsByAccount(account, 0,
-					Constants.FEEDS_MAX_RESULT);
+			List<Entry> entries = entryService.findFriendsByAccount(
+					loginAccount, account, 0, Constants.FEEDS_MAX_RESULT);
 			writeEntries(title, description, entries);
 		}
 

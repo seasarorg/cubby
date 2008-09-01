@@ -1,6 +1,5 @@
 package org.seasar.cubby.cubbitter.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,65 +30,57 @@ public class EntryService {
 	}
 
 	public List<Entry> findPublic(int firstResult, int maxResults) {
-		return entryDao.findByOpen(true, firstResult, maxResults);
+		return entryDao.findPublic(firstResult, maxResults);
 	}
 
 	public long getPublicCount() {
-		return entryDao.getCountByOpen(true);
+		return entryDao.getPublicCount();
 	}
 
-	public List<Entry> findByAccount(Account account, int firstResult,
-			int maxResults) {
-		return entryDao.findByAccount(account, firstResult, maxResults);
+	public List<Entry> findByAccount(Account account, Account loginAccount,
+			int firstResult, int maxResults) {
+		return entryDao.findByAccount(account, loginAccount, firstResult,
+				maxResults);
 	}
 
-	public long getCountByAccount(Account account) {
-		return entryDao.getCountByAccount(account);
+	public long getCountByAccount(Account account, Account loginAccount) {
+		return entryDao.getCountByAccount(account, loginAccount);
 	}
 
-	public List<Entry> findFriendsByAccount(Account account, int firstResult,
-			int maxResults) {
+	public List<Entry> findFriendsByAccount(Account loginAccount,
+			Account account, int firstResult, int maxResults) {
 		if (account == null) {
 			return Collections.emptyList();
 		}
-		List<Account> friends = getFriends(account);
-		List<Entry> entries = entryDao.findByAccounts(friends, firstResult,
-				maxResults);
-		return entries;
+		return entryDao.findFriendsByAccount(account, loginAccount,
+				firstResult, maxResults);
 	}
 
-	public long getFriendsCountByAccount(Account account) {
+	public long getFriendsCountByAccount(Account loginAccount, Account account) {
 		if (account == null) {
 			return 0L;
 		}
-		List<Account> friends = getFriends(account);
-		return entryDao.getCountByAccounts(friends);
+		return entryDao.getFriendsCountByAccount(account, loginAccount);
 	}
 
-	private List<Account> getFriends(Account account) {
-		List<Account> entryAccounts = new ArrayList<Account>();
-		entryAccounts.add(account);
-		entryAccounts.addAll(account.getFollowings());
-		return entryAccounts;
+	public List<Entry> findFavoritesByAccount(Account account,
+			Account loginAccount, int firstResult, int maxResults) {
+		return entryDao.findFavoritesByAccount(account, loginAccount,
+				firstResult, maxResults);
 	}
 
-	public List<Entry> findFavoritesByAccount(Account account, int firstResult,
-			int maxResults) {
-		return entryDao
-				.findFavoritesByAccount(account, firstResult, maxResults);
+	public long getFavoritesCountByAccount(Account account, Account loginAccount) {
+		return entryDao.getFavoritesCountByAccount(account, loginAccount);
 	}
 
-	public long getFavoritesCountByAccount(Account account) {
-		return entryDao.getFavoritesCountByAccount(account);
+	public List<Entry> findRepliesByAccount(Account account,
+			Account loginAccount, int firstResult, int maxResults) {
+		return entryDao.findRepliesByAccount(account, loginAccount,
+				firstResult, maxResults);
 	}
 
-	public List<Entry> findRepliesByAccount(Account account, int firstResult,
-			int maxResults) {
-		return entryDao.findRepliesByAccount(account, firstResult, maxResults);
-	}
-
-	public long getRepliesCountByAccount(Account account) {
-		return entryDao.getRepliesCountByAccount(account);
+	public long getRepliesCountByAccount(Account account, Account loginAccount) {
+		return entryDao.getRepliesCountByAccount(account, loginAccount);
 	}
 
 }

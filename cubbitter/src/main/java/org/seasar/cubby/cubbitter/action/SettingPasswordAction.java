@@ -53,8 +53,8 @@ public class SettingPasswordAction extends AbstractAction {
 	public ActionResult update() {
 		loginAccount.setPassword(password);
 
-		flash.put("notice", Messages.getText("setting.msg.updateSuccess"));
-		return new Redirect(SettingPasswordAction.class, "index");
+		notice(Messages.getText("setting.msg.updateSuccess"));
+		return new Redirect(SettingPasswordAction.class);
 	}
 
 }

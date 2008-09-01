@@ -18,7 +18,7 @@
 		</c:when>
 		<c:otherwise>
 			<ul id="message">
-				<c:forEach var="following" varStatus="s" items="${account.followings}">
+				<c:forEach var="following" items="${account.followings}">
 					<table class="comments">
 						<tr>
 							<td class="icon">
@@ -26,10 +26,9 @@
 									<img src="${contextPath}/${following.name}/medium.jpg" class="iconM" alt="${following.name}" />
 								</a>
 							</td>
-							<td>
+							<td class="comment">
 								<a href="${contextPath}/${following.name}/" class="memberName">${following.name}</a>
-								 / ${f:out(following.fullName)} &nbsp;
-								<a href="${contextPath}/${account.name}/following/remove/${following.name}?r=${r}" class="action">削除</a>
+								 / ${f:out(following.fullName)}
 							</td>
 						</tr>
 					</table>
