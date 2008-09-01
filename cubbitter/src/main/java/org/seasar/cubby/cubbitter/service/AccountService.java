@@ -1,5 +1,7 @@
 package org.seasar.cubby.cubbitter.service;
 
+import static org.seasar.cubby.cubbitter.util.JPQLUtils.escapeLike;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,8 @@ public class AccountService {
 
 	public Map<String, Object> sessionScope;
 
-	public Account login(String name, String password) throws AuthenticationException {
+	public Account login(String name, String password)
+			throws AuthenticationException {
 		try {
 			Account account = accountDao.findByNameAndPassword(name, password);
 			login(account);
@@ -82,7 +85,8 @@ public class AccountService {
 		}
 	}
 
-	public Account findByNameAndPassword(final String name, final String password) {
+	public Account findByNameAndPassword(final String name,
+			final String password) {
 		try {
 			return accountDao.findByNameAndPassword(name, password);
 		} catch (NoResultException e) {
@@ -90,13 +94,14 @@ public class AccountService {
 		}
 	}
 
-	public List<Account> findByKeyword(final String keyword, int firstResult, int maxResults) {
-		return accountDao.findByKeyword("%" + keyword + "%", firstResult,
+	public List<Account> findByKeyword(final String keyword, int firstResult,
+			int maxResults) {
+		return accountDao.findByKeyword(buildKeyword(keyword), firstResult,
 				maxResults);
 	}
 
 	public long getCountByKeyword(final String keyword) {
-		return accountDao.getCountByKeyword("%" + keyword + "%");
+		return accountDao.getCountByKeyword(buildKeyword(keyword));
 	}
 
 	public void persist(Account account) {
@@ -105,6 +110,10 @@ public class AccountService {
 
 	public void remove(Account account) {
 		accountDao.remove(account);
+	}
+
+	private static String buildKeyword(final String keyword) {
+		return "%" + escapeLike(keyword) + "%";
 	}
 
 }

@@ -12,46 +12,53 @@ import org.seasar.kuina.dao.QueryName;
 
 public interface EntryDao extends GenericDao<Entry, Long> {
 
-	@QueryName("Entry.findByOpen")
-	List<Entry> findByOpen(@ParameterName("open") boolean open,
+	@QueryName("findPublic")
+	List<Entry> findPublic(
 			@FirstResult @ParameterName("firstResult") int firstResult,
 			@MaxResults @ParameterName("maxResults") int maxResults);
 
-	@QueryName("Entry.getCountByOpen")
-	long getCountByOpen(@ParameterName("open") boolean open);
+	@QueryName("getPublicCount")
+	long getPublicCount();
 
-	@QueryName("Entry.findByAccounts")
-	List<Entry> findByAccounts(
-			@ParameterName("accounts") List<Account> accounts,
-			@FirstResult @ParameterName("firstResult") int firstResult,
-			@MaxResults @ParameterName("maxResults") int maxResults);
-
-	@QueryName("Entry.getCountByAccounts")
-	long getCountByAccounts(@ParameterName("accounts") List<Account> accounts);
-
-	@QueryName("Entry.findByAccount")
+	@QueryName("findByAccount")
 	List<Entry> findByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount,
 			@FirstResult @ParameterName("firstResult") int firstResult,
 			@MaxResults @ParameterName("maxResults") int maxResults);
 
-	@QueryName("Entry.getCountByAccount")
-	long getCountByAccount(@ParameterName("account") Account account);
+	@QueryName("getCountByAccount")
+	long getCountByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount);
 
-	@QueryName("Entry.findFavoritesByAccount")
+	@QueryName("findFriendsByAccount")
+	List<Entry> findFriendsByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount,
+			@FirstResult @ParameterName("firstResult") int firstResult,
+			@MaxResults @ParameterName("maxResults") int maxResults);
+
+	@QueryName("getFriendsCountByAccount")
+	long getFriendsCountByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount);
+
+	@QueryName("findFavoritesByAccount")
 	List<Entry> findFavoritesByAccount(
 			@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount,
 			@FirstResult @ParameterName("firstResult") int firstResult,
 			@MaxResults @ParameterName("maxResults") int maxResults);
 
-	@QueryName("Entry.getFavoritesCountByAccount")
-	long getFavoritesCountByAccount(@ParameterName("account") Account account);
+	@QueryName("getFavoritesCountByAccount")
+	long getFavoritesCountByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount);
 
-	@QueryName("Entry.findRepliesByAccount")
+	@QueryName("findRepliesByAccount")
 	List<Entry> findRepliesByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount,
 			@FirstResult @ParameterName("firstResult") int firstResult,
 			@MaxResults @ParameterName("maxResults") int maxResults);
 
-	@QueryName("Entry.getRepliesCountByAccount")
-	long getRepliesCountByAccount(@ParameterName("account") Account account);
+	@QueryName("getRepliesCountByAccount")
+	long getRepliesCountByAccount(@ParameterName("account") Account account,
+			@ParameterName("loginAccount") Account loginAccount);
 
 }

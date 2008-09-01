@@ -33,11 +33,11 @@ public class AccountAction extends AbstractAccountAction {
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
 		if (account.equals(loginAccount)) {
-			return new Redirect(AccountFriendAction.class, "index").param(
-					"account", account.getName());
+			return new Redirect(AccountFriendAction.class).param("account",
+					account.getName());
 		} else {
-			return new Redirect(AccountEntryAction.class, "index").param(
-					"account", account.getName());
+			return new Redirect(AccountEntryAction.class).param("account",
+					account.getName());
 		}
 	}
 

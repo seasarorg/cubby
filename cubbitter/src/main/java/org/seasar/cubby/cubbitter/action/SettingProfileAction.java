@@ -92,8 +92,8 @@ public class SettingProfileAction extends AbstractAction {
 	public ActionResult update() {
 		Beans.copy(this, loginAccount).excludesNull().excludesWhitespace()
 				.execute();
-		flash.put("notice", Messages.getText("setting.msg.updateSuccess"));
-		return new Redirect(SettingProfileAction.class, "index");
+		notice(Messages.getText("setting.msg.updateSuccess"));
+		return new Redirect(SettingProfileAction.class);
 	}
 
 	@Path("update")

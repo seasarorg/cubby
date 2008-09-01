@@ -20,7 +20,7 @@
 		</c:when>
 		<c:otherwise>
 			<ul id="message">
-				<c:forEach var="follower" varStatus="s" items="${account.followers}">
+				<c:forEach var="follower" items="${account.followers}">
 					<table class="comments">
 						<tr>
 							<td class="icon">
@@ -31,9 +31,6 @@
 							<td class="comment">
 								<a href="${contextPath}/${follower.name}/" class="memberName">${follower.name}</a>
 								 / ${f:out(follower.fullName)}
-								<c:if test="${f:contains(follower.requests, account)}">
-									&nbsp;<a href="${contextPath}/${account.name}/follower/${follower.name}/add?r=${r}" class="action">承認</a>
-								</c:if>
 							</td>
 						</tr>
 					</table>

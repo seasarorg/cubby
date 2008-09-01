@@ -65,8 +65,8 @@ public class SettingPictureAction extends AbstractAction {
 		}
 		large.setData(ImageUtils.getResizedImageBytes(image, 72));
 
-		flash.put("notice", Messages.getText("setting.msg.updateSuccess"));
-		return new Redirect(SettingPictureAction.class, "index");
+		notice(Messages.getText("setting.msg.updateSuccess"));
+		return new Redirect(SettingPictureAction.class);
 	}
 
 }

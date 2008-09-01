@@ -6,7 +6,7 @@ import org.seasar.cubby.action.Redirect;
 public class SettingAction extends AbstractAction {
 
 	public ActionResult index() {
-		return new Redirect(SettingProfileAction.class, "index");
+		return new Redirect(SettingProfileAction.class);
 	}
 
 }

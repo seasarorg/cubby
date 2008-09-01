@@ -37,10 +37,11 @@ public class AccountFriendAction extends AbstractAccountAction {
 
 	@Validation(rules = "validationRules")
 	public ActionResult index() {
-		long count = entryService.getFriendsCountByAccount(account);
+		long count = entryService.getFriendsCountByAccount(loginAccount,
+				account);
 		pager = new Pager(count, pageNo, Constants.ENTRIES_MAX_RESULT);
-		this.entries = entryService.findFriendsByAccount(account, pager
-				.getFirstResult(), pager.getMaxResults());
+		this.entries = entryService.findFriendsByAccount(loginAccount, account,
+				pager.getFirstResult(), pager.getMaxResults());
 		return new Forward("/account/friends/index.jsp");
 	}
 }
