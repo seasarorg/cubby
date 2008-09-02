@@ -36,10 +36,10 @@ public class ConverterAction extends Action {
 
 	public BookDao bookDao;
 
-	public List<Book> books;
-
 	@RequestParameter
 	public Book book;
+
+	public List<Book> books;
 
 	@Override
 	public void prerender() {
@@ -77,7 +77,7 @@ public class ConverterAction extends Action {
 	};
 
 	@Path("{book,...-..........}")
-	@Validation(rules = "detailValidationRules", errorPage = "index.jsp")
+	@Validation(rules = "detailValidationRules")
 	public ActionResult detail() {
 		return new Forward("index.jsp");
 	}
