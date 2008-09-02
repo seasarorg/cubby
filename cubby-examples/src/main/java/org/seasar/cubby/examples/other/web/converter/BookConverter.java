@@ -18,21 +18,36 @@ package org.seasar.cubby.examples.other.web.converter;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.impl.AbstractConverter;
 
+/**
+ * ISDN を表す文字列と Book を相互変換するコンバータです。
+ */
 public class BookConverter extends AbstractConverter {
 
 	public BookDao bookDao;
 
+	/**
+	 * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
+	 */
 	public Class<?> getObjectType() {
 		return Book.class;
 	}
 
+	/**
+	 * リクエストパラメータ(ここではISBN)を Book へ変換します。
+	 */
 	public Object convertToObject(Object value, Class<?> objectType,
 			ConversionHelper helper) {
-		String isbn13 = String.class.cast(value);
+		if (value == null) {
+			return null;
+		}
+		String isbn13 = value.toString();
 		Book book = bookDao.findByIsbn13(isbn13);
 		return book;
 	}
 
+	/**
+	 * Book から表示用の文字列(ISBN)へ変換します。
+	 */
 	public String convertToString(Object value, ConversionHelper helper) {
 		Book book = Book.class.cast(value);
 		return book.getIsbn13();
