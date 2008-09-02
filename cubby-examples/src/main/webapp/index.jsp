@@ -70,9 +70,17 @@ Cubbyで用意されたJSPカスタムタグ、JSPファンクションの一覧
 &dirs=%2FWEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fcomponents%2FArrayAction.java
 ">ソース表示</a>)
 </dd>
+<dt><a href="converter/">コンバータ</a>(v1.1.0以降)</dt>
+<dd>
+独自に実装したコンバータによってURL埋め込みのパラメータをエンティティ型のアクションのプロパティにバインドするサンプルです。
+(<a href="sourceviewer/?title=Converter
+&dirs=%2Fconverter%2F
+&dirs=%2FWEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fconverter
+">ソース表示</a>)
+</dd>
 <dt><a href="dispatch/">複数ボタンのフォーム(&#64;OnSubmit)</a>(v1.1.0以降)</dt>
 <dd>
-押されたSbumitボタンによって、実行するアクションメソッドを切り替える@OnSubmitの利用サンプルです。
+押されたSubmitボタンによって、実行するアクションメソッドを切り替える@OnSubmitの利用サンプルです。
 (<a href="sourceviewer/?title=@OnSubmit
 &dirs=%2Fdispatch%2F
 &dirs=%2FWEB-INF%2Fsrc%2Fmain%2Fjava%2Forg%2Fseasar%2Fcubby%2Fexamples%2Fother%2Fweb%2Fdispatch
