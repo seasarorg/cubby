@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-03-01
+  2008-09-03
   --------
 
 {目次}
@@ -12,6 +12,8 @@
  *{{{#ファイルアップロード}ファイルアップロード}}
 
  *{{{#共通アクション}共通アクション}}
+
+ *{{{#URL_に埋め込まれたパラメータの検証}URL に埋め込まれたパラメータの検証}}
  
  *{{{#画面部品のインポート}画面部品のインポート}}
 
@@ -98,7 +100,40 @@ private clsss TodoAction extend BaseAction {
   ...
 }
 +------------------------------------------------------+
- 
+
+{URL に埋め込まれたパラメータの検証}
+
+ コンバータを利用することで、リソースを表すエンティティのキー等が埋め込まれた /app/\{employee,[0-9a-zA-Z]\}/bar
+ のような URL を定義したとき、データベースにないリソースが指定された場合に 404(NOT FOUND)
+ を返すような処理が簡潔に書けます。
+
+ ここでは、cubby-examples に含まれるコンバータの例を解説します。
+ ソースコードは cubby-examples のパッケージ org.seasar.cubby.examples.other.web.converter を参照してください。
+
+ * AbstractValidationRules.java
+
+   URL に埋め込まれたリソースの有無は、パラメータの型チェック(DATA_TYPE)以前に実行したいので、
+   DefaultValidationRules を継承して、検証フェーズ RESOURCE を追加しています。
+
+ * Book.java
+
+ * BookDao.java
+
+ * BookConverter.java
+
+   BookDao を利用して、ISBN を表す文字列をキーにテーブルを検索し、Book のインスタンスを返すコンバータです。
+
+ * ConverterAction.java
+
+   /convert/[ISBNを表す文字列] という URL でアクセスできる detail メソッドを持ちます。\
+   Book 型のプロパティ book に @RequestParameter をつけてリクエストパラメータのバインド対象であることを定義しています。
+   通常は Book 型へのコンバータが存在しないので値が設定されないはずですが、ここでは BookConverter を定義しているので、
+   このコンバータによって ISBN -> Book という変換が行われ、該当のデータがテーブルに存在した場合はコンバータが返す Book のインスタンスが
+   プロパティ book に設定されます。存在しない場合はコンバータが null を返すのでプロパティ book には null が設定されます。\
+   その後、バリデーションが行われ、プロパティ book が null の場合は 404 を返します。
+   {{{cubby/apidocs/org/seasar/cubby/validator/validators/RequiredValidator.html}RequiredValidator}}
+   による検証はアクションのプロパティではなくリクエストパラメータに対して行われるので、このようなケースでは有効ではありませんのでご注意ください。
+
 {画面部品のインポート}
 
  Cubby では 共通の画面部品（他のフレームワークではコンポーネントなどと呼ばれます）を何もサポートしませんが、
