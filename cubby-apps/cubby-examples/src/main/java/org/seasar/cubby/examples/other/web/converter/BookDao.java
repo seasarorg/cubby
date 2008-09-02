@@ -13,21 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.examples.other.web;
+package org.seasar.cubby.examples.other.web.converter;
 
-import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Path;
+import java.util.List;
 
-/**
- * Indexのサンプル
- * @author agata
- */
-@Path("/")
-public class IndexAction extends Action {
+import org.seasar.dao.annotation.tiger.Arguments;
+import org.seasar.dao.annotation.tiger.Query;
+import org.seasar.dao.annotation.tiger.S2Dao;
 
-	public ActionResult index() {
-		return new Forward("index.jsp");
-	}
+@S2Dao(bean = Book.class)
+public interface BookDao {
+
+	List<Book> findAll();
+
+	@Arguments("isbn13")
+	@Query("ISBN13 = /*isbn13*/")
+	Book findByIsbn13(String isbn13);
+
 }

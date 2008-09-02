@@ -13,21 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.examples.other.web;
+package org.seasar.cubby.examples.other.web.converter;
 
-import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Path;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * Indexのサンプル
- * @author agata
- */
-@Path("/")
-public class IndexAction extends Action {
+import org.seasar.cubby.validator.DefaultValidationRules;
+import org.seasar.cubby.validator.ValidationPhase;
 
-	public ActionResult index() {
-		return new Forward("index.jsp");
+abstract class AbstractValidationRules extends DefaultValidationRules {
+
+	public static final ValidationPhase RESOURCE = new ValidationPhase();
+
+	private static final List<ValidationPhase> VALIDATION_PHASES = Arrays
+			.asList(new ValidationPhase[] { RESOURCE, DATA_TYPE,
+					DATA_CONSTRAINT });
+
+	@Override
+	public List<ValidationPhase> getValidationPhases() {
+		return VALIDATION_PHASES;
 	}
+
 }
