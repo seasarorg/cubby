@@ -4,7 +4,7 @@
   agata
   baba
   --------
-  2008-08-24
+  2008-09-03
   --------
 
 {目次}
@@ -18,6 +18,8 @@
   *{{{#アクションメソッド}アクションメソッド}}
 
   *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
+
+  *{{{#コンバータ}コンバータ}}
 
   *{{{#ActionResult}ActionResult}}
 
@@ -88,8 +90,75 @@
 
   []
 
-  また、バインドされるプロパティの型によってはコンバータによる型変換を行います。\
+  また、バインドされるプロパティの型によってはコンバータによる型変換を行います。
+
+*{コンバータ}
+
+  コンバータとは、リクエストパラメータをフォームオブジェクトへバインドする際に型変換を行う
+  {{{cubby/apidocs/org/seasar/cubby/converter/Converter.html}Converter}}
+  を実装したクラスです。
+
   標準でサポートしているコンバータは{{{cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html}APIドキュメント}}をご覧下さい。
+
+  また、独自のコンバータを実装することによって、標準ではサポートしていない型へリクエストパラメータをバインドすることができます。
+
+  以下の BookConverter.java は ISBN を表す文字列からデータベースを参照して Book に変換するコンバータです。
+  変換結果は
+
++------------------------------------------------------+
+		:
+	@RequestParameter
+	public Book book;
+		:
++------------------------------------------------------+
+
+  というプロパティにバインドされます。
+
+ <<BookConverter.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.examples.other.web.converter;
+
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.impl.AbstractConverter;
+
+/**
+ * ISDN を表す文字列と Book を相互変換するコンバータです。
+ */
+public class BookConverter extends AbstractConverter {
+
+	public BookDao bookDao;
+
+	/**
+	 * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
+	 */
+	public Class<?> getObjectType() {
+		return Book.class;
+	}
+
+	/**
+	 * リクエストパラメータ(ここではISBN)を Book へ変換します。
+	 */
+	public Object convertToObject(Object value, Class<?> objectType,
+			ConversionHelper helper) {
+		if (value == null) {
+			return null;
+		}
+		String isbn13 = value.toString();
+		Book book = bookDao.findByIsbn13(isbn13);
+		return book;
+	}
+
+	/**
+	 * Book から表示用の文字列(ISBN)へ変換します。
+	 */
+	public String convertToString(Object value, ConversionHelper helper) {
+		Book book = Book.class.cast(value);
+		return book.getIsbn13();
+	}
+
+}
++------------------------------------------------------+
 
 *{ActionResult}
 
