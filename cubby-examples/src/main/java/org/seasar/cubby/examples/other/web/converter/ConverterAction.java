@@ -31,6 +31,7 @@ import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
+import org.seasar.cubby.validator.validators.RequiredValidator;
 
 public class ConverterAction extends Action {
 
@@ -79,6 +80,31 @@ public class ConverterAction extends Action {
 	@Path("{book,...-..........}")
 	@Validation(rules = "detailValidationRules")
 	public ActionResult detail() {
+		return new Forward("index.jsp");
+	}
+
+	public ValidationRules inputValidationRules = new AbstractValidationRules() {
+
+		@Override
+		protected void initialize() {
+			add("book", new RequiredValidator());
+			add(DATA_CONSTRAINT, new ValidationRule() {
+
+				public void apply(Map<String, Object[]> params, Object form,
+						ActionErrors errors) throws ValidationException {
+					ConverterAction action = ConverterAction.class.cast(form);
+					if (action.book == null) {
+						throw new ValidationException("no such book", "book");
+					}
+				}
+
+			});
+		}
+
+	};
+
+	@Validation(rules = "inputValidationRules", errorPage = "index.jsp")
+	public ActionResult input() {
 		return new Forward("index.jsp");
 	}
 
