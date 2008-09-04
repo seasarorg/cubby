@@ -29,11 +29,19 @@
 	</table>
 </c:if>
 
+<p>
 <ul>
 	<c:forEach var="book" items="${books}">
 		<li><a href="${book.isbn13}">${f:out(book.title)}</a></li>
 	</c:forEach>
 </ul>
 <a href="978-4798006284">誤ったリンク(データベースに該当データがないので、バリデータによって 404 NOT FOUND を返します)</a>
+</p>
+
+<p>
+<t:form value="${action}" action="input" method="get">
+	<label for="book">フォームの値へ復元 ISBN:</label><t:input name="book" type="text" />
+</t:form>
+</p>
 </body>
 </html>
