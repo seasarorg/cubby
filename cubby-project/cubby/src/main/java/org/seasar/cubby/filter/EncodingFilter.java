@@ -80,7 +80,7 @@ public class EncodingFilter implements Filter {
 			+ ".FILTERED";
 
 	/** エンコーディングのキー。 */
-	public static final String ENCODING = "encoding";
+	private static final String ENCODING = "encoding";
 
 	/** 強制エンコーディング設定のキー。 */
 	private static final String FORCE_ENCODING = "forceEncoding";
