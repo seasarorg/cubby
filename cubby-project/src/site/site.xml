@@ -102,6 +102,7 @@
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 				<item name="管理ツールの利用" href="/tips.html#管理ツールの利用" />
 			</item>
+			<item name="よくある質問(FAQ)" href="/faq.html" />
 			<item name="移行ガイド" href="/migration.html" />
 			<item name="リンク集" href="/link.html" collapse="true">
 				<item name="Servlet/JSP" href="/link.html#ServletJSP" />
