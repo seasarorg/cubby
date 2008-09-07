@@ -45,20 +45,20 @@
 	</listener>
 
 	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.seasar.extension.filter.EncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-	</filter>
-
-	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
 		<init-param>
 			<param-name>statusCode</param-name>
 			<param-value>404</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.seasar.cubby.filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
 
@@ -103,16 +103,16 @@
 	</filter>
 
 	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
- 
-	<filter-mapping>
 		<filter-name>sendErrorFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+ 
    	<filter-mapping>
 		<filter-name>s2Filter</filter-name>
 		<url-pattern>/*</url-pattern>
