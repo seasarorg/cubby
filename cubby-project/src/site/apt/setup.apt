@@ -3,7 +3,7 @@
   --------
   baba
   --------
-  2008-05-31
+  2008-09-07
   --------
 
 {目次}
@@ -122,7 +122,7 @@ package: com.example.foo.barapp
    いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。\
    s2container などのライブラリのバージョン、S2Dao/S2JDBCを使用するかどうかの設定を変更する場合はここで N を選択して再度設定を入力してください。
    再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）\
-   デフォルトでは上記のように S2JDBC を使用、 S2Dao を使用しない設定になっています。\
+   デフォルトでは上記のように S2JDBC を使用、 S2Dao を使用しない設定になっています。
 
 *{Tomcat の起動}
 
@@ -299,7 +299,7 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
  web.xml にサーブレットフィルタとフィルタマッピングを追加します。
  登録する際は以下の順序で登録してください。
 
- [[1]]SendErrorFilter (任意)
+ [[1]]{{{cubby/apidocs/org/seasar/cubby/filter/SendErrorFilter}SendErrorFilter}} (任意)
 
       \*.jsp ファイルなど、直接アクセスされたくないファイルへのアクセスを制御するフィルターです。\
       この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。
@@ -323,7 +323,29 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
     </filter-mapping>
 +------------------------------------------------------+
 
- [[2]]S2ContainerFilter (必須)
+ [[2]]{{{cubby/apidocs/org/seasar/cubby/filter/EncodingFilter}EncodingFilter}} (任意)
+
+      リクエストのエンコーディングを設定するためのフィルタです。
+
++------------------------------------------------------+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.seasar.cubby.filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
++------------------------------------------------------+
+
+ [[3]]S2ContainerFilter (必須)
 
       Cubby 内部では{{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
 
@@ -344,7 +366,7 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
     </filter-mapping>
 +------------------------------------------------------+
 
- [[3]]HotdeployFilter
+ [[4]]HotdeployFilter
 
       {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy}Hot deploy}} を使用する場合は HotdeployFilter を定義します。
 
@@ -365,7 +387,7 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
     </filter-mapping>
 +------------------------------------------------------+
 
- [[4]]RequestRoutingFilter (必須)
+ [[5]]{{{cubby/apidocs/org/seasar/cubby/filter/RequestRoutingFilter}RequestRoutingFilter}} (必須)
 
       リクエストされた URL から、以下で述べる RequestRoutingFilter が「どのアクションメソッドを処理するか」という情報を抽出し、その情報からリクエストを組み立てて FORWARD します。
       このマッピングはアクションクラスに @Path アノテーションをつけることで変更できます。
@@ -393,18 +415,11 @@ CubbyとSeasar2のバージョンの推奨の組み合わせ
     </filter-mapping>
 +------------------------------------------------------+
 
- [[5]]CubbyFilter (必須)
+ [[6]]{{{cubby/apidocs/org/seasar/cubby/filter/CubbyFilter}CubbyFilter}} (必須)
 
       Cubby の主な処理を行うフィルタです。
-      リクエストされた URL をパースしてアクションメソッドを起動します。
-
-      たとえば、以下のURLならば
-      > http://(ホスト)/(コンテキストパス)/aaa/bbb/ccc
-      *アクションクラスのコンポーネント名 : aaa_bbb
-      *メソッド名 : ccc
-      となります。
-
-      対象のコンポーネントが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
+      フォワードされたリクエストからアクションメソッドを起動します。
+      対象のアクションが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
 
 +------------------------------------------------------+
     <filter>
