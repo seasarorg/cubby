@@ -26,7 +26,6 @@ import java.util.Map;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 入力検証を保持するクラスです。
@@ -37,11 +36,17 @@ import org.seasar.framework.util.StringUtil;
  */
 public abstract class DefaultValidationRules implements ValidationRules {
 
+	/** リソースを検証するフェーズ。 */
+	public static final ValidationPhase RESOURCE = new ValidationPhase();
+
 	/** データ型を検証するフェーズ。 */
 	public static final ValidationPhase DATA_TYPE = new ValidationPhase();
 
 	/** データ上の制約を検証するフェーズ。 */
 	public static final ValidationPhase DATA_CONSTRAINT = new ValidationPhase();
+
+	/** 空の {@link ValidationRule} のリスト。 */
+	private static final List<ValidationRule> EMPTY_VALIDATION_RULES = Collections.emptyList();
 
 	/** 入力検証のフェーズとそれに対応する入力検証ルールのリスト。 */
 	private final Map<ValidationPhase, List<ValidationRule>> phaseValidationRulesMap = new HashMap<ValidationPhase, List<ValidationRule>>();
@@ -51,7 +56,8 @@ public abstract class DefaultValidationRules implements ValidationRules {
 
 	/** 入力検証のフェーズ。 */
 	private static final List<ValidationPhase> VALIDATION_PHASES = Arrays
-			.asList(new ValidationPhase[] { DATA_TYPE, DATA_CONSTRAINT });
+			.asList(new ValidationPhase[] { RESOURCE, DATA_TYPE,
+					DATA_CONSTRAINT });
 
 	/**
 	 * メッセージキーのプリフィックスなしのコンストラクタ。
@@ -124,20 +130,20 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	}
 
 	/**
-	 * 項目名のメッセージキーを指定して、最初のフェーズに入力検証を追加します。
+	 * 項目名のリソースキーを指定して、最初のフェーズに入力検証を追加します。
 	 * 
 	 * @param paramName
 	 *            パラメータ名
-	 * @param paramNameMessageKey
+	 * @param paramNameResourceKey
 	 *            項目名のメッセージキー
 	 * @param validators
 	 *            入力検証
 	 */
 	protected void add(final String paramName,
-			final String paramNameMessageKey, final Validator... validators) {
-		this.add(getValidationPhases().get(0),
-				new FieldValidationRule(paramName,
-						makePropertyNameKey(paramNameMessageKey), validators));
+			final String paramNameResourceKey, final Validator... validators) {
+		this.add(getValidationPhases().get(0), new FieldValidationRule(
+				paramName, addResourceKeyPrefixTo(paramNameResourceKey),
+				validators));
 	}
 
 	/**
@@ -158,20 +164,18 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	}
 
 	/**
-	 * メッセージキーを作成します。
-	 * <p>
-	 * キーのプリフィックスが指定されていた場合、メッセージキーに付加します。
-	 * </p>
+	 * 指定されたリソースキーにこのオブジェクトに設定されているプレフィックスを追加します。
 	 * 
-	 * @param messageKey
-	 *            メッセージキー
-	 * @return 作成後のメッセージキー
+	 * @param resourceKey
+	 *            リソースキー
+	 * @return プレフィックスが付加されたリソースキー
+	 * @since 1.1.1
 	 */
-	private String makePropertyNameKey(final String messageKey) {
+	protected String addResourceKeyPrefixTo(final String resourceKey) {
 		if (this.resourceKeyPrefix == null) {
-			return messageKey;
+			return resourceKey;
 		} else {
-			return this.resourceKeyPrefix + messageKey;
+			return this.resourceKeyPrefix + resourceKey;
 		}
 	}
 
@@ -182,7 +186,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 * </p>
 	 */
 	public ActionResult fail(final String errorPage) {
-		if (StringUtil.isEmpty(errorPage)) {
+		if (errorPage == null || errorPage.length() == 0) {
 			throw new ActionRuntimeException("ECUB0106");
 		}
 		return new Forward(errorPage);
@@ -213,7 +217,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 			phaseValidationRules = this.phaseValidationRulesMap
 					.get(validationPhase);
 		} else {
-			phaseValidationRules = Collections.emptyList();
+			phaseValidationRules = EMPTY_VALIDATION_RULES;
 		}
 		return phaseValidationRules;
 	}
@@ -226,14 +230,6 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	@Deprecated
 	public List<ValidationRule> getRules() {
 		return phaseValidationRulesMap.get(getValidationPhases().get(0));
-	}
-
-	public boolean isFail(String name) {
-		return false;
-	}
-
-	public boolean isFail(ValidationRule rule) {
-		return false;
 	}
 
 }
