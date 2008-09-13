@@ -67,8 +67,8 @@ class TagUtils {
 	@SuppressWarnings("unchecked")
 	private static Object[] paramValues(final JspContext context,
 			final String name) {
-		final Map<String, Object[]> valuesMap = (Map<String, Object[]>) context
-				.getAttribute(ATTR_PARAMS, REQUEST_SCOPE);
+		final Map<String, Object[]> valuesMap = Map.class.cast(context
+				.getAttribute(ATTR_PARAMS, REQUEST_SCOPE));
 		final Object[] values;
 		if (valuesMap == null || !valuesMap.containsKey(name)) {
 			values = new Object[0];
@@ -77,26 +77,6 @@ class TagUtils {
 		}
 		return values;
 	}
-
-	// /**
-	// * フォーム値の{@link Map}から指定されたフィールドの値を取得します。
-	// *
-	// * @param valuesMap
-	// * フォーム値の{@link Map}
-	// * @param name
-	// * フィールド名
-	// * @return フィールドの値
-	// */
-	// private static Object[] formValues(final Map<String, String[]> valuesMap,
-	// final String name) {
-	// final Object[] values;
-	// if (valuesMap == null || !valuesMap.containsKey(name)) {
-	// values = new Object[0];
-	// } else {
-	// values = valuesMap.get(name);
-	// }
-	// return values;
-	// }
 
 	/**
 	 * 指定されたフィールド名に対応するフォームのフィールドへの出力値を取得します。

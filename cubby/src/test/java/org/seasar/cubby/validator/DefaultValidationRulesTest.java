@@ -15,8 +15,7 @@
  */
 package org.seasar.cubby.validator;
 
-import static org.seasar.cubby.validator.DefaultValidationRules.DATA_CONSTRAINT;
-import static org.seasar.cubby.validator.DefaultValidationRules.DATA_TYPE;
+import static org.seasar.cubby.validator.DefaultValidationRules.*;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.validator.validators.EqualsValidator;
 import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
@@ -178,23 +178,32 @@ public class DefaultValidationRulesTest extends S2TestCase {
 			@Override
 			protected void initialize() {
 				add("param1", new RequiredValidator());
+				add("param2", new EqualsValidator("a"));
+				add(DATA_CONSTRAINT, new ValidationRule() {
+
+					public void apply(Map<String, Object[]> params,
+							Object form, ActionErrors errors)
+							throws ValidationException {
+					}
+
+				});
 			}
 		};
 
-		final ValidationRules rules1 = new DefaultValidationRules() {
+		final ValidationRules rules = new DefaultValidationRules() {
 			@Override
 			protected void initialize() {
 				addAll(base);
 			}
 		};
 
-		Collection<ValidationRule> dataTypeRules = rules1
+		Collection<ValidationRule> dataTypeRules = rules
 				.getPhaseValidationRules(DATA_TYPE);
-		Collection<ValidationRule> dataConstraintRules = rules1
+		Collection<ValidationRule> dataConstraintRules = rules
 				.getPhaseValidationRules(DATA_CONSTRAINT);
 
-		assertEquals(1, dataTypeRules.size());
-		assertEquals(0, dataConstraintRules.size());
+		assertEquals(2, dataTypeRules.size());
+		assertEquals(1, dataConstraintRules.size());
 	}
 
 }

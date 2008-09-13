@@ -149,10 +149,17 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		 * @return <code>value</code>を変換した文字列
 		 */
 		private String convert(final Object value) {
+			if (value == null) {
+				return null;
+			}
 			final Converter converter = converterFactory.getConverter(null,
 					value.getClass());
 			if (converter == null) {
-				return value.toString();
+				if (value == null) {
+					return null;
+				} else {
+					return value.toString();
+				}
 			} else {
 				return converter.convertToString(value, conversionHelper);
 			}
