@@ -36,9 +36,6 @@ import org.seasar.cubby.exception.ActionRuntimeException;
  */
 public abstract class DefaultValidationRules implements ValidationRules {
 
-	/** リソースを検証するフェーズ。 */
-	public static final ValidationPhase RESOURCE = new ValidationPhase();
-
 	/** データ型を検証するフェーズ。 */
 	public static final ValidationPhase DATA_TYPE = new ValidationPhase();
 
@@ -57,8 +54,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 
 	/** 入力検証のフェーズ。 */
 	private static final List<ValidationPhase> VALIDATION_PHASES = Arrays
-			.asList(new ValidationPhase[] { RESOURCE, DATA_TYPE,
-					DATA_CONSTRAINT });
+			.asList(new ValidationPhase[] { DATA_TYPE, DATA_CONSTRAINT });
 
 	/**
 	 * メッセージキーのプリフィックスなしのコンストラクタ。

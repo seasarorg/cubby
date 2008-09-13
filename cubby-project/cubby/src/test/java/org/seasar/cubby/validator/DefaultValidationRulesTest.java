@@ -46,7 +46,6 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
 			}
 		};
-		assertEquals(0, rules.getPhaseValidationRules(RESOURCE).size());
 		assertEquals(1, rules.getPhaseValidationRules(DATA_TYPE).size());
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
@@ -69,7 +68,6 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				});
 			}
 		};
-		assertEquals(0, rules.getPhaseValidationRules(RESOURCE).size());
 		assertEquals(0, rules.getPhaseValidationRules(DATA_TYPE).size());
 		assertEquals(1, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
@@ -81,7 +79,6 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(0, rules.getPhaseValidationRules(RESOURCE).size());
 		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
@@ -93,7 +90,6 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(0, rules.getPhaseValidationRules(RESOURCE).size());
 		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 
@@ -114,7 +110,6 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				add("age", new NumberValidator(), new RangeValidator(0, 10));
 			}
 		};
-		assertEquals(0, rules.getPhaseValidationRules(RESOURCE).size());
 		assertEquals(2, rules.getPhaseValidationRules(DATA_TYPE).size());
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 
@@ -172,12 +167,10 @@ public class DefaultValidationRulesTest extends S2TestCase {
 				.getValidationPhases().iterator();
 		ValidationPhase first = iterator.next();
 		ValidationPhase second = iterator.next();
-		ValidationPhase third = iterator.next();
 		assertFalse(iterator.hasNext());
 
-		assertEquals(RESOURCE, first);
-		assertEquals(DATA_TYPE, second);
-		assertEquals(DATA_CONSTRAINT, third);
+		assertEquals(DATA_TYPE, first);
+		assertEquals(DATA_CONSTRAINT, second);
 	}
 
 	public void testAddAll() {
@@ -204,14 +197,11 @@ public class DefaultValidationRulesTest extends S2TestCase {
 			}
 		};
 
-		Collection<ValidationRule> resourceRules = rules
-				.getPhaseValidationRules(RESOURCE);
 		Collection<ValidationRule> dataTypeRules = rules
 				.getPhaseValidationRules(DATA_TYPE);
 		Collection<ValidationRule> dataConstraintRules = rules
 				.getPhaseValidationRules(DATA_CONSTRAINT);
 
-		assertEquals(0, resourceRules.size());
 		assertEquals(2, dataTypeRules.size());
 		assertEquals(1, dataConstraintRules.size());
 	}
