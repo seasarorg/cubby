@@ -46,7 +46,8 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	public static final ValidationPhase DATA_CONSTRAINT = new ValidationPhase();
 
 	/** 空の {@link ValidationRule} のリスト。 */
-	private static final List<ValidationRule> EMPTY_VALIDATION_RULES = Collections.emptyList();
+	private static final List<ValidationRule> EMPTY_VALIDATION_RULES = Collections
+			.emptyList();
 
 	/** 入力検証のフェーズとそれに対応する入力検証ルールのリスト。 */
 	private final Map<ValidationPhase, List<ValidationRule>> phaseValidationRulesMap = new HashMap<ValidationPhase, List<ValidationRule>>();
@@ -105,17 +106,29 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	}
 
 	/**
-	 * 最初のフェーズに入力検証ルールを追加します。
+	 * 項目ごとの入力検証を行うフェーズを返します。
+	 * 
+	 * @return {@link #DATA_TYPE}
+	 * @see #add(ValidationRule)
+	 * @see #add(String, Validator...)
+	 * @since 1.1.1
+	 */
+	protected ValidationPhase getDefaultValidationPhase() {
+		return DATA_TYPE;
+	}
+
+	/**
+	 * {@link #getDefaultValidationPhase()} のフェーズに入力検証ルールを追加します。
 	 * 
 	 * @param validationRule
 	 *            入力検証ルール
 	 */
 	protected void add(final ValidationRule validationRule) {
-		this.add(getValidationPhases().get(0), validationRule);
+		this.add(getDefaultValidationPhase(), validationRule);
 	}
 
 	/**
-	 * 最初のフェーズに入力検証を追加します。
+	 * {@link #getDefaultValidationPhase()} のフェーズに入力検証を追加します。
 	 * <p>
 	 * 項目名のメッセージキーとしてパラメータ名が使用されます。
 	 * </p>
@@ -141,7 +154,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 */
 	protected void add(final String paramName,
 			final String paramNameResourceKey, final Validator... validators) {
-		this.add(getValidationPhases().get(0), new FieldValidationRule(
+		this.add(getDefaultValidationPhase(), new FieldValidationRule(
 				paramName, addResourceKeyPrefixTo(paramNameResourceKey),
 				validators));
 	}
@@ -197,6 +210,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 * <p>
 	 * デフォルトでは以下の順序です。
 	 * <ul>
+	 * <li>{@link #RESOURCE}</li>
 	 * <li>{@link #DATA_TYPE}</li>
 	 * <li>{@link #DATA_CONSTRAINT}</li>
 	 * </ul>
@@ -229,7 +243,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 */
 	@Deprecated
 	public List<ValidationRule> getRules() {
-		return phaseValidationRulesMap.get(getValidationPhases().get(0));
+		return phaseValidationRulesMap.get(getDefaultValidationPhase());
 	}
 
 }
