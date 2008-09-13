@@ -53,6 +53,33 @@ public class FormWrapperFactoryImplTest extends S2TestCase {
 		assertNull(noprop);
 	}
 
+	public void testBeanToMap2() {
+		TestBean bean = new TestBean();
+		bean.setNum2(new Integer[] { null, null, null });
+		bean.setNum3(Arrays.asList(new String[] { null, null }));
+
+		FormWrapper formWrapper = formWrapperFactory.create(bean);
+		String[] date = formWrapper.getValues("date");
+		assertNull(date);
+
+		String[] num1 = formWrapper.getValues("num1");
+		assertNull(num1);
+
+		String[] num2 = formWrapper.getValues("num2");
+		assertEquals(3, num2.length);
+		assertNull(num2[0]);
+		assertNull(num2[1]);
+		assertNull(num2[2]);
+
+		String[] num3 = formWrapper.getValues("num3");
+		assertEquals(2, num3.length);
+		assertNull(num3[0]);
+		assertNull(num3[1]);
+
+		String[] noprop = formWrapper.getValues("noprop");
+		assertNull(noprop);
+	}
+
 	public static class TestBean {
 
 		Date date;
@@ -64,11 +91,18 @@ public class FormWrapperFactoryImplTest extends S2TestCase {
 		List<String> num3;
 
 		public Date getDate() {
+			if (date == null) {
+				return null;
+			}
 			return new Date(date.getTime());
 		}
 
 		public void setDate(Date date) {
-			this.date = new Date(date.getTime());
+			if (date == null) {
+				this.date = null;
+			} else {
+				this.date = new Date(date.getTime());
+			}
 		}
 
 		public Integer getNum1() {
