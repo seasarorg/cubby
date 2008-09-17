@@ -157,7 +157,10 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		if (linkSupport.isLinkable()) {
-			final String url = contextPath + linkSupport.getPath();
+			final String characterEncoding = pageContext.getRequest()
+					.getCharacterEncoding();
+			final String url = contextPath
+					+ linkSupport.getPath(characterEncoding);
 			attrs.put("action", url);
 		}
 

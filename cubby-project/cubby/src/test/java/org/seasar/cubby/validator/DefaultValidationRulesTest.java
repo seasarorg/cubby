@@ -133,7 +133,7 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		ActionResult result = rules.fail("error.jsp");
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
-		assertEquals("error.jsp", forward.getPath());
+		assertEquals("error.jsp", forward.getPath("UTF-8"));
 	}
 
 	public void testFailOverride() {
@@ -150,7 +150,7 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		ActionResult result = rules.fail("error.jsp");
 		assertTrue(result instanceof Redirect);
 		Redirect redirect = (Redirect) result;
-		assertEquals("error.jsp", redirect.getPath());
+		assertEquals("error.jsp", redirect.getPath("UTF-8"));
 	}
 
 	public void testValidationPhasePriority() {

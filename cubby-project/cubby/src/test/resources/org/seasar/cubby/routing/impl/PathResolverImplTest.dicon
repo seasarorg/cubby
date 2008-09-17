@@ -10,8 +10,6 @@
 		</initMethod>
 	</component>
 
-	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
-		<property name="uriEncoding">"UTF-8"</property>
-	</component>
+	<component class="org.seasar.cubby.routing.impl.PathResolverImpl" />
 
 </components>

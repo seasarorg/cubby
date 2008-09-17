@@ -113,14 +113,20 @@ public class Redirect implements ActionResult {
 	/** リダイレクト先のポート。 */
 	private final int port;
 
-	/** リダイレクト先のアクションクラス */
+	/** リダイレクト先のアクションクラス。 */
 	private Class<? extends Action> actionClass;
 
-	/** リダイレクト先のアクションクラスのメソッド名 */
+	/** リダイレクト先のアクションクラスのメソッド名。 */
 	private String methodName;
 
-	/** リダイレクト時のパラメータ */
+	/** リダイレクト時のパラメータ。 */
 	private Map<String, String[]> parameters;
+
+	/** URI のエンコーディング。 */
+	private String characterEncoding;
+
+	/** URL をエンコードするか。 */
+	private boolean encodeURL = true;
 
 	/**
 	 * インスタンスを生成します。
@@ -260,27 +266,31 @@ public class Redirect implements ActionResult {
 	/**
 	 * パスを取得します。
 	 * 
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return パス
 	 */
-	public String getPath() {
+	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
 			final S2Container container = SingletonS2ContainerFactory
-			.getContainer();
+					.getContainer();
 			final PathResolver pathResolver = (PathResolver) container
-			.getComponent(PathResolver.class);
+					.getComponent(PathResolver.class);
 			final String redirectPath = pathResolver.reverseLookup(actionClass,
-			methodName, parameters);
+					methodName, parameters, characterEncoding);
 			this.path = redirectPath;
 		}
 		return this.path;
 	}
-	
+
 	/**
 	 * アクションクラスを指定したリダイレクトかどうかを判定します。
+	 * 
 	 * @return アクションクラスを指定したリダイレクトならtrue
 	 */
 	private boolean isReverseLookupRedirect() {
-		return this.actionClass != null && this.methodName != null && this.parameters != null;
+		return this.actionClass != null && this.methodName != null
+				&& this.parameters != null;
 	}
 
 	/**
@@ -290,8 +300,14 @@ public class Redirect implements ActionResult {
 			final Class<? extends Action> actionClass, final Method method,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
-		final String redirectURL = calculateRedirectURL(getPath(), actionClass,
-				request);
+		final String characterEncoding;
+		if (this.characterEncoding == null) {
+			characterEncoding = request.getCharacterEncoding();
+		} else {
+			characterEncoding = this.characterEncoding;
+		}
+		final String redirectURL = calculateRedirectURL(
+				getPath(characterEncoding), actionClass, request);
 		final String encodedRedirectURL = encodeURL(redirectURL, response);
 		if (logger.isDebugEnabled()) {
 			logger.log("DCUB0003", new String[] { encodedRedirectURL });
@@ -405,7 +421,11 @@ public class Redirect implements ActionResult {
 	 */
 	protected String encodeURL(final String url,
 			final HttpServletResponse response) {
-		return response.encodeRedirectURL(url);
+		if (encodeURL) {
+			return response.encodeRedirectURL(url);
+		} else {
+			return url;
+		}
 	}
 
 	/**
@@ -415,34 +435,37 @@ public class Redirect implements ActionResult {
 	 * URL 埋め込みのセッション ID を出力したくない場合に使用してください。
 	 * </p>
 	 * 
-	 * @return リダイレクトする URL
+	 * @return このオブジェクト
 	 * @since 1.1.0
 	 */
-	public ActionResult noEncodeURL() {
-		return new Redirect(path, protocol, port) {
-			@Override
-			protected String encodeURL(final String url,
-					final HttpServletResponse response) {
-				return url;
-			}
-		};
+	public Redirect noEncodeURL() {
+		this.encodeURL = false;
+		return this;
 	}
-	
+
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValue パラメータの値。{@code Object#toString()}の結果が値として使用されます。
-	 * @return リダイレクトする URL
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValue
+	 *            パラメータの値。{@code Object#toString()}の結果が値として使用されます。
+	 * @return このオブジェクト
+	 * @since 1.1.0
 	 */
 	public Redirect param(String paramName, Object paramValue) {
 		return param(paramName, new String[] { paramValue.toString() });
 	}
-	
+
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValues パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
-	 * @return リダイレクトする URL
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValues
+	 *            パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
+	 * @return このオブジェクト
+	 * @since 1.1.0
 	 */
 	public Redirect param(final String paramName, final Object[] paramValues) {
 		return param(paramName, toStringArray(paramValues));
@@ -450,9 +473,13 @@ public class Redirect implements ActionResult {
 
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValues パラメータの値
-	 * @return リダイレクトする URL
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValues
+	 *            パラメータの値
+	 * @return このオブジェクト
+	 * @since 1.1.0
 	 */
 	public Redirect param(final String paramName, final String[] paramValues) {
 		if (isReverseLookupRedirect()) {
@@ -467,13 +494,15 @@ public class Redirect implements ActionResult {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。
 	 * <p>
 	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。
 	 * </p>
-	 * @param paramValues {@code Object#toString()}型の配列
+	 * 
+	 * @param paramValues
+	 *            {@code Object#toString()}型の配列
 	 * @return {@code Object#toString()}型の配列。
 	 */
 	private String[] toStringArray(final Object[] paramValues) {
@@ -483,4 +512,29 @@ public class Redirect implements ActionResult {
 		}
 		return values;
 	}
+
+	/**
+	 * URI のエンコーディングを指定します。
+	 * 
+	 * @param characterEncoding
+	 *            URI のエンコーディング
+	 * @return このオブジェクト
+	 * @since 1.1.1
+	 */
+	public Redirect characterEncoding(final String characterEncoding) {
+		this.characterEncoding = characterEncoding;
+		return this;
+	}
+
+	/**
+	 * パスを取得します。
+	 * 
+	 * @return パス
+	 * @deprecated use {@link #getPath(String)}
+	 */
+	@Deprecated
+	public String getPath() {
+		return getPath("UTF-8");
+	}
+
 }

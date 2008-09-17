@@ -69,9 +69,6 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	private static final Logger logger = Logger
 			.getLogger(PathResolverImpl.class);
 
-	/** デフォルトの URI エンコーディング */
-	private static final String DEFAULT_URI_ENCODING = "UTF-8";
-
 	/** アクションのパスからパラメータを抽出するための正規表現パターン */
 	private static Pattern URI_PARAMETER_MATCHING_PATTERN = Pattern
 			.compile("([{]([^}]+)[}])([^{]*)");
@@ -94,9 +91,6 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 
 	/** クラスパスを走査してクラスを検出するクラス。 */
 	private ClassDetector classDetector;
-
-	/** URI のエンコーディング。 */
-	private String uriEncoding = DEFAULT_URI_ENCODING;
 
 	/** 手動登録用のプライオリティカウンタ。 */
 	private int priorityCounter = 0;
@@ -126,16 +120,6 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 */
 	public void setClassDetector(final ClassDetector classDetector) {
 		this.classDetector = classDetector;
-	}
-
-	/**
-	 * URI エンコーディングを設定します。
-	 * 
-	 * @param uriEncoding
-	 *            URI エンコーディング
-	 */
-	public void setUriEncoding(final String uriEncoding) {
-		this.uriEncoding = uriEncoding;
 	}
 
 	/**
@@ -283,18 +267,12 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * {@inheritDoc}
 	 */
 	public InternalForwardInfo getInternalForwardInfo(final String path,
-			final String requestMethod) {
+			final String requestMethod, final String characterEncoding) {
 		initialize();
 
-		final String decodedPath;
-		try {
-			decodedPath = URLDecoder.decode(path, uriEncoding);
-		} catch (final IOException e) {
-			throw new IORuntimeException(e);
-		}
-
 		final InternalForwardInfo internalForwardInfo = findInternalForwardInfo(
-				decodedPath, requestMethod);
+				decode(path, characterEncoding), requestMethod,
+				characterEncoding);
 		return internalForwardInfo;
 	}
 
@@ -308,7 +286,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
 	 */
 	private InternalForwardInfo findInternalForwardInfo(final String path,
-			final String requestMethod) {
+			final String requestMethod, final String characterEncoding) {
 		final Iterator<Routing> iterator = routings.values().iterator();
 		while (iterator.hasNext()) {
 			final Routing routing = iterator.next();
@@ -335,7 +313,8 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 						final String value = matcher.group(i + 1);
 						uriParameters.put(name, new String[] { value });
 					}
-					final String inernalFowardPath = buildInternalForwardPath(uriParameters);
+					final String inernalFowardPath = buildInternalForwardPath(
+							uriParameters, characterEncoding);
 
 					final InternalForwardInfo internalForwardInfo = new InternalForwardInfoImpl(
 							inernalFowardPath, onSubmitRoutings);
@@ -352,14 +331,15 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * {@inheritDoc}
 	 */
 	public String buildInternalForwardPath(
-			final Map<String, String[]> parameters) {
+			final Map<String, String[]> parameters,
+			final String characterEncoding) {
 		final StringBuilder builder = new StringBuilder(100);
 		builder.append(INTERNAL_FORWARD_DIRECTORY);
 		if (parameters != null && !parameters.isEmpty()) {
 			builder.append("?");
 			final QueryStringBuilder query = new QueryStringBuilder();
-			if (!StringUtil.isEmpty(uriEncoding)) {
-				query.setEncode(uriEncoding);
+			if (!StringUtil.isEmpty(characterEncoding)) {
+				query.setEncode(characterEncoding);
 			}
 			for (final Entry<String, String[]> entry : parameters.entrySet()) {
 				for (final String parameter : entry.getValue()) {
@@ -457,7 +437,8 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * {@inheritDoc}
 	 */
 	public String reverseLookup(final Class<? extends Action> actionClass,
-			final String methodName, final Map<String, String[]> parameters) {
+			final String methodName, final Map<String, String[]> parameters,
+			final String characterEncoding) {
 		final Routing routing = findRouting(actionClass, methodName);
 		final String actionPath = routing.getActionPath();
 
@@ -486,18 +467,14 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 						new Object[] { actionPath, uriParameterName, value,
 								uriParameterRegex });
 			}
-			try {
-				final String encodedValue = URLEncoder.encode(value,
-						uriEncoding);
-				redirectPath = StringUtil.replace(redirectPath, matcher
-						.group(1), encodedValue);
-			} catch (final UnsupportedEncodingException e) {
-				throw new IORuntimeException(e);
-			}
+			redirectPath = StringUtil.replace(redirectPath, matcher.group(1),
+					encode(value, characterEncoding));
 		}
 		if (!copyOfParameters.isEmpty()) {
 			final QueryStringBuilder builder = new QueryStringBuilder();
-			builder.setEncode(uriEncoding);
+			if (characterEncoding != null) {
+				builder.setEncode(characterEncoding);
+			}
 			for (final Entry<String, String[]> entry : copyOfParameters
 					.entrySet()) {
 				for (final String value : entry.getValue()) {
@@ -585,7 +562,49 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 */
 	@SuppressWarnings("unchecked")
 	private static Class<? extends Action> cast(final Class<?> clazz) {
-		return (Class<? extends Action>) clazz;
+		return Class.class.cast(clazz);
+	}
+
+	/**
+	 * 指定された文字列を URL エンコードします。
+	 * 
+	 * @param str
+	 *            文字列
+	 * @param characterEncoding
+	 *            エンコーディング
+	 * @return エンコードされた文字列
+	 */
+	private static String encode(final String str,
+			final String characterEncoding) {
+		if (characterEncoding == null) {
+			return str;
+		}
+		try {
+			return URLEncoder.encode(str, characterEncoding);
+		} catch (final UnsupportedEncodingException e) {
+			throw new IORuntimeException(e);
+		}
+	}
+
+	/**
+	 * 指定された URL 文字列をデコードします。
+	 * 
+	 * @param str
+	 *            文字列
+	 * @param characterEncoding
+	 *            エンコーディング
+	 * @return デコードされた文字列
+	 */
+	private static String decode(final String str,
+			final String characterEncoding) {
+		if (characterEncoding == null) {
+			return str;
+		}
+		try {
+			return URLDecoder.decode(str, characterEncoding);
+		} catch (final IOException e) {
+			throw new IORuntimeException(e);
+		}
 	}
 
 }

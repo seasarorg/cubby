@@ -5,7 +5,6 @@
 	<include path="cubby.dicon"/>
 
 	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
-		<property name="uriEncoding">"UTF-8"</property>
 		<initMethod name="add">
 			<arg>"/routing/test"</arg>
 			<arg>@org.seasar.cubby.action.MockAction@class</arg>
