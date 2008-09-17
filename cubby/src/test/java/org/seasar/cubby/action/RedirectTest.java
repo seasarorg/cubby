@@ -210,7 +210,7 @@ public class RedirectTest extends S2TestCase {
 
 	public void testRedirectByClassAndMethod1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1");
-		assertEquals("/routing/test", redirect.getPath());
+		assertEquals("/routing/test", redirect.getPath("UTF-8"));
 	}
 
 	public void testRedirectByClassAndMethod2() throws Exception {
@@ -220,7 +220,8 @@ public class RedirectTest extends S2TestCase {
 
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				values);
-		assertEquals("/routing/test?value1=123&value2=456", redirect.getPath());
+		assertEquals("/routing/test?value1=123&value2=456", redirect
+				.getPath("UTF-8"));
 	}
 
 	public void testRedirectByClassAndMethod3() throws Exception {
@@ -229,7 +230,7 @@ public class RedirectTest extends S2TestCase {
 		values.put("value2", new String[] { "456" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
-		assertEquals("/routing/test/123/456", redirect.getPath());
+		assertEquals("/routing/test/123/456", redirect.getPath("UTF-8"));
 	}
 
 	public void testRedirectByClassAndMethod4() throws Exception {
@@ -239,19 +240,20 @@ public class RedirectTest extends S2TestCase {
 		values.put("value3", new String[] { "789" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
-		assertEquals("/routing/test/123/456?value3=789", redirect.getPath());
+		assertEquals("/routing/test/123/456?value3=789", redirect
+				.getPath("UTF-8"));
 	}
 
 	public void testRedirectByClassAndMethod5() throws Exception {
 		final Redirect redirect1 = new Redirect(MockAction.class, "index");
-		assertEquals("/routing/", redirect1.getPath());
+		assertEquals("/routing/", redirect1.getPath("UTF-8"));
 		final Redirect redirect2 = new Redirect(MockAction.class);
-		assertEquals("/routing/", redirect2.getPath());
+		assertEquals("/routing/", redirect2.getPath("UTF-8"));
 	}
 
 	public void testRedirectByClassAndMethodFailureNoRouting() throws Exception {
 		try {
-			new Redirect(MockAction.class, "none").getPath();
+			new Redirect(MockAction.class, "none").getPath("UTF-8");
 			fail();
 		} catch (final ActionRuntimeException e) {
 			// ok
@@ -261,7 +263,7 @@ public class RedirectTest extends S2TestCase {
 	public void testRedirectByClassAndMethodFailureLessParameter()
 			throws Exception {
 		try {
-			new Redirect(MockAction.class, "dummy2").getPath();
+			new Redirect(MockAction.class, "dummy2").getPath("UTF-8");
 			fail();
 		} catch (final ActionRuntimeException e) {
 			// ok
@@ -274,7 +276,7 @@ public class RedirectTest extends S2TestCase {
 		values.put("value1", new String[] { "abc" });
 		values.put("value2", new String[] { "456" });
 		try {
-			new Redirect(MockAction.class, "dummy2", values).getPath();
+			new Redirect(MockAction.class, "dummy2", values).getPath("UTF-8");
 			fail();
 		} catch (final ActionRuntimeException e) {
 			// ok
@@ -283,28 +285,29 @@ public class RedirectTest extends S2TestCase {
 
 	public void testGetPath() throws Exception {
 		final Redirect redirect = new Redirect("/absolute/redirect");
-		assertEquals("/absolute/redirect", redirect.getPath());
+		assertEquals("/absolute/redirect", redirect.getPath("UTF-8"));
 	}
 
 	public void testParam1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1")
-			.param("value1", "123")
-			.param("value2", "456");
-		assertEquals("/routing/test?value1=123&value2=456", redirect.getPath());
+				.param("value1", "123").param("value2", "456");
+		assertEquals("/routing/test?value1=123&value2=456", redirect
+				.getPath("UTF-8"));
 	}
 
 	public void testParam2() throws Exception {
 		Map<String, String[]> params = new HashMap<String, String[]>();
 		params.put("value1", new String[] { "123" });
-		final Redirect redirect = new Redirect(MockAction.class, "dummy1", params)
-			.param("value2", "456");
-		assertEquals("/routing/test?value1=123&value2=456", redirect.getPath());
+		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
+				params).param("value2", "456");
+		assertEquals("/routing/test?value1=123&value2=456", redirect
+				.getPath("UTF-8"));
 	}
 
 	public void testParam3() throws Exception {
-		Redirect redirect = new Redirect("hoge").param("value1", "123")
-			.param("value2", "456");
-		assertEquals("hoge?value1=123&value2=456", redirect.getPath());
+		Redirect redirect = new Redirect("hoge").param("value1", "123").param(
+				"value2", "456");
+		assertEquals("hoge?value1=123&value2=456", redirect.getPath("UTF-8"));
 	}
 
 	interface Asserter {

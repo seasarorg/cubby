@@ -39,9 +39,12 @@ public interface PathResolver {
 	 *            パス
 	 * @param requestMethod
 	 *            HTTPメソッド
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return フォワード情報
 	 */
-	InternalForwardInfo getInternalForwardInfo(String path, String requestMethod);
+	InternalForwardInfo getInternalForwardInfo(String path,
+			String requestMethod, String characterEncoding);
 
 	/**
 	 * ルーティング情報の一覧を取得します。 ルーティング情報は優先度順にソートされています。
@@ -63,8 +66,8 @@ public interface PathResolver {
 	 * @param methodName
 	 *            アクションメソッド名
 	 * @param requestMethods
-	 *            リクエストメソッド。<code>null</code> の場合、{@link RequestMethod#GET},{@link RequestMethod#POST}
-	 *            がデフォルト値として設定されます。
+	 *            リクエストメソッド。<code>null</code> の場合、{@link RequestMethod#GET},
+	 *            {@link RequestMethod#POST} がデフォルト値として設定されます。
 	 * @see org.seasar.cubby.action.Path#priority() 自動設定の際のプライオリティ
 	 */
 	void add(final String actionPath,
@@ -80,20 +83,26 @@ public interface PathResolver {
 	 *            メソッド名
 	 * @param parameters
 	 *            パラメータ
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return リダイレクト用のパス
 	 * @since 1.1.0
 	 */
 	String reverseLookup(final Class<? extends Action> actionClass,
-			String methodName, Map<String, String[]> parameters);
+			String methodName, Map<String, String[]> parameters,
+			String characterEncoding);
 
 	/**
 	 * 内部フォワードパスを構築します。
 	 * 
 	 * @param parameters
 	 *            パラメータ
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return 内部フォワードパス
 	 * @since 1.1.0
 	 */
-	String buildInternalForwardPath(Map<String, String[]> parameters);
+	String buildInternalForwardPath(Map<String, String[]> parameters,
+			String characterEncoding);
 
 }

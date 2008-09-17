@@ -102,11 +102,14 @@ class LinkSupport {
 	 * このパスにはコンテキストパスは含まれません。
 	 * </p>
 	 * 
-	 * @param parameterSupport
-	 * @return
+	 * @param characterEncoding
+	 *            URI のエンコーディング
+	 * @return パス
 	 * @throws JspTagException
+	 *             アクションクラスが見つからなかった場合
 	 */
-	public String getPath() throws JspTagException {
+	public String getPath(final String characterEncoding)
+			throws JspTagException {
 		final Class<? extends Action> actionClass;
 		try {
 			actionClass = forName(actionClassName);
@@ -116,10 +119,10 @@ class LinkSupport {
 
 		final S2Container container = SingletonS2ContainerFactory
 				.getContainer();
-		final PathResolver pathResolver = (PathResolver) container
-				.getComponent(PathResolver.class);
+		final PathResolver pathResolver = PathResolver.class.cast(container
+				.getComponent(PathResolver.class));
 		final String path = pathResolver.reverseLookup(actionClass,
-				actionMethodName, getParameters());
+				actionMethodName, getParameters(), characterEncoding);
 
 		return path;
 	}

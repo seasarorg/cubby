@@ -94,7 +94,7 @@ public class ValidationProcessorImplTest extends S2TestCase {
 				getRequest(), action, method);
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
-		assertEquals("error.jsp", forward.getPath());
+		assertEquals("error.jsp", forward.getPath("UTF-8"));
 	}
 
 }

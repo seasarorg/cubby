@@ -88,7 +88,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testRoot1() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo("/",
-				"GET");
+				"GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
 				.getInternalForwardPath());
@@ -104,7 +104,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testRoot2() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/dummy1", "GET");
+				"/dummy1", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
 				.getInternalForwardPath());
@@ -120,7 +120,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testDefault1() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/mock/update", "GET");
+				"/mock/update", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
 				.getInternalForwardPath());
@@ -136,7 +136,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testDefault2() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/mock/create", "GET");
+				"/mock/create", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
 				.getInternalForwardPath());
@@ -152,7 +152,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testDefault3() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/mock/delete/10", "GET");
+				"/mock/delete/10", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
@@ -172,13 +172,13 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testDefault4() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/mock/delete/a", "GET");
+				"/mock/delete/a", "GET", "UTF-8");
 		assertNull(info);
 	}
 
 	public void testDefault5() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/mock/cubby", "GET");
+				"/mock/cubby", "GET", "UTf-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
@@ -198,7 +198,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testPath1() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/foo/4/update", "GET");
+				"/foo/4/update", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
@@ -218,7 +218,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testPath2() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/foo/4/create", "GET");
+				"/foo/4/create", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
@@ -238,7 +238,7 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testPath3() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/foo/4/delete/10", "GET");
+				"/foo/4/delete/10", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
@@ -260,13 +260,13 @@ public class PathResolverImplTest extends S2TestCase {
 
 	public void testPath4() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/foo/4/delete/a", "GET");
+				"/foo/4/delete/a", "GET", "UTF-8");
 		assertNull(info);
 	}
 
 	public void testPath5() {
 		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
-				"/foo/4/cubby", "GET");
+				"/foo/4/cubby", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
 				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
