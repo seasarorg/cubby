@@ -137,14 +137,33 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	public static void assertPathEquals(
 			final Class<? extends ActionResult> resultClass,
 			final String expectedPath, final ActionResult actualResult) {
+		assertPathEquals(resultClass, expectedPath, actualResult, "UTF-8");
+	}
+
+	/**
+	 * ActionResultの型とパスをチェックします。
+	 * 
+	 * @param resultClass
+	 *            ActionResultの型
+	 * @param expectedPath
+	 *            期待されるパス
+	 * @param actualResult
+	 *            チェックするActionResult
+	 * @param characterEncoding
+	 *            URI のエンコーディング
+	 */
+	public static void assertPathEquals(
+			final Class<? extends ActionResult> resultClass,
+			final String expectedPath, final ActionResult actualResult,
+			final String characterEncoding) {
 		assertEquals("ActionResultの型をチェック", resultClass, actualResult
 				.getClass());
 		if (actualResult instanceof Forward) {
-			assertEquals("パスのチェック", expectedPath, ((Forward) actualResult)
-					.getPath());
+			assertEquals("パスのチェック", expectedPath, Forward.class.cast(
+					actualResult).getPath(characterEncoding));
 		} else if (actualResult instanceof Redirect) {
-			assertEquals("パスのチェック", expectedPath, ((Redirect) actualResult)
-					.getPath());
+			assertEquals("パスのチェック", expectedPath, Redirect.class.cast(
+					actualResult).getPath(characterEncoding));
 		}
 	}
 

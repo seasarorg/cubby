@@ -11,7 +11,6 @@
 	</component>
 
 	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
-		<property name="uriEncoding">"UTF-8"</property>
 		<initMethod name="add">
 			<arg>"/mockFormTagTest/foo"</arg>
 			<arg>@org.seasar.cubby.tags.MockFormTagTestAction@class</arg>

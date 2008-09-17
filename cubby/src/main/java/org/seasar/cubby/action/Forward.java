@@ -84,6 +84,7 @@ import org.seasar.framework.util.StringUtil;
  * parameters.put(&quot;value1&quot;, new String[] { &quot;12345&quot; });
  * return new Forward(TodoListAction.class, &quot;show&quot;, parameters);
  * </pre>
+ * 
  * </p>
  * <p>
  * フォワード前には {@link Action#invokePreRenderMethod(Method)} を実行します。 フォワード後には
@@ -178,26 +179,30 @@ public class Forward implements ActionResult {
 	/**
 	 * パスを取得します。
 	 * 
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return パス
 	 */
-	public String getPath() {
+	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
 			final S2Container container = SingletonS2ContainerFactory
-			.getContainer();
-			final PathResolver pathResolver = (PathResolver) container
-					.getComponent(PathResolver.class);
-			this.path = pathResolver.buildInternalForwardPath(parameters);
+					.getContainer();
+			final PathResolver pathResolver = PathResolver.class.cast(container
+					.getComponent(PathResolver.class));
+			this.path = pathResolver.buildInternalForwardPath(parameters,
+					characterEncoding);
 		}
 		return this.path;
 	}
 
-	
 	/**
 	 * アクションクラスを指定したフォワードかどうかを判定します。
+	 * 
 	 * @return アクションクラスを指定したフォワードならtrue
 	 */
 	private boolean isReverseLookupRedirect() {
-		return this.actionClass != null && this.methodName != null && this.parameters != null;
+		return this.actionClass != null && this.methodName != null
+				&& this.parameters != null;
 	}
 
 	/**
@@ -209,7 +214,9 @@ public class Forward implements ActionResult {
 			throws ServletException, IOException {
 		action.invokePreRenderMethod(method);
 
-		final String forwardPath = calculateForwardPath(getPath(), actionClass);
+		final String forwardPath = calculateForwardPath(getPath(request
+				.getCharacterEncoding()), actionClass, request
+				.getCharacterEncoding());
 		if (this.routings != null) {
 			request.setAttribute(ATTR_ROUTINGS, this.routings);
 		}
@@ -233,12 +240,15 @@ public class Forward implements ActionResult {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
+	 * @param characterEncoding
+	 *            URI のエンコーディング
 	 * @return フォワードするパス
 	 */
 	protected String calculateForwardPath(final String path,
-			final Class<? extends Action> actionClass) {
+			final Class<? extends Action> actionClass,
+			final String characterEncoding) {
 		final String absolutePath;
-		if (getPath().startsWith("/")) {
+		if (getPath(characterEncoding).startsWith("/")) {
 			absolutePath = path;
 		} else {
 			final String actionDirectory = CubbyUtils
@@ -261,21 +271,26 @@ public class Forward implements ActionResult {
 		return absolutePath;
 	}
 
-
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValue パラメータの値。{@code Object#toString()}の結果が値として使用されます。
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValue
+	 *            パラメータの値。{@code Object#toString()}の結果が値として使用されます。
 	 * @return フォワードする URL
 	 */
 	public Forward param(String paramName, Object paramValue) {
 		return param(paramName, new String[] { paramValue.toString() });
 	}
-	
+
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValues パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValues
+	 *            パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
 	 * @return フォワードする URL
 	 */
 	public Forward param(final String paramName, final Object[] paramValues) {
@@ -284,8 +299,11 @@ public class Forward implements ActionResult {
 
 	/**
 	 * パラメータを追加します。
-	 * @param paramName パラメータ名
-	 * @param paramValues パラメータの値
+	 * 
+	 * @param paramName
+	 *            パラメータ名
+	 * @param paramValues
+	 *            パラメータの値
 	 * @return フォワードする URL
 	 */
 	public Forward param(final String paramName, final String[] paramValues) {
@@ -301,13 +319,15 @@ public class Forward implements ActionResult {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。
 	 * <p>
 	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。
 	 * </p>
-	 * @param paramValues {@code Object#toString()}型の配列
+	 * 
+	 * @param paramValues
+	 *            {@code Object#toString()}型の配列
 	 * @return {@code Object#toString()}型の配列。
 	 */
 	private String[] toStringArray(final Object[] paramValues) {
@@ -316,6 +336,17 @@ public class Forward implements ActionResult {
 			values[i] = paramValues[i].toString();
 		}
 		return values;
+	}
+
+	/**
+	 * パスを取得します。
+	 * 
+	 * @return パス
+	 * @deprecated use {@link #getPath(String)}
+	 */
+	@Deprecated
+	public String getPath() {
+		return getPath("UTF-8");
 	}
 
 	/**
