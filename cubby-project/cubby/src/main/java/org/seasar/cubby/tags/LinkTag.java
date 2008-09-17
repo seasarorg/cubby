@@ -144,12 +144,15 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		final String url;
+		final String characterEncoding = pageContext.getRequest()
+				.getCharacterEncoding();
 		if (encodeURL) {
-			final HttpServletResponse response = (HttpServletResponse) pageContext
-					.getResponse();
-			url = response.encodeURL(contextPath + linkSupport.getPath());
+			final HttpServletResponse response = HttpServletResponse.class
+					.cast(pageContext.getResponse());
+			url = response.encodeURL(contextPath
+					+ linkSupport.getPath(characterEncoding));
 		} else {
-			url = contextPath + linkSupport.getPath();
+			url = contextPath + linkSupport.getPath(characterEncoding);
 		}
 
 		try {

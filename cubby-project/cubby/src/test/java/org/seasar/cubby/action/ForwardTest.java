@@ -91,12 +91,14 @@ public class ForwardTest extends S2TestCase {
 
 	public void testGetPath() throws Exception {
 		Forward forward = new Forward("/absolute/path.jsp");
-		assertEquals("/absolute/path.jsp", forward.getPath());
+		assertEquals("/absolute/path.jsp", forward.getPath("UTF-8"));
 	}
 
 	public void testParam() throws Exception {
-		Forward forward = new Forward("/absolute/path.jsp").param("value1", "123").param("value2", "456");
-		assertEquals("/absolute/path.jsp?value1=123&value2=456", forward.getPath());
+		Forward forward = new Forward("/absolute/path.jsp").param("value1",
+				"123").param("value2", "456");
+		assertEquals("/absolute/path.jsp?value1=123&value2=456", forward
+				.getPath("UTF-8"));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -111,7 +113,8 @@ public class ForwardTest extends S2TestCase {
 		forward.execute(action, MockAction.class, method,
 				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, path);
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY,
+								path);
 					}
 				}), response);
 		Map<String, Routing> routings = (Map<String, Routing>) request
@@ -121,7 +124,8 @@ public class ForwardTest extends S2TestCase {
 		Routing routing = routings.get(null);
 		assertNotNull(routing);
 		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2", null);
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2",
+				null);
 		assertEquals(forwardMethod, routing.getMethod());
 	}
 
@@ -137,7 +141,8 @@ public class ForwardTest extends S2TestCase {
 		forward.execute(action, MockAction.class, method,
 				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, path);
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY,
+								path);
 					}
 				}), response);
 		Map<String, Routing> routings = (Map<String, Routing>) request
@@ -147,7 +152,8 @@ public class ForwardTest extends S2TestCase {
 		Routing routing = routings.get(null);
 		assertNotNull(routing);
 		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "index", null);
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "index",
+				null);
 		assertEquals(forwardMethod, routing.getMethod());
 	}
 
@@ -159,11 +165,13 @@ public class ForwardTest extends S2TestCase {
 		MockHttpServletResponse response = this.getResponse();
 		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
-		Forward forward = new Forward(MockAction.class, "dummy2").param("value1", "123").param("value2", "456");
+		Forward forward = new Forward(MockAction.class, "dummy2").param(
+				"value1", "123").param("value2", "456");
 		forward.execute(action, MockAction.class, method,
 				new RequestDispatcherAssertionWrapper(request, new Asserter() {
 					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY + "?value1=123&value2=456", path);
+						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY
+								+ "?value1=123&value2=456", path);
 					}
 				}), response);
 		Map<String, Routing> routings = (Map<String, Routing>) request
@@ -173,7 +181,8 @@ public class ForwardTest extends S2TestCase {
 		Routing routing = routings.get(null);
 		assertNotNull(routing);
 		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2", null);
+		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2",
+				null);
 		assertEquals(forwardMethod, routing.getMethod());
 	}
 
