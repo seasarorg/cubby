@@ -11,7 +11,7 @@
       <defaultValue>1.0.48</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-s2dao">
-      <defaultValue>true</defaultValue>
+      <defaultValue>false</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-s2jdbc">
       <defaultValue>true</defaultValue>

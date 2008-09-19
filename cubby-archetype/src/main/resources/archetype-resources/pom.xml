@@ -107,6 +107,11 @@ line.separator=\n
       <version>${cubby-version}</version>
     </dependency>
     <dependency>
+      <groupId>org.seasar.cubby</groupId>
+      <artifactId>cubby-admin</artifactId>
+      <version>${cubby-version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-framework</artifactId>
       <version>${s2container-version}</version>
