@@ -6,6 +6,8 @@ import static org.seasar.cubby.action.RequestMethod.POST;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
@@ -32,7 +34,8 @@ public class PageAction extends Action {
 
 	public PageService pageService;
 	public WikiService wikiService;
-
+	public HttpServletRequest request; 
+	
 	public final ValidationRules saveValidation = new DefaultValidationRules() {
 		public void initialize() {
 			add("name", new RequiredValidator());
@@ -79,6 +82,11 @@ public class PageAction extends Action {
 	@Accept(GET)
 	@Path("/pages/{page,.+}")
 	public ActionResult show() throws Exception {
+		if (page == null) {
+			name = request.getParameter("page");
+			return new Forward("edit.jsp");
+		}
+		Beans.copy(page, this).execute();
 		return new Forward("index.jsp");
 	}
 	
