@@ -20,12 +20,15 @@
 <a href="${contextPath}/pages/delete/${page.name}">Delete</a>
 </c:if>
 </div>
+<div id="main">
 <c:import url="common/errors.jsp"></c:import>
-<t:form actionClass="wiki.action.PageAction" actionMethod="save" method="post" value="${action}">
+<t:form actionClass="org.seasar.cubby.wiki.action.PageAction" actionMethod="save" value="${action}"
+	method="post" class="editpage">
 	<t:input type="hidden" name="id"/>
 	<t:input type="text" name="name" size="100"/><br/>
-	<t:textarea name="content" rows="10" cols="100"/><br/>
+	<t:textarea name="content" rows="30" cols="100"/><br/>
 	<input type="submit" name="save" value="Save"/>
 </t:form>
+</div>
 </body>
 </html>

@@ -12,10 +12,9 @@
 <h1>${page.name}</h1>
 </div>
 <div id="menu">
-<a href="${contextPath}">Home</a>
-<a href="${contextPath}/pages/edit/">New</a>
-<a href="${contextPath}/pages/edit/${page.name}">Edit</a>
+<c:import url="/common/menu.jsp"></c:import>
 </div>
+<div id="main">
 <div id="sidebar">
 <h3>Page List</h3>
 <ul>
@@ -25,8 +24,25 @@
 </ul>
 </div>
 <div id="content">
+<div style="text-align: right;"">
+<a href="javascript:editPage();">edit</a><br/>
+</div>
 <c:import url="common/notice.jsp"></c:import>
+<div id="wiki-content">
 ${action.pageContent}
 </div>
+<div id="wiki-content-edit" class="wiki-content-edit"  style="display:none">
+<t:textarea name="content" value="${action.page.content}" rows="20"></t:textarea>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+function editPage() {
+	document.getElementById('wiki-content').style.display='none';
+	document.getElementById('wiki-content-edit').style.display='';
+}
+-->
+</script>
 </body>
 </html>
