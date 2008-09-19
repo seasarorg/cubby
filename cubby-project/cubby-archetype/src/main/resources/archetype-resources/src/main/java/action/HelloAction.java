@@ -4,6 +4,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
@@ -22,6 +23,7 @@ public class HelloAction extends Action {
 
 	public HelloService helloService;
 
+	@RequestParameter
 	public String name;
 
 	public String message;

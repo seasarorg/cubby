@@ -11,6 +11,7 @@
 	<include path="routing.dicon"/>
 	<include path="cubby.dicon"/>
 #if ($use-s2jdbc.matches("(?i)y|yes|true|on"))
+	<include path="j2ee.dicon"/>
 	<include path="s2jdbc.dicon"/>
 #end
 </components>
