@@ -24,7 +24,11 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.RequestMethod;
+import org.seasar.cubby.controller.ClassDetector;
+import org.seasar.cubby.exception.IllegalRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
@@ -284,7 +288,49 @@ public class PathResolverImplTest extends S2TestCase {
 		assertEquals(1, query.getParam("name").size());
 		assertEquals("cubby", query.getParam("name").get(0));
 	}
+	
+	public void testAddAbstractClass() throws Exception {
+		PathResolverImpl resolver = new PathResolverImpl();
+		resolver.setClassDetector(new ClassDetector() { public void detect() {} });
+		
+		try {
+			resolver.add("/parent/m1", ParentAction.class, "m1");
+			fail();
+		} catch (IllegalRoutingRuntimeException e) {
+			assertEquals("アクションクラスではないクラスを登録するとエラー(抽象クラス)", "ECUB0002", e.getMessageCode());
+		}
+		try {
+			resolver.add("/child/m3", ChildAction.class, "m3");
+			fail();
+		} catch (IllegalRoutingRuntimeException e) {
+			assertEquals("アクションメソッドではないメソッドを登録するとエラー(戻り値がObject)", "ECUB0003", e.getMessageCode());
+		}
+		resolver.add("/child/m1", ChildAction.class, "m1");
+		resolver.add("/child/m2", ChildAction.class, "m2");
+		assertEquals("正常に登録できたルーティング情報の数", 4, resolver.getRoutings().size());
+		assertRouting(resolver.getRoutings().get(0), "/child/m1", RequestMethod.GET, ChildAction.class, "m1");
+		assertRouting(resolver.getRoutings().get(1), "/child/m1", RequestMethod.POST, ChildAction.class, "m1");
+		assertRouting(resolver.getRoutings().get(2), "/child/m2", RequestMethod.GET, ChildAction.class, "m2");
+		assertRouting(resolver.getRoutings().get(3), "/child/m2", RequestMethod.POST, ChildAction.class, "m2");
+	}
+	
+	private void assertRouting(Routing routing, String path,
+			RequestMethod requestMethod, Class<? extends Action> actionClass, String actionMethod) {
+		assertEquals(path, routing.getActionPath());
+		assertEquals(requestMethod, routing.getRequestMethod());
+		assertEquals(actionClass, routing.getActionClass());
+		assertEquals(actionMethod, routing.getMethod().getName());
+	}
 
+	public abstract class ParentAction extends Action {
+		public ActionResult m1() { return null; }
+	}
+	
+	public class ChildAction extends ParentAction {
+		public ActionResult m2() { return null; }
+		public Object m3() { return null; }
+	}
+	
 	class Query {
 		private String path;
 		private Map<String, List<String>> params;
