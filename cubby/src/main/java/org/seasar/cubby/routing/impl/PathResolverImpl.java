@@ -41,6 +41,7 @@ import org.seasar.cubby.controller.ClassDetector;
 import org.seasar.cubby.controller.DetectClassProcessor;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.cubby.exception.DuplicateRoutingRuntimeException;
+import org.seasar.cubby.exception.IllegalRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
@@ -186,7 +187,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	public void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
 			final RequestMethod... requestMethods) {
-
+		
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
 		if (requestMethods == null || requestMethods.length == 0) {
@@ -218,7 +219,12 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	private void add(final String actionPath,
 			final Class<? extends Action> actionClass, final Method method,
 			final RequestMethod requestMethod, final boolean auto) {
-
+		if (!CubbyUtils.isActionClass(actionClass)) {
+			throw new IllegalRoutingRuntimeException("ECUB0002", new Object[] { actionClass });
+		} else if (!CubbyUtils.isActionMethod(method)) {
+			throw new IllegalRoutingRuntimeException("ECUB0003", new Object[] { method });
+		}
+		
 		final Matcher matcher = URI_PARAMETER_MATCHING_PATTERN
 				.matcher(actionPath);
 		String uriRegex = actionPath;
