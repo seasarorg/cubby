@@ -23,6 +23,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.exception.ActionRuntimeException;
 import org.seasar.framework.util.ClassUtil;
@@ -166,8 +168,44 @@ public class CubbyUtilsTest extends TestCase {
 			fail();
 		} catch (ActionRuntimeException e) {
 			// ok
-			e.printStackTrace();
+			assertTrue(true);
 		}
 	}
+	
+	public void testIsActionClass() throws Exception {
+		assertTrue("アクションクラスであればtrue", CubbyUtils.isActionClass(ChildAction.class));
+		assertFalse("Actionを継承していないクラスはアクションクラスではない", CubbyUtils.isActionClass(Object.class));
+		assertFalse("抽象クラスはアクションクラスではない", CubbyUtils.isActionClass(ParentAction.class));
+	}
+	
+	public void testIsActionMethod() throws Exception {
+		assertTrue("親クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m1")));
+		assertTrue("オーバーライドした親クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m2")));
+		assertTrue("子クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m3")));
+		assertFalse("メソッドの引数が不正", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m4", int.class)));
+		assertFalse("メソッドの戻り値が不正", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m5")));
+	}
 
+	public abstract class ParentAction extends Action {
+		public ActionResult m1() {
+			return null; 
+		}
+		public abstract ActionResult m2();
+	}
+	
+	public class ChildAction extends ParentAction {
+		@Override
+		public ActionResult m2() {
+			return null;
+		}
+		public ActionResult m3() { 
+			return null; 
+		}
+		public ActionResult m4(int value) {
+			return null;
+		}
+		public Object m5() {
+			return null;
+		}
+	}
 }

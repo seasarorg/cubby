@@ -15,10 +15,12 @@
  */
 package org.seasar.cubby.util;
 
+import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
+
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Accept;
@@ -225,28 +227,41 @@ public class CubbyUtils {
 	}
 
 	/**
-	 * 指定されたクラスがアクションメソッドかを示します。
-	 * 
+	 * 指定されたクラスがアクションクラスかを示します。
+	 * <p>
+	 * アクションクラスは以下の条件を満たす必要があります。
+	 * </p>
+	 * <ul>
+	 * <li>{@code Action}クラスを継承</li>
+	 * <li>抽象クラスでない</li>
+	 * </ul>
 	 * @param clazz
 	 *            クラス
 	 * @return 指定されたクラスがアクションクラスの場合は <code>true</code>、そうでない場合は
 	 *         <code>false</code>
 	 */
 	public static boolean isActionClass(final Class<?> clazz) {
-		return Action.class.isAssignableFrom(clazz);
+		return Action.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers());
 	}
 
 	/**
 	 * 指定されたメソッドがアクションメソッドかを示します。
-	 * 
+	 * <p>
+	 * アクションメソッドは以下の条件を満たす必要があります。
+	 * </p>
+	 * <ul>
+	 * <li>publicなインスタンスメソッド</li>
+	 * <li>戻り値が{@code ActionResult}</li>
+	 * <li>引数が0</li>
+	 * </ul>
 	 * @param method
 	 *            メソッド
 	 * @return 指定されたメソッドがアクションメソッドの場合は <code>true</code>、そうでない場合は
 	 *         <code>false</code>
 	 */
 	public static boolean isActionMethod(final Method method) {
-		return method.getReturnType().isAssignableFrom(ActionResult.class)
-				&& method.getParameterTypes().length == 0;
+		return ActionResult.class.isAssignableFrom(method.getReturnType())
+				&& (method.getParameterTypes().length == 0);
 	}
 
 	/**
