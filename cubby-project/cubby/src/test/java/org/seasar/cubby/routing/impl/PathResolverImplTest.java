@@ -30,14 +30,13 @@ import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.controller.ClassDetector;
 import org.seasar.cubby.exception.IllegalRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
-import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.util.ClassUtil;
 
 public class PathResolverImplTest extends S2TestCase {
 
-	private PathResolver pathResolver;
+	private PathResolverImpl pathResolver;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -290,28 +289,27 @@ public class PathResolverImplTest extends S2TestCase {
 	}
 	
 	public void testAddAbstractClass() throws Exception {
-		PathResolverImpl resolver = new PathResolverImpl();
-		resolver.setClassDetector(new ClassDetector() { public void detect() {} });
+		pathResolver.setClassDetector(new ClassDetector() { public void detect() {} });
 		
 		try {
-			resolver.add("/parent/m1", ParentAction.class, "m1");
+			pathResolver.add("/parent/m1", ParentAction.class, "m1");
 			fail();
 		} catch (IllegalRoutingRuntimeException e) {
 			assertEquals("アクションクラスではないクラスを登録するとエラー(抽象クラス)", "ECUB0002", e.getMessageCode());
 		}
 		try {
-			resolver.add("/child/m3", ChildAction.class, "m3");
+			pathResolver.add("/child/m3", ChildAction.class, "m3");
 			fail();
 		} catch (IllegalRoutingRuntimeException e) {
 			assertEquals("アクションメソッドではないメソッドを登録するとエラー(戻り値がObject)", "ECUB0003", e.getMessageCode());
 		}
-		resolver.add("/child/m1", ChildAction.class, "m1");
-		resolver.add("/child/m2", ChildAction.class, "m2");
-		assertEquals("正常に登録できたルーティング情報の数", 4, resolver.getRoutings().size());
-		assertRouting(resolver.getRoutings().get(0), "/child/m1", RequestMethod.GET, ChildAction.class, "m1");
-		assertRouting(resolver.getRoutings().get(1), "/child/m1", RequestMethod.POST, ChildAction.class, "m1");
-		assertRouting(resolver.getRoutings().get(2), "/child/m2", RequestMethod.GET, ChildAction.class, "m2");
-		assertRouting(resolver.getRoutings().get(3), "/child/m2", RequestMethod.POST, ChildAction.class, "m2");
+		pathResolver.add("/child/m1", ChildAction.class, "m1");
+		pathResolver.add("/child/m2", ChildAction.class, "m2");
+		assertEquals("正常に登録できたルーティング情報の数", 4, pathResolver.getRoutings().size());
+		assertRouting(pathResolver.getRoutings().get(0), "/child/m1", RequestMethod.GET, ChildAction.class, "m1");
+		assertRouting(pathResolver.getRoutings().get(1), "/child/m1", RequestMethod.POST, ChildAction.class, "m1");
+		assertRouting(pathResolver.getRoutings().get(2), "/child/m2", RequestMethod.GET, ChildAction.class, "m2");
+		assertRouting(pathResolver.getRoutings().get(3), "/child/m2", RequestMethod.POST, ChildAction.class, "m2");
 	}
 	
 	private void assertRouting(Routing routing, String path,
