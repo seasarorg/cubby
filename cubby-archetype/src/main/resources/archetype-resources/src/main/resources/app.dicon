@@ -7,11 +7,11 @@
 #if ($use-s2dao.matches("(?i)y|yes|true|on"))
 	<include path="dao.dicon"/>
 #end
-	<include path="dxo.dicon"/>
 	<include path="routing.dicon"/>
 	<include path="cubby.dicon"/>
 #if ($use-s2jdbc.matches("(?i)y|yes|true|on"))
 	<include path="j2ee.dicon"/>
 	<include path="s2jdbc.dicon"/>
 #end
+	<include path="app-cubby.dicon"/>
 </components>
