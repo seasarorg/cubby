@@ -4,4 +4,5 @@
 <components namespace="cubby">
 	<include path="convention.dicon" />
 	<component class="org.seasar.cubby.controller.impl.ClassDetectorImpl" />
+	<component class="org.seasar.cubby.routing.impl.PathTemplateParserImpl" />
 </components>
