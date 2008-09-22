@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.routing.impl;
 
-import org.seasar.cubby.exception.IllegalPathTemplateException;
+import org.seasar.cubby.exception.PathTemplateParseException;
 import org.seasar.cubby.routing.PathTemplateParser;
 
 import junit.framework.TestCase;
@@ -44,7 +44,7 @@ public class PathTemplateParserImplTest extends TestCase {
 
 			});
 			fail();
-		} catch (IllegalPathTemplateException e) {
+		} catch (PathTemplateParseException e) {
 			// ok
 			e.printStackTrace();
 		}
@@ -171,6 +171,29 @@ public class PathTemplateParserImplTest extends TestCase {
 
 				});
 		assertEquals("/foo/bar/(\\{aa)/(a\\}a)", regex);
+	}
+
+	public void testParse6() {
+		String regex = parser.parse("/foo/bar/{abc,aa\\\\}",
+				new PathTemplateParser.Handler() {
+
+					private int count = 0;
+
+					public String handle(String name, String regex) {
+						switch (count) {
+						case 0:
+							assertEquals("abc", name);
+							assertEquals("aa\\\\", regex);
+							break;
+						default:
+							fail();
+						}
+						count++;
+						return "(" + regex + ")";
+					}
+
+				});
+		assertEquals("/foo/bar/(aa\\\\)", regex);
 	}
 
 }
