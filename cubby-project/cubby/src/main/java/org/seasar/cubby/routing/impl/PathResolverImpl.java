@@ -44,6 +44,7 @@ import org.seasar.cubby.exception.DuplicateRoutingRuntimeException;
 import org.seasar.cubby.exception.IllegalRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
@@ -70,13 +71,6 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	private static final Logger logger = Logger
 			.getLogger(PathResolverImpl.class);
 
-	/** アクションのパスからパラメータを抽出するための正規表現パターン */
-	private static Pattern URI_PARAMETER_MATCHING_PATTERN = Pattern
-			.compile("([{]([^}]+)[}])([^{]*)");
-
-	/** デフォルトの URI パラメータ正規表現 */
-	private static final String DEFAULT_URI_PARAMETER_REGEX = "[a-zA-Z0-9]+";
-
 	/** インスタンスが初期化済みであることを示します。 */
 	private boolean initialized;
 
@@ -92,6 +86,9 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 
 	/** クラスパスを走査してクラスを検出するクラス。 */
 	private ClassDetector classDetector;
+
+	/** パステンプレートのパーサー。 */
+	private PathTemplateParser pathTemplateParser;
 
 	/** 手動登録用のプライオリティカウンタ。 */
 	private int priorityCounter = 0;
@@ -117,10 +114,21 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * クラスパスを走査してクラスを検出するクラスを設定します。
 	 * 
 	 * @param classDetector
-	 *            クラスパスを走査してクラスを設定します。
+	 *            クラスパスを走査してクラスを検出するクラス
 	 */
 	public void setClassDetector(final ClassDetector classDetector) {
 		this.classDetector = classDetector;
+	}
+
+	/**
+	 * パステンプレートのパーサーを設定します。
+	 * 
+	 * @param pathTemplateParser
+	 *            パステンプレートのパーサー
+	 */
+	public void setPathTemplateParser(
+			final PathTemplateParser pathTemplateParser) {
+		this.pathTemplateParser = pathTemplateParser;
 	}
 
 	/**
@@ -187,7 +195,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	public void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
 			final RequestMethod... requestMethods) {
-		
+
 		final Method method = ClassUtil.getMethod(actionClass, methodName,
 				new Class<?>[0]);
 		if (requestMethods == null || requestMethods.length == 0) {
@@ -219,31 +227,26 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	private void add(final String actionPath,
 			final Class<? extends Action> actionClass, final Method method,
 			final RequestMethod requestMethod, final boolean auto) {
+
 		if (!CubbyUtils.isActionClass(actionClass)) {
-			throw new IllegalRoutingRuntimeException("ECUB0002", new Object[] { actionClass });
+			throw new IllegalRoutingRuntimeException("ECUB0002",
+					new Object[] { actionClass });
 		} else if (!CubbyUtils.isActionMethod(method)) {
-			throw new IllegalRoutingRuntimeException("ECUB0003", new Object[] { method });
+			throw new IllegalRoutingRuntimeException("ECUB0003",
+					new Object[] { method });
 		}
-		
-		final Matcher matcher = URI_PARAMETER_MATCHING_PATTERN
-				.matcher(actionPath);
-		String uriRegex = actionPath;
+
 		final List<String> uriParameterNames = new ArrayList<String>();
-		while (matcher.find()) {
-			final String holder = matcher.group(2);
-			final String[] tokens = CubbyUtils.split2(holder, ',');
-			uriParameterNames.add(tokens[0]);
-			final String uriParameterRegex;
-			if (tokens.length == 1) {
-				uriParameterRegex = DEFAULT_URI_PARAMETER_REGEX;
-			} else {
-				uriParameterRegex = tokens[1];
-			}
-			uriRegex = StringUtil.replace(uriRegex, matcher.group(1),
-					regexGroup(uriParameterRegex));
-		}
-		uriRegex = "^" + uriRegex + "$";
-		final Pattern pattern = Pattern.compile(uriRegex);
+		final String uriRegex = pathTemplateParser.parse(actionPath,
+				new PathTemplateParser.Handler() {
+
+					public String handle(final String name, final String regex) {
+						uriParameterNames.add(name);
+						return regexGroup(regex);
+					}
+
+				});
+		final Pattern pattern = Pattern.compile("^" + uriRegex + "$");
 
 		final String onSubmit = CubbyUtils.getOnSubmit(method);
 
@@ -339,10 +342,10 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	public String buildInternalForwardPath(
 			final Map<String, String[]> parameters,
 			final String characterEncoding) {
-		final StringBuilder builder = new StringBuilder(100);
-		builder.append(INTERNAL_FORWARD_DIRECTORY);
+		final StringBuilder path = new StringBuilder(100);
+		path.append(INTERNAL_FORWARD_DIRECTORY);
 		if (parameters != null && !parameters.isEmpty()) {
-			builder.append("?");
+			path.append("?");
 			final QueryStringBuilder query = new QueryStringBuilder();
 			if (!StringUtil.isEmpty(characterEncoding)) {
 				query.setEncode(characterEncoding);
@@ -352,9 +355,9 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 					query.addParam(entry.getKey(), parameter);
 				}
 			}
-			builder.append(query.toString());
+			path.append(query.toString());
 		}
-		return builder.toString();
+		return path.toString();
 	}
 
 	/**
@@ -447,35 +450,28 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 			final String characterEncoding) {
 		final Routing routing = findRouting(actionClass, methodName);
 		final String actionPath = routing.getActionPath();
-
-		final Matcher matcher = URI_PARAMETER_MATCHING_PATTERN
-				.matcher(actionPath);
 		final Map<String, String[]> copyOfParameters = new HashMap<String, String[]>(
 				parameters);
-		String redirectPath = actionPath;
-		while (matcher.find()) {
-			final String holder = matcher.group(2);
-			final String[] tokens = CubbyUtils.split2(holder, ',');
-			final String uriParameterName = tokens[0];
-			if (!copyOfParameters.containsKey(uriParameterName)) {
-				throw new ActionRuntimeException("ECUB0104", new Object[] {
-						actionPath, uriParameterName });
-			}
-			final String value = copyOfParameters.remove(uriParameterName)[0];
-			final String uriParameterRegex;
-			if (tokens.length == 1) {
-				uriParameterRegex = DEFAULT_URI_PARAMETER_REGEX;
-			} else {
-				uriParameterRegex = tokens[1];
-			}
-			if (!value.matches(uriParameterRegex)) {
-				throw new ActionRuntimeException("ECUB0105",
-						new Object[] { actionPath, uriParameterName, value,
-								uriParameterRegex });
-			}
-			redirectPath = StringUtil.replace(redirectPath, matcher.group(1),
-					encode(value, characterEncoding));
-		}
+		final StringBuilder path = new StringBuilder(100);
+		path.append(pathTemplateParser.parse(actionPath,
+				new PathTemplateParser.Handler() {
+
+					public String handle(final String name, final String regex) {
+						if (!copyOfParameters.containsKey(name)) {
+							throw new ActionRuntimeException("ECUB0104",
+									new Object[] { actionPath, name });
+						}
+						final String value = copyOfParameters.remove(name)[0];
+						if (!value.matches(regex)) {
+							throw new ActionRuntimeException("ECUB0105",
+									new Object[] { actionPath, name, value,
+											regex });
+						}
+						return encode(value, characterEncoding);
+					}
+
+				}));
+
 		if (!copyOfParameters.isEmpty()) {
 			final QueryStringBuilder builder = new QueryStringBuilder();
 			if (characterEncoding != null) {
@@ -487,10 +483,11 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 					builder.addParam(entry.getKey(), value);
 				}
 			}
-			redirectPath += "?" + builder.toString();
+			path.append('?');
+			path.append(builder.toString());
 		}
 
-		return redirectPath;
+		return path.toString();
 	}
 
 	/**
