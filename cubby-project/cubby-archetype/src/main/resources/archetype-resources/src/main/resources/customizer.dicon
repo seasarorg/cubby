@@ -14,6 +14,7 @@
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
+#if ($use-s2dao.matches("(?i)y|yes|true|on") || $use-s2jdbc.matches("(?i)y|yes|true|on"))
     <initMethod name="addCustomizer">
       <arg>
         <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
@@ -24,6 +25,7 @@
         </component>
       </arg>
     </initMethod>
+#end
     <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer"><arg>cubby.validationCustomizer</arg></initMethod>
   </component>
@@ -31,9 +33,11 @@
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
+#if ($use-s2dao.matches("(?i)y|yes|true|on") || $use-s2jdbc.matches("(?i)y|yes|true|on"))
     <initMethod name="addCustomizer">
       <arg>requiredTxCustomizer</arg>
     </initMethod>
+#end
   </component>
   <component name="logicCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">
@@ -44,9 +48,11 @@
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
+#if ($use-s2dao.matches("(?i)y|yes|true|on"))
     <initMethod name="addCustomizer">
       <arg>s2DaoCustomizer</arg>
     </initMethod>
+#end
   </component>
   <component name="dxoCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">
