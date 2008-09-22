@@ -18,12 +18,12 @@ package org.seasar.cubby.exception;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
- * パステンプレートが不正であることを表す例外です。
+ * パステンプレートのパースに失敗したことを表す例外です。
  * 
  * @author baba
  * @since 1.1.1
  */
-public class IllegalPathTemplateException extends SRuntimeException {
+public class PathTemplateParseException extends SRuntimeException {
 
 	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class IllegalPathTemplateException extends SRuntimeException {
 	 * @param cause
 	 *            この例外の原因
 	 */
-	public IllegalPathTemplateException(final String messageCode,
+	public PathTemplateParseException(final String messageCode,
 			final Object[] args, final Throwable cause) {
 		super(messageCode, args, cause);
 	}
@@ -51,7 +51,7 @@ public class IllegalPathTemplateException extends SRuntimeException {
 	 * @param args
 	 *            メッセージコードに対応するメッセージに対する置換文字列の配列
 	 */
-	public IllegalPathTemplateException(final String messageCode,
+	public PathTemplateParseException(final String messageCode,
 			final Object[] args) {
 		super(messageCode, args);
 	}
@@ -62,7 +62,7 @@ public class IllegalPathTemplateException extends SRuntimeException {
 	 * @param messageCode
 	 *            メッセージコード
 	 */
-	public IllegalPathTemplateException(final String messageCode) {
+	public PathTemplateParseException(final String messageCode) {
 		super(messageCode);
 	}
 

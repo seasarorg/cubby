@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.routing.impl;
 
-import org.seasar.cubby.exception.IllegalPathTemplateException;
+import org.seasar.cubby.exception.PathTemplateParseException;
 import org.seasar.cubby.routing.PathTemplateParser;
 
 /**
@@ -45,7 +45,7 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 	 * @since 1.1.1
 	 */
 	private enum State {
-		NORMAL, PARAM_NAME, PARAM_REGEX;
+		NORMAL, PARAM_NAME, PARAM_REGEX, PARAM_REGEX_ESCAPE;
 	}
 
 	/**
@@ -60,9 +60,9 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 		int braceDepth = 0;
 
 		for (int i = 0; i < template.length(); i++) {
+			final char c = template.charAt(i);
 			switch (state) {
 			case NORMAL: {
-				final char c = template.charAt(i);
 				if (c == OPEN_PLACE_HOLDER) {
 					state = State.PARAM_NAME;
 				} else {
@@ -71,10 +71,9 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 				break;
 			}
 			case PARAM_NAME: {
-				final char c = template.charAt(i);
 				if (c == CLOSE_PLACE_HOLDER) {
 					if (paramName.length() == 0) {
-						throw new IllegalPathTemplateException("ECUB0108",
+						throw new PathTemplateParseException("ECUB0108",
 								new Object[] { template, i });
 					}
 					final String replacement = handler.handle(paramName
@@ -91,16 +90,16 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 				break;
 			}
 			case PARAM_REGEX: {
-				final char b = i == 0 ? 0 : template.charAt(i - 1);
-				final char c = template.charAt(i);
-				if (b != REGEXP_ESCAPE && c == CLOSE_PLACE_HOLDER
-						&& braceDepth == 0) {
+				if (c == REGEXP_ESCAPE) {
+					paramRegex.append(c);
+					state = State.PARAM_REGEX_ESCAPE;
+				} else if (c == CLOSE_PLACE_HOLDER && braceDepth == 0) {
 					if (paramName.length() == 0) {
-						throw new IllegalPathTemplateException("ECUB0108",
+						throw new PathTemplateParseException("ECUB0108",
 								new Object[] { template, i });
 					}
 					if (paramRegex.length() == 0) {
-						throw new IllegalPathTemplateException("ECUB0109",
+						throw new PathTemplateParseException("ECUB0109",
 								new Object[] { template, i });
 					}
 					final String replacement = handler.handle(paramName
@@ -112,21 +111,26 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 					braceDepth = 0;
 					state = State.NORMAL;
 				} else {
-					if (b != REGEXP_ESCAPE) {
-						if (c == OPEN_PLACE_HOLDER) {
-							braceDepth++;
-						} else if (c == CLOSE_PLACE_HOLDER) {
-							braceDepth--;
-						}
+					if (c == OPEN_PLACE_HOLDER) {
+						braceDepth++;
+					} else if (c == CLOSE_PLACE_HOLDER) {
+						braceDepth--;
 					}
 					paramRegex.append(c);
 				}
 				break;
 			}
+			case PARAM_REGEX_ESCAPE: {
+				paramRegex.append(c);
+				state = State.PARAM_REGEX;
+				break;
+			}
+			default:
+				throw new IllegalStateException();
 			}
 		}
 		if (state != State.NORMAL) {
-			throw new IllegalPathTemplateException("ECUB0107",
+			throw new PathTemplateParseException("ECUB0107",
 					new Object[] { template });
 		}
 		return pathRegex.toString();
