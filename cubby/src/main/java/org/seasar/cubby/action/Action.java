@@ -92,7 +92,6 @@ public abstract class Action {
 	 * @since 1.1.0
 	 */
 	public void invokeInitializeMethod(final Method actionMethod) {
-		this.initialize();
 		if (actionMethod.isAnnotationPresent(InitializeMethod.class)) {
 			final InitializeMethod initializeMethod = actionMethod
 					.getAnnotation(InitializeMethod.class);
