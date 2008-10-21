@@ -25,17 +25,17 @@
 <a name="15" href="#15">15</a>  <em class="jxr_comment"> */</em>
 <a name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> org.seasar.cubby.validator;
 <a name="17" href="#17">17</a>  
-<a name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.seasar.cubby.validator.DefaultValidationRules.DATA_CONSTRAINT;
-<a name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.seasar.cubby.validator.DefaultValidationRules.DATA_TYPE;
-<a name="20" href="#20">20</a>  
-<a name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> java.util.Collection;
-<a name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
-<a name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a name="24" href="#24">24</a>  
-<a name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.ActionErrors;
-<a name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.ActionResult;
-<a name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Forward;
-<a name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Redirect;
+<a name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.seasar.cubby.validator.DefaultValidationRules.*;
+<a name="19" href="#19">19</a>  
+<a name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> java.util.Collection;
+<a name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
+<a name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a name="23" href="#23">23</a>  
+<a name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.ActionErrors;
+<a name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.ActionResult;
+<a name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Forward;
+<a name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.action.Redirect;
+<a name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.validators.EqualsValidator;
 <a name="29" href="#29">29</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.validators.MaxLengthValidator;
 <a name="30" href="#30">30</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.validators.NumberValidator;
 <a name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> org.seasar.cubby.validator.validators.RangeValidator;
@@ -143,7 +143,7 @@
 <a name="133" href="#133">133</a> 		ActionResult result = rules.fail(<span class="jxr_string">"error.jsp"</span>);
 <a name="134" href="#134">134</a> 		assertTrue(result instanceof Forward);
 <a name="135" href="#135">135</a> 		Forward forward = (Forward) result;
-<a name="136" href="#136">136</a> 		assertEquals(<span class="jxr_string">"error.jsp"</span>, forward.getPath());
+<a name="136" href="#136">136</a> 		assertEquals(<span class="jxr_string">"error.jsp"</span>, forward.getPath(<span class="jxr_string">"UTF-8"</span>));
 <a name="137" href="#137">137</a> 	}
 <a name="138" href="#138">138</a> 
 <a name="139" href="#139">139</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testFailOverride() {
@@ -160,7 +160,7 @@
 <a name="150" href="#150">150</a> 		ActionResult result = rules.fail(<span class="jxr_string">"error.jsp"</span>);
 <a name="151" href="#151">151</a> 		assertTrue(result instanceof Redirect);
 <a name="152" href="#152">152</a> 		Redirect redirect = (Redirect) result;
-<a name="153" href="#153">153</a> 		assertEquals(<span class="jxr_string">"error.jsp"</span>, redirect.getPath());
+<a name="153" href="#153">153</a> 		assertEquals(<span class="jxr_string">"error.jsp"</span>, redirect.getPath(<span class="jxr_string">"UTF-8"</span>));
 <a name="154" href="#154">154</a> 	}
 <a name="155" href="#155">155</a> 
 <a name="156" href="#156">156</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testValidationPhasePriority() {
@@ -188,26 +188,35 @@
 <a name="178" href="#178">178</a> 			@Override
 <a name="179" href="#179">179</a> 			<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initialize() {
 <a name="180" href="#180">180</a> 				add(<span class="jxr_string">"param1"</span>, <strong class="jxr_keyword">new</strong> RequiredValidator());
-<a name="181" href="#181">181</a> 			}
-<a name="182" href="#182">182</a> 		};
+<a name="181" href="#181">181</a> 				add(<span class="jxr_string">"param2"</span>, <strong class="jxr_keyword">new</strong> EqualsValidator(<span class="jxr_string">"a"</span>));
+<a name="182" href="#182">182</a> 				add(DATA_CONSTRAINT, <strong class="jxr_keyword">new</strong> ValidationRule() {
 <a name="183" href="#183">183</a> 
-<a name="184" href="#184">184</a> 		<strong class="jxr_keyword">final</strong> ValidationRules rules1 = <strong class="jxr_keyword">new</strong> DefaultValidationRules() {
-<a name="185" href="#185">185</a> 			@Override
-<a name="186" href="#186">186</a> 			<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initialize() {
-<a name="187" href="#187">187</a> 				addAll(base);
-<a name="188" href="#188">188</a> 			}
-<a name="189" href="#189">189</a> 		};
-<a name="190" href="#190">190</a> 
-<a name="191" href="#191">191</a> 		Collection&lt;ValidationRule&gt; dataTypeRules = rules1
-<a name="192" href="#192">192</a> 				.getPhaseValidationRules(DATA_TYPE);
-<a name="193" href="#193">193</a> 		Collection&lt;ValidationRule&gt; dataConstraintRules = rules1
-<a name="194" href="#194">194</a> 				.getPhaseValidationRules(DATA_CONSTRAINT);
-<a name="195" href="#195">195</a> 
-<a name="196" href="#196">196</a> 		assertEquals(1, dataTypeRules.size());
-<a name="197" href="#197">197</a> 		assertEquals(0, dataConstraintRules.size());
-<a name="198" href="#198">198</a> 	}
+<a name="184" href="#184">184</a> 					<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> apply(Map&lt;String, Object[]&gt; params,
+<a name="185" href="#185">185</a> 							Object form, ActionErrors errors)
+<a name="186" href="#186">186</a> 							<strong class="jxr_keyword">throws</strong> ValidationException {
+<a name="187" href="#187">187</a> 					}
+<a name="188" href="#188">188</a> 
+<a name="189" href="#189">189</a> 				});
+<a name="190" href="#190">190</a> 			}
+<a name="191" href="#191">191</a> 		};
+<a name="192" href="#192">192</a> 
+<a name="193" href="#193">193</a> 		<strong class="jxr_keyword">final</strong> ValidationRules rules = <strong class="jxr_keyword">new</strong> DefaultValidationRules() {
+<a name="194" href="#194">194</a> 			@Override
+<a name="195" href="#195">195</a> 			<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initialize() {
+<a name="196" href="#196">196</a> 				addAll(base);
+<a name="197" href="#197">197</a> 			}
+<a name="198" href="#198">198</a> 		};
 <a name="199" href="#199">199</a> 
-<a name="200" href="#200">200</a> }
+<a name="200" href="#200">200</a> 		Collection&lt;ValidationRule&gt; dataTypeRules = rules
+<a name="201" href="#201">201</a> 				.getPhaseValidationRules(DATA_TYPE);
+<a name="202" href="#202">202</a> 		Collection&lt;ValidationRule&gt; dataConstraintRules = rules
+<a name="203" href="#203">203</a> 				.getPhaseValidationRules(DATA_CONSTRAINT);
+<a name="204" href="#204">204</a> 
+<a name="205" href="#205">205</a> 		assertEquals(2, dataTypeRules.size());
+<a name="206" href="#206">206</a> 		assertEquals(1, dataConstraintRules.size());
+<a name="207" href="#207">207</a> 	}
+<a name="208" href="#208">208</a> 
+<a name="209" href="#209">209</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

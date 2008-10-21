@@ -102,102 +102,101 @@
 <a name="92" href="#92">92</a>  <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
 <a name="93" href="#93">93</a>  <em class="jxr_javadoccomment">	 */</em>
 <a name="94" href="#94">94</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invokeInitializeMethod(<strong class="jxr_keyword">final</strong> Method actionMethod) {
-<a name="95" href="#95">95</a>  		<strong class="jxr_keyword">this</strong>.initialize();
-<a name="96" href="#96">96</a>  		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(InitializeMethod.<strong class="jxr_keyword">class</strong>)) {
-<a name="97" href="#97">97</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/InitializeMethod.html">InitializeMethod</a> initializeMethod = actionMethod
-<a name="98" href="#98">98</a>  					.getAnnotation(InitializeMethod.<strong class="jxr_keyword">class</strong>);
-<a name="99" href="#99">99</a>  			<strong class="jxr_keyword">final</strong> String methodName = initializeMethod.value();
-<a name="100" href="#100">100</a> 			<strong class="jxr_keyword">this</strong>.invoke(methodName);
-<a name="101" href="#101">101</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="102" href="#102">102</a> 			<strong class="jxr_keyword">this</strong>.initialize();
-<a name="103" href="#103">103</a> 		}
-<a name="104" href="#104">104</a> 	}
-<a name="105" href="#105">105</a> 
-<a name="106" href="#106">106</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link InitializeMethod} で装飾されていない場合に</em>
-<a name="108" href="#108">108</a> <em class="jxr_javadoccomment">	 * {@link #invokeInitializeMethod(Method)} から呼ばれるメソッドです。</em>
-<a name="109" href="#109">109</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="110" href="#110">110</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initialize() {
-<a name="111" href="#111">111</a> 	}
-<a name="112" href="#112">112</a> 
-<a name="113" href="#113">113</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="114" href="#114">114</a> <em class="jxr_javadoccomment">	 * フォーワードの直前に呼ばれます。</em>
-<a name="115" href="#115">115</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="116" href="#116">116</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドが {@link PreRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。</em>
-<a name="117" href="#117">117</a> <em class="jxr_javadoccomment">	 * そうでない場合は {@link #prerender()} を呼び出します。</em>
-<a name="118" href="#118">118</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="119" href="#119">119</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="120" href="#120">120</a> <em class="jxr_javadoccomment">	 * 対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。</em>
-<a name="121" href="#121">121</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="122" href="#122">122</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="123" href="#123">123</a> <em class="jxr_javadoccomment">	 * @param actionMethod</em>
-<a name="124" href="#124">124</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
-<a name="125" href="#125">125</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="126" href="#126">126</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="127" href="#127">127</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invokePreRenderMethod(<strong class="jxr_keyword">final</strong> Method actionMethod) {
-<a name="128" href="#128">128</a> 		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(PreRenderMethod.<strong class="jxr_keyword">class</strong>)) {
-<a name="129" href="#129">129</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/PreRenderMethod.html">PreRenderMethod</a> preRenderMethod = actionMethod
-<a name="130" href="#130">130</a> 					.getAnnotation(PreRenderMethod.<strong class="jxr_keyword">class</strong>);
-<a name="131" href="#131">131</a> 			<strong class="jxr_keyword">final</strong> String methodName = preRenderMethod.value();
-<a name="132" href="#132">132</a> 			<strong class="jxr_keyword">this</strong>.invoke(methodName);
-<a name="133" href="#133">133</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="134" href="#134">134</a> 			<strong class="jxr_keyword">this</strong>.prerender();
-<a name="135" href="#135">135</a> 		}
-<a name="136" href="#136">136</a> 	}
-<a name="137" href="#137">137</a> 
-<a name="138" href="#138">138</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="139" href="#139">139</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link PreRenderMethod} で装飾されていない場合に</em>
-<a name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 * {@link #invokePreRenderMethod(Method)} から呼ばれるメソッドです。</em>
-<a name="141" href="#141">141</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="142" href="#142">142</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> prerender() {
-<a name="143" href="#143">143</a> 	}
-<a name="144" href="#144">144</a> 
-<a name="145" href="#145">145</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 * フォワードの直後に呼ばれます。</em>
-<a name="147" href="#147">147</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="148" href="#148">148</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドが {@link PostRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。</em>
-<a name="149" href="#149">149</a> <em class="jxr_javadoccomment">	 * そうでない場合は {@link #postrender()} を呼び出します。</em>
-<a name="150" href="#150">150</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="151" href="#151">151</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="152" href="#152">152</a> <em class="jxr_javadoccomment">	 * 通常はあまり使用することはないでしょう。</em>
-<a name="153" href="#153">153</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * @param actionMethod</em>
-<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
-<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="159" href="#159">159</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invokePostRenderMethod(<strong class="jxr_keyword">final</strong> Method actionMethod) {
-<a name="160" href="#160">160</a> 		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(PostRenderMethod.<strong class="jxr_keyword">class</strong>)) {
-<a name="161" href="#161">161</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/PostRenderMethod.html">PostRenderMethod</a> postRenderMethod = actionMethod
-<a name="162" href="#162">162</a> 					.getAnnotation(PostRenderMethod.<strong class="jxr_keyword">class</strong>);
-<a name="163" href="#163">163</a> 			<strong class="jxr_keyword">final</strong> String methodName = postRenderMethod.value();
-<a name="164" href="#164">164</a> 			<strong class="jxr_keyword">this</strong>.invoke(methodName);
-<a name="165" href="#165">165</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="166" href="#166">166</a> 			<strong class="jxr_keyword">this</strong>.postrender();
-<a name="167" href="#167">167</a> 		}
-<a name="168" href="#168">168</a> 	}
-<a name="169" href="#169">169</a> 
-<a name="170" href="#170">170</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="171" href="#171">171</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link PostRenderMethod} で装飾されていない場合に</em>
-<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 * {@link #invokePostRenderMethod(Method)} から呼ばれるメソッドです。</em>
-<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="174" href="#174">174</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> postrender() {
-<a name="175" href="#175">175</a> 	}
-<a name="176" href="#176">176</a> 
-<a name="177" href="#177">177</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">	 * このアクションに定義された指定されたメソッド名のメソッドを実行します。</em>
-<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="180" href="#180">180</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
-<a name="181" href="#181">181</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
-<a name="182" href="#182">182</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="183" href="#183">183</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="184" href="#184">184</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> invoke(<strong class="jxr_keyword">final</strong> String methodName) {
-<a name="185" href="#185">185</a> 		<strong class="jxr_keyword">final</strong> Method method = ClassUtil.getMethod(<strong class="jxr_keyword">this</strong>.getClass(), methodName,
-<a name="186" href="#186">186</a> 				<strong class="jxr_keyword">null</strong>);
-<a name="187" href="#187">187</a> 		MethodUtil.invoke(method, <strong class="jxr_keyword">this</strong>, <strong class="jxr_keyword">null</strong>);
-<a name="188" href="#188">188</a> 	}
-<a name="189" href="#189">189</a> 
-<a name="190" href="#190">190</a> }
+<a name="95" href="#95">95</a>  		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(InitializeMethod.<strong class="jxr_keyword">class</strong>)) {
+<a name="96" href="#96">96</a>  			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/InitializeMethod.html">InitializeMethod</a> initializeMethod = actionMethod
+<a name="97" href="#97">97</a>  					.getAnnotation(InitializeMethod.<strong class="jxr_keyword">class</strong>);
+<a name="98" href="#98">98</a>  			<strong class="jxr_keyword">final</strong> String methodName = initializeMethod.value();
+<a name="99" href="#99">99</a>  			<strong class="jxr_keyword">this</strong>.invoke(methodName);
+<a name="100" href="#100">100</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="101" href="#101">101</a> 			<strong class="jxr_keyword">this</strong>.initialize();
+<a name="102" href="#102">102</a> 		}
+<a name="103" href="#103">103</a> 	}
+<a name="104" href="#104">104</a> 
+<a name="105" href="#105">105</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="106" href="#106">106</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link InitializeMethod} で装飾されていない場合に</em>
+<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 * {@link #invokeInitializeMethod(Method)} から呼ばれるメソッドです。</em>
+<a name="108" href="#108">108</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="109" href="#109">109</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initialize() {
+<a name="110" href="#110">110</a> 	}
+<a name="111" href="#111">111</a> 
+<a name="112" href="#112">112</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="113" href="#113">113</a> <em class="jxr_javadoccomment">	 * フォーワードの直前に呼ばれます。</em>
+<a name="114" href="#114">114</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="115" href="#115">115</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドが {@link PreRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。</em>
+<a name="116" href="#116">116</a> <em class="jxr_javadoccomment">	 * そうでない場合は {@link #prerender()} を呼び出します。</em>
+<a name="117" href="#117">117</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="118" href="#118">118</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="119" href="#119">119</a> <em class="jxr_javadoccomment">	 * 対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。</em>
+<a name="120" href="#120">120</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="121" href="#121">121</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="122" href="#122">122</a> <em class="jxr_javadoccomment">	 * @param actionMethod</em>
+<a name="123" href="#123">123</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
+<a name="124" href="#124">124</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="125" href="#125">125</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="126" href="#126">126</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invokePreRenderMethod(<strong class="jxr_keyword">final</strong> Method actionMethod) {
+<a name="127" href="#127">127</a> 		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(PreRenderMethod.<strong class="jxr_keyword">class</strong>)) {
+<a name="128" href="#128">128</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/PreRenderMethod.html">PreRenderMethod</a> preRenderMethod = actionMethod
+<a name="129" href="#129">129</a> 					.getAnnotation(PreRenderMethod.<strong class="jxr_keyword">class</strong>);
+<a name="130" href="#130">130</a> 			<strong class="jxr_keyword">final</strong> String methodName = preRenderMethod.value();
+<a name="131" href="#131">131</a> 			<strong class="jxr_keyword">this</strong>.invoke(methodName);
+<a name="132" href="#132">132</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="133" href="#133">133</a> 			<strong class="jxr_keyword">this</strong>.prerender();
+<a name="134" href="#134">134</a> 		}
+<a name="135" href="#135">135</a> 	}
+<a name="136" href="#136">136</a> 
+<a name="137" href="#137">137</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="138" href="#138">138</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link PreRenderMethod} で装飾されていない場合に</em>
+<a name="139" href="#139">139</a> <em class="jxr_javadoccomment">	 * {@link #invokePreRenderMethod(Method)} から呼ばれるメソッドです。</em>
+<a name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="141" href="#141">141</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> prerender() {
+<a name="142" href="#142">142</a> 	}
+<a name="143" href="#143">143</a> 
+<a name="144" href="#144">144</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="145" href="#145">145</a> <em class="jxr_javadoccomment">	 * フォワードの直後に呼ばれます。</em>
+<a name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="147" href="#147">147</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドが {@link PostRenderMethod} でメソッド名が指定されている場合はそのメソッドを呼び出します。</em>
+<a name="148" href="#148">148</a> <em class="jxr_javadoccomment">	 * そうでない場合は {@link #postrender()} を呼び出します。</em>
+<a name="149" href="#149">149</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="150" href="#150">150</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="151" href="#151">151</a> <em class="jxr_javadoccomment">	 * 通常はあまり使用することはないでしょう。</em>
+<a name="152" href="#152">152</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="153" href="#153">153</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 * @param actionMethod</em>
+<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 *            アクションメソッド</em>
+<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="158" href="#158">158</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> invokePostRenderMethod(<strong class="jxr_keyword">final</strong> Method actionMethod) {
+<a name="159" href="#159">159</a> 		<strong class="jxr_keyword">if</strong> (actionMethod.isAnnotationPresent(PostRenderMethod.<strong class="jxr_keyword">class</strong>)) {
+<a name="160" href="#160">160</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/PostRenderMethod.html">PostRenderMethod</a> postRenderMethod = actionMethod
+<a name="161" href="#161">161</a> 					.getAnnotation(PostRenderMethod.<strong class="jxr_keyword">class</strong>);
+<a name="162" href="#162">162</a> 			<strong class="jxr_keyword">final</strong> String methodName = postRenderMethod.value();
+<a name="163" href="#163">163</a> 			<strong class="jxr_keyword">this</strong>.invoke(methodName);
+<a name="164" href="#164">164</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="165" href="#165">165</a> 			<strong class="jxr_keyword">this</strong>.postrender();
+<a name="166" href="#166">166</a> 		}
+<a name="167" href="#167">167</a> 	}
+<a name="168" href="#168">168</a> 
+<a name="169" href="#169">169</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="170" href="#170">170</a> <em class="jxr_javadoccomment">	 * アクションメソッドが {@link PostRenderMethod} で装飾されていない場合に</em>
+<a name="171" href="#171">171</a> <em class="jxr_javadoccomment">	 * {@link #invokePostRenderMethod(Method)} から呼ばれるメソッドです。</em>
+<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="173" href="#173">173</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> postrender() {
+<a name="174" href="#174">174</a> 	}
+<a name="175" href="#175">175</a> 
+<a name="176" href="#176">176</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="177" href="#177">177</a> <em class="jxr_javadoccomment">	 * このアクションに定義された指定されたメソッド名のメソッドを実行します。</em>
+<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
+<a name="180" href="#180">180</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
+<a name="181" href="#181">181</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="182" href="#182">182</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="183" href="#183">183</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> invoke(<strong class="jxr_keyword">final</strong> String methodName) {
+<a name="184" href="#184">184</a> 		<strong class="jxr_keyword">final</strong> Method method = ClassUtil.getMethod(<strong class="jxr_keyword">this</strong>.getClass(), methodName,
+<a name="185" href="#185">185</a> 				<strong class="jxr_keyword">null</strong>);
+<a name="186" href="#186">186</a> 		MethodUtil.invoke(method, <strong class="jxr_keyword">this</strong>, <strong class="jxr_keyword">null</strong>);
+<a name="187" href="#187">187</a> 	}
+<a name="188" href="#188">188</a> 
+<a name="189" href="#189">189</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

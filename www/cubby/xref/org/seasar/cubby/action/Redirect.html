@@ -123,377 +123,431 @@
 <a name="113" href="#113">113</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト先のポート。 */</em>
 <a name="114" href="#114">114</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> port;
 <a name="115" href="#115">115</a> 
-<a name="116" href="#116">116</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト先のアクションクラス */</em>
+<a name="116" href="#116">116</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト先のアクションクラス。 */</em>
 <a name="117" href="#117">117</a> 	<strong class="jxr_keyword">private</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass;
 <a name="118" href="#118">118</a> 
-<a name="119" href="#119">119</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト先のアクションクラスのメソッド名 */</em>
+<a name="119" href="#119">119</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト先のアクションクラスのメソッド名。 */</em>
 <a name="120" href="#120">120</a> 	<strong class="jxr_keyword">private</strong> String methodName;
 <a name="121" href="#121">121</a> 
-<a name="122" href="#122">122</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト時のパラメータ */</em>
+<a name="122" href="#122">122</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> リダイレクト時のパラメータ。 */</em>
 <a name="123" href="#123">123</a> 	<strong class="jxr_keyword">private</strong> Map&lt;String, String[]&gt; parameters;
 <a name="124" href="#124">124</a> 
-<a name="125" href="#125">125</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="126" href="#126">126</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
-<a name="127" href="#127">127</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="128" href="#128">128</a> <em class="jxr_javadoccomment">	 * @param path</em>
-<a name="129" href="#129">129</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
-<a name="130" href="#130">130</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="131" href="#131">131</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path) {
-<a name="132" href="#132">132</a> 		<strong class="jxr_keyword">this</strong>(path, <strong class="jxr_keyword">null</strong>);
-<a name="133" href="#133">133</a> 	}
-<a name="134" href="#134">134</a> 
-<a name="135" href="#135">135</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="136" href="#136">136</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
-<a name="137" href="#137">137</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="138" href="#138">138</a> <em class="jxr_javadoccomment">	 * @param path</em>
-<a name="139" href="#139">139</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
-<a name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
-<a name="141" href="#141">141</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
-<a name="142" href="#142">142</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="143" href="#143">143</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="144" href="#144">144</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path, <strong class="jxr_keyword">final</strong> String protocol) {
-<a name="145" href="#145">145</a> 		<strong class="jxr_keyword">this</strong>(path, protocol, -1);
-<a name="146" href="#146">146</a> 	}
-<a name="147" href="#147">147</a> 
-<a name="148" href="#148">148</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="149" href="#149">149</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
-<a name="150" href="#150">150</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="151" href="#151">151</a> <em class="jxr_javadoccomment">	 * @param path</em>
-<a name="152" href="#152">152</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
-<a name="153" href="#153">153</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
-<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
-<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * @param port</em>
-<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のポート</em>
-<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="159" href="#159">159</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path, <strong class="jxr_keyword">final</strong> String protocol, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> port) {
-<a name="160" href="#160">160</a> 		<strong class="jxr_keyword">this</strong>.path = path;
-<a name="161" href="#161">161</a> 		<strong class="jxr_keyword">this</strong>.protocol = protocol;
-<a name="162" href="#162">162</a> 		<strong class="jxr_keyword">this</strong>.port = port;
-<a name="163" href="#163">163</a> 	}
-<a name="164" href="#164">164</a> 
-<a name="165" href="#165">165</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="166" href="#166">166</a> <em class="jxr_javadoccomment">	 * 指定されたアクションクラスのindexメソッドへリダイレクトするインスタンスを生成します。</em>
-<a name="167" href="#167">167</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="168" href="#168">168</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="169" href="#169">169</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="170" href="#170">170</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
-<a name="171" href="#171">171</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
-<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="174" href="#174">174</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass) {
-<a name="175" href="#175">175</a> 		<strong class="jxr_keyword">this</strong>(actionClass, <span class="jxr_string">"index"</span>);
-<a name="176" href="#176">176</a> 	}
-<a name="177" href="#177">177</a> 
-<a name="178" href="#178">178</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
-<a name="180" href="#180">180</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="181" href="#181">181</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="182" href="#182">182</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="183" href="#183">183</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
-<a name="184" href="#184">184</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
-<a name="185" href="#185">185</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
-<a name="186" href="#186">186</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
-<a name="187" href="#187">187</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="188" href="#188">188</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="189" href="#189">189</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="190" href="#190">190</a> 			<strong class="jxr_keyword">final</strong> String methodName) {
-<a name="191" href="#191">191</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, EMPTY_PARAMETERS);
-<a name="192" href="#192">192</a> 	}
-<a name="193" href="#193">193</a> 
-<a name="194" href="#194">194</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="195" href="#195">195</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
-<a name="196" href="#196">196</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="197" href="#197">197</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="198" href="#198">198</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="199" href="#199">199</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
-<a name="200" href="#200">200</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
-<a name="201" href="#201">201</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
-<a name="202" href="#202">202</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
-<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
-<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
-<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="207" href="#207">207</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="208" href="#208">208</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters) {
-<a name="209" href="#209">209</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, parameters, <strong class="jxr_keyword">null</strong>);
-<a name="210" href="#210">210</a> 	}
-<a name="211" href="#211">211</a> 
-<a name="212" href="#212">212</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="213" href="#213">213</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
-<a name="214" href="#214">214</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="215" href="#215">215</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="216" href="#216">216</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="217" href="#217">217</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
-<a name="218" href="#218">218</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
-<a name="219" href="#219">219</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
-<a name="220" href="#220">220</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
-<a name="221" href="#221">221</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
-<a name="222" href="#222">222</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
-<a name="223" href="#223">223</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
-<a name="224" href="#224">224</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
-<a name="225" href="#225">225</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="226" href="#226">226</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="227" href="#227">227</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="228" href="#228">228</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters,
-<a name="229" href="#229">229</a> 			<strong class="jxr_keyword">final</strong> String protocol) {
-<a name="230" href="#230">230</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, parameters, protocol, -1);
-<a name="231" href="#231">231</a> 	}
-<a name="232" href="#232">232</a> 
-<a name="233" href="#233">233</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="234" href="#234">234</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
-<a name="235" href="#235">235</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="236" href="#236">236</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="237" href="#237">237</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="238" href="#238">238</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
-<a name="239" href="#239">239</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
-<a name="240" href="#240">240</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
-<a name="241" href="#241">241</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
-<a name="242" href="#242">242</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
-<a name="243" href="#243">243</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
-<a name="244" href="#244">244</a> <em class="jxr_javadoccomment">	 * @param port</em>
-<a name="245" href="#245">245</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のポート</em>
-<a name="246" href="#246">246</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
-<a name="247" href="#247">247</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
-<a name="248" href="#248">248</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="249" href="#249">249</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="250" href="#250">250</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="251" href="#251">251</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters,
-<a name="252" href="#252">252</a> 			<strong class="jxr_keyword">final</strong> String protocol, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> port) {
-<a name="253" href="#253">253</a> 		<strong class="jxr_keyword">this</strong>.actionClass = actionClass;
-<a name="254" href="#254">254</a> 		<strong class="jxr_keyword">this</strong>.methodName = methodName;
-<a name="255" href="#255">255</a> 		<strong class="jxr_keyword">this</strong>.parameters = parameters;
-<a name="256" href="#256">256</a> 		<strong class="jxr_keyword">this</strong>.protocol = protocol;
-<a name="257" href="#257">257</a> 		<strong class="jxr_keyword">this</strong>.port = port;
-<a name="258" href="#258">258</a> 	}
-<a name="259" href="#259">259</a> 
-<a name="260" href="#260">260</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="261" href="#261">261</a> <em class="jxr_javadoccomment">	 * パスを取得します。</em>
-<a name="262" href="#262">262</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="263" href="#263">263</a> <em class="jxr_javadoccomment">	 * @return パス</em>
-<a name="264" href="#264">264</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="265" href="#265">265</a> 	<strong class="jxr_keyword">public</strong> String getPath() {
-<a name="266" href="#266">266</a> 		<strong class="jxr_keyword">if</strong> (isReverseLookupRedirect()) {
-<a name="267" href="#267">267</a> 			<strong class="jxr_keyword">final</strong> S2Container container = SingletonS2ContainerFactory
-<a name="268" href="#268">268</a> 			.getContainer();
-<a name="269" href="#269">269</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/routing/PathResolver.html">PathResolver</a> pathResolver = (PathResolver) container
-<a name="270" href="#270">270</a> 			.getComponent(PathResolver.<strong class="jxr_keyword">class</strong>);
-<a name="271" href="#271">271</a> 			<strong class="jxr_keyword">final</strong> String redirectPath = pathResolver.reverseLookup(actionClass,
-<a name="272" href="#272">272</a> 			methodName, parameters);
-<a name="273" href="#273">273</a> 			<strong class="jxr_keyword">this</strong>.path = redirectPath;
-<a name="274" href="#274">274</a> 		}
-<a name="275" href="#275">275</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.path;
-<a name="276" href="#276">276</a> 	}
-<a name="277" href="#277">277</a> 	
-<a name="278" href="#278">278</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="279" href="#279">279</a> <em class="jxr_javadoccomment">	 * アクションクラスを指定したリダイレクトかどうかを判定します。</em>
-<a name="280" href="#280">280</a> <em class="jxr_javadoccomment">	 * @return アクションクラスを指定したリダイレクトならtrue</em>
-<a name="281" href="#281">281</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="282" href="#282">282</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isReverseLookupRedirect() {
-<a name="283" href="#283">283</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.actionClass != <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.methodName != <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.parameters != <strong class="jxr_keyword">null</strong>;
+<a name="125" href="#125">125</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> URI のエンコーディング。 */</em>
+<a name="126" href="#126">126</a> 	<strong class="jxr_keyword">private</strong> String characterEncoding;
+<a name="127" href="#127">127</a> 
+<a name="128" href="#128">128</a> 	<em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> URL をエンコードするか。 */</em>
+<a name="129" href="#129">129</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> encodeURL = <strong class="jxr_keyword">true</strong>;
+<a name="130" href="#130">130</a> 
+<a name="131" href="#131">131</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="132" href="#132">132</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
+<a name="133" href="#133">133</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="134" href="#134">134</a> <em class="jxr_javadoccomment">	 * @param path</em>
+<a name="135" href="#135">135</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
+<a name="136" href="#136">136</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="137" href="#137">137</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path) {
+<a name="138" href="#138">138</a> 		<strong class="jxr_keyword">this</strong>(path, <strong class="jxr_keyword">null</strong>);
+<a name="139" href="#139">139</a> 	}
+<a name="140" href="#140">140</a> 
+<a name="141" href="#141">141</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="142" href="#142">142</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
+<a name="143" href="#143">143</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="144" href="#144">144</a> <em class="jxr_javadoccomment">	 * @param path</em>
+<a name="145" href="#145">145</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
+<a name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
+<a name="147" href="#147">147</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
+<a name="148" href="#148">148</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="149" href="#149">149</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="150" href="#150">150</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path, <strong class="jxr_keyword">final</strong> String protocol) {
+<a name="151" href="#151">151</a> 		<strong class="jxr_keyword">this</strong>(path, protocol, -1);
+<a name="152" href="#152">152</a> 	}
+<a name="153" href="#153">153</a> 
+<a name="154" href="#154">154</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * インスタンスを生成します。</em>
+<a name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * @param path</em>
+<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のパス</em>
+<a name="159" href="#159">159</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
+<a name="160" href="#160">160</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
+<a name="161" href="#161">161</a> <em class="jxr_javadoccomment">	 * @param port</em>
+<a name="162" href="#162">162</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のポート</em>
+<a name="163" href="#163">163</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="164" href="#164">164</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="165" href="#165">165</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> String path, <strong class="jxr_keyword">final</strong> String protocol, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> port) {
+<a name="166" href="#166">166</a> 		<strong class="jxr_keyword">this</strong>.path = path;
+<a name="167" href="#167">167</a> 		<strong class="jxr_keyword">this</strong>.protocol = protocol;
+<a name="168" href="#168">168</a> 		<strong class="jxr_keyword">this</strong>.port = port;
+<a name="169" href="#169">169</a> 	}
+<a name="170" href="#170">170</a> 
+<a name="171" href="#171">171</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="172" href="#172">172</a> <em class="jxr_javadoccomment">	 * 指定されたアクションクラスのindexメソッドへリダイレクトするインスタンスを生成します。</em>
+<a name="173" href="#173">173</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="174" href="#174">174</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="175" href="#175">175</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="176" href="#176">176</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
+<a name="177" href="#177">177</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
+<a name="178" href="#178">178</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="179" href="#179">179</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="180" href="#180">180</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass) {
+<a name="181" href="#181">181</a> 		<strong class="jxr_keyword">this</strong>(actionClass, <span class="jxr_string">"index"</span>);
+<a name="182" href="#182">182</a> 	}
+<a name="183" href="#183">183</a> 
+<a name="184" href="#184">184</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="185" href="#185">185</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
+<a name="186" href="#186">186</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="187" href="#187">187</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="188" href="#188">188</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="189" href="#189">189</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
+<a name="190" href="#190">190</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
+<a name="191" href="#191">191</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
+<a name="192" href="#192">192</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
+<a name="193" href="#193">193</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="194" href="#194">194</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="195" href="#195">195</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="196" href="#196">196</a> 			<strong class="jxr_keyword">final</strong> String methodName) {
+<a name="197" href="#197">197</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, EMPTY_PARAMETERS);
+<a name="198" href="#198">198</a> 	}
+<a name="199" href="#199">199</a> 
+<a name="200" href="#200">200</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="201" href="#201">201</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
+<a name="202" href="#202">202</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
+<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
+<a name="207" href="#207">207</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
+<a name="208" href="#208">208</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
+<a name="209" href="#209">209</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
+<a name="210" href="#210">210</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
+<a name="211" href="#211">211</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="212" href="#212">212</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="213" href="#213">213</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="214" href="#214">214</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters) {
+<a name="215" href="#215">215</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, parameters, <strong class="jxr_keyword">null</strong>);
+<a name="216" href="#216">216</a> 	}
+<a name="217" href="#217">217</a> 
+<a name="218" href="#218">218</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="219" href="#219">219</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
+<a name="220" href="#220">220</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="221" href="#221">221</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="222" href="#222">222</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="223" href="#223">223</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
+<a name="224" href="#224">224</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
+<a name="225" href="#225">225</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
+<a name="226" href="#226">226</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
+<a name="227" href="#227">227</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
+<a name="228" href="#228">228</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
+<a name="229" href="#229">229</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
+<a name="230" href="#230">230</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
+<a name="231" href="#231">231</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="232" href="#232">232</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="233" href="#233">233</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="234" href="#234">234</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters,
+<a name="235" href="#235">235</a> 			<strong class="jxr_keyword">final</strong> String protocol) {
+<a name="236" href="#236">236</a> 		<strong class="jxr_keyword">this</strong>(actionClass, methodName, parameters, protocol, -1);
+<a name="237" href="#237">237</a> 	}
+<a name="238" href="#238">238</a> 
+<a name="239" href="#239">239</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="240" href="#240">240</a> <em class="jxr_javadoccomment">	 * 指定されたアクションメソッドへリダイレクトするインスタンスを生成します。</em>
+<a name="241" href="#241">241</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="242" href="#242">242</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="243" href="#243">243</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="244" href="#244">244</a> <em class="jxr_javadoccomment">	 * @param methodName</em>
+<a name="245" href="#245">245</a> <em class="jxr_javadoccomment">	 *            メソッド名</em>
+<a name="246" href="#246">246</a> <em class="jxr_javadoccomment">	 * @param parameters</em>
+<a name="247" href="#247">247</a> <em class="jxr_javadoccomment">	 *            パラメータ</em>
+<a name="248" href="#248">248</a> <em class="jxr_javadoccomment">	 * @param protocol</em>
+<a name="249" href="#249">249</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のプロトコル</em>
+<a name="250" href="#250">250</a> <em class="jxr_javadoccomment">	 * @param port</em>
+<a name="251" href="#251">251</a> <em class="jxr_javadoccomment">	 *            リダイレクト先のポート</em>
+<a name="252" href="#252">252</a> <em class="jxr_javadoccomment">	 * @throws org.seasar.cubby.exception.ActionRuntimeException</em>
+<a name="253" href="#253">253</a> <em class="jxr_javadoccomment">	 *             リダイレクト先パスの構築に失敗した場合</em>
+<a name="254" href="#254">254</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="255" href="#255">255</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="256" href="#256">256</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="257" href="#257">257</a> 			<strong class="jxr_keyword">final</strong> String methodName, <strong class="jxr_keyword">final</strong> Map&lt;String, String[]&gt; parameters,
+<a name="258" href="#258">258</a> 			<strong class="jxr_keyword">final</strong> String protocol, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> port) {
+<a name="259" href="#259">259</a> 		<strong class="jxr_keyword">this</strong>.actionClass = actionClass;
+<a name="260" href="#260">260</a> 		<strong class="jxr_keyword">this</strong>.methodName = methodName;
+<a name="261" href="#261">261</a> 		<strong class="jxr_keyword">this</strong>.parameters = parameters;
+<a name="262" href="#262">262</a> 		<strong class="jxr_keyword">this</strong>.protocol = protocol;
+<a name="263" href="#263">263</a> 		<strong class="jxr_keyword">this</strong>.port = port;
+<a name="264" href="#264">264</a> 	}
+<a name="265" href="#265">265</a> 
+<a name="266" href="#266">266</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="267" href="#267">267</a> <em class="jxr_javadoccomment">	 * パスを取得します。</em>
+<a name="268" href="#268">268</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="269" href="#269">269</a> <em class="jxr_javadoccomment">	 * @param characterEncoding</em>
+<a name="270" href="#270">270</a> <em class="jxr_javadoccomment">	 *            URI のエンコーディング</em>
+<a name="271" href="#271">271</a> <em class="jxr_javadoccomment">	 * @return パス</em>
+<a name="272" href="#272">272</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="273" href="#273">273</a> 	<strong class="jxr_keyword">public</strong> String getPath(<strong class="jxr_keyword">final</strong> String characterEncoding) {
+<a name="274" href="#274">274</a> 		<strong class="jxr_keyword">if</strong> (isReverseLookupRedirect()) {
+<a name="275" href="#275">275</a> 			<strong class="jxr_keyword">final</strong> S2Container container = SingletonS2ContainerFactory
+<a name="276" href="#276">276</a> 					.getContainer();
+<a name="277" href="#277">277</a> 			<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/routing/PathResolver.html">PathResolver</a> pathResolver = (PathResolver) container
+<a name="278" href="#278">278</a> 					.getComponent(PathResolver.<strong class="jxr_keyword">class</strong>);
+<a name="279" href="#279">279</a> 			<strong class="jxr_keyword">final</strong> String redirectPath = pathResolver.reverseLookup(actionClass,
+<a name="280" href="#280">280</a> 					methodName, parameters, characterEncoding);
+<a name="281" href="#281">281</a> 			<strong class="jxr_keyword">this</strong>.path = redirectPath;
+<a name="282" href="#282">282</a> 		}
+<a name="283" href="#283">283</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.path;
 <a name="284" href="#284">284</a> 	}
 <a name="285" href="#285">285</a> 
 <a name="286" href="#286">286</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="287" href="#287">287</a> <em class="jxr_javadoccomment">	 * {@inheritDoc}</em>
-<a name="288" href="#288">288</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="289" href="#289">289</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute(<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/Action.html">Action</a> action,
-<a name="290" href="#290">290</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass, <strong class="jxr_keyword">final</strong> Method method,
-<a name="291" href="#291">291</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request, <strong class="jxr_keyword">final</strong> HttpServletResponse response)
-<a name="292" href="#292">292</a> 			<strong class="jxr_keyword">throws</strong> Exception {
-<a name="293" href="#293">293</a> 		<strong class="jxr_keyword">final</strong> String redirectURL = calculateRedirectURL(getPath(), actionClass,
-<a name="294" href="#294">294</a> 				request);
-<a name="295" href="#295">295</a> 		<strong class="jxr_keyword">final</strong> String encodedRedirectURL = encodeURL(redirectURL, response);
-<a name="296" href="#296">296</a> 		<strong class="jxr_keyword">if</strong> (logger.isDebugEnabled()) {
-<a name="297" href="#297">297</a> 			logger.log(<span class="jxr_string">"DCUB0003"</span>, <strong class="jxr_keyword">new</strong> String[] { encodedRedirectURL });
-<a name="298" href="#298">298</a> 		}
-<a name="299" href="#299">299</a> 		response.sendRedirect(encodedRedirectURL);
-<a name="300" href="#300">300</a> 	}
-<a name="301" href="#301">301</a> 
-<a name="302" href="#302">302</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="303" href="#303">303</a> <em class="jxr_javadoccomment">	 * リダイレクトする URL を計算します。</em>
-<a name="304" href="#304">304</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="305" href="#305">305</a> <em class="jxr_javadoccomment">	 * @param path</em>
-<a name="306" href="#306">306</a> <em class="jxr_javadoccomment">	 *            パス</em>
-<a name="307" href="#307">307</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="308" href="#308">308</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="309" href="#309">309</a> <em class="jxr_javadoccomment">	 * @param request</em>
-<a name="310" href="#310">310</a> <em class="jxr_javadoccomment">	 *            リクエスト</em>
-<a name="311" href="#311">311</a> <em class="jxr_javadoccomment">	 * @return URL</em>
-<a name="312" href="#312">312</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="313" href="#313">313</a> 	<strong class="jxr_keyword">protected</strong> String calculateRedirectURL(<strong class="jxr_keyword">final</strong> String path,
-<a name="314" href="#314">314</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="315" href="#315">315</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request) {
-<a name="316" href="#316">316</a> 		<strong class="jxr_keyword">try</strong> {
-<a name="317" href="#317">317</a> 			<strong class="jxr_keyword">final</strong> String redirectURL = <strong class="jxr_keyword">new</strong> URL(path).toExternalForm();
-<a name="318" href="#318">318</a> 			<strong class="jxr_keyword">return</strong> redirectURL;
-<a name="319" href="#319">319</a> 		} <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
-<a name="320" href="#320">320</a> 			<strong class="jxr_keyword">final</strong> String redirectURL = calculateInternalRedirectURL(path,
-<a name="321" href="#321">321</a> 					actionClass, request);
-<a name="322" href="#322">322</a> 			<strong class="jxr_keyword">return</strong> redirectURL;
-<a name="323" href="#323">323</a> 		}
-<a name="324" href="#324">324</a> 	}
-<a name="325" href="#325">325</a> 
-<a name="326" href="#326">326</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="327" href="#327">327</a> <em class="jxr_javadoccomment">	 * リダイレクトする URL を計算します。</em>
-<a name="328" href="#328">328</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="329" href="#329">329</a> <em class="jxr_javadoccomment">	 * @param path</em>
-<a name="330" href="#330">330</a> <em class="jxr_javadoccomment">	 *            パス</em>
-<a name="331" href="#331">331</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
-<a name="332" href="#332">332</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
-<a name="333" href="#333">333</a> <em class="jxr_javadoccomment">	 * @param request</em>
-<a name="334" href="#334">334</a> <em class="jxr_javadoccomment">	 *            リクエスト</em>
-<a name="335" href="#335">335</a> <em class="jxr_javadoccomment">	 * @return URL</em>
-<a name="336" href="#336">336</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="337" href="#337">337</a> 	<strong class="jxr_keyword">private</strong> String calculateInternalRedirectURL(<strong class="jxr_keyword">final</strong> String path,
-<a name="338" href="#338">338</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
-<a name="339" href="#339">339</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request) {
-<a name="340" href="#340">340</a> 		<strong class="jxr_keyword">final</strong> String redirectPath;
-<a name="341" href="#341">341</a> 		<strong class="jxr_keyword">final</strong> String contextPath;
-<a name="342" href="#342">342</a> 		<strong class="jxr_keyword">if</strong> (<span class="jxr_string">"/"</span>.equals(request.getContextPath())) {
-<a name="343" href="#343">343</a> 			contextPath = <span class="jxr_string">""</span>;
-<a name="344" href="#344">344</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="345" href="#345">345</a> 			contextPath = request.getContextPath();
-<a name="346" href="#346">346</a> 		}
-<a name="347" href="#347">347</a> 		<strong class="jxr_keyword">if</strong> (path.startsWith(<span class="jxr_string">"/"</span>)) {
-<a name="348" href="#348">348</a> 			redirectPath = contextPath + path;
-<a name="349" href="#349">349</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="350" href="#350">350</a> 			<strong class="jxr_keyword">final</strong> String actionDirectory = <a href="../../../../org/seasar/cubby/util/CubbyUtils.html">CubbyUtils</a>
-<a name="351" href="#351">351</a> 					.getActionDirectory(actionClass);
-<a name="352" href="#352">352</a> 			<strong class="jxr_keyword">if</strong> (StringUtil.isEmpty(actionDirectory)) {
-<a name="353" href="#353">353</a> 				<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a name="354" href="#354">354</a> 				builder.append(contextPath);
-<a name="355" href="#355">355</a> 				<strong class="jxr_keyword">if</strong> (!contextPath.endsWith(<span class="jxr_string">"/"</span>)) {
-<a name="356" href="#356">356</a> 					builder.append(<span class="jxr_string">"/"</span>);
-<a name="357" href="#357">357</a> 				}
-<a name="358" href="#358">358</a> 				builder.append(path);
-<a name="359" href="#359">359</a> 				redirectPath = builder.toString();
-<a name="360" href="#360">360</a> 			} <strong class="jxr_keyword">else</strong> {
-<a name="361" href="#361">361</a> 				<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a name="362" href="#362">362</a> 				builder.append(contextPath);
-<a name="363" href="#363">363</a> 				<strong class="jxr_keyword">if</strong> (!contextPath.endsWith(<span class="jxr_string">"/"</span>)
-<a name="364" href="#364">364</a> 						&amp;&amp; !actionDirectory.startsWith(<span class="jxr_string">"/"</span>)) {
-<a name="365" href="#365">365</a> 					builder.append(<span class="jxr_string">"/"</span>);
-<a name="366" href="#366">366</a> 				}
-<a name="367" href="#367">367</a> 				builder.append(actionDirectory);
-<a name="368" href="#368">368</a> 				<strong class="jxr_keyword">if</strong> (!actionDirectory.endsWith(<span class="jxr_string">"/"</span>)) {
-<a name="369" href="#369">369</a> 					builder.append(<span class="jxr_string">"/"</span>);
-<a name="370" href="#370">370</a> 				}
-<a name="371" href="#371">371</a> 				builder.append(path);
-<a name="372" href="#372">372</a> 				redirectPath = builder.toString();
-<a name="373" href="#373">373</a> 			}
-<a name="374" href="#374">374</a> 		}
-<a name="375" href="#375">375</a> 
-<a name="376" href="#376">376</a> 		<strong class="jxr_keyword">if</strong> (protocol == <strong class="jxr_keyword">null</strong>) {
-<a name="377" href="#377">377</a> 			<strong class="jxr_keyword">return</strong> redirectPath;
-<a name="378" href="#378">378</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="379" href="#379">379</a> 			<strong class="jxr_keyword">try</strong> {
-<a name="380" href="#380">380</a> 				<strong class="jxr_keyword">final</strong> URL currentURL = <strong class="jxr_keyword">new</strong> URL(request.getRequestURL()
-<a name="381" href="#381">381</a> 						.toString());
-<a name="382" href="#382">382</a> 				<strong class="jxr_keyword">final</strong> String redirectProtocol = <strong class="jxr_keyword">this</strong>.protocol == <strong class="jxr_keyword">null</strong> ? currentURL
-<a name="383" href="#383">383</a> 						.getProtocol()
-<a name="384" href="#384">384</a> 						: <strong class="jxr_keyword">this</strong>.protocol;
-<a name="385" href="#385">385</a> 				<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> redirectPort = <strong class="jxr_keyword">this</strong>.port &lt; 0 ? currentURL.getPort()
-<a name="386" href="#386">386</a> 						: <strong class="jxr_keyword">this</strong>.port;
-<a name="387" href="#387">387</a> 				<strong class="jxr_keyword">final</strong> URL redirectURL = <strong class="jxr_keyword">new</strong> URL(redirectProtocol, currentURL
-<a name="388" href="#388">388</a> 						.getHost(), redirectPort, redirectPath);
-<a name="389" href="#389">389</a> 				<strong class="jxr_keyword">return</strong> redirectURL.toExternalForm();
-<a name="390" href="#390">390</a> 			} <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
-<a name="391" href="#391">391</a> 				<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IORuntimeException(e);
-<a name="392" href="#392">392</a> 			}
-<a name="393" href="#393">393</a> 		}
-<a name="394" href="#394">394</a> 	}
-<a name="395" href="#395">395</a> 
-<a name="396" href="#396">396</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="397" href="#397">397</a> <em class="jxr_javadoccomment">	 * URL をエンコードします。</em>
-<a name="398" href="#398">398</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="399" href="#399">399</a> <em class="jxr_javadoccomment">	 * @param url</em>
-<a name="400" href="#400">400</a> <em class="jxr_javadoccomment">	 *            URL</em>
-<a name="401" href="#401">401</a> <em class="jxr_javadoccomment">	 * @param response</em>
-<a name="402" href="#402">402</a> <em class="jxr_javadoccomment">	 *            レスポンス</em>
-<a name="403" href="#403">403</a> <em class="jxr_javadoccomment">	 * @return エンコードされた URL</em>
-<a name="404" href="#404">404</a> <em class="jxr_javadoccomment">	 * @see HttpServletResponse#encodeRedirectURL(String)</em>
-<a name="405" href="#405">405</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="406" href="#406">406</a> 	<strong class="jxr_keyword">protected</strong> String encodeURL(<strong class="jxr_keyword">final</strong> String url,
-<a name="407" href="#407">407</a> 			<strong class="jxr_keyword">final</strong> HttpServletResponse response) {
-<a name="408" href="#408">408</a> 		<strong class="jxr_keyword">return</strong> response.encodeRedirectURL(url);
-<a name="409" href="#409">409</a> 	}
-<a name="410" href="#410">410</a> 
-<a name="411" href="#411">411</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="412" href="#412">412</a> <em class="jxr_javadoccomment">	 * {@link HttpServletResponse#encodeRedirectURL(String)}</em>
-<a name="413" href="#413">413</a> <em class="jxr_javadoccomment">	 * によってエンコードせずにリダイレクトします。</em>
-<a name="414" href="#414">414</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="415" href="#415">415</a> <em class="jxr_javadoccomment">	 * URL 埋め込みのセッション ID を出力したくない場合に使用してください。</em>
-<a name="416" href="#416">416</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="417" href="#417">417</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="418" href="#418">418</a> <em class="jxr_javadoccomment">	 * @return リダイレクトする URL</em>
-<a name="419" href="#419">419</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="420" href="#420">420</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="421" href="#421">421</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/ActionResult.html">ActionResult</a> noEncodeURL() {
-<a name="422" href="#422">422</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a>(path, protocol, port) {
-<a name="423" href="#423">423</a> 			@Override
-<a name="424" href="#424">424</a> 			<strong class="jxr_keyword">protected</strong> String encodeURL(<strong class="jxr_keyword">final</strong> String url,
-<a name="425" href="#425">425</a> 					<strong class="jxr_keyword">final</strong> HttpServletResponse response) {
-<a name="426" href="#426">426</a> 				<strong class="jxr_keyword">return</strong> url;
-<a name="427" href="#427">427</a> 			}
-<a name="428" href="#428">428</a> 		};
+<a name="287" href="#287">287</a> <em class="jxr_javadoccomment">	 * アクションクラスを指定したリダイレクトかどうかを判定します。</em>
+<a name="288" href="#288">288</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="289" href="#289">289</a> <em class="jxr_javadoccomment">	 * @return アクションクラスを指定したリダイレクトならtrue</em>
+<a name="290" href="#290">290</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="291" href="#291">291</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isReverseLookupRedirect() {
+<a name="292" href="#292">292</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.actionClass != <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.methodName != <strong class="jxr_keyword">null</strong>
+<a name="293" href="#293">293</a> 				&amp;&amp; <strong class="jxr_keyword">this</strong>.parameters != <strong class="jxr_keyword">null</strong>;
+<a name="294" href="#294">294</a> 	}
+<a name="295" href="#295">295</a> 
+<a name="296" href="#296">296</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="297" href="#297">297</a> <em class="jxr_javadoccomment">	 * {@inheritDoc}</em>
+<a name="298" href="#298">298</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="299" href="#299">299</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute(<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/action/Action.html">Action</a> action,
+<a name="300" href="#300">300</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass, <strong class="jxr_keyword">final</strong> Method method,
+<a name="301" href="#301">301</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request, <strong class="jxr_keyword">final</strong> HttpServletResponse response)
+<a name="302" href="#302">302</a> 			<strong class="jxr_keyword">throws</strong> Exception {
+<a name="303" href="#303">303</a> 		<strong class="jxr_keyword">final</strong> String characterEncoding;
+<a name="304" href="#304">304</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.characterEncoding == <strong class="jxr_keyword">null</strong>) {
+<a name="305" href="#305">305</a> 			characterEncoding = request.getCharacterEncoding();
+<a name="306" href="#306">306</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="307" href="#307">307</a> 			characterEncoding = <strong class="jxr_keyword">this</strong>.characterEncoding;
+<a name="308" href="#308">308</a> 		}
+<a name="309" href="#309">309</a> 		<strong class="jxr_keyword">final</strong> String redirectURL = calculateRedirectURL(
+<a name="310" href="#310">310</a> 				getPath(characterEncoding), actionClass, request);
+<a name="311" href="#311">311</a> 		<strong class="jxr_keyword">final</strong> String encodedRedirectURL = encodeURL(redirectURL, response);
+<a name="312" href="#312">312</a> 		<strong class="jxr_keyword">if</strong> (logger.isDebugEnabled()) {
+<a name="313" href="#313">313</a> 			logger.log(<span class="jxr_string">"DCUB0003"</span>, <strong class="jxr_keyword">new</strong> String[] { encodedRedirectURL });
+<a name="314" href="#314">314</a> 		}
+<a name="315" href="#315">315</a> 		response.sendRedirect(encodedRedirectURL);
+<a name="316" href="#316">316</a> 	}
+<a name="317" href="#317">317</a> 
+<a name="318" href="#318">318</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="319" href="#319">319</a> <em class="jxr_javadoccomment">	 * リダイレクトする URL を計算します。</em>
+<a name="320" href="#320">320</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="321" href="#321">321</a> <em class="jxr_javadoccomment">	 * @param path</em>
+<a name="322" href="#322">322</a> <em class="jxr_javadoccomment">	 *            パス</em>
+<a name="323" href="#323">323</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="324" href="#324">324</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="325" href="#325">325</a> <em class="jxr_javadoccomment">	 * @param request</em>
+<a name="326" href="#326">326</a> <em class="jxr_javadoccomment">	 *            リクエスト</em>
+<a name="327" href="#327">327</a> <em class="jxr_javadoccomment">	 * @return URL</em>
+<a name="328" href="#328">328</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="329" href="#329">329</a> 	<strong class="jxr_keyword">protected</strong> String calculateRedirectURL(<strong class="jxr_keyword">final</strong> String path,
+<a name="330" href="#330">330</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="331" href="#331">331</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request) {
+<a name="332" href="#332">332</a> 		<strong class="jxr_keyword">try</strong> {
+<a name="333" href="#333">333</a> 			<strong class="jxr_keyword">final</strong> String redirectURL = <strong class="jxr_keyword">new</strong> URL(path).toExternalForm();
+<a name="334" href="#334">334</a> 			<strong class="jxr_keyword">return</strong> redirectURL;
+<a name="335" href="#335">335</a> 		} <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
+<a name="336" href="#336">336</a> 			<strong class="jxr_keyword">final</strong> String redirectURL = calculateInternalRedirectURL(path,
+<a name="337" href="#337">337</a> 					actionClass, request);
+<a name="338" href="#338">338</a> 			<strong class="jxr_keyword">return</strong> redirectURL;
+<a name="339" href="#339">339</a> 		}
+<a name="340" href="#340">340</a> 	}
+<a name="341" href="#341">341</a> 
+<a name="342" href="#342">342</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="343" href="#343">343</a> <em class="jxr_javadoccomment">	 * リダイレクトする URL を計算します。</em>
+<a name="344" href="#344">344</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="345" href="#345">345</a> <em class="jxr_javadoccomment">	 * @param path</em>
+<a name="346" href="#346">346</a> <em class="jxr_javadoccomment">	 *            パス</em>
+<a name="347" href="#347">347</a> <em class="jxr_javadoccomment">	 * @param actionClass</em>
+<a name="348" href="#348">348</a> <em class="jxr_javadoccomment">	 *            アクションクラス</em>
+<a name="349" href="#349">349</a> <em class="jxr_javadoccomment">	 * @param request</em>
+<a name="350" href="#350">350</a> <em class="jxr_javadoccomment">	 *            リクエスト</em>
+<a name="351" href="#351">351</a> <em class="jxr_javadoccomment">	 * @return URL</em>
+<a name="352" href="#352">352</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="353" href="#353">353</a> 	<strong class="jxr_keyword">private</strong> String calculateInternalRedirectURL(<strong class="jxr_keyword">final</strong> String path,
+<a name="354" href="#354">354</a> 			<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass,
+<a name="355" href="#355">355</a> 			<strong class="jxr_keyword">final</strong> HttpServletRequest request) {
+<a name="356" href="#356">356</a> 		<strong class="jxr_keyword">final</strong> String redirectPath;
+<a name="357" href="#357">357</a> 		<strong class="jxr_keyword">final</strong> String contextPath;
+<a name="358" href="#358">358</a> 		<strong class="jxr_keyword">if</strong> (<span class="jxr_string">"/"</span>.equals(request.getContextPath())) {
+<a name="359" href="#359">359</a> 			contextPath = <span class="jxr_string">""</span>;
+<a name="360" href="#360">360</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="361" href="#361">361</a> 			contextPath = request.getContextPath();
+<a name="362" href="#362">362</a> 		}
+<a name="363" href="#363">363</a> 		<strong class="jxr_keyword">if</strong> (path.startsWith(<span class="jxr_string">"/"</span>)) {
+<a name="364" href="#364">364</a> 			redirectPath = contextPath + path;
+<a name="365" href="#365">365</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="366" href="#366">366</a> 			<strong class="jxr_keyword">final</strong> String actionDirectory = <a href="../../../../org/seasar/cubby/util/CubbyUtils.html">CubbyUtils</a>
+<a name="367" href="#367">367</a> 					.getActionDirectory(actionClass);
+<a name="368" href="#368">368</a> 			<strong class="jxr_keyword">if</strong> (StringUtil.isEmpty(actionDirectory)) {
+<a name="369" href="#369">369</a> 				<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a name="370" href="#370">370</a> 				builder.append(contextPath);
+<a name="371" href="#371">371</a> 				<strong class="jxr_keyword">if</strong> (!contextPath.endsWith(<span class="jxr_string">"/"</span>)) {
+<a name="372" href="#372">372</a> 					builder.append(<span class="jxr_string">"/"</span>);
+<a name="373" href="#373">373</a> 				}
+<a name="374" href="#374">374</a> 				builder.append(path);
+<a name="375" href="#375">375</a> 				redirectPath = builder.toString();
+<a name="376" href="#376">376</a> 			} <strong class="jxr_keyword">else</strong> {
+<a name="377" href="#377">377</a> 				<strong class="jxr_keyword">final</strong> StringBuilder builder = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a name="378" href="#378">378</a> 				builder.append(contextPath);
+<a name="379" href="#379">379</a> 				<strong class="jxr_keyword">if</strong> (!contextPath.endsWith(<span class="jxr_string">"/"</span>)
+<a name="380" href="#380">380</a> 						&amp;&amp; !actionDirectory.startsWith(<span class="jxr_string">"/"</span>)) {
+<a name="381" href="#381">381</a> 					builder.append(<span class="jxr_string">"/"</span>);
+<a name="382" href="#382">382</a> 				}
+<a name="383" href="#383">383</a> 				builder.append(actionDirectory);
+<a name="384" href="#384">384</a> 				<strong class="jxr_keyword">if</strong> (!actionDirectory.endsWith(<span class="jxr_string">"/"</span>)) {
+<a name="385" href="#385">385</a> 					builder.append(<span class="jxr_string">"/"</span>);
+<a name="386" href="#386">386</a> 				}
+<a name="387" href="#387">387</a> 				builder.append(path);
+<a name="388" href="#388">388</a> 				redirectPath = builder.toString();
+<a name="389" href="#389">389</a> 			}
+<a name="390" href="#390">390</a> 		}
+<a name="391" href="#391">391</a> 
+<a name="392" href="#392">392</a> 		<strong class="jxr_keyword">if</strong> (protocol == <strong class="jxr_keyword">null</strong>) {
+<a name="393" href="#393">393</a> 			<strong class="jxr_keyword">return</strong> redirectPath;
+<a name="394" href="#394">394</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="395" href="#395">395</a> 			<strong class="jxr_keyword">try</strong> {
+<a name="396" href="#396">396</a> 				<strong class="jxr_keyword">final</strong> URL currentURL = <strong class="jxr_keyword">new</strong> URL(request.getRequestURL()
+<a name="397" href="#397">397</a> 						.toString());
+<a name="398" href="#398">398</a> 				<strong class="jxr_keyword">final</strong> String redirectProtocol = <strong class="jxr_keyword">this</strong>.protocol == <strong class="jxr_keyword">null</strong> ? currentURL
+<a name="399" href="#399">399</a> 						.getProtocol()
+<a name="400" href="#400">400</a> 						: <strong class="jxr_keyword">this</strong>.protocol;
+<a name="401" href="#401">401</a> 				<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> redirectPort = <strong class="jxr_keyword">this</strong>.port &lt; 0 ? currentURL.getPort()
+<a name="402" href="#402">402</a> 						: <strong class="jxr_keyword">this</strong>.port;
+<a name="403" href="#403">403</a> 				<strong class="jxr_keyword">final</strong> URL redirectURL = <strong class="jxr_keyword">new</strong> URL(redirectProtocol, currentURL
+<a name="404" href="#404">404</a> 						.getHost(), redirectPort, redirectPath);
+<a name="405" href="#405">405</a> 				<strong class="jxr_keyword">return</strong> redirectURL.toExternalForm();
+<a name="406" href="#406">406</a> 			} <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
+<a name="407" href="#407">407</a> 				<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IORuntimeException(e);
+<a name="408" href="#408">408</a> 			}
+<a name="409" href="#409">409</a> 		}
+<a name="410" href="#410">410</a> 	}
+<a name="411" href="#411">411</a> 
+<a name="412" href="#412">412</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="413" href="#413">413</a> <em class="jxr_javadoccomment">	 * URL をエンコードします。</em>
+<a name="414" href="#414">414</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="415" href="#415">415</a> <em class="jxr_javadoccomment">	 * @param url</em>
+<a name="416" href="#416">416</a> <em class="jxr_javadoccomment">	 *            URL</em>
+<a name="417" href="#417">417</a> <em class="jxr_javadoccomment">	 * @param response</em>
+<a name="418" href="#418">418</a> <em class="jxr_javadoccomment">	 *            レスポンス</em>
+<a name="419" href="#419">419</a> <em class="jxr_javadoccomment">	 * @return エンコードされた URL</em>
+<a name="420" href="#420">420</a> <em class="jxr_javadoccomment">	 * @see HttpServletResponse#encodeRedirectURL(String)</em>
+<a name="421" href="#421">421</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="422" href="#422">422</a> 	<strong class="jxr_keyword">protected</strong> String encodeURL(<strong class="jxr_keyword">final</strong> String url,
+<a name="423" href="#423">423</a> 			<strong class="jxr_keyword">final</strong> HttpServletResponse response) {
+<a name="424" href="#424">424</a> 		<strong class="jxr_keyword">if</strong> (encodeURL) {
+<a name="425" href="#425">425</a> 			<strong class="jxr_keyword">return</strong> response.encodeRedirectURL(url);
+<a name="426" href="#426">426</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="427" href="#427">427</a> 			<strong class="jxr_keyword">return</strong> url;
+<a name="428" href="#428">428</a> 		}
 <a name="429" href="#429">429</a> 	}
-<a name="430" href="#430">430</a> 	
+<a name="430" href="#430">430</a> 
 <a name="431" href="#431">431</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="432" href="#432">432</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
-<a name="433" href="#433">433</a> <em class="jxr_javadoccomment">	 * @param paramName パラメータ名</em>
-<a name="434" href="#434">434</a> <em class="jxr_javadoccomment">	 * @param paramValue パラメータの値。{@code Object#toString()}の結果が値として使用されます。</em>
-<a name="435" href="#435">435</a> <em class="jxr_javadoccomment">	 * @return リダイレクトする URL</em>
-<a name="436" href="#436">436</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="437" href="#437">437</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(String paramName, Object paramValue) {
-<a name="438" href="#438">438</a> 		<strong class="jxr_keyword">return</strong> param(paramName, <strong class="jxr_keyword">new</strong> String[] { paramValue.toString() });
-<a name="439" href="#439">439</a> 	}
-<a name="440" href="#440">440</a> 	
-<a name="441" href="#441">441</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="442" href="#442">442</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
-<a name="443" href="#443">443</a> <em class="jxr_javadoccomment">	 * @param paramName パラメータ名</em>
-<a name="444" href="#444">444</a> <em class="jxr_javadoccomment">	 * @param paramValues パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。</em>
-<a name="445" href="#445">445</a> <em class="jxr_javadoccomment">	 * @return リダイレクトする URL</em>
-<a name="446" href="#446">446</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="447" href="#447">447</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(<strong class="jxr_keyword">final</strong> String paramName, <strong class="jxr_keyword">final</strong> Object[] paramValues) {
-<a name="448" href="#448">448</a> 		<strong class="jxr_keyword">return</strong> param(paramName, toStringArray(paramValues));
-<a name="449" href="#449">449</a> 	}
-<a name="450" href="#450">450</a> 
-<a name="451" href="#451">451</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="452" href="#452">452</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
-<a name="453" href="#453">453</a> <em class="jxr_javadoccomment">	 * @param paramName パラメータ名</em>
-<a name="454" href="#454">454</a> <em class="jxr_javadoccomment">	 * @param paramValues パラメータの値</em>
-<a name="455" href="#455">455</a> <em class="jxr_javadoccomment">	 * @return リダイレクトする URL</em>
-<a name="456" href="#456">456</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="457" href="#457">457</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(<strong class="jxr_keyword">final</strong> String paramName, <strong class="jxr_keyword">final</strong> String[] paramValues) {
-<a name="458" href="#458">458</a> 		<strong class="jxr_keyword">if</strong> (isReverseLookupRedirect()) {
-<a name="459" href="#459">459</a> 			<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.parameters == EMPTY_PARAMETERS) {
-<a name="460" href="#460">460</a> 				<strong class="jxr_keyword">this</strong>.parameters = <strong class="jxr_keyword">new</strong> HashMap&lt;String, String[]&gt;();
-<a name="461" href="#461">461</a> 			}
-<a name="462" href="#462">462</a> 			<strong class="jxr_keyword">this</strong>.parameters.put(paramName, paramValues);
-<a name="463" href="#463">463</a> 		} <strong class="jxr_keyword">else</strong> {
-<a name="464" href="#464">464</a> 			QueryStringBuilder builder = <strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/util/QueryStringBuilder.html">QueryStringBuilder</a>(<strong class="jxr_keyword">this</strong>.path);
-<a name="465" href="#465">465</a> 			builder.addParam(paramName, paramValues);
-<a name="466" href="#466">466</a> 			<strong class="jxr_keyword">this</strong>.path = builder.toString();
-<a name="467" href="#467">467</a> 		}
-<a name="468" href="#468">468</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
-<a name="469" href="#469">469</a> 	}
-<a name="470" href="#470">470</a> 	
-<a name="471" href="#471">471</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="472" href="#472">472</a> <em class="jxr_javadoccomment">	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。</em>
-<a name="473" href="#473">473</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
-<a name="474" href="#474">474</a> <em class="jxr_javadoccomment">	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。</em>
-<a name="475" href="#475">475</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
-<a name="476" href="#476">476</a> <em class="jxr_javadoccomment">	 * @param paramValues {@code Object#toString()}型の配列</em>
-<a name="477" href="#477">477</a> <em class="jxr_javadoccomment">	 * @return {@code Object#toString()}型の配列。</em>
-<a name="478" href="#478">478</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="479" href="#479">479</a> 	<strong class="jxr_keyword">private</strong> String[] toStringArray(<strong class="jxr_keyword">final</strong> Object[] paramValues) {
-<a name="480" href="#480">480</a> 		String[] values = <strong class="jxr_keyword">new</strong> String[paramValues.length];
-<a name="481" href="#481">481</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; paramValues.length; i++) {
-<a name="482" href="#482">482</a> 			values[i] = paramValues[i].toString();
-<a name="483" href="#483">483</a> 		}
-<a name="484" href="#484">484</a> 		<strong class="jxr_keyword">return</strong> values;
-<a name="485" href="#485">485</a> 	}
-<a name="486" href="#486">486</a> }
+<a name="432" href="#432">432</a> <em class="jxr_javadoccomment">	 * {@link HttpServletResponse#encodeRedirectURL(String)}</em>
+<a name="433" href="#433">433</a> <em class="jxr_javadoccomment">	 * によってエンコードせずにリダイレクトします。</em>
+<a name="434" href="#434">434</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="435" href="#435">435</a> <em class="jxr_javadoccomment">	 * URL 埋め込みのセッション ID を出力したくない場合に使用してください。</em>
+<a name="436" href="#436">436</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="437" href="#437">437</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="438" href="#438">438</a> <em class="jxr_javadoccomment">	 * @return このオブジェクト</em>
+<a name="439" href="#439">439</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="440" href="#440">440</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="441" href="#441">441</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> noEncodeURL() {
+<a name="442" href="#442">442</a> 		<strong class="jxr_keyword">this</strong>.encodeURL = false;
+<a name="443" href="#443">443</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
+<a name="444" href="#444">444</a> 	}
+<a name="445" href="#445">445</a> 
+<a name="446" href="#446">446</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="447" href="#447">447</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
+<a name="448" href="#448">448</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="449" href="#449">449</a> <em class="jxr_javadoccomment">	 * @param paramName</em>
+<a name="450" href="#450">450</a> <em class="jxr_javadoccomment">	 *            パラメータ名</em>
+<a name="451" href="#451">451</a> <em class="jxr_javadoccomment">	 * @param paramValue</em>
+<a name="452" href="#452">452</a> <em class="jxr_javadoccomment">	 *            パラメータの値。{@code Object#toString()}の結果が値として使用されます。</em>
+<a name="453" href="#453">453</a> <em class="jxr_javadoccomment">	 * @return このオブジェクト</em>
+<a name="454" href="#454">454</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="455" href="#455">455</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="456" href="#456">456</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(String paramName, Object paramValue) {
+<a name="457" href="#457">457</a> 		<strong class="jxr_keyword">return</strong> param(paramName, <strong class="jxr_keyword">new</strong> String[] { paramValue.toString() });
+<a name="458" href="#458">458</a> 	}
+<a name="459" href="#459">459</a> 
+<a name="460" href="#460">460</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="461" href="#461">461</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
+<a name="462" href="#462">462</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="463" href="#463">463</a> <em class="jxr_javadoccomment">	 * @param paramName</em>
+<a name="464" href="#464">464</a> <em class="jxr_javadoccomment">	 *            パラメータ名</em>
+<a name="465" href="#465">465</a> <em class="jxr_javadoccomment">	 * @param paramValues</em>
+<a name="466" href="#466">466</a> <em class="jxr_javadoccomment">	 *            パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。</em>
+<a name="467" href="#467">467</a> <em class="jxr_javadoccomment">	 * @return このオブジェクト</em>
+<a name="468" href="#468">468</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="469" href="#469">469</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="470" href="#470">470</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(<strong class="jxr_keyword">final</strong> String paramName, <strong class="jxr_keyword">final</strong> Object[] paramValues) {
+<a name="471" href="#471">471</a> 		<strong class="jxr_keyword">return</strong> param(paramName, toStringArray(paramValues));
+<a name="472" href="#472">472</a> 	}
+<a name="473" href="#473">473</a> 
+<a name="474" href="#474">474</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="475" href="#475">475</a> <em class="jxr_javadoccomment">	 * パラメータを追加します。</em>
+<a name="476" href="#476">476</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="477" href="#477">477</a> <em class="jxr_javadoccomment">	 * @param paramName</em>
+<a name="478" href="#478">478</a> <em class="jxr_javadoccomment">	 *            パラメータ名</em>
+<a name="479" href="#479">479</a> <em class="jxr_javadoccomment">	 * @param paramValues</em>
+<a name="480" href="#480">480</a> <em class="jxr_javadoccomment">	 *            パラメータの値</em>
+<a name="481" href="#481">481</a> <em class="jxr_javadoccomment">	 * @return このオブジェクト</em>
+<a name="482" href="#482">482</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="483" href="#483">483</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="484" href="#484">484</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> param(<strong class="jxr_keyword">final</strong> String paramName, <strong class="jxr_keyword">final</strong> String[] paramValues) {
+<a name="485" href="#485">485</a> 		<strong class="jxr_keyword">if</strong> (isReverseLookupRedirect()) {
+<a name="486" href="#486">486</a> 			<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.parameters == EMPTY_PARAMETERS) {
+<a name="487" href="#487">487</a> 				<strong class="jxr_keyword">this</strong>.parameters = <strong class="jxr_keyword">new</strong> HashMap&lt;String, String[]&gt;();
+<a name="488" href="#488">488</a> 			}
+<a name="489" href="#489">489</a> 			<strong class="jxr_keyword">this</strong>.parameters.put(paramName, paramValues);
+<a name="490" href="#490">490</a> 		} <strong class="jxr_keyword">else</strong> {
+<a name="491" href="#491">491</a> 			QueryStringBuilder builder = <strong class="jxr_keyword">new</strong> <a href="../../../../org/seasar/cubby/util/QueryStringBuilder.html">QueryStringBuilder</a>(<strong class="jxr_keyword">this</strong>.path);
+<a name="492" href="#492">492</a> 			builder.addParam(paramName, paramValues);
+<a name="493" href="#493">493</a> 			<strong class="jxr_keyword">this</strong>.path = builder.toString();
+<a name="494" href="#494">494</a> 		}
+<a name="495" href="#495">495</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
+<a name="496" href="#496">496</a> 	}
+<a name="497" href="#497">497</a> 
+<a name="498" href="#498">498</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="499" href="#499">499</a> <em class="jxr_javadoccomment">	 * {@code Object#toString()}型の配列を{@code Object#toString()}型の配列に変換します。</em>
+<a name="500" href="#500">500</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;</em>
+<a name="501" href="#501">501</a> <em class="jxr_javadoccomment">	 * 配列のそれぞれの要素に対して{@code Object#toString()}を使用して変換します。</em>
+<a name="502" href="#502">502</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
+<a name="503" href="#503">503</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="504" href="#504">504</a> <em class="jxr_javadoccomment">	 * @param paramValues</em>
+<a name="505" href="#505">505</a> <em class="jxr_javadoccomment">	 *            {@code Object#toString()}型の配列</em>
+<a name="506" href="#506">506</a> <em class="jxr_javadoccomment">	 * @return {@code Object#toString()}型の配列。</em>
+<a name="507" href="#507">507</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="508" href="#508">508</a> 	<strong class="jxr_keyword">private</strong> String[] toStringArray(<strong class="jxr_keyword">final</strong> Object[] paramValues) {
+<a name="509" href="#509">509</a> 		String[] values = <strong class="jxr_keyword">new</strong> String[paramValues.length];
+<a name="510" href="#510">510</a> 		<strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; paramValues.length; i++) {
+<a name="511" href="#511">511</a> 			values[i] = paramValues[i].toString();
+<a name="512" href="#512">512</a> 		}
+<a name="513" href="#513">513</a> 		<strong class="jxr_keyword">return</strong> values;
+<a name="514" href="#514">514</a> 	}
+<a name="515" href="#515">515</a> 
+<a name="516" href="#516">516</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="517" href="#517">517</a> <em class="jxr_javadoccomment">	 * URI のエンコーディングを指定します。</em>
+<a name="518" href="#518">518</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="519" href="#519">519</a> <em class="jxr_javadoccomment">	 * @param characterEncoding</em>
+<a name="520" href="#520">520</a> <em class="jxr_javadoccomment">	 *            URI のエンコーディング</em>
+<a name="521" href="#521">521</a> <em class="jxr_javadoccomment">	 * @return このオブジェクト</em>
+<a name="522" href="#522">522</a> <em class="jxr_javadoccomment">	 * @since 1.1.1</em>
+<a name="523" href="#523">523</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="524" href="#524">524</a> 	<strong class="jxr_keyword">public</strong> <a href="../../../../org/seasar/cubby/action/Redirect.html">Redirect</a> characterEncoding(<strong class="jxr_keyword">final</strong> String characterEncoding) {
+<a name="525" href="#525">525</a> 		<strong class="jxr_keyword">this</strong>.characterEncoding = characterEncoding;
+<a name="526" href="#526">526</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
+<a name="527" href="#527">527</a> 	}
+<a name="528" href="#528">528</a> 
+<a name="529" href="#529">529</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="530" href="#530">530</a> <em class="jxr_javadoccomment">	 * パスを取得します。</em>
+<a name="531" href="#531">531</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="532" href="#532">532</a> <em class="jxr_javadoccomment">	 * @return パス</em>
+<a name="533" href="#533">533</a> <em class="jxr_javadoccomment">	 * @deprecated use {@link #getPath(String)}</em>
+<a name="534" href="#534">534</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="535" href="#535">535</a> 	@Deprecated
+<a name="536" href="#536">536</a> 	<strong class="jxr_keyword">public</strong> String getPath() {
+<a name="537" href="#537">537</a> 		<strong class="jxr_keyword">return</strong> getPath(<span class="jxr_string">"UTF-8"</span>);
+<a name="538" href="#538">538</a> 	}
+<a name="539" href="#539">539</a> 
+<a name="540" href="#540">540</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

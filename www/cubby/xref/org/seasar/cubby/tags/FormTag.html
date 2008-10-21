@@ -167,58 +167,61 @@
 <a name="157" href="#157">157</a> 		<strong class="jxr_keyword">final</strong> String contextPath = (String) pageContext.getAttribute(
 <a name="158" href="#158">158</a> 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 <a name="159" href="#159">159</a> 		<strong class="jxr_keyword">if</strong> (linkSupport.isLinkable()) {
-<a name="160" href="#160">160</a> 			<strong class="jxr_keyword">final</strong> String url = contextPath + linkSupport.getPath();
-<a name="161" href="#161">161</a> 			attrs.put(<span class="jxr_string">"action"</span>, url);
-<a name="162" href="#162">162</a> 		}
-<a name="163" href="#163">163</a> 
-<a name="164" href="#164">164</a> 		<strong class="jxr_keyword">if</strong> (encodeURL &amp;&amp; attrs.containsKey(<span class="jxr_string">"action"</span>)) {
-<a name="165" href="#165">165</a> 			<strong class="jxr_keyword">final</strong> String url = (String) attrs.get(<span class="jxr_string">"action"</span>);
-<a name="166" href="#166">166</a> 			<strong class="jxr_keyword">final</strong> HttpServletResponse response = (HttpServletResponse) pageContext
-<a name="167" href="#167">167</a> 					.getResponse();
-<a name="168" href="#168">168</a> 			<strong class="jxr_keyword">final</strong> String encodedUrl = response.encodeURL(url);
-<a name="169" href="#169">169</a> 			attrs.put(<span class="jxr_string">"action"</span>, encodedUrl);
-<a name="170" href="#170">170</a> 		}
-<a name="171" href="#171">171</a> 
-<a name="172" href="#172">172</a> 		<strong class="jxr_keyword">final</strong> JspWriter out = pageContext.getOut();
-<a name="173" href="#173">173</a> 		<strong class="jxr_keyword">try</strong> {
-<a name="174" href="#174">174</a> 			out.write(<span class="jxr_string">"&lt;form "</span>);
-<a name="175" href="#175">175</a> 			out.write(toAttr(getDynamicAttribute()));
-<a name="176" href="#176">176</a> 			out.write(<span class="jxr_string">"&gt;"</span>);
-<a name="177" href="#177">177</a> 			<strong class="jxr_keyword">final</strong> BodyContent bodyContent = getBodyContent();
-<a name="178" href="#178">178</a> 			<strong class="jxr_keyword">if</strong> (bodyContent != <strong class="jxr_keyword">null</strong>) {
-<a name="179" href="#179">179</a> 				bodyContent.writeOut(out);
-<a name="180" href="#180">180</a> 			}
-<a name="181" href="#181">181</a> 			out.write(<span class="jxr_string">"&lt;/form&gt;"</span>);
-<a name="182" href="#182">182</a> 		} <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
-<a name="183" href="#183">183</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> JspException(e);
-<a name="184" href="#184">184</a> 		}
-<a name="185" href="#185">185</a> 		reset();
-<a name="186" href="#186">186</a> 		<strong class="jxr_keyword">return</strong> EVAL_PAGE;
-<a name="187" href="#187">187</a> 	}
-<a name="188" href="#188">188</a> 
-<a name="189" href="#189">189</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="190" href="#190">190</a> <em class="jxr_javadoccomment">	 * このタグをリセットします。</em>
-<a name="191" href="#191">191</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="192" href="#192">192</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> reset() {
-<a name="193" href="#193">193</a> 		linkSupport.clear();
-<a name="194" href="#194">194</a> 		attrs.clear();
-<a name="195" href="#195">195</a> 		value = <strong class="jxr_keyword">null</strong>;
-<a name="196" href="#196">196</a> 		formWrapper = <strong class="jxr_keyword">null</strong>;
-<a name="197" href="#197">197</a> 	}
-<a name="198" href="#198">198</a> 
-<a name="199" href="#199">199</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="200" href="#200">200</a> <em class="jxr_javadoccomment">	 * フォームへ出力する値を取得します。</em>
-<a name="201" href="#201">201</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="202" href="#202">202</a> <em class="jxr_javadoccomment">	 * @param name</em>
-<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 *            フィールド名</em>
-<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 * @return フォームへ出力する値</em>
-<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
-<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="207" href="#207">207</a> 	<strong class="jxr_keyword">public</strong> String[] getValues(<strong class="jxr_keyword">final</strong> String name) {
-<a name="208" href="#208">208</a> 		<strong class="jxr_keyword">return</strong> formWrapper.getValues(name);
-<a name="209" href="#209">209</a> 	}
-<a name="210" href="#210">210</a> 
-<a name="211" href="#211">211</a> }
+<a name="160" href="#160">160</a> 			<strong class="jxr_keyword">final</strong> String characterEncoding = pageContext.getRequest()
+<a name="161" href="#161">161</a> 					.getCharacterEncoding();
+<a name="162" href="#162">162</a> 			<strong class="jxr_keyword">final</strong> String url = contextPath
+<a name="163" href="#163">163</a> 					+ linkSupport.getPath(characterEncoding);
+<a name="164" href="#164">164</a> 			attrs.put(<span class="jxr_string">"action"</span>, url);
+<a name="165" href="#165">165</a> 		}
+<a name="166" href="#166">166</a> 
+<a name="167" href="#167">167</a> 		<strong class="jxr_keyword">if</strong> (encodeURL &amp;&amp; attrs.containsKey(<span class="jxr_string">"action"</span>)) {
+<a name="168" href="#168">168</a> 			<strong class="jxr_keyword">final</strong> String url = (String) attrs.get(<span class="jxr_string">"action"</span>);
+<a name="169" href="#169">169</a> 			<strong class="jxr_keyword">final</strong> HttpServletResponse response = (HttpServletResponse) pageContext
+<a name="170" href="#170">170</a> 					.getResponse();
+<a name="171" href="#171">171</a> 			<strong class="jxr_keyword">final</strong> String encodedUrl = response.encodeURL(url);
+<a name="172" href="#172">172</a> 			attrs.put(<span class="jxr_string">"action"</span>, encodedUrl);
+<a name="173" href="#173">173</a> 		}
+<a name="174" href="#174">174</a> 
+<a name="175" href="#175">175</a> 		<strong class="jxr_keyword">final</strong> JspWriter out = pageContext.getOut();
+<a name="176" href="#176">176</a> 		<strong class="jxr_keyword">try</strong> {
+<a name="177" href="#177">177</a> 			out.write(<span class="jxr_string">"&lt;form "</span>);
+<a name="178" href="#178">178</a> 			out.write(toAttr(getDynamicAttribute()));
+<a name="179" href="#179">179</a> 			out.write(<span class="jxr_string">"&gt;"</span>);
+<a name="180" href="#180">180</a> 			<strong class="jxr_keyword">final</strong> BodyContent bodyContent = getBodyContent();
+<a name="181" href="#181">181</a> 			<strong class="jxr_keyword">if</strong> (bodyContent != <strong class="jxr_keyword">null</strong>) {
+<a name="182" href="#182">182</a> 				bodyContent.writeOut(out);
+<a name="183" href="#183">183</a> 			}
+<a name="184" href="#184">184</a> 			out.write(<span class="jxr_string">"&lt;/form&gt;"</span>);
+<a name="185" href="#185">185</a> 		} <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
+<a name="186" href="#186">186</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> JspException(e);
+<a name="187" href="#187">187</a> 		}
+<a name="188" href="#188">188</a> 		reset();
+<a name="189" href="#189">189</a> 		<strong class="jxr_keyword">return</strong> EVAL_PAGE;
+<a name="190" href="#190">190</a> 	}
+<a name="191" href="#191">191</a> 
+<a name="192" href="#192">192</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="193" href="#193">193</a> <em class="jxr_javadoccomment">	 * このタグをリセットします。</em>
+<a name="194" href="#194">194</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="195" href="#195">195</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> reset() {
+<a name="196" href="#196">196</a> 		linkSupport.clear();
+<a name="197" href="#197">197</a> 		attrs.clear();
+<a name="198" href="#198">198</a> 		value = <strong class="jxr_keyword">null</strong>;
+<a name="199" href="#199">199</a> 		formWrapper = <strong class="jxr_keyword">null</strong>;
+<a name="200" href="#200">200</a> 	}
+<a name="201" href="#201">201</a> 
+<a name="202" href="#202">202</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="203" href="#203">203</a> <em class="jxr_javadoccomment">	 * フォームへ出力する値を取得します。</em>
+<a name="204" href="#204">204</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * @param name</em>
+<a name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 *            フィールド名</em>
+<a name="207" href="#207">207</a> <em class="jxr_javadoccomment">	 * @return フォームへ出力する値</em>
+<a name="208" href="#208">208</a> <em class="jxr_javadoccomment">	 * @since 1.1.0</em>
+<a name="209" href="#209">209</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="210" href="#210">210</a> 	<strong class="jxr_keyword">public</strong> String[] getValues(<strong class="jxr_keyword">final</strong> String name) {
+<a name="211" href="#211">211</a> 		<strong class="jxr_keyword">return</strong> formWrapper.getValues(name);
+<a name="212" href="#212">212</a> 	}
+<a name="213" href="#213">213</a> 
+<a name="214" href="#214">214</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

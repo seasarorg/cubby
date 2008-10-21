@@ -58,8 +58,8 @@ baba" />
             
   
     
-             最終更新: 2008-08-26
-              &nbsp;| バージョン: 1.1.0
+             最終更新: 2008-10-22
+              &nbsp;| バージョン: 1.1.1
             </div>
       <div class="clear">
         <hr/>
@@ -238,6 +238,10 @@ baba" />
                 </li>
               
     <li class="none">
+                    <a href="faq.html">よくある質問(FAQ)</a>
+          </li>
+              
+    <li class="none">
                     <a href="migration.html">移行ガイド</a>
           </li>
               
@@ -346,6 +350,7 @@ baba" />
 <li><a href="#アクションの定義">アクションの定義</a><ul><li><a href="#アクションクラス">アクションクラス</a></li>
 <li><a href="#アクションメソッド">アクションメソッド</a></li>
 <li><a href="#リクエストパラメータのバインド">リクエストパラメータのバインド</a></li>
+<li><a href="#コンバータ">コンバータ</a></li>
 <li><a href="#ActionResult">ActionResult</a></li>
 <li><a href="#アノテーション">アノテーション</a></li>
 <li><a href="#事前処理事後処理">事前処理・事後処理</a></li>
@@ -385,8 +390,62 @@ URI に対応するメソッドをアクションメソッド、アクション�
 <li>バインドしない (<a href="cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#NONE">NONE)</a>)</li>
 <li><a href="cubby/apidocs/org/seasar/cubby/action/Form.html">@Form</a> で修飾して bindingType を指定しない場合は ALL_PROPERTIES と同様に全プロパティをバインド対象とする</li>
 </ul>
-<p>また、バインドされるプロパティの型によってはコンバータによる型変換を行います。<br />
-標準でサポートしているコンバータは<a href="cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html">APIドキュメント</a>をご覧下さい。</p>
+<p>また、バインドされるプロパティの型によってはコンバータによる型変換を行います。</p>
+</div>
+<div class="section"><h3><a name="コンバータ">コンバータ</a></h3>
+<p>コンバータとは、リクエストパラメータをフォームオブジェクトへバインドする際に型変換を行う <a href="cubby/apidocs/org/seasar/cubby/converter/Converter.html">Converter</a> を実装したクラスです。</p>
+<p>標準でサポートしているコンバータは<a href="cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html">APIドキュメント</a>をご覧下さい。</p>
+<p>また、独自のコンバータを実装することによって、標準ではサポートしていない型へリクエストパラメータをバインドすることができます。</p>
+<p>以下の BookConverter.java は ISBN を表す文字列からデータベースを参照して Book に変換するコンバータです。 変換結果は</p>
+<div class="source"><pre>                :
+        @RequestParameter
+        public Book book;
+                :</pre>
+</div>
+<p>というプロパティにバインドされます。</p>
+<p><b>BookConverter.java</b></p>
+<div class="source"><pre>package org.seasar.cubby.examples.other.web.converter;
+
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.impl.AbstractConverter;
+
+/**
+ * ISDN を表す文字列と Book を相互変換するコンバータです。
+ */
+public class BookConverter extends AbstractConverter {
+
+        public BookDao bookDao;
+
+        /**
+         * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
+         */
+        public Class&lt;?&gt; getObjectType() {
+                return Book.class;
+        }
+
+        /**
+         * リクエストパラメータ(ここではISBN)を Book へ変換します。
+         */
+        public Object convertToObject(Object value, Class&lt;?&gt; objectType,
+                        ConversionHelper helper) {
+                if (value == null) {
+                        return null;
+                }
+                String isbn13 = value.toString();
+                Book book = bookDao.findByIsbn13(isbn13);
+                return book;
+        }
+
+        /**
+         * Book から表示用の文字列(ISBN)へ変換します。
+         */
+        public String convertToString(Object value, ConversionHelper helper) {
+                Book book = Book.class.cast(value);
+                return book.getIsbn13();
+        }
+
+}</pre>
+</div>
 </div>
 <div class="section"><h3><a name="ActionResult">ActionResult</a></h3>
 <p>以下のクラスは <a href="cubby/apidocs/org/seasar/cubby/action/ActionResult.html">ActionResult</a> を実装するクラスで、アクションメソッドの戻り値として使用できます。</p>

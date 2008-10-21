@@ -112,64 +112,67 @@
 <a name="102" href="#102">102</a> <em class="jxr_javadoccomment">	 * このパスにはコンテキストパスは含まれません。</em>
 <a name="103" href="#103">103</a> <em class="jxr_javadoccomment">	 * &lt;/p&gt;</em>
 <a name="104" href="#104">104</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="105" href="#105">105</a> <em class="jxr_javadoccomment">	 * @param parameterSupport</em>
-<a name="106" href="#106">106</a> <em class="jxr_javadoccomment">	 * @return</em>
-<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 * @throws JspTagException</em>
-<a name="108" href="#108">108</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="109" href="#109">109</a> 	<strong class="jxr_keyword">public</strong> String getPath() <strong class="jxr_keyword">throws</strong> JspTagException {
-<a name="110" href="#110">110</a> 		<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass;
-<a name="111" href="#111">111</a> 		<strong class="jxr_keyword">try</strong> {
-<a name="112" href="#112">112</a> 			actionClass = forName(actionClassName);
-<a name="113" href="#113">113</a> 		} <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ClassNotFoundException e) {
-<a name="114" href="#114">114</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> JspTagException(e);
-<a name="115" href="#115">115</a> 		}
-<a name="116" href="#116">116</a> 
-<a name="117" href="#117">117</a> 		<strong class="jxr_keyword">final</strong> S2Container container = SingletonS2ContainerFactory
-<a name="118" href="#118">118</a> 				.getContainer();
-<a name="119" href="#119">119</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/routing/PathResolver.html">PathResolver</a> pathResolver = (PathResolver) container
-<a name="120" href="#120">120</a> 				.getComponent(PathResolver.<strong class="jxr_keyword">class</strong>);
-<a name="121" href="#121">121</a> 		<strong class="jxr_keyword">final</strong> String path = pathResolver.reverseLookup(actionClass,
-<a name="122" href="#122">122</a> 				actionMethodName, getParameters());
-<a name="123" href="#123">123</a> 
-<a name="124" href="#124">124</a> 		<strong class="jxr_keyword">return</strong> path;
-<a name="125" href="#125">125</a> 	}
+<a name="105" href="#105">105</a> <em class="jxr_javadoccomment">	 * @param characterEncoding</em>
+<a name="106" href="#106">106</a> <em class="jxr_javadoccomment">	 *            URI のエンコーディング</em>
+<a name="107" href="#107">107</a> <em class="jxr_javadoccomment">	 * @return パス</em>
+<a name="108" href="#108">108</a> <em class="jxr_javadoccomment">	 * @throws JspTagException</em>
+<a name="109" href="#109">109</a> <em class="jxr_javadoccomment">	 *             アクションクラスが見つからなかった場合</em>
+<a name="110" href="#110">110</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="111" href="#111">111</a> 	<strong class="jxr_keyword">public</strong> String getPath(<strong class="jxr_keyword">final</strong> String characterEncoding)
+<a name="112" href="#112">112</a> 			<strong class="jxr_keyword">throws</strong> JspTagException {
+<a name="113" href="#113">113</a> 		<strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Action&gt; actionClass;
+<a name="114" href="#114">114</a> 		<strong class="jxr_keyword">try</strong> {
+<a name="115" href="#115">115</a> 			actionClass = forName(actionClassName);
+<a name="116" href="#116">116</a> 		} <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ClassNotFoundException e) {
+<a name="117" href="#117">117</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> JspTagException(e);
+<a name="118" href="#118">118</a> 		}
+<a name="119" href="#119">119</a> 
+<a name="120" href="#120">120</a> 		<strong class="jxr_keyword">final</strong> S2Container container = SingletonS2ContainerFactory
+<a name="121" href="#121">121</a> 				.getContainer();
+<a name="122" href="#122">122</a> 		<strong class="jxr_keyword">final</strong> <a href="../../../../org/seasar/cubby/routing/PathResolver.html">PathResolver</a> pathResolver = PathResolver.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(container
+<a name="123" href="#123">123</a> 				.getComponent(PathResolver.<strong class="jxr_keyword">class</strong>));
+<a name="124" href="#124">124</a> 		<strong class="jxr_keyword">final</strong> String path = pathResolver.reverseLookup(actionClass,
+<a name="125" href="#125">125</a> 				actionMethodName, getParameters(), characterEncoding);
 <a name="126" href="#126">126</a> 
-<a name="127" href="#127">127</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="128" href="#128">128</a> <em class="jxr_javadoccomment">	 * リンク可能かを示します。</em>
-<a name="129" href="#129">129</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="130" href="#130">130</a> <em class="jxr_javadoccomment">	 * @return リンク可能な場合は &lt;code&gt;true&lt;/code&gt;、そうでない場合は &lt;code&gt;false&lt;/code&gt;</em>
-<a name="131" href="#131">131</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="132" href="#132">132</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isLinkable() {
-<a name="133" href="#133">133</a> 		<strong class="jxr_keyword">return</strong> actionClassName != <strong class="jxr_keyword">null</strong> &amp;&amp; actionMethodName != <strong class="jxr_keyword">null</strong>;
-<a name="134" href="#134">134</a> 	}
-<a name="135" href="#135">135</a> 
-<a name="136" href="#136">136</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="137" href="#137">137</a> <em class="jxr_javadoccomment">	 * 特定の型のクラスオブジェクトを返します。</em>
-<a name="138" href="#138">138</a> <em class="jxr_javadoccomment">	 * </em>
-<a name="139" href="#139">139</a> <em class="jxr_javadoccomment">	 * @param &lt;T&gt;</em>
-<a name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 *            型</em>
-<a name="141" href="#141">141</a> <em class="jxr_javadoccomment">	 * @param className</em>
-<a name="142" href="#142">142</a> <em class="jxr_javadoccomment">	 *            クラス名</em>
-<a name="143" href="#143">143</a> <em class="jxr_javadoccomment">	 * @return クラスオブジェクト</em>
-<a name="144" href="#144">144</a> <em class="jxr_javadoccomment">	 * @throws ClassNotFoundException</em>
-<a name="145" href="#145">145</a> <em class="jxr_javadoccomment">	 *             指定されたクラスが見つからない場合</em>
-<a name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="147" href="#147">147</a> 	@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a name="148" href="#148">148</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Class&lt;T&gt; forName(<strong class="jxr_keyword">final</strong> String className)
-<a name="149" href="#149">149</a> 			<strong class="jxr_keyword">throws</strong> ClassNotFoundException {
-<a name="150" href="#150">150</a> 		<strong class="jxr_keyword">return</strong> (Class&lt;T&gt;) Class.forName(className);
-<a name="151" href="#151">151</a> 	}
-<a name="152" href="#152">152</a> 
-<a name="153" href="#153">153</a> 	<em class="jxr_javadoccomment">/**</em>
-<a name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 * リソースを開放します。</em>
-<a name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 */</em>
-<a name="156" href="#156">156</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> clear() {
-<a name="157" href="#157">157</a> 		<strong class="jxr_keyword">this</strong>.actionClassName = <strong class="jxr_keyword">null</strong>;
-<a name="158" href="#158">158</a> 		<strong class="jxr_keyword">this</strong>.actionMethodName = <strong class="jxr_keyword">null</strong>;
-<a name="159" href="#159">159</a> 		<strong class="jxr_keyword">this</strong>.parameters.clear();
-<a name="160" href="#160">160</a> 	}
-<a name="161" href="#161">161</a> 
-<a name="162" href="#162">162</a> }
+<a name="127" href="#127">127</a> 		<strong class="jxr_keyword">return</strong> path;
+<a name="128" href="#128">128</a> 	}
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="131" href="#131">131</a> <em class="jxr_javadoccomment">	 * リンク可能かを示します。</em>
+<a name="132" href="#132">132</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="133" href="#133">133</a> <em class="jxr_javadoccomment">	 * @return リンク可能な場合は &lt;code&gt;true&lt;/code&gt;、そうでない場合は &lt;code&gt;false&lt;/code&gt;</em>
+<a name="134" href="#134">134</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="135" href="#135">135</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isLinkable() {
+<a name="136" href="#136">136</a> 		<strong class="jxr_keyword">return</strong> actionClassName != <strong class="jxr_keyword">null</strong> &amp;&amp; actionMethodName != <strong class="jxr_keyword">null</strong>;
+<a name="137" href="#137">137</a> 	}
+<a name="138" href="#138">138</a> 
+<a name="139" href="#139">139</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 * 特定の型のクラスオブジェクトを返します。</em>
+<a name="141" href="#141">141</a> <em class="jxr_javadoccomment">	 * </em>
+<a name="142" href="#142">142</a> <em class="jxr_javadoccomment">	 * @param &lt;T&gt;</em>
+<a name="143" href="#143">143</a> <em class="jxr_javadoccomment">	 *            型</em>
+<a name="144" href="#144">144</a> <em class="jxr_javadoccomment">	 * @param className</em>
+<a name="145" href="#145">145</a> <em class="jxr_javadoccomment">	 *            クラス名</em>
+<a name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 * @return クラスオブジェクト</em>
+<a name="147" href="#147">147</a> <em class="jxr_javadoccomment">	 * @throws ClassNotFoundException</em>
+<a name="148" href="#148">148</a> <em class="jxr_javadoccomment">	 *             指定されたクラスが見つからない場合</em>
+<a name="149" href="#149">149</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="150" href="#150">150</a> 	@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a name="151" href="#151">151</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> &lt;T&gt; Class&lt;T&gt; forName(<strong class="jxr_keyword">final</strong> String className)
+<a name="152" href="#152">152</a> 			<strong class="jxr_keyword">throws</strong> ClassNotFoundException {
+<a name="153" href="#153">153</a> 		<strong class="jxr_keyword">return</strong> (Class&lt;T&gt;) Class.forName(className);
+<a name="154" href="#154">154</a> 	}
+<a name="155" href="#155">155</a> 
+<a name="156" href="#156">156</a> 	<em class="jxr_javadoccomment">/**</em>
+<a name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * リソースを開放します。</em>
+<a name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 */</em>
+<a name="159" href="#159">159</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> clear() {
+<a name="160" href="#160">160</a> 		<strong class="jxr_keyword">this</strong>.actionClassName = <strong class="jxr_keyword">null</strong>;
+<a name="161" href="#161">161</a> 		<strong class="jxr_keyword">this</strong>.actionMethodName = <strong class="jxr_keyword">null</strong>;
+<a name="162" href="#162">162</a> 		<strong class="jxr_keyword">this</strong>.parameters.clear();
+<a name="163" href="#163">163</a> 	}
+<a name="164" href="#164">164</a> 
+<a name="165" href="#165">165</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
