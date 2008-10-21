@@ -12,6 +12,10 @@ cd ../cubby-examples
 mvn clean package
 cp -f target/*.war ../www/download
 
+cd ../cubbitter
+mvn clean package
+cp -f target/*.war ../www/download
+
 cd ../cubby-project
 mvn clean package site
 cp -f cubby-dist/target/*.zip ../www/download

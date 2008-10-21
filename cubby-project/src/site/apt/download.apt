@@ -4,12 +4,30 @@
   agata
   baba
   --------
-  2008-08-27
+  2008-10-22
   --------
 
 {ダウンロード}
 
 *{最新のリリース}
+
+** Cubby 1.1.1 (2008-10-22)
+
+  リリース1.1.0です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10795}リリースノート}}）
+
+  * Cubby 本体とドキュメント {{{http://cubby.seasar.org/download/cubby-1.1.1.zip}ダウンロード}}
+
+  * サンプル war {{{http://cubby.seasar.org/download/cubby-examples-1.1.1.war}ダウンロード}}
+
+  * サンプルアプリ(Cubbitter) war {{{http://cubby.seasar.org/download/cubbitter-1.1.1.war}ダウンロード}}
+
+  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/1.1.1/}SVNリポジトリのtags}}からチェックアウトして下さい
+
+  * 以前のバージョンからの移行する際の注意点
+
+  {{{migration.html#1.0.x_から_1.1.x_への移行}移行ガイド(1.0.xから1.1.xへの移行)}}をご覧ください。
+
+*{過去のリリース}
 
 ** Cubby 1.1.0 (2008-08-27)
 
@@ -26,8 +44,6 @@
   * 以前のバージョンからの移行する際の注意点
 
   {{{migration.html#1.0.x_から_1.1.x_への移行}移行ガイド(1.0.xから1.1.xへの移行)}}をご覧ください。
-
-*{過去のリリース}
 
 ** Cubby 1.1.0-rc2 (2008-08-17)
 
