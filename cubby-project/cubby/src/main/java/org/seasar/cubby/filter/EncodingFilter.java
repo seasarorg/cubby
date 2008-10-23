@@ -151,10 +151,8 @@ public class EncodingFilter implements Filter {
 	 */
 	private void validateEncoding(final String encoding)
 			throws UnsupportedEncodingException {
-		if (encoding != null) {
-			if (!Charset.isSupported(encoding)) {
-				throw new UnsupportedEncodingException(encoding);
-			}
+		if (encoding != null && !Charset.isSupported(encoding)) {
+			throw new UnsupportedEncodingException(encoding);
 		}
 	}
 
@@ -179,7 +177,8 @@ public class EncodingFilter implements Filter {
 				chain.doFilter(request, response);
 			} else {
 				final ServletRequest wrapper = new EncodingHttpServletRequestWrapper(
-						(HttpServletRequest) request, null, null);
+						HttpServletRequest.class.cast(request), uriEncoding,
+						uriBytesEncoding);
 				chain.doFilter(wrapper, response);
 			}
 			request.removeAttribute(ALREADY_FILTERED_ATTRIBUTE_NAME);
