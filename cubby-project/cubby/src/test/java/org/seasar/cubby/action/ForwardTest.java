@@ -15,175 +15,256 @@
  */
 package org.seasar.cubby.action;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 
+import org.easymock.IAnswer;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockHttpServletResponse;
-import org.seasar.framework.mock.servlet.MockServletContext;
-import org.seasar.framework.util.ClassUtil;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
 
-public class ForwardTest extends S2TestCase {
+public class ForwardTest {
 
-	public MockAction action;
+	private MockAction action = new MockAction();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+	private HttpServletRequest request;
+
+	private RequestDispatcher requestDispatcher;
+
+	private HttpServletResponse response;
+
+	@Before
+	public void setupContainer() {
+		final PathResolver pathResolver = new PathResolverImpl();
+		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
+
+			public PathResolver getPathResolver() {
+				return pathResolver;
+			}
+
+		};
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (PathResolverFactory.class.equals(type)) {
+					return type.cast(pathResolverFactory);
+				}
+				return null;
+			}
+
+		});
 	}
 
-	public void testBasicSequence() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	@Before
+	public void setupRequest() {
+		request = createMock(HttpServletRequest.class);
+		expect(request.getCharacterEncoding()).andReturn("UTF-8").anyTimes();
+		requestDispatcher = createMock(RequestDispatcher.class);
+		response = createMock(HttpServletResponse.class);
+	}
+
+	@Test
+	public void basicSequence() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		final MockActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getRequestDispatcher("/mock/path.jsp")).andStubAnswer(
+				new IAnswer<RequestDispatcher>() {
+
+					public RequestDispatcher answer() throws Throwable {
+						assertTrue(actionContext.isPrerendered());
+						return requestDispatcher;
+					}
+
+				});
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward("path.jsp");
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertTrue(action.isPrerendered());
-						assertEquals("/mock/path.jsp", path);
-					}
-				}), response);
-		assertTrue(action.isPostrendered());
+		forward.execute(actionContext, request, response);
+		assertTrue(actionContext.isPostrendered());
+		verify(request, requestDispatcher, response);
 	}
 
-	public void testRelativePath() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	@Test
+	public void relativePath() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		final MockActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getRequestDispatcher("/mock/page.jsp")).andReturn(
+				requestDispatcher);
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward("page.jsp");
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertEquals("/mock/page.jsp", path);
-					}
-				}), response);
+		forward.execute(actionContext, request, response);
+		verify(request, requestDispatcher, response);
 	}
 
-	public void testAbsolutePath() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	@Test
+	public void absolutePath() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getRequestDispatcher("/absolute/path.jsp")).andReturn(
+				requestDispatcher);
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward("/absolute/path.jsp");
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertEquals("/absolute/path.jsp", path);
-					}
-				}), response);
+		forward.execute(actionContext, request, response);
+		verify(request, requestDispatcher, response);
 	}
 
-	public void testGetPath() throws Exception {
+	@Test
+	public void getPath() throws Exception {
 		Forward forward = new Forward("/absolute/path.jsp");
 		assertEquals("/absolute/path.jsp", forward.getPath("UTF-8"));
 	}
 
-	public void testParam() throws Exception {
+	@Test
+	public void param() throws Exception {
 		Forward forward = new Forward("/absolute/path.jsp").param("value1",
 				"123").param("value2", "456");
 		assertEquals("/absolute/path.jsp?value1=123&value2=456", forward
 				.getPath("UTF-8"));
 	}
 
+	@Test
 	@SuppressWarnings("unchecked")
-	public void testForwardByClassAndMethodName() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	public void forwardByClassAndMethodName() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		expectLastCall().andAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
+				assertNotNull(routings);
+				assertEquals(1, routings.size());
+				Routing routing = routings.get(null);
+				assertNotNull(routing);
+				assertEquals(MockAction.class, routing.getActionClass());
+				Method forwardMethod = action.getClass().getMethod("dummy2");
+				assertEquals(forwardMethod, routing.getMethod());
+				return null;
+			}
+
+		});
+		expect(
+				request
+						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY))
+				.andReturn(requestDispatcher);
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward(MockAction.class, "dummy2");
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY,
-								path);
-					}
-				}), response);
-		Map<String, Routing> routings = (Map<String, Routing>) request
-				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
-		assertNotNull(routing);
-		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2",
-				null);
-		assertEquals(forwardMethod, routing.getMethod());
+		forward.execute(actionContext, request, response);
 	}
 
+	@Test
 	@SuppressWarnings("unchecked")
-	public void testForwardByClassAndIndex() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	public void forwardByClassAndIndex() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		expectLastCall().andAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
+				assertNotNull(routings);
+				assertEquals(1, routings.size());
+				Routing routing = routings.get(null);
+				assertNotNull(routing);
+				assertEquals(MockAction.class, routing.getActionClass());
+				Method forwardMethod = action.getClass().getMethod("index");
+				assertEquals(forwardMethod, routing.getMethod());
+				return null;
+			}
+
+		});
+		expect(
+				request
+						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY))
+				.andReturn(requestDispatcher);
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward(MockAction.class);
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY,
-								path);
-					}
-				}), response);
-		Map<String, Routing> routings = (Map<String, Routing>) request
-				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
-		assertNotNull(routing);
-		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "index",
-				null);
-		assertEquals(forwardMethod, routing.getMethod());
+		forward.execute(actionContext, request, response);
 	}
 
 	@SuppressWarnings("unchecked")
-	public void testForwardByClassAndMethodNameWithParam() throws Exception {
-		MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
+	public void forwardByClassAndMethodNameWithParam() throws Exception {
+		Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		expectLastCall().andAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
+				assertNotNull(routings);
+				assertEquals(1, routings.size());
+				Routing routing = routings.get(null);
+				assertNotNull(routing);
+				assertEquals(MockAction.class, routing.getActionClass());
+				Method forwardMethod = action.getClass().getMethod("dummy2");
+				assertEquals(forwardMethod, routing.getMethod());
+				return null;
+			}
+
+		});
+		expect(
+				request
+						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY
+								+ "?value1=123&value2=456")).andReturn(
+				requestDispatcher);
+		requestDispatcher.forward(request, response);
+		expectLastCall();
+		replay(request, requestDispatcher, response);
 
 		Forward forward = new Forward(MockAction.class, "dummy2").param(
 				"value1", "123").param("value2", "456");
-		forward.execute(action, MockAction.class, method,
-				new RequestDispatcherAssertionWrapper(request, new Asserter() {
-					public void assertDispatchPath(String path) {
-						assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY
-								+ "?value1=123&value2=456", path);
-					}
-				}), response);
-		Map<String, Routing> routings = (Map<String, Routing>) request
-				.getAttribute(CubbyConstants.ATTR_ROUTINGS);
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
-		assertNotNull(routing);
-		assertEquals(MockAction.class, routing.getActionClass());
-		Method forwardMethod = ClassUtil.getMethod(action.getClass(), "dummy2",
-				null);
-		assertEquals(forwardMethod, routing.getMethod());
+		forward.execute(actionContext, request, response);
 	}
 
 	interface Asserter {

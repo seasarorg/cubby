@@ -21,9 +21,17 @@ import org.seasar.cubby.action.Form;
 
 public class MockFormAction extends Action {
 
-	public Object form = new Object();
+	private Object form = new Object();
 
-	public Object nullForm;
+	private Object nullForm = null;
+
+	public Object getForm() {
+		return form;
+	}
+
+	public Object getNullForm() {
+		return nullForm;
+	}
 
 	public ActionResult normal() {
 		return null;

@@ -15,20 +15,27 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertSuccess;
+
 import java.util.regex.Pattern;
 
+import org.junit.Test;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 
-public class RegexpValidatorTest extends AbstractScalarFieldValidatorTestCase {
+public class RegexpValidatorTest {
 
-	public void testValidation1() {
+	@Test
+	public void validate1() {
 		ScalarFieldValidator validator = new RegexpValidator("a.*34");
 		assertSuccess(validator, null, "", "a5634");
 		assertFail(validator, "b5634");
 	}
 
-	public void testValidation2() {
-		ScalarFieldValidator validator = new RegexpValidator(Pattern.compile("(?i)a.*34"));
+	@Test
+	public void validate2() {
+		ScalarFieldValidator validator = new RegexpValidator(Pattern
+				.compile("(?i)a.*34"));
 		assertSuccess(validator, null, "", "a5634");
 		assertSuccess(validator, null, "", "A5634");
 		assertFail(validator, "b5634");

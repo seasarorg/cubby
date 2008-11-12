@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.routing;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
@@ -51,7 +51,14 @@ public interface PathResolver {
 	 * 
 	 * @return ルーティング情報の一覧
 	 */
-	List<Routing> getRoutings();
+	// List<Routing> getRoutings();
+	Map<Routing, Routing> getRoutings();
+
+	// TODO
+	void addAllActionClasses(Collection<Class<? extends Action>> actionClasses);
+
+	// TODO
+	void clearAllActionClasses();
 
 	/**
 	 * ルーティング情報を手動登録します。
@@ -63,16 +70,15 @@ public interface PathResolver {
 	 *            アクションのパス
 	 * @param actionClass
 	 *            アクションクラス
-	 * @param methodName
+	 * @param actionMethodName
 	 *            アクションメソッド名
 	 * @param requestMethods
 	 *            リクエストメソッド。<code>null</code> の場合、{@link RequestMethod#GET},
 	 *            {@link RequestMethod#POST} がデフォルト値として設定されます。
 	 * @see org.seasar.cubby.action.Path#priority() 自動設定の際のプライオリティ
 	 */
-	void add(final String actionPath,
-			final Class<? extends Action> actionClass, final String methodName,
-			final RequestMethod... requestMethods);
+	void add(String actionPath, Class<? extends Action> actionClass,
+			String actionMethodName, RequestMethod... requestMethods);
 
 	/**
 	 * 指定されたアクションクラス、メソッド名、パラメータからパスを逆引きします。
@@ -88,7 +94,7 @@ public interface PathResolver {
 	 * @return リダイレクト用のパス
 	 * @since 1.1.0
 	 */
-	String reverseLookup(final Class<? extends Action> actionClass,
+	String reverseLookup(Class<? extends Action> actionClass,
 			String methodName, Map<String, String[]> parameters,
 			String characterEncoding);
 

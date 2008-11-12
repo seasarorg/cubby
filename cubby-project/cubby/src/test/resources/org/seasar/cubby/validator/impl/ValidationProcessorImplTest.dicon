@@ -3,12 +3,4 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="cubby.dicon"/>
-
-	<component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl" />
-
-	<component name="errors" class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
-	<component name="params" class="java.util.HashMap" instance="request" />
-
-	<component name="action" class="org.seasar.cubby.validator.impl.MockAction" instance="request" />
-
 </components>

@@ -15,6 +15,10 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,16 +27,17 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
 import org.jdom.Element;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
 
 public class InputTagTest extends SimpleTagTestCase {
 
 	private InputTag tag;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setup() throws Exception {
 		tag = new InputTag();
 		setupSimpleTag(tag);
 		setupErrors(context);
@@ -54,7 +59,8 @@ public class InputTagTest extends SimpleTagTestCase {
 				PageContext.REQUEST_SCOPE);
 	}
 
-	public void testDoTagCheckboxValueRequred() throws Exception {
+	@Test
+	public void doTagCheckboxValueRequred() throws Exception {
 		tag.setName("stringField");
 		tag.setCheckedValue("value1");
 		tag.setType("checkbox");
@@ -67,7 +73,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		}
 	}
 
-	public void testDoTagCheckbox1() throws Exception {
+	@Test
+	public void doTagCheckbox1() throws Exception {
 		tag.setType("checkbox");
 		tag.setName("stringField");
 		tag.setValue("outputValue");
@@ -77,7 +84,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 4, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "outputValue", element.getAttributeValue("value"));
@@ -88,7 +95,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// checked=\"true\"/>\n", context.getResult());
 	}
 
-	public void testDoTagCheckbox2() throws Exception {
+	@Test
+	public void doTagCheckbox2() throws Exception {
 		tag.setType("checkbox");
 		tag.setName("stringField");
 		tag.setValue("value1");
@@ -98,7 +106,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -108,7 +116,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagCheckboxWithCheckedValue1() throws Exception {
+	@Test
+	public void doTagCheckboxWithCheckedValue1() throws Exception {
 		tag.setType("checkbox");
 		tag.setName("stringField");
 		tag.setValue("value1");
@@ -119,7 +128,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -129,7 +138,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagCheckboxWithCheckedValue2() throws Exception {
+	@Test
+	public void doTagCheckboxWithCheckedValue2() throws Exception {
 		tag.setType("checkbox");
 		tag.setName("stringField");
 		tag.setValue("value1");
@@ -140,7 +150,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 4, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -151,7 +161,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagCheckboxWithCheckedValueError1() throws Exception {
+	@Test
+	public void doTagCheckboxWithCheckedValueError1() throws Exception {
 		setValidationFail();
 
 		tag.setType("checkbox");
@@ -163,7 +174,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -173,7 +184,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagCheckboxError1() throws Exception {
+	@Test
+	public void doTagCheckboxError1() throws Exception {
 		setValidationFail();
 
 		tag.setType("checkbox");
@@ -185,7 +197,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 4, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));
@@ -196,7 +208,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// checked=\"true\"/>\n", context.getResult());
 	}
 
-	public void testDoTagCheckboxError2() throws Exception {
+	@Test
+	public void doTagCheckboxError2() throws Exception {
 		setValidationFail();
 
 		tag.setType("checkbox");
@@ -208,7 +221,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "checkbox", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -218,7 +231,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagRadioValueRequred() throws Exception {
+	@Test
+	public void doTagRadioValueRequred() throws Exception {
 		tag.setName("stringField");
 		tag.setCheckedValue("value1");
 		tag.setType("radio");
@@ -230,7 +244,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		}
 	}
 
-	public void testDoTagRadio1() throws Exception {
+	@Test
+	public void doTagRadio1() throws Exception {
 		tag.setType("radio");
 		tag.setName("stringField");
 		tag.setValue("outputValue");
@@ -240,7 +255,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 4, element.getAttributes().size());
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "outputValue", element.getAttributeValue("value"));
@@ -251,7 +266,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// checked=\"true\"/>\n", context.getResult());
 	}
 
-	public void testDoTagRadio2() throws Exception {
+	@Test
+	public void doTagRadio2() throws Exception {
 		tag.setType("radio");
 		tag.setName("stringField");
 		tag.setValue("value1");
@@ -261,7 +277,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -271,7 +287,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagRadioError1() throws Exception {
+	@Test
+	public void doTagRadioError1() throws Exception {
 		setValidationFail();
 
 		tag.setType("radio");
@@ -283,7 +300,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 4, element.getAttributes().size());
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));
@@ -294,7 +311,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// checked=\"true\"/>\n", context.getResult());
 	}
 
-	public void testDoTagRadioError2() throws Exception {
+	@Test
+	public void doTagRadioError2() throws Exception {
 		setValidationFail();
 
 		tag.setType("radio");
@@ -306,7 +324,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "radio", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -316,7 +334,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// />\n", context.getResult());
 	}
 
-	public void testDoTagText1() throws Exception {
+	@Test
+	public void doTagText1() throws Exception {
 		tag.setType("text");
 		tag.setName("stringField");
 		tag.setValue("value1");
@@ -326,7 +345,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "text", element.getAttributeValue("type"));
 		assertEquals(message, "value1", element.getAttributeValue("value"));
@@ -336,7 +355,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// context.getResult());
 	}
 
-	public void testDoTagText2() throws Exception {
+	@Test
+	public void doTagText2() throws Exception {
 		tag.setType("text");
 		tag.setName("stringField");
 		// tag.setValue("value1");
@@ -346,7 +366,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "text", element.getAttributeValue("type"));
 		assertEquals(message, "outputValue", element.getAttributeValue("value"));
@@ -356,7 +376,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// context.getResult());
 	}
 
-	public void testDoTagTextError1() throws Exception {
+	@Test
+	public void doTagTextError1() throws Exception {
 		setValidationFail();
 
 		tag.setType("text");
@@ -368,7 +389,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "text", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));
@@ -378,7 +399,8 @@ public class InputTagTest extends SimpleTagTestCase {
 		// context.getResult());
 	}
 
-	public void testDoTagTextError2() throws Exception {
+	@Test
+	public void doTagTextError2() throws Exception {
 		setValidationFail();
 
 		tag.setType("text");
@@ -390,7 +412,7 @@ public class InputTagTest extends SimpleTagTestCase {
 
 		Element element = getResultAsElementFromContext();
 		String message = "valueが指定";
-		assertTrue(message, StringUtil.isEmpty(element.getValue()));
+		assertTrue(message, StringUtils.isEmpty(element.getValue()));
 		assertEquals(message, 3, element.getAttributes().size());
 		assertEquals(message, "text", element.getAttributeValue("type"));
 		assertEquals(message, "paramsValue", element.getAttributeValue("value"));

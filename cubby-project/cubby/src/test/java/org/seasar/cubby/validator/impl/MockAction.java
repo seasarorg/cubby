@@ -28,13 +28,17 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 
 public class MockAction extends Action {
 
-	public ValidationRules validationRules = new DefaultValidationRules() {
+	private ValidationRules validationRules = new DefaultValidationRules() {
 		@Override
 		public void initialize() {
 			add("name", new RequiredValidator(), new MaxLengthValidator(10));
 			add("age", new NumberValidator(), new RangeValidator(0, 10));
 		}
 	};
+
+	public ValidationRules getValidationRules() {
+		return validationRules;
+	}
 
 	@Path("/mock/dummy")
 	@Validation(rules = "validationRules", errorPage = "error.jsp")

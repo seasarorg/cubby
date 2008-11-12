@@ -21,6 +21,7 @@ import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,11 +34,11 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.log.Logger;
-import org.seasar.framework.message.MessageFormatter;
+import org.seasar.cubby.beans.BeanDesc;
+import org.seasar.cubby.beans.BeanDescFactory;
+import org.seasar.cubby.beans.PropertyDesc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * selectを出力するタグ
@@ -48,7 +49,8 @@ import org.seasar.framework.message.MessageFormatter;
  */
 public class SelectTag extends DynamicAttributesTagSupport {
 
-	private static final Logger logger = Logger.getLogger(SelectTag.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(SelectTag.class);
 
 	/** name属性。 */
 	private String name;
@@ -178,8 +180,8 @@ public class SelectTag extends DynamicAttributesTagSupport {
 				optionWriter = new OptionWriter(new EntryItemAdaptor());
 				collection = ((Map<?, ?>) items).entrySet();
 			} else {
-				throw new JspTagException(MessageFormatter.getMessage(
-						"ECUB1001", new Object[] { "items", items.getClass() }));
+				throw new JspTagException(format("ECUB1001", "items",
+						items == null ? null : items.getClass()));
 			}
 			for (final Object item : collection) {
 				optionWriter.write(out, item, value);
@@ -250,8 +252,8 @@ public class SelectTag extends DynamicAttributesTagSupport {
 
 		BeanItemAdaptor() throws JspTagException {
 			if (valueProperty == null) {
-				throw new JspTagException(MessageFormatter.getMessage(
-						"ECUB1002", new Object[] { "items", "valueProperty" }));
+				throw new JspTagException(format("ECUB1002", "items",
+						"valueProperty"));
 			}
 		}
 
@@ -288,17 +290,17 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	private class EntryItemAdaptor implements ItemAdaptor {
 
 		EntryItemAdaptor() {
-			if (valueProperty != null) {
-				logger.log("WCUB1001", new Object[] { "items",
-						Map.class.getSimpleName(), "valueProperty",
-						valueProperty,
-						Entry.class.getSimpleName() + "#getKey()" });
-			}
-			if (labelProperty != null) {
-				logger.log("WCUB1002", new Object[] { "items",
-						Map.class.getSimpleName(), "labelProperty",
-						labelProperty,
-						Entry.class.getSimpleName() + "#getValue()" });
+			if (logger.isWarnEnabled()) {
+				if (valueProperty != null) {
+					logger.warn(format("WCUB1001", "items", Map.class
+							.getSimpleName(), "valueProperty", valueProperty,
+							Entry.class.getSimpleName() + "#getKey()"));
+				}
+				if (labelProperty != null) {
+					logger.warn(format("WCUB1002", "items", Map.class
+							.getSimpleName(), "labelProperty", labelProperty,
+							Entry.class.getSimpleName() + "#getValue()"));
+				}
 			}
 		}
 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="0.561" errors="0" skipped="0" tests="1" name="org.seasar.cubby.plugins.s2.unit.CubbyTestCaseTest">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="env.SESSION_MANAGER" value="local/unix:@/tmp/.ICE-unix/2842,unix/unix:/tmp/.ICE-unix/2842"/>
+    <property name="env.LESSOPEN" value="|/usr/bin/lesspipe.sh %s"/>
+    <property name="localRepository" value="/home/baba/.m2/repository"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="env.QT_IM_MODULE" value="xim"/>
+    <property name="sun.management.compiler" value="HotSpot Tiered Compilers"/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/resources.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/rt.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/jsse.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/jce.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/charsets.jar:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/classes"/>
+    <property name="env.PWD" value="/home/baba/workspace-cubby/cubby-project"/>
+    <property name="env.XDG_SESSION_COOKIE" value="8e85a03f2977d92847d3c42948c3e608-1226502793.929226-1889883902"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="env.LANG" value="ja_JP.utf8"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.runtime.version" value="1.6.0_07-b06"/>
+    <property name="env.HISTSIZE" value="1000"/>
+    <property name="env.JS_FEEDBACK_CONVERT" value="t"/>
+    <property name="env.DISPLAY" value=":0.0"/>
+    <property name="user.name" value="baba"/>
+    <property name="env.USER" value="baba"/>
+    <property name="env.SHELL" value="/bin/bash"/>
+    <property name="env.QTLIB" value="/usr/lib/qt-3.3/lib"/>
+    <property name="env.DESKTOP_SESSION" value="gnome"/>
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat"/>
+    <property name="env.PATH" value="/etc/alternatives/java_sdk/bin:/usr/lib/qt-3.3/bin:/usr/kerberos/bin:/usr/local/bin:/usr/bin:/bin:/home/baba/bin"/>
+    <property name="user.language" value="ja"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/i386"/>
+    <property name="classworlds.conf" value="/home/baba/opt/maven/bin/m2.conf"/>
+    <property name="java.version" value="1.6.0_07"/>
+    <property name="user.timezone" value="Asia/Tokyo"/>
+    <property name="env.DBUS_SESSION_BUS_ADDRESS" value="unix:abstract=/tmp/dbus-l39yLX4VA4,guid=050d694ac9cfaa8d9ee91973491af28b"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="env.SSH_AGENT_PID" value="3025"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/endorsed"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="env.SHLVL" value="2"/>
+    <property name="file.separator" value="/"/>
+    <property name="env.HOSTNAME" value="x61"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="env.QTDIR" value="/usr/lib/qt-3.3"/>
+    <property name="env.SDL_AUDIODRIVER" value="esd"/>
+    <property name="env.GNOME_DESKTOP_SESSION_ID" value="Default"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="env.GDMSESSION" value="gnome"/>
+    <property name="user.country" value="JP"/>
+    <property name="env.GNOME_KEYRING_PID" value="2841"/>
+    <property name="java.home" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="env.LOGNAME" value="baba"/>
+    <property name="os.version" value="2.6.27.5-32.fc9.i686.PAE"/>
+    <property name="env.G_BROKEN_FILENAMES" value="1"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.version" value="10.0-b23"/>
+    <property name="env.QTINC" value="/usr/lib/qt-3.3/include"/>
+    <property name="env.DESKTOP_STARTUP_ID" value=""/>
+    <property name="env.JAVA_HOME" value="/etc/alternatives/java_sdk"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="env.TERM" value="xterm"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="env.HTT_GENERATES_KANAKEY" value="t"/>
+    <property name="env.XMODIFIERS" value="@im=iiimx"/>
+    <property name="env.GDM_LANG" value="ja_JP.utf8"/>
+    <property name="user.home" value="/home/baba"/>
+    <property name="env.OLDPWD" value="/home/baba/workspace-cubby/cubby-project"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="env.WINDOWID" value="90177612"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/i386/server:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/i386:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib"/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="maven.home" value="/home/baba/opt/maven"/>
+    <property name="java.class.path" value="/home/baba/opt/maven/boot/classworlds-1.1.jar"/>
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="env.GTK_RC_FILES" value="/etc/gtk/gtkrc:/home/baba/.gtkrc-1.2-gnome2"/>
+    <property name="env.HOME" value="/home/baba"/>
+    <property name="surefire.test.class.path" value="/home/baba/workspace-cubby/cubby-project/cubby-s2/target/test-classes:/home/baba/workspace-cubby/cubby-project/cubby-s2/target/classes:/home/baba/.m2/repository/junit/junit/4.4/junit-4.4.jar:/home/baba/.m2/repository/org/apache/geronimo/specs/geronimo-servlet_2.4_spec/1.1/geronimo-servlet_2.4_spec-1.1.jar:/home/baba/workspace-cubby/cubby-project/cubby/target/cubby-2.0.0-SNAPSHOT.jar:/home/baba/.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1.jar:/home/baba/.m2/repository/commons-fileupload/commons-fileupload/1.2/commons-fileupload-1.2.jar:/home/baba/.m2/repository/org/slf4j/slf4j-api/1.5.2/slf4j-api-1.5.2.jar:/home/baba/.m2/repository/org/easymock/easymock/2.4/easymock-2.4.jar:/home/baba/.m2/repository/org/seasar/container/s2-framework/2.4.32/s2-framework-2.4.32.jar:/home/baba/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/baba/.m2/repository/jboss/javassist/3.4.ga/javassist-3.4.ga.jar:/home/baba/.m2/repository/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar:/home/baba/.m2/repository/org/seasar/container/s2-extension/2.4.32/s2-extension-2.4.32.jar:/home/baba/.m2/repository/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL.jar:/home/baba/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/home/baba/.m2/repository/org/seasar/container/s2-tiger/2.4.22/s2-tiger-2.4.22.jar:/home/baba/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.2/jcl-over-slf4j-1.5.2.jar:/home/baba/.m2/repository/ch/qos/logback/logback-core/0.9.9/logback-core-0.9.9.jar:/home/baba/.m2/repository/ch/qos/logback/logback-classic/0.9.9/logback-classic-0.9.9.jar:/home/baba/.m2/repository/rhino/js/1.7R1/js-1.7R1.jar:"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="env.LD_LIBRARY_PATH" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/i386/server:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/i386:/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/../lib/i386"/>
+    <property name="env.LS_COLORS" value="no=00:fi=00:di=00;34:ln=00;36:pi=40;33:so=00;35:do=00;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.svgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.lzma=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.dz=00;31:*.gz=00;31:*.bz2=00;31:*.tbz2=00;31:*.bz=00;31:*.tz=00;31:*.deb=00;31:*.rpm=00;31:*.jar=00;31:*.rar=00;31:*.ace=00;31:*.zoo=00;31:*.cpio=00;31:*.7z=00;31:*.rz=00;31:*.jpg=00;35:*.jpeg=00;35:*.gif=00;35:*.bmp=00;35:*.pbm=00;35:*.pgm=00;35:*.ppm=00;35:*.tga=00;35:*.xbm=00;35:*.xpm=00;35:*.tif=00;35:*.tiff=00;35:*.png=00;35:*.mng=00;35:*.pcx=00;35:*.mov=00;35:*.mpg=00;35:*.mpeg=00;35:*.m2v=00;35:*.mkv=00;35:*.ogm=00;35:*.mp4=00;35:*.m4v=00;35:*.mp4v=00;35:*.vob=00;35:*.qt=00;35:*.nuv=00;35:*.wmv=00;35:*.asf=00;35:*.rm=00;35:*.rmvb=00;35:*.flc=00;35:*.avi=00;35:*.fli=00;35:*.gl=00;35:*.dl=00;35:*.xcf=00;35:*.xwd=00;35:*.yuv=00;35:*.svg=00;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="env.SSH_AUTH_SOCK" value="/tmp/keyring-f2cHod/ssh"/>
+    <property name="env.KDEDIRS" value="/usr"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="os.arch" value="i386"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-1.6.0-sun-1.6.0.7/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="user.dir" value="/home/baba/workspace-cubby/cubby-project/cubby-s2"/>
+    <property name="env.XAUTHORITY" value="/var/run/gdm/auth-cookie-XXI7V9JU-for-baba"/>
+    <property name="env.HTT_DISABLE_STATUS_WINDOW" value="t"/>
+    <property name="env.HTT_USES_LINUX_XKEYSYM" value="t"/>
+    <property name="env.GTK_MODULES" value="gnomebreakpad"/>
+    <property name="line.separator" value="
+"/>
+    <property name="env.INPUTRC" value="/etc/inputrc"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Server VM"/>
+    <property name="env.HTT_IGNORES_LOCK_MASK" value="t"/>
+    <property name="env.COLORTERM" value="gnome-terminal"/>
+    <property name="basedir" value="/home/baba/workspace-cubby/cubby-project/cubby-s2"/>
+    <property name="env.USERNAME" value="baba"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="env.GNOME_KEYRING_SOCKET" value="/tmp/keyring-f2cHod/socket"/>
+    <property name="env.MAIL" value="/var/spool/mail/baba"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="env.KDE_IS_PRELINKED" value="1"/>
+    <property name="env.SSH_ASKPASS" value="/usr/libexec/openssh/gnome-ssh-askpass"/>
+  </properties>
+  <testcase time="0.529" classname="org.seasar.cubby.plugins.s2.unit.CubbyTestCaseTest" name="testSetupThreadContext"/>
+</testsuite>

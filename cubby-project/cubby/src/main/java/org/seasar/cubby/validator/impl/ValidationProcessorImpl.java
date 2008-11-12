@@ -20,16 +20,15 @@ import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 import static org.seasar.cubby.validator.ValidationUtils.getValidation;
 import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationFailBehaviour;
@@ -49,17 +48,18 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void process(final HttpServletRequest request, final Action action,
-			final Class<? extends Action> actionClass, final Method method) {
-		final Validation validation = getValidation(method);
+	public void process(final HttpServletRequest request,
+			final ActionContext actionContext) {
+		final Validation validation = getValidation(actionContext
+				.getActionMethod());
 		if (validation != null) {
 			final Map<String, Object[]> params = CubbyUtils.getAttribute(
 					request, ATTR_PARAMS);
-			final ValidationRules validationRules = getValidationRules(action,
-					validation.rules());
-			final Object formBean = CubbyUtils.getFormBean(action, actionClass,
-					method);
-			validate(validationRules, params, formBean, action.getErrors());
+			final ValidationRules validationRules = getValidationRules(
+					actionContext.getAction(), validation.rules());
+			final Object formBean = actionContext.getFormBean();
+			validate(validationRules, params, formBean, actionContext
+					.getActionErrors());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 * @param errors
 	 *            アクションのエラー
 	 */
-	public void validate(final ValidationRules validationRules,
+	private void validate(final ValidationRules validationRules,
 			final Map<String, Object[]> params, final Object form,
 			final ActionErrors errors) {
 		for (ValidationPhase validationPhase : validationRules
@@ -98,7 +98,7 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 * @param form
 	 *            フォームオブジェクト
 	 */
-	public void validate(final ValidationRules validationRules,
+	private void validate(final ValidationRules validationRules,
 			final ValidationPhase validationPhase,
 			final Map<String, Object[]> params, final Object form,
 			final ActionErrors errors) {
@@ -118,11 +118,10 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	 * {@inheritDoc}
 	 */
 	public ActionResult handleValidationException(final ValidationException e,
-			final HttpServletRequest request, final Action action,
-			final Method method) {
+			final HttpServletRequest request, final ActionContext actionContext) {
 		request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
 		final ValidationFailBehaviour behaviour = e.getBehaviour();
-		return behaviour.getActionResult(action, method);
+		return behaviour.getActionResult(actionContext);
 	}
 
 }

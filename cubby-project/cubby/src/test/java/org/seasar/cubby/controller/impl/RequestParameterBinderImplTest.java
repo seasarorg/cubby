@@ -15,6 +15,13 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,49 +45,70 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.RequestParameterBinder;
-import org.seasar.extension.unit.S2TestCase;
+import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterFactory;
 
 /**
  * 
  * @author baba
  */
-public class RequestParameterBinderImplTest extends S2TestCase {
+public class RequestParameterBinderImplTest {
 
-	public RequestParameterBinder requestParameterBinder;
+	private RequestParameterBinder requestParameterBinder;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		include(getClass().getName().replace('.', '/') + ".dicon");
+	@Before
+	public void setupContainerAndRequestParameterBinder() {
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (ConverterFactory.class.equals(type)) {
+					return type.cast(new MockConverterFactory());
+				}
+				return null;
+			}
+
+		});
+		requestParameterBinder = new RequestParameterBinderImpl();
 	}
 
-	public void testMapToBeanNullSource() {
+	@Test
+	public void mapToBeanNullSource() {
 		FormDto dto = new FormDto();
-		requestParameterBinder.bind(null, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(null, dto, actionContext);
 	}
 
-	public void testMapToBean() {
+	@Test
+	public void mapToBean() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("date", new Object[] { "2006-01-01" });
 
 		FormDto dto = new FormDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		assertEquals(format.format(cal.getTime()), format.format(dto.date));
+		assertEquals(format.format(cal.getTime()), format.format(dto.getDate()));
 	}
 
-	public void testMapToBean_OneValue() {
+	@Test
+	public void mapToBean_OneValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num1", new Object[] { "1" });
 		map.put("num2", new Object[] { "2" });
@@ -88,66 +116,74 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FormDto dto = new FormDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
-		assertNotNull(dto.num1);
-		assertEquals(Integer.valueOf(1), dto.num1);
-		assertNotNull(dto.num2);
-		assertEquals(1, dto.num2.length);
-		assertEquals(Integer.valueOf(2), dto.num2[0]);
-		assertNotNull(dto.num3);
-		assertEquals(1, dto.num3.size());
-		assertEquals("def", dto.num3.get(0));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getNum1());
+		assertEquals(Integer.valueOf(1), dto.getNum1());
+		assertNotNull(dto.getNum2());
+		assertEquals(1, dto.getNum2().length);
+		assertEquals(Integer.valueOf(2), dto.getNum2()[0]);
+		assertNotNull(dto.getNum3());
+		assertEquals(1, dto.getNum3().size());
+		assertEquals("def", dto.getNum3().get(0));
 	}
 
-	public void testMapToBean_MultiValue() {
+	@Test
+	public void mapToBean_MultiValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num2", new Object[] { "1", "2" });
 		map.put("num3", new Object[] { "abc", "def" });
 
 		FormDto dto = new FormDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
-		assertNotNull(dto.num2);
-		assertEquals(2, dto.num2.length);
-		assertEquals(Integer.valueOf(1), dto.num2[0]);
-		assertEquals(Integer.valueOf(2), dto.num2[1]);
-		assertNotNull(dto.num3);
-		assertEquals(2, dto.num3.size());
-		assertEquals("abc", dto.num3.get(0));
-		assertEquals("def", dto.num3.get(1));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getNum2());
+		assertEquals(2, dto.getNum2().length);
+		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
+		assertEquals(Integer.valueOf(2), dto.getNum2()[1]);
+		assertNotNull(dto.getNum3());
+		assertEquals(2, dto.getNum3().size());
+		assertEquals("abc", dto.getNum3().get(0));
+		assertEquals("def", dto.getNum3().get(1));
 	}
 
-	public void testMapToBean_MultiValueIncludesEmptyValue() {
+	@Test
+	public void mapToBean_MultiValueIncludesEmptyValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num2", new String[] { "1", "", "2" });
 
 		FormDto dto = new FormDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
-		assertEquals(3, dto.num2.length);
-		assertEquals(Integer.valueOf(1), dto.num2[0]);
-		assertEquals(null, dto.num2[1]);
-		assertEquals(Integer.valueOf(2), dto.num2[2]);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertEquals(3, dto.getNum2().length);
+		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
+		assertEquals(null, dto.getNum2()[1]);
+		assertEquals(Integer.valueOf(2), dto.getNum2()[2]);
 	}
 
-	public void testMapToBean_MultiValueIncludesNullValue() {
+	@Test
+	public void mapToBean_MultiValueIncludesNullValue() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num3", new String[] { "zzz", null, "xxx" });
 
 		FormDto dto = new FormDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
-		assertEquals(3, dto.num3.size());
-		assertEquals("zzz", dto.num3.get(0));
-		assertNull(dto.num3.get(1));
-		assertEquals("xxx", dto.num3.get(2));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertEquals(3, dto.getNum3().size());
+		assertEquals("zzz", dto.getNum3().get(0));
+		assertNull(dto.getNum3().get(1));
+		assertEquals("xxx", dto.getNum3().get(2));
 	}
 
-	public void testConverters() {
+	@Test
+	public void converters() {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("decimal", new Object[] { "12.3" });
 		map.put("decimals", new Object[] { "45.6", "78.9" });
@@ -199,197 +235,202 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		ConvertersDto dto = new ConvertersDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
 
-		assertNotNull(dto.decimal);
-		assertTrue(new BigDecimal("12.3").compareTo(dto.decimal) == 0);
+		assertNotNull(dto.getDecimal());
+		assertTrue(new BigDecimal("12.3").compareTo(dto.getDecimal()) == 0);
 
-		assertNotNull(dto.decimals);
-		assertEquals(2, dto.decimals.length);
-		assertTrue(new BigDecimal("45.6").compareTo(dto.decimals[0]) == 0);
-		assertTrue(new BigDecimal("78.9").compareTo(dto.decimals[1]) == 0);
+		assertNotNull(dto.getDecimals());
+		assertEquals(2, dto.getDecimals().length);
+		assertTrue(new BigDecimal("45.6").compareTo(dto.getDecimals()[0]) == 0);
+		assertTrue(new BigDecimal("78.9").compareTo(dto.getDecimals()[1]) == 0);
 
-		assertNotNull(dto.bigint);
-		assertTrue(new BigInteger("9876").compareTo(dto.bigint) == 0);
+		assertNotNull(dto.getBigint());
+		assertTrue(new BigInteger("9876").compareTo(dto.getBigint()) == 0);
 
-		assertNotNull(dto.bigints);
-		assertEquals(2, dto.bigints.length);
-		assertTrue(new BigInteger("5432").compareTo(dto.bigints[0]) == 0);
-		assertTrue(new BigInteger("10").compareTo(dto.bigints[1]) == 0);
+		assertNotNull(dto.getBigints());
+		assertEquals(2, dto.getBigints().length);
+		assertTrue(new BigInteger("5432").compareTo(dto.getBigints()[0]) == 0);
+		assertTrue(new BigInteger("10").compareTo(dto.getBigints()[1]) == 0);
 
-		assertNotNull(dto.bool1);
-		assertTrue(dto.bool1);
+		assertNotNull(dto.getBool1());
+		assertTrue(dto.getBool1());
 
-		assertNotNull(dto.bools1);
-		assertEquals(2, dto.bools1.length);
-		assertTrue(dto.bools1[0]);
-		assertFalse(dto.bools1[1]);
+		assertNotNull(dto.getBools1());
+		assertEquals(2, dto.getBools1().length);
+		assertTrue(dto.getBools1()[0]);
+		assertFalse(dto.getBools1()[1]);
 
-		assertFalse(dto.bool2);
+		assertFalse(dto.isBool2());
 
-		assertNotNull(dto.bools2);
-		assertEquals(3, dto.bools2.length);
-		assertFalse(dto.bools2[0]);
-		assertTrue(dto.bools2[1]);
-		assertFalse(dto.bools2[2]);
+		assertNotNull(dto.getBools2());
+		assertEquals(3, dto.getBools2().length);
+		assertFalse(dto.getBools2()[0]);
+		assertTrue(dto.getBools2()[1]);
+		assertFalse(dto.getBools2()[2]);
 
-		assertNotNull(dto.byte1);
-		assertEquals(new Byte((byte) 12), dto.byte1);
+		assertNotNull(dto.getByte1());
+		assertEquals(new Byte((byte) 12), dto.getByte1());
 
-		assertNotNull(dto.bytes1);
-		assertEquals(2, dto.bytes1.length);
-		assertEquals(new Byte((byte) 34), dto.bytes1[0]);
-		assertEquals(new Byte((byte) 56), dto.bytes1[1]);
+		assertNotNull(dto.getBytes1());
+		assertEquals(2, dto.getBytes1().length);
+		assertEquals(new Byte((byte) 34), dto.getBytes1()[0]);
+		assertEquals(new Byte((byte) 56), dto.getBytes1()[1]);
 
-		assertEquals((byte) 98, dto.byte2);
+		assertEquals((byte) 98, dto.getByte2());
 
-		assertNotNull(dto.bytes2);
-		assertEquals(2, dto.bytes2.length);
-		assertEquals((byte) 76, dto.bytes2[0]);
-		assertEquals((byte) 54, dto.bytes2[1]);
+		assertNotNull(dto.getBytes2());
+		assertEquals(2, dto.getBytes2().length);
+		assertEquals((byte) 76, dto.getBytes2()[0]);
+		assertEquals((byte) 54, dto.getBytes2()[1]);
 
-		assertNotNull(dto.char1);
-		assertEquals(new Character('a'), dto.char1);
+		assertNotNull(dto.getChar1());
+		assertEquals(new Character('a'), dto.getChar1());
 
-		assertNotNull(dto.chars1);
-		assertEquals(2, dto.chars1.length);
-		assertEquals(new Character('b'), dto.chars1[0]);
-		assertEquals(new Character('c'), dto.chars1[1]);
+		assertNotNull(dto.getChars1());
+		assertEquals(2, dto.getChars1().length);
+		assertEquals(new Character('b'), dto.getChars1()[0]);
+		assertEquals(new Character('c'), dto.getChars1()[1]);
 
-		assertNotNull(dto.char2);
-		assertEquals('d', dto.char2);
+		assertNotNull(dto.getChar2());
+		assertEquals('d', dto.getChar2());
 
-		assertNotNull(dto.chars2);
-		assertEquals(2, dto.chars2.length);
-		assertEquals('e', dto.chars2[0]);
-		assertEquals('f', dto.chars2[1]);
+		assertNotNull(dto.getChars2());
+		assertEquals(2, dto.getChars2().length);
+		assertEquals('e', dto.getChars2()[0]);
+		assertEquals('f', dto.getChars2()[1]);
 
-		assertNotNull(dto.date);
-		assertEquals(new Date(fromDateToMillis(2008, 7, 28)), dto.date);
+		assertNotNull(dto.getDate());
+		assertEquals(new Date(fromDateToMillis(2008, 7, 28)), dto.getDate());
 
-		assertNotNull(dto.dates);
-		assertEquals(2, dto.dates.length);
-		assertEquals(new Date(fromDateToMillis(2008, 8, 14)), dto.dates[0]);
-		assertEquals(new Date(fromDateToMillis(2008, 10, 30)), dto.dates[1]);
+		assertNotNull(dto.getDates());
+		assertEquals(2, dto.getDates().length);
+		assertEquals(new Date(fromDateToMillis(2008, 8, 14)), dto.getDates()[0]);
+		assertEquals(new Date(fromDateToMillis(2008, 10, 30)),
+				dto.getDates()[1]);
 
-		assertNotNull(dto.double1);
-		assertEquals(new Double(1.2d), dto.double1);
+		assertNotNull(dto.getDouble1());
+		assertEquals(new Double(1.2d), dto.getDouble1());
 
-		assertNotNull(dto.doubles1);
-		assertEquals(2, dto.doubles1.length);
-		assertEquals(new Double(3.4d), dto.doubles1[0]);
-		assertEquals(new Double(5.6d), dto.doubles1[1]);
+		assertNotNull(dto.getDoubles1());
+		assertEquals(2, dto.getDoubles1().length);
+		assertEquals(new Double(3.4d), dto.getDoubles1()[0]);
+		assertEquals(new Double(5.6d), dto.getDoubles1()[1]);
 
-		assertEquals(9.8d, dto.double2);
+		assertEquals(9.8d, dto.getDouble2(), 0.0d);
 
-		assertNotNull(dto.doubles2);
-		assertEquals(2, dto.doubles2.length);
-		assertEquals(7.6d, dto.doubles2[0]);
-		assertEquals(5.4d, dto.doubles2[1]);
+		assertNotNull(dto.getDoubles2());
+		assertEquals(2, dto.getDoubles2().length);
+		assertEquals(7.6d, dto.getDoubles2()[0], 0.0d);
+		assertEquals(5.4d, dto.getDoubles2()[1], 0.0d);
 
-		assertNotNull(dto.en);
-		assertSame(ExEnum.VALUE1, dto.en);
+		assertNotNull(dto.getEn());
+		assertSame(ExEnum.VALUE1, dto.getEn());
 
-		assertNotNull(dto.ens);
-		assertEquals(2, dto.ens.length);
-		assertSame(ExEnum.VALUE2, dto.ens[0]);
-		assertSame(ExEnum.VALUE3, dto.ens[1]);
+		assertNotNull(dto.getEns());
+		assertEquals(2, dto.getEns().length);
+		assertSame(ExEnum.VALUE2, dto.getEns()[0]);
+		assertSame(ExEnum.VALUE3, dto.getEns()[1]);
 
-		assertNotNull(dto.float1);
-		assertEquals(new Float(1.2f), dto.float1);
+		assertNotNull(dto.getFloat1());
+		assertEquals(new Float(1.2f), dto.getFloat1());
 
-		assertNotNull(dto.floats1);
-		assertEquals(2, dto.floats1.length);
-		assertEquals(new Float(3.4f), dto.floats1[0]);
-		assertEquals(new Float(5.6f), dto.floats1[1]);
+		assertNotNull(dto.getFloats1());
+		assertEquals(2, dto.getFloats1().length);
+		assertEquals(new Float(3.4f), dto.getFloats1()[0]);
+		assertEquals(new Float(5.6f), dto.getFloats1()[1]);
 
-		assertEquals(9.8f, dto.float2);
+		assertEquals(9.8f, dto.getFloat2(), 0.0f);
 
-		assertNotNull(dto.floats2);
-		assertEquals(2, dto.floats2.length);
-		assertEquals(7.6f, dto.floats2[0]);
-		assertEquals(5.4f, dto.floats2[1]);
+		assertNotNull(dto.getFloats2());
+		assertEquals(2, dto.getFloats2().length);
+		assertEquals(7.6f, dto.getFloats2()[0], 0.0f);
+		assertEquals(5.4f, dto.getFloats2()[1], 0.0f);
 
-		assertNotNull(dto.int1);
-		assertEquals(new Integer(12), dto.int1);
+		assertNotNull(dto.getInt1());
+		assertEquals(new Integer(12), dto.getInt1());
 
-		assertNotNull(dto.ints1);
-		assertEquals(2, dto.ints1.length);
-		assertEquals(new Integer(34), dto.ints1[0]);
-		assertEquals(new Integer(56), dto.ints1[1]);
+		assertNotNull(dto.getInts1());
+		assertEquals(2, dto.getInts1().length);
+		assertEquals(new Integer(34), dto.getInts1()[0]);
+		assertEquals(new Integer(56), dto.getInts1()[1]);
 
-		assertEquals(98, dto.int2);
+		assertEquals(98, dto.getInt2());
 
-		assertNotNull(dto.ints2);
-		assertEquals(2, dto.ints2.length);
-		assertEquals(76, dto.ints2[0]);
-		assertEquals(54, dto.ints2[1]);
+		assertNotNull(dto.getInts2());
+		assertEquals(2, dto.getInts2().length);
+		assertEquals(76, dto.getInts2()[0]);
+		assertEquals(54, dto.getInts2()[1]);
 
-		assertNotNull(dto.long1);
-		assertEquals(new Long(12l), dto.long1);
+		assertNotNull(dto.getLong1());
+		assertEquals(new Long(12l), dto.getLong1());
 
-		assertNotNull(dto.longs1);
-		assertEquals(2, dto.longs1.length);
-		assertEquals(new Long(34l), dto.longs1[0]);
-		assertEquals(new Long(56l), dto.longs1[1]);
+		assertNotNull(dto.getLongs1());
+		assertEquals(2, dto.getLongs1().length);
+		assertEquals(new Long(34l), dto.getLongs1()[0]);
+		assertEquals(new Long(56l), dto.getLongs1()[1]);
 
-		assertEquals(98l, dto.long2);
+		assertEquals(98l, dto.getLong2());
 
-		assertNotNull(dto.longs2);
-		assertEquals(2, dto.longs2.length);
-		assertEquals(76l, dto.longs2[0]);
-		assertEquals(54l, dto.longs2[1]);
+		assertNotNull(dto.getLongs2());
+		assertEquals(2, dto.getLongs2().length);
+		assertEquals(76l, dto.getLongs2()[0]);
+		assertEquals(54l, dto.getLongs2()[1]);
 
-		assertNotNull(dto.short1);
-		assertEquals(new Short((short) 12), dto.short1);
+		assertNotNull(dto.getShort1());
+		assertEquals(new Short((short) 12), dto.getShort1());
 
-		assertNotNull(dto.shorts1);
-		assertEquals(2, dto.shorts1.length);
-		assertEquals(new Short((short) 34), dto.shorts1[0]);
-		assertEquals(new Short((short) 56), dto.shorts1[1]);
+		assertNotNull(dto.getShorts1());
+		assertEquals(2, dto.getShorts1().length);
+		assertEquals(new Short((short) 34), dto.getShorts1()[0]);
+		assertEquals(new Short((short) 56), dto.getShorts1()[1]);
 
-		assertEquals((short) 98, dto.short2);
+		assertEquals((short) 98, dto.getShort2());
 
-		assertNotNull(dto.shorts2);
-		assertEquals(2, dto.shorts2.length);
-		assertEquals((short) 76, dto.shorts2[0]);
-		assertEquals((short) 54, dto.shorts2[1]);
+		assertNotNull(dto.getShorts2());
+		assertEquals(2, dto.getShorts2().length);
+		assertEquals((short) 76, dto.getShorts2()[0]);
+		assertEquals((short) 54, dto.getShorts2()[1]);
 
-		assertNotNull(dto.sqldate);
-		assertEquals(new java.sql.Date(fromDateToMillis(2008, 7, 28)),
-				dto.sqldate);
+		assertNotNull(dto.getSqldate());
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 7, 28)), dto
+				.getSqldate());
 
-		assertNotNull(dto.sqldates);
-		assertEquals(2, dto.sqldates.length);
-		assertEquals(new java.sql.Date(fromDateToMillis(2008, 8, 14)),
-				dto.sqldates[0]);
-		assertEquals(new java.sql.Date(fromDateToMillis(2008, 10, 30)),
-				dto.sqldates[1]);
+		assertNotNull(dto.getSqldates());
+		assertEquals(2, dto.getSqldates().length);
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 8, 14)), dto
+				.getSqldates()[0]);
+		assertEquals(new java.sql.Date(fromDateToMillis(2008, 10, 30)), dto
+				.getSqldates()[1]);
 
-		assertNotNull(dto.sqltime);
-		assertEquals(new Time(fromTimeToMillis(12, 34, 56)), dto.sqltime);
+		assertNotNull(dto.getSqltime());
+		assertEquals(new Time(fromTimeToMillis(12, 34, 56)), dto.getSqltime());
 
-		assertNotNull(dto.sqltimes);
-		assertEquals(2, dto.sqltimes.length);
-		assertEquals(new Time(fromTimeToMillis(13, 45, 24)), dto.sqltimes[0]);
-		assertEquals(new Time(fromTimeToMillis(23, 44, 00)), dto.sqltimes[1]);
+		assertNotNull(dto.getSqltimes());
+		assertEquals(2, dto.getSqltimes().length);
+		assertEquals(new Time(fromTimeToMillis(13, 45, 24)),
+				dto.getSqltimes()[0]);
+		assertEquals(new Time(fromTimeToMillis(23, 44, 00)),
+				dto.getSqltimes()[1]);
 
-		assertNotNull(dto.sqltimestamp);
+		assertNotNull(dto.getSqltimestamp());
 		assertEquals(new Timestamp(fromTimestampToMillis(2008, 7, 28, 12, 34,
-				56)), dto.sqltimestamp);
+				56)), dto.getSqltimestamp());
 
-		assertNotNull(dto.sqltimestamps);
-		assertEquals(2, dto.sqltimestamps.length);
+		assertNotNull(dto.getSqltimestamps());
+		assertEquals(2, dto.getSqltimestamps().length);
 		assertEquals(new Timestamp(fromTimestampToMillis(2008, 8, 14, 13, 45,
-				24)), dto.sqltimestamps[0]);
+				24)), dto.getSqltimestamps()[0]);
 		assertEquals(new Timestamp(fromTimestampToMillis(2008, 10, 30, 23, 44,
-				00)), dto.sqltimestamps[1]);
+				00)), dto.getSqltimestamps()[1]);
 
 		System.out.println(dto);
 	}
 
-	public void testConvertFileItem() throws UnsupportedEncodingException {
+	@Test
+	public void convertFileItem() throws UnsupportedEncodingException {
 		Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("file", new Object[] { new MockFileItem("123") });
 		map.put("bytefile", new Object[] { new MockFileItem("456") });
@@ -401,24 +442,25 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 
 		FileItemDto dto = new FileItemDto();
 
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
 		String encoding = "UTF-8";
-		assertNotNull(dto.file);
-		assertEquals("123", new String(dto.file.get(), encoding));
-		assertNotNull(dto.bytefile);
-		assertEquals("456", new String(dto.bytefile, encoding));
-		assertNotNull(dto.bytefiles);
-		assertEquals(2, dto.bytefiles.length);
-		assertEquals("abc", new String(dto.bytefiles[0], encoding));
-		assertEquals("def", new String(dto.bytefiles[1], encoding));
-		assertNotNull(dto.bytefilelist);
-		assertEquals(2, dto.bytefilelist.size());
-		Iterator<byte[]> it = dto.bytefilelist.iterator();
+		assertNotNull(dto.getFile());
+		assertEquals("123", new String(dto.getFile().get(), encoding));
+		assertNotNull(dto.getBytefile());
+		assertEquals("456", new String(dto.getBytefile(), encoding));
+		assertNotNull(dto.getBytefiles());
+		assertEquals(2, dto.getBytefiles().length);
+		assertEquals("abc", new String(dto.getBytefiles()[0], encoding));
+		assertEquals("def", new String(dto.getBytefiles()[1], encoding));
+		assertNotNull(dto.getBytefilelist());
+		assertEquals(2, dto.getBytefilelist().size());
+		Iterator<byte[]> it = dto.getBytefilelist().iterator();
 		assertEquals("GHI", new String(it.next(), encoding));
 		assertEquals("JKL", new String(it.next(), encoding));
-		assertNotNull(dto.input);
-		assertEquals("QQ", new String(getBytes(dto.input), encoding));
+		assertNotNull(dto.getInput());
+		assertEquals("QQ", new String(getBytes(dto.getInput()), encoding));
 	}
 
 	public void testBindTypeNoAnnotated() {
@@ -426,11 +468,12 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "noAnnotated"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNull(dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "noAnnotated"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNull(dto.getNoRequestParameter());
 	}
 
 	public void testBindTypeNoBindingType() {
@@ -438,12 +481,14 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "noBindingType"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNotNull(dto.noRequestParameter);
-		assertEquals("def", dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class,
+						"noBindingType"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNotNull(dto.getNoRequestParameter());
+		assertEquals("def", dto.getNoRequestParameter());
 	}
 
 	public void testBindTypeAllProperties() {
@@ -451,12 +496,13 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "all"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNotNull(dto.noRequestParameter);
-		assertEquals("def", dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNotNull(dto.getNoRequestParameter());
+		assertEquals("def", dto.getNoRequestParameter());
 	}
 
 	public void testBindTypeOnlySpecifiedProperties() {
@@ -464,11 +510,12 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction.class, actionMethod(
-				MockAction.class, "specified"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNull(dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "specified"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNull(dto.getNoRequestParameter());
 	}
 
 	public void testBindTypeNoAnnotatedOnClass() {
@@ -476,12 +523,14 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction2.class, actionMethod(
-				MockAction2.class, "noAnnotated"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNotNull(dto.noRequestParameter);
-		assertEquals("def", dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction2.class, actionMethod(MockAction2.class,
+						"noAnnotated"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNotNull(dto.getNoRequestParameter());
+		assertEquals("def", dto.getNoRequestParameter());
 	}
 
 	public void testBindTypeOnlySpecifiedPropertiesOnClass() {
@@ -489,11 +538,12 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
 		FormDto2 dto = new FormDto2();
-		requestParameterBinder.bind(map, dto, MockAction2.class, actionMethod(
-				MockAction2.class, "specified"));
-		assertNotNull(dto.hasRequestParameter);
-		assertEquals("abc", dto.hasRequestParameter);
-		assertNull(dto.noRequestParameter);
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction2.class, actionMethod(MockAction2.class, "specified"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertNotNull(dto.getHasRequestParameter());
+		assertEquals("abc", dto.getHasRequestParameter());
+		assertNull(dto.getNoRequestParameter());
 	}
 
 	private Method actionMethod(Class<? extends Action> actionClass,
@@ -539,66 +589,482 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 	}
 
 	public static class FormDto2 {
-		@RequestParameter
-		public String hasRequestParameter;
+		private String hasRequestParameter;
 
-		public String noRequestParameter;
+		public String getHasRequestParameter() {
+			return hasRequestParameter;
+		}
+
+		@RequestParameter
+		public void setHasRequestParameter(String hasRequestParameter) {
+			this.hasRequestParameter = hasRequestParameter;
+		}
+
+		private String noRequestParameter;
+
+		public String getNoRequestParameter() {
+			return noRequestParameter;
+		}
+
+		public void setNoRequestParameter(String noRequestParameter) {
+			this.noRequestParameter = noRequestParameter;
+		}
 	}
 
 	public static class FormDto {
-		public Date date;
-		public Integer num1;
-		public Integer[] num2;
-		public List<String> num3;
+		private Date date;
+		private Integer num1;
+		private Integer[] num2;
+		private List<String> num3;
+
+		public Date getDate() {
+			return date;
+		}
+
+		public void setDate(Date date) {
+			this.date = date;
+		}
+
+		public Integer getNum1() {
+			return num1;
+		}
+
+		public void setNum1(Integer num1) {
+			this.num1 = num1;
+		}
+
+		public Integer[] getNum2() {
+			return num2;
+		}
+
+		public void setNum2(Integer[] num2) {
+			this.num2 = num2;
+		}
+
+		public List<String> getNum3() {
+			return num3;
+		}
+
+		public void setNum3(List<String> num3) {
+			this.num3 = num3;
+		}
 	}
 
 	public static class ConvertersDto {
-		public BigDecimal decimal;
-		public BigDecimal[] decimals;
-		public BigInteger bigint;
-		public BigInteger[] bigints;
-		public Boolean bool1;
-		public Boolean[] bools1;
-		public boolean bool2;
-		public boolean[] bools2;
-		public Byte byte1;
-		public Byte[] bytes1;
-		public byte byte2;
-		public byte[] bytes2;
-		public Character char1;
-		public Character[] chars1;
-		public char char2;
-		public char[] chars2;
-		public Date date;
-		public Date[] dates;
-		public Double double1;
-		public Double[] doubles1;
-		public double double2;
-		public double[] doubles2;
-		public ExEnum en;
-		public ExEnum[] ens;
-		public Float float1;
-		public Float[] floats1;
-		public float float2;
-		public float[] floats2;
-		public Integer int1;
-		public Integer[] ints1;
-		public int int2;
-		public int[] ints2;
-		public Long long1;
-		public Long[] longs1;
-		public long long2;
-		public long[] longs2;
-		public Short short1;
-		public Short[] shorts1;
-		public short short2;
-		public short[] shorts2;
-		public java.sql.Date sqldate;
-		public java.sql.Date[] sqldates;
-		public Time sqltime;
-		public Time[] sqltimes;
-		public Timestamp sqltimestamp;
-		public Timestamp[] sqltimestamps;
+		private BigDecimal decimal;
+		private BigDecimal[] decimals;
+		private BigInteger bigint;
+		private BigInteger[] bigints;
+		private Boolean bool1;
+		private Boolean[] bools1;
+		private boolean bool2;
+		private boolean[] bools2;
+		private Byte byte1;
+		private Byte[] bytes1;
+		private byte byte2;
+		private byte[] bytes2;
+		private Character char1;
+		private Character[] chars1;
+		private char char2;
+		private char[] chars2;
+		private Date date;
+		private Date[] dates;
+		private Double double1;
+		private Double[] doubles1;
+		private double double2;
+		private double[] doubles2;
+		private ExEnum en;
+		private ExEnum[] ens;
+		private Float float1;
+		private Float[] floats1;
+		private float float2;
+		private float[] floats2;
+		private Integer int1;
+		private Integer[] ints1;
+		private int int2;
+		private int[] ints2;
+		private Long long1;
+		private Long[] longs1;
+		private long long2;
+		private long[] longs2;
+		private Short short1;
+		private Short[] shorts1;
+		private short short2;
+		private short[] shorts2;
+		private java.sql.Date sqldate;
+		private java.sql.Date[] sqldates;
+		private Time sqltime;
+		private Time[] sqltimes;
+		private Timestamp sqltimestamp;
+		private Timestamp[] sqltimestamps;
+
+		public BigDecimal getDecimal() {
+			return decimal;
+		}
+
+		public void setDecimal(BigDecimal decimal) {
+			this.decimal = decimal;
+		}
+
+		public BigDecimal[] getDecimals() {
+			return decimals;
+		}
+
+		public void setDecimals(BigDecimal[] decimals) {
+			this.decimals = decimals;
+		}
+
+		public BigInteger getBigint() {
+			return bigint;
+		}
+
+		public void setBigint(BigInteger bigint) {
+			this.bigint = bigint;
+		}
+
+		public BigInteger[] getBigints() {
+			return bigints;
+		}
+
+		public void setBigints(BigInteger[] bigints) {
+			this.bigints = bigints;
+		}
+
+		public Boolean getBool1() {
+			return bool1;
+		}
+
+		public void setBool1(Boolean bool1) {
+			this.bool1 = bool1;
+		}
+
+		public Boolean[] getBools1() {
+			return bools1;
+		}
+
+		public void setBools1(Boolean[] bools1) {
+			this.bools1 = bools1;
+		}
+
+		public boolean isBool2() {
+			return bool2;
+		}
+
+		public void setBool2(boolean bool2) {
+			this.bool2 = bool2;
+		}
+
+		public boolean[] getBools2() {
+			return bools2;
+		}
+
+		public void setBools2(boolean[] bools2) {
+			this.bools2 = bools2;
+		}
+
+		public Byte getByte1() {
+			return byte1;
+		}
+
+		public void setByte1(Byte byte1) {
+			this.byte1 = byte1;
+		}
+
+		public Byte[] getBytes1() {
+			return bytes1;
+		}
+
+		public void setBytes1(Byte[] bytes1) {
+			this.bytes1 = bytes1;
+		}
+
+		public byte getByte2() {
+			return byte2;
+		}
+
+		public void setByte2(byte byte2) {
+			this.byte2 = byte2;
+		}
+
+		public byte[] getBytes2() {
+			return bytes2;
+		}
+
+		public void setBytes2(byte[] bytes2) {
+			this.bytes2 = bytes2;
+		}
+
+		public Character getChar1() {
+			return char1;
+		}
+
+		public void setChar1(Character char1) {
+			this.char1 = char1;
+		}
+
+		public Character[] getChars1() {
+			return chars1;
+		}
+
+		public void setChars1(Character[] chars1) {
+			this.chars1 = chars1;
+		}
+
+		public char getChar2() {
+			return char2;
+		}
+
+		public void setChar2(char char2) {
+			this.char2 = char2;
+		}
+
+		public char[] getChars2() {
+			return chars2;
+		}
+
+		public void setChars2(char[] chars2) {
+			this.chars2 = chars2;
+		}
+
+		public Date getDate() {
+			return date;
+		}
+
+		public void setDate(Date date) {
+			this.date = date;
+		}
+
+		public Date[] getDates() {
+			return dates;
+		}
+
+		public void setDates(Date[] dates) {
+			this.dates = dates;
+		}
+
+		public Double getDouble1() {
+			return double1;
+		}
+
+		public void setDouble1(Double double1) {
+			this.double1 = double1;
+		}
+
+		public Double[] getDoubles1() {
+			return doubles1;
+		}
+
+		public void setDoubles1(Double[] doubles1) {
+			this.doubles1 = doubles1;
+		}
+
+		public double getDouble2() {
+			return double2;
+		}
+
+		public void setDouble2(double double2) {
+			this.double2 = double2;
+		}
+
+		public double[] getDoubles2() {
+			return doubles2;
+		}
+
+		public void setDoubles2(double[] doubles2) {
+			this.doubles2 = doubles2;
+		}
+
+		public ExEnum getEn() {
+			return en;
+		}
+
+		public void setEn(ExEnum en) {
+			this.en = en;
+		}
+
+		public ExEnum[] getEns() {
+			return ens;
+		}
+
+		public void setEns(ExEnum[] ens) {
+			this.ens = ens;
+		}
+
+		public Float getFloat1() {
+			return float1;
+		}
+
+		public void setFloat1(Float float1) {
+			this.float1 = float1;
+		}
+
+		public Float[] getFloats1() {
+			return floats1;
+		}
+
+		public void setFloats1(Float[] floats1) {
+			this.floats1 = floats1;
+		}
+
+		public float getFloat2() {
+			return float2;
+		}
+
+		public void setFloat2(float float2) {
+			this.float2 = float2;
+		}
+
+		public float[] getFloats2() {
+			return floats2;
+		}
+
+		public void setFloats2(float[] floats2) {
+			this.floats2 = floats2;
+		}
+
+		public Integer getInt1() {
+			return int1;
+		}
+
+		public void setInt1(Integer int1) {
+			this.int1 = int1;
+		}
+
+		public Integer[] getInts1() {
+			return ints1;
+		}
+
+		public void setInts1(Integer[] ints1) {
+			this.ints1 = ints1;
+		}
+
+		public int getInt2() {
+			return int2;
+		}
+
+		public void setInt2(int int2) {
+			this.int2 = int2;
+		}
+
+		public int[] getInts2() {
+			return ints2;
+		}
+
+		public void setInts2(int[] ints2) {
+			this.ints2 = ints2;
+		}
+
+		public Long getLong1() {
+			return long1;
+		}
+
+		public void setLong1(Long long1) {
+			this.long1 = long1;
+		}
+
+		public Long[] getLongs1() {
+			return longs1;
+		}
+
+		public void setLongs1(Long[] longs1) {
+			this.longs1 = longs1;
+		}
+
+		public long getLong2() {
+			return long2;
+		}
+
+		public void setLong2(long long2) {
+			this.long2 = long2;
+		}
+
+		public long[] getLongs2() {
+			return longs2;
+		}
+
+		public void setLongs2(long[] longs2) {
+			this.longs2 = longs2;
+		}
+
+		public Short getShort1() {
+			return short1;
+		}
+
+		public void setShort1(Short short1) {
+			this.short1 = short1;
+		}
+
+		public Short[] getShorts1() {
+			return shorts1;
+		}
+
+		public void setShorts1(Short[] shorts1) {
+			this.shorts1 = shorts1;
+		}
+
+		public short getShort2() {
+			return short2;
+		}
+
+		public void setShort2(short short2) {
+			this.short2 = short2;
+		}
+
+		public short[] getShorts2() {
+			return shorts2;
+		}
+
+		public void setShorts2(short[] shorts2) {
+			this.shorts2 = shorts2;
+		}
+
+		public java.sql.Date getSqldate() {
+			return sqldate;
+		}
+
+		public void setSqldate(java.sql.Date sqldate) {
+			this.sqldate = sqldate;
+		}
+
+		public java.sql.Date[] getSqldates() {
+			return sqldates;
+		}
+
+		public void setSqldates(java.sql.Date[] sqldates) {
+			this.sqldates = sqldates;
+		}
+
+		public Time getSqltime() {
+			return sqltime;
+		}
+
+		public void setSqltime(Time sqltime) {
+			this.sqltime = sqltime;
+		}
+
+		public Time[] getSqltimes() {
+			return sqltimes;
+		}
+
+		public void setSqltimes(Time[] sqltimes) {
+			this.sqltimes = sqltimes;
+		}
+
+		public Timestamp getSqltimestamp() {
+			return sqltimestamp;
+		}
+
+		public void setSqltimestamp(Timestamp sqltimestamp) {
+			this.sqltimestamp = sqltimestamp;
+		}
+
+		public Timestamp[] getSqltimestamps() {
+			return sqltimestamps;
+		}
+
+		public void setSqltimestamps(Timestamp[] sqltimestamps) {
+			this.sqltimestamps = sqltimestamps;
+		}
 	}
 
 	public enum ExEnum {
@@ -606,11 +1072,51 @@ public class RequestParameterBinderImplTest extends S2TestCase {
 	}
 
 	public static class FileItemDto {
-		public FileItem file;
-		public byte[] bytefile;
-		public byte[][] bytefiles;
-		public Set<byte[]> bytefilelist;
-		public InputStream input;
+		private FileItem file;
+		private byte[] bytefile;
+		private byte[][] bytefiles;
+		private Set<byte[]> bytefilelist;
+		private InputStream input;
+
+		public FileItem getFile() {
+			return file;
+		}
+
+		public void setFile(FileItem file) {
+			this.file = file;
+		}
+
+		public byte[] getBytefile() {
+			return bytefile;
+		}
+
+		public void setBytefile(byte[] bytefile) {
+			this.bytefile = bytefile;
+		}
+
+		public byte[][] getBytefiles() {
+			return bytefiles;
+		}
+
+		public void setBytefiles(byte[][] bytefiles) {
+			this.bytefiles = bytefiles;
+		}
+
+		public Set<byte[]> getBytefilelist() {
+			return bytefilelist;
+		}
+
+		public void setBytefilelist(Set<byte[]> bytefilelist) {
+			this.bytefilelist = bytefilelist;
+		}
+
+		public InputStream getInput() {
+			return input;
+		}
+
+		public void setInput(InputStream input) {
+			this.input = input;
+		}
 	}
 
 	private static class MockFileItem implements FileItem {

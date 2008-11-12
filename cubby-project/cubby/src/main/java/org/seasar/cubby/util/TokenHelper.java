@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.tags.TokenTag;
 import org.seasar.cubby.validator.validators.TokenValidator;
-import org.seasar.framework.util.LruHashMap;
 
 /**
  * 2重サブミット防止処理のヘルパークラス
@@ -65,7 +64,8 @@ public class TokenHelper {
 	/**
 	 * トークン用のマップをセッションから取得します。
 	 * <p>
-	 * セッション中にトークン用のマップが存在しない場合、新規に生成します。 トークン用のマップは{@link LruHashMap}を使い、トークンの保持上限付きのMapになります。
+	 * セッション中にトークン用のマップが存在しない場合、新規に生成します。 トークン用のマップは{@link LruHashMap}
+	 * を使い、トークンの保持上限付きのMapになります。
 	 * </p>
 	 * 
 	 * @param session
@@ -73,11 +73,11 @@ public class TokenHelper {
 	 * @return トークン用のマップ
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String, String> getTokenMap(HttpSession session) {
+	public static Map<String, String> getTokenMap(final HttpSession session) {
 		Map<String, String> tokenMap = (Map<String, String>) session
 				.getAttribute(CubbyConstants.ATTR_TOKEN);
 		if (tokenMap == null) {
-			tokenMap = new LruHashMap(TOKEN_HISTORY_SIZE);
+			tokenMap = new LruHashMap<String, String>(TOKEN_HISTORY_SIZE);
 			session.setAttribute(ATTR_TOKEN, tokenMap);
 		}
 		return tokenMap;
@@ -91,8 +91,8 @@ public class TokenHelper {
 	 * @param token
 	 *            トークン文字列
 	 */
-	public static void setToken(HttpSession session, String token) {
-		Map<String, String> tokenMap = getTokenMap(session);
+	public static void setToken(final HttpSession session, final String token) {
+		final Map<String, String> tokenMap = getTokenMap(session);
 		synchronized (tokenMap) {
 			tokenMap.put(token, null);
 		}
@@ -108,12 +108,14 @@ public class TokenHelper {
 	 *            セッション
 	 * @param token
 	 *            トークン文字列
-	 * @return 指定されたトークン文字列がセッション中に存在したら<code>true</code>、それ以外は<code>false</code>
+	 * @return 指定されたトークン文字列がセッション中に存在したら<code>true</code>、それ以外は
+	 *         <code>false</code>
 	 */
-	public static boolean validateToken(HttpSession session, String token) {
-		Map<String, String> tokenMap = getTokenMap(session);
+	public static boolean validateToken(final HttpSession session,
+			final String token) {
+		final Map<String, String> tokenMap = getTokenMap(session);
 		synchronized (tokenMap) {
-			boolean success = tokenMap.containsKey(token);
+			final boolean success = tokenMap.containsKey(token);
 			tokenMap.remove(token);
 			return success;
 		}

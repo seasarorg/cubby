@@ -15,262 +15,380 @@
  */
 package org.seasar.cubby.action;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockHttpServletResponse;
-import org.seasar.framework.mock.servlet.MockServletContext;
-import org.seasar.framework.util.ClassUtil;
+import org.easymock.IAnswer;
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.RoutingException;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
 
-public class RedirectTest extends S2TestCase {
+public class RedirectTest {
 
-	public MockAction action;
+	private MockAction action = new MockAction();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+	private HttpServletRequest request;
+
+	private RequestDispatcher requestDispatcher;
+
+	private HttpServletResponse response;
+
+	@Before
+	public void setupContainer() {
+		final List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+		actionClasses.add(MockAction.class);
+		final PathResolver pathResolver = new PathResolverImpl();
+		pathResolver.addAllActionClasses(actionClasses);
+		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
+
+			public PathResolver getPathResolver() {
+				return pathResolver;
+			}
+
+		};
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (PathResolverFactory.class.equals(type)) {
+					return type.cast(pathResolverFactory);
+				}
+				return null;
+			}
+
+		});
 	}
 
-	public void testBasicSequence() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Before
+	public void setupRequest() {
+		request = createMock(HttpServletRequest.class);
+		expect(request.getCharacterEncoding()).andReturn("UTF-8").anyTimes();
+		expect(request.getRequestURL()).andReturn(
+				new StringBuffer("http://localhost/foo")).anyTimes();
+		requestDispatcher = createMock(RequestDispatcher.class);
+		response = createMock(HttpServletResponse.class);
+	}
+
+	@Test
+	public void basicSequence() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		final MockActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("/cubby/mock/path.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("path.jsp");
-		assertFalse(action.isPrerendered());
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("/cubby/mock/path.jsp", path);
-					}
-				}));
-		assertFalse(action.isPrerendered());
-		assertFalse(action.isPostrendered());
+		assertFalse(actionContext.isPrerendered());
+		redirect.execute(actionContext, request, response);
+		assertFalse(actionContext.isPrerendered());
+		assertFalse(actionContext.isPostrendered());
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testBasicSequenceWithProtocol() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void basicSequenceWithProtocol() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		final MockActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("https://localhost/cubby/mock/path.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("path.jsp", "https");
-		assertFalse(action.isPrerendered());
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("https://localhost/cubby/mock/path.jsp",
-								path);
-					}
-				}));
-		assertFalse(action.isPrerendered());
-		assertFalse(action.isPostrendered());
+		assertFalse(actionContext.isPrerendered());
+		redirect.execute(actionContext, request, response);
+		assertFalse(actionContext.isPrerendered());
+		assertFalse(actionContext.isPostrendered());
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testBasicSequenceWithProtocolAndPort() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void basicSequenceWithProtocolAndPort() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		final MockActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
 
-		final Redirect redirect = new Redirect("path.jsp", "http", 8080);
-		assertFalse(action.isPrerendered());
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals(
-								"http://localhost:8080/cubby/mock/path.jsp",
-								path);
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
 					}
-				}));
-		assertFalse(action.isPrerendered());
-		assertFalse(action.isPostrendered());
+
+				});
+		response.sendRedirect("https://localhost:8080/cubby/mock/path.jsp");
+		replay(request, requestDispatcher, response);
+
+		final Redirect redirect = new Redirect("path.jsp", "https", 8080);
+		assertFalse(actionContext.isPrerendered());
+		redirect.execute(actionContext, request, response);
+		assertFalse(actionContext.isPrerendered());
+		assertFalse(actionContext.isPostrendered());
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testRelativePath() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void relativePath() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("/cubby/mock/page.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("page.jsp");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("/cubby/mock/page.jsp", path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testRelativePathWithProtocol() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void relativePathWithProtocol() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("https://localhost/cubby/mock/page.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("page.jsp", "https");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("https://localhost/cubby/mock/page.jsp",
-								path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testAbsolutePath() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void absolutePath() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("/cubby/absolute/path.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("/absolute/path.jsp");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("/cubby/absolute/path.jsp", path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testAbsolutePathWithProtocol() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void absolutePathWithProtocol() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("https://localhost/cubby/absolute/path.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("/absolute/path.jsp", "https");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals(
-								"https://localhost/cubby/absolute/path.jsp",
-								path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testAbsoluteURL() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/cubby");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void absoluteURL() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("http://example.com/");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("http://example.com/");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("http://example.com/", path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testRootContextPath() throws Exception {
-		final MockServletContext servletContext = this.getServletContext();
-		servletContext.setServletContextName("/");
-		final MockHttpServletRequest request = this.getRequest();
-		final MockHttpServletResponse response = this.getResponse();
-		final Method method = ClassUtil.getMethod(action.getClass(), "dummy1",
-				null);
+	@Test
+	public void rootContextPath() throws Exception {
+		final Method method = action.getClass().getMethod("dummy1");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+
+		expect(request.getContextPath()).andReturn("/").anyTimes();
+		expect(response.encodeRedirectURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
+		response.sendRedirect("/mock/path.jsp");
+		replay(request, requestDispatcher, response);
 
 		final Redirect redirect = new Redirect("path.jsp");
-		redirect.execute(action, MockAction.class, method, request,
-				new RequestDispatcherAssertionWrapper(response, new Asserter() {
-					public void assertDispatchPath(final String path) {
-						assertEquals("/mock/path.jsp", path);
-					}
-				}));
+		redirect.execute(actionContext, request, response);
+
+		verify(request, response, requestDispatcher);
 	}
 
-	public void testRedirectByClassAndMethod1() throws Exception {
+	@Test
+	public void redirectByClassAndMethod1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1");
-		assertEquals("/routing/test", redirect.getPath("UTF-8"));
+		assertEquals("/mock/dummy1", redirect.getPath("UTF-8"));
 	}
 
-	public void testRedirectByClassAndMethod2() throws Exception {
+	@Test
+	public void redirectByClassAndMethod2() throws Exception {
 		final Map<String, String[]> values = new LinkedHashMap<String, String[]>();
 		values.put("value1", new String[] { "123" });
 		values.put("value2", new String[] { "456" });
 
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				values);
-		assertEquals("/routing/test?value1=123&value2=456", redirect
+		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
 
-	public void testRedirectByClassAndMethod3() throws Exception {
+	@Test
+	public void redirectByClassAndMethod3() throws Exception {
 		final Map<String, String[]> values = new LinkedHashMap<String, String[]>();
 		values.put("value1", new String[] { "123" });
 		values.put("value2", new String[] { "456" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
-		assertEquals("/routing/test/123/456", redirect.getPath("UTF-8"));
+		assertEquals("/mock/dummy2/123/456", redirect.getPath("UTF-8"));
 	}
 
-	public void testRedirectByClassAndMethod4() throws Exception {
+	@Test
+	public void redirectByClassAndMethod4() throws Exception {
 		final Map<String, String[]> values = new LinkedHashMap<String, String[]>();
 		values.put("value1", new String[] { "123" });
 		values.put("value2", new String[] { "456" });
 		values.put("value3", new String[] { "789" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
-		assertEquals("/routing/test/123/456?value3=789", redirect
+		assertEquals("/mock/dummy2/123/456?value3=789", redirect
 				.getPath("UTF-8"));
 	}
 
-	public void testRedirectByClassAndMethod5() throws Exception {
+	@Test
+	public void redirectByClassAndMethod5() throws Exception {
 		final Redirect redirect1 = new Redirect(MockAction.class, "index");
-		assertEquals("/routing/", redirect1.getPath("UTF-8"));
+		assertEquals("/mock/", redirect1.getPath("UTF-8"));
 		final Redirect redirect2 = new Redirect(MockAction.class);
-		assertEquals("/routing/", redirect2.getPath("UTF-8"));
+		assertEquals("/mock/", redirect2.getPath("UTF-8"));
 	}
 
-	public void testRedirectByClassAndMethodFailureNoRouting() throws Exception {
+	@Test
+	public void redirectByClassAndMethodFailureNoRouting() throws Exception {
 		try {
 			new Redirect(MockAction.class, "none").getPath("UTF-8");
 			fail();
-		} catch (final ActionRuntimeException e) {
+		} catch (final RoutingException e) {
 			// ok
 		}
 	}
 
-	public void testRedirectByClassAndMethodFailureLessParameter()
-			throws Exception {
+	@Test
+	public void redirectByClassAndMethodFailureLessParameter() throws Exception {
 		try {
 			new Redirect(MockAction.class, "dummy2").getPath("UTF-8");
 			fail();
-		} catch (final ActionRuntimeException e) {
+		} catch (final RoutingException e) {
 			// ok
 		}
 	}
 
-	public void testRedirectByClassAndMethodFailureUnmatchParameter()
+	@Test
+	public void redirectByClassAndMethodFailureUnmatchParameter()
 			throws Exception {
 		final Map<String, String[]> values = new LinkedHashMap<String, String[]>();
 		values.put("value1", new String[] { "abc" });
@@ -278,33 +396,37 @@ public class RedirectTest extends S2TestCase {
 		try {
 			new Redirect(MockAction.class, "dummy2", values).getPath("UTF-8");
 			fail();
-		} catch (final ActionRuntimeException e) {
+		} catch (final RoutingException e) {
 			// ok
 		}
 	}
 
-	public void testGetPath() throws Exception {
+	@Test
+	public void getPath() throws Exception {
 		final Redirect redirect = new Redirect("/absolute/redirect");
 		assertEquals("/absolute/redirect", redirect.getPath("UTF-8"));
 	}
 
-	public void testParam1() throws Exception {
+	@Test
+	public void param1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1")
 				.param("value1", "123").param("value2", "456");
-		assertEquals("/routing/test?value1=123&value2=456", redirect
+		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
 
-	public void testParam2() throws Exception {
-		Map<String, String[]> params = new HashMap<String, String[]>();
+	@Test
+	public void pParam2() throws Exception {
+		Map<String, String[]> params = new LinkedHashMap<String, String[]>();
 		params.put("value1", new String[] { "123" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				params).param("value2", "456");
-		assertEquals("/routing/test?value1=123&value2=456", redirect
+		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
 
-	public void testParam3() throws Exception {
+	@Test
+	public void param3() throws Exception {
 		Redirect redirect = new Redirect("hoge").param("value1", "123").param(
 				"value2", "456");
 		assertEquals("hoge?value1=123&value2=456", redirect.getPath("UTF-8"));

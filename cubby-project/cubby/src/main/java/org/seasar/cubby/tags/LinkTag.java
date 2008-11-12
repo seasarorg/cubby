@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -144,8 +145,8 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
 		final String url;
-		final String characterEncoding = pageContext.getRequest()
-				.getCharacterEncoding();
+		final ServletRequest request = pageContext.getRequest();
+		final String characterEncoding = request.getCharacterEncoding();
 		if (encodeURL) {
 			final HttpServletResponse response = HttpServletResponse.class
 					.cast(pageContext.getResponse());

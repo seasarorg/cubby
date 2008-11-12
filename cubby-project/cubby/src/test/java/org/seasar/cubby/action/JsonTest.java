@@ -15,75 +15,86 @@
  */
 package org.seasar.cubby.action;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.Scriptable;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockHttpServletResponse;
-import org.seasar.framework.util.ClassUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class JsonTest extends S2TestCase {
+import org.junit.Test;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.mock.MockJsonProvider;
 
-	public void testExecute() throws Exception {
+public class JsonTest {
+
+	@Test
+	public void execute() throws Exception {
 		final MockAction action = new MockAction();
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
-		Json json = createBean();
-		json.execute(action, MockAction.class, method, request, response);
-		assertEquals("text/javascript; charset=utf-8", response
-				.getContentType());
-		// assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
-		Hoge result = evaluate(response.getResponseString());
-		assertEquals("カビー", result.getName());
-		assertEquals(new Integer(30), result.getAge());
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		HttpServletResponse response = createMock(HttpServletResponse.class);
+		final StringWriter writer = new StringWriter();
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/javascript; charset=utf-8");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Pragma", "no-cache");
+		expect(response.getWriter()).andReturn(new PrintWriter(writer));
+
+		replay(request, response);
+
+		Method method = action.getClass().getMethod("dummy1");
+
+		Json json = new Json(createBean());
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+		json.execute(actionContext, request, response);
+		assertEquals(MockJsonProvider.JSON_STRING, writer.toString());
+
+		verify(request, response);
 	}
 
-	public void testExecuteWithContentTypeAndEncoding() throws Exception {
+	@Test
+	public void executeWithContentTypeAndEncoding() throws Exception {
 		final MockAction action = new MockAction();
-		MockHttpServletRequest request = this.getRequest();
-		MockHttpServletResponse response = this.getResponse();
-		Method method = ClassUtil.getMethod(action.getClass(), "dummy1", null);
 
-		Json json = createBean().contentType("text/javascript+json").encoding(
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		HttpServletResponse response = createMock(HttpServletResponse.class);
+		final StringWriter writer = new StringWriter();
+		response.setCharacterEncoding("Shift_JIS");
+		response.setContentType("text/javascript+json; charset=Shift_JIS");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Pragma", "no-cache");
+		expect(response.getWriter()).andReturn(new PrintWriter(writer));
+		replay(request, response);
+
+		Method method = action.getClass().getMethod("dummy1");
+
+		Json json = new Json(createBean()).contentType("text/javascript+json").encoding(
 				"Shift_JIS");
-		json.execute(action, MockAction.class, method, request, response);
-		assertEquals("text/javascript+json", json.getContentType());
-		assertEquals("Shift_JIS", json.getEncoding());
-		assertEquals("text/javascript+json; charset=Shift_JIS", response
-				.getContentType());
-		// assertEquals("{age:30,name:\"カビー\"}", response.getResponseString());
-		Hoge result = evaluate(response.getResponseString());
-		assertEquals("カビー", result.getName());
-		assertEquals(new Integer(30), result.getAge());
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
+		json.execute(actionContext, request, response);
+		assertEquals(MockJsonProvider.JSON_STRING, writer.toString());
+
+		verify(request, response);
 	}
 
-	private Json createBean() {
-		Hoge bean = new Hoge();
+	private Foo createBean() {
+		Foo bean = new Foo();
 		bean.setName("カビー");
 		bean.setAge(30);
-		Json json = new Json(bean);
-		return json;
+		return bean;
 	}
 
-	private static Hoge evaluate(String responseString) {
-		ContextFactory contextFactory = new ContextFactory();
-		Context context = contextFactory.enterContext();
-		Scriptable scope = context.initStandardObjects();
-		Hoge result = new Hoge();
-		scope.put("result", scope, result);
-		String source = "var data = eval(" + responseString + ");"
-				+ "result.name = data.name;" + "result.age = data.age";
-		context.evaluateString(scope, source, null, 0, null);
-		Context.exit();
-		return result;
-	}
-
-	public static class Hoge {
+	public static class Foo {
 		private String name;
 		private Integer age;
 

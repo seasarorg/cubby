@@ -24,9 +24,10 @@ import java.util.Map.Entry;
 import javax.servlet.jsp.JspTagException;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.routing.PathResolver;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
  * リンク用の補助クラスです。
@@ -117,10 +118,14 @@ class LinkSupport {
 			throw new JspTagException(e);
 		}
 
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final PathResolver pathResolver = PathResolver.class.cast(container
-				.getComponent(PathResolver.class));
+		// final S2Container container = SingletonS2ContainerFactory
+		// .getContainer();
+		final Container container = ContainerFactory.getContainer();
+		final PathResolverFactory pathResolverFactory = container
+				.lookup(PathResolverFactory.class);
+		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
+		// final PathResolver pathResolver = container
+		// .lookup(PathResolver.class);
 		final String path = pathResolver.reverseLookup(actionClass,
 				actionMethodName, getParameters(), characterEncoding);
 

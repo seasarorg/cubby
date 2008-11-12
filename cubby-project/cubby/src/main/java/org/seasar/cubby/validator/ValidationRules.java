@@ -16,7 +16,6 @@
 package org.seasar.cubby.validator;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.seasar.cubby.action.ActionResult;
 
@@ -28,15 +27,6 @@ import org.seasar.cubby.action.ActionResult;
  * @since 1.0.0
  */
 public interface ValidationRules {
-
-	/**
-	 * 入力検証ルールのリストを取得します。
-	 * 
-	 * @return 入力検証ルールのリスト
-	 * @deprecated {@link DefaultValidationRules#addAll(ValidationRules)} を使用してください。
-	 */
-	@Deprecated
-	List<ValidationRule> getRules();
 
 	/**
 	 * 入力検証にエラーがあった場合に呼び出されます。

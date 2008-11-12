@@ -15,10 +15,15 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ArrayFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ArrayFieldValidatorAssert.assertSuccess;
+
+import org.junit.Test;
 import org.seasar.cubby.validator.ArrayFieldValidator;
 
-public class ArrayMinSizeTest extends AbstractArrayFieldValidatorTestCase {
+public class ArrayMinSizeTest {
 
+	@Test
 	public void testValidation() {
 		ArrayFieldValidator validator = new ArrayMinSizeValidator(3);
 		assertSuccess(validator, null, new Object[] { "1", "2", "3" },

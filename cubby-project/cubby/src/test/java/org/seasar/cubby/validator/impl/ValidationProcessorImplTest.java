@@ -15,83 +15,123 @@
  */
 package org.seasar.cubby.validator.impl;
 
-import java.lang.reflect.Method;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.controller.MessagesBehaviour;
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.validator.ValidationException;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.util.ClassUtil;
+import org.seasar.cubby.validator.ValidationProcessor;
 
-public class ValidationProcessorImplTest extends S2TestCase {
+public class ValidationProcessorImplTest {
 
-	public ValidationProcessorImpl validationProcessor;
+	private ValidationProcessor validationProcessor = new ValidationProcessorImpl();
 
-	public MockAction action;
+	private MockAction action = new MockAction();
 
-	public Map<String, Object[]> params;
+	private Map<String, Object[]> params = new HashMap<String, Object[]>();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-		params = new HashMap<String, Object[]>();
-		getRequest().setAttribute(CubbyConstants.ATTR_PARAMS, params);
+	private HttpServletRequest request;
+
+	@Before
+	public void setupContainer() {
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (type.equals(MessagesBehaviour.class)) {
+					return type.cast(new DefaultMessagesBehaviour());
+				}
+				return null;
+			}
+
+		});
 	}
 
-	public void testProcess1() {
-		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
-				new Class[0]);
+	@Before
+	public void setupMock() throws Exception {
+		request = createMock(HttpServletRequest.class);
+		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andReturn(
+				params).anyTimes();
+		replay(request);
+		// include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+		// action = new MockAction();
+		// params = new HashMap<String, Object[]>();
+		// getRequest().setAttribute(CubbyConstants.ATTR_PARAMS, params);
+
+	}
+
+	@Test
+	public void process1() throws Exception {
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, MockAction.class.getMethod("dummy"));
 		try {
-			validationProcessor.process(getRequest(), action, MockAction.class,
-					method);
+			validationProcessor.process(request, actionContext);
 			fail();
 		} catch (ValidationException e) {
-			assertFalse(action.getErrors().isEmpty());
-			assertEquals(1, action.getErrors().getFields().size());
-			assertNotNull(action.getErrors().getFields().get("name"));
+			ActionErrors errors = actionContext.getActionErrors();
+			assertFalse(errors.isEmpty());
+			assertEquals(1, errors.getFields().size());
+			assertNotNull(errors.getFields().get("name"));
 		}
 	}
 
-	public void testProcess2() {
+	public void testProcess2() throws Exception {
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "bob" });
 
-		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
-				new Class[0]);
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, MockAction.class.getMethod("dummy"));
 		try {
-			validationProcessor.process(getRequest(), action, MockAction.class,
-					method);
+			validationProcessor.process(request, actionContext);
 			fail();
 		} catch (ValidationException e) {
-			assertFalse(action.getErrors().isEmpty());
-			assertEquals(1, action.getErrors().getFields().size());
-			assertNotNull(action.getErrors().getFields().get("age"));
+			ActionErrors errors = actionContext.getActionErrors();
+			assertFalse(errors.isEmpty());
+			assertEquals(1, errors.getFields().size());
+			assertNotNull(errors.getFields().get("age"));
 		}
 	}
 
-	public void testProcess3() {
+	public void testProcess3() throws Exception {
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "5" });
 
-		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
-				new Class[0]);
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, MockAction.class.getMethod("dummy"));
 		try {
-			validationProcessor.process(getRequest(), action, MockAction.class,
-					method);
+			validationProcessor.process(request, actionContext);
 		} catch (ValidationException e) {
 			fail();
 		}
 	}
 
-	public void testHandleValidationException() {
+	public void testHandleValidationException() throws Exception {
 		ValidationException e = new ValidationException("message", "field1");
-		Method method = ClassUtil.getMethod(MockAction.class, "dummy",
-				new Class[0]);
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, MockAction.class.getMethod("dummy"));
 		ActionResult result = validationProcessor.handleValidationException(e,
-				getRequest(), action, method);
+				request, actionContext);
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
 		assertEquals("error.jsp", forward.getPath("UTF-8"));

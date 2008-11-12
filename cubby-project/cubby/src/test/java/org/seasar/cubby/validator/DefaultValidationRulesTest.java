@@ -15,12 +15,17 @@
  */
 package org.seasar.cubby.validator;
 
-import static org.seasar.cubby.validator.DefaultValidationRules.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.seasar.cubby.validator.DefaultValidationRules.DATA_CONSTRAINT;
+import static org.seasar.cubby.validator.DefaultValidationRules.DATA_TYPE;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.junit.Test;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
@@ -30,16 +35,11 @@ import org.seasar.cubby.validator.validators.MaxLengthValidator;
 import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
-import org.seasar.extension.unit.S2TestCase;
 
-public class DefaultValidationRulesTest extends S2TestCase {
+public class DefaultValidationRulesTest {
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-	}
-
-	public void testAddAndGetRules1() throws Exception {
+	@Test
+	public void addAndGetRules1() throws Exception {
 		ValidationRules rules = new DefaultValidationRules() {
 			@Override
 			protected void initialize() {
@@ -50,7 +50,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
 
-	public void testAddAndGetRules2() throws Exception {
+	@Test
+	public void addAndGetRules2() throws Exception {
 		ValidationRules rules = new DefaultValidationRules() {
 			@Override
 			protected void initialize() {
@@ -72,7 +73,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals(1, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
 
-	public void testInitialize() throws Exception {
+	@Test
+	public void initialize() throws Exception {
 		ValidationRules rules = new DefaultValidationRules() {
 			public void initialize() {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
@@ -83,7 +85,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals(0, rules.getPhaseValidationRules(DATA_CONSTRAINT).size());
 	}
 
-	public void testConstractor1() throws Exception {
+	@Test
+	public void constractor1() throws Exception {
 		ValidationRules rules = new DefaultValidationRules() {
 			public void initialize() {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
@@ -103,7 +106,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals("age", rule.getFieldNameKey());
 	}
 
-	public void testConstractor2() throws Exception {
+	@Test
+	public void constractor2() throws Exception {
 		ValidationRules rules = new DefaultValidationRules("userProfile.") {
 			public void initialize() {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
@@ -123,7 +127,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals("userProfile.age", rule.getFieldNameKey());
 	}
 
-	public void testFail() {
+	@Test
+	public void fail() {
 		ValidationRules rules = new DefaultValidationRules("userProfile.") {
 			public void initialize() {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
@@ -136,7 +141,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals("error.jsp", forward.getPath("UTF-8"));
 	}
 
-	public void testFailOverride() {
+	@Test
+	public void failOverride() {
 		ValidationRules rules = new DefaultValidationRules("userProfile.") {
 			public void initialize() {
 				add("name", new RequiredValidator(), new MaxLengthValidator(10));
@@ -153,7 +159,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals("error.jsp", redirect.getPath("UTF-8"));
 	}
 
-	public void testValidationPhasePriority() {
+	@Test
+	public void validationPhasePriority() {
 
 		ValidationRules validationRules = new DefaultValidationRules() {
 
@@ -173,7 +180,8 @@ public class DefaultValidationRulesTest extends S2TestCase {
 		assertEquals(DATA_CONSTRAINT, second);
 	}
 
-	public void testAddAll() {
+	@Test
+	public void addAll() {
 		final ValidationRules base = new DefaultValidationRules() {
 			@Override
 			protected void initialize() {

@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * Eメールアドレスに対する検証を行います。
@@ -83,7 +83,7 @@ public class EmailValidator implements ScalarFieldValidator {
 		}
 		if (value instanceof String) {
 			final String email = (String) value;
-			if (StringUtil.isEmpty(email)) {
+			if (StringUtils.isEmpty(email)) {
 				return;
 			}
 

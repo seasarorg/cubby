@@ -16,6 +16,7 @@
 package org.seasar.cubby.action;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -30,15 +31,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
-import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.ClassUtil;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 指定されたパスにフォワードする {@link ActionResult} です。
@@ -97,7 +100,7 @@ import org.seasar.framework.util.StringUtil;
 public class Forward implements ActionResult {
 
 	/** ロガー。 */
-	private static final Logger logger = Logger.getLogger(Forward.class);
+	private static final Logger logger = LoggerFactory.getLogger(Forward.class);
 
 	/** 空のパラメータ。 */
 	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
@@ -145,10 +148,13 @@ public class Forward implements ActionResult {
 		this.actionClass = actionClass;
 		this.methodName = methodName;
 		this.parameters = parameters;
-		final Method method = ClassUtil.getMethod(actionClass, methodName,
-				new Class[0]);
-		final Routing routing = new ForwardRouting(actionClass, method);
-		this.routings = Collections.singletonMap(null, routing);
+		try {
+			final Method method = actionClass.getMethod(methodName);
+			final Routing routing = new ForwardRouting(actionClass, method);
+			this.routings = Collections.singletonMap(null, routing);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	/**
@@ -185,10 +191,16 @@ public class Forward implements ActionResult {
 	 */
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final PathResolver pathResolver = PathResolver.class.cast(container
-					.getComponent(PathResolver.class));
+			final Container container = ContainerFactory.getContainer();
+			// TODO
+			// final S2Container container = SingletonS2ContainerFactory
+			// .getContainer();
+			final PathResolverFactory pathResolverFactory = container
+					.lookup(PathResolverFactory.class);
+			final PathResolver pathResolver = pathResolverFactory
+					.getPathResolver();
+//			final PathResolver pathResolver = container
+//					.lookup(PathResolver.class);
 			this.path = pathResolver.buildInternalForwardPath(parameters,
 					characterEncoding);
 		}
@@ -208,31 +220,29 @@ public class Forward implements ActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final Action action,
-			final Class<? extends Action> actionClass, final Method method,
+	public void execute(final ActionContext actionContext,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
-		action.invokePreRenderMethod(method);
+		actionContext.invokePreRenderMethod();
 
 		final String forwardPath = calculateForwardPath(getPath(request
-				.getCharacterEncoding()), actionClass, request
-				.getCharacterEncoding());
+				.getCharacterEncoding()), actionContext.getActionClass(),
+				request.getCharacterEncoding());
 		if (this.routings != null) {
 			request.setAttribute(ATTR_ROUTINGS, this.routings);
 		}
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0001", new Object[] { forwardPath, routings });
+			logger.debug(format("DCUB0001", forwardPath, routings));
 		}
 		final RequestDispatcher dispatcher = request
 				.getRequestDispatcher(forwardPath);
 		dispatcher.forward(request, response);
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0002", new Object[] { forwardPath });
+			logger.debug(format("DCUB0002", forwardPath));
 		}
 
-		action.invokePostRenderMethod(method);
-
-		action.getFlash().clear();
+		actionContext.invokePostRenderMethod();
+		actionContext.clearFlash();
 	}
 
 	/**
@@ -253,7 +263,7 @@ public class Forward implements ActionResult {
 		} else {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
-			if (StringUtil.isEmpty(actionDirectory)) {
+			if (StringUtils.isEmpty(actionDirectory)) {
 				absolutePath = "/" + path;
 			} else {
 				final StringBuilder builder = new StringBuilder();

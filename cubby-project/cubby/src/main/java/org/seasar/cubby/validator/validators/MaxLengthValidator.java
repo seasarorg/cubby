@@ -15,10 +15,10 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 最大文字数を検証します。
@@ -75,7 +75,7 @@ public class MaxLengthValidator implements ScalarFieldValidator {
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;
-			if (StringUtil.isEmpty((String) value)) {
+			if (StringUtils.isEmpty((String) value)) {
 				return;
 			}
 			if (str.length() <= max) {

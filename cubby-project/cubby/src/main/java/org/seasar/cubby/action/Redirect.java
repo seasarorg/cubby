@@ -15,7 +15,8 @@
  */
 package org.seasar.cubby.action;
 
-import java.lang.reflect.Method;
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -25,14 +26,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 指定されたパスにリダイレクトする {@link ActionResult} です。
@@ -98,7 +101,8 @@ import org.seasar.framework.util.StringUtil;
 public class Redirect implements ActionResult {
 
 	/** ロガー。 */
-	private static final Logger logger = Logger.getLogger(Redirect.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(Redirect.class);
 
 	/** 空のパラメータ。 */
 	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
@@ -173,8 +177,6 @@ public class Redirect implements ActionResult {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
-	 * @throws org.seasar.cubby.exception.ActionRuntimeException
-	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass) {
@@ -188,8 +190,6 @@ public class Redirect implements ActionResult {
 	 *            アクションクラス
 	 * @param methodName
 	 *            メソッド名
-	 * @throws org.seasar.cubby.exception.ActionRuntimeException
-	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
@@ -206,8 +206,6 @@ public class Redirect implements ActionResult {
 	 *            メソッド名
 	 * @param parameters
 	 *            パラメータ
-	 * @throws org.seasar.cubby.exception.ActionRuntimeException
-	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
@@ -226,8 +224,6 @@ public class Redirect implements ActionResult {
 	 *            パラメータ
 	 * @param protocol
 	 *            リダイレクト先のプロトコル
-	 * @throws org.seasar.cubby.exception.ActionRuntimeException
-	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
@@ -249,8 +245,6 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のプロトコル
 	 * @param port
 	 *            リダイレクト先のポート
-	 * @throws org.seasar.cubby.exception.ActionRuntimeException
-	 *             リダイレクト先パスの構築に失敗した場合
 	 * @since 1.1.0
 	 */
 	public Redirect(final Class<? extends Action> actionClass,
@@ -272,10 +266,16 @@ public class Redirect implements ActionResult {
 	 */
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final PathResolver pathResolver = (PathResolver) container
-					.getComponent(PathResolver.class);
+			final Container container = ContainerFactory.getContainer();
+			// TODO
+			// final S2Container container = SingletonS2ContainerFactory
+			// .getContainer();
+			// final PathResolver pathResolver = container
+			// .lookup(PathResolver.class);
+			final PathResolverFactory pathResolverFactory = container
+					.lookup(PathResolverFactory.class);
+			final PathResolver pathResolver = pathResolverFactory
+					.getPathResolver();
 			final String redirectPath = pathResolver.reverseLookup(actionClass,
 					methodName, parameters, characterEncoding);
 			this.path = redirectPath;
@@ -296,8 +296,7 @@ public class Redirect implements ActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final Action action,
-			final Class<? extends Action> actionClass, final Method method,
+	public void execute(final ActionContext actionContext,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 		final String characterEncoding;
@@ -307,10 +306,11 @@ public class Redirect implements ActionResult {
 			characterEncoding = this.characterEncoding;
 		}
 		final String redirectURL = calculateRedirectURL(
-				getPath(characterEncoding), actionClass, request);
+				getPath(characterEncoding), actionContext.getActionClass(),
+				request);
 		final String encodedRedirectURL = encodeURL(redirectURL, response);
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0003", new String[] { encodedRedirectURL });
+			logger.debug(format("DCUB0003", encodedRedirectURL));
 		}
 		response.sendRedirect(encodedRedirectURL);
 	}
@@ -365,7 +365,7 @@ public class Redirect implements ActionResult {
 		} else {
 			final String actionDirectory = CubbyUtils
 					.getActionDirectory(actionClass);
-			if (StringUtil.isEmpty(actionDirectory)) {
+			if (StringUtils.isEmpty(actionDirectory)) {
 				final StringBuilder builder = new StringBuilder();
 				builder.append(contextPath);
 				if (!contextPath.endsWith("/")) {
@@ -404,7 +404,7 @@ public class Redirect implements ActionResult {
 						.getHost(), redirectPort, redirectPath);
 				return redirectURL.toExternalForm();
 			} catch (MalformedURLException e) {
-				throw new IORuntimeException(e);
+				throw new ActionException(e);
 			}
 		}
 	}

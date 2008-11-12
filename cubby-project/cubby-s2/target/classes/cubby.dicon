@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components namespace="cubby">
+	<include path="convention.dicon" />
+
+	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
+
+	<!-- spi -->
+	<component class="org.seasar.cubby.plugins.s2.factory.S2PathResolverFactory" />
+	<component class="org.seasar.cubby.plugins.s2.factory.S2RequestParserFactory" />
+	<component class="org.seasar.cubby.plugins.s2.factory.S2ConverterFactory" />
+	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
+
+
+	<!-- routing -->
+	<!--component class="org.seasar.cubby.routing.impl.S2PathResolverImpl" /-->
+	<!--component class="org.seasar.cubby.routing.impl.RouterImpl" /-->
+
+	<!-- action -->
+	<!--component class="org.seasar.cubby.controller.impl.ActionProcessorImpl" /-->
+	<!--component class="org.seasar.cubby.controller.impl.RequestParserSelectorImpl" /-->
+	<!--component class="org.seasar.cubby.controller.impl.RoutingsDispatcherImpl" /-->
+	<!--component class="org.seasar.cubby.controller.impl.CubbyConfigurationImpl" /-->
+	<!--component class="org.seasar.cubby.controller.impl.RequestParameterBinderImpl"/-->
+	<!--component class="org.seasar.cubby.controller.impl.FormWrapperFactoryImpl"/-->
+
+	<!-- handlers -->
+	<component class="org.seasar.cubby.controller.chain.ExceptionActionHandler"/>
+	<component class="org.seasar.cubby.controller.chain.InitializeActionHandler"/>
+	<component class="org.seasar.cubby.controller.chain.ValidationActionHandler"/>
+	<component class="org.seasar.cubby.controller.chain.InvocationActionHandler"/>
+
+	<!-- Validation -->
+	<!--component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/-->
+
+	<!-- converter -->
+	<!--component class="org.seasar.cubby.plugins.s2.factory.S2ConverterFactory" /-->
+	<!--component class="org.seasar.cubby.converter.impl.ConversionHelperImpl" /-->
+
+	<!-- converters -->
+	<component class="org.seasar.cubby.converter.impl.BigDecimalConverter" />
+	<component class="org.seasar.cubby.converter.impl.BigIntegerConverter" />
+	<component class="org.seasar.cubby.converter.impl.BooleanConverter" />
+	<component class="org.seasar.cubby.converter.impl.ByteArrayFileItemConverter" />
+	<component class="org.seasar.cubby.converter.impl.ByteConverter" />
+	<component class="org.seasar.cubby.converter.impl.CharacterConverter" />
+	<component class="org.seasar.cubby.converter.impl.DateConverter" />
+	<component class="org.seasar.cubby.converter.impl.DoubleConverter" />
+	<component class="org.seasar.cubby.converter.impl.EnumConverter" />
+	<component class="org.seasar.cubby.converter.impl.FloatConverter" />
+	<component class="org.seasar.cubby.converter.impl.InputStreamFileItemConverter" />
+	<component class="org.seasar.cubby.converter.impl.IntegerConverter" />
+	<component class="org.seasar.cubby.converter.impl.LongConverter" />
+	<component class="org.seasar.cubby.converter.impl.ShortConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlDateConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlTimeConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlTimestampConverter" />
+
+</components>

@@ -15,38 +15,53 @@
  */
 package org.seasar.cubby.validator;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.validator.impl.ValidationProcessorImpl;
-import org.seasar.extension.unit.S2TestCase;
 
-public class UserValidationRuleTest extends S2TestCase {
+public class UserValidationRuleTest {
 
-	public ValidationProcessorImpl validationProcessor;
+	public ValidationProcessorImpl validationProcessor = new ValidationProcessorImpl();
 
-	public MockAction action;
+	public MockAction action = new MockAction();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-	}
+	@Test
+	public void userValidation() throws Exception {
+		Method method = MockAction.class.getMethod("dummy");
+		ActionContext actionContext = new MockActionContext(action,
+				MockAction.class, method);
 
-	public void testUserValidation() throws ValidationException {
-		ActionErrors errors = action.getErrors();
-		Object form = action;
-		ValidationRules rules = action.rules;
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getAttribute(ATTR_PARAMS)).andReturn(params).anyTimes();
+		replay(request);
 
-		validationProcessor.validate(rules, params, form, errors);
+		validationProcessor.process(request, actionContext);
 
 		action.value2 = "ng";
 		try {
-			validationProcessor.validate(rules, params, form, errors);
+			validationProcessor.process(request, actionContext);
 			fail();
 		} catch (ValidationException e) {
+			ActionErrors errors = actionContext.getActionErrors();
 			assertEquals(1, errors.getAll().size());
 			assertEquals("validation failed", errors.getAll().get(0));
 		}
@@ -54,16 +69,28 @@ public class UserValidationRuleTest extends S2TestCase {
 
 	public static class MockAction extends Action {
 
-		public String value1;
+		private String value1;
 
-		public String value2;
+		private String value2;
 
-		public ValidationRules rules = new DefaultValidationRules() {
+		private ValidationRules rules = new DefaultValidationRules() {
 			@Override
 			public void initialize() {
 				add(DATA_CONSTRAINT, new UserValidationRule());
 			}
 		};
+
+		public String getValue1() {
+			return value1;
+		}
+
+		public String getValue2() {
+			return value2;
+		}
+
+		public ValidationRules getRules() {
+			return rules;
+		}
 
 		class UserValidationRule implements ValidationRule {
 
@@ -75,5 +102,11 @@ public class UserValidationRuleTest extends S2TestCase {
 			}
 
 		}
+
+		@Validation(rules = "rules")
+		public ActionResult dummy() {
+			return null;
+		}
+
 	}
 }

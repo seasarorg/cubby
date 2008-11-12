@@ -16,15 +16,15 @@
 package org.seasar.cubby.action;
 
 import java.io.Writer;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.framework.util.JSONSerializer;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.util.StringUtils;
 
 /**
  * JSON 形式のレスポンスを返す {@link ActionResult} です。
@@ -65,7 +65,7 @@ import org.seasar.framework.util.StringUtil;
  * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)< /a>
  * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON
  *      * with Padding)< /a>
- * @see JSONSerializer#serialize(Object)
+ * @see JsonProvider#toJson(Object)
  * @author baba
  * @author agata
  * @since 1.0.0
@@ -79,6 +79,8 @@ public class Json implements ActionResult {
 	private String contentType = "text/javascript";
 
 	private String encoding = "utf-8";
+
+	private boolean xjson = false;
 
 	/**
 	 * JSON 形式でレスポンスを返すインスタンスを生成します。
@@ -166,11 +168,18 @@ public class Json implements ActionResult {
 		return this.encoding;
 	}
 
+	public void xjson() {
+		this.xjson = true;
+	}
+
+	public boolean isXjson() {
+		return xjson;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final Action action,
-			final Class<? extends Action> actionClass, final Method method,
+	public void execute(final ActionContext actionContext,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 		response.setCharacterEncoding(this.encoding);
@@ -179,21 +188,26 @@ public class Json implements ActionResult {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
+		final JsonProvider jsonProvider = JsonProvider.Factory.get();
 		final String script;
 		if (isJsonp()) {
-			script = appendCallbackFunction(JSONSerializer.serialize(bean),
+			script = appendCallbackFunction(jsonProvider.toJson(bean),
 					calllback);
 		} else {
-			script = JSONSerializer.serialize(bean);
+			script = jsonProvider.toJson(bean);
 		}
 
-		final Writer writer = response.getWriter();
-		writer.write(script);
-		writer.flush();
+		if (xjson) {
+			response.setHeader("X-JSON", script);
+		} else {
+			final Writer writer = response.getWriter();
+			writer.write(script);
+			writer.flush();
+		}
 	}
 
 	private boolean isJsonp() {
-		return !StringUtil.isEmpty(calllback);
+		return !StringUtils.isEmpty(calllback);
 	}
 
 	private static String appendCallbackFunction(final String script,
@@ -206,4 +220,5 @@ public class Json implements ActionResult {
 		builder.append(");");
 		return builder.toString();
 	}
+
 }

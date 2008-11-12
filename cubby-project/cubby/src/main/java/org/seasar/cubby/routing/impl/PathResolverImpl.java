@@ -16,6 +16,7 @@
 package org.seasar.cubby.routing.impl;
 
 import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,7 @@ import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,24 +38,16 @@ import java.util.regex.Pattern;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.controller.ClassDetector;
-import org.seasar.cubby.controller.DetectClassProcessor;
-import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.cubby.exception.DuplicateRoutingRuntimeException;
-import org.seasar.cubby.exception.IllegalRoutingRuntimeException;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.routing.RoutingException;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
-import org.seasar.framework.convention.NamingConvention;
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.ClassUtil;
-import org.seasar.framework.util.Disposable;
-import org.seasar.framework.util.DisposableUtil;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * クラスパスから {@link Action} を検索し、クラス名やメソッド名、そのクラスやメソッドに指定された
@@ -64,18 +57,19 @@ import org.seasar.framework.util.StringUtil;
  * @author baba
  * @since 1.0.0
  */
-public class PathResolverImpl implements PathResolver, DetectClassProcessor,
-		Disposable {
+public class PathResolverImpl implements PathResolver {// ,
+	// DetectClassProcessor,
+	// Disposable {
 
 	/** ロガー */
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(PathResolverImpl.class);
 
-	/** インスタンスが初期化済みであることを示します。 */
-	private boolean initialized;
-
-	/** 命名規約。 */
-	private NamingConvention namingConvention;
+	// /** インスタンスが初期化済みであることを示します。 */
+	// private boolean initialized;
+	//
+	// /** 命名規約。 */
+	// private NamingConvention namingConvention;
 
 	/** ルーティングのコンパレータ。 */
 	private final Comparator<Routing> routingComparator = new RoutingComparator();
@@ -84,11 +78,11 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	private final Map<Routing, Routing> routings = new TreeMap<Routing, Routing>(
 			routingComparator);
 
-	/** クラスパスを走査してクラスを検出するクラス。 */
-	private ClassDetector classDetector;
+	// /** クラスパスを走査してクラスを検出するクラス。 */
+	// private ClassDetector classDetector;
 
 	/** パステンプレートのパーサー。 */
-	private PathTemplateParser pathTemplateParser;
+	private PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
 
 	/** 手動登録用のプライオリティカウンタ。 */
 	private int priorityCounter = 0;
@@ -104,78 +98,104 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 * 
 	 * @return ルーティング情報
 	 */
-	public List<Routing> getRoutings() {
-		initialize();
-		return Collections.unmodifiableList(new ArrayList<Routing>(routings
-				.values()));
+	public Map<Routing, Routing> getRoutings() {
+		// TODO
+		// initialize();
+		// return Collections.unmodifiableList(new ArrayList<Routing>(routings
+		// .values()));
+		return routings;
 	}
 
-	/**
-	 * クラスパスを走査してクラスを検出するクラスを設定します。
-	 * 
-	 * @param classDetector
-	 *            クラスパスを走査してクラスを検出するクラス
-	 */
-	public void setClassDetector(final ClassDetector classDetector) {
-		this.classDetector = classDetector;
-	}
+	// /**
+	// * クラスパスを走査してクラスを検出するクラスを設定します。
+	// *
+	// * @param classDetector
+	// * クラスパスを走査してクラスを検出するクラス
+	// */
+	// public void setClassDetector(final ClassDetector classDetector) {
+	// this.classDetector = classDetector;
+	// }
+	//
+	// /**
+	// * 初期化します。
+	// */
+	// public void initialize() {
+	// if (initialized) {
+	// return;
+	// }
+	// classDetector.detect();
+	// DisposableUtil.add(this);
+	// initialized = true;
+	// }
+	//
+	// /**
+	// * {@inheritDoc}
+	// */
+	// public void dispose() {
+	// final List<Routing> removes = new ArrayList<Routing>();
+	// for (final Routing routing : routings.keySet()) {
+	// if (routing.isAuto()) {
+	// removes.add(routing);
+	// }
+	// }
+	// for (final Routing routing : removes) {
+	// routings.remove(routing);
+	// }
+	// initialized = false;
+	// }
 
-	/**
-	 * パステンプレートのパーサーを設定します。
-	 * 
-	 * @param pathTemplateParser
-	 *            パステンプレートのパーサー
-	 */
-	public void setPathTemplateParser(
-			final PathTemplateParser pathTemplateParser) {
-		this.pathTemplateParser = pathTemplateParser;
-	}
-
-	/**
-	 * 初期化します。
-	 */
-	public void initialize() {
-		if (initialized) {
-			return;
-		}
-		classDetector.detect();
-		DisposableUtil.add(this);
-		initialized = true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void dispose() {
-		final List<Routing> removes = new ArrayList<Routing>();
-		for (final Routing routing : routings.keySet()) {
-			if (routing.isAuto()) {
-				removes.add(routing);
+	public void addAllActionClasses(
+			Collection<Class<? extends Action>> actionClasses) {
+		for (final Class<? extends Action> actionClass : actionClasses) {
+			for (final Method method : actionClass.getMethods()) {
+				if (CubbyUtils.isActionMethod(method)) {
+					final String actionPath = CubbyUtils.getActionPath(
+							actionClass, method);
+					final RequestMethod[] acceptableRequestMethods = CubbyUtils
+							.getAcceptableRequestMethods(actionClass, method);
+					for (final RequestMethod requestMethod : acceptableRequestMethods) {
+						this.add(actionPath, actionClass, method,
+								requestMethod, true);
+					}
+				}
 			}
 		}
-		for (final Routing routing : removes) {
-			routings.remove(routing);
-		}
-		initialized = false;
 	}
 
-	/**
-	 * ルーティング情報を登録します。
-	 * <p>
-	 * クラスパスを検索して自動登録されるルーティング情報以外にも、このメソッドによって手動でルーティング情報を登録できます。
-	 * </p>
-	 * 
-	 * @param actionPath
-	 *            アクションのパス
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param methodName
-	 *            アクションメソッド名
-	 */
-	public void add(final String actionPath,
-			final Class<? extends Action> actionClass, final String methodName) {
-		this.add(actionPath, actionClass, methodName, new RequestMethod[0]);
+	public void clearAllActionClasses() {
+		routings.clear();
 	}
+
+	// // TODO
+	// public void clearAutoRegisteredRouting() {
+	// final List<Routing> removes = new ArrayList<Routing>();
+	// for (final Routing routing : routings.keySet()) {
+	// if (routing.isAuto()) {
+	// removes.add(routing);
+	// }
+	// }
+	// for (final Routing routing : removes) {
+	// routings.remove(routing);
+	// }
+	// }
+
+	// /**
+	// * ルーティング情報を登録します。
+	// * <p>
+	// * クラスパスを検索して自動登録されるルーティング情報以外にも、このメソッドによって手動でルーティング情報を登録できます。
+	// * </p>
+	// *
+	// * @param actionPath
+	// * アクションのパス
+	// * @param actionClass
+	// * アクションクラス
+	// * @param methodName
+	// * アクションメソッド名
+	// */
+	// public void add(final String actionPath,
+	// final Class<? extends Action> actionClass, final String methodName) {
+	// this.add(actionPath, actionClass, methodName, new RequestMethod[0]);
+	// }
 
 	/**
 	 * ルーティング情報を登録します。
@@ -195,18 +215,22 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	public void add(final String actionPath,
 			final Class<? extends Action> actionClass, final String methodName,
 			final RequestMethod... requestMethods) {
-
-		final Method method = ClassUtil.getMethod(actionClass, methodName,
-				new Class<?>[0]);
-		if (requestMethods == null || requestMethods.length == 0) {
-			for (final RequestMethod requestMethod : CubbyUtils.DEFAULT_ACCEPT_ANNOTATION
-					.value()) {
-				this.add(actionPath, actionClass, method, requestMethod, false);
+		try {
+			final Method method = actionClass.getMethod(methodName);
+			if (requestMethods == null || requestMethods.length == 0) {
+				for (final RequestMethod requestMethod : CubbyUtils.DEFAULT_ACCEPT_ANNOTATION
+						.value()) {
+					this.add(actionPath, actionClass, method, requestMethod,
+							false);
+				}
+			} else {
+				for (final RequestMethod requestMethod : requestMethods) {
+					this.add(actionPath, actionClass, method, requestMethod,
+							false);
+				}
 			}
-		} else {
-			for (final RequestMethod requestMethod : requestMethods) {
-				this.add(actionPath, actionClass, method, requestMethod, false);
-			}
+		} catch (final NoSuchMethodException e) {
+			throw new RoutingException(e);
 		}
 	}
 
@@ -229,11 +253,9 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 			final RequestMethod requestMethod, final boolean auto) {
 
 		if (!CubbyUtils.isActionClass(actionClass)) {
-			throw new IllegalRoutingRuntimeException("ECUB0002",
-					new Object[] { actionClass });
+			throw new RoutingException(format("ECUB0002", actionClass));
 		} else if (!CubbyUtils.isActionMethod(method)) {
-			throw new IllegalRoutingRuntimeException("ECUB0003",
-					new Object[] { method });
+			throw new RoutingException(format("ECUB0003", method));
 		}
 
 		final List<String> uriParameterNames = new ArrayList<String>();
@@ -261,13 +283,13 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 			final Routing duplication = routings.get(routing);
 			if (!routing.getActionClass().equals(duplication.getActionClass())
 					|| !routing.getMethod().equals(duplication.getMethod())) {
-				throw new DuplicateRoutingRuntimeException("ECUB0001",
-						new Object[] { routing, duplication });
+				throw new RoutingException(format("ECUB0001", routing,
+						duplication));
 			}
 		} else {
 			routings.put(routing, routing);
 			if (logger.isDebugEnabled()) {
-				logger.log("DCUB0007", new Object[] { routing });
+				logger.debug(format("DCUB0007", routing));
 			}
 		}
 	}
@@ -277,29 +299,32 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	 */
 	public InternalForwardInfo getInternalForwardInfo(final String path,
 			final String requestMethod, final String characterEncoding) {
-		initialize();
-
-		final InternalForwardInfo internalForwardInfo = findInternalForwardInfo(
-				decode(path, characterEncoding), requestMethod,
-				characterEncoding);
-		return internalForwardInfo;
-	}
-
-	/**
-	 * 指定されたパス、メソッドに対応する内部フォワード情報を検索します。
-	 * 
-	 * @param path
-	 *            リクエストのパス
-	 * @param requestMethod
-	 *            リクエストのメソッド
-	 * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
-	 */
-	private InternalForwardInfo findInternalForwardInfo(final String path,
-			final String requestMethod, final String characterEncoding) {
-		final Iterator<Routing> iterator = routings.values().iterator();
+		// TODO
+		// initialize();
+		//
+		// final InternalForwardInfo internalForwardInfo =
+		// findInternalForwardInfo(
+		// decode(path, characterEncoding), requestMethod,
+		// characterEncoding);
+		// return internalForwardInfo;
+		// }
+		//
+		// /**
+		// * 指定されたパス、メソッドに対応する内部フォワード情報を検索します。
+		// *
+		// * @param path
+		// * リクエストのパス
+		// * @param requestMethod
+		// * リクエストのメソッド
+		// * @return 内部フォワード情報、対応する内部フォワード情報が登録されていない場合は <code>null</code>
+		// */
+		// public InternalForwardInfo findInternalForwardInfo(final String path,
+		// final String requestMethod, final String characterEncoding) {
+		final String decodedPath = decode(path, characterEncoding);
+		final Iterator<Routing> iterator = getRoutings().values().iterator();
 		while (iterator.hasNext()) {
 			final Routing routing = iterator.next();
-			final Matcher matcher = routing.getPattern().matcher(path);
+			final Matcher matcher = routing.getPattern().matcher(decodedPath);
 			if (matcher.find()) {
 				if (routing.isAcceptable(requestMethod)) {
 					final Map<String, Routing> onSubmitRoutings = new HashMap<String, Routing>();
@@ -347,7 +372,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		if (parameters != null && !parameters.isEmpty()) {
 			path.append("?");
 			final QueryStringBuilder query = new QueryStringBuilder();
-			if (!StringUtil.isEmpty(characterEncoding)) {
+			if (!StringUtils.isEmpty(characterEncoding)) {
 				query.setEncode(characterEncoding);
 			}
 			for (final Entry<String, String[]> entry : parameters.entrySet()) {
@@ -360,15 +385,16 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		return path.toString();
 	}
 
-	/**
-	 * 命名規約を設定します。
-	 * 
-	 * @param namingConvention
-	 *            命名規約
-	 */
-	public void setNamingConvention(final NamingConvention namingConvention) {
-		this.namingConvention = namingConvention;
-	}
+	// /**
+	// * 命名規約を設定します。
+	// *
+	// * @param namingConvention
+	// * 命名規約
+	// */
+	// public void setNamingConvention(final NamingConvention namingConvention)
+	// {
+	// this.namingConvention = namingConvention;
+	// }
 
 	/**
 	 * 指定された正規表現を括弧「()」で囲んで正規表現のグループにします。
@@ -448,7 +474,8 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	public String reverseLookup(final Class<? extends Action> actionClass,
 			final String methodName, final Map<String, String[]> parameters,
 			final String characterEncoding) {
-		final Routing routing = findRouting(actionClass, methodName);
+		final Collection<Routing> routings = getRoutings().values();
+		final Routing routing = findRouting(routings, actionClass, methodName);
 		final String actionPath = routing.getActionPath();
 		final Map<String, String[]> copyOfParameters = new HashMap<String, String[]>(
 				parameters);
@@ -458,14 +485,13 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 
 					public String handle(final String name, final String regex) {
 						if (!copyOfParameters.containsKey(name)) {
-							throw new ActionRuntimeException("ECUB0104",
-									new Object[] { actionPath, name });
+							throw new RoutingException(format("ECUB0104",
+									actionPath, name));
 						}
 						final String value = copyOfParameters.remove(name)[0];
 						if (!value.matches(regex)) {
-							throw new ActionRuntimeException("ECUB0105",
-									new Object[] { actionPath, name, value,
-											regex });
+							throw new RoutingException(format("ECUB0105",
+									actionPath, name, value, regex));
 						}
 						return encode(value, characterEncoding);
 					}
@@ -493,17 +519,19 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 	/**
 	 * 指定されたクラス、メソッドに対応するルーティング情報を検索します。
 	 * 
+	 * @param routings
+	 *            ルーティング情報
 	 * @param actionClass
 	 *            クラス
 	 * @param methodName
 	 *            メソッド
 	 * @return ルーティング情報
-	 * @throws ActionRuntimeException
+	 * @throws RoutingException
 	 *             ルーティング情報が見つからなかった場合
 	 */
-	private Routing findRouting(final Class<? extends Action> actionClass,
-			final String methodName) {
-		for (final Routing routing : routings.values()) {
+	private static Routing findRouting(Collection<Routing> routings,
+			final Class<? extends Action> actionClass, final String methodName) {
+		for (final Routing routing : routings) {
 			if (actionClass.getCanonicalName().equals(
 					routing.getActionClass().getCanonicalName())) {
 				if (methodName.equals(routing.getMethod().getName())) {
@@ -511,62 +539,61 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 				}
 			}
 		}
-		throw new ActionRuntimeException("ECUB0103", new Object[] {
-				actionClass, methodName });
+		throw new RoutingException(format("ECUB0103", actionClass, methodName));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * 指定されたパッケージ名、クラス名から導出されるクラスがアクションクラスだった場合はルーティングを登録します。
-	 * </p>
-	 */
-	public void processClass(final String packageName,
-			final String shortClassName) {
-		if (shortClassName.indexOf('$') != -1) {
-			return;
-		}
-		final String className = ClassUtil.concatName(packageName,
-				shortClassName);
-		if (!namingConvention.isTargetClassName(className)) {
-			return;
-		}
-		if (!className.endsWith(namingConvention.getActionSuffix())) {
-			return;
-		}
-		final Class<?> clazz = ClassUtil.forName(className);
-		if (namingConvention.isSkipClass(clazz)) {
-			return;
-		}
-		if (!CubbyUtils.isActionClass(clazz)) {
-			return;
-		}
-		final Class<? extends Action> actionClass = cast(clazz);
-
-		for (final Method method : clazz.getMethods()) {
-			if (CubbyUtils.isActionMethod(method)) {
-				final String actionPath = CubbyUtils.getActionPath(actionClass,
-						method);
-				final RequestMethod[] acceptableRequestMethods = CubbyUtils
-						.getAcceptableRequestMethods(clazz, method);
-				for (final RequestMethod requestMethod : acceptableRequestMethods) {
-					add(actionPath, actionClass, method, requestMethod, true);
-				}
-			}
-		}
-	}
-
-	/**
-	 * 指定されたクラスを <code>Class&lt;? extends Action&gt;</code> にキャストします。
-	 * 
-	 * @param clazz
-	 *            クラス
-	 * @return キャストされたクラス
-	 */
-	@SuppressWarnings("unchecked")
-	private static Class<? extends Action> cast(final Class<?> clazz) {
-		return Class.class.cast(clazz);
-	}
+	// /**
+	// * {@inheritDoc}
+	// * <p>
+	// * 指定されたパッケージ名、クラス名から導出されるクラスがアクションクラスだった場合はルーティングを登録します。
+	// * </p>
+	// */
+	// public void processClass(final String packageName,
+	// final String shortClassName) {
+	// if (shortClassName.indexOf('$') != -1) {
+	// return;
+	// }
+	// final String className = ClassUtils.concatName(packageName,
+	// shortClassName);
+	// if (!namingConvention.isTargetClassName(className)) {
+	// return;
+	// }
+	// if (!className.endsWith(namingConvention.getActionSuffix())) {
+	// return;
+	// }
+	// final Class<?> clazz = ClassUtils.forName(className);
+	// if (namingConvention.isSkipClass(clazz)) {
+	// return;
+	// }
+	// if (!CubbyUtils.isActionClass(clazz)) {
+	// return;
+	// }
+	// final Class<? extends Action> actionClass = cast(clazz);
+	//
+	// for (final Method method : clazz.getMethods()) {
+	// if (CubbyUtils.isActionMethod(method)) {
+	// final String actionPath = CubbyUtils.getActionPath(actionClass,
+	// method);
+	// final RequestMethod[] acceptableRequestMethods = CubbyUtils
+	// .getAcceptableRequestMethods(clazz, method);
+	// for (final RequestMethod requestMethod : acceptableRequestMethods) {
+	// add(actionPath, actionClass, method, requestMethod, true);
+	// }
+	// }
+	// }
+	// }
+	//
+	// /**
+	// * 指定されたクラスを <code>Class&lt;? extends Action&gt;</code> にキャストします。
+	// *
+	// * @param clazz
+	// * クラス
+	// * @return キャストされたクラス
+	// */
+	// @SuppressWarnings("unchecked")
+	// private static Class<? extends Action> cast(final Class<?> clazz) {
+	// return Class.class.cast(clazz);
+	// }
 
 	/**
 	 * 指定された文字列を URL エンコードします。
@@ -585,7 +612,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		try {
 			return URLEncoder.encode(str, characterEncoding);
 		} catch (final UnsupportedEncodingException e) {
-			throw new IORuntimeException(e);
+			throw new RoutingException(e);
 		}
 	}
 
@@ -606,7 +633,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		try {
 			return URLDecoder.decode(str, characterEncoding);
 		} catch (final IOException e) {
-			throw new IORuntimeException(e);
+			throw new RoutingException(e);
 		}
 	}
 

@@ -15,16 +15,19 @@
  */
 package org.seasar.cubby.routing.impl;
 
-import org.seasar.cubby.exception.PathTemplateParseException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
+import org.seasar.cubby.routing.PathTemplateException;
 import org.seasar.cubby.routing.PathTemplateParser;
 
-import junit.framework.TestCase;
-
-public class PathTemplateParserImplTest extends TestCase {
+public class PathTemplateParserImplTest {
 
 	private PathTemplateParser parser = new PathTemplateParserImpl();
 
-	public void testParseFail() {
+	@Test
+	public void parseFail() {
 		assertIllegalTemplate("/foo/bar/{}");
 		assertIllegalTemplate("/foo/bar/{");
 		assertIllegalTemplate("/foo/bar/{a");
@@ -44,13 +47,14 @@ public class PathTemplateParserImplTest extends TestCase {
 
 			});
 			fail();
-		} catch (PathTemplateParseException e) {
+		} catch (PathTemplateException e) {
 			// ok
 			e.printStackTrace();
 		}
 	}
 
-	public void testParse1() {
+	@Test
+	public void parse1() {
 		String regex = parser.parse("/foo/{abc}",
 				new PathTemplateParser.Handler() {
 
@@ -73,7 +77,8 @@ public class PathTemplateParserImplTest extends TestCase {
 		assertEquals("/foo/([a-zA-Z0-9]+)", regex);
 	}
 
-	public void testParse2() {
+	@Test
+	public void parse2() {
 		String regex = parser.parse("/foo/{abc}/bar/{def}",
 				new PathTemplateParser.Handler() {
 
@@ -100,7 +105,8 @@ public class PathTemplateParserImplTest extends TestCase {
 		assertEquals("/foo/([a-zA-Z0-9]+)/bar/([a-zA-Z0-9]+)", regex);
 	}
 
-	public void testParse3() {
+	@Test
+	public void parse3() {
 		String regex = parser.parse("/foo/bar/{abc,{3}a}",
 				new PathTemplateParser.Handler() {
 
@@ -123,7 +129,8 @@ public class PathTemplateParserImplTest extends TestCase {
 		assertEquals("/foo/bar/({3}a)", regex);
 	}
 
-	public void testParse4() {
+	@Test
+	public void parse4() {
 		String regex = parser.parse("/foo/bar/{abc,\\{aa}",
 				new PathTemplateParser.Handler() {
 
@@ -146,7 +153,8 @@ public class PathTemplateParserImplTest extends TestCase {
 		assertEquals("/foo/bar/(\\{aa)", regex);
 	}
 
-	public void testParse5() {
+	@Test
+	public void parse5() {
 		String regex = parser.parse("/foo/bar/{abc,\\{aa}/{def,a\\}a}",
 				new PathTemplateParser.Handler() {
 
@@ -173,7 +181,8 @@ public class PathTemplateParserImplTest extends TestCase {
 		assertEquals("/foo/bar/(\\{aa)/(a\\}a)", regex);
 	}
 
-	public void testParse6() {
+	@Test
+	public void parse6() {
 		String regex = parser.parse("/foo/bar/{abc,aa\\\\}",
 				new PathTemplateParser.Handler() {
 

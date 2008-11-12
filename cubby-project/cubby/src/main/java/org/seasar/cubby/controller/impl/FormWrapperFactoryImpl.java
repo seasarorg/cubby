@@ -18,14 +18,17 @@ package org.seasar.cubby.controller.impl;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
+import org.seasar.cubby.beans.BeanDesc;
+import org.seasar.cubby.beans.BeanDescFactory;
+import org.seasar.cubby.beans.PropertyDesc;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.converter.ConverterFactory;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.cubby.converter.impl.ConversionHelperImpl;
+import org.seasar.cubby.factory.ConverterFactory;
 
 /**
  * フォームオブジェクトのラッパーファクトリの実装です。
@@ -35,31 +38,19 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  */
 public class FormWrapperFactoryImpl implements FormWrapperFactory {
 
-	/** コンバータのファクトリクラス。 */
-	private ConverterFactory converterFactory;
-
 	/** 変換のヘルパクラス。 */
-	private ConversionHelper conversionHelper;
+	private ConversionHelper conversionHelper = new ConversionHelperImpl();
 
-	/**
-	 * コンバータのファクトリクラスを設定します。
-	 * 
-	 * @param converterFactory
-	 *            コンバータのファクトリクラス
-	 */
-	public void setConverterFactory(final ConverterFactory converterFactory) {
-		this.converterFactory = converterFactory;
-	}
-
-	/**
-	 * 変換のヘルパクラスを設定します。
-	 * 
-	 * @param conversionHelper
-	 *            変換のヘルパクラス
-	 */
-	public void setConversionHelper(final ConversionHelper conversionHelper) {
-		this.conversionHelper = conversionHelper;
-	}
+	// /**
+	// * 変換のヘルパクラスを設定します。
+	// *
+	// * @param conversionHelper
+	// * 変換のヘルパクラス
+	// */
+	// public void setConversionHelper(final ConversionHelper conversionHelper)
+	// {
+	// this.conversionHelper = conversionHelper;
+	// }
 
 	/**
 	 * {@inheritDoc}
@@ -152,6 +143,9 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			if (value == null) {
 				return null;
 			}
+			final Container container = ContainerFactory.getContainer();
+			final ConverterFactory converterFactory = container
+					.lookup(ConverterFactory.class);
 			final Converter converter = converterFactory.getConverter(null,
 					value.getClass());
 			if (converter == null) {

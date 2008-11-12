@@ -15,33 +15,118 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.easymock.IAnswer;
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.container.Container;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
+import org.seasar.cubby.mock.MockContainerProvider;
 
-public class MultipartRequestParserImplTest extends S2TestCase {
+public class MultipartRequestParserImplTest {
 
-	public RequestParser requestParser;
+	private RequestParser requestParser = new MultipartRequestParserImpl();
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+	private HttpServletRequest request;
+
+	private Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+
+	private String contentType;
+
+	@Before
+	public void setupContainer() {
 	}
 
-	public void testGetEmptyParameterMap() throws Throwable {
-		MockHttpServletRequest request = getRequest();
+	@Before
+	@SuppressWarnings("unchecked")
+	public void setupRequest() {
+		request = createMock(HttpServletRequest.class);
+		expect(request.getAttribute(String.class.cast(anyObject())))
+				.andStubAnswer(new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		request.setAttribute(String.class.cast(anyObject()), anyObject());
+		expectLastCall().andStubAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				attributes.put(String.class.cast(getCurrentArguments()[0]),
+						getCurrentArguments()[1]);
+				return null;
+			}
+
+		});
+		expect(request.getAttributeNames()).andStubAnswer(
+				new IAnswer<Enumeration>() {
+
+					public Enumeration answer() throws Throwable {
+						return attributes.keys();
+					}
+
+				});
+		expect(request.getParameterMap()).andReturn(attributes);
+		expect(request.getMethod()).andReturn("GET");
+		expect(request.getContentType()).andStubAnswer(new IAnswer<String>() {
+
+			public String answer() throws Throwable {
+				return contentType;
+			}
+
+		});
+		replay(request);
+
+		final FileUpload fileUpload = new ServletFileUpload();
+		final RequestContext requestContext = new ServletRequestContext(request);
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (FileUpload.class.equals(type)) {
+					return type.cast(fileUpload);
+				}
+
+				if (RequestContext.class.equals(type)) {
+					return type.cast(requestContext);
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@Test
+	public void getEmptyParameterMap() {
 		Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		assertEquals("parameterMap.size()", 0, parameterMap.size());
 	}
 
-	public void testGetParameterMap() throws Throwable {
-		MockHttpServletRequest request = getRequest();
-		request.setParameter("a", "12345");
-		request.setParameter("b", new String[] { "abc", "def" });
+	@Test
+	public void getParameterMap() {
+		attributes.put("a", new String[] { "12345" });
+		attributes.put("b", new String[] { "abc", "def" });
 		Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		assertEquals("parameterMap.size()", 2, parameterMap.size());
@@ -54,16 +139,15 @@ public class MultipartRequestParserImplTest extends S2TestCase {
 		assertEquals("b[1]", "def", b[1]);
 	}
 
-	public void testIsParsable() {
-		MockHttpServletRequest request = getRequest();
-
-		request.setContentType("application/x-www-form-urlencoded");
+	@Test
+	public void isParsable() {
+		contentType = "application/x-www-form-urlencoded";
 		assertFalse(requestParser.isParsable(request));
 
-		request.setContentType("multipart/form-data");
+		contentType = "multipart/form-data";
 		assertTrue(requestParser.isParsable(request));
 
-		request.setContentType("application/atom+xml");
+		contentType = "application/atom+xml";
 		assertFalse(requestParser.isParsable(request));
 	}
 

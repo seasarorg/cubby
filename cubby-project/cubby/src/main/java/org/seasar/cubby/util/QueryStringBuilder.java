@@ -18,8 +18,6 @@ package org.seasar.cubby.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.seasar.framework.exception.IORuntimeException;
-
 /**
  * パラメータ文字列を作成します。
  * <p>
@@ -139,7 +137,8 @@ public class QueryStringBuilder {
 				queryString.append(URLEncoder.encode(value.toString(), encode));
 			}
 		} catch (final UnsupportedEncodingException e) {
-			throw new IORuntimeException(e);
+			throw new IllegalArgumentException(e);
 		}
 	}
+
 }

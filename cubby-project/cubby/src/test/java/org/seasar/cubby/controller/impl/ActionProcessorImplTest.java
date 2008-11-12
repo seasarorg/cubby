@@ -15,15 +15,17 @@
  */
 package org.seasar.cubby.controller.impl;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 //TODO
-public class ActionProcessorImplTest extends TestCase {
+public class ActionProcessorImplTest {
 
-	public void testConstructor() throws Throwable {
-        new ActionProcessorImpl();
-        assertTrue("Test call resulted in expected outcome", true);
-    }
+	@Test
+	public void constructor() throws Throwable {
+		new ActionProcessorImpl();
+		assertTrue("Test call resulted in expected outcome", true);
+	}
 
 }
-

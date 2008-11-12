@@ -22,10 +22,13 @@ import static org.seasar.cubby.tags.TagUtils.formValue;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
@@ -33,8 +36,6 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.framework.message.MessageFormatter;
-import org.seasar.framework.util.ArrayUtil;
 
 /**
  * inputを出力するタグ。
@@ -53,8 +54,13 @@ import org.seasar.framework.util.ArrayUtil;
  */
 public class InputTag extends DynamicAttributesTagSupport {
 
-	private static final String[] MULTIPLE_VALUE_TYPES = new String[] {
-			"checkbox", "radio" };
+	private static final Set<String> MULTIPLE_VALUE_TYPES;
+	static {
+		Set<String> set = new HashSet<String>();
+		set.add("checkbox");
+		set.add("radio");
+		MULTIPLE_VALUE_TYPES = Collections.unmodifiableSet(set);
+	}
 
 	private String type;
 
@@ -137,12 +143,10 @@ public class InputTag extends DynamicAttributesTagSupport {
 			}
 		}
 
-		if (ArrayUtil.contains(MULTIPLE_VALUE_TYPES, this.type)) {
+		if (MULTIPLE_VALUE_TYPES.contains(this.type)) {
 			if (this.value == null) {
-				throw new JspTagException(MessageFormatter.getMessage(
-						"ECUB1003", new Object[] {
-								Arrays.deepToString(MULTIPLE_VALUE_TYPES),
-								"value" }));
+				throw new JspTagException(format("ECUB1003",
+						MULTIPLE_VALUE_TYPES, "value"));
 			}
 			final Object[] values = multipleFormValues(context, outputValues,
 					this.name, this.checkedValue);

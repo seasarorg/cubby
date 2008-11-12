@@ -28,16 +28,18 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.beans.BeanDesc;
+import org.seasar.cubby.beans.BeanDescFactory;
+import org.seasar.cubby.beans.PropertyDesc;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.util.IteratorEnumeration;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
 
 /**
  * 特別な属性を取得するためのリクエストのラッパです。
  * <p>
- * 以下のような属性を使用することができます。 <table><thead>
+ * 以下のような属性を使用することができます。
+ * <table>
+ * <thead>
  * <tr>
  * <th>属性名</th>
  * <th>値</th>
@@ -64,7 +66,8 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
  * <td>アクションのプロパティ値</td>
  * <td>任意</td>
  * </tr>
- * </table> これらの属性は通常の属性よりも優先されるのでご注意ください。
+ * </table>
+ * これらの属性は通常の属性よりも優先されるのでご注意ください。
  * </p>
  * 
  * @author baba
@@ -136,8 +139,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			for (int i = 0; i < beanDesc.getPropertyDescSize(); i++) {
-				final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(i);
+			for (PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
 				if (propertyDesc.isReadable()) {
 					attributeNames.add(propertyDesc.getPropertyName());
 				}

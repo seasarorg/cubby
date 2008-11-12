@@ -21,34 +21,11 @@ public class MockAction extends Action {
 
 	public String value2;
 
-	private boolean prerendered = false;
-
-	private boolean postrendered = false;
-
-	@Override
-	public void prerender() {
-		super.prerender();
-		prerendered = true;
-	}
-
-	@Override
-	public void postrender() {
-		super.postrender();
-		postrendered = true;
-	}
-
-	public boolean isPrerendered() {
-		return prerendered;
-	}
-
-	public boolean isPostrendered() {
-		return postrendered;
-	}
-
 	public ActionResult dummy1() {
 		return null;
 	}
 
+	@Path("dummy2/{value1,[0-9]+}/{value2}")
 	public ActionResult dummy2() {
 		return null;
 	}

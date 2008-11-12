@@ -15,11 +15,16 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertSuccess;
+
+import org.junit.Test;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 
-public class NumberValidatorTest extends AbstractScalarFieldValidatorTestCase {
+public class NumberValidatorTest {
 
-	public void testValidation() {
+	@Test
+	public void validate() {
 		ScalarFieldValidator validator = new NumberValidator();
 		assertSuccess(validator, "1", "-1", "1.1", "-1.1");
 		assertFail(validator, "A", "123,456", "1.23.5");

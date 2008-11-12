@@ -15,7 +15,9 @@
  */
 package org.seasar.cubby.routing.impl;
 
-import org.seasar.cubby.exception.PathTemplateParseException;
+import static org.seasar.cubby.util.LoggerMessages.format;
+
+import org.seasar.cubby.routing.PathTemplateException;
 import org.seasar.cubby.routing.PathTemplateParser;
 
 /**
@@ -73,8 +75,8 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 			case PARAM_NAME: {
 				if (c == CLOSE_PLACE_HOLDER) {
 					if (paramName.length() == 0) {
-						throw new PathTemplateParseException("ECUB0108",
-								new Object[] { template, i });
+						throw new PathTemplateException(format("ECUB0108",
+								template, i));
 					}
 					final String replacement = handler.handle(paramName
 							.toString(), DEFAULT_URI_PARAMETER_REGEX);
@@ -95,12 +97,12 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 					state = State.PARAM_REGEX_ESCAPE;
 				} else if (c == CLOSE_PLACE_HOLDER && braceDepth == 0) {
 					if (paramName.length() == 0) {
-						throw new PathTemplateParseException("ECUB0108",
-								new Object[] { template, i });
+						throw new PathTemplateException(format("ECUB0108",
+								template, i));
 					}
 					if (paramRegex.length() == 0) {
-						throw new PathTemplateParseException("ECUB0109",
-								new Object[] { template, i });
+						throw new PathTemplateException(format("ECUB0109",
+								template, i));
 					}
 					final String replacement = handler.handle(paramName
 							.toString(), paramRegex.toString());
@@ -130,8 +132,7 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 			}
 		}
 		if (state != State.NORMAL) {
-			throw new PathTemplateParseException("ECUB0107",
-					new Object[] { template });
+			throw new PathTemplateException(format("ECUB0107", template));
 		}
 		return pathRegex.toString();
 	}

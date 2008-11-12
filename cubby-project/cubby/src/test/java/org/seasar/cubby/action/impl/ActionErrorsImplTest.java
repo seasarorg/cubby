@@ -15,32 +15,26 @@
  */
 package org.seasar.cubby.action.impl;
 
-import javax.servlet.http.HttpServletRequest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FieldInfo;
-import org.seasar.extension.unit.S2TestCase;
 
-public class ActionErrorsImplTest extends S2TestCase {
+public class ActionErrorsImplTest {
 
-	public ActionErrors actionErrors;
+	ActionErrors actionErrors = new ActionErrorsImpl();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-	}
-
-	public void testRequestAttributes() {
-		HttpServletRequest request = this.getRequest();
-		assertSame(actionErrors, request.getAttribute("errors"));
-	}
-
+	@Test
 	public void testIsEmpty1() {
 		assertTrue(actionErrors.isEmpty());
 		actionErrors.add("error1");
 		assertFalse(actionErrors.isEmpty());
 	}
 
+	@Test
 	public void testAdd() {
 		actionErrors.add("error1");
 		assertEquals(1, actionErrors.getOthers().size());

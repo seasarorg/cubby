@@ -18,10 +18,10 @@ package org.seasar.cubby.validator.validators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 指定された正規表現にマッチするか検証します。
@@ -103,7 +103,7 @@ public class RegexpValidator implements ScalarFieldValidator {
 		}
 		if (value instanceof String) {
 			final String stringValue = (String) value;
-			if (StringUtil.isEmpty(stringValue)) {
+			if (StringUtils.isEmpty(stringValue)) {
 				return;
 			}
 			final Matcher matcher = pattern.matcher(stringValue);

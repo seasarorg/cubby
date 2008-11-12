@@ -27,6 +27,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -34,20 +36,11 @@ import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.tagext.BodyContent;
 
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
-import org.seasar.framework.mock.servlet.MockHttpServletResponse;
-import org.seasar.framework.mock.servlet.MockHttpServletResponseImpl;
-import org.seasar.framework.mock.servlet.MockServletContext;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
-
 public class MockJspContext extends PageContext {
 
-	private MockServletContext servletContext = new MockServletContextImpl(
-			"cubby");
-	private MockHttpServletRequest request = new MockHttpServletRequestImpl(
-			servletContext, "/mock");
-	private MockHttpServletResponse response = new MockHttpServletResponseImpl(request);
+	private ServletContext servletContext;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
 	private JspWriter writer = new MockJspWriter();
 	private Stack<JspWriter> outStack = new Stack<JspWriter>();
 	private Map<Integer, Map<String, Object>> attributes = new HashMap<Integer, Map<String, Object>>();
@@ -56,9 +49,17 @@ public class MockJspContext extends PageContext {
 			PageContext.APPLICATION_SCOPE };
 
 	public MockJspContext() {
+		this(null, null, null);
+	}
+
+	public MockJspContext(ServletContext servletContext,
+			HttpServletRequest request, HttpServletResponse response) {
 		for (int scope : FIND_ATTRIBUTE_SEQ) {
 			attributes.put(scope, new HashMap<String, Object>());
 		}
+		this.servletContext = servletContext;
+		this.request = request;
+		this.response = response;
 	}
 
 	public MockJspWriter getMockJspWriter() {

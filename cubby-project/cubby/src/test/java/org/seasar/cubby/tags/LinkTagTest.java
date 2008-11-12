@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,16 +24,21 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspTag;
 
 import org.jdom.Element;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 public class LinkTagTest extends AbstractStandardTagTestCase {
 
 	private LinkTag tag;
 
-	@Override
-	protected void setUp() throws Exception {
-		include(getClass().getName().replace('.', '/') + ".dicon");
-		super.setUp();
+	@Before
+	public void setup() throws Exception {
 		tag = new LinkTag();
 		setupBodyTag(tag);
 		setupErrors(context);
@@ -39,7 +46,35 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 				PageContext.REQUEST_SCOPE);
 	}
 
-	public void testDoTag() throws Exception {
+	@Before
+	public void setupContainer() {
+		final PathResolver pathResolver = new PathResolverImpl();
+		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
+				"foo");
+		pathResolver.add("/mockFormTagTest/bar/{id}",
+				MockFormTagTestAction.class, "bar");
+
+		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
+
+			public PathResolver getPathResolver() {
+				return pathResolver;
+			}
+
+		};
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (PathResolverFactory.class.equals(type)) {
+					return type.cast(pathResolverFactory);
+				}
+				return null;
+			}
+
+		});
+	}
+
+	@Test
+	public void doTag() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("foo");
 		doLifecycle(tag);
@@ -50,7 +85,8 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 				.getResult());
 	}
 
-	public void testDoTagWithParam() throws Exception {
+	@Test
+	public void doTagWithParam() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("bar");
 		doLifecycle(tag, new ChildrenFactory() {
@@ -74,7 +110,8 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 						.getResult());
 	}
 
-	public void testDoTagOutputTag() throws Exception {
+	@Test
+	public void doTagOutputTag() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("foo");
 		tag.setTag("a");
@@ -94,7 +131,8 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, "body", element.getValue());
 	}
 
-	public void testDoTagOutputTagWithParam() throws Exception {
+	@Test
+	public void doTagOutputTagWithParam() throws Exception {
 		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
 		tag.setActionMethod("bar");
 		tag.setTag("img");

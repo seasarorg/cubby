@@ -15,14 +15,17 @@
  */
 package org.seasar.cubby.controller;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class RegexTest extends TestCase{
+public class RegexTest {
 
-	public void testConvertUri() throws Exception {
+	@Test
+	public void convertUri() throws Exception {
 		Pattern pattern = Pattern.compile("([/]([a-z]+)[/]todo[/]([0-9]+))");
 		Matcher m = pattern.matcher("/agata/todo/100");
 		String result = m.replaceAll("/todo/show?id=$3&name=$2");

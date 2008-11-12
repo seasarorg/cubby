@@ -60,9 +60,19 @@ public class CubbyConstants {
 	public static final String ATTR_ROUTINGS = "org.seasar.cubby.routings";
 
 	/**
+	 * アクションコンテキストのリクエストの属性中の名前。
+	 */
+	public static final String ATTR_ACTION_CONTEXT = "org.seasar.cubby.actionContext";
+
+	/**
 	 * バリデーションエラーを表すオブジェクトのリクエストの属性中の名前。
 	 */
 	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
+
+	/**
+	 * フラッシュメッセージのセッションの属性中の名前。
+	 */
+	public static final String ATTR_FLASH = "org.seasar.cubby.flash";
 
 	/**
 	 * トークンのMapをセッションに保存する名前。

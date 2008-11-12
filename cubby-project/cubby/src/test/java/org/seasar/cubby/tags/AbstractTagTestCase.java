@@ -15,39 +15,110 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Hashtable;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
 
+import org.easymock.IAnswer;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.Before;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.extension.unit.S2TestCase;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterFactory;
 
-abstract class AbstractTagTestCase extends S2TestCase {
+public abstract class AbstractTagTestCase {
 
 	protected MockJspFragment jspBody;
 
 	protected MockJspContext context;
 
+	private ServletContext servletContext;
+
+	private HttpServletRequest request;
+
+	private HttpServletResponse response;
+
+	private HttpSession session;
+
 	public AbstractTagTestCase() {
 		super();
 	}
 
-	public AbstractTagTestCase(String name) {
-		super(name);
+	@Before
+	public void setupMocks() throws Exception {
+		servletContext = createMock(ServletContext.class);
+		request = createMock(HttpServletRequest.class);
+		response = createMock(HttpServletResponse.class);
+		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+		session = createMock(HttpSession.class);
+		expect(session.getAttribute(isA(String.class))).andStubAnswer(
+				new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		session.setAttribute(isA(String.class), anyObject());
+		expectLastCall().andStubAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				return attributes.put(String.class
+						.cast(getCurrentArguments()[0]),
+						getCurrentArguments()[1]);
+			}
+
+		});
+
+		request = createMock(HttpServletRequest.class);
+		expect(request.getCharacterEncoding()).andStubReturn("UTF-8");
+		expect(request.getSession()).andStubReturn(session);
+		expect(response.encodeURL(isA(String.class))).andStubAnswer(new IAnswer<String>() {
+
+			public String answer() throws Throwable {
+				return String.class.cast(getCurrentArguments()[0]);
+			}
+			
+		});
+		replay(request, response, session, servletContext);
+
+		context = new MockJspContext(servletContext, request, response);
+		jspBody = new MockJspFragment();
+		jspBody.setJspContext(context);
 	}
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		jspBody = new MockJspFragment();
-		context = new MockJspContext();
-		jspBody.setJspContext(context);
+	@Before
+	public void setupContainer() {
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (ConverterFactory.class.equals(type)) {
+					return type.cast(new MockConverterFactory());
+				}
+				return null;
+			}
+
+		});
 	}
 
 	protected Element getResultAsElementFromContext() throws JDOMException,
@@ -58,7 +129,7 @@ abstract class AbstractTagTestCase extends S2TestCase {
 		return element;
 	}
 
-	public void setupErrors(JspContext context) {
+	protected void setupErrors(JspContext context) {
 		ActionErrorsImpl errors = new ActionErrorsImpl();
 		context.setAttribute("errors", errors, PageContext.REQUEST_SCOPE);
 	}

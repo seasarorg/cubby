@@ -16,6 +16,8 @@
 package org.seasar.cubby.routing.impl;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.seasar.cubby.action.RequestMethod.GET;
 import static org.seasar.cubby.action.RequestMethod.POST;
 
@@ -24,25 +26,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.impl.PathResolverImpl.RoutingComparator;
 
-public class RoutingComparatorTest extends TestCase {
+public class RoutingComparatorTest {
 
 	private RoutingComparator comparator = new RoutingComparator();
-	private RoutingImpl routing1;
-	private RoutingImpl routing1d;
-	private RoutingImpl routing2;
-	private RoutingImpl routing3;
-	private RoutingImpl routing4;
-	private RoutingImpl routing5;
-	private RoutingImpl routing5d;
-	private RoutingImpl routing6;
-	private RoutingImpl routing6d;
+	private Routing routing1;
+	private Routing routing1d;
+	private Routing routing2;
+	private Routing routing3;
+	private Routing routing4;
+	private Routing routing5;
+	private Routing routing5d;
+	private Routing routing6;
+	private Routing routing6d;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setupRoutings() throws Exception {
 		routing1 = new RoutingImpl(null, null, null, asList(new String[0]),
 				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE, true);
 		routing1d = new RoutingImpl(null, null, null, asList(new String[0]),
@@ -70,15 +73,16 @@ public class RoutingComparatorTest extends TestCase {
 				false);
 	}
 
-	public void testDuplicate() {
+	@Test
+	public void duplicate() {
 		assertEquals(0, comparator.compare(routing1, routing1d));
 		assertEquals(0, comparator.compare(routing5, routing5d));
 	}
 
-	public void testSort() {
-		List<RoutingImpl> routings = new ArrayList<RoutingImpl>(
-				asList(new RoutingImpl[] { routing3, routing5, routing1,
-						routing4, routing2 }));
+	@Test
+	public void sort() {
+		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
+				routing3, routing5, routing1, routing4, routing2 }));
 		Collections.sort(routings, comparator);
 		System.out.println(routings);
 		assertSame("1", routing1, routings.get(0));
@@ -88,10 +92,11 @@ public class RoutingComparatorTest extends TestCase {
 		assertSame("5", routing5, routings.get(4));
 	}
 
-	public void testSort2() {
-		List<RoutingImpl> routings = new ArrayList<RoutingImpl>(
-				asList(new RoutingImpl[] { routing3, routing5, routing1,
-						routing4, routing2, routing6, routing6d }));
+	@Test
+	public void sort2() {
+		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
+				routing3, routing5, routing1, routing4, routing2, routing6,
+				routing6d }));
 		Collections.sort(routings, comparator);
 		System.out.println(routings);
 		assertSame("0", routing6d, routings.get(0));
