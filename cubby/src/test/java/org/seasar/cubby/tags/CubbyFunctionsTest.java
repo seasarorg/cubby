@@ -15,18 +15,25 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import javax.servlet.http.HttpServletRequest;
 
+import org.junit.Test;
 import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
-public class CubbyFunctionsTest extends TestCase {
+public class CubbyFunctionsTest {
 
-	public void testContains() {
+	@Test
+	public void contains() {
 		List<String> action = new ArrayList<String>();
 		action.add("unvalidate");
 		action.add("validateRecord");
@@ -36,12 +43,23 @@ public class CubbyFunctionsTest extends TestCase {
 		assertTrue(CubbyFunctions.contains(action, "validate"));
 	}
 
-	public void testUrl() throws Exception {
-		MockHttpServletRequestImpl request = new MockHttpServletRequestImpl(new MockServletContextImpl("/"), "/");
-		request.setCharacterEncoding("UTF-8");
+	@Test
+	public void url1() throws Exception {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		replay(request);
+
 		ThreadContext.setRequest(request);
-		assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions.url("abc あいう"));
-		request.setCharacterEncoding("Windows-31J");
+		assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
+				.url("abc あいう"));
+	}
+
+	@Test
+	public void url2() throws Exception {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getCharacterEncoding()).andReturn("Windows-31J");
+		replay(request);
+
 		ThreadContext.setRequest(request);
 		assertEquals("abc+%82%A0%82%A2%82%A4", CubbyFunctions.url("abc あいう"));
 	}

@@ -18,23 +18,39 @@ package org.seasar.cubby.validator;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.controller.MessagesBehaviour;
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.validator.validators.ArrayMaxSizeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
-import org.seasar.extension.unit.S2TestCase;
+import static org.junit.Assert.*;
 
-public class FieldValidationRuleTest extends S2TestCase {
+public class FieldValidationRuleTest {
 
-	public ActionErrors errors = new ActionErrorsImpl();
+	private ActionErrors errors = new ActionErrorsImpl();
 
-	@Override
-	protected void setUp() throws Exception {
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
+	@Before
+	public void setupContainer() {
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (type.equals(MessagesBehaviour.class)) {
+					return type.cast(new DefaultMessagesBehaviour());
+				}
+				return null;
+			}
+
+		});
 	}
 
-	public void testApply1() throws Exception {
+	@Test
+	public void apply1() throws Exception {
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("name", new Object[] { "aa" });
 
@@ -44,7 +60,8 @@ public class FieldValidationRuleTest extends S2TestCase {
 		assertTrue(errors.isEmpty());
 	}
 
-	public void testApply2() throws Exception {
+	@Test
+	public void apply2() throws Exception {
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 		params.put("name", new Object[] { "aa", "bb" });
 
@@ -56,7 +73,8 @@ public class FieldValidationRuleTest extends S2TestCase {
 		assertTrue(errors.getIndexedFields().get("name").get(0).isEmpty());
 	}
 
-	public void testApply3() throws Exception {
+	@Test
+	public void apply3() throws Exception {
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 
 		ValidationRule rule = new FieldValidationRule("name",

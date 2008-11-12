@@ -31,7 +31,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
 
 /**
  * カスタムタグで使用するユーティリティクラスです。
@@ -321,7 +321,7 @@ class TagUtils {
 	public static void addClassName(final Map<String, Object> dyn,
 			final String className) {
 		String classValue = (String) dyn.get("class");
-		if (StringUtil.isEmpty(classValue)) {
+		if (StringUtils.isEmpty(classValue)) {
 			classValue = className;
 		} else {
 			classValue = classValue + " " + className;

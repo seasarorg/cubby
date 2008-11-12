@@ -15,6 +15,9 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertSuccess;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,33 +26,37 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
+import org.junit.Test;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 
-public class FileRegexpValidatorTest extends AbstractScalarFieldValidatorTestCase {
+public class FileRegexpValidatorTest {
 
-	public void testValidation1() {
+	@Test
+	public void validate1() {
 		ScalarFieldValidator validator = new FileRegexpValidator("a.*34");
 		assertSuccess(validator, null, "", new MockFileItem("a5634"));
 		assertFail(validator, new MockFileItem("b5634"));
 	}
 
-	public void testValidation2() {
-		ScalarFieldValidator validator = new FileRegexpValidator(Pattern.compile("(?i)a.*34"));
+	@Test
+	public void validate2() {
+		ScalarFieldValidator validator = new FileRegexpValidator(Pattern
+				.compile("(?i)a.*34"));
 		assertSuccess(validator, null, "", new MockFileItem("a5634"));
 		assertSuccess(validator, null, "", new MockFileItem("A5634"));
 		assertFail(validator, new MockFileItem("b5634"));
 	}
-	
-	
-	@SuppressWarnings("serial")
+
 	static class MockFileItem implements FileItem {
-		
+
+		private static final long serialVersionUID = 1L;
+
 		private String name;
 
 		public MockFileItem(String name) {
 			this.name = name;
 		}
-		
+
 		public void delete() {
 		}
 

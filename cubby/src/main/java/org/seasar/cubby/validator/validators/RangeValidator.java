@@ -15,10 +15,10 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 数値の範囲を指定して検証します。
@@ -82,7 +82,7 @@ public class RangeValidator implements ScalarFieldValidator {
 	public void validate(final ValidationContext context, final Object value) {
 		if (value instanceof String) {
 			final String str = (String) value;
-			if (StringUtil.isEmpty(str)) {
+			if (StringUtils.isEmpty(str)) {
 				return;
 			}
 			try {

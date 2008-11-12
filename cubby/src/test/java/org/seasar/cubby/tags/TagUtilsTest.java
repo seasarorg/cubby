@@ -15,55 +15,59 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.jsp.PageContext;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
 
-public class TagUtilsTest extends TestCase {
+public class TagUtilsTest {
 
-	public void testConstructor() throws Throwable {
-		new TagUtils();
-		assertTrue("Test call resulted in expected outcome", true);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void testAddClassName() throws Throwable {
-		Map dyn = new HashMap();
+	@Test
+	public void addClassName() throws Exception {
+		Map<String, Object> dyn = new HashMap<String, Object>();
 		dyn.put("class", "testString");
 		TagUtils.addClassName(dyn, "testTagUtilsClassName");
 		assertEquals("(HashMap) dyn.get(\"class\")",
 				"testString testTagUtilsClassName", dyn.get("class"));
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testAddClassName1() throws Throwable {
-		Map dyn = new HashMap();
+	@Test
+	public void addClassName1() throws Exception {
+		Map<String, Object> dyn = new HashMap<String, Object>();
 		TagUtils.addClassName(dyn, "testTagUtilsClassName");
 		assertEquals("(HashMap) dyn.size()", 1, dyn.size());
 		assertEquals("(HashMap) dyn.get(\"class\")", "testTagUtilsClassName",
 				dyn.get("class"));
 	}
 
-	public void testErrors() throws Throwable {
+	@Test
+	public void errors() throws Exception {
 		ActionErrors result = TagUtils.errors(new MockJspContext());
 		assertNull("result", result);
 	}
 
-	public void testFormValue() throws Throwable {
+	@Test
+	public void formValue() throws Exception {
 		Integer specifiedValue = -2;
 		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
 				new String[0], "testTagUtilsName", 2, specifiedValue);
 		assertEquals("result", specifiedValue, result);
 	}
 
-	public void testFormValue1() throws Throwable {
+	@Test
+	public void formValue1() throws Exception {
 		String[] strings = new String[3];
 		strings[0] = "testString";
 		String result = (String) TagUtils.formValue(new MockJspContext(),
@@ -71,26 +75,30 @@ public class TagUtilsTest extends TestCase {
 		assertEquals("result", "testString", result);
 	}
 
-	public void testFormValue2() throws Throwable {
+	@Test
+	public void formValue2() throws Exception {
 		Integer specifiedValue = new Integer(0);
 		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
 				new String[0], "testTagUtilsName", 0, specifiedValue);
 		assertSame("result", specifiedValue, result);
 	}
 
-	public void testFormValue3() throws Throwable {
+	@Test
+	public void formValue3() throws Exception {
 		String result = (String) TagUtils.formValue(new MockJspContext(),
 				new String[0], "testTagUtilsName", 1, null);
 		assertEquals("result", "", result);
 	}
 
-	public void testFormValue4() throws Throwable {
+	@Test
+	public void formValue4() throws Exception {
 		String result = (String) TagUtils.formValue(new MockJspContext(),
 				new String[0], "testTagUtilsName", null, null);
 		assertEquals("result", "", result);
 	}
 
-	public void testFormValue5() throws Throwable {
+	@Test
+	public void formValue5() throws Exception {
 		Boolean specifiedValue = Boolean.FALSE;
 		Boolean result = (Boolean) TagUtils.formValue(new MockJspContext(),
 				new String[0], "testTagUtilsName", new Integer(-1),
@@ -98,15 +106,16 @@ public class TagUtilsTest extends TestCase {
 		assertSame("result", specifiedValue, result);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testFormValue6() throws Throwable {
+	@Test
+	public void formValue6() throws Exception {
 		String[] strings = new String[3];
 		Object result = TagUtils.formValue(new MockJspContext(), strings,
 				"testString", new Integer(0), null);
 		assertNull("result", result);
 	}
 
-	public void testFormValueValidationFail1() throws Throwable {
+	@Test
+	public void formValueValidationFail1() throws Exception {
 		MockJspContext context = new MockJspContext();
 		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
 				PageContext.REQUEST_SCOPE);
@@ -115,7 +124,8 @@ public class TagUtilsTest extends TestCase {
 		assertEquals("result", "", result);
 	}
 
-	public void testFormValueValidationFail2() throws Throwable {
+	@Test
+	public void formValueValidationFail2() throws Exception {
 		MockJspContext context = new MockJspContext();
 		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
 				PageContext.REQUEST_SCOPE);
@@ -124,7 +134,8 @@ public class TagUtilsTest extends TestCase {
 		assertEquals("result", "aaa", result);
 	}
 
-	public void testFormValueValidationFail3() throws Throwable {
+	@Test
+	public void formValueValidationFail3() throws Exception {
 		MockJspContext context = new MockJspContext();
 		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
 				PageContext.REQUEST_SCOPE);
@@ -137,71 +148,81 @@ public class TagUtilsTest extends TestCase {
 		assertEquals("result", "bbb", result);
 	}
 
-	public void testIsChecked() throws Throwable {
+	@Test
+	public void isChecked() throws Exception {
 		Object[] values = new Object[1];
 		values[0] = "";
 		boolean result = TagUtils.contains(values, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testIsChecked1() throws Throwable {
-		boolean result = TagUtils.contains(new ArrayList(100),
+	@Test
+	public void isChecked1() throws Exception {
+		boolean result = TagUtils.contains(new ArrayList<Integer>(100),
 				"testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	public void testIsChecked2() throws Throwable {
+	@Test
+	public void isChecked2() throws Exception {
 		Object[] values = new Object[2];
 		values[1] = "testString";
 		boolean result = TagUtils.contains(values, "testString");
 		assertTrue("result", result);
 	}
 
-	public void testIsChecked3() throws Throwable {
+	@Test
+	public void isChecked3() throws Exception {
 		Object[] values = new Object[0];
 		boolean result = TagUtils.contains(values, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	public void testIsChecked4() throws Throwable {
+	@Test
+	public void isChecked4() throws Exception {
 		Object[] values = new Object[3];
 		values[0] = "";
 		boolean result = TagUtils.contains(values, "");
 		assertTrue("result", result);
 	}
 
-	public void testIsChecked5() throws Throwable {
+	@Test
+	public void isChecked5() throws Exception {
 		boolean result = TagUtils.contains("testString", "testString");
 		assertTrue("result", result);
 	}
 
-	public void testIsChecked6() throws Throwable {
+	@Test
+	public void isChecked6() throws Exception {
 		Object[] values = new Object[1];
 		boolean result = TagUtils.contains(values, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	public void testIsChecked7() throws Throwable {
+	@Test
+	public void isChecked7() throws Exception {
 		Object[] values = new Object[3];
 		values[1] = new Integer(100);
 		boolean result = TagUtils.contains(values, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	public void testIsChecked8() throws Throwable {
+	@Test
+	public void isChecked8() throws Exception {
 		boolean result = TagUtils.contains(Boolean.FALSE, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
 
-	public void testIsChecked9() throws Throwable {
+	@Test
+	public void isChecked9() throws Exception {
 		Object[] values = new Object[4];
 		values[0] = "testString";
 		boolean result = TagUtils.contains(values, "testString");
 		assertTrue("result", result);
 	}
 
-	public void testIsChecked10() throws Throwable {
+	@Test
+	public void isChecked10() throws Exception {
 		Object[] values = new Object[2];
 		values[0] = new Integer(-2);
 		values[1] = "testString";
@@ -209,7 +230,8 @@ public class TagUtilsTest extends TestCase {
 		assertTrue("result", result);
 	}
 
-	public void testMultipleFormValues() throws Throwable {
+	@Test
+	public void multipleFormValues() throws Exception {
 		String[] strings = new String[2];
 		String[] result = (String[]) TagUtils.multipleFormValues(
 				new MockJspContext(), strings, "testString", null);
@@ -217,48 +239,52 @@ public class TagUtilsTest extends TestCase {
 		assertNull("strings[0]", strings[0]);
 	}
 
-	public void testMultipleFormValues1() throws Throwable {
+	@Test
+	public void multipleFormValues1() throws Exception {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				new String[0], "testTagUtilsName", null);
 		assertEquals("result.length", 0, result.length);
 	}
 
-	public void testMultipleFormValues2() throws Throwable {
+	@Test
+	public void multipleFormValues2() throws Exception {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				new String[0], "testTagUtilsName", "testTagUtilsCheckedValue");
 		assertEquals("result.length", 1, result.length);
 		assertEquals("result[0]", "testTagUtilsCheckedValue", result[0]);
 	}
 
-	public void testMultipleFormValues3() throws Throwable {
+	@Test
+	public void multipleFormValues3() throws Exception {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				null, "testTagUtilsName", null);
 		assertEquals("result.length", 0, result.length);
 	}
 
-	public void testMultipleFormValues4() throws Throwable {
+	@Test
+	public void multipleFormValues4() throws Exception {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				null, "testTagUtilsName");
 		assertEquals("result.length", 0, result.length);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testMultipleFormValues5() throws Throwable {
+	@Test
+	public void multipleFormValues5() throws Exception {
 		String[] strings = new String[0];
 		String[] result = (String[]) TagUtils.multipleFormValues(
 				new MockJspContext(), strings, "testString");
 		assertSame("result", strings, result);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testMultipleFormValues6() throws Throwable {
+	@Test
+	public void multipleFormValues6() throws Exception {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				new String[0], "testTagUtilsName");
 		assertEquals("result.length", 0, result.length);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testMultipleFormValues7() throws Throwable {
+	@Test
+	public void multipleFormValues7() throws Exception {
 		String[] strings = new String[3];
 		String[] result = (String[]) TagUtils.multipleFormValues(
 				new MockJspContext(), strings, "testString");
@@ -266,21 +292,22 @@ public class TagUtilsTest extends TestCase {
 		assertNull("strings[0]", strings[0]);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testToAttr() throws Throwable {
-		String result = TagUtils.toAttr(new HashMap());
+	@Test
+	public void toAttr() throws Exception {
+		String result = TagUtils.toAttr(new HashMap<String, Object>());
 		assertEquals("result", "", result);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testToAttr1() throws Throwable {
-		Map map = new HashMap();
+	@Test
+	public void toAttr1() throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("testString", new Integer(-32));
 		String result = TagUtils.toAttr(map);
 		assertEquals("result", "testString=\"-32\" ", result);
 	}
 
-	public void testAddClassNameThrowsNullPointerException() throws Throwable {
+	@Test
+	public void addClassNameThrowsNullPointerException() throws Exception {
 		try {
 			TagUtils.addClassName(null, "testTagUtilsClassName");
 			fail("Expected NullPointerException to be thrown");
@@ -289,7 +316,8 @@ public class TagUtilsTest extends TestCase {
 		}
 	}
 
-	public void testErrorsThrowsNullPointerException() throws Throwable {
+	@Test
+	public void errorsThrowsNullPointerException() throws Exception {
 		try {
 			TagUtils.errors(null);
 			fail("Expected NullPointerException to be thrown");
@@ -298,7 +326,8 @@ public class TagUtilsTest extends TestCase {
 		}
 	}
 
-	public void testIsCheckedThrowsClassCastException() throws Throwable {
+	@Test
+	public void isCheckedThrowsClassCastException() throws Exception {
 		char[] values = new char[2];
 		try {
 			TagUtils.contains(values, "testTagUtilsValue");
@@ -309,7 +338,8 @@ public class TagUtilsTest extends TestCase {
 		}
 	}
 
-	public void testIsCheckedThrowsNullPointerException() throws Throwable {
+	@Test
+	public void isCheckedThrowsNullPointerException() throws Exception {
 		try {
 			TagUtils.contains(null, "testTagUtilsValue");
 			fail("Expected NullPointerException to be thrown");
@@ -318,7 +348,8 @@ public class TagUtilsTest extends TestCase {
 		}
 	}
 
-	public void testToAttrThrowsNullPointerException() throws Throwable {
+	@Test
+	public void toAttrThrowsNullPointerException() throws Exception {
 		try {
 			TagUtils.toAttr(null);
 			fail("Expected NullPointerException to be thrown");

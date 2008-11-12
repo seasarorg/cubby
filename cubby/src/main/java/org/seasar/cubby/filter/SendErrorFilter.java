@@ -31,7 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
 
 /**
  * 適用されたリクエストに対して、異常系の HTTP ステータスコードを返す {@link Filter} です。
@@ -111,7 +111,7 @@ public class SendErrorFilter implements Filter {
 		}
 		final String ignorePathPatternString = config
 				.getInitParameter(IGNORE_PATH_PATTERN);
-		if (!StringUtil.isEmpty(ignorePathPatternString)) {
+		if (!StringUtils.isEmpty(ignorePathPatternString)) {
 
 			for (final StringTokenizer tokenizer = new StringTokenizer(
 					ignorePathPatternString, ","); tokenizer.hasMoreTokens();) {

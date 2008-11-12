@@ -15,13 +15,17 @@
  */
 package org.seasar.cubby.action;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.mock.MockActionContext;
 
-public class DirectTest extends TestCase {
+public class DirectTest {
 
+	@Test
 	public void testExecute() throws Exception {
 		Direct direct = new Direct();
-		direct.execute(null, null, null, null, null);
+		ActionContext actionContext = new MockActionContext(null, null, null);
+		direct.execute(actionContext, null, null);
 	}
 
 }

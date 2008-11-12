@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -32,17 +34,18 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.exception.FileUploadRuntimeException;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.exception.IORuntimeException;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.ServiceFactory;
+import org.seasar.cubby.util.StringUtils;
 
 /**
  * contentType が multipart/form-data のリクエストに対応したリクエスト解析器です。
  * <p>
- * リクエストの解析には <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
- * を使用します。
+ * リクエストの解析には <a href="http://commons.apache.org/fileupload/">Commons
+ * FileUpload</a> を使用します。
  * </p>
  * 
  * @author baba
@@ -54,21 +57,8 @@ public class MultipartRequestParserImpl implements RequestParser {
 	/** デフォルトの優先順位。 */
 	static final int DEFAULT_PRIORITY = DefaultRequestParserImpl.DEFAULT_PRIORITY - 1;
 
-	/** コンテナ。 */
-	private final S2Container container;
-
 	/** 優先順位。 */
 	private int priority = DEFAULT_PRIORITY;
-
-	/**
-	 * インスタンス化します。
-	 * 
-	 * @param container
-	 *            コンテナ
-	 */
-	public MultipartRequestParserImpl(final S2Container container) {
-		this.container = container;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -78,12 +68,12 @@ public class MultipartRequestParserImpl implements RequestParser {
 	 * <p>
 	 * リクエストパラメータを戻り値の {@link Map} に格納する際には以下のように変換します。
 	 * <ul>
-	 * <li> フォームのフィールド
+	 * <li>フォームのフィールド
 	 * <p>
 	 * 文字列に変換
 	 * </p>
 	 * </li>
-	 * <li> フォームのフィールド以外(アップロードされたファイル)
+	 * <li>フォームのフィールド以外(アップロードされたファイル)
 	 * <p>
 	 * {@link FileItem}に変換
 	 * </p>
@@ -104,11 +94,10 @@ public class MultipartRequestParserImpl implements RequestParser {
 		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>(
 				request.getParameterMap());
 		if (ServletFileUpload.isMultipartContent(request)) {
-			final S2Container root = container.getRoot();
-			final FileUpload fileUpload = (FileUpload) root
-					.getComponent(FileUpload.class);
-			final RequestContext requestContext = (RequestContext) root
-					.getComponent(RequestContext.class);
+			final Container container = ContainerFactory.getContainer();
+			final FileUpload fileUpload = container.lookup(FileUpload.class);
+			final RequestContext requestContext = container
+					.lookup(RequestContext.class);
 			parameterMap.putAll(this.getMultipartParameterMap(fileUpload,
 					requestContext));
 		}
@@ -141,9 +130,9 @@ public class MultipartRequestParserImpl implements RequestParser {
 				messageCode = "ECUB0201";
 				args = new Object[] { e };
 			}
-			throw new FileUploadRuntimeException(messageCode, args, e);
+			throw new RequestParseException(format(messageCode, args), e);
 		} catch (final IOException e) {
-			throw new IORuntimeException(e);
+			throw new RequestParseException(e);
 		}
 	}
 
@@ -155,7 +144,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 			if (item.isFormField()) {
 				value = item.getString(encoding);
 			} else {
-				if (StringUtil.isEmpty(item.getName()) || item.getSize() == 0) {
+				if (StringUtils.isEmpty(item.getName()) || item.getSize() == 0) {
 					// ファイル名無し、あるいは０バイトのファイル
 					value = null;
 				} else {
@@ -172,11 +161,11 @@ public class MultipartRequestParserImpl implements RequestParser {
 			values.add(value);
 		}
 
-		final Map<String, Object[]> parameterMap = fromValueListToValueArray(valueListParameterMap);
+		final Map<String, Object[]> parameterMap = fromValueListMapToValueArrayMap(valueListParameterMap);
 		return parameterMap;
 	}
 
-	Map<String, Object[]> fromValueListToValueArray(
+	Map<String, Object[]> fromValueListMapToValueArrayMap(
 			final Map<String, List<Object>> collectParameterMap) {
 		// 配列でパラメータMapを構築
 		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
@@ -198,13 +187,18 @@ public class MultipartRequestParserImpl implements RequestParser {
 	 * {@inheritDoc}
 	 */
 	public boolean isParsable(final HttpServletRequest request) {
-		final S2Container root = container.getRoot();
-		if (root.hasComponentDef(RequestContext.class)) {
-			final RequestContext requestContext = (RequestContext) root
-					.getComponent(RequestContext.class);
-			return FileUpload.isMultipartContent(requestContext);
+		final RequestContext requestContext = ServiceFactory
+				.getProvider(RequestContext.class);
+		if (requestContext == null) {
+			return false;
 		}
-		return false;
+		// final Container container = ContainerFactory.getContainer();
+		// if (container.has(RequestContext.class)) {
+		// final RequestContext requestContext = container
+		// .lookup(RequestContext.class);
+		return FileUpload.isMultipartContent(requestContext);
+		// }
+		// return false;
 	}
 
 	/**

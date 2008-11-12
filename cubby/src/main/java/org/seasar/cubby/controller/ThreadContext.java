@@ -20,9 +20,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
+import org.seasar.cubby.util.ServiceFactory;
 
 /**
  * 実行スレッドのコンテキスト情報です。
@@ -32,8 +30,9 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
  */
 public class ThreadContext {
 
-	/** デフォルトのメッセージのふるまい。 */
-	private static final MessagesBehaviour DEFAULT_MESSAGES_BEHAVIOUR = new DefaultMessagesBehaviour();
+	// /** デフォルトのメッセージのふるまい。 */
+	// private static final MessagesBehaviour DEFAULT_MESSAGES_BEHAVIOUR = new
+	// DefaultMessagesBehaviour();
 
 	/** ThreadContext を保存するスレッドローカル。 */
 	private static final ThreadLocal<ThreadContext> CONTEXT = new ThreadLocal<ThreadContext>() {
@@ -71,17 +70,16 @@ public class ThreadContext {
 		CONTEXT.get().request = request;
 	}
 
-	/**
-	 * Cubby の全体的な設定情報を取得します。
-	 * 
-	 * @return Cubby の全体的な設定情報
-	 */
-	public static CubbyConfiguration getConfiguration() {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		return (CubbyConfiguration) container
-				.getComponent(CubbyConfiguration.class);
-	}
+	//TODO
+	// /**
+	// * Cubby の全体的な設定情報を取得します。
+	// *
+	// * @return Cubby の全体的な設定情報
+	// */
+	// public static CubbyConfiguration getConfiguration() {
+	// final Container container = ContainerFactory.getContainer();
+	// return container.lookup(CubbyConfiguration.class);
+	// }
 
 	/**
 	 * 現在の実行スレッドに関連付けられたリクエストに対応するメッセージ用の {@link ResourceBundle} を取得します。
@@ -125,14 +123,15 @@ public class ThreadContext {
 	private static MessagesBehaviour getMessagesBehaviour(
 			final ThreadContext context) {
 		if (context.messagesBehaviour == null) {
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			if (container.hasComponentDef(MessagesBehaviour.class)) {
-				context.messagesBehaviour = (MessagesBehaviour) container
-						.getComponent(MessagesBehaviour.class);
-			} else {
-				context.messagesBehaviour = DEFAULT_MESSAGES_BEHAVIOUR;
-			}
+			context.messagesBehaviour = ServiceFactory
+					.getProvider(MessagesBehaviour.class);
+			// final Container container = ContainerFactory.getContainer();
+			// if (container.has(MessagesBehaviour.class)) {
+			// context.messagesBehaviour = container
+			// .lookup(MessagesBehaviour.class);
+			// } else {
+			// context.messagesBehaviour = DEFAULT_MESSAGES_BEHAVIOUR;
+			// }
 		}
 		return context.messagesBehaviour;
 	}

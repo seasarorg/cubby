@@ -15,26 +15,33 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspTag;
 
 import org.jdom.Element;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterFactory;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 public class FormTagTest extends AbstractStandardTagTestCase {
 
-	public HttpServletRequest request;
+	private FormTag tag;
 
-	public FormTag tag;
-
-	@Override
-	protected void setUp() throws Exception {
-		include(getClass().getName().replace('.', '/') + ".dicon");
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		tag = new FormTag();
 		setupBodyTag(tag);
 		setupErrors(context);
@@ -42,7 +49,38 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 				PageContext.REQUEST_SCOPE);
 	}
 
-	public void testDoTagNoChild() throws Exception {
+	@Before
+	public void setupContainer() {
+		final PathResolver pathResolver = new PathResolverImpl();
+		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
+				"foo");
+		pathResolver.add("/mockFormTagTest/bar/{id}",
+				MockFormTagTestAction.class, "bar");
+
+		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
+
+			public PathResolver getPathResolver() {
+				return pathResolver;
+			}
+
+		};
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (PathResolverFactory.class.equals(type)) {
+					return type.cast(pathResolverFactory);
+				}
+				if (ConverterFactory.class.equals(type)) {
+					return type.cast(new MockConverterFactory());
+				}
+				return null;
+			}
+
+		});
+	}
+
+	@Test
+	public void doTagNoChild() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
@@ -60,7 +98,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
 	}
 
-	public void testDoTagEmptyBody() throws Exception {
+	@Test
+	public void doTagEmptyBody() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
@@ -78,7 +117,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, "/todo/save", element.getAttributeValue("action"));
 	}
 
-	public void testDoTagWithTextAreaTag() throws Exception {
+	@Test
+	public void doTagWithTextAreaTag() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
@@ -110,7 +150,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, "value1", child.getValue());
 	}
 
-	public void testDoTagWithSpecifiedAction() throws Exception {
+	@Test
+	public void doTagWithSpecifiedAction() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
@@ -131,7 +172,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, 0, element.getChildren().size());
 	}
 
-	public void testDoTagWithSpecifiedActionAndParam() throws Exception {
+	@Test
+	public void doTagWithSpecifiedActionAndParam() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 
@@ -164,8 +206,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, 0, element.getChildren().size());
 	}
 
-	public void testDoTagWithTextAreaAndSpecifiedActionAndParam()
-			throws Exception {
+	@Test
+	public void doTagWithTextAreaAndSpecifiedActionAndParam() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
 

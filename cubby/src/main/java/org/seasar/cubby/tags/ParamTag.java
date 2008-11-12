@@ -15,13 +15,13 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import org.seasar.framework.message.MessageFormatter;
 
 /**
  * パラメータを指定するためのカスタムタグです。
@@ -65,8 +65,7 @@ public class ParamTag extends SimpleTagSupport {
 		final ParamParent parent = (ParamParent) findAncestorWithClass(this,
 				ParamParent.class);
 		if (parent == null) {
-			throw new JspException(MessageFormatter.getSimpleMessage(
-					"ECUB1004", null));
+			throw new JspException(format("ECUB1004"));
 		}
 		final String value;
 		if (this.value == null) {

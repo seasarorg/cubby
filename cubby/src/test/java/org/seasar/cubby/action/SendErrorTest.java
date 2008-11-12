@@ -15,41 +15,47 @@
  */
 package org.seasar.cubby.action;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.mock.MockActionContext;
 
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
-import org.seasar.framework.mock.servlet.MockHttpServletResponse;
-import org.seasar.framework.mock.servlet.MockHttpServletResponseImpl;
-import org.seasar.framework.mock.servlet.MockServletContext;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
+public class SendErrorTest {
 
-public class SendErrorTest extends TestCase {
+	private HttpServletRequest request;
 
-	public void testSendError() throws Exception {
-		MockServletContext context = new MockServletContextImpl("test");
-		MockHttpServletRequest request = context.createRequest("foo");
-		MockHttpServletResponse response = new MockHttpServletResponseImpl(
-				request);
+	private HttpServletResponse response;
 
-		SendError sendError = new SendError(HttpServletResponse.SC_NOT_FOUND);
-		sendError.execute(null, null, null, request, response);
-
-		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
+	@Before
+	public void setupMock() {
+		request = createMock(HttpServletRequest.class);
+		response = createMock(HttpServletResponse.class);
 	}
 
-	public void testSendErrorWithMessage() throws Exception {
-		MockServletContext context = new MockServletContextImpl("test");
-		MockHttpServletRequest request = context.createRequest("foo");
-		MockHttpServletResponse response = new MockHttpServletResponseImpl(
-				request);
+	@Test
+	public void sendError() throws Exception {
+		response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		replay(request, response);
+
+		SendError sendError = new SendError(HttpServletResponse.SC_NOT_FOUND);
+		ActionContext actionContext = new MockActionContext(null, null, null);
+		sendError.execute(actionContext, request, response);
+	}
+
+	@Test
+	public void sendErrorWithMessage() throws Exception {
+		response.sendError(HttpServletResponse.SC_NOT_FOUND, "NOT FOUND");
+		replay(request, response);
 
 		SendError sendError = new SendError(HttpServletResponse.SC_NOT_FOUND,
 				"NOT FOUND");
-		sendError.execute(null, null, null, request, response);
-
-		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
-		assertEquals("NOT FOUND", response.getMessage());
+		ActionContext actionContext = new MockActionContext(null, null, null);
+		sendError.execute(actionContext, request, response);
 	}
 }

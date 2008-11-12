@@ -1,25 +1,43 @@
 package org.seasar.cubby.controller.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.container.Container;
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.extension.unit.S2TestCase;
+import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterFactory;
 
-public class FormWrapperFactoryImplTest extends S2TestCase {
+public class FormWrapperFactoryImplTest {
 
 	public FormWrapperFactory formWrapperFactory;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		include(getClass().getName().replace('.', '/') + ".dicon");
+	@Before
+	public void setupContainerAndFormWrapperFactory() {
+		MockContainerProvider.setContainer(new Container() {
+
+			public <T> T lookup(Class<T> type) {
+				if (ConverterFactory.class.equals(type)) {
+					return type.cast(new MockConverterFactory());
+				}
+				return null;
+			}
+
+		});
+		formWrapperFactory = new FormWrapperFactoryImpl();
 	}
 
-	public void testBeanToMap() {
+	@Test
+	public void beanToMap() {
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 
@@ -53,7 +71,8 @@ public class FormWrapperFactoryImplTest extends S2TestCase {
 		assertNull(noprop);
 	}
 
-	public void testBeanToMap2() {
+	@Test
+	public void beanToMap2() {
 		TestBean bean = new TestBean();
 		bean.setNum2(new Integer[] { null, null, null });
 		bean.setNum3(Arrays.asList(new String[] { null, null }));

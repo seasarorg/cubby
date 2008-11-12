@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.routing.impl;
 
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,11 +25,15 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Router;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.log.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ルーターの実装です。
@@ -38,24 +44,25 @@ import org.seasar.framework.log.Logger;
 public class RouterImpl implements Router {
 
 	/** ロガー */
-	private static final Logger logger = Logger.getLogger(RouterImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(RouterImpl.class);
 
 	/** 空の対象外パターンのリスト */
 	private static final List<Pattern> EMPTY_IGNORE_PATH_PATTERNS = Collections
 			.emptyList();
 
-	/** フォワードするための情報を抽出するクラス。 */
-	private PathResolver pathResolver;
-
-	/**
-	 * フォワードするための情報を抽出するクラスを設定します。
-	 * 
-	 * @param pathResolver
-	 *            フォワードするための情報を抽出するクラス
-	 */
-	public void setPathResolver(final PathResolver pathResolver) {
-		this.pathResolver = pathResolver;
-	}
+//	/** フォワードするための情報を抽出するクラス。 */
+//	private PathResolver pathResolver;
+//
+//	/**
+//	 * フォワードするための情報を抽出するクラスを設定します。
+//	 * 
+//	 * @param pathResolver
+//	 *            フォワードするための情報を抽出するクラス
+//	 */
+//	public void setPathResolver(final PathResolver pathResolver) {
+//		this.pathResolver = pathResolver;
+//	}
 
 	/**
 	 * {@inheritDoc}
@@ -72,13 +79,17 @@ public class RouterImpl implements Router {
 			final HttpServletResponse response, List<Pattern> ignorePathPatterns) {
 		final String path = CubbyUtils.getPath(request);
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0006", new Object[] { path });
+			logger.debug(format("DCUB0006", path));
 		}
 
 		if (isIgnorePath(path, ignorePathPatterns)) {
 			return null;
 		}
 
+		final Container container = ContainerFactory.getContainer();
+		final PathResolverFactory pathResolverFactory = container
+				.lookup(PathResolverFactory.class);
+		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
 		final InternalForwardInfo internalForwardInfo = pathResolver
 				.getInternalForwardInfo(path, request.getMethod(), null);
 		return internalForwardInfo;

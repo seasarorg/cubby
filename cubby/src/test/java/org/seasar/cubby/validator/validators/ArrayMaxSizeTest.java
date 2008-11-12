@@ -15,11 +15,16 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ArrayFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ArrayFieldValidatorAssert.assertSuccess;
+
+import org.junit.Test;
 import org.seasar.cubby.validator.ArrayFieldValidator;
 
-public class ArrayMaxSizeTest extends AbstractArrayFieldValidatorTestCase {
+public class ArrayMaxSizeTest {
 
-	public void testValidation() {
+	@Test
+	public void validate() {
 		ArrayFieldValidator validator = new ArrayMaxSizeValidator(3);
 		assertSuccess(validator, null, new Object[] { "1", "2" }, new Object[] {
 				"1", "2", "3" });

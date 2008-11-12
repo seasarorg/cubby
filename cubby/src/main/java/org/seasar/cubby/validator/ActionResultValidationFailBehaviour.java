@@ -16,10 +16,9 @@
 package org.seasar.cubby.validator;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 指定された {@link ActionResult} を実行する {@link ValidationFailBehaviour} です。
@@ -27,12 +26,13 @@ import org.seasar.cubby.action.ActionResult;
  * @author baba
  * @since 1.1.0
  */
-class ActionResultValidationFailBehaviour implements
-		ValidationFailBehaviour, Serializable {
+class ActionResultValidationFailBehaviour implements ValidationFailBehaviour,
+		Serializable {
 
 	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 1L;
 
+	/** 入力検証でエラーがあった場合に実行する {@link ActionResult}。 */
 	private final ActionResult actionResult;
 
 	/**
@@ -48,7 +48,7 @@ class ActionResultValidationFailBehaviour implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult getActionResult(final Action action, final Method method) {
+	public ActionResult getActionResult(final ActionContext actionContext) {
 		return actionResult;
 	}
 

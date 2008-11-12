@@ -16,6 +16,7 @@
 package org.seasar.cubby.util;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -25,16 +26,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.OnSubmit;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.PropertyDesc;
-import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.beans.BeanDesc;
+import org.seasar.cubby.beans.BeanDescFactory;
+import org.seasar.cubby.beans.PropertyDesc;
 
 /**
  * Cubby内部で使用するユーティリティクラスです。
@@ -68,7 +68,7 @@ public class CubbyUtils {
 			final Class<? extends Action> actionClass) {
 		final String actionName;
 		final Path path = actionClass.getAnnotation(Path.class);
-		if (path != null && !StringUtil.isEmpty(path.value())) {
+		if (path != null && !StringUtils.isEmpty(path.value())) {
 			actionName = path.value();
 		} else {
 			final String name = left(actionClass.getSimpleName(), "$");
@@ -103,7 +103,7 @@ public class CubbyUtils {
 	 * @return 先頭1文字を小文字にした文字列
 	 */
 	private static String toFirstLower(final String text) {
-		if (StringUtil.isEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			throw new IllegalArgumentException("text is empty.");
 		}
 		final StringBuilder sb = new StringBuilder();
@@ -151,7 +151,7 @@ public class CubbyUtils {
 	private static String getActionMethodName(final Method method) {
 		final String actionName;
 		final Path path = method.getAnnotation(Path.class);
-		if (path != null && !StringUtil.isEmpty(path.value())) {
+		if (path != null && !StringUtils.isEmpty(path.value())) {
 			actionName = path.value();
 		} else {
 			final String methodName = method.getName();
@@ -193,6 +193,7 @@ public class CubbyUtils {
 	 *            オブジェクト
 	 * @return オブジェクトのサイズ
 	 */
+	@Deprecated
 	public static int getObjectSize(final Object value) {
 		final int size;
 		if (value == null) {
@@ -235,13 +236,15 @@ public class CubbyUtils {
 	 * <li>{@code Action}クラスを継承</li>
 	 * <li>抽象クラスでない</li>
 	 * </ul>
+	 * 
 	 * @param clazz
 	 *            クラス
 	 * @return 指定されたクラスがアクションクラスの場合は <code>true</code>、そうでない場合は
 	 *         <code>false</code>
 	 */
 	public static boolean isActionClass(final Class<?> clazz) {
-		return Action.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers());
+		return Action.class.isAssignableFrom(clazz)
+				&& !Modifier.isAbstract(clazz.getModifiers());
 	}
 
 	/**
@@ -254,6 +257,7 @@ public class CubbyUtils {
 	 * <li>戻り値が{@code ActionResult}</li>
 	 * <li>引数が0</li>
 	 * </ul>
+	 * 
 	 * @param method
 	 *            メソッド
 	 * @return 指定されたメソッドがアクションメソッドの場合は <code>true</code>、そうでない場合は
@@ -275,6 +279,7 @@ public class CubbyUtils {
 	 *            置換文字列
 	 * @return 最初に出現した置換対象を置換文字列で置き換えた文字列
 	 */
+	@Deprecated
 	public static String replaceFirst(final String text, final String replace,
 			final String with) {
 		if (text == null || replace == null || with == null) {
@@ -300,6 +305,7 @@ public class CubbyUtils {
 	 *            区切り文字
 	 * @return 指定された文字列を区切り文字で区切った文字列の配列
 	 */
+	@Deprecated
 	public static String[] split2(final String text, final char delim) {
 		if (text == null) {
 			return null;
@@ -317,7 +323,8 @@ public class CubbyUtils {
 	/**
 	 * 指定された文字列をHTMLとしてエスケープします。
 	 * <p>
-	 * <table> <thead>
+	 * <table>
+	 * <thead>
 	 * <tr>
 	 * <th>変換前</th>
 	 * <th>変換後</th>
@@ -343,7 +350,8 @@ public class CubbyUtils {
 	 * <td>&#39</td>
 	 * <td>&amp;#39</td>
 	 * </tr>
-	 * </tbody> </table>
+	 * </tbody>
+	 * </table>
 	 * </p>
 	 * 
 	 * @param str
@@ -359,11 +367,11 @@ public class CubbyUtils {
 		} else {
 			text = str.toString();
 		}
-		text = StringUtil.replace(text, "&", "&amp;");
-		text = StringUtil.replace(text, "<", "&lt;");
-		text = StringUtil.replace(text, ">", "&gt;");
-		text = StringUtil.replace(text, "\"", "&quot;");
-		text = StringUtil.replace(text, "'", "&#39;");
+		text = StringUtils.replace(text, "&", "&amp;");
+		text = StringUtils.replace(text, "<", "&lt;");
+		text = StringUtils.replace(text, ">", "&gt;");
+		text = StringUtils.replace(text, "\"", "&quot;");
+		text = StringUtils.replace(text, "'", "&#39;");
 		return text;
 	}
 
@@ -394,15 +402,12 @@ public class CubbyUtils {
 	 *             <code>null</code> だった場合
 	 * @since 1.0.2
 	 */
-	@SuppressWarnings("deprecation")
+	@Deprecated
 	public static Object getFormBean(final Action action,
 			final Class<?> actionClass, final Method method) {
 		final Form form = getForm(actionClass, method);
 		if (form == null) {
 			return action;
-		}
-		if (!form.binding()) {
-			return null;
 		}
 		if (form.bindingType() == NONE) {
 			return null;
@@ -418,8 +423,7 @@ public class CubbyUtils {
 				.getPropertyDesc(propertyName);
 		final Object formBean = propertyDesc.getValue(action);
 		if (formBean == null) {
-			throw new ActionRuntimeException("ECUB0102",
-					new Object[] { propertyName });
+			throw new ActionException(format("ECUB0102", propertyName));
 		}
 		return formBean;
 	}
@@ -431,10 +435,11 @@ public class CubbyUtils {
 	 *            アクションクラス
 	 * @param method
 	 *            アクションメソッド
-	 * @return {@link Form}、修飾されていない場合はメソッドが定義されたクラスを修飾する {@link Form}、クラスも修飾されていない場合は
-	 *         <code>null</code>
+	 * @return {@link Form}、修飾されていない場合はメソッドが定義されたクラスを修飾する {@link Form}
+	 *         、クラスも修飾されていない場合は <code>null</code>
 	 * @since 1.0.2
 	 */
+	@Deprecated
 	public static Form getForm(final Class<?> actionClass, final Method method) {
 		final Form form;
 		if (method.isAnnotationPresent(Form.class)) {

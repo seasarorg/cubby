@@ -15,22 +15,25 @@
  */
 package org.seasar.cubby.spike;
 
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.framework.util.ClassUtil;
 
-public class DeclaredClassTest extends TestCase {
+public class DeclaredClassTest {
 
-	public void testA() {
+	@Test
+	public void a() throws Exception {
 		Object obj = new ConcreteOne();
-		Method method1 = ClassUtil.getMethod(obj.getClass(), "method1", new Class[0]);
-		Method method2 = ClassUtil.getMethod(obj.getClass(), "method2", new Class[0]);
+		Method method1 = obj.getClass().getMethod("method1");
+		Method method2 = obj.getClass().getMethod("method2");
 
-		System.out.println(method1.getDeclaringClass());
-		System.out.println(method2.getDeclaringClass());
+		assertEquals(DeclaredClassTest.AbstractOne.class, method1
+				.getDeclaringClass());
+		assertEquals(DeclaredClassTest.ConcreteOne.class, method2
+				.getDeclaringClass());
 	}
 
 	static abstract class AbstractOne {

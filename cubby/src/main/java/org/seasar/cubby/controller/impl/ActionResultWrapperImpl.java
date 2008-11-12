@@ -15,13 +15,11 @@
  */
 package org.seasar.cubby.controller.impl;
 
-import java.lang.reflect.Method;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionResultWrapper;
 
 /**
@@ -35,34 +33,22 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	/** アクションの実行結果。 */
 	private final ActionResult actionResult;
 
-	/** アクション。 */
-	private final Action action;
-
-	/** アクションクラス。 */
-	private final Class<? extends Action> actionClass;
-
-	/** アクションメソッド。 */
-	private final Method method;
+	/** アクションコンテキスト。 */
+	private final ActionContext actionContext;
 
 	/**
 	 * 指定されたアクションの実行結果をラップしたインスタンスを生成します。
 	 * 
 	 * @param actionResult
 	 *            アクションの実行結果
-	 * @param action
-	 *            アクション
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param method
-	 *            アクションメソッド
+	 * @param actionContext
+	 *            アクションコンテキスト
 	 */
-	public ActionResultWrapperImpl(ActionResult actionResult, Action action,
-			Class<? extends Action> actionClass, Method method) {
+	public ActionResultWrapperImpl(ActionResult actionResult,
+			ActionContext actionContext) {
 		super();
 		this.actionResult = actionResult;
-		this.action = action;
-		this.actionClass = actionClass;
-		this.method = method;
+		this.actionContext = actionContext;
 	}
 
 	/**
@@ -70,7 +56,7 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	 */
 	public void execute(final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
-		actionResult.execute(action, actionClass, method, request, response);
+		actionResult.execute(actionContext, request, response);
 	}
 
 	/**

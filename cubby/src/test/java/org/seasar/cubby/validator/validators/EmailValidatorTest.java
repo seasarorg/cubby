@@ -15,11 +15,16 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertSuccess;
+
+import org.junit.Test;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 
-public class EmailValidatorTest extends AbstractScalarFieldValidatorTestCase {
+public class EmailValidatorTest {
 
-	public void testValidation() {
+	@Test
+	public void validate() {
 		ScalarFieldValidator validator = new EmailValidator();
 		assertSuccess(validator, null, "", "testuser@test.jp",
 				"testuser@192.168.192.168", "testuser@192.168.192");

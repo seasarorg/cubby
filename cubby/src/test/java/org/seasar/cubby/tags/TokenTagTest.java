@@ -15,30 +15,33 @@
  */
 package org.seasar.cubby.tags;
 
-import javax.servlet.http.HttpSession;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.jdom.Element;
+import org.junit.Before;
+import org.junit.Test;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.util.TokenHelper;
-import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
 public class TokenTagTest extends SimpleTagTestCase {
 
-	TokenTag tag;
+	private TokenTag tag;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setup() throws Exception {
 		tag = new TokenTag();
 		setupSimpleTag(tag);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testDoTag1() throws Exception {
-		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
-		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
-		HttpSession session = ThreadContext.getRequest().getSession();
+	@Test
+	public void doTag1() throws Exception {
+		HttpServletRequest request = HttpServletRequest.class.cast(context
+				.getRequest());
+		ThreadContext.setRequest(request);
 
 		tag.doTag();
 		Element element = getResultAsElementFromContext();
@@ -49,15 +52,15 @@ public class TokenTagTest extends SimpleTagTestCase {
 		assertTrue(message, element.getAttributeValue("value").length() != 0);
 		assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
 				.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(session, element
-				.getAttributeValue("value")));
+		assertTrue(message, TokenHelper.validateToken(request.getSession(),
+				element.getAttributeValue("value")));
 	}
 
-	@SuppressWarnings("unchecked")
-	public void testDoTag2() throws Exception {
-		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
-		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
-		HttpSession session = ThreadContext.getRequest().getSession();
+	@Test
+	public void doTag2() throws Exception {
+		HttpServletRequest request = HttpServletRequest.class.cast(context
+				.getRequest());
+		ThreadContext.setRequest(request);
 
 		tag.setName("cubby.token2");
 		tag.doTag();
@@ -67,17 +70,16 @@ public class TokenTagTest extends SimpleTagTestCase {
 		assertEquals(message, "input", element.getName());
 		assertEquals(message, "hidden", element.getAttributeValue("type"));
 		assertTrue(message, element.getAttributeValue("value").length() != 0);
-		assertEquals(message, "cubby.token2", element
-				.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(session, element
-				.getAttributeValue("value")));
+		assertEquals(message, "cubby.token2", element.getAttributeValue("name"));
+		assertTrue(message, TokenHelper.validateToken(request.getSession(),
+				element.getAttributeValue("value")));
 	}
 
-	@SuppressWarnings("unchecked")
+	@Test
 	public void testDoTag3() throws Exception {
-		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
-		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
-		HttpSession session = ThreadContext.getRequest().getSession();
+		HttpServletRequest request = HttpServletRequest.class.cast(context
+				.getRequest());
+		ThreadContext.setRequest(request);
 
 		tag.setDynamicAttribute(null, "id", "token");
 		tag.doTag();
@@ -90,12 +92,14 @@ public class TokenTagTest extends SimpleTagTestCase {
 		assertTrue(message, element.getAttributeValue("value").length() != 0);
 		assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
 				.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(session, element
-				.getAttributeValue("value")));
+		assertTrue(message, TokenHelper.validateToken(request.getSession(),
+				element.getAttributeValue("value")));
 	}
-	
-	public void testRequestIsNull() throws Exception {
+
+	@Test
+	public void requestIsNull() throws Exception {
 		ThreadContext.setRequest(null);
+
 		tag.setDynamicAttribute(null, "id", "token");
 		try {
 			tag.doTag();

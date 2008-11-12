@@ -15,10 +15,8 @@
  */
 package org.seasar.cubby.validator;
 
-import java.lang.reflect.Method;
-
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 入力検証でエラーがあった場合の振る舞いです。
@@ -31,11 +29,9 @@ public interface ValidationFailBehaviour {
 	/**
 	 * 入力検証でエラーがあった場合の画面遷移を制御するための {@link ActionResult} を取得します。
 	 * 
-	 * @param action
-	 *            アクション
-	 * @param method
-	 *            アクションメソッド
+	 * @param actionContext
+	 *            アクションコンテキスト
 	 */
-	ActionResult getActionResult(Action action, Method method);
+	ActionResult getActionResult(ActionContext actionContext);
 
 }

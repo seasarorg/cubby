@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.validator;
 
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.exception.ActionRuntimeException;
 
 /**
  * 入力検証を保持するクラスです。
@@ -196,7 +198,7 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 */
 	public ActionResult fail(final String errorPage) {
 		if (errorPage == null || errorPage.length() == 0) {
-			throw new ActionRuntimeException("ECUB0106");
+			throw new ActionException(format("ECUB0106"));
 		}
 		return new Forward(errorPage);
 	}
@@ -230,16 +232,6 @@ public abstract class DefaultValidationRules implements ValidationRules {
 			phaseValidationRules = EMPTY_VALIDATION_RULES;
 		}
 		return phaseValidationRules;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @deprecated {@link #addAll(ValidationRules)} を使用してください。
-	 */
-	@Deprecated
-	public List<ValidationRule> getRules() {
-		return phaseValidationRulesMap.get(getDefaultValidationPhase());
 	}
 
 }

@@ -15,6 +15,10 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +27,18 @@ import java.util.Map;
 import javax.servlet.jsp.JspTagException;
 
 import org.jdom.Element;
-import org.seasar.framework.util.StringUtil;
+import org.junit.Before;
+import org.junit.Test;
+import org.seasar.cubby.util.StringUtils;
 
 public class SelectTagTest extends SimpleTagTestCase {
 
 	SelectTag tag;
+
 	List<ItemBean> items = new ArrayList<ItemBean>();
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+
+	@Before
+	public void setup() {
 		tag = new SelectTag();
 		setupSimpleTag(tag);
 		setupErrors(context);
@@ -41,7 +47,8 @@ public class SelectTagTest extends SimpleTagTestCase {
 		items.add(new ItemBean(3, "name3"));
 	}
 
-	public void testDoTag1() throws Exception {
+	@Test
+	public void doTag1() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
 		tag.setParent(new MockFormTag(map));
@@ -63,13 +70,15 @@ public class SelectTagTest extends SimpleTagTestCase {
 		for (Object o : element.getChildren("option")) {
 			Element child = (Element) o;
 			String value = child.getValue();
-			if (StringUtil.isEmpty(value)) {
+			if (StringUtils.isEmpty(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
-				assertTrue(message, StringUtil.isEmpty(child.getAttributeValue("value")));
+				assertTrue(message, StringUtils.isEmpty(child
+						.getAttributeValue("value")));
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -80,16 +89,17 @@ public class SelectTagTest extends SimpleTagTestCase {
 				fail(message);
 			}
 		}
-//		assertEquals("基本",
-//				"<select name=\"stringField\" id=\"stringField\" >\n" +
-//				"<option value=\"\"></option>\n" +
-//				"<option value=\"1\" selected=\"true\">name1</option>\n" +
-//				"<option value=\"2\" >name2</option>\n" +
-//				"<option value=\"3\" >name3</option>\n" +
-//				"</select>\n", context.getResult());
+		// assertEquals("基本",
+		// "<select name=\"stringField\" id=\"stringField\" >\n" +
+		// "<option value=\"\"></option>\n" +
+		// "<option value=\"1\" selected=\"true\">name1</option>\n" +
+		// "<option value=\"2\" >name2</option>\n" +
+		// "<option value=\"3\" >name3</option>\n" +
+		// "</select>\n", context.getResult());
 	}
 
-	public void testDoTag2() throws Exception {
+	@Test
+	public void doTag2() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("integerArrayField", new String[] { "1", "3" });
 		tag.setParent(new MockFormTag(map));
@@ -105,40 +115,45 @@ public class SelectTagTest extends SimpleTagTestCase {
 		Element element = getResultAsElementFromContext();
 		String message = "selectedの対象が2つ";
 		assertEquals(message, 2, element.getAttributes().size());
-		assertEquals(message, "integerArrayField", element.getAttributeValue("name"));
+		assertEquals(message, "integerArrayField", element
+				.getAttributeValue("name"));
 		assertEquals(message, "5", element.getAttributeValue("size"));
 		assertEquals(message, 4, element.getChildren().size());
 		for (Object o : element.getChildren("option")) {
 			Element child = (Element) o;
 			String value = child.getValue();
-			if (StringUtil.isEmpty(value)) {
+			if (StringUtils.isEmpty(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
-				assertTrue(message, StringUtil.isEmpty(child.getAttributeValue("value")));
+				assertTrue(message, StringUtils.isEmpty(child
+						.getAttributeValue("value")));
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
 			} else if ("name3".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "3", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else {
 				fail(message);
 			}
 		}
-//		assertEquals("selectedの対象が2つ",
-//				"<select size=\"5\" name=\"integerArrayField\" >\n" +
-//				"<option value=\"\"></option>\n" +
-//				"<option value=\"1\" selected=\"true\">name1</option>\n" +
-//				"<option value=\"2\" >name2</option>\n" +
-//				"<option value=\"3\" selected=\"true\">name3</option>\n" +
-//				"</select>\n", context.getResult());
+		// assertEquals("selectedの対象が2つ",
+		// "<select size=\"5\" name=\"integerArrayField\" >\n" +
+		// "<option value=\"\"></option>\n" +
+		// "<option value=\"1\" selected=\"true\">name1</option>\n" +
+		// "<option value=\"2\" >name2</option>\n" +
+		// "<option value=\"3\" selected=\"true\">name3</option>\n" +
+		// "</select>\n", context.getResult());
 	}
 
-	public void testDoTag3() throws Exception {
+	@Test
+	public void doTag3() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
 		tag.setParent(new MockFormTag(map));
@@ -157,13 +172,15 @@ public class SelectTagTest extends SimpleTagTestCase {
 		for (Object o : element.getChildren("option")) {
 			Element child = (Element) o;
 			String value = child.getValue();
-			if (StringUtil.isEmpty(value)) {
+			if (StringUtils.isEmpty(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
-				assertTrue(message, StringUtil.isEmpty(child.getAttributeValue("value")));
+				assertTrue(message, StringUtils.isEmpty(child
+						.getAttributeValue("value")));
 			} else if ("1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else if ("2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -174,16 +191,17 @@ public class SelectTagTest extends SimpleTagTestCase {
 				fail(message);
 			}
 		}
-//		assertEquals("labelPropertyを省略",
-//				"<select name=\"stringField\" id=\"stringField\" >\n" +
-//				"<option value=\"\"></option>\n" +
-//				"<option value=\"1\" selected=\"true\">1</option>\n" +
-//				"<option value=\"2\" >2</option>\n" +
-//				"<option value=\"3\" >3</option>\n" +
-//				"</select>\n", context.getResult());
+		// assertEquals("labelPropertyを省略",
+		// "<select name=\"stringField\" id=\"stringField\" >\n" +
+		// "<option value=\"\"></option>\n" +
+		// "<option value=\"1\" selected=\"true\">1</option>\n" +
+		// "<option value=\"2\" >2</option>\n" +
+		// "<option value=\"3\" >3</option>\n" +
+		// "</select>\n", context.getResult());
 	}
 
-	public void testDoTag4() throws Exception {
+	@Test
+	public void doTag4() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
 		tag.setParent(new MockFormTag(map));
@@ -205,7 +223,8 @@ public class SelectTagTest extends SimpleTagTestCase {
 			if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -216,15 +235,16 @@ public class SelectTagTest extends SimpleTagTestCase {
 				fail(message);
 			}
 		}
-//		assertEquals("emptyOption=false",
-//				"<select name=\"stringField\" >\n" +
-//				"<option value=\"1\" selected=\"true\">name1</option>\n" +
-//				"<option value=\"2\" >name2</option>\n" +
-//				"<option value=\"3\" >name3</option>\n" +
-//				"</select>\n", context.getResult());
+		// assertEquals("emptyOption=false",
+		// "<select name=\"stringField\" >\n" +
+		// "<option value=\"1\" selected=\"true\">name1</option>\n" +
+		// "<option value=\"2\" >name2</option>\n" +
+		// "<option value=\"3\" >name3</option>\n" +
+		// "</select>\n", context.getResult());
 	}
 
-	public void testDoTag5() throws Exception {
+	@Test
+	public void doTag5() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
 		tag.setParent(new MockFormTag(map));
@@ -245,11 +265,13 @@ public class SelectTagTest extends SimpleTagTestCase {
 			String value = child.getValue();
 			if ("empty label".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
-				assertTrue(message, StringUtil.isEmpty(child.getAttributeValue("value")));
+				assertTrue(message, StringUtils.isEmpty(child
+						.getAttributeValue("value")));
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "true", child
+						.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -260,16 +282,17 @@ public class SelectTagTest extends SimpleTagTestCase {
 				fail(message);
 			}
 		}
-//		assertEquals("emptyOption=true, emptyOptionLabel=empty label",
-//				"<select name=\"stringField\" >\n" +
-//				"<option value=\"\">empty label</option>\n" +
-//				"<option value=\"1\" selected=\"true\">name1</option>\n" +
-//				"<option value=\"2\" >name2</option>\n" +
-//				"<option value=\"3\" >name3</option>\n" +
-//				"</select>\n", context.getResult());
+		// assertEquals("emptyOption=true, emptyOptionLabel=empty label",
+		// "<select name=\"stringField\" >\n" +
+		// "<option value=\"\">empty label</option>\n" +
+		// "<option value=\"1\" selected=\"true\">name1</option>\n" +
+		// "<option value=\"2\" >name2</option>\n" +
+		// "<option value=\"3\" >name3</option>\n" +
+		// "</select>\n", context.getResult());
 	}
 
-	public void testDoTagNotSetValueProperty() throws Exception {
+	@Test
+	public void doTagNotSetValueProperty() throws Exception {
 		Map<String, String[]> map = new HashMap<String, String[]>();
 		map.put("stringField", new String[] { "1" });
 		tag.setParent(new MockFormTag(map));
@@ -287,19 +310,24 @@ public class SelectTagTest extends SimpleTagTestCase {
 	public static class ItemBean {
 		private Integer id;
 		private String name;
+
 		public ItemBean(int id, String name) {
 			this.id = id;
 			this.name = name;
 		}
+
 		public Integer getId() {
 			return id;
 		}
+
 		public void setId(Integer id) {
 			this.id = id;
 		}
+
 		public String getName() {
 			return name;
 		}
+
 		public void setName(String name) {
 			this.name = name;
 		}

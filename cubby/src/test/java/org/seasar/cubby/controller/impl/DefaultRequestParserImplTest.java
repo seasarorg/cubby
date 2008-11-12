@@ -15,35 +15,46 @@
  */
 package org.seasar.cubby.controller.impl;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequest;
+import org.junit.Test;
 
-public class DefaultRequestParserImplTest extends S2TestCase {
+public class DefaultRequestParserImplTest {
 
-	public HttpServletRequest request;
+	public DefaultRequestParserImpl requestParser = new DefaultRequestParserImpl();
 
-	public DefaultRequestParserImpl requestParser;
+	@Test
+	public void getEmptyParameterMap() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		Map<String, String[]> requestParameterMap = new HashMap<String, String[]>();
+		expect(request.getParameterMap()).andReturn(requestParameterMap);
+		replay(request);
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-	}
-
-	public void testGetEmptyParameterMap() throws Throwable {
 		Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		assertEquals("parameterMap.size()", 0, parameterMap.size());
+		verify(request);
 	}
 
-	public void testGetParameterMap() throws Throwable {
-		MockHttpServletRequest mock = (MockHttpServletRequest) request;
-		mock.setParameter("a", "12345");
-		mock.setParameter("b", new String[] { "abc", "def" });
+	@Test
+	public void getParameterMap() throws Throwable {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		Map<String, String[]> requestParameterMap = new HashMap<String, String[]>();
+		requestParameterMap.put("a", new String[] { "12345" });
+		requestParameterMap.put("b", new String[] { "abc", "def" });
+		expect(request.getParameterMap()).andReturn(requestParameterMap);
+		replay(request);
+
 		Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);
 		assertEquals("parameterMap.size()", 2, parameterMap.size());
@@ -54,24 +65,43 @@ public class DefaultRequestParserImplTest extends S2TestCase {
 		assertEquals("b.length", 2, b.length);
 		assertEquals("b[0]", "abc", b[0]);
 		assertEquals("b[1]", "def", b[1]);
+		verify(request);
 	}
 
-	public void testIsParsable() {
-		MockHttpServletRequest request = getRequest();
-
-		request.setContentType("application/x-www-form-urlencoded");
+	@Test
+	public void isParsable1() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getContentType()).andReturn(
+				"application/x-www-form-urlencoded").anyTimes();
+		replay(request);
 		assertTrue(requestParser.isParsable(request));
-
-		request.setContentType("multipart/form-data");
-		assertTrue(requestParser.isParsable(request));
-
-		request.setContentType("application/atom+xml");
-		assertTrue(requestParser.isParsable(request));
+		verify(request);
 	}
 
-	public void testPriority() {
-		assertEquals(DefaultRequestParserImpl.DEFAULT_PRIORITY,
-				requestParser.getPriority());
+	@Test
+	public void isParsable2() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getContentType()).andReturn("multipart/form-data")
+				.anyTimes();
+		replay(request);
+		assertTrue(requestParser.isParsable(request));
+		verify(request);
+	}
+
+	@Test
+	public void isParsable3() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getContentType()).andReturn("application/atom+xml")
+				.anyTimes();
+		replay(request);
+		assertTrue(requestParser.isParsable(request));
+		verify(request);
+	}
+
+	@Test
+	public void priority() {
+		assertEquals(DefaultRequestParserImpl.DEFAULT_PRIORITY, requestParser
+				.getPriority());
 	}
 
 }

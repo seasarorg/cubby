@@ -15,23 +15,29 @@
  */
 package org.seasar.cubby.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
-import org.seasar.cubby.exception.ActionRuntimeException;
-import org.seasar.framework.util.ClassUtil;
 
-public class CubbyUtilsTest extends TestCase {
+public class CubbyUtilsTest {
 
-	public void testGetObjectSize() {
+	@Test
+	@Deprecated
+	public void getObjectSize() {
 		// array
 		assertEquals(0, CubbyUtils.getObjectSize(null));
 		assertEquals(1, CubbyUtils.getObjectSize(""));
@@ -48,8 +54,7 @@ public class CubbyUtilsTest extends TestCase {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	private Collection toCollection(Object[] objects) {
+	private static Object toCollection(Object[] objects) {
 		List<Object> list = new ArrayList<Object>();
 		for (Object o : objects) {
 			list.add(o);
@@ -57,38 +62,41 @@ public class CubbyUtilsTest extends TestCase {
 		return list;
 	}
 
-	public void testGetActionPath() {
+	@Test
+	public void getActionPath() throws Exception {
 		assertEquals("/hoge/m1", CubbyUtils.getActionPath(Hoge1Action.class,
-				ClassUtil.getMethod(Hoge1Action.class, "m1", null)));
+				Hoge1Action.class.getMethod("m1")));
 		assertEquals("/hoge/m/m2", CubbyUtils.getActionPath(Hoge1Action.class,
-				ClassUtil.getMethod(Hoge1Action.class, "m2", null)));
+				Hoge1Action.class.getMethod("m2")));
 		assertEquals("/hoge/", CubbyUtils.getActionPath(Hoge1Action.class,
-				ClassUtil.getMethod(Hoge1Action.class, "index", null)));
+				Hoge1Action.class.getMethod("index")));
 		assertEquals("/hoge/index2", CubbyUtils.getActionPath(
-				Hoge1Action.class, ClassUtil.getMethod(Hoge1Action.class,
-						"index2", null)));
+				Hoge1Action.class, Hoge1Action.class.getMethod("index2")));
 		assertEquals("/hoge2/m1", CubbyUtils.getActionPath(Hoge2Action.class,
-				ClassUtil.getMethod(Hoge2Action.class, "m1", null)));
+				Hoge2Action.class.getMethod("m1")));
 		assertEquals("/hoge/m2", CubbyUtils.getActionPath(Hoge2Action.class,
-				ClassUtil.getMethod(Hoge2Action.class, "m2", null)));
-		assertEquals("/", CubbyUtils.getActionPath(MockAction.class, ClassUtil
-				.getMethod(MockAction.class, "index", null)));
+				Hoge2Action.class.getMethod("m2")));
+		assertEquals("/", CubbyUtils.getActionPath(MockAction.class,
+				MockAction.class.getMethod("index")));
 		assertEquals("/dummy1", CubbyUtils.getActionPath(MockAction.class,
-				ClassUtil.getMethod(MockAction.class, "dummy1", null)));
+				MockAction.class.getMethod("dummy1")));
 		assertEquals("/dummy2", CubbyUtils.getActionPath(MockAction.class,
-				ClassUtil.getMethod(MockAction.class, "dummy2", null)));
+				MockAction.class.getMethod("dummy2")));
 		assertEquals("/todo/lists", CubbyUtils.getActionPath(MockAction.class,
-				ClassUtil.getMethod(MockAction.class, "todolist", null)));
+				MockAction.class.getMethod("todolist")));
 		assertEquals("/tasklists", CubbyUtils.getActionPath(MockAction.class,
-				ClassUtil.getMethod(MockAction.class, "tasklist", null)));
+				MockAction.class.getMethod("tasklist")));
 	}
 
-	public void testGetActionClassName() {
+	@Test
+	public void getActionClassName() {
 		assertEquals("hoge", CubbyUtils.getActionDirectory(Hoge1Action.class));
 		assertEquals("hoge2", CubbyUtils.getActionDirectory(Hoge2Action.class));
 	}
 
-	public void testReplaceFirst() {
+	@Test
+	@SuppressWarnings("deprecation")
+	public void replaceFirst() {
 		assertNull(CubbyUtils.replaceFirst(null, "", ""));
 		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", null, null));
 		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", "a", null));
@@ -103,7 +111,9 @@ public class CubbyUtilsTest extends TestCase {
 		assertEquals("3xyzaab", CubbyUtils.replaceFirst("3abaab", "ab", "xyz"));
 	}
 
-	public void testSplit2() {
+	@Test
+	@SuppressWarnings("deprecation")
+	public void split2() {
 		assertNull(CubbyUtils.split2(null, '_'));
 		assertTrue(Arrays.deepEquals(new String[] { "" }, CubbyUtils.split2("",
 				'_')));
@@ -115,7 +125,8 @@ public class CubbyUtilsTest extends TestCase {
 				CubbyUtils.split2("ab_cd_de_", '_')));
 	}
 
-	public void testGetPriority() throws Exception {
+	@Test
+	public void gGetPriority() throws Exception {
 		Method method = TestGetPriprity.class.getMethod("m1", new Class[0]);
 		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
 
@@ -126,7 +137,7 @@ public class CubbyUtilsTest extends TestCase {
 		assertEquals(0, CubbyUtils.getPriority(method));
 	}
 
-	static class TestGetPriprity {
+	private static class TestGetPriprity {
 		public void m1() {
 		}
 
@@ -141,69 +152,86 @@ public class CubbyUtilsTest extends TestCase {
 		}
 	}
 
-	public void testGetFormBean1() throws Exception {
+	@Test
+	@Deprecated
+	public void formBean1() throws Exception {
 		MockFormAction action = new MockFormAction();
-		Method method = ClassUtil.getMethod(action.getClass(), "normal",
-				new Class[0]);
+		Method method = action.getClass().getMethod("normal");
 		Object actual = CubbyUtils
-				.getFormBean(action, MockAction.class, method);
+				.getFormBean(action, MockFormAction.class, method);
 		assertSame(action, actual);
 	}
 
-	public void testGetFormBean2() throws Exception {
+	@Test
+	@Deprecated
+	public void getFormBean2() throws Exception {
 		MockFormAction action = new MockFormAction();
-		Method method = ClassUtil.getMethod(action.getClass(), "legalForm",
-				new Class[0]);
+		Method method = action.getClass().getMethod("legalForm");
 		Object actual = CubbyUtils
-				.getFormBean(action, MockAction.class, method);
-		assertSame(action.form, actual);
+				.getFormBean(action, MockFormAction.class, method);
+		assertSame(action.getForm(), actual);
 	}
 
-	public void testGetFormBean3() throws Exception {
+	@Test
+	@Deprecated
+	public void getFormBean3() throws Exception {
 		MockFormAction action = new MockFormAction();
-		Method method = ClassUtil.getMethod(action.getClass(), "illegalForm",
-				new Class[0]);
+		Method method = action.getClass().getMethod("illegalForm");
 		try {
-			CubbyUtils.getFormBean(action, MockAction.class, method);
+			CubbyUtils.getFormBean(action, MockFormAction.class, method);
 			fail();
-		} catch (ActionRuntimeException e) {
+		} catch (ActionException e) {
 			// ok
 			assertTrue(true);
 		}
 	}
-	
-	public void testIsActionClass() throws Exception {
-		assertTrue("アクションクラスであればtrue", CubbyUtils.isActionClass(ChildAction.class));
-		assertFalse("Actionを継承していないクラスはアクションクラスではない", CubbyUtils.isActionClass(Object.class));
-		assertFalse("抽象クラスはアクションクラスではない", CubbyUtils.isActionClass(ParentAction.class));
+
+	@Test
+	public void isActionClass() throws Exception {
+		assertTrue("アクションクラスであればtrue", CubbyUtils
+				.isActionClass(ChildAction.class));
+		assertFalse("Actionを継承していないクラスはアクションクラスではない", CubbyUtils
+				.isActionClass(Object.class));
+		assertFalse("抽象クラスはアクションクラスではない", CubbyUtils
+				.isActionClass(ParentAction.class));
 	}
-	
-	public void testIsActionMethod() throws Exception {
-		assertTrue("親クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m1")));
-		assertTrue("オーバーライドした親クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m2")));
-		assertTrue("子クラスのアクションメソッド", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m3")));
-		assertFalse("メソッドの引数が不正", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m4", int.class)));
-		assertFalse("メソッドの戻り値が不正", CubbyUtils.isActionMethod(ChildAction.class.getMethod("m5")));
+
+	@Test
+	public void isActionMethod() throws Exception {
+		assertTrue("親クラスのアクションメソッド", CubbyUtils
+				.isActionMethod(ChildAction.class.getMethod("m1")));
+		assertTrue("オーバーライドした親クラスのアクションメソッド", CubbyUtils
+				.isActionMethod(ChildAction.class.getMethod("m2")));
+		assertTrue("子クラスのアクションメソッド", CubbyUtils
+				.isActionMethod(ChildAction.class.getMethod("m3")));
+		assertFalse("メソッドの引数が不正", CubbyUtils.isActionMethod(ChildAction.class
+				.getMethod("m4", int.class)));
+		assertFalse("メソッドの戻り値が不正", CubbyUtils.isActionMethod(ChildAction.class
+				.getMethod("m5")));
 	}
 
 	public abstract class ParentAction extends Action {
 		public ActionResult m1() {
-			return null; 
+			return null;
 		}
+
 		public abstract ActionResult m2();
 	}
-	
+
 	public class ChildAction extends ParentAction {
 		@Override
 		public ActionResult m2() {
 			return null;
 		}
-		public ActionResult m3() { 
-			return null; 
+
+		public ActionResult m3() {
+			return null;
 		}
+
 		public ActionResult m4(int value) {
 			return null;
 		}
+
 		public Object m5() {
 			return null;
 		}

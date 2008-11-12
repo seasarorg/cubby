@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.util.StringUtils;
 
 /**
  * ルーティングの実装。
@@ -62,7 +62,8 @@ class RoutingImpl implements Routing {
 	 * @param onSubmit
 	 *            このルーティングを使用することを判断するためのパラメータ名
 	 * @param priority
-	 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}が常にセットされます。
+	 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}
+	 *            が常にセットされます。
 	 * @param auto
 	 *            自動登録されたかどうか
 	 */
@@ -148,7 +149,7 @@ class RoutingImpl implements Routing {
 	 * {@inheritDoc}
 	 */
 	public boolean isAcceptable(final String requestMethod) {
-		return StringUtil.equalsIgnoreCase(this.requestMethod.name(),
+		return StringUtils.equalsIgnoreCase(this.requestMethod.name(),
 				requestMethod);
 	}
 

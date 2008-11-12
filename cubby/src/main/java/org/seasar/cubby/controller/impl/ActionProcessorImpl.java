@@ -16,10 +16,11 @@
 package org.seasar.cubby.controller.impl;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
+import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -27,18 +28,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.controller.ActionResultWrapper;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.RequestParserSelector;
 import org.seasar.cubby.controller.RoutingsDispatcher;
-import org.seasar.cubby.exception.ActionRuntimeException;
+import org.seasar.cubby.controller.chain.ActionHandlerChain;
+import org.seasar.cubby.controller.chain.ActionHandlerChainFactory;
+import org.seasar.cubby.factory.RequestParserFactory;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
-import org.seasar.framework.log.Logger;
+import org.seasar.cubby.util.ServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスの実装です。
@@ -49,39 +57,36 @@ import org.seasar.framework.log.Logger;
 public class ActionProcessorImpl implements ActionProcessor {
 
 	/** ロガー。 */
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(ActionProcessorImpl.class);
 
-	/** 空の引数。 */
-	private static final Object[] EMPTY_ARGS = new Object[0];
-
 	/** リクエストパラメータに応じたルーティングを割り当てるためのクラス。 */
-	private RoutingsDispatcher routingsDispatcher;
+	private RoutingsDispatcher routingsDispatcher = new RoutingsDispatcherImpl();
 
-	/** リクエスト解析器。 */
-	private RequestParserSelector requestParserSelector;
-
-	/**
-	 * リクエストパラメータに応じたルーティングを割り当てるためのクラスを設定します。
-	 * 
-	 * @param routingsDispatcher
-	 *            リクエストパラメータに応じたルーティングを割り当てるためのクラス
-	 */
-	public void setRoutingsDispatcher(
-			final RoutingsDispatcher routingsDispatcher) {
-		this.routingsDispatcher = routingsDispatcher;
-	}
-
-	/**
-	 * リクエスト解析器セレクタを設定します。
-	 * 
-	 * @param requestParserSelector
-	 *            リクエスト解析器
-	 */
-	public void setRequestParserSelector(
-			final RequestParserSelector requestParserSelector) {
-		this.requestParserSelector = requestParserSelector;
-	}
+//	/** リクエスト解析器。 */
+//	private RequestParserSelector requestParserSelector;
+//
+//	/**
+//	 * リクエストパラメータに応じたルーティングを割り当てるためのクラスを設定します。
+//	 * 
+//	 * @param routingsDispatcher
+//	 *            リクエストパラメータに応じたルーティングを割り当てるためのクラス
+//	 */
+//	public void setRoutingsDispatcher(
+//			final RoutingsDispatcher routingsDispatcher) {
+//		this.routingsDispatcher = routingsDispatcher;
+//	}
+//
+//	/**
+//	 * リクエスト解析器セレクタを設定します。
+//	 * 
+//	 * @param requestParserSelector
+//	 *            リクエスト解析器
+//	 */
+//	public void setRequestParserSelector(
+//			final RequestParserSelector requestParserSelector) {
+//		this.requestParserSelector = requestParserSelector;
+//	}
 
 	/**
 	 * {@inheritDoc}
@@ -93,8 +98,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 		if (routings == null) {
 			return null;
 		}
-
 		request.removeAttribute(ATTR_ROUTINGS);
+
 		final Map<String, Object[]> parameterMap = parseRequest(request);
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 
@@ -104,52 +109,46 @@ public class ActionProcessorImpl implements ActionProcessor {
 			return null;
 		}
 
-		final Class<? extends Action> actionClass = routing.getActionClass();
-		final Method method = routing.getMethod();
+		final Method actionMethod = routing.getMethod();
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0004", new Object[] { request.getRequestURI() });
-			logger.log("DCUB0005", new Object[] { method });
+			logger.debug(format("DCUB0004", request.getRequestURI()));
+			logger.debug(format("DCUB0005", actionMethod));
 		}
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final Action action = (Action) container.getComponent(actionClass);
+
+		final Class<? extends Action> actionClass = routing.getActionClass();
+
+		final Container container = ContainerFactory.getContainer();
+
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashHashMap<String, Object>(request);
+
+		final Action action = (Action) container.lookup(actionClass);
+		action.setErrors(actionErrors);
+		action.setFlash(flashMap);
 		request.setAttribute(ATTR_ACTION, action);
-		final ActionResult actionResult = invoke(action, method);
+
+		final ActionContext actionContext = new ActionContextImpl(action,
+				actionClass, actionMethod, actionErrors, flashMap);
+		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
+
+//		final ActionHandlerChainFactory actionHandlerChainFactory;
+//		if (container.has(ActionHandlerChainFactory.class)) {
+//			actionHandlerChainFactory = container
+//					.lookup(ActionHandlerChainFactory.class);
+//		} else {
+//			actionHandlerChainFactory = new DefaultActionHandlerChainFactory();
+//		}
+		final ActionHandlerChainFactory actionHandlerChainFactory = ServiceFactory
+				.getProvider(ActionHandlerChainFactory.class);
+		final ActionHandlerChain actionHandlerChain = actionHandlerChainFactory.getActionHandlerChain();
+		final ActionResult actionResult = actionHandlerChain.chain(request,
+				response, actionContext);
 		if (actionResult == null) {
-			throw new ActionRuntimeException("ECUB0101",
-					new Object[] { method });
+			throw new ActionException(format("ECUB0101", actionMethod));
 		}
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
-				actionResult, action, actionClass, method);
+				actionResult, actionContext);
 		return actionResultWrapper;
-	}
-
-	/**
-	 * 指定されたアクションのメソッドを実行します。
-	 * 
-	 * @param action
-	 *            アクション
-	 * @param method
-	 *            アクションメソッド
-	 * @return アクションメソッドの実行結果
-	 */
-	private ActionResult invoke(final Action action, final Method method)
-			throws Exception {
-		try {
-			final ActionResult result = (ActionResult) method.invoke(action,
-					EMPTY_ARGS);
-			return result;
-		} catch (final InvocationTargetException ex) {
-			logger.log(ex);
-			final Throwable target = ex.getTargetException();
-			if (target instanceof Error) {
-				throw (Error) target;
-			} else if (target instanceof RuntimeException) {
-				throw (RuntimeException) target;
-			} else {
-				throw (Exception) target;
-			}
-		}
 	}
 
 	/**
@@ -160,13 +159,16 @@ public class ActionProcessorImpl implements ActionProcessor {
 	 * @return リクエストパラメータの{@link Map}
 	 */
 	private Map<String, Object[]> parseRequest(final HttpServletRequest request) {
-		final RequestParser requestParser = requestParserSelector
-				.select(request);
+		final Container container = ContainerFactory.getContainer();
+		final RequestParserFactory requestParserFactory = container
+				.lookup(RequestParserFactory.class);
+		final RequestParser requestParser = requestParserFactory
+				.getRequestParser(request);
 		if (requestParser == null) {
 			throw new NullPointerException("requestParser");
 		}
 		if (logger.isDebugEnabled()) {
-			logger.log("DCUB0016", new Object[] { requestParser });
+			logger.debug(format("DCUB0016", requestParser));
 		}
 		final Map<String, Object[]> parameterMap = requestParser
 				.getParameterMap(request);

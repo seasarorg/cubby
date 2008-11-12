@@ -15,19 +15,19 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.seasar.cubby.util.LoggerMessages.format;
+
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.controller.CubbyConfiguration;
-import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.util.ServiceFactory;
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.framework.exception.SRuntimeException;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 日付に対する検証を行います。
@@ -94,7 +94,7 @@ public class DateFormatValidator implements ScalarFieldValidator {
 		}
 		if (value instanceof String) {
 			final String stringValue = (String) value;
-			if (StringUtil.isEmpty((String) value)) {
+			if (StringUtils.isEmpty((String) value)) {
 				return;
 			}
 			try {
@@ -116,14 +116,15 @@ public class DateFormatValidator implements ScalarFieldValidator {
 			final Object value) {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
 		final String pattern;
-		if (StringUtil.isEmpty(this.pattern)) {
-			final CubbyConfiguration configuration = ThreadContext
-					.getConfiguration();
-			final FormatPattern formatPattern = configuration
-					.getFormatPattern();
+		if (StringUtils.isEmpty(this.pattern)) {
+			// final CubbyConfiguration configuration = ThreadContext
+			// .getConfiguration();
+			// final FormatPattern formatPattern = configuration
+			// .getFormatPattern();
+			final FormatPattern formatPattern = ServiceFactory
+					.getProvider(FormatPattern.class);
 			if (formatPattern == null) {
-				throw new SRuntimeException("ECUB0301", new Object[] { this,
-						value });
+				throw new IllegalStateException(format("ECUB0301", this, value));
 			}
 			pattern = formatPattern.getDatePattern();
 		} else {

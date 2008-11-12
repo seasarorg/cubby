@@ -5,7 +5,7 @@
   <parent>
     <artifactId>cubby-project</artifactId>
     <groupId>org.seasar.cubby</groupId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby</artifactId>
@@ -19,21 +19,6 @@
         <configuration>
           <downloadSources>true</downloadSources>
           <downloadJavadocs>true</downloadJavadocs>
-          <additionalBuildcommands>
-            <buildCommand>
-              <name>org.seasar.kijimuna.core.builder</name>
-              <arguments>
-              </arguments>
-            </buildCommand>
-            <buildCommand>
-              <name>org.seasar.kijimuna.core.validator</name>
-              <arguments>
-              </arguments>
-            </buildCommand>
-          </additionalBuildcommands>
-          <additionalProjectnatures>
-            <projectnature>org.seasar.kijimuna.core.nature</projectnature>
-          </additionalProjectnatures>
           <classpathContainers>
             <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5</classpathContainer>
           </classpathContainers>
@@ -45,28 +30,8 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.3.1</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.15</version>
+      <version>4.4</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun.jdmk</groupId>
-          <artifactId>jmxtools</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.jms</groupId>
-          <artifactId>jms</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jmx</groupId>
-          <artifactId>jmxri</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -91,19 +56,32 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.seasar.container</groupId>
-      <artifactId>s2-framework</artifactId>
-      <version>2.4.22</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.2</version>
     </dependency>
     <dependency>
-      <groupId>org.seasar.container</groupId>
-      <artifactId>s2-extension</artifactId>
-      <version>2.4.22</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.5.2</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.seasar.container</groupId>
-      <artifactId>s2-tiger</artifactId>
-      <version>2.4.22</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>0.9.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>2.4</version>
     </dependency>
     <dependency>
       <groupId>jdom</groupId>
@@ -111,11 +89,5 @@
       <version>1.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
-      <version>1.7R1</version>
-      <scope>test</scope>
-    </dependency> 
   </dependencies>
 </project>

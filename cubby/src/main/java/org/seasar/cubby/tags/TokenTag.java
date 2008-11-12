@@ -16,6 +16,7 @@
 package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.tags.TagUtils.toAttr;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
 
@@ -26,10 +27,9 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.util.StringUtils;
 import org.seasar.cubby.util.TokenHelper;
 import org.seasar.cubby.validator.validators.TokenValidator;
-import org.seasar.framework.message.MessageFormatter;
-import org.seasar.framework.util.StringUtil;
 
 /**
  * 2重サブミット防止用の<input type="hidden"/>を出力するタグ。
@@ -68,7 +68,7 @@ public class TokenTag extends DynamicAttributesTagSupport {
 
 		final String token = TokenHelper.generateGUID();
 		out.append("<input type=\"hidden\" name=\"");
-		if (StringUtil.isEmpty(name)) {
+		if (StringUtils.isEmpty(name)) {
 			out.append(TokenHelper.DEFAULT_TOKEN_NAME);
 		} else {
 			out.append(name);
@@ -80,7 +80,7 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		out.append("/>");
 		final HttpServletRequest request = ThreadContext.getRequest();
 		if (request == null) {
-			throw new IllegalStateException(MessageFormatter.getMessage("ECUB0401", null));
+			throw new IllegalStateException(format("ECUB0401"));
 		}
 		final HttpSession session = request.getSession();
 		TokenHelper.setToken(session, token);

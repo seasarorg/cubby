@@ -15,11 +15,9 @@
  */
 package org.seasar.cubby.action;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
-
-import org.seasar.framework.util.ClassUtil;
-import org.seasar.framework.util.MethodUtil;
 
 /**
  * アクションの基底クラスです。
@@ -181,9 +179,16 @@ public abstract class Action {
 	 * @since 1.1.0
 	 */
 	protected void invoke(final String methodName) {
-		final Method method = ClassUtil.getMethod(this.getClass(), methodName,
-				null);
-		MethodUtil.invoke(method, this, null);
+		try {
+			final Method method = this.getClass().getMethod(methodName);
+			method.invoke(this);
+		} catch (NoSuchMethodException e) {
+			throw new ActionException(e);
+		} catch (IllegalAccessException e) {
+			throw new ActionException(e);
+		} catch (InvocationTargetException e) {
+			throw new ActionException(e);
+		}
 	}
 
 }

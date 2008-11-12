@@ -15,9 +15,15 @@
  */
 package org.seasar.cubby.validator.validators;
 
-public class DateFormatTest extends AbstractScalarFieldValidatorTestCase {
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertFail;
+import static org.seasar.cubby.validator.validators.ScalarFieldValidatorAssert.assertSuccess;
 
-	public void testValidate() {
+import org.junit.Test;
+
+public class DateFormatTest {
+
+	@Test
+	public void validate() {
 		DateFormatValidator validator = new DateFormatValidator("yyyy-MM-dd");
 		assertSuccess(validator, "2006-01-01");
 		assertFail(validator, "2006-02-29", "06-02-29", "2006-2-2a");

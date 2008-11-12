@@ -16,6 +16,7 @@
 package org.seasar.cubby.filter;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+import static org.seasar.cubby.util.LoggerMessages.format;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,10 +38,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.InternalForwardInfo;
 import org.seasar.cubby.routing.Router;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
-import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.StringUtil;
+import org.seasar.cubby.routing.impl.RouterImpl;
+import org.seasar.cubby.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * リクエストされたURLを適切なアクションに振り分けるフィルタ。
@@ -54,11 +55,14 @@ import org.seasar.framework.util.StringUtil;
 public class RequestRoutingFilter implements Filter {
 
 	/** ロガー。 */
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(RequestRoutingFilter.class);
 
 	/** ルーティングの対象外とするパスの初期パラメータ名。 */
 	public static final String IGNORE_PATH_PATTERN = "ignorePathPattern";
+
+	//TODO
+	private final Router router = new RouterImpl();
 
 	/** ルーティングの対象外とするパスの正規表現パターンのリスト。 */
 	private final List<Pattern> ignorePathPatterns = new ArrayList<Pattern>();
@@ -66,10 +70,12 @@ public class RequestRoutingFilter implements Filter {
 	/**
 	 * このフィルタを初期化します。
 	 * <p>
-	 * 使用可能な初期化パラメータ <table> <thead>
-	 * <th> 初期化パラメータ名 </th>
-	 * <th> 初期化パラメータの値 </th>
-	 * <th> 例 </th>
+	 * 使用可能な初期化パラメータ
+	 * <table>
+	 * <thead>
+	 * <th>初期化パラメータ名</th>
+	 * <th>初期化パラメータの値</th>
+	 * <th>例</th>
 	 * </thead> <thead>
 	 * <tr>
 	 * <td>{@link #IGNORE_PATH_PATTERN}</td>
@@ -83,7 +89,7 @@ public class RequestRoutingFilter implements Filter {
 	 * &lt;param-value&gt;/img/.*,/js/.*&lt;param-name&gt;
 	 * </pre>
 	 * 
-	 * この例では /img と /js 以下のパスをルーティングの対象外にします。 </td>
+	 * この例では /img と /js 以下のパスをルーティングの対象外にします。</td>
 	 * </tr>
 	 * </thead>
 	 * </p>
@@ -96,7 +102,7 @@ public class RequestRoutingFilter implements Filter {
 	public void init(final FilterConfig config) throws ServletException {
 		final String ignorePathPatternString = config
 				.getInitParameter(IGNORE_PATH_PATTERN);
-		if (!StringUtil.isEmpty(ignorePathPatternString)) {
+		if (!StringUtils.isEmpty(ignorePathPatternString)) {
 
 			for (final StringTokenizer tokenizer = new StringTokenizer(
 					ignorePathPatternString, ","); tokenizer.hasMoreTokens();) {
@@ -141,9 +147,11 @@ public class RequestRoutingFilter implements Filter {
 		final HttpServletRequest request = (HttpServletRequest) req;
 		final HttpServletResponse response = (HttpServletResponse) res;
 
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final Router router = (Router) container.getComponent(Router.class);
+		// TODO
+		// final S2Container container = SingletonS2ContainerFactory
+		// .getContainer();
+//		final Container container = ContainerFactory.getContainer();
+//		final Router router = container.lookup(Router.class);
 
 		final InternalForwardInfo internalForwardInfo = router.routing(request,
 				response, ignorePathPatterns);
@@ -153,9 +161,9 @@ public class RequestRoutingFilter implements Filter {
 			final Map<String, Routing> onSubmitRoutings = internalForwardInfo
 					.getOnSubmitRoutings();
 			if (logger.isDebugEnabled()) {
-				logger.log("DCUB0001", new Object[] { internalForwardPath,
-						onSubmitRoutings });
-				logger.log("DCUB0015", new Object[] { onSubmitRoutings });
+				logger.debug(format("DCUB0001", internalForwardPath,
+						onSubmitRoutings));
+				logger.debug(format("DCUB0015", onSubmitRoutings));
 			}
 			request.setAttribute(ATTR_ROUTINGS, onSubmitRoutings);
 			final RequestDispatcher requestDispatcher = request

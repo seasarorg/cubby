@@ -15,25 +15,62 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.easymock.IAnswer;
+import org.junit.Test;
 import org.seasar.cubby.controller.ThreadContext;
 import org.seasar.cubby.util.TokenHelper;
 import org.seasar.cubby.validator.ValidationContext;
-import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.mock.servlet.MockHttpServletRequestImpl;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
-public class TokenValidatorTest extends S2TestCase {
+public class TokenValidatorTest {
 
-	@SuppressWarnings("unchecked")
-	public void testValidate() throws Exception {
+	@Test
+	public void validate() throws Exception {
 		TokenValidator validator = new TokenValidator();
-		MockServletContextImpl servletContext = new MockServletContextImpl(
-				"/cubby");
-		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext,
-				"/servlet"));
-		HttpSession session = ThreadContext.getRequest().getSession();
+
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		HttpSession session = createMock(HttpSession.class);
+		expect(request.getSession()).andReturn(session).anyTimes();
+
+		final Map<String, Object> sessionAttributes = new HashMap<String, Object>();
+		expect(session.getAttribute((String) anyObject())).andAnswer(
+				new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return sessionAttributes
+								.get((String) getCurrentArguments()[0]);
+					}
+
+				}).anyTimes();
+		session.setAttribute((String) anyObject(), anyObject());
+		expectLastCall().andAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				sessionAttributes.put((String) getCurrentArguments()[0],
+						getCurrentArguments()[1]);
+				return null;
+			}
+		}).anyTimes();
+
+		replay(request, session);
+
+		ThreadContext.setRequest(request);
 
 		ValidationContext context = new ValidationContext();
 		validator.validate(context, new Object[] { "tokenstring" });
@@ -50,9 +87,12 @@ public class TokenValidatorTest extends S2TestCase {
 		validator.validate(context, new Object[] { "tokenstring" });
 		assertFalse("セッション中のトークン文字列が除去された（２重サブミットの状態）ためエラー", context
 				.getMessageInfos().isEmpty());
+
+		verify(request, session);
 	}
 
-	public void testRequestIsNull() throws Exception {
+	@Test
+	public void requestIsNull() throws Exception {
 		ThreadContext.setRequest(null);
 		TokenValidator validator = new TokenValidator();
 		ValidationContext context = new ValidationContext();

@@ -29,9 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.controller.ActionResultWrapper;
 import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
-import org.seasar.framework.log.Logger;
+import org.seasar.cubby.controller.impl.ActionProcessorImpl;
 
 /**
  * Cubby用のフィルター。
@@ -45,8 +43,7 @@ import org.seasar.framework.log.Logger;
  */
 public class CubbyFilter implements Filter {
 
-	/** ロガー。 */
-	private static final Logger logger = Logger.getLogger(CubbyFilter.class);
+	private ActionProcessor actionProcessor = new ActionProcessorImpl();
 
 	/**
 	 * {@inheritDoc}
@@ -63,7 +60,7 @@ public class CubbyFilter implements Filter {
 	/**
 	 * フィルター処理。
 	 * <p>
-	 * リクエストの処理を{@link SingletonS2ContainerFactory#getContainer() コンテナ}から取得した{@link ActionProcessor}に委譲します。
+	 * リクエストの処理を {@link ActionProcessor} に委譲します。
 	 * </p>
 	 * 
 	 * @param req
@@ -84,12 +81,14 @@ public class CubbyFilter implements Filter {
 		final HttpServletResponse response = (HttpServletResponse) res;
 		ThreadContext.setRequest(request);
 		try {
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final ActionProcessor processor = (ActionProcessor) container
-					.getComponent(ActionProcessor.class);
-			final ActionResultWrapper actionResultWrapper = processor.process(
-					request, response);
+			// final Container container = ContainerFactory.getContainer();
+			// TODO
+			// final S2Container container = SingletonS2ContainerFactory
+			// .getContainer();
+			// final ActionProcessor processor = container
+			// .lookup(ActionProcessor.class);
+			final ActionResultWrapper actionResultWrapper = actionProcessor
+					.process(request, response);
 			if (actionResultWrapper != null) {
 				actionResultWrapper.execute(request, response);
 			} else {
@@ -101,7 +100,6 @@ public class CubbyFilter implements Filter {
 			} else if (e instanceof ServletException) {
 				throw (ServletException) e;
 			} else {
-				logger.log(e);
 				throw new ServletException(e);
 			}
 		} finally {

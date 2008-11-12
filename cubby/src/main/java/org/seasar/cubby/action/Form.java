@@ -144,17 +144,6 @@ public @interface Form {
 	String value() default THIS;
 
 	/**
-	 * リクエストパラメータからフォームオブジェクトへのバインディングするかを示します。
-	 * <p>
-	 * <code>false</code> が指定された場合はフォームオブジェクトへのバインディングを行いません。
-	 * </p>
-	 * 
-	 * @deprecated {@link RequestParameterBindingType#NONE} を使用するようにしてください。
-	 */
-	@Deprecated
-	boolean binding() default true;
-
-	/**
 	 * リクエストパラメータからフォームオブジェクトへのバインディング方法を指定します。
 	 * 
 	 * @since 1.1.0

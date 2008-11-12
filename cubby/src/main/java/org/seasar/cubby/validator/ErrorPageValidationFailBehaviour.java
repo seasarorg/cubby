@@ -22,11 +22,20 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.controller.ActionContext;
 
-class ErrorPageValidationFailBehaviour implements
-		ValidationFailBehaviour, Serializable {
+/**
+ * {@link Validation} アノテーションで指定されたエラーページへ遷移する {@link ValidationFailBehaviour}
+ * です。
+ * 
+ * @author baba
+ * @since 1.1.0
+ */
+class ErrorPageValidationFailBehaviour implements ValidationFailBehaviour,
+		Serializable {
 
 	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 1L;
@@ -61,18 +70,21 @@ class ErrorPageValidationFailBehaviour implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult getActionResult(final Action action, final Method method) {
+	public ActionResult getActionResult(final ActionContext actionContext) {
 		if (errorMessage != null && errorMessage.length() > 0) {
-			action.getErrors().add(errorMessage, fieldNames);
+			final ActionErrors actionErrors = actionContext.getActionErrors();
+			actionErrors.add(errorMessage, fieldNames);
 		}
 		final String errorPage;
-		final Validation validation = getValidation(method);
+		final Method actionMethod = actionContext.getActionMethod();
+		final Validation validation = getValidation(actionMethod);
 		if (validation == null) {
 			errorPage = null;
 		} else {
 			errorPage = validation.errorPage();
 		}
 
+		final Action action = actionContext.getAction();
 		final ValidationRules validationRules = getValidationRules(action,
 				validation.rules());
 		return validationRules.fail(errorPage);

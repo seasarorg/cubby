@@ -15,10 +15,10 @@
  */
 package org.seasar.cubby.action;
 
-import java.lang.reflect.Method;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.seasar.cubby.controller.ActionContext;
 
 /**
  * エラーのレスポンスを返すことを示す {@link ActionResult} です。
@@ -65,8 +65,7 @@ public class SendError implements ActionResult {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void execute(final Action action,
-			final Class<? extends Action> actionClass, final Method method,
+	public void execute(final ActionContext actionContext,
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
 		if (message == null) {

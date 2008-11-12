@@ -20,7 +20,6 @@ import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.seasar.cubby.converter.Converter;
-import org.seasar.framework.log.Logger;
 
 /**
  * {@link FileItem}から{@link InputStream}へ変換する{@link Converter}です。
@@ -29,10 +28,6 @@ import org.seasar.framework.log.Logger;
  * @since 1.1.0
  */
 public class InputStreamFileItemConverter extends AbstractFileItemConverter {
-
-	/** ロガー。 */
-	private static final Logger logger = Logger
-			.getLogger(InputStreamFileItemConverter.class);
 
 	/**
 	 * {@inheritDoc}
@@ -58,7 +53,6 @@ public class InputStreamFileItemConverter extends AbstractFileItemConverter {
 		try {
 			return fileItem.getInputStream();
 		} catch (final IOException e) {
-			logger.log(e);
 			return null;
 		}
 	}

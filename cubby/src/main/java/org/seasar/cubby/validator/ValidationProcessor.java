@@ -23,6 +23,7 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 入力検証処理です。
@@ -41,25 +42,20 @@ public interface ValidationProcessor {
 	 * 
 	 * @param request
 	 *            リクエスト
-	 * @param action
-	 *            アクション
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param method
-	 *            メソッド
+	 * @param actionContext
+	 *            アクションコンテキスト
 	 * @throws ValidationException
 	 *             入力検証にエラーがあった場合
 	 */
-	void process(HttpServletRequest request, Action action,
-			Class<? extends Action> actionClass, Method method);
+	void process(HttpServletRequest request, ActionContext actionContext);
 
 	/**
 	 * {@link #process(HttpServletRequest, Action, Class, Method)} で発生した
 	 * {@link ValidationException} を処理します。
 	 * <p>
 	 * <ul>
-	 * <li>{@link ValidationException} にメッセージが指定されていた場合はそれを
-	 * {@link ActionErrors} に設定</li>
+	 * <li>{@link ValidationException} にメッセージが指定されていた場合はそれを {@link ActionErrors}
+	 * に設定</li>
 	 * <li>リクエストの属性 {@link CubbyConstants#ATTR_VALIDATION_FAIL} に
 	 * <code>true</code> を設定</li>
 	 * <li>{@link ValidationRules#fail(String)} の呼び出し</li>
@@ -71,13 +67,11 @@ public interface ValidationProcessor {
 	 * @param request
 	 *            リクエスト
 	 * @param action
-	 *            アクション
-	 * @param method
-	 *            メソッド
+	 *            アクションコンテキスト
 	 * @return {@link ValidationRules#fail(String)} が返す値
 	 * @since 1.1.0
 	 */
 	ActionResult handleValidationException(ValidationException e,
-			HttpServletRequest request, Action action, Method method);
+			HttpServletRequest request, ActionContext actionContext);
 
 }

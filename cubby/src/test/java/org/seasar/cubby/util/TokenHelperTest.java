@@ -15,25 +15,30 @@
  */
 package org.seasar.cubby.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import javax.servlet.http.HttpSession;
 
+import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.framework.mock.servlet.MockHttpSession;
-import org.seasar.framework.mock.servlet.MockHttpSessionImpl;
-import org.seasar.framework.mock.servlet.MockServletContextImpl;
-import org.seasar.framework.util.LruHashMap;
+import static org.easymock.EasyMock.*;
 
-public class TokenHelperTest extends TestCase {
+public class TokenHelperTest {
 
-	public void testGenerateGUID() throws Exception {
+	@Test
+	public void generateGUID() throws Exception {
 		final int count = 50000;
 		Set<String> generatedGuids = new HashSet<String>();
 		for (int i = 0; i < count; i++) {
 			String guid = TokenHelper.generateGUID();
-//			assertEquals("GUIDは32文字[" + guid + "]", 32, guid.length());
+			// assertEquals("GUIDは32文字[" + guid + "]", 32, guid.length());
 			assertNotNull(guid);
 			assertTrue(guid.length() > 0);
 			assertFalse("GUIDが重複した:" + guid, generatedGuids.contains(guid));
@@ -42,29 +47,39 @@ public class TokenHelperTest extends TestCase {
 		assertEquals(count, generatedGuids.size());
 	}
 
-	public void testSetToken() throws Exception {
+	@Test
+	public void setToken() throws Exception {
 		String token = "tokenstring";
-		MockHttpSession session = new MockHttpSessionImpl(new MockServletContextImpl("/cubby"));
-		LruHashMap tokenMap = new LruHashMap(32);
-		session.setAttribute(CubbyConstants.ATTR_TOKEN, tokenMap);
+
+		HttpSession session = createMock(HttpSession.class);
+		Map<String, String> tokenMap = new LruHashMap<String, String>(32);
+		expect(session.getAttribute(CubbyConstants.ATTR_TOKEN)).andReturn(
+				tokenMap).anyTimes();
+		replay(session);
+
 		TokenHelper.setToken(session, token);
 
 		assertTrue("トークン文字列がトークン用のMapのキーとして追加", tokenMap
 				.containsKey("tokenstring"));
 	}
 
-	public void testValidateToken() throws Exception {
+	@Test
+	public void validateToken() throws Exception {
 		String token = "tokenstring";
-		MockHttpSession session = new MockHttpSessionImpl(new MockServletContextImpl("/cubby"));
-		LruHashMap tokenMap = new LruHashMap(32);
-		session.setAttribute(CubbyConstants.ATTR_TOKEN, tokenMap);
+
+		HttpSession session = createMock(HttpSession.class);
+		Map<String, String> tokenMap = new LruHashMap<String, String>(32);
+		expect(session.getAttribute(CubbyConstants.ATTR_TOKEN)).andReturn(
+				tokenMap).anyTimes();
+		replay(session);
+
 		TokenHelper.setToken(session, token);
 
-		assertFalse("セッション中に存在しないトークン文字列", TokenHelper.validateToken(
-				session, "dummytoken"));
-		assertTrue("セッション中に存在するトークン文字列", TokenHelper.validateToken(
-				session, "tokenstring"));
-		assertFalse("1度validateTokenした後は指定したトークン文字列は除去されている", TokenHelper.validateToken(
-				session, "tokenstring"));
+		assertFalse("セッション中に存在しないトークン文字列", TokenHelper.validateToken(session,
+				"dummytoken"));
+		assertTrue("セッション中に存在するトークン文字列", TokenHelper.validateToken(session,
+				"tokenstring"));
+		assertFalse("1度validateTokenした後は指定したトークン文字列は除去されている", TokenHelper
+				.validateToken(session, "tokenstring"));
 	}
 }

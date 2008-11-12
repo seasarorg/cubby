@@ -16,7 +16,6 @@
 package org.seasar.cubby.admin.servlet;
 
 import static org.seasar.cubby.util.CubbyUtils.escapeHtml;
-import static org.seasar.framework.util.StringUtil.isEmpty;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,10 +29,11 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
-import org.seasar.framework.container.SingletonS2Container;
 
 class RoutingSection implements Section {
 
@@ -42,8 +42,6 @@ class RoutingSection implements Section {
 	private PrintWriter out;
 
 	private Locale locale;
-
-	private PathResolver pathResolver;
 
 	private Iterator<String> rowClasses = new LoopingIterator<String>(Arrays
 			.asList(new String[] { "odd", "even" }));
@@ -55,8 +53,6 @@ class RoutingSection implements Section {
 		this.request = request;
 		this.out = response.getWriter();
 		this.locale = request.getLocale();
-		this.pathResolver = (PathResolverImpl) SingletonS2Container
-				.getComponent(PathResolver.class);
 		this.messages = new Messages(locale);
 	}
 
@@ -93,11 +89,17 @@ class RoutingSection implements Section {
 		out.println(th(messages.getString("lbl.priority")));
 		out.println("</thead>");
 		out.println("<tbody>");
+
+		final Container container = ContainerFactory.getContainer();
+		final PathResolverFactory pathResolverFactory = container
+				.lookup(PathResolverFactory.class);
+		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
+
 		int no = 1;
-		for (final Routing routing : pathResolver.getRoutings()) {
+		for (final Routing routing : pathResolver.getRoutings().values()) {
 			final boolean write;
 			final Map<String, String> pathParameters;
-			if (isEmpty(path)) {
+			if (path == null || path.length() == 0) {
 				write = true;
 				pathParameters = null;
 			} else {

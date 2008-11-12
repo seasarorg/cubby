@@ -15,7 +15,9 @@
  */
 package org.seasar.cubby.admin.servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
@@ -23,8 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.seasar.framework.util.InputStreamUtil;
 
 /**
  * Cubbyの管理コンソールを表示するサーブレットです。
@@ -77,7 +77,8 @@ public class CubbyAdminServlet extends HttpServlet {
 		// NOTE:
 		// MacOSX 10.5 + Tomcat 6ではループバックアドレスが
 		// 「0:0:0:0:0:0:0:1%0」となるため、startWithを使い判定を行う
-		return remoteAddr.equals("127.0.0.1") || remoteAddr.startsWith("0:0:0:0:0:0:0:1");
+		return remoteAddr.equals("127.0.0.1")
+				|| remoteAddr.startsWith("0:0:0:0:0:0:0:1");
 	}
 
 	private void render(final HttpServletRequest request,
@@ -112,12 +113,38 @@ public class CubbyAdminServlet extends HttpServlet {
 	private String getResource(final String resourceName)
 			throws ServletException {
 		try {
-			return new String(InputStreamUtil.getBytes(getClass()
-					.getResourceAsStream(resourceName)), "UTF-8");
-		} catch (final Exception e) {
+			return new String(getBytes(getClass().getResourceAsStream(
+					resourceName)), "UTF-8");
+		} catch (final IOException e) {
 			throw new ServletException("Can't read resouce file : "
 					+ resourceName, e);
 		}
+	}
+
+	/**
+	 * {@link InputStream}からbyteの配列を取得します。
+	 * 
+	 * @param is
+	 * @return byteの配列
+	 * @throws IORuntimeException
+	 *             {@link IOException}が発生した場合
+	 */
+	public static final byte[] getBytes(InputStream is) throws IOException {
+		byte[] bytes = null;
+		byte[] buf = new byte[8192];
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int n = 0;
+			while ((n = is.read(buf, 0, buf.length)) != -1) {
+				baos.write(buf, 0, n);
+			}
+			bytes = baos.toByteArray();
+		} finally {
+			if (is != null) {
+				is.close();
+			}
+		}
+		return bytes;
 	}
 
 }

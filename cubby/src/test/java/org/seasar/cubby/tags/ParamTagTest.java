@@ -1,5 +1,10 @@
 package org.seasar.cubby.tags;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,19 +12,22 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import org.junit.Before;
+import org.junit.Test;
+
 public class ParamTagTest extends SimpleTagTestCase {
 
 	private ParamTag tag;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setup() throws Exception {
 		tag = new ParamTag();
 		setupSimpleTag(tag);
 		setupErrors(context);
 	}
 
-	public void testDoTag1() throws JspException, IOException {
+	@Test
+	public void doTag1() throws JspException, IOException {
 		final MockParentTag parent = new MockParentTag();
 		tag.setParent(parent);
 		tag.setName("paramname");
@@ -32,7 +40,8 @@ public class ParamTagTest extends SimpleTagTestCase {
 		assertEquals("paramvalue", value);
 	}
 
-	public void testDoTag2() throws JspException, IOException {
+	@Test
+	public void doTag2() throws JspException, IOException {
 		final MockParentTag parent = new MockParentTag();
 		tag.setParent(parent);
 		tag.setName("paramname");
@@ -47,7 +56,8 @@ public class ParamTagTest extends SimpleTagTestCase {
 		assertEquals("bodyvalue", value);
 	}
 
-	public void testDoTagHasIllegalParent() throws JspException, IOException {
+	@Test
+	public void doTagHasIllegalParent() throws JspException, IOException {
 		final InputTag parent = new InputTag();
 		assertFalse(parent instanceof ParamParent);
 		tag.setParent(parent);
@@ -62,7 +72,8 @@ public class ParamTagTest extends SimpleTagTestCase {
 		}
 	}
 
-	public void testDoTagHasNoParent() throws JspException, IOException {
+	@Test
+	public void doTagHasNoParent() throws JspException, IOException {
 		tag.setName("paramname");
 		tag.setValue("paramvalue");
 		try {
@@ -74,8 +85,7 @@ public class ParamTagTest extends SimpleTagTestCase {
 		}
 	}
 
-	private class MockParentTag extends SimpleTagSupport implements
-			ParamParent {
+	private class MockParentTag extends SimpleTagSupport implements ParamParent {
 
 		private final Map<String, String> parameters = new HashMap<String, String>();
 
