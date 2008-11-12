@@ -3,10 +3,13 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
   <include path="default-customizer.dicon"/>
-  <include path="cubby-customizer.dicon"/>
+
+  <component name="propertyInterType" class="org.seasar.cubby.plugins.s2.aop.PropertyInterType">
+    <property name="trace">true</property>
+  </component>
 
   <component name="propertyInterTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
-    <property name="interTypeName">"aop.propertyInterType"</property>
+    <property name="interTypeName">"propertyInterType"</property>
   </component>
 
   <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
@@ -21,7 +24,7 @@
     </initMethod>
     <initMethod name="addCustomizer">
       <arg>
-        <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+        <component class="org.seasar.cubby.plugins.s2.customizer.ActionMethodCustomizer">
           <initMethod name="addInterceptorName">
             <arg>"j2ee.requiredTx"</arg>
           </initMethod>
@@ -31,7 +34,7 @@
     </initMethod>
     <initMethod name="addCustomizer">
       <arg>
-        <component class="org.seasar.cubby.customizer.ActionMethodCustomizer">
+        <component class="org.seasar.cubby.plugins.s2.customizer.ActionMethodCustomizer">
           <initMethod name="addInterceptorName">
             <arg>"authActionInterceptor"</arg>
           </initMethod>
@@ -48,8 +51,6 @@
         </component>
       </arg>
     </initMethod>
-    <initMethod name="addCustomizer"><arg>cubby.initializeCustomizer</arg></initMethod>
-    <initMethod name="addCustomizer"><arg>cubby.validationCustomizer</arg></initMethod>
   </component>
   <component name="serviceCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">

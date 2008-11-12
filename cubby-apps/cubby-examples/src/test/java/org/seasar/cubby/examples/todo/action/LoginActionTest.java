@@ -19,7 +19,7 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.examples.H2ScriptRunner;
 import org.seasar.cubby.examples.ScriptRunner;
-import org.seasar.cubby.unit.CubbyTestCase;
+import org.seasar.cubby.plugins.s2.unit.CubbyTestCase;
 
 public class LoginActionTest extends CubbyTestCase {
 
