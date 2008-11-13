@@ -18,6 +18,8 @@
 
   *{{{#Eclipse_を使った開発}Eclipse を使った開発}}
 
+  *{{{#NetBeans_を使った開発}NetBeans を使った開発}}
+
  *{{{#各種ファイル}各種ファイル}}
 
   *{{{#必要なライブラリ_WEB-INFlib}必要なライブラリ (WEB-INF/lib)}}
@@ -258,6 +260,10 @@ mvn eclipse:eclipse -DdownloadSources=true
 コードテンプレート
 
 []
+
+*{NetBeans を使った開発}
+
+ {{{http://sugmak.com/2008/10/netbeans65rc1cubby111.html}こちら}}をご参照ください。
 
 {各種ファイル}
 
