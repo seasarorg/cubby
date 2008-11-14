@@ -4,14 +4,16 @@
 <components namespace="cubby">
 	<include path="convention.dicon" />
 
+	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
+
+	<!-- request parsers -->
 	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
 
 	<!-- spi -->
 	<component class="org.seasar.cubby.plugins.s2.factory.S2PathResolverFactory" />
 	<component class="org.seasar.cubby.plugins.s2.factory.S2RequestParserFactory" />
 	<component class="org.seasar.cubby.plugins.s2.factory.S2ConverterFactory" />
-	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
-
+	<component class="org.seasar.cubby.plugins.s2.factory.S2ActionHandlerChainFactory" />
 
 	<!-- routing -->
 	<!--component class="org.seasar.cubby.routing.impl.S2PathResolverImpl" /-->
@@ -26,10 +28,20 @@
 	<!--component class="org.seasar.cubby.controller.impl.FormWrapperFactoryImpl"/-->
 
 	<!-- handlers -->
-	<component class="org.seasar.cubby.controller.chain.ExceptionActionHandler"/>
-	<component class="org.seasar.cubby.controller.chain.InitializeActionHandler"/>
-	<component class="org.seasar.cubby.controller.chain.ValidationActionHandler"/>
-	<component class="org.seasar.cubby.controller.chain.InvocationActionHandler"/>
+	<component name="actionHandlers" class="java.util.ArrayList">
+		<initMethod name="add">
+			<arg><component class="org.seasar.cubby.handler.impl.ExceptionActionHandler" /></arg>
+		</initMethod>
+		<initMethod name="add">
+			<arg><component class="org.seasar.cubby.handler.impl.InitializeActionHandler" /></arg>
+		</initMethod>
+		<initMethod name="add">
+			<arg><component class="org.seasar.cubby.handler.impl.ValidationActionHandler" /></arg>
+		</initMethod>
+		<initMethod name="add">
+			<arg><component class="org.seasar.cubby.handler.impl.InvocationActionHandler" /></arg>
+		</initMethod>
+	</component>
 
 	<!-- Validation -->
 	<!--component class="org.seasar.cubby.validator.impl.ValidationProcessorImpl"/-->

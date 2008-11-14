@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.chain;
+package org.seasar.cubby.handler.impl;
 
 import java.lang.reflect.Method;
 
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.handler.ActionHandler;
+import org.seasar.cubby.handler.ActionHandlerChain;
 
 public class InvocationActionHandler implements ActionHandler {
 

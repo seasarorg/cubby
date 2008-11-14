@@ -58,8 +58,15 @@ public class DefaultMessagesBehaviour implements MessagesBehaviour {
 	 */
 	public ResourceBundle getBundle(final Locale locale) {
 		final ResourceBundle bundle = ResourceBundle.getBundle(baseName,
-				locale == null ? Locale.getDefault() : locale);
+				sLocale(locale));
 		return bundle;
+	}
+
+	private Locale sLocale(Locale locale) {
+		if (locale == null) {
+			return Locale.getDefault();
+		}
+		return locale;
 	}
 
 	/**

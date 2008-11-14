@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.chain;
+package org.seasar.cubby.handler;
 
 public interface ActionHandlerChainFactory {
 

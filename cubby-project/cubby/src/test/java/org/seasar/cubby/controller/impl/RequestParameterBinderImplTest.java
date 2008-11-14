@@ -53,6 +53,7 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.cubby.factory.ConverterFactory;
@@ -76,7 +77,7 @@ public class RequestParameterBinderImplTest {
 				if (ConverterFactory.class.equals(type)) {
 					return type.cast(new MockConverterFactory());
 				}
-				return null;
+				throw new LookupException();
 			}
 
 		});

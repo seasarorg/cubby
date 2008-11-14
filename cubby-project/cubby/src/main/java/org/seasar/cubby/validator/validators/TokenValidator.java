@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.validator.validators;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

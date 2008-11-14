@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.mock.MockContainerProvider;
 
@@ -46,7 +47,7 @@ public class ThreadContextTest {
 				if (MessagesBehaviour.class.equals(type)) {
 					return type.cast(new DefaultMessagesBehaviour());
 				}
-				return null;
+				throw new LookupException();
 			}
 
 		});
@@ -54,21 +55,51 @@ public class ThreadContextTest {
 	}
 
 	@Test
-	public void getMessagesMap() {
+	public void getMessagesMap_ja() {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
 		replay(request);
+		ThreadContext.setRequest(request);
+
 		Map<?, ?> result = ThreadContext.getMessagesMap();
-		assertEquals("result.size()", 13, result.size());
+		assertEquals("result.size()", 14, result.size());
 		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
 				"{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
 	}
 
 	@Test
-	public void getMessagesResourceBundle() {
+	public void getMessagesMap_en() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
+		replay(request);
+		ThreadContext.setRequest(request);
+
+		Map<?, ?> result = ThreadContext.getMessagesMap();
+		assertEquals("result.size()", 14, result.size());
+		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
+				"{0} : selects <= {1}.", result.get("valid.arrayMaxSize"));
+	}
+
+	@Test
+	public void getMessagesResourceBundle_ja() {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
 		replay(request);
+		ThreadContext.setRequest(request);
+
+		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
+				.getMessagesResourceBundle();
+		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
+				.hasMoreElements());
+	}
+
+	@Test
+	public void getMessagesResourceBundle_en() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
+		replay(request);
+		ThreadContext.setRequest(request);
+
 		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
 				.getMessagesResourceBundle();
 		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
@@ -80,6 +111,7 @@ public class ThreadContextTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		replay(request);
 		ThreadContext.setRequest(request);
+
 		HttpServletRequest result = ThreadContext.getRequest();
 		assertSame("ThreadContext.getRequest()", request, result);
 		verify(request);

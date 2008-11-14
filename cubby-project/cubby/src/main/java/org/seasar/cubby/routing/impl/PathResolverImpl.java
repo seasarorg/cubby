@@ -16,7 +16,7 @@
 package org.seasar.cubby.routing.impl;
 
 import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

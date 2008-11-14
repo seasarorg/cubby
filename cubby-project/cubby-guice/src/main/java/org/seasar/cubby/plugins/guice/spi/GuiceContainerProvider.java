@@ -1,6 +1,7 @@
 package org.seasar.cubby.plugins.guice.spi;
 
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.plugins.guice.ModuleFactory;
 import org.seasar.cubby.spi.ContainerProvider;
 
@@ -27,14 +28,17 @@ public class GuiceContainerProvider implements ContainerProvider {
 			this.injector = injector;
 		}
 
-		public <T> T lookup(Class<T> type) {
+		public <T> T lookup(Class<T> type) throws LookupException {
 			try {
 				return injector.getInstance(type);
-			} catch (RuntimeException e) { // TODO
+			} catch (RuntimeException e) {	//TODO
+				System.out.println("************************");
 				e.printStackTrace();
-				return null;
+				System.out.println("************************");
+				throw new LookupException(e);
 			}
 		}
 
 	}
+
 }

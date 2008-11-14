@@ -19,7 +19,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -39,12 +39,11 @@ import org.seasar.cubby.controller.ActionProcessor;
 import org.seasar.cubby.controller.ActionResultWrapper;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.RoutingsDispatcher;
-import org.seasar.cubby.controller.chain.ActionHandlerChain;
-import org.seasar.cubby.controller.chain.ActionHandlerChainFactory;
 import org.seasar.cubby.factory.RequestParserFactory;
+import org.seasar.cubby.handler.ActionHandlerChain;
+import org.seasar.cubby.handler.ActionHandlerChainFactory;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.cubby.util.ServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,8 +137,11 @@ public class ActionProcessorImpl implements ActionProcessor {
 //		} else {
 //			actionHandlerChainFactory = new DefaultActionHandlerChainFactory();
 //		}
-		final ActionHandlerChainFactory actionHandlerChainFactory = ServiceFactory
-				.getProvider(ActionHandlerChainFactory.class);
+
+		final ActionHandlerChainFactory actionHandlerChainFactory = container
+				.lookup(ActionHandlerChainFactory.class);
+//		final ActionHandlerChainFactory actionHandlerChainFactory = ServiceFactory
+//				.getProvider(ActionHandlerChainFactory.class);
 		final ActionHandlerChain actionHandlerChain = actionHandlerChainFactory.getActionHandlerChain();
 		final ActionResult actionResult = actionHandlerChain.chain(request,
 				response, actionContext);

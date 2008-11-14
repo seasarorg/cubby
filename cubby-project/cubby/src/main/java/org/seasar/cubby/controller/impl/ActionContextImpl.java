@@ -16,7 +16,7 @@
 package org.seasar.cubby.controller.impl;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

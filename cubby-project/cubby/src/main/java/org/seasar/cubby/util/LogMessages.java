@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  * @author baba
  * @since 2.0.0
  */
-public class LoggerMessages {
+public class LogMessages {
 
 	/** リソースバンドル。 */
 	private static ResourceBundle resourceBundle = ResourceBundle

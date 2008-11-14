@@ -2,6 +2,7 @@ package org.seasar.cubby.util;
 
 import org.seasar.cubby.container.Container;
 import org.seasar.cubby.container.ContainerFactory;
+import org.seasar.cubby.container.LookupException;
 
 public class ServiceFactory {
 
@@ -12,15 +13,14 @@ public class ServiceFactory {
 	 * @param service
 	 * @return
 	 */
-	public static <S> S getProvider(Class<S> service) {
+	public static <S> S getProvider(final Class<S> service) {
 		final Container container = ContainerFactory.getContainer();
-		final S providerFromContainer = container.lookup(service);
-		if (providerFromContainer != null) {
-			return providerFromContainer;
+		try {
+			return container.lookup(service);
+		} catch (final LookupException e) {
+			final ServiceLoader<S> serviceLoader = ServiceLoader.load(service);
+			return serviceLoader.getProvider();
 		}
-		final ServiceLoader<S> serviceLoader = ServiceLoader.load(service);
-		final S providerFromServiceLoader = serviceLoader.getProvider();
-		return providerFromServiceLoader;
 	}
 
 }

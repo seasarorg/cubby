@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.net.MalformedURLException;
 import java.net.URL;

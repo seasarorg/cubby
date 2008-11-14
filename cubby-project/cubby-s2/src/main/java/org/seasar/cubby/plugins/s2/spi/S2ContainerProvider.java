@@ -16,6 +16,7 @@
 package org.seasar.cubby.plugins.s2.spi;
 
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.S2Container;
@@ -56,21 +57,19 @@ public class S2ContainerProvider implements ContainerProvider {
 
 		/**
 		 * {@inheritDoc}
+		 * @throws LookupException 
 		 */
-		@SuppressWarnings("unchecked")
-		public <T> T lookup(Class<T> type) {
+		public <T> T lookup(Class<T> type) throws LookupException {
 			try {
-				return (T) container().getComponent(type);
+				T component = type.cast(container().getComponent(type));
+				if (type == null) {
+					//TODO
+					throw new LookupException();
+				}
+				return component;
 			} catch (final ComponentNotFoundRuntimeException e) {
-				return null;
+				throw new LookupException(e);
 			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean has(Class<?> type) {
-			return container().hasComponentDef(type);
 		}
 
 		/**

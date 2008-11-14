@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 import java.io.StringWriter;

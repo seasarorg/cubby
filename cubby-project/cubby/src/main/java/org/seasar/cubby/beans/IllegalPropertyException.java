@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.beans;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 /**
  * プロパティの値の設定に失敗したときにスローされる例外です。

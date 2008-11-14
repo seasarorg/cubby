@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.controller.chain;
+package org.seasar.cubby.handler.impl;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 
@@ -28,6 +28,8 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.controller.RequestParameterBinder;
 import org.seasar.cubby.controller.impl.RequestParameterBinderImpl;
+import org.seasar.cubby.handler.ActionHandler;
+import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.util.CubbyUtils;
 
 /**
