@@ -27,7 +27,6 @@ public class HelloAction extends Action {
 	@Inject
 	private HelloService helloService;
 
-	@RequestParameter
 	private String name;
 
 	private String message;
@@ -40,6 +39,7 @@ public class HelloAction extends Action {
 		return name;
 	}
 
+	@RequestParameter
 	public void setName(String name) {
 		this.name = name;
 	}
