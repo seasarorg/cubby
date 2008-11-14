@@ -16,7 +16,7 @@
 package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.tags.TagUtils.toAttr;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 

@@ -13,13 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.controller.chain;
+package org.seasar.cubby.handler.impl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.handler.ActionHandler;
+import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationProcessor;
 import org.seasar.cubby.validator.impl.ValidationProcessorImpl;

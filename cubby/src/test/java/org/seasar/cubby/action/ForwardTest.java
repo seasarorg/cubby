@@ -40,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.factory.PathResolverFactory;
 import org.seasar.cubby.mock.MockActionContext;
@@ -74,7 +75,7 @@ public class ForwardTest {
 				if (PathResolverFactory.class.equals(type)) {
 					return type.cast(pathResolverFactory);
 				}
-				return null;
+				throw new LookupException();
 			}
 
 		});

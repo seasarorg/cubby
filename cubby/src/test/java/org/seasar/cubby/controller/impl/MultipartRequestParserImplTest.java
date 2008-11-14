@@ -53,10 +53,6 @@ public class MultipartRequestParserImplTest {
 	private String contentType;
 
 	@Before
-	public void setupContainer() {
-	}
-
-	@Before
 	@SuppressWarnings("unchecked")
 	public void setupRequest() {
 		request = createMock(HttpServletRequest.class);

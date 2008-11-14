@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.util;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.routing.impl;
 
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import org.seasar.cubby.routing.PathTemplateException;
 import org.seasar.cubby.routing.PathTemplateParser;

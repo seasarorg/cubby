@@ -27,13 +27,23 @@ import org.seasar.cubby.factory.impl.AbstractConverterFactory;
 public class MockConverterFactory extends AbstractConverterFactory {
 
 	private List<Converter> converters = Arrays.asList(new Converter[] {
-			new BigDecimalConverter(), new BigIntegerConverter(),
-			new BooleanConverter(), new ByteArrayFileItemConverter(),
-			new ByteConverter(), new CharacterConverter(), new DateConverter(),
-			new DoubleConverter(), new EnumConverter(), new FloatConverter(),
-			new InputStreamFileItemConverter(), new IntegerConverter(),
-			new LongConverter(), new ShortConverter(), new SqlDateConverter(),
-			new SqlTimeConverter(), new SqlTimestampConverter() });
+			new BigDecimalConverter(),
+			new BigIntegerConverter(),
+			new BooleanConverter(),
+			new ByteArrayFileItemConverter(),
+			new ByteConverter(),
+			new CharacterConverter(),
+			new DateConverter(),
+			new DoubleConverter(),
+			new EnumConverter(),
+			new FloatConverter(),
+			new InputStreamFileItemConverter(),
+			new IntegerConverter(),
+			new LongConverter(),
+			new ShortConverter(),
+			new SqlDateConverter(),
+			new SqlTimeConverter(),
+			new SqlTimestampConverter() });
 
 	@Override
 	protected Collection<Converter> getConverters() {

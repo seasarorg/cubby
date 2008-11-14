@@ -16,7 +16,7 @@
 package org.seasar.cubby.action;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 import java.lang.reflect.Method;

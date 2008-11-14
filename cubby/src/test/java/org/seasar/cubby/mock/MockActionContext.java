@@ -1,7 +1,7 @@
 package org.seasar.cubby.mock;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
-import static org.seasar.cubby.util.LoggerMessages.format;
+import static org.seasar.cubby.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

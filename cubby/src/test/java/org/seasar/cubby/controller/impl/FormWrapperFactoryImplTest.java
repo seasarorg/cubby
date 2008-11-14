@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.container.Container;
+import org.seasar.cubby.container.LookupException;
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.factory.ConverterFactory;
@@ -29,7 +30,7 @@ public class FormWrapperFactoryImplTest {
 				if (ConverterFactory.class.equals(type)) {
 					return type.cast(new MockConverterFactory());
 				}
-				return null;
+				throw new LookupException();
 			}
 
 		});

@@ -1,4 +1,4 @@
-package org.seasar.cubby.controller.chain;
+package org.seasar.cubby.handler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
