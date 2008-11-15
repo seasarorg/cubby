@@ -18,6 +18,7 @@ package org.seasar.cubby.controller.impl;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 
 //TODO
 public class ActionProcessorImplTest {

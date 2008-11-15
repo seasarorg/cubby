@@ -18,7 +18,6 @@ package org.seasar.cubby.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * アクションメソッド実行後の処理を表す結果オブジェクトのインターフェイス

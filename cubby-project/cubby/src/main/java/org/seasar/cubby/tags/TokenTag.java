@@ -15,8 +15,8 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
-import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 
@@ -26,9 +26,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.util.StringUtils;
-import org.seasar.cubby.util.TokenHelper;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.validator.validators.TokenValidator;
 
 /**

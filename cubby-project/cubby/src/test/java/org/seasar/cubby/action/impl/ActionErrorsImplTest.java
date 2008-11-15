@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FieldInfo;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 
 public class ActionErrorsImplTest {
 

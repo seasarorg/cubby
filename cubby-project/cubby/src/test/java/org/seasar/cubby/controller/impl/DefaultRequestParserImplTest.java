@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
 
 public class DefaultRequestParserImplTest {
 

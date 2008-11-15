@@ -24,10 +24,10 @@ import java.util.Map.Entry;
 import javax.servlet.jsp.JspTagException;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.ContainerFactory;
-import org.seasar.cubby.factory.PathResolverFactory;
-import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.ContainerFactory;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
 
 /**
  * リンク用の補助クラスです。

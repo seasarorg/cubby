@@ -17,8 +17,8 @@ package org.seasar.cubby.validator;
 
 import java.io.Serializable;
 
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 指定された {@link ActionResult} を実行する {@link ValidationFailBehaviour} です。

@@ -27,6 +27,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.internal.action.impl.FormatPatternImpl;
 
 public class FormatPatternImplTest {
 

@@ -19,9 +19,9 @@ import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.BeanDescFactory;
-import org.seasar.cubby.beans.PropertyDesc;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.BeanDescFactory;
+import org.seasar.cubby.internal.beans.PropertyDesc;
 
 /**
  * バリデーションのユーティリティクラスです。

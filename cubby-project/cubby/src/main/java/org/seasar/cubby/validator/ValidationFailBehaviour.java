@@ -15,8 +15,8 @@
  */
 package org.seasar.cubby.validator;
 
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 入力検証でエラーがあった場合の振る舞いです。

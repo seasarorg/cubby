@@ -3,6 +3,9 @@ package org.seasar.cubby.util;
 import java.util.Iterator;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.util.ServiceLoader;
+import org.seasar.cubby.internal.util.ServiceLoadingException;
+
 import static org.junit.Assert.*;
 
 public class ServiceLoaderTest {

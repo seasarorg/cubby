@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.validator;
 
-import static org.seasar.cubby.util.LogMessages.format;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.util.ArrayList;
 import java.util.Arrays;

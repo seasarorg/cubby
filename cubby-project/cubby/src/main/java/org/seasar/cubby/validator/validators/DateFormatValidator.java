@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.validator.validators;
 
-import static org.seasar.cubby.util.LogMessages.format;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.text.DateFormat;
 import java.text.ParsePosition;
@@ -23,8 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.util.ServiceFactory;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.ServiceFactory;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;

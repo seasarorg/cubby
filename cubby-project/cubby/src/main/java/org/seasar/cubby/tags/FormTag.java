@@ -30,9 +30,9 @@ import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
-import org.seasar.cubby.controller.FormWrapper;
-import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.cubby.controller.impl.FormWrapperFactoryImpl;
+import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.internal.controller.FormWrapperFactory;
+import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 
 /**
  * フォームを出力するタグライブラリ。

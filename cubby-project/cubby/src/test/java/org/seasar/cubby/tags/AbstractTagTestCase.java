@@ -40,9 +40,9 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.Before;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterFactory;
 

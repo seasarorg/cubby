@@ -40,15 +40,14 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.LookupException;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.RoutingException;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.RoutingException;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 public class RedirectTest {
 

@@ -26,10 +26,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionProcessor;
-import org.seasar.cubby.controller.ActionResultWrapper;
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.controller.impl.ActionProcessorImpl;
+import org.seasar.cubby.internal.controller.ActionProcessor;
+import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 
 /**
  * Cubby用のフィルター。

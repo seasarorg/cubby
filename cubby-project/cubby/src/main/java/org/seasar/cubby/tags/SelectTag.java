@@ -15,13 +15,13 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
-import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -34,9 +34,9 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.BeanDescFactory;
-import org.seasar.cubby.beans.PropertyDesc;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.BeanDescFactory;
+import org.seasar.cubby.internal.beans.PropertyDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -19,8 +19,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.seasar.cubby.routing.PathTemplateException;
-import org.seasar.cubby.routing.PathTemplateParser;
+import org.seasar.cubby.internal.routing.PathTemplateException;
+import org.seasar.cubby.internal.routing.PathTemplateParser;
+import org.seasar.cubby.internal.routing.impl.PathTemplateParserImpl;
 
 public class PathTemplateParserImplTest {
 

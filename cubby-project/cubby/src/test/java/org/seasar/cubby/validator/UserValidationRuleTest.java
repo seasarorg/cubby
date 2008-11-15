@@ -30,12 +30,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.controller.ActionContext;
+import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
 import org.seasar.cubby.mock.MockActionContext;
-import org.seasar.cubby.validator.impl.ValidationProcessorImpl;
 
 public class UserValidationRuleTest {
 

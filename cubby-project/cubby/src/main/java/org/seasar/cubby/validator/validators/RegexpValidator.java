@@ -18,7 +18,7 @@ package org.seasar.cubby.validator.validators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;

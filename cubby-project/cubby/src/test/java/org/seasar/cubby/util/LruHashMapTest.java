@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Iterator;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.util.LruHashMap;
 
 public class LruHashMapTest {
 

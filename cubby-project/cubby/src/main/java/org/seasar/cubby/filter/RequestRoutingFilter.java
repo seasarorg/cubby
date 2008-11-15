@@ -16,7 +16,7 @@
 package org.seasar.cubby.filter;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
-import static org.seasar.cubby.util.LogMessages.format;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,11 +35,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.routing.InternalForwardInfo;
-import org.seasar.cubby.routing.Router;
-import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.routing.impl.RouterImpl;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.routing.InternalForwardInfo;
+import org.seasar.cubby.internal.routing.Router;
+import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.routing.impl.RouterImpl;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

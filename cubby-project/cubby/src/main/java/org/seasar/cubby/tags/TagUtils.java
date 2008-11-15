@@ -30,8 +30,8 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 
 /**
  * カスタムタグで使用するユーティリティクラスです。

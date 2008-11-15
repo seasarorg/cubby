@@ -31,7 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 
 /**
  * 適用されたリクエストに対して、異常系の HTTP ステータスコードを返す {@link Filter} です。

@@ -28,6 +28,9 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.internal.util.LruHashMap;
+import org.seasar.cubby.internal.util.TokenHelper;
+
 import static org.easymock.EasyMock.*;
 
 public class TokenHelperTest {

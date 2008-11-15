@@ -16,7 +16,7 @@
 package org.seasar.cubby.action;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
-import static org.seasar.cubby.util.LogMessages.format;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -31,15 +31,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.ContainerFactory;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.factory.PathResolverFactory;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.util.CubbyUtils;
-import org.seasar.cubby.util.QueryStringBuilder;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.ContainerFactory;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.QueryStringBuilder;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

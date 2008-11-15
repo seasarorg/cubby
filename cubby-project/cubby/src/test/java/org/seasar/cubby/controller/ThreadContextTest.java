@@ -32,9 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.LookupException;
-import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.controller.MessagesBehaviour;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class ThreadContextTest {

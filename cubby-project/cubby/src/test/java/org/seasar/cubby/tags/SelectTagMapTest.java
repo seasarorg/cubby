@@ -26,7 +26,7 @@ import java.util.Map;
 import org.jdom.Element;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 
 public class SelectTagMapTest extends SimpleTagTestCase {
 
