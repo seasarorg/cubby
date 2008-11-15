@@ -23,12 +23,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.IllegalPropertyException;
-import org.seasar.cubby.beans.ParameterizedClassDesc;
-import org.seasar.cubby.beans.PropertyDesc;
-import org.seasar.cubby.beans.PropertyNotFoundException;
-import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.IllegalPropertyException;
+import org.seasar.cubby.internal.beans.ParameterizedClassDesc;
+import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.internal.beans.PropertyNotFoundException;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
 import org.seasar.framework.beans.IllegalPropertyRuntimeException;
 
 /**

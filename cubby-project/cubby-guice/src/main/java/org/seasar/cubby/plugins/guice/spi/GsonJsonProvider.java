@@ -1,6 +1,6 @@
 package org.seasar.cubby.plugins.guice.spi;
 
-import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.internal.spi.JsonProvider;
 
 import com.google.gson.Gson;
 

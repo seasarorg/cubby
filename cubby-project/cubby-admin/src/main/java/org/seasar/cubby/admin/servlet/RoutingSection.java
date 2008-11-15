@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.admin.servlet;
 
-import static org.seasar.cubby.util.CubbyUtils.escapeHtml;
+import static org.seasar.cubby.internal.util.CubbyUtils.escapeHtml;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,11 +29,11 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.ContainerFactory;
-import org.seasar.cubby.factory.PathResolverFactory;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.ContainerFactory;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.Routing;
 
 class RoutingSection implements Section {
 

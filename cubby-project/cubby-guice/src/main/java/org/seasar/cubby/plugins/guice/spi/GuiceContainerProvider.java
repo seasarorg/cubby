@@ -1,9 +1,9 @@
 package org.seasar.cubby.plugins.guice.spi;
 
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.LookupException;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.spi.ContainerProvider;
 import org.seasar.cubby.plugins.guice.ModuleFactory;
-import org.seasar.cubby.spi.ContainerProvider;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

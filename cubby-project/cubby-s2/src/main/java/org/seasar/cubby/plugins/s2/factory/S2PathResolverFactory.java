@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.util.ClassUtils;
+import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
-import org.seasar.cubby.util.ClassUtils;
-import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;

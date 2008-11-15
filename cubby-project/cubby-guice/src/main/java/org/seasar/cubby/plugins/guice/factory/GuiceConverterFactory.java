@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.factory.impl.AbstractCachedConverterFactory;
+import org.seasar.cubby.internal.factory.impl.AbstractCachedConverterFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;

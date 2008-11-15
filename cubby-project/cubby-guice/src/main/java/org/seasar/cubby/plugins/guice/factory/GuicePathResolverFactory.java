@@ -3,9 +3,9 @@ package org.seasar.cubby.plugins.guice.factory;
 import java.util.Collection;
 
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.factory.PathResolverFactory;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 
 import com.google.inject.Inject;
 

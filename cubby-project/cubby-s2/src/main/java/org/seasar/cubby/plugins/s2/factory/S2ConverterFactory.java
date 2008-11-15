@@ -22,10 +22,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.factory.impl.AbstractCachedConverterFactory;
+import org.seasar.cubby.internal.factory.impl.AbstractCachedConverterFactory;
+import org.seasar.cubby.internal.util.ClassUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
-import org.seasar.cubby.util.ClassUtils;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;

@@ -15,9 +15,9 @@
  */
 package org.seasar.cubby.plugins.s2.spi;
 
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.LookupException;
-import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.spi.ContainerProvider;
 import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;

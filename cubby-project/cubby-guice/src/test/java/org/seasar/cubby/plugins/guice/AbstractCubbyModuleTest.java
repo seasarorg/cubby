@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.plugins.guice.factory.GuicePathResolverFactory.ActionClassesFactory;
 
 import com.google.inject.Guice;
