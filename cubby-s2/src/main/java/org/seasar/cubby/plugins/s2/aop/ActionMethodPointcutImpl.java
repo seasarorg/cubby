@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.framework.aop.Pointcut;
 import org.seasar.framework.exception.EmptyRuntimeException;
 

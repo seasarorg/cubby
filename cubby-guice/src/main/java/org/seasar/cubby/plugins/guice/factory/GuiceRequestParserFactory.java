@@ -3,7 +3,7 @@ package org.seasar.cubby.plugins.guice.factory;
 import java.util.Collection;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.factory.impl.AbstractRequestParserFactory;
+import org.seasar.cubby.internal.factory.impl.AbstractRequestParserFactory;
 
 import com.google.inject.Inject;
 

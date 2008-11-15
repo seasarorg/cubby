@@ -21,10 +21,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.PropertyDesc;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
 import org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider;
-import org.seasar.cubby.spi.BeanDescProvider;
 
 public class S2BeanDescProviderTest {
 

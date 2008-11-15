@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.plugins.s2.unit;
 
-import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.validators.TokenValidator;
 

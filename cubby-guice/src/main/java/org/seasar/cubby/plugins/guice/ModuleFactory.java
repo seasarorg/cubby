@@ -1,6 +1,6 @@
 package org.seasar.cubby.plugins.guice;
 
-import org.seasar.cubby.util.ClassUtils;
+import org.seasar.cubby.internal.util.ClassUtils;
 
 import com.google.inject.Module;
 
