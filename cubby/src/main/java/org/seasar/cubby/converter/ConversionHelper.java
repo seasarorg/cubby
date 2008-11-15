@@ -13,31 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.factory;
+package org.seasar.cubby.converter;
 
-import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.action.FormatPattern;
 
 /**
- * {@link Converter コンバータ}のファクトリクラスです。
+ * 変換のヘルパクラス。
  * 
  * @author baba
  * @since 1.1.0
  */
-public interface ConverterFactory {
+public interface ConversionHelper {
 
 	/**
-	 * <code>converterType</code>への変換が可能なコンバータを返します。
-	 * <p>
-	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
-	 * </p>
+	 * 日付や時刻のフォーマットパターンを保持するクラスを取得します。
 	 * 
-	 * @param parameterType
-	 *            リクエストパラメータの型
-	 * @param objectType
-	 *            変換先のクラス
-	 * 
-	 * @return コンバータ
+	 * @return 日付や時刻のフォーマットパターンを保持するクラス
 	 */
-	Converter getConverter(Class<?> parameterType, Class<?> objectType);
+	FormatPattern getFormatPattern();
 
 }

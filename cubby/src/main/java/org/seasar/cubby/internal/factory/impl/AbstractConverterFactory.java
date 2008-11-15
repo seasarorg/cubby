@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.seasar.cubby.internal.converter.Converter;
+import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.internal.util.ClassUtils;
 

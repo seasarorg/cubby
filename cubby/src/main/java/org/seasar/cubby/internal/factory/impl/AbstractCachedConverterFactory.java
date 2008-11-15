@@ -3,7 +3,7 @@ package org.seasar.cubby.internal.factory.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.cubby.internal.converter.Converter;
+import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.util.ClassUtils;
 
 public abstract class AbstractCachedConverterFactory extends AbstractConverterFactory {

@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.internal.util.ServiceFactory;
 
 /**
