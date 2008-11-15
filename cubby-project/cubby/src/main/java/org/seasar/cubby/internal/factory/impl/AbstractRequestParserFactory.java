@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.internal.controller.RequestParser;
+import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.factory.RequestParserFactory;
 
 /**

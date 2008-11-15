@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.seasar.cubby.internal.controller.MessagesBehaviour;
+import org.seasar.cubby.controller.MessagesBehaviour;
 
 /**
  * メッセージの振る舞いのデフォルト実装です。

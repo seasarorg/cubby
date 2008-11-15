@@ -19,7 +19,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.internal.controller.RequestParser;
+import org.seasar.cubby.controller.RequestParser;
 
 /**
  * リクエスト解析器のデフォルト実装です。

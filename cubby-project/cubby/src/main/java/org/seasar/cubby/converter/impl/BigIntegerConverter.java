@@ -13,31 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.factory;
+package org.seasar.cubby.converter.impl;
 
-import org.seasar.cubby.converter.Converter;
+import java.math.BigInteger;
 
 /**
- * {@link Converter コンバータ}のファクトリクラスです。
+ * {@link BigInteger}への変換を行うコンバータです。
  * 
  * @author baba
  * @since 1.1.0
  */
-public interface ConverterFactory {
+public class BigIntegerConverter extends AbstractNumberConverter {
 
 	/**
-	 * <code>converterType</code>への変換が可能なコンバータを返します。
-	 * <p>
-	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
-	 * </p>
-	 * 
-	 * @param parameterType
-	 *            リクエストパラメータの型
-	 * @param objectType
-	 *            変換先のクラス
-	 * 
-	 * @return コンバータ
+	 * {@inheritDoc}
 	 */
-	Converter getConverter(Class<?> parameterType, Class<?> objectType);
+	public Class<?> getObjectType() {
+		return BigInteger.class;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Number convert(final Number number) {
+		return new BigInteger(number.toString());
+	}
 
 }

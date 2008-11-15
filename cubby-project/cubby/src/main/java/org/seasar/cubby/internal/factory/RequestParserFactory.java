@@ -2,7 +2,7 @@ package org.seasar.cubby.internal.factory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.internal.controller.RequestParser;
+import org.seasar.cubby.controller.RequestParser;
 
 public interface RequestParserFactory {
 

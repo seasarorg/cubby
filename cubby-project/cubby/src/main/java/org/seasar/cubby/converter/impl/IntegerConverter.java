@@ -13,31 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.factory;
-
-import org.seasar.cubby.converter.Converter;
+package org.seasar.cubby.converter.impl;
 
 /**
- * {@link Converter コンバータ}のファクトリクラスです。
+ * {@link Integer}への変換を行うコンバータです。
  * 
  * @author baba
  * @since 1.1.0
  */
-public interface ConverterFactory {
+public class IntegerConverter extends AbstractNumberConverter {
 
 	/**
-	 * <code>converterType</code>への変換が可能なコンバータを返します。
-	 * <p>
-	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
-	 * </p>
-	 * 
-	 * @param parameterType
-	 *            リクエストパラメータの型
-	 * @param objectType
-	 *            変換先のクラス
-	 * 
-	 * @return コンバータ
+	 * {@inheritDoc}
 	 */
-	Converter getConverter(Class<?> parameterType, Class<?> objectType);
+	public Class<?> getObjectType() {
+		return Integer.class;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Number convert(final Number number) {
+		return new Integer(number.intValue());
+	}
 
 }

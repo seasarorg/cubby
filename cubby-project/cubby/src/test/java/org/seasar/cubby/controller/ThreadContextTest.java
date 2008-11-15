@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.controller.MessagesBehaviour;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.mock.MockContainerProvider;
