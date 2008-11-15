@@ -23,10 +23,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.PropertyDesc;
-import org.seasar.cubby.beans.PropertyNotFoundException;
-import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.internal.beans.PropertyNotFoundException;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
 
 public class DefaultBeanDescProviderTest {
 

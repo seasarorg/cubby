@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.addClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
@@ -22,7 +23,6 @@ import static org.seasar.cubby.tags.TagUtils.formValue;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
-import static org.seasar.cubby.util.LogMessages.format;
 
 import java.io.IOException;
 import java.util.Collections;

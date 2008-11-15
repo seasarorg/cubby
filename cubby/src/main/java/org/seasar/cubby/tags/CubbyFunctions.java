@@ -25,8 +25,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.util.CubbyUtils;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.CubbyUtils;
 
 /**
  * Cubby の JSP functions を提供します。

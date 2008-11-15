@@ -1,6 +1,6 @@
 package org.seasar.cubby.mock;
 
-import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.internal.spi.JsonProvider;
 
 public class MockJsonProvider implements JsonProvider {
 

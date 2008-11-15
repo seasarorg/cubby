@@ -28,11 +28,11 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.BeanDescFactory;
-import org.seasar.cubby.beans.PropertyDesc;
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.util.IteratorEnumeration;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.BeanDescFactory;
+import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.IteratorEnumeration;
 
 /**
  * 特別な属性を取得するためのリクエストのラッパです。

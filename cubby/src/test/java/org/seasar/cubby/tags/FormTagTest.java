@@ -28,13 +28,13 @@ import org.jdom.Element;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.factory.ConverterFactory;
-import org.seasar.cubby.factory.PathResolverFactory;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.factory.ConverterFactory;
+import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterFactory;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 public class FormTagTest extends AbstractStandardTagTestCase {
 

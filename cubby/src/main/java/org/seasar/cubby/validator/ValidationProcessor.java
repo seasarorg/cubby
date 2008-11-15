@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.controller.ActionContext;
 
 /**
  * 入力検証処理です。

@@ -36,9 +36,10 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.routing.InternalForwardInfo;
-import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.routing.RoutingException;
+import org.seasar.cubby.internal.routing.InternalForwardInfo;
+import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.routing.RoutingException;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 
 public class PathResolverImplTest {
 

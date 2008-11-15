@@ -28,7 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.seasar.cubby.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext;
 
 public class CubbyFunctionsTest {
 

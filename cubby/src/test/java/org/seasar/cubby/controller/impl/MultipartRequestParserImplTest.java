@@ -38,8 +38,10 @@ import org.apache.commons.fileupload.servlet.ServletRequestContext;
 import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.controller.RequestParser;
+import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.internal.controller.impl.MultipartRequestParserImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class MultipartRequestParserImplTest {

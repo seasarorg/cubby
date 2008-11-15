@@ -17,7 +17,7 @@ package org.seasar.cubby.validator.validators;
 
 import java.math.BigDecimal;
 
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;

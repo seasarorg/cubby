@@ -28,8 +28,9 @@ import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.routing.impl.PathResolverImpl.RoutingComparator;
+import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.routing.impl.RoutingImpl;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl.RoutingComparator;
 
 public class RoutingComparatorTest {
 

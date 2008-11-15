@@ -16,7 +16,6 @@
 package org.seasar.cubby.action;
 
 import org.junit.Test;
-import org.seasar.cubby.controller.ActionContext;
 import org.seasar.cubby.mock.MockActionContext;
 
 public class DirectTest {

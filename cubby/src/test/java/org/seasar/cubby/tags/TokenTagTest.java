@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.jdom.Element;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.util.TokenHelper;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.TokenHelper;
 
 public class TokenTagTest extends SimpleTagTestCase {
 

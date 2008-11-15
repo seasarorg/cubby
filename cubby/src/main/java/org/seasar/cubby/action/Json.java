@@ -22,9 +22,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.spi.JsonProvider;
-import org.seasar.cubby.util.StringUtils;
+import org.seasar.cubby.internal.spi.JsonProvider;
+import org.seasar.cubby.internal.util.StringUtils;
 
 /**
  * JSON 形式のレスポンスを返す {@link ActionResult} です。

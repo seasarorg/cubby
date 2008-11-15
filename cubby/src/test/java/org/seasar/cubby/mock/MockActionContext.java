@@ -1,23 +1,23 @@
 package org.seasar.cubby.mock;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
-import static org.seasar.cubby.util.LogMessages.format;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.beans.BeanDesc;
-import org.seasar.cubby.beans.BeanDescFactory;
-import org.seasar.cubby.beans.PropertyDesc;
-import org.seasar.cubby.controller.ActionContext;
-import org.seasar.cubby.controller.ActionResultWrapper;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.internal.beans.BeanDesc;
+import org.seasar.cubby.internal.beans.BeanDescFactory;
+import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.internal.controller.ActionResultWrapper;
 
 public class MockActionContext implements ActionContext {
 

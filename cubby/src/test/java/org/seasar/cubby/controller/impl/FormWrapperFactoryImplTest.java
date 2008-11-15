@@ -10,11 +10,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.container.Container;
-import org.seasar.cubby.container.LookupException;
-import org.seasar.cubby.controller.FormWrapper;
-import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.cubby.factory.ConverterFactory;
+import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.internal.controller.FormWrapperFactory;
+import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
+import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterFactory;
 

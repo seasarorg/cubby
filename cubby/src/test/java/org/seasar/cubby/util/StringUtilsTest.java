@@ -18,6 +18,7 @@ package org.seasar.cubby.util;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.util.StringUtils;
 
 public class StringUtilsTest {
 

@@ -34,8 +34,8 @@ import javax.servlet.http.HttpSession;
 
 import org.easymock.IAnswer;
 import org.junit.Test;
-import org.seasar.cubby.controller.ThreadContext;
-import org.seasar.cubby.util.TokenHelper;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.validator.ValidationContext;
 
 public class TokenValidatorTest {
