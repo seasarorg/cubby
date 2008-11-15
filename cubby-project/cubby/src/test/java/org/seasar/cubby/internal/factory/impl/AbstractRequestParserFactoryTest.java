@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
 import org.seasar.cubby.internal.factory.RequestParserFactory;
 import org.seasar.cubby.internal.factory.impl.AbstractRequestParserFactory;
 

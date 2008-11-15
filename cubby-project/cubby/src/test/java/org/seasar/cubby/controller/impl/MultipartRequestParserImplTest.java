@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.controller.impl;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
@@ -40,8 +40,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
-import org.seasar.cubby.internal.controller.impl.MultipartRequestParserImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class MultipartRequestParserImplTest {
