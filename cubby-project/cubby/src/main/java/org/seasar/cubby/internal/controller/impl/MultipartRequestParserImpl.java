@@ -34,10 +34,10 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.controller.RequestParseException;
 import org.seasar.cubby.internal.util.ServiceFactory;
 import org.seasar.cubby.internal.util.StringUtils;
 

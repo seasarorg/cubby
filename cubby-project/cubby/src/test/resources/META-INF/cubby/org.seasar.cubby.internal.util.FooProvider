@@ -1,0 +1,5 @@
+# comment
+	org.seasar.cubby.internal.util.FooProviderImpl1
+
+org.seasar.cubby.internal.util.FooProviderImpl2 #comment
+	#

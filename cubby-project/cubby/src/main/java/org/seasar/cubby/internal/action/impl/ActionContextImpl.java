@@ -38,7 +38,7 @@ import org.seasar.cubby.internal.beans.PropertyDesc;
  * @author baba
  * @since 2.0.0
  */
-class ActionContextImpl implements ActionContext {
+public class ActionContextImpl implements ActionContext {
 
 	/** アクション。 */
 	private final Action action;
@@ -69,7 +69,7 @@ class ActionContextImpl implements ActionContext {
 	 * @param flashMap
 	 *            揮発性メッセージ
 	 */
-	ActionContextImpl(final Action action,
+	public ActionContextImpl(final Action action,
 			final Class<? extends Action> actionClass,
 			final Method actionMethod, final ActionErrors actionErrors,
 			final Map<String, Object> flashMap) {
@@ -162,7 +162,6 @@ class ActionContextImpl implements ActionContext {
 			throw new IllegalStateException(type.toString());
 		}
 	}
-
 
 	/**
 	 * {@inheritDoc}
