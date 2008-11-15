@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.converter.impl.BigIntegerConverter;
@@ -33,7 +34,6 @@ import org.seasar.cubby.handler.impl.ExceptionActionHandler;
 import org.seasar.cubby.handler.impl.InitializeActionHandler;
 import org.seasar.cubby.handler.impl.InvocationActionHandler;
 import org.seasar.cubby.handler.impl.ValidationActionHandler;
-import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
 import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.factory.RequestParserFactory;

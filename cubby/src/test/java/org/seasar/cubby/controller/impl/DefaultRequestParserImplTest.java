@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.controller.impl;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.seasar.cubby.internal.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
 
 public class DefaultRequestParserImplTest {
 
