@@ -1,16 +1,16 @@
 package org.seasar.cubby.wiki.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.Id;
+//import javax.persistence.Table;
+//
+//@Entity
+//@Table
 public class Page {
 
-	@Id
-	@GeneratedValue
+//	@Id
+//	@GeneratedValue
 	private Integer id;
 	
 	private String name;

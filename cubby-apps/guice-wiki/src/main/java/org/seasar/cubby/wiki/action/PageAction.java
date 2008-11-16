@@ -26,14 +26,20 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 import org.seasar.cubby.wiki.entity.Page;
 import org.seasar.cubby.wiki.service.PageService;
 import org.seasar.cubby.wiki.service.WikiService;
-import org.seasar.framework.beans.util.Beans;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.RequestScoped;
 
 
+@RequestScoped
 @Path("/")
 public class PageAction extends Action {
 
-	public PageService pageService;
-	public WikiService wikiService;
+	@Inject
+	private PageService pageService;
+	@Inject
+	private WikiService wikiService;
+	
 	public HttpServletRequest request; 
 	
 	public final ValidationRules saveValidation = new DefaultValidationRules() {
@@ -61,17 +67,10 @@ public class PageAction extends Action {
 		}
 	}
 	
-	@RequestParameter
-	public Page page;
-	
-	@RequestParameter
-	public Integer id;
-	
-	@RequestParameter
-	public String name;
-	
-	@RequestParameter
-	public String content;
+	private Page page;
+	private Integer id;
+	private String name;
+	private String content;
 
 	@Accept(GET)
 	public ActionResult index() {
@@ -86,7 +85,9 @@ public class PageAction extends Action {
 			name = request.getParameter("page");
 			return new Forward("edit.jsp");
 		}
-		Beans.copy(page, this).execute();
+		this.id = page.getId();
+		this.name = page.getName();
+		this.content = page.getContent();
 		return new Forward("index.jsp");
 	}
 	
@@ -100,7 +101,9 @@ public class PageAction extends Action {
 	@Accept(GET)
 	@Path(value="/pages/edit/{page,.+}", priority=0)
 	public ActionResult edit() throws Exception {
-		Beans.copy(page, this).execute();
+		this.id = page.getId();
+		this.name = page.getName();
+		this.content = page.getContent();
 		return new Forward("edit.jsp");
 	}
 
@@ -108,7 +111,10 @@ public class PageAction extends Action {
 	@Path("/pages/")
 	@Validation(rules="saveValidation", errorPage="edit.jsp")
 	public ActionResult save() throws Exception {
-		page = Beans.createAndCopy(Page.class, this).execute();
+		Page page = new Page();
+		page.setId(this.id);
+		page.setName(this.name);
+		page.setContent(this.content);
 		pageService.save(page);
 		flash.put("notice", Messages.getText("msg.updated"));
 		return new Redirect(PageAction.class, "show")
@@ -121,5 +127,41 @@ public class PageAction extends Action {
 	
 	public String getPageContent() {
 		return wikiService.render(page.getContent());
+	}
+
+	public Page getPage() {
+		return page;
+	}
+
+	@RequestParameter
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	@RequestParameter
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@RequestParameter
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	@RequestParameter
+	public void setContent(String content) {
+		this.content = content;
 	}
 }
