@@ -20,6 +20,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -27,8 +28,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,6 +53,7 @@ public class CubbyHttpServletRequestWrapperTest {
 	@SuppressWarnings("unchecked")
 	public void setupRequest() {
 		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+		final Hashtable<String, String[]> parameters = new Hashtable<String, String[]>();
 		request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(String.class.cast(anyObject())))
 				.andStubAnswer(new IAnswer<Object>() {
@@ -77,6 +81,40 @@ public class CubbyHttpServletRequestWrapperTest {
 					}
 
 				});
+		expect(request.getParameter(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
+
+					public String answer() throws Throwable {
+						return parameters.get(String.class
+								.cast(getCurrentArguments()[0]))[0];
+					}
+
+				});
+		expect(request.getParameterMap()).andStubAnswer(
+				new IAnswer<? extends Map>() {
+
+					public Map answer() throws Throwable {
+						return parameters;
+					}
+
+				});
+		expect(request.getParameterNames()).andAnswer(
+				new IAnswer<Enumeration>() {
+
+					public Enumeration answer() throws Throwable {
+						return parameters.keys();
+					}
+
+				});
+		expect(request.getParameterValues(isA(String.class))).andAnswer(
+				new IAnswer<String[]>() {
+
+					public String[] answer() throws Throwable {
+						return parameters.get(String.class
+								.cast(getCurrentArguments()[0]));
+					}
+
+				});
 		replay(request);
 	}
 
@@ -94,7 +132,7 @@ public class CubbyHttpServletRequestWrapperTest {
 				.contains(CubbyConstants.ATTR_ACTION));
 
 		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-				request);
+				request, new HashMap<String, String[]>());
 		Action action = new MockAction();
 		wrapper.setAttribute(CubbyConstants.ATTR_ACTION, action);
 

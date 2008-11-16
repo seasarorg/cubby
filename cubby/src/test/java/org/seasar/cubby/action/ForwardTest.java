@@ -28,7 +28,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +61,10 @@ public class ForwardTest {
 
 	@Before
 	public void setupContainer() {
+		final List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+		actionClasses.add(MockAction.class);
 		final PathResolver pathResolver = new PathResolverImpl();
+		pathResolver.addAllActionClasses(actionClasses);
 		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
 
 			public PathResolver getPathResolver() {
@@ -162,20 +166,17 @@ public class ForwardTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void forwardByClassAndMethodName() throws Exception {
 		Method method = action.getClass().getMethod("dummy1");
 		ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
-		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
+				isA(Routing.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
-				assertNotNull(routings);
-				assertEquals(1, routings.size());
-				Routing routing = routings.get(null);
+				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("dummy2");
@@ -184,33 +185,29 @@ public class ForwardTest {
 			}
 
 		});
-		expect(
-				request
-						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY))
-				.andReturn(requestDispatcher);
+		expect(request.getRequestDispatcher("/mock/dummy2/5/abc")).andReturn(
+				requestDispatcher);
 		requestDispatcher.forward(request, response);
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward(MockAction.class, "dummy2");
+		Forward forward = new Forward(MockAction.class, "dummy2").param(
+				"value1", "5").param("value2", "abc");
 		forward.execute(actionContext, request, response);
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void forwardByClassAndIndex() throws Exception {
 		Method method = action.getClass().getMethod("dummy1");
 		ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
-		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
+				isA(Routing.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
-				assertNotNull(routings);
-				assertEquals(1, routings.size());
-				Routing routing = routings.get(null);
+				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("index");
@@ -219,10 +216,8 @@ public class ForwardTest {
 			}
 
 		});
-		expect(
-				request
-						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY))
-				.andReturn(requestDispatcher);
+		expect(request.getRequestDispatcher("/mock/")).andReturn(
+				requestDispatcher);
 		requestDispatcher.forward(request, response);
 		expectLastCall();
 		replay(request, requestDispatcher, response);
@@ -231,20 +226,18 @@ public class ForwardTest {
 		forward.execute(actionContext, request, response);
 	}
 
-	@SuppressWarnings("unchecked")
+	@Test
 	public void forwardByClassAndMethodNameWithParam() throws Exception {
 		Method method = action.getClass().getMethod("dummy1");
 		ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
-		request.setAttribute(eq(CubbyConstants.ATTR_ROUTINGS), isA(Map.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
+				isA(Routing.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Map<String, Routing> routings = (Map<String, Routing>) getCurrentArguments()[1];
-				assertNotNull(routings);
-				assertEquals(1, routings.size());
-				Routing routing = routings.get(null);
+				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("dummy2");
@@ -253,10 +246,7 @@ public class ForwardTest {
 			}
 
 		});
-		expect(
-				request
-						.getRequestDispatcher(CubbyConstants.INTERNAL_FORWARD_DIRECTORY
-								+ "?value1=123&value2=456")).andReturn(
+		expect(request.getRequestDispatcher("/mock/dummy2/123/456")).andReturn(
 				requestDispatcher);
 		requestDispatcher.forward(request, response);
 		expectLastCall();
