@@ -22,7 +22,7 @@
 </div>
 <div id="main">
 <c:import url="common/errors.jsp"></c:import>
-<t:form actionClass="org.seasar.cubby.wiki.action.PageAction" actionMethod="save" value="${action}"
+<t:form actionClass="org.seasar.cubby.wiki.action.PageAction" actionMethod="save" value="${action.page}"
 	method="post" class="editpage">
 	<t:input type="hidden" name="id"/>
 	<t:input type="text" name="name" size="100"/><br/>

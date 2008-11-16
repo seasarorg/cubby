@@ -1,20 +1,21 @@
 package org.seasar.cubby.wiki.entity;
 
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
-//
-//@Entity
-//@Table
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
 public class Page {
 
-//	@Id
-//	@GeneratedValue
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private String content;
 
 	public Integer getId() {

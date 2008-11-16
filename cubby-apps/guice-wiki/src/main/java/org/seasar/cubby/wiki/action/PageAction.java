@@ -6,6 +6,7 @@ import static org.seasar.cubby.action.RequestMethod.POST;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Accept;
@@ -39,8 +40,11 @@ public class PageAction extends Action {
 	private PageService pageService;
 	@Inject
 	private WikiService wikiService;
+	@Inject
+	private HttpServletRequest request; 
+	@Inject
+	private EntityManager entityManager;
 	
-	public HttpServletRequest request; 
 	
 	public final ValidationRules saveValidation = new DefaultValidationRules() {
 		public void initialize() {
@@ -74,6 +78,7 @@ public class PageAction extends Action {
 
 	@Accept(GET)
 	public ActionResult index() {
+        page = entityManager.find(Page.class, 1);
 		return new Forward(PageAction.class, "show")
 			.param("page", "FrontPage");
 	}
@@ -163,5 +168,9 @@ public class PageAction extends Action {
 	@RequestParameter
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public ValidationRules getSaveValidation() {
+		return saveValidation;
 	}
 }

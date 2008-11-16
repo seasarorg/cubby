@@ -1,35 +1,47 @@
 package org.seasar.cubby.wiki.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+
 import org.seasar.cubby.wiki.entity.Page;
+
+import com.google.inject.Inject;
 
 
 public class PageService {
 
-//	public JdbcManager jdbcManager;
+	@Inject
+	private EntityManager entityManager;
 	
 	public Page getPageById(Integer id) {
-//		return jdbcManager.from(Page.class).id(id).getSingleResult();
-		return new Page();
+		return entityManager.find(Page.class, id);
 	}
 
 	public Page getPageByName(String name) {
-//		return jdbcManager.from(Page.class).where("name=?", name).getSingleResult();
-		return new Page();
+		try {
+			return (Page) entityManager
+			.createQuery("SELECT p FROM Page p where p.name = :name")
+			.setParameter("name", name)
+			.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		}
 	}
 
 	public void save(Page page) {
-//		if (page.getId() == null) {
-//			jdbcManager.insert(page).excludesNull().execute();
-//		} else {
-//			jdbcManager.update(page).excludesNull().execute();
-//		}
+		if (page.getId() == null) {
+			entityManager.persist(page);
+		} else {
+			entityManager.merge(page);
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Page> getPages() {
-//		return jdbcManager.from(Page.class).orderBy("name").getResultList();
-		return new ArrayList<Page>();
+		return (List<Page>) entityManager
+		.createQuery("SELECT p FROM Page p order by p.name")
+		.getResultList();
 	}
 }
