@@ -31,10 +31,6 @@ import org.seasar.cubby.internal.util.ServiceFactory;
  */
 public class ThreadContext {
 
-	// /** デフォルトのメッセージのふるまい。 */
-	// private static final MessagesBehaviour DEFAULT_MESSAGES_BEHAVIOUR = new
-	// DefaultMessagesBehaviour();
-
 	/** ThreadContext を保存するスレッドローカル。 */
 	private static final ThreadLocal<ThreadContext> CONTEXT = new ThreadLocal<ThreadContext>() {
 
@@ -70,17 +66,6 @@ public class ThreadContext {
 	public static void setRequest(final HttpServletRequest request) {
 		CONTEXT.get().request = request;
 	}
-
-	//TODO
-	// /**
-	// * Cubby の全体的な設定情報を取得します。
-	// *
-	// * @return Cubby の全体的な設定情報
-	// */
-	// public static CubbyConfiguration getConfiguration() {
-	// final Container container = ContainerFactory.getContainer();
-	// return container.lookup(CubbyConfiguration.class);
-	// }
 
 	/**
 	 * 現在の実行スレッドに関連付けられたリクエストに対応するメッセージ用の {@link ResourceBundle} を取得します。
@@ -126,13 +111,6 @@ public class ThreadContext {
 		if (context.messagesBehaviour == null) {
 			context.messagesBehaviour = ServiceFactory
 					.getProvider(MessagesBehaviour.class);
-			// final Container container = ContainerFactory.getContainer();
-			// if (container.has(MessagesBehaviour.class)) {
-			// context.messagesBehaviour = container
-			// .lookup(MessagesBehaviour.class);
-			// } else {
-			// context.messagesBehaviour = DEFAULT_MESSAGES_BEHAVIOUR;
-			// }
 		}
 		return context.messagesBehaviour;
 	}
