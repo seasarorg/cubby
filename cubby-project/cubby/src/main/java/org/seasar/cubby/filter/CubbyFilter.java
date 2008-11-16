@@ -138,10 +138,8 @@ public class CubbyFilter implements Filter {
 	 * フィルター処理。
 	 * <p>
 	 * リクエストされた URI に対応する内部フォワード情報が {@link Router} から取得できた場合は、そこに設定されている
-	 * {@link InternalForwardInfo#getOnSubmitRoutings()} をリクエストに設定し、
-	 * {@link InternalForwardInfo#getInternalForwardPath()} へフォワードします。 フォワード先は
-	 * {@link CubbyFilter} が処理することを期待します。 URI
-	 * に対応する内部フォワード情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を移譲します。
+	 * {@link Info#getOnSubmitRoutings()} をリクエストに設定し、 {@link CubbyFilter}
+	 * が処理することを期待します。 URI に対応する内部フォワード情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を移譲します。
 	 * </p>
 	 * <p>
 	 * リクエストの処理を {@link ActionProcessor} に委譲します。
@@ -173,7 +171,6 @@ public class CubbyFilter implements Filter {
 		if (pathInfo != null) {
 			final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
 					request, pathInfo.getURIParameters());
-			ThreadContext.setRequest(wrappedRequest);
 
 			final Map<String, Object[]> parameterMap = parseRequest(wrappedRequest);
 			request.setAttribute(ATTR_PARAMS, parameterMap);
@@ -182,23 +179,30 @@ public class CubbyFilter implements Filter {
 					.getOnSubmitRoutings();
 			final Routing routing = dispatch(routings, parameterMap);
 
-			try {
-				final ActionResultWrapper actionResultWrapper = actionProcessor
-						.process(wrappedRequest, response, routing);
-				actionResultWrapper.execute(wrappedRequest, response);
-			} catch (final Exception e) {
-				if (e instanceof IOException) {
-					throw IOException.class.cast(e);
-				} else if (e instanceof ServletException) {
-					throw ServletException.class.cast(e);
-				} else {
-					throw new ServletException(e);
-				}
-			} finally {
-				ThreadContext.remove();
-			}
+			invoke(wrappedRequest, response, routing);
 		} else {
 			chain.doFilter(request, response);
+		}
+	}
+
+	private void invoke(final HttpServletRequest request,
+			final HttpServletResponse response, final Routing routing)
+			throws IOException, ServletException {
+		ThreadContext.setRequest(request);
+		try {
+			final ActionResultWrapper actionResultWrapper = actionProcessor
+					.process(request, response, routing);
+			actionResultWrapper.execute(request, response);
+		} catch (final Exception e) {
+			if (e instanceof IOException) {
+				throw IOException.class.cast(e);
+			} else if (e instanceof ServletException) {
+				throw ServletException.class.cast(e);
+			} else {
+				throw new ServletException(e);
+			}
+		} finally {
+			ThreadContext.remove();
 		}
 	}
 

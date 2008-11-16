@@ -18,7 +18,6 @@ package org.seasar.cubby.internal.routing.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -32,14 +31,12 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.RoutingException;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 
 public class PathResolverImplTest {
 
@@ -105,11 +102,8 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testRoot1() throws Exception {
-		PathInfo info = pathResolver.getPathInfo("/",
-				"GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/", "GET", "UTF-8");
 		assertNotNull(info);
-		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
-				.getInternalForwardPath());
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -118,15 +112,15 @@ public class PathResolverImplTest {
 		assertEquals(MockRootAction.class.getMethod("index"), routing
 				.getMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(0, uriParameters.size());
 	}
 
 	@Test
 	public void testRoot2() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/dummy1", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/dummy1", "GET", "UTF-8");
 		assertNotNull(info);
-		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
-				.getInternalForwardPath());
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -135,15 +129,16 @@ public class PathResolverImplTest {
 		assertEquals(MockRootAction.class.getMethod("dummy1"), routing
 				.getMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(0, uriParameters.size());
 	}
 
 	@Test
 	public void testDefault1() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/mock/update", "GET", "UTF-8");
+		PathInfo info = pathResolver
+				.getPathInfo("/mock/update", "GET", "UTF-8");
 		assertNotNull(info);
-		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
-				.getInternalForwardPath());
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -151,15 +146,16 @@ public class PathResolverImplTest {
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("update"), routing.getMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(0, uriParameters.size());
 	}
 
 	@Test
 	public void testDefault2() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/mock/create", "GET", "UTF-8");
+		PathInfo info = pathResolver
+				.getPathInfo("/mock/create", "GET", "UTF-8");
 		assertNotNull(info);
-		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
-				.getInternalForwardPath());
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -167,15 +163,16 @@ public class PathResolverImplTest {
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("insert"), routing.getMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(0, uriParameters.size());
 	}
 
 	@Test
 	public void testDefault3() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/mock/delete/10", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/mock/delete/10", "GET",
+				"UTF-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -183,26 +180,25 @@ public class PathResolverImplTest {
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("delete"), routing.getMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(1, query.getParameterSize());
-		assertEquals(1, query.getParam("value").size());
-		assertEquals("10", query.getParam("value").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(1, uriParameters.size());
+		String[] value = uriParameters.get("value");
+		assertEquals(1, value.length);
+		assertEquals("10", value[0]);
 	}
 
 	@Test
 	public void testDefault4() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/mock/delete/a", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/mock/delete/a", "GET",
+				"UTF-8");
 		assertNull(info);
 	}
 
 	@Test
 	public void testDefault5() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/mock/cubby", "GET", "UTf-8");
+		PathInfo info = pathResolver.getPathInfo("/mock/cubby", "GET", "UTf-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -210,18 +206,19 @@ public class PathResolverImplTest {
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("name"), routing.getMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(1, query.getParam("name").size());
-		assertEquals("cubby", query.getParam("name").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(1, uriParameters.size());
+		String[] value = uriParameters.get("name");
+		assertEquals(1, value.length);
+		assertEquals("cubby", value[0]);
 	}
 
 	@Test
 	public void testPath1() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/foo/4/update", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/foo/4/update", "GET",
+				"UTF-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -230,19 +227,19 @@ public class PathResolverImplTest {
 		assertEquals(MockPathAction.class.getMethod("update"), routing
 				.getMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(1, query.getParameterSize());
-		assertEquals(1, query.getParam("id").size());
-		assertEquals("4", query.getParam("id").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(1, uriParameters.size());
+		String[] value = uriParameters.get("id");
+		assertEquals(1, value.length);
+		assertEquals("4", value[0]);
 	}
 
 	@Test
 	public void testPath2() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/foo/4/create", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/foo/4/create", "GET",
+				"UTF-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -251,19 +248,19 @@ public class PathResolverImplTest {
 		assertEquals(MockPathAction.class.getMethod("insert"), routing
 				.getMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(1, query.getParameterSize());
-		assertEquals(1, query.getParam("id").size());
-		assertEquals("4", query.getParam("id").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(1, uriParameters.size());
+		String[] value = uriParameters.get("id");
+		assertEquals(1, value.length);
+		assertEquals("4", value[0]);
 	}
 
 	@Test
 	public void testPath3() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/foo/4/delete/10", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/foo/4/delete/10", "GET",
+				"UTF-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -272,28 +269,29 @@ public class PathResolverImplTest {
 		assertEquals(MockPathAction.class.getMethod("delete"), routing
 				.getMethod());
 		assertEquals(2, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(2, query.getParameterSize());
-		assertEquals(1, query.getParam("id").size());
-		assertEquals("4", query.getParam("id").get(0));
-		assertEquals(1, query.getParam("value").size());
-		assertEquals("10", query.getParam("value").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(2, uriParameters.size());
+		String[] id = uriParameters.get("id");
+		assertEquals(1, id.length);
+		assertEquals("4", id[0]);
+		String[] value = uriParameters.get("value");
+		assertEquals(1, value.length);
+		assertEquals("10", value[0]);
 	}
 
 	@Test
 	public void testPath4() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/foo/4/delete/a", "GET", "UTF-8");
+		PathInfo info = pathResolver.getPathInfo("/foo/4/delete/a", "GET",
+				"UTF-8");
 		assertNull(info);
 	}
 
 	@Test
 	public void testPath5() throws Exception {
-		PathInfo info = pathResolver.getPathInfo(
-				"/foo/4/cubby", "GET", "UTF-8");
+		PathInfo info = pathResolver
+				.getPathInfo("/foo/4/cubby", "GET", "UTF-8");
 		assertNotNull(info);
-		assertTrue(info.getInternalForwardPath().startsWith(
-				CubbyConstants.INTERNAL_FORWARD_DIRECTORY));
 		Map<String, Routing> routings = info.getOnSubmitRoutings();
 		assertNotNull(routings);
 		assertEquals(1, routings.size());
@@ -302,11 +300,15 @@ public class PathResolverImplTest {
 		assertEquals(MockPathAction.class.getMethod("name"), routing
 				.getMethod());
 		assertEquals(2, routing.getUriParameterNames().size());
-		Query query = new Query(info.getInternalForwardPath());
-		assertEquals(1, query.getParam("id").size());
-		assertEquals("4", query.getParam("id").get(0));
-		assertEquals(1, query.getParam("name").size());
-		assertEquals("cubby", query.getParam("name").get(0));
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(2, uriParameters.size());
+		String[] id = uriParameters.get("id");
+		assertEquals(1, id.length);
+		assertEquals("4", id[0]);
+		String[] value = uriParameters.get("name");
+		assertEquals(1, value.length);
+		assertEquals("cubby", value[0]);
 	}
 
 	@Test
