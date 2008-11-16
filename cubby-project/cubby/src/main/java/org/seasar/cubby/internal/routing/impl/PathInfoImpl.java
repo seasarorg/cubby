@@ -17,19 +17,19 @@ package org.seasar.cubby.internal.routing.impl;
 
 import java.util.Map;
 
-import org.seasar.cubby.internal.routing.InternalForwardInfo;
+import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.Routing;
 
 /**
- * 内部フォワード情報の実装です。
+ * パスから取得した情報の実装です。
  * 
  * @author baba
  * @since 1.0.0
  */
-class InternalForwardInfoImpl implements InternalForwardInfo {
+class PathInfoImpl implements PathInfo {
 
-	/** 内部フォワード先のパス。 */
-	private final String internalForwardPath;
+	/** URI から抽出したパラメータを取得します。 */
+	private final Map<String, String[]> uriParameters;
 
 	/** リクエストパラメータ名と対応するルーティングのマッピング。 */
 	private final Map<String, Routing> onSubmitRoutings;
@@ -37,24 +37,22 @@ class InternalForwardInfoImpl implements InternalForwardInfo {
 	/**
 	 * インスタンス化します。
 	 * 
-	 * @param internalForwardPath
-	 *            内部フォワードパス
-	 * @param routing
-	 *            ルーティング
 	 * @param uriParameters
-	 *            URI パラメータ
+	 *            URI から抽出したパラメータ
+	 * @param onSubmitRoutings
+	 *            リクエストパラメータ名とルーティングのマッピングを取得します。
 	 */
-	public InternalForwardInfoImpl(final String internalForwardPath,
+	public PathInfoImpl(final Map<String, String[]> uriParameters,
 			final Map<String, Routing> onSubmitRoutings) {
-		this.internalForwardPath = internalForwardPath;
+		this.uriParameters = uriParameters;
 		this.onSubmitRoutings = onSubmitRoutings;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getInternalForwardPath() {
-		return internalForwardPath;
+	public Map<String, String[]> getURIParameters() {
+		return uriParameters;
 	}
 
 	/**

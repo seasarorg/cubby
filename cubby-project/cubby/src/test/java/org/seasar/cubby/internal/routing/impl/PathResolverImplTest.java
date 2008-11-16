@@ -36,7 +36,7 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.internal.routing.InternalForwardInfo;
+import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.RoutingException;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
@@ -105,7 +105,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testRoot1() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo("/",
+		PathInfo info = pathResolver.getPathInfo("/",
 				"GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
@@ -122,7 +122,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testRoot2() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/dummy1", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
@@ -139,7 +139,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testDefault1() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/mock/update", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
@@ -155,7 +155,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testDefault2() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/mock/create", "GET", "UTF-8");
 		assertNotNull(info);
 		assertEquals(CubbyConstants.INTERNAL_FORWARD_DIRECTORY, info
@@ -171,7 +171,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testDefault3() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/mock/delete/10", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
@@ -191,14 +191,14 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testDefault4() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/mock/delete/a", "GET", "UTF-8");
 		assertNull(info);
 	}
 
 	@Test
 	public void testDefault5() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/mock/cubby", "GET", "UTf-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
@@ -217,7 +217,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testPath1() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/foo/4/update", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
@@ -238,7 +238,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testPath2() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/foo/4/create", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
@@ -259,7 +259,7 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testPath3() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/foo/4/delete/10", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(
@@ -282,14 +282,14 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testPath4() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/foo/4/delete/a", "GET", "UTF-8");
 		assertNull(info);
 	}
 
 	@Test
 	public void testPath5() throws Exception {
-		InternalForwardInfo info = pathResolver.getInternalForwardInfo(
+		PathInfo info = pathResolver.getPathInfo(
 				"/foo/4/cubby", "GET", "UTF-8");
 		assertNotNull(info);
 		assertTrue(info.getInternalForwardPath().startsWith(

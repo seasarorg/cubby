@@ -266,11 +266,6 @@ public class Redirect implements ActionResult {
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
 			final Container container = ContainerFactory.getContainer();
-			// TODO
-			// final S2Container container = SingletonS2ContainerFactory
-			// .getContainer();
-			// final PathResolver pathResolver = container
-			// .lookup(PathResolver.class);
 			final PathResolverFactory pathResolverFactory = container
 					.lookup(PathResolverFactory.class);
 			final PathResolver pathResolver = pathResolverFactory

@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.factory.PathResolverFactory;
-import org.seasar.cubby.internal.routing.InternalForwardInfo;
+import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.util.CubbyUtils;
@@ -51,23 +51,10 @@ public class RouterImpl implements Router {
 	private static final List<Pattern> EMPTY_IGNORE_PATH_PATTERNS = Collections
 			.emptyList();
 
-//	/** フォワードするための情報を抽出するクラス。 */
-//	private PathResolver pathResolver;
-//
-//	/**
-//	 * フォワードするための情報を抽出するクラスを設定します。
-//	 * 
-//	 * @param pathResolver
-//	 *            フォワードするための情報を抽出するクラス
-//	 */
-//	public void setPathResolver(final PathResolver pathResolver) {
-//		this.pathResolver = pathResolver;
-//	}
-
 	/**
 	 * {@inheritDoc}
 	 */
-	public InternalForwardInfo routing(final HttpServletRequest request,
+	public PathInfo routing(final HttpServletRequest request,
 			final HttpServletResponse response) {
 		return routing(request, response, EMPTY_IGNORE_PATH_PATTERNS);
 	}
@@ -75,8 +62,9 @@ public class RouterImpl implements Router {
 	/**
 	 * {@inheritDoc}
 	 */
-	public InternalForwardInfo routing(final HttpServletRequest request,
-			final HttpServletResponse response, List<Pattern> ignorePathPatterns) {
+	public PathInfo routing(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final List<Pattern> ignorePathPatterns) {
 		final String path = CubbyUtils.getPath(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format("DCUB0006", path));
@@ -90,8 +78,8 @@ public class RouterImpl implements Router {
 		final PathResolverFactory pathResolverFactory = container
 				.lookup(PathResolverFactory.class);
 		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
-		final InternalForwardInfo internalForwardInfo = pathResolver
-				.getInternalForwardInfo(path, request.getMethod(), null);
+		final PathInfo internalForwardInfo = pathResolver.getPathInfo(path,
+				request.getMethod(), null);
 		return internalForwardInfo;
 	}
 
@@ -106,7 +94,7 @@ public class RouterImpl implements Router {
 	 *         <code>false</code>
 	 */
 	private boolean isIgnorePath(final String path,
-			List<Pattern> ignorePathPatterns) {
+			final List<Pattern> ignorePathPatterns) {
 		for (final Pattern pattern : ignorePathPatterns) {
 			final Matcher matcher = pattern.matcher(path);
 			if (matcher.matches()) {

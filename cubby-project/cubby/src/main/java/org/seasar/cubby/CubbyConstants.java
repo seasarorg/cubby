@@ -24,10 +24,10 @@ package org.seasar.cubby;
  */
 public class CubbyConstants {
 
-	/**
-	 * 内部フォワード先のディレクトリ。
-	 */
-	public static final String INTERNAL_FORWARD_DIRECTORY = "/__internal_forward";
+//	/**
+//	 * 内部フォワード先のディレクトリ。
+//	 */
+//	public static final String INTERNAL_FORWARD_DIRECTORY = "/__internal_forward";
 
 	/**
 	 * Cubbyのデフォルトメッセージリソースの名前。
@@ -54,10 +54,18 @@ public class CubbyConstants {
 	 */
 	public static final String ATTR_PARAMS = "org.seasar.cubby.params";
 
+//	public static final String ATTR_URI_PARAMS = "org.seasar.cubby.uriarams";
+
+//TODO
+//	/**
+//	 * 内部フォワード時にルーティング情報を引き渡すための名前。
+//	 */
+//	public static final String ATTR_ROUTINGS = "org.seasar.cubby.routings";
+
 	/**
 	 * 内部フォワード時にルーティング情報を引き渡すための名前。
 	 */
-	public static final String ATTR_ROUTINGS = "org.seasar.cubby.routings";
+	public static final String ATTR_ROUTING = "org.seasar.cubby.routing";
 
 	/**
 	 * アクションコンテキストのリクエストの属性中の名前。
