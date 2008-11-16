@@ -21,7 +21,10 @@ import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -75,14 +78,49 @@ import org.seasar.cubby.internal.util.IteratorEnumeration;
  */
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
+	// TODO
+	private final Map<String, String[]> parameters;
+
 	/**
 	 * インスタンス化します。
 	 * 
 	 * @param request
 	 *            ラップするリクエスト
 	 */
-	public CubbyHttpServletRequestWrapper(final HttpServletRequest request) {
+	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
+			final Map<String, String[]> pathParameters) {
 		super(request);
+		Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+
+		Map<?, ?> parameterMap = request.getParameterMap();
+		for (Entry<?, ?> entry : parameterMap.entrySet()) {
+			String name = String.class.cast(entry.getKey());
+			List<String> values = new ArrayList<String>();
+			for (String value : String[].class.cast(entry.getValue())) {
+				values.add(value);
+			}
+			extendedParameterMap.put(name, values);
+		}
+		for (Entry<String, String[]> entry : pathParameters.entrySet()) {
+			String name = entry.getKey();
+			if (extendedParameterMap.containsKey(name)) {
+				List<String> values = extendedParameterMap.get(name);
+				for (String value : entry.getValue()) {
+					values.add(value);
+				}
+			} else {
+				List<String> values = new ArrayList<String>();
+				for (String value : entry.getValue()) {
+					values.add(value);
+				}
+				extendedParameterMap.put(name, values);
+			}
+		}
+
+		parameters = new HashMap<String, String[]>();
+		for (Entry<String, List<String>> entry : extendedParameterMap.entrySet()) {
+			parameters.put(entry.getKey(), entry.getValue().toArray(new String[0]));
+		}
 	}
 
 	/**
@@ -152,5 +190,31 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		}
 		return new IteratorEnumeration(attributeNames.iterator());
 	}
+
+	@Override
+	public String getParameter(String name) {
+		String[] parameters = this.parameters.get(name);
+		if (parameters == null) {
+			return null;
+		} else {
+			return parameters[0];
+		}
+	}
+
+	@Override
+	public Map getParameterMap() {
+		return this.parameters;
+	}
+
+	@Override
+	public Enumeration getParameterNames() {
+		return new IteratorEnumeration(parameters.keySet().iterator());
+	}
+
+	@Override
+	public String[] getParameterValues(String name) {
+		return parameters.get(name);
+	}
+
 
 }

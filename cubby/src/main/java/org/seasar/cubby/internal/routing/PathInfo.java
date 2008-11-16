@@ -18,19 +18,17 @@ package org.seasar.cubby.internal.routing;
 import java.util.Map;
 
 /**
- * 内部フォワード情報です。
+ * パスから取得した情報です。
  * 
  * @author baba
- * @since 1.0.0
+ * @since 2.0.0
  */
-public interface InternalForwardInfo {
+public interface PathInfo {
 
 	/**
-	 * 内部フォワード先のパスを取得します。
-	 * 
-	 * @return 内部フォワード先のパス
+	 * URI から抽出したパラメータを取得します。
 	 */
-	String getInternalForwardPath();
+	Map<String, String[]> getURIParameters();
 
 	/**
 	 * リクエストパラメータ名とルーティングのマッピングを取得します。

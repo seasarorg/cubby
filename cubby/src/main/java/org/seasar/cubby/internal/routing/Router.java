@@ -40,7 +40,7 @@ public interface Router {
 	 *         <code>null</code>
 	 * @see #routing(HttpServletRequest, HttpServletResponse, List)
 	 */
-	InternalForwardInfo routing(HttpServletRequest request,
+	PathInfo routing(HttpServletRequest request,
 			HttpServletResponse response);
 
 	/**
@@ -57,11 +57,11 @@ public interface Router {
 	 *            対象外とするパスのパターン
 	 * @return リクエストに対応する内部フォワード情報、URI とリクエストメソッドに対応する内部フォワード情報がない場合や URI
 	 *         が対象外とするパスのパターンにマッチする場合は <code>null</code>
-	 * @see PathResolver#getInternalForwardInfo(String, String, String)
+	 * @see PathResolver#getPathInfo(String, String, String)
 	 * @see org.seasar.cubby.action.Path
 	 * @see org.seasar.cubby.action.Accept
 	 */
-	InternalForwardInfo routing(HttpServletRequest request,
+	PathInfo routing(HttpServletRequest request,
 			HttpServletResponse response, List<Pattern> ignorePathPatterns);
 
 }

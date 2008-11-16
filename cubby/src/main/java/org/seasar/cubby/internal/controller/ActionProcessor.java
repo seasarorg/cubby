@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.internal.routing.Routing;
 
 /**
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスです。
@@ -42,11 +43,13 @@ public interface ActionProcessor {
 	 *            リクエスト
 	 * @param response
 	 *            レスポンス
+	 * @param routing
+	 *            ルーティング
 	 * @return アクションメソッドの戻り値。リクエストに応じたアクションメソッドが見つからなかった場合は <code>null</code>
 	 * @throws Exception
 	 *             アクションの実行時に例外が発生した場合
 	 */
 	ActionResultWrapper process(HttpServletRequest request,
-			HttpServletResponse response) throws Exception;
+			HttpServletResponse response, Routing routing) throws Exception;
 
 }

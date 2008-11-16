@@ -43,7 +43,7 @@ public interface PathResolver {
 	 *            URI のエンコーディング
 	 * @return フォワード情報
 	 */
-	InternalForwardInfo getInternalForwardInfo(String path,
+	PathInfo getPathInfo(String path,
 			String requestMethod, String characterEncoding);
 
 	/**
@@ -96,19 +96,6 @@ public interface PathResolver {
 	 */
 	String reverseLookup(Class<? extends Action> actionClass,
 			String methodName, Map<String, String[]> parameters,
-			String characterEncoding);
-
-	/**
-	 * 内部フォワードパスを構築します。
-	 * 
-	 * @param parameters
-	 *            パラメータ
-	 * @param characterEncoding
-	 *            URI のエンコーディング
-	 * @return 内部フォワードパス
-	 * @since 1.1.0
-	 */
-	String buildInternalForwardPath(Map<String, String[]> parameters,
 			String characterEncoding);
 
 }

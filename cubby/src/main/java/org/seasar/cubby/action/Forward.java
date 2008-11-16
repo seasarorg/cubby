@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.action;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+import static org.seasar.cubby.CubbyConstants.ATTR_ROUTING;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.io.IOException;
@@ -109,7 +109,7 @@ public class Forward implements ActionResult {
 	private String path;
 
 	/** ルーティング。 */
-	private final Map<String, Routing> routings;
+	private final Routing routing;
 
 	/** フォワード先のアクションクラス */
 	private Class<? extends Action> actionClass;
@@ -128,7 +128,7 @@ public class Forward implements ActionResult {
 	 */
 	public Forward(final String path) {
 		this.path = path;
-		this.routings = null;
+		this.routing = null;
 	}
 
 	/**
@@ -149,9 +149,8 @@ public class Forward implements ActionResult {
 		this.parameters = parameters;
 		try {
 			final Method method = actionClass.getMethod(methodName);
-			final Routing routing = new ForwardRouting(actionClass, method);
-			this.routings = Collections.singletonMap(null, routing);
-		} catch (NoSuchMethodException e) {
+			this.routing = new ForwardRouting(actionClass, method);
+		} catch (final NoSuchMethodException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
@@ -191,17 +190,13 @@ public class Forward implements ActionResult {
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
 			final Container container = ContainerFactory.getContainer();
-			// TODO
-			// final S2Container container = SingletonS2ContainerFactory
-			// .getContainer();
 			final PathResolverFactory pathResolverFactory = container
 					.lookup(PathResolverFactory.class);
 			final PathResolver pathResolver = pathResolverFactory
 					.getPathResolver();
-//			final PathResolver pathResolver = container
-//					.lookup(PathResolver.class);
-			this.path = pathResolver.buildInternalForwardPath(parameters,
-					characterEncoding);
+			final String forwardPath = pathResolver.reverseLookup(actionClass,
+					methodName, parameters, characterEncoding);
+			this.path = forwardPath;
 		}
 		return this.path;
 	}
@@ -227,11 +222,11 @@ public class Forward implements ActionResult {
 		final String forwardPath = calculateForwardPath(getPath(request
 				.getCharacterEncoding()), actionContext.getActionClass(),
 				request.getCharacterEncoding());
-		if (this.routings != null) {
-			request.setAttribute(ATTR_ROUTINGS, this.routings);
+		if (this.routing != null) {
+			request.setAttribute(ATTR_ROUTING, this.routing);
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug(format("DCUB0001", forwardPath, routings));
+			logger.debug(format("DCUB0001", forwardPath, routing));
 		}
 		final RequestDispatcher dispatcher = request
 				.getRequestDispatcher(forwardPath);
@@ -289,7 +284,7 @@ public class Forward implements ActionResult {
 	 *            パラメータの値。{@code Object#toString()}の結果が値として使用されます。
 	 * @return フォワードする URL
 	 */
-	public Forward param(String paramName, Object paramValue) {
+	public Forward param(final String paramName, final Object paramValue) {
 		return param(paramName, new String[] { paramValue.toString() });
 	}
 
@@ -322,7 +317,7 @@ public class Forward implements ActionResult {
 			}
 			this.parameters.put(paramName, paramValues);
 		} else {
-			QueryStringBuilder builder = new QueryStringBuilder(this.path);
+			final QueryStringBuilder builder = new QueryStringBuilder(this.path);
 			builder.addParam(paramName, paramValues);
 			this.path = builder.toString();
 		}
@@ -340,7 +335,7 @@ public class Forward implements ActionResult {
 	 * @return {@code Object#toString()}型の配列。
 	 */
 	private String[] toStringArray(final Object[] paramValues) {
-		String[] values = new String[paramValues.length];
+		final String[] values = new String[paramValues.length];
 		for (int i = 0; i < paramValues.length; i++) {
 			values[i] = paramValues[i].toString();
 		}
@@ -367,10 +362,10 @@ public class Forward implements ActionResult {
 	private static class ForwardRouting implements Routing {
 
 		/** アクションクラス。 */
-		private Class<? extends Action> actionClass;
+		private final Class<? extends Action> actionClass;
 
 		/** アクションメソッド。 */
-		private Method method;
+		private final Method method;
 
 		/**
 		 * {@inheritDoc}
