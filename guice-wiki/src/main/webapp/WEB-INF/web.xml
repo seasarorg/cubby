@@ -5,9 +5,30 @@
         version="2.4">
 
 	<context-param>
-		<param-name>cubby.guice.module</param-name>
-		<param-value>org.seasar.cubby.wiki.WikiModule</param-value>
+		<param-name>db.url</param-name>
+		<param-value>jdbc:h2:~/guice-wiki/data</param-value>
 	</context-param>
+	<context-param>
+		<param-name>db.user</param-name>
+		<param-value>sa</param-value>
+	</context-param>
+	<context-param>
+		<param-name>db.password</param-name>
+		<param-value>sa</param-value>
+	</context-param>
+	<context-param>
+		<param-name>db.tcpServer</param-name>
+		<param-value>-tcpAllowOthers</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>cubby.guice.module</param-name>
+		<param-value>org.seasar.cubby.wiki.ApplicationModule</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.h2.server.web.DbStarter</listener-class>
+	</listener>
 
 	<listener>
 		<listener-class>org.seasar.cubby.plugins.guice.servlet.GuiceContextListener</listener-class>
@@ -42,6 +63,11 @@
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
 	</filter>
 
+	<filter>
+		<filter-name>transactionFilter</filter-name>
+		<filter-class>org.seasar.cubby.wiki.filter.TransactionFilter</filter-class>
+	</filter>
+
     <filter>
         <filter-name>requestRoutingFilter</filter-name>
         <filter-class>org.seasar.cubby.filter.RequestRoutingFilter</filter-class>
@@ -70,6 +96,12 @@
 	<filter-mapping>
 		<filter-name>guiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>transactionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 
     <filter-mapping>
