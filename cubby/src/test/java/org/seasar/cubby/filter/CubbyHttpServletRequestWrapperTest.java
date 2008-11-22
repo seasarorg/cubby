@@ -91,7 +91,7 @@ public class CubbyHttpServletRequestWrapperTest {
 
 				});
 		expect(request.getParameterMap()).andStubAnswer(
-				new IAnswer<? extends Map>() {
+				new IAnswer<Map>() {
 
 					public Map answer() throws Throwable {
 						return parameters;

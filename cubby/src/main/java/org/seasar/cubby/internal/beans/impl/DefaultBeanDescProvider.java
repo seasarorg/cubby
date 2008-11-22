@@ -74,7 +74,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	 */
 	public BeanDesc getBeanDesc(final Class<?> clazz) {
 		if (beanDescCache.containsKey(clazz)) {
-			return BeanDesc.class.cast(beanDescCache.get(clazz));
+			return beanDescCache.get(clazz);
 		} else {
 			try {
 				final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
@@ -267,7 +267,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 			} catch (final InvocationTargetException e) {
 				final Throwable t = e.getTargetException();
 				if (t instanceof Error) {
-					throw Error.class.cast(t);
+					throw (Error) t;
 				}
 				throw new IllegalPropertyException(clazz, propertyDescriptor
 						.getName(), e);
@@ -303,7 +303,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 			} catch (final InvocationTargetException e) {
 				final Throwable t = e.getTargetException();
 				if (t instanceof Error) {
-					throw Error.class.cast(t);
+					throw (Error) t;
 				}
 				throw new IllegalPropertyException(clazz, propertyDescriptor
 						.getName(), e);

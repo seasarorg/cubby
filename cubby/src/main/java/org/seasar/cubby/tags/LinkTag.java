@@ -148,8 +148,8 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 		final ServletRequest request = pageContext.getRequest();
 		final String characterEncoding = request.getCharacterEncoding();
 		if (encodeURL) {
-			final HttpServletResponse response = HttpServletResponse.class
-					.cast(pageContext.getResponse());
+			final HttpServletResponse response = (HttpServletResponse) pageContext
+					.getResponse();
 			url = response.encodeURL(contextPath
 					+ linkSupport.getPath(characterEncoding));
 		} else {

@@ -145,9 +145,9 @@ public class CubbyFilter implements Filter {
 	 * リクエストの処理を {@link ActionProcessor} に委譲します。
 	 * </p>
 	 * 
-	 * @param req
+	 * @param request
 	 *            リクエスト
-	 * @param res
+	 * @param response
 	 *            レスポンス
 	 * @param chain
 	 *            フィルタチェイン
@@ -158,10 +158,11 @@ public class CubbyFilter implements Filter {
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
 	 * @see ActionProcessor#process(HttpServletRequest, HttpServletResponse)
 	 */
-	public void doFilter(final ServletRequest req, final ServletResponse res,
-			final FilterChain chain) throws IOException, ServletException {
-		process(HttpServletRequest.class.cast(req), HttpServletResponse.class
-				.cast(res), chain);
+	public void doFilter(final ServletRequest request,
+			final ServletResponse response, final FilterChain chain)
+			throws IOException, ServletException {
+		process((HttpServletRequest) request, (HttpServletResponse) response,
+				chain);
 	}
 
 	private void process(final HttpServletRequest request,
@@ -195,9 +196,9 @@ public class CubbyFilter implements Filter {
 			actionResultWrapper.execute(request, response);
 		} catch (final Exception e) {
 			if (e instanceof IOException) {
-				throw IOException.class.cast(e);
+				throw (IOException) e;
 			} else if (e instanceof ServletException) {
-				throw ServletException.class.cast(e);
+				throw (ServletException) e;
 			} else {
 				throw new ServletException(e);
 			}

@@ -177,7 +177,7 @@ public class EncodingFilter implements Filter {
 				chain.doFilter(request, response);
 			} else {
 				final ServletRequest wrapper = new EncodingHttpServletRequestWrapper(
-						HttpServletRequest.class.cast(request), uriEncoding,
+						(HttpServletRequest) request, uriEncoding,
 						uriBytesEncoding);
 				chain.doFilter(wrapper, response);
 			}

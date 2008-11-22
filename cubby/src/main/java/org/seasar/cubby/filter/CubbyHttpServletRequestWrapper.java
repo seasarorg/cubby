@@ -79,7 +79,7 @@ import org.seasar.cubby.internal.util.IteratorEnumeration;
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	// TODO
-	private final Map<String, String[]> parameters;
+	private final Map<String, String[]> parameterMap;
 
 	/**
 	 * インスタンス化します。
@@ -88,39 +88,48 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 *            ラップするリクエスト
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
-			final Map<String, String[]> pathParameters) {
+			final Map<String, String[]> uriParameters) {
 		super(request);
-		Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+		this.parameterMap = buildParameterMap(request, uriParameters);
+	}
 
-		Map<?, ?> parameterMap = request.getParameterMap();
-		for (Entry<?, ?> entry : parameterMap.entrySet()) {
-			String name = String.class.cast(entry.getKey());
-			List<String> values = new ArrayList<String>();
-			for (String value : String[].class.cast(entry.getValue())) {
+	private Map<String, String[]> buildParameterMap(
+			final HttpServletRequest request,
+			final Map<String, String[]> uriParameters) {
+		final Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+
+		final Map<?, ?> originalParameterMap = request.getParameterMap();
+		for (final Entry<?, ?> entry : originalParameterMap.entrySet()) {
+			final String name = (String) entry.getKey();
+			final List<String> values = new ArrayList<String>();
+			for (final String value : (String[]) entry.getValue()) {
 				values.add(value);
 			}
 			extendedParameterMap.put(name, values);
 		}
-		for (Entry<String, String[]> entry : pathParameters.entrySet()) {
-			String name = entry.getKey();
+		for (final Entry<String, String[]> entry : uriParameters.entrySet()) {
+			final String name = entry.getKey();
 			if (extendedParameterMap.containsKey(name)) {
-				List<String> values = extendedParameterMap.get(name);
-				for (String value : entry.getValue()) {
+				final List<String> values = extendedParameterMap.get(name);
+				for (final String value : entry.getValue()) {
 					values.add(value);
 				}
 			} else {
-				List<String> values = new ArrayList<String>();
-				for (String value : entry.getValue()) {
+				final List<String> values = new ArrayList<String>();
+				for (final String value : entry.getValue()) {
 					values.add(value);
 				}
 				extendedParameterMap.put(name, values);
 			}
 		}
 
-		parameters = new HashMap<String, String[]>();
-		for (Entry<String, List<String>> entry : extendedParameterMap.entrySet()) {
-			parameters.put(entry.getKey(), entry.getValue().toArray(new String[0]));
+		Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+		for (final Entry<String, List<String>> entry : extendedParameterMap
+				.entrySet()) {
+			parameterMap.put(entry.getKey(), entry.getValue().toArray(
+					new String[0]));
 		}
+		return parameterMap;
 	}
 
 	/**
@@ -177,7 +186,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			for (PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
+			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
 				if (propertyDesc.isReadable()) {
 					attributeNames.add(propertyDesc.getPropertyName());
 				}
@@ -191,9 +200,12 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		return new IteratorEnumeration(attributeNames.iterator());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getParameter(String name) {
-		String[] parameters = this.parameters.get(name);
+	public String getParameter(final String name) {
+		final String[] parameters = this.parameterMap.get(name);
 		if (parameters == null) {
 			return null;
 		} else {
@@ -201,20 +213,21 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map getParameterMap() {
-		return this.parameters;
+		return this.parameterMap;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getParameterNames() {
-		return new IteratorEnumeration(parameters.keySet().iterator());
+		return new IteratorEnumeration(parameterMap.keySet().iterator());
 	}
 
 	@Override
-	public String[] getParameterValues(String name) {
-		return parameters.get(name);
+	public String[] getParameterValues(final String name) {
+		return parameterMap.get(name);
 	}
-
 
 }
