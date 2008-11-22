@@ -12,20 +12,21 @@ import org.seasar.cubby.handler.ActionHandlerChain;
 
 public class ExceptionActionHandler implements ActionHandler {
 
-	public ActionResult handle(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext,
-			ActionHandlerChain actionInvocationChain) throws Exception {
+	public ActionResult handle(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext,
+			final ActionHandlerChain actionInvocationChain) throws Exception {
 		try {
 			return actionInvocationChain
 					.chain(request, response, actionContext);
 		} catch (final InvocationTargetException e) {
 			final Throwable target = e.getTargetException();
 			if (target instanceof Error) {
-				throw Error.class.cast(target);
+				throw (Error) target;
 			} else if (target instanceof RuntimeException) {
-				throw RuntimeException.class.cast(target);
+				throw (RuntimeException) target;
 			} else {
-				throw Exception.class.cast(target);
+				throw (Exception) target;
 			}
 		}
 	}
