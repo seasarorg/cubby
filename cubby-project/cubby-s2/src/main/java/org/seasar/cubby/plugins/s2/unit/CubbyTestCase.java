@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.plugins.s2.unit;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
+//import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.routing.InternalForwardInfo;
+//import org.seasar.cubby.internal.routing.InternalForwardInfo;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
@@ -179,65 +179,66 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		final MockHttpServletRequest request = getRequest();
 		setServletPath(request, originalPath);
 		final MockHttpServletResponse response = getResponse();
-		routing(request, response);
+//		routing(request, response);
 		setupThreadContext();
-		final ActionResultWrapper actionResultWrapper = actionProcessor
-				.process(request, response);
-		if (actionResultWrapper == null) {
-			return null;
-		}
-		return actionResultWrapper.getActionResult();
+//		final ActionResultWrapper actionResultWrapper = actionProcessor
+//				.process(request, response);
+//		if (actionResultWrapper == null) {
+//			return null;
+//		}
+//		return actionResultWrapper.getActionResult();
+		return null;
 	}
 
-	/**
-	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
-	 * 
-	 * @param request
-	 *            リクエスト
-	 * @param response
-	 *            レスポンス
-	 * @return 内部フォワードパス
-	 * @since 1.0.5
-	 */
-	protected String routing(final MockHttpServletRequest request,
-			final MockHttpServletResponse response) {
-		final InternalForwardInfo internalForwardInfo = router.routing(request,
-				response);
-		if (internalForwardInfo == null) {
-			fail(request.getServletPath() + " could not mapping to action");
-		}
-		final String internalForwardPath = internalForwardInfo
-				.getInternalForwardPath();
-		final MockHttpServletRequest internalForwardRequest = this
-				.getServletContext().createRequest(internalForwardPath);
-		request.setAttribute(ATTR_ROUTINGS, internalForwardInfo
-				.getOnSubmitRoutings());
-		request.setAttribute("javax.servlet.forward.request_uri", request
-				.getRequestURI());
-		request.setAttribute("javax.servlet.forward.context_path", request
-				.getContextPath());
-		request.setAttribute("javax.servlet.forward.servlet_path", request
-				.getServletPath());
-		request.setAttribute("javax.servlet.forward.path_info", request
-				.getPathInfo());
-		request.setAttribute("javax.servlet.forward.query_string", request
-				.getQueryString());
-		final String servletPath = internalForwardRequest.getServletPath();
-		setServletPath(request, servletPath);
-		request.setQueryString(internalForwardRequest.getQueryString());
-		if (StringUtils.isNotBlank(internalForwardRequest.getQueryString())) {
-			final Map<String, List<String>> pathParameters = parseQueryString(internalForwardRequest
-					.getQueryString());
-			for (final Entry<String, List<String>> entry : pathParameters
-					.entrySet()) {
-				final String name = entry.getKey();
-				for (final String value : entry.getValue()) {
-					request.addParameter(name, value);
-				}
-			}
-		}
-		return internalForwardPath;
-	}
+//	/**
+//	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
+//	 * 
+//	 * @param request
+//	 *            リクエスト
+//	 * @param response
+//	 *            レスポンス
+//	 * @return 内部フォワードパス
+//	 * @since 1.0.5
+//	 */
+//	protected String routing(final MockHttpServletRequest request,
+//			final MockHttpServletResponse response) {
+//		final InternalForwardInfo internalForwardInfo = router.routing(request,
+//				response);
+//		if (internalForwardInfo == null) {
+//			fail(request.getServletPath() + " could not mapping to action");
+//		}
+//		final String internalForwardPath = internalForwardInfo
+//				.getInternalForwardPath();
+//		final MockHttpServletRequest internalForwardRequest = this
+//				.getServletContext().createRequest(internalForwardPath);
+//		request.setAttribute(ATTR_ROUTINGS, internalForwardInfo
+//				.getOnSubmitRoutings());
+//		request.setAttribute("javax.servlet.forward.request_uri", request
+//				.getRequestURI());
+//		request.setAttribute("javax.servlet.forward.context_path", request
+//				.getContextPath());
+//		request.setAttribute("javax.servlet.forward.servlet_path", request
+//				.getServletPath());
+//		request.setAttribute("javax.servlet.forward.path_info", request
+//				.getPathInfo());
+//		request.setAttribute("javax.servlet.forward.query_string", request
+//				.getQueryString());
+//		final String servletPath = internalForwardRequest.getServletPath();
+//		setServletPath(request, servletPath);
+//		request.setQueryString(internalForwardRequest.getQueryString());
+//		if (StringUtils.isNotBlank(internalForwardRequest.getQueryString())) {
+//			final Map<String, List<String>> pathParameters = parseQueryString(internalForwardRequest
+//					.getQueryString());
+//			for (final Entry<String, List<String>> entry : pathParameters
+//					.entrySet()) {
+//				final String name = entry.getKey();
+//				for (final String value : entry.getValue()) {
+//					request.addParameter(name, value);
+//				}
+//			}
+//		}
+//		return internalForwardPath;
+//	}
 
 	/**
 	 * 指定されたモックリクエストのサーブレットパスを設定します。
