@@ -19,7 +19,9 @@ import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.spi.ContainerProvider;
 import org.seasar.framework.container.ComponentNotFoundRuntimeException;
+import org.seasar.framework.container.CyclicReferenceRuntimeException;
 import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.TooManyRegistrationRuntimeException;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
@@ -31,7 +33,7 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 public class S2ContainerProvider implements ContainerProvider {
 
 	/** {@link Container} */
-	private Container container;
+	private final Container container;
 
 	/**
 	 * インスタンス化します。
@@ -57,28 +59,25 @@ public class S2ContainerProvider implements ContainerProvider {
 
 		/**
 		 * {@inheritDoc}
-		 * @throws LookupException 
+		 * 
+		 * @throws LookupException
 		 */
-		public <T> T lookup(Class<T> type) throws LookupException {
+		public <T> T lookup(final Class<T> type) throws LookupException {
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
 			try {
-				T component = type.cast(container().getComponent(type));
-				if (type == null) {
-					//TODO
+				final T component = type.cast(container.getComponent(type));
+				if (component == null) {
 					throw new LookupException();
 				}
 				return component;
 			} catch (final ComponentNotFoundRuntimeException e) {
 				throw new LookupException(e);
+			} catch (final TooManyRegistrationRuntimeException e) {
+				throw new LookupException(e);
+			} catch (final CyclicReferenceRuntimeException e) {
+				throw new LookupException(e);
 			}
-		}
-
-		/**
-		 * {@link S2Container} を取得します。
-		 * 
-		 * @return {@link S2Container}
-		 */
-		private S2Container container() {
-			return SingletonS2ContainerFactory.getContainer();
 		}
 
 	}
