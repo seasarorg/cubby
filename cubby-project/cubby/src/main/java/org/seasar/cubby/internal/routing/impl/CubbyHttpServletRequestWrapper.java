@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.filter;
+package org.seasar.cubby.internal.routing.impl;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
@@ -79,7 +79,7 @@ import org.seasar.cubby.internal.util.IteratorEnumeration;
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	// TODO
-	private final Map<String, String[]> parameterMap;
+	private final Map<String, String[]> parameters;
 
 	/**
 	 * インスタンス化します。
@@ -88,48 +88,39 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 *            ラップするリクエスト
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
-			final Map<String, String[]> uriParameters) {
+			final Map<String, String[]> pathParameters) {
 		super(request);
-		this.parameterMap = buildParameterMap(request, uriParameters);
-	}
+		Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
 
-	private Map<String, String[]> buildParameterMap(
-			final HttpServletRequest request,
-			final Map<String, String[]> uriParameters) {
-		final Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
-
-		final Map<?, ?> originalParameterMap = request.getParameterMap();
-		for (final Entry<?, ?> entry : originalParameterMap.entrySet()) {
-			final String name = (String) entry.getKey();
-			final List<String> values = new ArrayList<String>();
-			for (final String value : (String[]) entry.getValue()) {
+		Map<?, ?> parameterMap = request.getParameterMap();
+		for (Entry<?, ?> entry : parameterMap.entrySet()) {
+			String name = String.class.cast(entry.getKey());
+			List<String> values = new ArrayList<String>();
+			for (String value : String[].class.cast(entry.getValue())) {
 				values.add(value);
 			}
 			extendedParameterMap.put(name, values);
 		}
-		for (final Entry<String, String[]> entry : uriParameters.entrySet()) {
-			final String name = entry.getKey();
+		for (Entry<String, String[]> entry : pathParameters.entrySet()) {
+			String name = entry.getKey();
 			if (extendedParameterMap.containsKey(name)) {
-				final List<String> values = extendedParameterMap.get(name);
-				for (final String value : entry.getValue()) {
+				List<String> values = extendedParameterMap.get(name);
+				for (String value : entry.getValue()) {
 					values.add(value);
 				}
 			} else {
-				final List<String> values = new ArrayList<String>();
-				for (final String value : entry.getValue()) {
+				List<String> values = new ArrayList<String>();
+				for (String value : entry.getValue()) {
 					values.add(value);
 				}
 				extendedParameterMap.put(name, values);
 			}
 		}
 
-		Map<String, String[]> parameterMap = new HashMap<String, String[]>();
-		for (final Entry<String, List<String>> entry : extendedParameterMap
-				.entrySet()) {
-			parameterMap.put(entry.getKey(), entry.getValue().toArray(
-					new String[0]));
+		parameters = new HashMap<String, String[]>();
+		for (Entry<String, List<String>> entry : extendedParameterMap.entrySet()) {
+			parameters.put(entry.getKey(), entry.getValue().toArray(new String[0]));
 		}
-		return parameterMap;
 	}
 
 	/**
@@ -186,7 +177,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
+			for (PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
 				if (propertyDesc.isReadable()) {
 					attributeNames.add(propertyDesc.getPropertyName());
 				}
@@ -200,12 +191,9 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		return new IteratorEnumeration(attributeNames.iterator());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public String getParameter(final String name) {
-		final String[] parameters = this.parameterMap.get(name);
+	public String getParameter(String name) {
+		String[] parameters = this.parameters.get(name);
 		if (parameters == null) {
 			return null;
 		} else {
@@ -213,21 +201,20 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map getParameterMap() {
-		return this.parameterMap;
+		return this.parameters;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getParameterNames() {
-		return new IteratorEnumeration(parameterMap.keySet().iterator());
+		return new IteratorEnumeration(parameters.keySet().iterator());
 	}
 
 	@Override
-	public String[] getParameterValues(final String name) {
-		return parameterMap.get(name);
+	public String[] getParameterValues(String name) {
+		return parameters.get(name);
 	}
+
 
 }
