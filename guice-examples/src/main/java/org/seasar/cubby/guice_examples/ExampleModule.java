@@ -30,9 +30,18 @@ public class ExampleModule extends AbstractModule {
 			}
 
 		});
-		install(new ServletModule());
+//		install(new ServletModule());
+		setUpServletModule();
 
 		bind(HelloService.class).to(HelloServiceImpl.class).in(Singleton.class);
 	}
+	
+	protected void setUpServletModule(){
+		install(new ServletModule());		
+	}
+	
+	
+	
+	
 
 }
