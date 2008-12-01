@@ -15,24 +15,15 @@
  */
 package org.seasar.cubby.plugins.s2.unit;
 
-//import static org.seasar.cubby.CubbyConstants.ATTR_ROUTINGS;
-
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.internal.controller.ActionProcessor;
-import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
-//import org.seasar.cubby.internal.routing.InternalForwardInfo;
-import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.unit.CubbyAssert;
+import org.seasar.cubby.unit.CubbyRunner;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
 import org.seasar.framework.mock.servlet.MockHttpServletResponse;
 import org.seasar.framework.unit.S2TigerTestCase;
@@ -116,12 +107,6 @@ import org.seasar.framework.unit.S2TigerTestCase;
  */
 public abstract class CubbyTestCase extends S2TigerTestCase {
 
-	/** ルーティング */
-	private Router router;
-
-	/** ActionProcessor */
-	private ActionProcessor actionProcessor;
-
 	/**
 	 * ActionResultの型とパスをチェックします。
 	 * 
@@ -135,7 +120,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	public static void assertPathEquals(
 			final Class<? extends ActionResult> resultClass,
 			final String expectedPath, final ActionResult actualResult) {
-		assertPathEquals(resultClass, expectedPath, actualResult, "UTF-8");
+		CubbyAssert.assertPathEquals(resultClass, expectedPath, actualResult);
 	}
 
 	/**
@@ -154,15 +139,8 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 			final Class<? extends ActionResult> resultClass,
 			final String expectedPath, final ActionResult actualResult,
 			final String characterEncoding) {
-		assertEquals("ActionResultの型をチェック", resultClass, actualResult
-				.getClass());
-		if (actualResult instanceof Forward) {
-			assertEquals("パスのチェック", expectedPath, Forward.class.cast(
-					actualResult).getPath(characterEncoding));
-		} else if (actualResult instanceof Redirect) {
-			assertEquals("パスのチェック", expectedPath, Redirect.class.cast(
-					actualResult).getPath(characterEncoding));
-		}
+		CubbyAssert.assertPathEquals(resultClass, expectedPath, actualResult,
+				characterEncoding);
 	}
 
 	/**
@@ -179,66 +157,8 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 		final MockHttpServletRequest request = getRequest();
 		setServletPath(request, originalPath);
 		final MockHttpServletResponse response = getResponse();
-//		routing(request, response);
-		setupThreadContext();
-//		final ActionResultWrapper actionResultWrapper = actionProcessor
-//				.process(request, response);
-//		if (actionResultWrapper == null) {
-//			return null;
-//		}
-//		return actionResultWrapper.getActionResult();
-		return null;
+		return processAction(request, response);
 	}
-
-//	/**
-//	 * CubbyFilterで行っているルーティングをエミュレートして、内部フォワードパスをリクエストにセットします。
-//	 * 
-//	 * @param request
-//	 *            リクエスト
-//	 * @param response
-//	 *            レスポンス
-//	 * @return 内部フォワードパス
-//	 * @since 1.0.5
-//	 */
-//	protected String routing(final MockHttpServletRequest request,
-//			final MockHttpServletResponse response) {
-//		final InternalForwardInfo internalForwardInfo = router.routing(request,
-//				response);
-//		if (internalForwardInfo == null) {
-//			fail(request.getServletPath() + " could not mapping to action");
-//		}
-//		final String internalForwardPath = internalForwardInfo
-//				.getInternalForwardPath();
-//		final MockHttpServletRequest internalForwardRequest = this
-//				.getServletContext().createRequest(internalForwardPath);
-//		request.setAttribute(ATTR_ROUTINGS, internalForwardInfo
-//				.getOnSubmitRoutings());
-//		request.setAttribute("javax.servlet.forward.request_uri", request
-//				.getRequestURI());
-//		request.setAttribute("javax.servlet.forward.context_path", request
-//				.getContextPath());
-//		request.setAttribute("javax.servlet.forward.servlet_path", request
-//				.getServletPath());
-//		request.setAttribute("javax.servlet.forward.path_info", request
-//				.getPathInfo());
-//		request.setAttribute("javax.servlet.forward.query_string", request
-//				.getQueryString());
-//		final String servletPath = internalForwardRequest.getServletPath();
-//		setServletPath(request, servletPath);
-//		request.setQueryString(internalForwardRequest.getQueryString());
-//		if (StringUtils.isNotBlank(internalForwardRequest.getQueryString())) {
-//			final Map<String, List<String>> pathParameters = parseQueryString(internalForwardRequest
-//					.getQueryString());
-//			for (final Entry<String, List<String>> entry : pathParameters
-//					.entrySet()) {
-//				final String name = entry.getKey();
-//				for (final String value : entry.getValue()) {
-//					request.addParameter(name, value);
-//				}
-//			}
-//		}
-//		return internalForwardPath;
-//	}
 
 	/**
 	 * 指定されたモックリクエストのサーブレットパスを設定します。
@@ -261,36 +181,28 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	}
 
 	/**
-	 * {@link ThreadContext}にリクエストをセットします。
+	 * アクションメソッドを実行します。
+	 * 
+	 * @param originalPath
+	 *            オリジナルパス
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
 	 */
-	protected void setupThreadContext() {
-		ThreadContext.setRequest(getRequest());
+	protected ActionResult processAction(final HttpServletRequest request,
+			final HttpServletResponse response) throws Exception {
+		setupThreadContext(request);
+		return CubbyRunner.processAction(request, response);
 	}
 
 	/**
-	 * クエリ文字列をパースして {@link Map} へ変換します。
+	 * {@link ThreadContext}に要求をセットします。
 	 * 
-	 * @param queryString
-	 *            クエリ文字列
-	 * @return クエリ文字列をパースした {@link Map}
+	 * @param request
+	 *            要求
 	 */
-	private Map<String, List<String>> parseQueryString(final String queryString) {
-		final Map<String, List<String>> params = new HashMap<String, List<String>>();
-		final String[] tokens = queryString.split("&");
-		for (final String token : tokens) {
-			final String[] param = token.split("=");
-			final String name = param[0];
-			final String value = param[1];
-			final List<String> values;
-			if (params.containsKey(name)) {
-				values = params.get(name);
-			} else {
-				values = new ArrayList<String>();
-				params.put(name, values);
-			}
-			values.add(value);
-		}
-		return params;
+	protected void setupThreadContext(final HttpServletRequest request) {
+		ThreadContext.newContext(request);
 	}
 
 }

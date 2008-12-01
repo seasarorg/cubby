@@ -112,7 +112,7 @@ public class Forward implements ActionResult {
 	private final Routing routing;
 
 	/** フォワード先のアクションクラス */
-	private Class<? extends Action> actionClass;
+	private Class<?> actionClass;
 
 	/** フォワード先のアクションクラスのメソッド名 */
 	private String methodName;
@@ -142,7 +142,7 @@ public class Forward implements ActionResult {
 	 *            パラメータ
 	 * @since 1.1.0
 	 */
-	public Forward(final Class<? extends Action> actionClass,
+	public Forward(final Class<?> actionClass,
 			final String methodName, final Map<String, String[]> parameters) {
 		this.actionClass = actionClass;
 		this.methodName = methodName;
@@ -162,7 +162,7 @@ public class Forward implements ActionResult {
 	 *            アクションクラス
 	 * @since 1.1.0
 	 */
-	public Forward(final Class<? extends Action> actionClass) {
+	public Forward(final Class<?> actionClass) {
 		this(actionClass, "index");
 	}
 
@@ -175,7 +175,7 @@ public class Forward implements ActionResult {
 	 *            アクションメソッド名
 	 * @since 1.1.0
 	 */
-	public Forward(final Class<? extends Action> actionClass,
+	public Forward(final Class<?> actionClass,
 			final String methodName) {
 		this(actionClass, methodName, EMPTY_PARAMETERS);
 	}
@@ -249,8 +249,7 @@ public class Forward implements ActionResult {
 	 * @return フォワードするパス
 	 */
 	protected String calculateForwardPath(final String path,
-			final Class<? extends Action> actionClass,
-			final String characterEncoding) {
+			final Class<?> actionClass, final String characterEncoding) {
 		final String absolutePath;
 		if (getPath(characterEncoding).startsWith("/")) {
 			absolutePath = path;
@@ -343,17 +342,6 @@ public class Forward implements ActionResult {
 	}
 
 	/**
-	 * パスを取得します。
-	 * 
-	 * @return パス
-	 * @deprecated use {@link #getPath(String)}
-	 */
-	@Deprecated
-	public String getPath() {
-		return getPath("UTF-8");
-	}
-
-	/**
 	 * アクションメソッドへフォワードするためのルーティング。
 	 * 
 	 * @author baba
@@ -362,7 +350,7 @@ public class Forward implements ActionResult {
 	private static class ForwardRouting implements Routing {
 
 		/** アクションクラス。 */
-		private final Class<? extends Action> actionClass;
+		private final Class<?> actionClass;
 
 		/** アクションメソッド。 */
 		private final Method method;
@@ -370,7 +358,7 @@ public class Forward implements ActionResult {
 		/**
 		 * {@inheritDoc}
 		 */
-		private ForwardRouting(final Class<? extends Action> actionClass,
+		private ForwardRouting(final Class<?> actionClass,
 				final Method method) {
 			this.actionClass = actionClass;
 			this.method = method;
@@ -379,7 +367,7 @@ public class Forward implements ActionResult {
 		/**
 		 * {@inheritDoc}
 		 */
-		public Class<? extends Action> getActionClass() {
+		public Class<?> getActionClass() {
 			return actionClass;
 		}
 

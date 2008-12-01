@@ -90,9 +90,8 @@ public class PathResolverImpl implements PathResolver {
 	}
 
 	// TODO
-	public void addAllActionClasses(
-			final Collection<Class<? extends Action>> actionClasses) {
-		for (final Class<? extends Action> actionClass : actionClasses) {
+	public void addAllActionClasses(final Collection<Class<?>> actionClasses) {
+		for (final Class<?> actionClass : actionClasses) {
 			for (final Method method : actionClass.getMethods()) {
 				if (CubbyUtils.isActionMethod(method)) {
 					final String actionPath = CubbyUtils.getActionPath(
@@ -127,9 +126,8 @@ public class PathResolverImpl implements PathResolver {
 	 * @param requestMethods
 	 *            リクエストメソッド
 	 */
-	public void add(final String actionPath,
-			final Class<? extends Action> actionClass, final String methodName,
-			final RequestMethod... requestMethods) {
+	public void add(final String actionPath, final Class<?> actionClass,
+			final String methodName, final RequestMethod... requestMethods) {
 		try {
 			final Method method = actionClass.getMethod(methodName);
 			if (requestMethods == null || requestMethods.length == 0) {
@@ -163,9 +161,9 @@ public class PathResolverImpl implements PathResolver {
 	 * @param auto
 	 *            自動登録かどうか
 	 */
-	private void add(final String actionPath,
-			final Class<? extends Action> actionClass, final Method method,
-			final RequestMethod requestMethod, final boolean auto) {
+	private void add(final String actionPath, final Class<?> actionClass,
+			final Method method, final RequestMethod requestMethod,
+			final boolean auto) {
 
 		if (!CubbyUtils.isActionClass(actionClass)) {
 			throw new RoutingException(format("ECUB0002", actionClass));
@@ -328,7 +326,7 @@ public class PathResolverImpl implements PathResolver {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String reverseLookup(final Class<? extends Action> actionClass,
+	public String reverseLookup(final Class<?> actionClass,
 			final String methodName, final Map<String, String[]> parameters,
 			final String characterEncoding) {
 		final Collection<Routing> routings = getRoutings().values();
@@ -387,7 +385,7 @@ public class PathResolverImpl implements PathResolver {
 	 *             ルーティング情報が見つからなかった場合
 	 */
 	private static Routing findRouting(final Collection<Routing> routings,
-			final Class<? extends Action> actionClass, final String methodName) {
+			final Class<?> actionClass, final String methodName) {
 		for (final Routing routing : routings) {
 			if (actionClass.getCanonicalName().equals(
 					routing.getActionClass().getCanonicalName())) {

@@ -26,7 +26,7 @@ import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 
 public class ActionErrorsImplTest {
 
-	ActionErrors actionErrors = new ActionErrorsImpl();
+	private ActionErrors actionErrors = new ActionErrorsImpl();
 
 	@Test
 	public void testIsEmpty1() {
@@ -70,14 +70,25 @@ public class ActionErrorsImplTest {
 		assertEquals("error4", actionErrors.getFields().get("field1").get(1));
 		assertEquals(1, actionErrors.getFields().get("field2").size());
 		assertEquals("error5", actionErrors.getFields().get("field2").get(0));
-		assertEquals(1, actionErrors.getIndexedFields().get("field2").get(0).size());
-		assertTrue(actionErrors.getIndexedFields().get("field2").get(1).isEmpty());
-		assertEquals("error5", actionErrors.getIndexedFields().get("field2").get(0).get(0));
+		assertEquals(1, actionErrors.getIndexedFields().get("field2").get(0)
+				.size());
+		assertTrue(actionErrors.getIndexedFields().get("field2").get(1)
+				.isEmpty());
+		assertEquals("error5", actionErrors.getIndexedFields().get("field2")
+				.get(0).get(0));
 		assertEquals(5, actionErrors.getAll().size());
 		assertEquals("error1", actionErrors.getAll().get(0));
 		assertEquals("error2", actionErrors.getAll().get(1));
 		assertEquals("error3", actionErrors.getAll().get(2));
 		assertEquals("error4", actionErrors.getAll().get(3));
 		assertEquals("error5", actionErrors.getAll().get(4));
+
+		actionErrors.add("error6", (FieldInfo) null);
+		assertEquals("error6", actionErrors.getAll().get(5));
+		assertEquals(6, actionErrors.getAll().size());
+
+		actionErrors.clear();
+		assertTrue(actionErrors.isEmpty());
 	}
+
 }

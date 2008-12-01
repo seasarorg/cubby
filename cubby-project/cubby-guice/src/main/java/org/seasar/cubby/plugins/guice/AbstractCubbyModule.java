@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
 import org.seasar.cubby.converter.Converter;
@@ -33,6 +32,7 @@ import org.seasar.cubby.handler.ActionHandlerChainFactory;
 import org.seasar.cubby.handler.impl.ExceptionActionHandler;
 import org.seasar.cubby.handler.impl.InitializeActionHandler;
 import org.seasar.cubby.handler.impl.InvocationActionHandler;
+import org.seasar.cubby.handler.impl.ParameterBindingActionHandler;
 import org.seasar.cubby.handler.impl.ValidationActionHandler;
 import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.internal.factory.PathResolverFactory;
@@ -104,7 +104,7 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 				new ActionClassesFactoryImpl());
 	}
 
-	protected abstract Collection<Class<? extends Action>> getActionClasses();
+	protected abstract Collection<Class<?>> getActionClasses();
 
 	protected Collection<Class<? extends Converter>> getConverterClasses() {
 		List<Class<? extends Converter>> converterClasses = new ArrayList<Class<? extends Converter>>();
@@ -139,7 +139,7 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 
 	private class ActionClassesFactoryImpl implements ActionClassesFactory {
 
-		public Collection<Class<? extends Action>> getActionClasses() {
+		public Collection<Class<?>> getActionClasses() {
 			return AbstractCubbyModule.this.getActionClasses();
 		}
 
@@ -163,6 +163,7 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 		List<Class<? extends ActionHandler>> actionHandlerClasses = new ArrayList<Class<? extends ActionHandler>>();
 		actionHandlerClasses.add(ExceptionActionHandler.class);
 		actionHandlerClasses.add(InitializeActionHandler.class);
+		actionHandlerClasses.add(ParameterBindingActionHandler.class);
 		actionHandlerClasses.add(ValidationActionHandler.class);
 		actionHandlerClasses.add(InvocationActionHandler.class);
 		return Collections.unmodifiableList(actionHandlerClasses);

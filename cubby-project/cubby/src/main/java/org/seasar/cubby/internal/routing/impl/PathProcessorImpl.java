@@ -154,7 +154,7 @@ public class PathProcessorImpl implements PathProcessor {
 	 */
 	private void invoke(final HttpServletRequest wrappedRequest,
 			final Routing routing) throws IOException, ServletException {
-		ThreadContext.setRequest(wrappedRequest);
+		ThreadContext.newContext(wrappedRequest);
 		try {
 			final ActionResultWrapper actionResultWrapper = actionProcessor
 					.process(wrappedRequest, response, routing);
@@ -168,7 +168,7 @@ public class PathProcessorImpl implements PathProcessor {
 				throw new ServletException(e);
 			}
 		} finally {
-			ThreadContext.remove();
+			ThreadContext.restoreContext();
 		}
 	}
 

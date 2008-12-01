@@ -15,6 +15,10 @@
  */
 package org.seasar.cubby.handler.impl;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,26 +26,39 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
+import org.seasar.cubby.internal.controller.RequestParameterBinder;
+import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
+import org.seasar.cubby.internal.util.CubbyUtils;
 
 /**
- * アクションを初期化するアクションハンドラーです。
+ * 要求パラメータをフォームオブジェクトにバインドするアクションハンドラーです。
  * 
  * @author baba
  * @since 2.0.0
  */
-public class InitializeActionHandler implements ActionHandler {
+public class ParameterBindingActionHandler implements ActionHandler {
+
+	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
+	private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * {@link ActionContext#invokeInitializeMethod()} を呼び出します。
+	 * アクションメソッドにフォームオブジェクトが定義されている場合に、{@link RequestParameterBinder}
+	 * によって要求パラメータをフォームオブジェクトにバインドします。
 	 * </p>
 	 */
 	public ActionResult handle(final HttpServletRequest request,
 			final HttpServletResponse response,
 			final ActionContext actionContext,
 			final ActionHandlerChain actionHandlerChain) throws Exception {
-		actionContext.invokeInitializeMethod();
+
+		final Object formBean = actionContext.getFormBean();
+		if (formBean != null) {
+			final Map<String, Object[]> parameterMap = CubbyUtils.getAttribute(
+					request, ATTR_PARAMS);
+			requestParameterBinder.bind(parameterMap, formBean, actionContext);
+		}
 
 		final ActionResult result = actionHandlerChain.chain(request, response,
 				actionContext);

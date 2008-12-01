@@ -103,6 +103,8 @@ public class DefaultRequestParserImplTest {
 	public void priority() {
 		assertEquals(DefaultRequestParserImpl.DEFAULT_PRIORITY, requestParser
 				.getPriority());
+		requestParser.setPriority(5);
+		assertEquals(5, requestParser.getPriority());
 	}
 
 }

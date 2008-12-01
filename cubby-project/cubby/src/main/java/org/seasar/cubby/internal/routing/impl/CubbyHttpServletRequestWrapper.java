@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.internal.beans.BeanDesc;
 import org.seasar.cubby.internal.beans.BeanDescFactory;
 import org.seasar.cubby.internal.beans.PropertyDesc;
@@ -38,9 +37,13 @@ import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.IteratorEnumeration;
 
 /**
- * 特別な属性を取得するためのリクエストのラッパです。
+ * 特別な属性を取得するためにサーブレットへの要求をラップします。
  * <p>
- * 以下のような属性を使用することができます。
+ * <ul>
+ * <li>{@link #getAttribute(String)}</li>
+ * <li>{@link #getAttributeNames()}</li>
+ * </ul>
+ * 上記メソッドでは、ラップされた要求の属性に加えて以下のような属性を使用することができます。
  * <table>
  * <thead>
  * <tr>
@@ -72,62 +75,91 @@ import org.seasar.cubby.internal.util.IteratorEnumeration;
  * </table>
  * これらの属性は通常の属性よりも優先されるのでご注意ください。
  * </p>
+ * <p>
+ * また、以下のリクエストパラメータに関するメソッドは、通常のリクエストパラメータに加え、URI パラメータも対象として処理します。
+ * <ul>
+ * <li>{@link #getParameter(String)}</li>
+ * <li>{@link #getParameterMap()}</li>
+ * <li>{@link #getParameterNames()}</li>
+ * <li>{@link #getParameterValues(String)}</li>
+ * </ul>
+ * </p>
  * 
  * @author baba
  * @since 1.0.0
  */
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	// TODO
-	private final Map<String, String[]> parameters;
+	/** URI パラメータを含むリクエストパラメータの {@link Map} です。 */
+	private final Map<String, String[]> parameterMap;
 
 	/**
-	 * インスタンス化します。
+	 * 指定された要求をラップした要求オブジェクトを構築します。
 	 * 
 	 * @param request
-	 *            ラップするリクエスト
+	 *            要求
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
-			final Map<String, String[]> pathParameters) {
+			final Map<String, String[]> uriParameters) {
 		super(request);
-		Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+		this.parameterMap = buildParameterMap(request, uriParameters);
+	}
 
-		Map<?, ?> parameterMap = request.getParameterMap();
-		for (Entry<?, ?> entry : parameterMap.entrySet()) {
-			String name = String.class.cast(entry.getKey());
-			List<String> values = new ArrayList<String>();
-			for (String value : String[].class.cast(entry.getValue())) {
+	/**
+	 * 要求パラメータを構築します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param uriParameters
+	 *            URI パラメータの {@link Map}
+	 * @return URI パラメータを含むリクエストパラメータの {@link Map}
+	 */
+	private Map<String, String[]> buildParameterMap(
+			final HttpServletRequest request,
+			final Map<String, String[]> uriParameters) {
+		final Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+
+		final Map<?, ?> originalParameterMap = request.getParameterMap();
+		for (final Entry<?, ?> entry : originalParameterMap.entrySet()) {
+			final String name = (String) entry.getKey();
+			final List<String> values = new ArrayList<String>();
+			for (final String value : (String[]) entry.getValue()) {
 				values.add(value);
 			}
 			extendedParameterMap.put(name, values);
 		}
-		for (Entry<String, String[]> entry : pathParameters.entrySet()) {
-			String name = entry.getKey();
+		for (final Entry<String, String[]> entry : uriParameters.entrySet()) {
+			final String name = entry.getKey();
 			if (extendedParameterMap.containsKey(name)) {
-				List<String> values = extendedParameterMap.get(name);
-				for (String value : entry.getValue()) {
+				final List<String> values = extendedParameterMap.get(name);
+				for (final String value : entry.getValue()) {
 					values.add(value);
 				}
 			} else {
-				List<String> values = new ArrayList<String>();
-				for (String value : entry.getValue()) {
+				final List<String> values = new ArrayList<String>();
+				for (final String value : entry.getValue()) {
 					values.add(value);
 				}
 				extendedParameterMap.put(name, values);
 			}
 		}
 
-		parameters = new HashMap<String, String[]>();
-		for (Entry<String, List<String>> entry : extendedParameterMap.entrySet()) {
-			parameters.put(entry.getKey(), entry.getValue().toArray(new String[0]));
+		final Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+		for (final Entry<String, List<String>> entry : extendedParameterMap
+				.entrySet()) {
+			parameterMap.put(entry.getKey(), entry.getValue().toArray(
+					new String[0]));
 		}
+		return parameterMap;
 	}
 
 	/**
-	 * リクエストの属性を取得します。
+	 * 指定された属性の値を <code>Object</code> として返します。指定された名前の属性が存在しない場合は、
+	 * <code>null</code> を返します。
 	 * 
 	 * @param name
-	 *            属性名
+	 *            属性の名前を指定する <code>String</code>
+	 * @return 属性の値を含む <code>Object</code>。属性が存在しない場合は <code>null</code>
 	 */
 	@Override
 	public Object getAttribute(final String name) {
@@ -137,7 +169,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		} else if (ATTR_MESSAGES.equals(name)) {
 			attribute = ThreadContext.getMessagesMap();
 		} else {
-			final Action action = (Action) super.getAttribute(ATTR_ACTION);
+			final Object action = super.getAttribute(ATTR_ACTION);
 			if (action != null) {
 				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 						.getClass());
@@ -160,9 +192,10 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	/**
-	 * 属性名の列挙を返します。
+	 * この要求で利用できる属性の名前が格納された <code>Enumeration</code> を返します。利用できる属性が要求にない場合は、空の
+	 * <code>Enumeration</code> を返します。
 	 * 
-	 * @return 属性名の列挙
+	 * @return 要求に付随する属性の名前が格納された文字列の <code>Enumeration</code>
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -173,11 +206,11 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		attributeNames.add(ATTR_ACTION);
 		attributeNames.add(ATTR_MESSAGES);
 
-		final Action action = (Action) super.getAttribute(ATTR_ACTION);
+		final Object action = super.getAttribute(ATTR_ACTION);
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			for (PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
+			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
 				if (propertyDesc.isReadable()) {
 					attributeNames.add(propertyDesc.getPropertyName());
 				}
@@ -191,9 +224,19 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		return new IteratorEnumeration(attributeNames.iterator());
 	}
 
+	/**
+	 * 要求パラメータの値を <code>String</code> として返します。
+	 * <p>
+	 * パラメータが存在しない場合は、<code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @param name
+	 *            パラメータの名前を指定する <code>String</code>
+	 * @return パラメータの単一の値を表す <code>String</code>
+	 */
 	@Override
-	public String getParameter(String name) {
-		String[] parameters = this.parameters.get(name);
+	public String getParameter(final String name) {
+		final String[] parameters = this.parameterMap.get(name);
 		if (parameters == null) {
 			return null;
 		} else {
@@ -201,20 +244,47 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		}
 	}
 
-	@Override
-	public Map getParameterMap() {
-		return this.parameters;
-	}
-
+	/**
+	 * この要求に含まれるパラメータの名前を格納した、<code>String</code> オブジェクトの
+	 * <code>Enumeration</code> を返します。
+	 * <p>
+	 * パラメータが要求にない場合、このメソッドは空の <code>Enumeration</code> を返します。
+	 * </p>
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getParameterNames() {
-		return new IteratorEnumeration(parameters.keySet().iterator());
+		return new IteratorEnumeration(parameterMap.keySet().iterator());
 	}
 
+	/**
+	 * 指定された要求パラメータのすべての値が格納された <code>String</code> オブジェクトの配列を返します。
+	 * <p>
+	 * パラメータが存在しない場合は、<code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @param name
+	 *            取得したいパラメータの名前を表す <code>String</code>
+	 * @return パラメータの値が格納された <code>String</code> オブジェクトの配列
+	 */
 	@Override
-	public String[] getParameterValues(String name) {
-		return parameters.get(name);
+	public String[] getParameterValues(final String name) {
+		return parameterMap.get(name);
 	}
 
+	/**
+	 * この要求から取得できるパラメータを <code>java.util.Map</code> で返します。
+	 * 
+	 * @return キーとしてパラメータ名、マップ値としてパラメータ値が格納された不変の <code>java.util.Map</code>。
+	 *         <p>
+	 *         パラメータマップ内のキーは <code>String</code> 型。パラメータマップ内の値は
+	 *         <code>String</code> の配列型
+	 *         </p>
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map getParameterMap() {
+		return this.parameterMap;
+	}
 
 }

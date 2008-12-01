@@ -32,48 +32,98 @@ import org.seasar.cubby.internal.util.ServiceFactory;
 public class ThreadContext {
 
 	/** ThreadContext を保存するスレッドローカル。 */
-	private static final ThreadLocal<ThreadContext> CONTEXT = new ThreadLocal<ThreadContext>() {
+	private static final ThreadLocal<ThreadContext> THREAD_LOCAL = new ThreadLocal<ThreadContext>();
 
-		@Override
-		protected ThreadContext initialValue() {
-			return new ThreadContext();
-		}
+	/** 前回のコンテキスト。 */
+	private final ThreadContext previous;
 
-	};
+	/** 要求。 */
+	private final HttpServletRequest request;
+
+	/** メッセージのリソースバンドル。 */
+	private ResourceBundle messagesResourceBundle = null;
+
+	/** メッセージの {@link Map} */
+	private Map<String, Object> messages = null;
+
+	/** メッセージ表示用リソースバンドルの振る舞い。 */
+	private MessagesBehaviour messagesBehaviour;
 
 	/**
-	 * スレッドローカルから現在の実行スレッドに関する情報を削除します。
-	 */
-	public static void remove() {
-		CONTEXT.remove();
-	}
-
-	/**
-	 * 現在の実行スレッドに関連付けられたリクエストを取得します。
+	 * インスタンス化します。
 	 * 
-	 * @return リクエスト
+	 * @param previous
+	 *            前回のコンテキスト
+	 * @param request
+	 *            要求
 	 */
-	public static HttpServletRequest getRequest() {
-		return CONTEXT.get().request;
+	private ThreadContext(final ThreadContext previous,
+			final HttpServletRequest request) {
+		this.previous = previous;
+		this.request = request;
 	}
 
 	/**
-	 * 現在の実行スレッドに指定されたリクエストを関連付けます。
+	 * スレッドローカル変数からコンテキストを取得します。
+	 * 
+	 * @return コンテキスト
+	 */
+	private static ThreadContext getContext() {
+		final ThreadContext context = THREAD_LOCAL.get();
+		if (context == null) {
+			throw new IllegalStateException();
+		}
+		return context;
+	}
+
+	/**
+	 * 現在の実行スレッドに対するコンテキストを保存し、指定された情報をもつ新規コンテキストを関連付けます。
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 */
-	public static void setRequest(final HttpServletRequest request) {
-		CONTEXT.get().request = request;
+	public static void newContext(final HttpServletRequest request) {
+		final ThreadContext previous = THREAD_LOCAL.get();
+		final ThreadContext context = new ThreadContext(previous, request);
+		THREAD_LOCAL.set(context);
 	}
 
 	/**
-	 * 現在の実行スレッドに関連付けられたリクエストに対応するメッセージ用の {@link ResourceBundle} を取得します。
+	 * スレッドローカル変数を {@link ThreadContext#newContext(HttpServletRequest)}
+	 * 呼び出し以前の状態に戻します。
+	 */
+	public static void restoreContext() {
+		final ThreadContext context = THREAD_LOCAL.get();
+		if (context != null) {
+			THREAD_LOCAL.set(context.previous);
+		} else {
+			remove();
+		}
+	}
+
+	/**
+	 * スレッドローカル変数から現在の実行スレッドに関する情報を削除します。
+	 */
+	public static void remove() {
+		THREAD_LOCAL.remove();
+	}
+
+	/**
+	 * 現在の実行スレッドに関連付けられた要求を取得します。
+	 * 
+	 * @return 要求
+	 */
+	public static HttpServletRequest getRequest() {
+		return getContext().request;
+	}
+
+	/**
+	 * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} を取得します。
 	 * 
 	 * @return リソースバンドル
 	 */
 	public static ResourceBundle getMessagesResourceBundle() {
-		final ThreadContext context = CONTEXT.get();
+		final ThreadContext context = getContext();
 		if (context.messagesResourceBundle == null) {
 			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
 			context.messagesResourceBundle = messagesBehaviour
@@ -89,8 +139,8 @@ public class ThreadContext {
 	 * 
 	 * @return メッセージの {@link Map}
 	 */
-	public static Map<String, String> getMessagesMap() {
-		final ThreadContext context = CONTEXT.get();
+	public static Map<String, Object> getMessagesMap() {
+		final ThreadContext context = getContext();
 		if (context.messages == null) {
 			final ResourceBundle bundle = getMessagesResourceBundle();
 			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
@@ -114,23 +164,5 @@ public class ThreadContext {
 		}
 		return context.messagesBehaviour;
 	}
-
-	/**
-	 * インスタンス化します。
-	 */
-	private ThreadContext() {
-	}
-
-	/** リクエスト。 */
-	private HttpServletRequest request;
-
-	/** メッセージのリソースバンドル。 */
-	private ResourceBundle messagesResourceBundle = null;
-
-	/** メッセージの {@link Map} */
-	private Map<String, String> messages = null;
-
-	/** メッセージ表示用リソースバンドルの振る舞い。 */
-	private MessagesBehaviour messagesBehaviour;
 
 }

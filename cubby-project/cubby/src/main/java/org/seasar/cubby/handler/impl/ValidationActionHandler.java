@@ -59,11 +59,10 @@ public class ValidationActionHandler implements ActionHandler {
 	 */
 	public ActionResult handle(HttpServletRequest request,
 			HttpServletResponse response, ActionContext actionContext,
-			ActionHandlerChain actionInvocationChain) throws Exception {
+			ActionHandlerChain actionHandlerChain) throws Exception {
 		try {
 			validationProcessor.process(request, actionContext);
-			return actionInvocationChain
-					.chain(request, response, actionContext);
+			return actionHandlerChain.chain(request, response, actionContext);
 		} catch (final ValidationException e) {
 			return validationProcessor.handleValidationException(e, request,
 					actionContext);

@@ -61,7 +61,7 @@ public class RedirectTest {
 
 	@Before
 	public void setupContainer() {
-		final List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+		final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 		actionClasses.add(MockAction.class);
 		final PathResolver pathResolver = new PathResolverImpl();
 		pathResolver.addAllActionClasses(actionClasses);

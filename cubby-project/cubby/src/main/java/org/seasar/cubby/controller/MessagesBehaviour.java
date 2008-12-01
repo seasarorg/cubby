@@ -43,6 +43,6 @@ public interface MessagesBehaviour {
 	 *            メッセージ表示用のリソースバンドル
 	 * @return リソースバンドルを変換した {@link Map}
 	 */
-	Map<String, String> toMap(ResourceBundle bundle);
+	Map<String, Object> toMap(ResourceBundle bundle);
 
 }

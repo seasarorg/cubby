@@ -17,6 +17,8 @@ package org.seasar.cubby.internal.controller.impl;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
+import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
+import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
@@ -25,7 +27,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
@@ -67,17 +68,18 @@ public class ActionProcessorImpl implements ActionProcessor {
 			logger.debug(format("DCUB0005", actionMethod));
 		}
 
-		final Class<? extends Action> actionClass = routing.getActionClass();
+		final Class<?> actionClass = routing.getActionClass();
 
 		final Container container = ContainerFactory.getContainer();
 
 		final ActionErrors actionErrors = new ActionErrorsImpl();
-		final Map<String, Object> flashMap = new FlashHashMap<String, Object>(
-				request);
+		request.setAttribute(ATTR_ERRORS, actionErrors);
 
-		final Action action = (Action) container.lookup(actionClass);
-		action.setErrors(actionErrors);
-		action.setFlash(flashMap);
+		final Map<String, Object> flashMap = new FlashMap<String, Object>(
+				request);
+		request.setAttribute(ATTR_FLASH, flashMap);
+
+		final Object action = container.lookup(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 
 		final ActionContext actionContext = new ActionContextImpl(action,

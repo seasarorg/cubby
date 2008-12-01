@@ -27,6 +27,9 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.InitializeMethod;
+import org.seasar.cubby.action.PostRenderMethod;
+import org.seasar.cubby.action.PreRenderMethod;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.internal.beans.BeanDesc;
 import org.seasar.cubby.internal.beans.BeanDescFactory;
@@ -41,10 +44,10 @@ import org.seasar.cubby.internal.beans.PropertyDesc;
 public class ActionContextImpl implements ActionContext {
 
 	/** アクション。 */
-	private final Action action;
+	private final Object action;
 
 	/** アクションクラス。 */
-	private final Class<? extends Action> actionClass;
+	private final Class<?> actionClass;
 
 	/** アクションメソッド。 */
 	private final Method actionMethod;
@@ -69,8 +72,7 @@ public class ActionContextImpl implements ActionContext {
 	 * @param flashMap
 	 *            揮発性メッセージ
 	 */
-	public ActionContextImpl(final Action action,
-			final Class<? extends Action> actionClass,
+	public ActionContextImpl(final Object action, final Class<?> actionClass,
 			final Method actionMethod, final ActionErrors actionErrors,
 			final Map<String, Object> flashMap) {
 		this.action = action;
@@ -78,19 +80,28 @@ public class ActionContextImpl implements ActionContext {
 		this.actionMethod = actionMethod;
 		this.actionErrors = actionErrors;
 		this.flashMap = flashMap;
+		if (action instanceof Action) {
+			initialize((Action) action, actionErrors, flashMap);
+		}
+	}
+
+	private void initialize(final Action action,
+			final ActionErrors actionErrors, final Map<String, Object> flashMap) {
+		action.setErrors(actionErrors);
+		action.setFlash(flashMap);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Action getAction() {
+	public Object getAction() {
 		return action;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<? extends Action> getActionClass() {
+	public Class<?> getActionClass() {
 		return actionClass;
 	}
 
@@ -167,21 +178,42 @@ public class ActionContextImpl implements ActionContext {
 	 * {@inheritDoc}
 	 */
 	public void invokeInitializeMethod() {
-		action.invokeInitializeMethod(actionMethod);
+		if (action instanceof Action) {
+			((Action) action).invokeInitializeMethod(actionMethod);
+		} else if (actionMethod.isAnnotationPresent(InitializeMethod.class)) {
+			final InitializeMethod initializeMethod = actionMethod
+					.getAnnotation(InitializeMethod.class);
+			final String methodName = initializeMethod.value();
+			this.invoke(action, methodName);
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void invokePreRenderMethod() {
-		action.invokePreRenderMethod(actionMethod);
+		if (action instanceof Action) {
+			((Action) action).invokePreRenderMethod(actionMethod);
+		} else if (actionMethod.isAnnotationPresent(PreRenderMethod.class)) {
+			final PreRenderMethod preRenderMethod = actionMethod
+					.getAnnotation(PreRenderMethod.class);
+			final String methodName = preRenderMethod.value();
+			this.invoke(action, methodName);
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void invokePostRenderMethod() {
-		action.invokePostRenderMethod(actionMethod);
+		if (action instanceof Action) {
+			((Action) action).invokePostRenderMethod(actionMethod);
+		} else if (actionMethod.isAnnotationPresent(PostRenderMethod.class)) {
+			final PostRenderMethod postRenderMethod = actionMethod
+					.getAnnotation(PostRenderMethod.class);
+			final String methodName = postRenderMethod.value();
+			this.invoke(action, methodName);
+		}
 	}
 
 	/**
@@ -219,6 +251,26 @@ public class ActionContextImpl implements ActionContext {
 	 */
 	public void clearFlash() {
 		flashMap.clear();
+	}
+
+	/**
+	 * アクションの指定されたメソッド名のメソッドを実行します。
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @since 1.1.0
+	 */
+	private void invoke(final Object action, final String methodName) {
+		try {
+			final Method method = action.getClass().getMethod(methodName);
+			method.invoke(this);
+		} catch (NoSuchMethodException e) {
+			throw new ActionException(e);
+		} catch (IllegalAccessException e) {
+			throw new ActionException(e);
+		} catch (InvocationTargetException e) {
+			throw new ActionException(e);
+		}
 	}
 
 	/**

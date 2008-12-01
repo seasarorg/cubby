@@ -49,7 +49,7 @@ public class CubbyFunctionsTest {
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
 		replay(request);
 
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 		assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
 				.url("abc あいう"));
 	}
@@ -60,7 +60,7 @@ public class CubbyFunctionsTest {
 		expect(request.getCharacterEncoding()).andReturn("Windows-31J");
 		replay(request);
 
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 		assertEquals("abc+%82%A0%82%A2%82%A4", CubbyFunctions.url("abc あいう"));
 	}
 

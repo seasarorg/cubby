@@ -23,17 +23,22 @@ public class CubbyTestCaseTest extends CubbyTestCase {
 
 	/**
 	 * Fix https://www.seasar.org/issues/browse/CUBBY-114
+	 * 
 	 * @throws Exception
 	 */
 	public void testSetupThreadContext() throws Exception {
 		ThreadContext.remove();
-		assertNull(ThreadContext.getRequest());
-		setupThreadContext();
+		try {
+			ThreadContext.getRequest();
+			fail();
+		} catch (IllegalStateException e) {
+		}
+		setupThreadContext(getRequest());
 		assertNotNull(ThreadContext.getRequest());
-		
+
 		TokenValidator v = new TokenValidator();
 		ValidationContext context = new ValidationContext();
-		v.validate(context, new String[]{"1"});
+		v.validate(context, new String[] { "1" });
 		assertTrue("上記のvalidateメソッドの呼び出しでNPEが発生しないこと", true);
 	}
 }

@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.util.StringUtils;
@@ -18,7 +17,7 @@ import org.seasar.cubby.internal.util.StringUtils;
 class RoutingImpl implements Routing {
 
 	/** アクションクラス。 */
-	private final Class<? extends Action> actionClass;
+	private final Class<?> actionClass;
 
 	/** アクソンメソッド。 */
 	private final Method method;
@@ -67,7 +66,7 @@ class RoutingImpl implements Routing {
 	 * @param auto
 	 *            自動登録されたかどうか
 	 */
-	RoutingImpl(final Class<? extends Action> actionClass, final Method method,
+	RoutingImpl(final Class<?> actionClass, final Method method,
 			final String actionPath, final List<String> uriParameterNames,
 			final Pattern pattern, final RequestMethod requestMethod,
 			final String onSubmit, final int priority, final boolean auto) {
@@ -85,7 +84,7 @@ class RoutingImpl implements Routing {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class<? extends Action> getActionClass() {
+	public Class<?> getActionClass() {
 		return actionClass;
 	}
 

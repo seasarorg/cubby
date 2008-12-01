@@ -17,7 +17,6 @@ package org.seasar.cubby.validator;
 
 import java.lang.reflect.Method;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.internal.beans.BeanDesc;
 import org.seasar.cubby.internal.beans.BeanDescFactory;
@@ -51,7 +50,7 @@ public class ValidationUtils {
 	 *            入力検証ルールの集合が定義されたプロパティ名
 	 * @return アクションメソッドの入力検証ルールの集合
 	 */
-	public static ValidationRules getValidationRules(final Action action,
+	public static ValidationRules getValidationRules(final Object action,
 			final String rulesPropertyName) {
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());

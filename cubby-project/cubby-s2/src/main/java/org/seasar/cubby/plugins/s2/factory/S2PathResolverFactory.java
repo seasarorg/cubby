@@ -18,7 +18,6 @@ package org.seasar.cubby.plugins.s2.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
@@ -31,7 +30,7 @@ import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
 /**
- * クラスパスから {@link Action} を検索しアクションクラスを登録します。
+ * クラスパスを走査しアクションクラスを登録します。
  * 
  * @author baba
  * @since 2.0.0
@@ -53,7 +52,7 @@ public class S2PathResolverFactory implements PathResolverFactory,
 	private boolean initialized;
 
 	/** アクションクラスのリスト。 */
-	private List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+	private List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 
 	private PathResolver pathResolver = new PathResolverImpl();
 
@@ -76,26 +75,6 @@ public class S2PathResolverFactory implements PathResolverFactory,
 	public void setNamingConvention(final NamingConvention namingConvention) {
 		this.namingConvention = namingConvention;
 	}
-
-	// /**
-	// * ルーティング情報を取得します。
-	// *
-	// * @return ルーティング情報
-	// */
-	// public List<Routing> getRoutings() {
-	// initialize();
-	// return Collections.unmodifiableList(new ArrayList<Routing>(routings
-	// .values()));
-	// }
-	//
-	// /**
-	// * アクションクラスのコレクションを取得します。
-	// *
-	// * @return アクションクラスのコレクション
-	// */
-	// public Collection<Class<? extends Action>> getActionClasses() {
-	// return actionClasses;
-	// }
 
 	/**
 	 * 初期化します。
@@ -146,20 +125,7 @@ public class S2PathResolverFactory implements PathResolverFactory,
 		if (!CubbyUtils.isActionClass(clazz)) {
 			return;
 		}
-		final Class<? extends Action> actionClass = cast(clazz);
-		actionClasses.add(actionClass);
-	}
-
-	/**
-	 * 指定されたクラスを <code>Class&lt;? extends Action&gt;</code> にキャストします。
-	 * 
-	 * @param clazz
-	 *            クラス
-	 * @return キャストされたクラス
-	 */
-	@SuppressWarnings("unchecked")
-	private static Class<? extends Action> cast(final Class<?> clazz) {
-		return Class.class.cast(clazz);
+		actionClasses.add(clazz);
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class TokenValidatorTest {
 
 		replay(request, session);
 
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		ValidationContext context = new ValidationContext();
 		validator.validate(context, new Object[] { "tokenstring" });
@@ -93,7 +93,7 @@ public class TokenValidatorTest {
 
 	@Test
 	public void requestIsNull() throws Exception {
-		ThreadContext.setRequest(null);
+		ThreadContext.newContext(null);
 		TokenValidator validator = new TokenValidator();
 		ValidationContext context = new ValidationContext();
 		try {

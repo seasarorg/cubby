@@ -17,12 +17,12 @@ public class GuiceActionHandlerChainFactory implements
 	private final List<ActionHandler> actionHandlers;
 
 	@Inject
-	public GuiceActionHandlerChainFactory(Injector injector,
-			ActionHandlerClassesFactory actionHandlerClassesFactory) {
-		List<ActionHandler> actionHandlers = new ArrayList<ActionHandler>();
-		for (Class<? extends ActionHandler> actionHandlerClass : actionHandlerClassesFactory
+	public GuiceActionHandlerChainFactory(final Injector injector,
+			final ActionHandlerClassesFactory actionHandlerClassesFactory) {
+		final List<ActionHandler> actionHandlers = new ArrayList<ActionHandler>();
+		for (final Class<? extends ActionHandler> actionHandlerClass : actionHandlerClassesFactory
 				.getActionHandlerClasses()) {
-			ActionHandler actionHandler = injector
+			final ActionHandler actionHandler = injector
 					.getInstance(actionHandlerClass);
 			actionHandlers.add(actionHandler);
 		}
@@ -30,7 +30,7 @@ public class GuiceActionHandlerChainFactory implements
 	}
 
 	public ActionHandlerChain getActionHandlerChain() {
-		ActionHandlerChain actionHandlerChain = new ActionHandlerChainImpl(
+		final ActionHandlerChain actionHandlerChain = new ActionHandlerChainImpl(
 				actionHandlers.iterator());
 		return actionHandlerChain;
 	}

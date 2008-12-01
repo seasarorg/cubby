@@ -17,51 +17,16 @@ package org.seasar.cubby.internal.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
-import org.seasar.cubby.internal.util.CubbyUtils;
 
 public class CubbyUtilsTest {
-
-	@Test
-	@Deprecated
-	public void getObjectSize() {
-		// array
-		assertEquals(0, CubbyUtils.getObjectSize(null));
-		assertEquals(1, CubbyUtils.getObjectSize(""));
-		assertEquals(0, CubbyUtils.getObjectSize(new Object[] {}));
-		assertEquals(3, CubbyUtils.getObjectSize(new Object[] { 1, 2, 3 }));
-		assertEquals(3, CubbyUtils.getObjectSize(new Object[] { null, 2, 3 }));
-
-		// collection
-		assertEquals(0, CubbyUtils.getObjectSize(toCollection(new Object[] {})));
-		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] { 1,
-				2, 3 })));
-		assertEquals(3, CubbyUtils.getObjectSize(toCollection(new Object[] {
-				null, 2, 3 })));
-
-	}
-
-	private static Object toCollection(Object[] objects) {
-		List<Object> list = new ArrayList<Object>();
-		for (Object o : objects) {
-			list.add(o);
-		}
-		return list;
-	}
 
 	@Test
 	public void getActionPath() throws Exception {
@@ -96,37 +61,6 @@ public class CubbyUtilsTest {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
-	public void replaceFirst() {
-		assertNull(CubbyUtils.replaceFirst(null, "", ""));
-		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", null, null));
-		assertEquals("abaa", CubbyUtils.replaceFirst("abaa", "a", null));
-		assertEquals("baa", CubbyUtils.replaceFirst("abaa", "a", ""));
-		assertEquals("zbaa", CubbyUtils.replaceFirst("abaa", "a", "z"));
-		assertEquals("xyzaab", CubbyUtils.replaceFirst("abaab", "ab", "xyz"));
-		assertNull(CubbyUtils.replaceFirst(null, "", ""));
-		assertEquals("3abaa", CubbyUtils.replaceFirst("3abaa", null, null));
-		assertEquals("3abaa", CubbyUtils.replaceFirst("3abaa", "a", null));
-		assertEquals("3baa", CubbyUtils.replaceFirst("3abaa", "a", ""));
-		assertEquals("3zbaa", CubbyUtils.replaceFirst("3abaa", "a", "z"));
-		assertEquals("3xyzaab", CubbyUtils.replaceFirst("3abaab", "ab", "xyz"));
-	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void split2() {
-		assertNull(CubbyUtils.split2(null, '_'));
-		assertTrue(Arrays.deepEquals(new String[] { "" }, CubbyUtils.split2("",
-				'_')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab", "" }, CubbyUtils
-				.split2("ab_", '_')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab_cd_de_" }, CubbyUtils
-				.split2("ab_cd_de_", ',')));
-		assertTrue(Arrays.deepEquals(new String[] { "ab", "cd_de_" },
-				CubbyUtils.split2("ab_cd_de_", '_')));
-	}
-
-	@Test
 	public void gGetPriority() throws Exception {
 		Method method = TestGetPriprity.class.getMethod("m1", new Class[0]);
 		assertEquals(Integer.MAX_VALUE, CubbyUtils.getPriority(method));
@@ -154,44 +88,10 @@ public class CubbyUtilsTest {
 	}
 
 	@Test
-	@Deprecated
-	public void formBean1() throws Exception {
-		MockFormAction action = new MockFormAction();
-		Method method = action.getClass().getMethod("normal");
-		Object actual = CubbyUtils
-				.getFormBean(action, MockFormAction.class, method);
-		assertSame(action, actual);
-	}
-
-	@Test
-	@Deprecated
-	public void getFormBean2() throws Exception {
-		MockFormAction action = new MockFormAction();
-		Method method = action.getClass().getMethod("legalForm");
-		Object actual = CubbyUtils
-				.getFormBean(action, MockFormAction.class, method);
-		assertSame(action.getForm(), actual);
-	}
-
-	@Test
-	@Deprecated
-	public void getFormBean3() throws Exception {
-		MockFormAction action = new MockFormAction();
-		Method method = action.getClass().getMethod("illegalForm");
-		try {
-			CubbyUtils.getFormBean(action, MockFormAction.class, method);
-			fail();
-		} catch (ActionException e) {
-			// ok
-			assertTrue(true);
-		}
-	}
-
-	@Test
 	public void isActionClass() throws Exception {
 		assertTrue("アクションクラスであればtrue", CubbyUtils
 				.isActionClass(ChildAction.class));
-		assertFalse("Actionを継承していないクラスはアクションクラスではない", CubbyUtils
+		assertTrue("Actionを継承していないクラスでもアクションクラスである", CubbyUtils
 				.isActionClass(Object.class));
 		assertFalse("抽象クラスはアクションクラスではない", CubbyUtils
 				.isActionClass(ParentAction.class));

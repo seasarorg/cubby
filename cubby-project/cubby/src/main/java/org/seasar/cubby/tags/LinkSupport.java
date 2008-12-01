@@ -23,7 +23,6 @@ import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspTagException;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.factory.PathResolverFactory;
@@ -111,21 +110,17 @@ class LinkSupport {
 	 */
 	public String getPath(final String characterEncoding)
 			throws JspTagException {
-		final Class<? extends Action> actionClass;
+		final Class<?> actionClass;
 		try {
 			actionClass = forName(actionClassName);
 		} catch (final ClassNotFoundException e) {
 			throw new JspTagException(e);
 		}
 
-		// final S2Container container = SingletonS2ContainerFactory
-		// .getContainer();
 		final Container container = ContainerFactory.getContainer();
 		final PathResolverFactory pathResolverFactory = container
 				.lookup(PathResolverFactory.class);
 		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
-		// final PathResolver pathResolver = container
-		// .lookup(PathResolver.class);
 		final String path = pathResolver.reverseLookup(actionClass,
 				actionMethodName, getParameters(), characterEncoding);
 

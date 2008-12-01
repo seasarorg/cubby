@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.plugins.guice.factory.GuicePathResolverFactory.ActionClassesFactory;
 
@@ -18,8 +17,7 @@ public class AbstractCubbyModuleTest {
 
 	@Before
 	public void setup() {
-		ModuleFactory.setModuleClassName(TestModule.class
-				.getName());
+		ModuleFactory.setModuleClassName(TestModule.class.getName());
 	}
 
 	@Test
@@ -29,14 +27,15 @@ public class AbstractCubbyModuleTest {
 		System.out.println(injector);
 		Foo foo = injector.getInstance(Foo.class);
 		System.out.println(foo.factory);
-		ConverterFactory converterFactory = injector.getInstance(ConverterFactory.class);
+		ConverterFactory converterFactory = injector
+				.getInstance(ConverterFactory.class);
 		System.out.println(converterFactory);
 	}
 
 	public static class TestModule extends AbstractCubbyModule {
 		@Override
-		protected Collection<Class<? extends Action>> getActionClasses() {
-			return new ArrayList<Class<? extends Action>>();
+		protected Collection<Class<?>> getActionClasses() {
+			return new ArrayList<Class<?>>();
 		}
 	}
 
