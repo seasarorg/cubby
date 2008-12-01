@@ -18,7 +18,6 @@ package org.seasar.cubby.examples.todo.action;
 import java.text.DateFormat;
 import java.util.List;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.FormatPattern;
@@ -41,7 +40,7 @@ import org.seasar.cubby.validator.validators.DateFormatValidator;
  * @author baba
  */
 @Path("todo")
-public class TodoListAction extends Action {
+public class TodoListAction {
 
 	// ----------------------------------------------[Validation]
 
@@ -71,7 +70,7 @@ public class TodoListAction extends Action {
 	/**
 	 * 一覧の表示(/todo/)
 	 */
-	@Form(value = "todoConditionDto")
+	@Form("todoConditionDto")
 	@Validation(rules = "validation", errorPage = "list.jsp")
 	public ActionResult index() {
 		this.todoList = todoDao.selectByCondition(todoConditionDto);

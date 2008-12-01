@@ -2,6 +2,8 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="app-cubby">
+	<include path="cubby-handlers.dicon"/>
+	<include path="cubby-converters.dicon"/>
 
 	<!-- 日付フォーマットの設定 -->
 	<component class="org.seasar.cubby.action.impl.FormatPatternImpl">

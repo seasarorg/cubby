@@ -15,6 +15,9 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
+import static org.seasar.cubby.util.ActionUtils.errors;
+
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.examples.H2ScriptRunner;
@@ -56,28 +59,28 @@ public class LoginActionTest extends CubbyTestCase {
 	public void testLogin_authError() throws Exception {
 		assertPathEquals(Forward.class, "/todo/login.jsp",
 				processAction("/todo/login/process"));
-		assertEquals(0, action.getErrors().getOthers().size());
-		assertEquals(2, action.getErrors().getFields().size());
-		assertEquals(1, action.getErrors().getFields().get("userId").size());
-		assertEquals(1, action.getErrors().getFields().get("password").size());
-		assertEquals("ユーザIDかパスワードが違います。", action.getErrors().getFields().get(
-				"userId").get(0));
-		assertEquals("ユーザIDかパスワードが違います。", action.getErrors().getFields().get(
-				"password").get(0));
+		ActionErrors errors = errors();
+		assertEquals(0, errors.getOthers().size());
+		assertEquals(2, errors.getFields().size());
+		assertEquals(1, errors.getFields().get("userId").size());
+		assertEquals(1, errors.getFields().get("password").size());
+		assertEquals("ユーザIDかパスワードが違います。", errors.getFields().get("userId").get(
+				0));
+		assertEquals("ユーザIDかパスワードが違います。", errors.getFields().get("password")
+				.get(0));
 		assertNull(action.sessionScope.get("user"));
 	}
 
 	public void testLogin_validationError() throws Exception {
 		assertPathEquals(Forward.class, "/todo/login.jsp",
 				processAction("/todo/login/process"));
-		assertEquals(0, action.getErrors().getOthers().size());
-		assertEquals(2, action.getErrors().getFields().size());
-		assertEquals(1, action.getErrors().getFields().get("userId").size());
-		assertEquals(1, action.getErrors().getFields().get("password").size());
-		assertEquals("ユーザ名は必須です。", action.getErrors().getFields().get("userId")
-				.get(0));
-		assertEquals("パスワードは必須です。", action.getErrors().getFields().get(
-				"password").get(0));
+		ActionErrors errors = errors();
+		assertEquals(0, errors.getOthers().size());
+		assertEquals(2, errors.getFields().size());
+		assertEquals(1, errors.getFields().get("userId").size());
+		assertEquals(1, errors.getFields().get("password").size());
+		assertEquals("ユーザ名は必須です。", errors.getFields().get("userId").get(0));
+		assertEquals("パスワードは必須です。", errors.getFields().get("password").get(0));
 		assertNull(action.sessionScope.get("user"));
 	}
 }
