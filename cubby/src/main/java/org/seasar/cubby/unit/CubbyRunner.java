@@ -71,12 +71,12 @@ public class CubbyRunner {
 			.parseRequest(wrappedRequest);
 			request.setAttribute(ATTR_PARAMS, parameterMap);
 			final Routing routing = super.dispatch(parameterMap);
-			ThreadContext.setRequest(wrappedRequest);
+			ThreadContext.newContext(wrappedRequest);
 			try {
 				return actionProcessor.process(wrappedRequest, response,
 						routing);
 			} finally {
-				ThreadContext.remove();
+				ThreadContext.restoreContext();
 			}
 		}				
 	}

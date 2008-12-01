@@ -33,18 +33,17 @@ import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.util.ServiceFactory;
+import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.util.StringUtils;
 
 /**
- * contentType が multipart/form-data のリクエストに対応したリクエスト解析器です。
+ * マルチパートの要求に対応した解析器です。
  * <p>
- * リクエストの解析には <a href="http://commons.apache.org/fileupload/">Commons
+ * 要求の解析には <a href="http://commons.apache.org/fileupload/">Commons
  * FileUpload</a> を使用します。
  * </p>
  * 
@@ -63,10 +62,10 @@ public class MultipartRequestParserImpl implements RequestParser {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * 指定されたリクエストがマルチパートのリクエスト(contentType が multipart/form-data)であれば、コンテナに登録された
-	 * {@link FileUpload} と {@link RequestContext} を使用してリクエストを解析します。
+	 * 指定された要求がマルチパートの要求 (contentType が "multipart/" で始まる) であれば、コンテナに登録された
+	 * {@link FileUpload} と {@link RequestContext} を使用して要求を解析します。
 	 * <p>
-	 * リクエストパラメータを戻り値の {@link Map} に格納する際には以下のように変換します。
+	 * 要求パラメータを戻り値の {@link Map} に格納する際には以下のように変換します。
 	 * <ul>
 	 * <li>フォームのフィールド
 	 * <p>
@@ -75,31 +74,35 @@ public class MultipartRequestParserImpl implements RequestParser {
 	 * </li>
 	 * <li>フォームのフィールド以外(アップロードされたファイル)
 	 * <p>
-	 * {@link FileItem}に変換
+	 * {@link FileItem} に変換
 	 * </p>
 	 * </li>
 	 * </ul>
 	 * </p>
 	 * </p>
-	 * <p>
-	 * 指定されたリクエストが通常のリクエストであれば、{@link HttpServletRequest#getParameterMap()}
-	 * の結果をそのまま返します。
-	 * </p>
 	 * 
-	 * @see FileUpload
+	 * @throws RequestParseException
+	 *             指定された要求がマルチパートではなかった場合
+	 * @see FileUpload#parseRequest(RequestContext)
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object[]> getParameterMap(
 			final HttpServletRequest request) {
 		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>(
 				request.getParameterMap());
-		if (ServletFileUpload.isMultipartContent(request)) {
-			final Container container = ContainerFactory.getContainer();
-			final FileUpload fileUpload = container.lookup(FileUpload.class);
+		final Container container = ContainerFactory.getContainer();
+		try {
 			final RequestContext requestContext = container
 					.lookup(RequestContext.class);
-			parameterMap.putAll(this.getMultipartParameterMap(fileUpload,
-					requestContext));
+			if (FileUpload.isMultipartContent(requestContext)) {
+				final FileUpload fileUpload = container
+						.lookup(FileUpload.class);
+				final Map<String, Object[]> multipartParameterMap = getMultipartParameterMap(
+						fileUpload, requestContext);
+				parameterMap.putAll(multipartParameterMap);
+			}
+		} catch (final LookupException e) {
+			throw new IllegalStateException(e);
 		}
 		return parameterMap;
 	}
@@ -166,11 +169,10 @@ public class MultipartRequestParserImpl implements RequestParser {
 	}
 
 	Map<String, Object[]> fromValueListMapToValueArrayMap(
-			final Map<String, List<Object>> collectParameterMap) {
+			final Map<String, List<Object>> valueListMap) {
 		// 配列でパラメータMapを構築
 		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
-		for (final Entry<String, List<Object>> entry : collectParameterMap
-				.entrySet()) {
+		for (final Entry<String, List<Object>> entry : valueListMap.entrySet()) {
 			final List<Object> values = entry.getValue();
 			final Object[] valueArray;
 			if (values.get(0) instanceof String) {
@@ -185,20 +187,22 @@ public class MultipartRequestParserImpl implements RequestParser {
 
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * 指定された要求がマルチパートの要求 (contentType が "multipart/" で始まる) の場合に
+	 * <code>true</code> を返します。
+	 * </p>
+	 * 
+	 * @see FileUpload#isMultipartContent(RequestContext)
 	 */
 	public boolean isParsable(final HttpServletRequest request) {
-		final RequestContext requestContext = ServiceFactory
-				.getProvider(RequestContext.class);
-		if (requestContext == null) {
+		final Container container = ContainerFactory.getContainer();
+		try {
+			final RequestContext requestContext = container
+					.lookup(RequestContext.class);
+			return FileUpload.isMultipartContent(requestContext);
+		} catch (final LookupException e) {
 			return false;
 		}
-		// final Container container = ContainerFactory.getContainer();
-		// if (container.has(RequestContext.class)) {
-		// final RequestContext requestContext = container
-		// .lookup(RequestContext.class);
-		return FileUpload.isMultipartContent(requestContext);
-		// }
-		// return false;
 	}
 
 	/**

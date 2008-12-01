@@ -20,9 +20,9 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Locale;
 import java.util.Map;
@@ -30,19 +30,20 @@ import java.util.PropertyResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class ThreadContextTest {
 
 	@Before
-	public void setupContainer() {
+	public void setup() {
+		ThreadContext.remove();
 		MockContainerProvider.setContainer(new Container() {
 
 			public <T> T lookup(Class<T> type) {
@@ -53,6 +54,10 @@ public class ThreadContextTest {
 			}
 
 		});
+	}
+
+	@After
+	public void teardown() {
 		ThreadContext.remove();
 	}
 
@@ -61,7 +66,7 @@ public class ThreadContextTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
 		replay(request);
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		Map<?, ?> result = ThreadContext.getMessagesMap();
 		assertEquals("result.size()", 14, result.size());
@@ -74,7 +79,7 @@ public class ThreadContextTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
 		replay(request);
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		Map<?, ?> result = ThreadContext.getMessagesMap();
 		assertEquals("result.size()", 14, result.size());
@@ -87,7 +92,7 @@ public class ThreadContextTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
 		replay(request);
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
 				.getMessagesResourceBundle();
@@ -100,7 +105,7 @@ public class ThreadContextTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
 		replay(request);
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
 				.getMessagesResourceBundle();
@@ -112,7 +117,7 @@ public class ThreadContextTest {
 	public void getRequest() {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		replay(request);
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		HttpServletRequest result = ThreadContext.getRequest();
 		assertSame("ThreadContext.getRequest()", request, result);
@@ -120,12 +125,18 @@ public class ThreadContextTest {
 	}
 
 	@Test
-	public void remove() {
+	public void lifeCycle() {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		replay(request);
-		ThreadContext.setRequest(request);
-		ThreadContext.remove();
-		assertNull("ThreadContext.remove()", ThreadContext.getRequest());
+		ThreadContext.newContext(request);
+		assertSame(request, ThreadContext.getRequest());
+		ThreadContext.restoreContext();
+		try {
+			ThreadContext.getRequest();
+			fail();
+		} catch (IllegalStateException e) {
+			// ok
+		}
 		verify(request);
 	}
 

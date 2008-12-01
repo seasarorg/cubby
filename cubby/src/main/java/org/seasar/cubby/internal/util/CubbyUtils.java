@@ -15,26 +15,17 @@
  */
 package org.seasar.cubby.internal.util;
 
-import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
-import static org.seasar.cubby.internal.util.LogMessages.format;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Accept;
-import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.OnSubmit;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.BeanDescFactory;
-import org.seasar.cubby.internal.beans.PropertyDesc;
 
 /**
  * Cubby内部で使用するユーティリティクラスです。
@@ -64,8 +55,7 @@ public class CubbyUtils {
 	 *            アクションクラス
 	 * @return アクションクラスに対応するディレクトリ
 	 */
-	public static String getActionDirectory(
-			final Class<? extends Action> actionClass) {
+	public static String getActionDirectory(final Class<?> actionClass) {
 		final String actionName;
 		final Path path = actionClass.getAnnotation(Path.class);
 		if (path != null && !StringUtils.isEmpty(path.value())) {
@@ -123,8 +113,8 @@ public class CubbyUtils {
 	 *            アクションメソッド
 	 * @return アクションメソッドのパス
 	 */
-	public static String getActionPath(
-			final Class<? extends Action> actionClass, final Method method) {
+	public static String getActionPath(final Class<?> actionClass,
+			final Method method) {
 		final String path;
 		final String actionMethodName = getActionMethodName(method);
 		if (actionMethodName.startsWith("/")) {
@@ -187,30 +177,6 @@ public class CubbyUtils {
 	}
 
 	/**
-	 * 指定されたオブジェクトのサイズを取得します。
-	 * 
-	 * @param value
-	 *            オブジェクト
-	 * @return オブジェクトのサイズ
-	 */
-	@Deprecated
-	public static int getObjectSize(final Object value) {
-		final int size;
-		if (value == null) {
-			size = 0;
-		} else if (value.getClass().isArray()) {
-			final Object[] array = (Object[]) value;
-			size = array.length;
-		} else if (value instanceof Collection) {
-			final Collection<?> collection = (Collection<?>) value;
-			size = collection.size();
-		} else {
-			size = 1;
-		}
-		return size;
-	}
-
-	/**
 	 * リクエストの URI からコンテキストパスを除いたパスを返します。
 	 * 
 	 * @param request
@@ -233,7 +199,6 @@ public class CubbyUtils {
 	 * アクションクラスは以下の条件を満たす必要があります。
 	 * </p>
 	 * <ul>
-	 * <li>{@code Action}クラスを継承</li>
 	 * <li>抽象クラスでない</li>
 	 * </ul>
 	 * 
@@ -243,8 +208,7 @@ public class CubbyUtils {
 	 *         <code>false</code>
 	 */
 	public static boolean isActionClass(final Class<?> clazz) {
-		return Action.class.isAssignableFrom(clazz)
-				&& !Modifier.isAbstract(clazz.getModifiers());
+		return !Modifier.isAbstract(clazz.getModifiers());
 	}
 
 	/**
@@ -266,58 +230,6 @@ public class CubbyUtils {
 	public static boolean isActionMethod(final Method method) {
 		return ActionResult.class.isAssignableFrom(method.getReturnType())
 				&& (method.getParameterTypes().length == 0);
-	}
-
-	/**
-	 * 指定された文字列のなかで、最初に出現した置換対象を置換文字列で置き換えます。
-	 * 
-	 * @param text
-	 *            対象の文字列
-	 * @param replace
-	 *            置換対象
-	 * @param with
-	 *            置換文字列
-	 * @return 最初に出現した置換対象を置換文字列で置き換えた文字列
-	 */
-	@Deprecated
-	public static String replaceFirst(final String text, final String replace,
-			final String with) {
-		if (text == null || replace == null || with == null) {
-			return text;
-		}
-		final int index = text.indexOf(replace);
-		if (index == -1) {
-			return text;
-		}
-		final StringBuilder builder = new StringBuilder(100);
-		builder.append(text.substring(0, index));
-		builder.append(with);
-		builder.append(text.substring(index + replace.length()));
-		return builder.toString();
-	}
-
-	/**
-	 * 指定された文字列を区切り文字で区切った文字列の配列に変換します。
-	 * 
-	 * @param text
-	 *            対象の文字列
-	 * @param delim
-	 *            区切り文字
-	 * @return 指定された文字列を区切り文字で区切った文字列の配列
-	 */
-	@Deprecated
-	public static String[] split2(final String text, final char delim) {
-		if (text == null) {
-			return null;
-		}
-		final int index = text.indexOf(delim);
-		if (index == -1) {
-			return new String[] { text };
-		}
-		final String[] tokens = new String[2];
-		tokens[0] = text.substring(0, index);
-		tokens[1] = text.substring(index + 1);
-		return tokens;
 	}
 
 	/**
@@ -388,69 +300,6 @@ public class CubbyUtils {
 	}
 
 	/**
-	 * 指定されたアクションからアクションメソッドに対応するフォームオブジェクトを取得します。
-	 * 
-	 * @param action
-	 *            アクション
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param method
-	 *            アクションメソッド
-	 * @return フォームオブジェクト
-	 * @throws ActionRuntimeException
-	 *             &#064;Formでフォームオブジェクトとなるプロパティを指定しているが、そのプロパティが
-	 *             <code>null</code> だった場合
-	 * @since 1.0.2
-	 */
-	@Deprecated
-	public static Object getFormBean(final Action action,
-			final Class<?> actionClass, final Method method) {
-		final Form form = getForm(actionClass, method);
-		if (form == null) {
-			return action;
-		}
-		if (form.bindingType() == NONE) {
-			return null;
-		}
-		if (Form.THIS.equals(form.value())) {
-			return action;
-		}
-
-		final String propertyName = form.value();
-		final BeanDesc beanDesc = BeanDescFactory
-				.getBeanDesc(action.getClass());
-		final PropertyDesc propertyDesc = beanDesc
-				.getPropertyDesc(propertyName);
-		final Object formBean = propertyDesc.getValue(action);
-		if (formBean == null) {
-			throw new ActionException(format("ECUB0102", propertyName));
-		}
-		return formBean;
-	}
-
-	/**
-	 * 指定されたアクションメソッドを修飾する {@link Form} を取得します。
-	 * 
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param method
-	 *            アクションメソッド
-	 * @return {@link Form}、修飾されていない場合はメソッドが定義されたクラスを修飾する {@link Form}
-	 *         、クラスも修飾されていない場合は <code>null</code>
-	 * @since 1.0.2
-	 */
-	@Deprecated
-	public static Form getForm(final Class<?> actionClass, final Method method) {
-		final Form form;
-		if (method.isAnnotationPresent(Form.class)) {
-			form = method.getAnnotation(Form.class);
-		} else {
-			form = actionClass.getAnnotation(Form.class);
-		}
-		return form;
-	}
-
-	/**
 	 * 指定されたアクションメソッドを使用することを判断するためのパラメータ名を取得します。
 	 * <p>
 	 * パラメータ名によらずに実行する場合は <code>null</code> を返します。
@@ -477,14 +326,14 @@ public class CubbyUtils {
 	 * @param <T>
 	 *            取得する属性の型
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param name
 	 *            属性名
 	 * @return 属性
 	 * @since 1.1.0
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getAttribute(final HttpServletRequest request,
+	public static <T> T getAttribute(final ServletRequest request,
 			final String name) {
 		return (T) request.getAttribute(name);
 	}

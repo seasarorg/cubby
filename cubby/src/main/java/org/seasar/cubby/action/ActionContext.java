@@ -32,14 +32,14 @@ public interface ActionContext {
 	 * 
 	 * @return アクション
 	 */
-	Action getAction();
+	Object getAction();
 
 	/**
 	 * アクションクラスを取得します。
 	 * 
 	 * @return アクションクラス
 	 */
-	Class<? extends Action> getActionClass();
+	Class<?> getActionClass();
 
 	/**
 	 * アクションメソッドを取得します。
@@ -59,9 +59,9 @@ public interface ActionContext {
 	Object getFormBean();
 
 	/**
-	 * フォームオブジェクトのすべてのプロパティにリクエストパラメータをバインドするかを示します。
+	 * フォームオブジェクトのすべてのプロパティに要求パラメータをバインドするかを示します。
 	 * 
-	 * @return フォームオブジェクトのすべてのプロパティにリクエストパラメータをバインドする場合は <code>true</code>
+	 * @return フォームオブジェクトのすべてのプロパティに要求パラメータをバインドする場合は <code>true</code>
 	 *         、そうでない場合は <code>false</code>
 	 */
 	boolean isBindRequestParameterToAllProperties();

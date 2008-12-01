@@ -1,12 +1,14 @@
 package org.seasar.cubby.filter;
 
-import static org.junit.Assert.*;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,8 +42,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 
 		replay(config, request, response, chain);
 
@@ -67,8 +68,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 
 		replay(config, request, response, chain);
 
@@ -95,8 +95,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 
 		replay(config, request, response, chain);
 
@@ -123,8 +122,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 
 		replay(config, request, response, chain);
 
@@ -150,8 +148,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 
 		replay(config, request, response, chain);
 
@@ -182,8 +179,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
@@ -225,8 +221,7 @@ public class EncodingFilterTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 
 		FilterChain chain = createMock(FilterChain.class);
-		chain.doFilter((ServletRequest) anyObject(),
-				(ServletResponse) anyObject());
+		chain.doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
@@ -253,7 +248,7 @@ public class EncodingFilterTest {
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 
-		expect(request.getAttribute((String) anyObject())).andAnswer(
+		expect(request.getAttribute((String) anyObject())).andStubAnswer(
 				new IAnswer<Object>() {
 
 					public Object answer() throws Throwable {
@@ -263,7 +258,7 @@ public class EncodingFilterTest {
 				});
 
 		request.setAttribute((String) anyObject(), anyObject());
-		expectLastCall().andAnswer(new IAnswer<Object>() {
+		expectLastCall().andStubAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
 				requestAttributes.put((String) getCurrentArguments()[0],

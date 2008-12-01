@@ -145,8 +145,15 @@ public class ActionErrorsImpl implements ActionErrors {
 	}
 
 	private void addFields(final String message, final FieldInfo fieldInfo) {
-		final String name = fieldInfo == null ? null : fieldInfo.getName();
-		final Integer index = fieldInfo == null ? null : fieldInfo.getIndex();
+		final String name;
+		final Integer index;
+		if (fieldInfo == null) {
+			name = null;
+			index = null;
+		} else {
+			name = fieldInfo.getName();
+			index = fieldInfo.getIndex();
+		}
 
 		final List<String> messages = this.fields.get(name);
 		messages.add(message);

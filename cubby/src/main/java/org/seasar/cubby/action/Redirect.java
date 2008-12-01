@@ -117,7 +117,7 @@ public class Redirect implements ActionResult {
 	private final int port;
 
 	/** リダイレクト先のアクションクラス。 */
-	private Class<? extends Action> actionClass;
+	private Class<?> actionClass;
 
 	/** リダイレクト先のアクションクラスのメソッド名。 */
 	private String methodName;
@@ -178,7 +178,7 @@ public class Redirect implements ActionResult {
 	 *            アクションクラス
 	 * @since 1.1.0
 	 */
-	public Redirect(final Class<? extends Action> actionClass) {
+	public Redirect(final Class<?> actionClass) {
 		this(actionClass, "index");
 	}
 
@@ -191,8 +191,7 @@ public class Redirect implements ActionResult {
 	 *            メソッド名
 	 * @since 1.1.0
 	 */
-	public Redirect(final Class<? extends Action> actionClass,
-			final String methodName) {
+	public Redirect(final Class<?> actionClass, final String methodName) {
 		this(actionClass, methodName, EMPTY_PARAMETERS);
 	}
 
@@ -207,8 +206,8 @@ public class Redirect implements ActionResult {
 	 *            パラメータ
 	 * @since 1.1.0
 	 */
-	public Redirect(final Class<? extends Action> actionClass,
-			final String methodName, final Map<String, String[]> parameters) {
+	public Redirect(final Class<?> actionClass, final String methodName,
+			final Map<String, String[]> parameters) {
 		this(actionClass, methodName, parameters, null);
 	}
 
@@ -225,9 +224,8 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のプロトコル
 	 * @since 1.1.0
 	 */
-	public Redirect(final Class<? extends Action> actionClass,
-			final String methodName, final Map<String, String[]> parameters,
-			final String protocol) {
+	public Redirect(final Class<?> actionClass, final String methodName,
+			final Map<String, String[]> parameters, final String protocol) {
 		this(actionClass, methodName, parameters, protocol, -1);
 	}
 
@@ -246,9 +244,9 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のポート
 	 * @since 1.1.0
 	 */
-	public Redirect(final Class<? extends Action> actionClass,
-			final String methodName, final Map<String, String[]> parameters,
-			final String protocol, final int port) {
+	public Redirect(final Class<?> actionClass, final String methodName,
+			final Map<String, String[]> parameters, final String protocol,
+			final int port) {
 		this.actionClass = actionClass;
 		this.methodName = methodName;
 		this.parameters = parameters;
@@ -321,8 +319,7 @@ public class Redirect implements ActionResult {
 	 * @return URL
 	 */
 	protected String calculateRedirectURL(final String path,
-			final Class<? extends Action> actionClass,
-			final HttpServletRequest request) {
+			final Class<?> actionClass, final HttpServletRequest request) {
 		try {
 			final String redirectURL = new URL(path).toExternalForm();
 			return redirectURL;
@@ -345,8 +342,7 @@ public class Redirect implements ActionResult {
 	 * @return URL
 	 */
 	private String calculateInternalRedirectURL(final String path,
-			final Class<? extends Action> actionClass,
-			final HttpServletRequest request) {
+			final Class<?> actionClass, final HttpServletRequest request) {
 		final String redirectPath;
 		final String contextPath;
 		if ("/".equals(request.getContextPath())) {

@@ -153,8 +153,8 @@ public class SendErrorFilter implements Filter {
 	 *         <code>false</code>
 	 */
 	private boolean isIgnore(final HttpServletRequest request) {
+		final String servletPath = request.getServletPath();
 		for (final Pattern ignorePattern : ignorePathPatterns) {
-			final String servletPath = request.getServletPath();
 			final Matcher matcher = ignorePattern.matcher(servletPath);
 			if (matcher.matches()) {
 				return true;

@@ -82,7 +82,7 @@ public abstract class Action {
 	 * そうでない場合は {{@link #initialize()} を呼び出します。
 	 * </p>
 	 * <p>
-	 * パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。
+	 * パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はサーブレットへの要求から直接取得する必要があります。
 	 * </p>
 	 * 
 	 * @param actionMethod
@@ -182,11 +182,11 @@ public abstract class Action {
 		try {
 			final Method method = this.getClass().getMethod(methodName);
 			method.invoke(this);
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			throw new ActionException(e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new ActionException(e);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new ActionException(e);
 		}
 	}

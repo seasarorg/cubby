@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="cubby-converters">
+
+	<component class="org.seasar.cubby.converter.impl.BigDecimalConverter" />
+	<component class="org.seasar.cubby.converter.impl.BigIntegerConverter" />
+	<component class="org.seasar.cubby.converter.impl.BooleanConverter" />
+	<component class="org.seasar.cubby.converter.impl.ByteArrayFileItemConverter" />
+	<component class="org.seasar.cubby.converter.impl.ByteConverter" />
+	<component class="org.seasar.cubby.converter.impl.CharacterConverter" />
+	<component class="org.seasar.cubby.converter.impl.DateConverter" />
+	<component class="org.seasar.cubby.converter.impl.DoubleConverter" />
+	<component class="org.seasar.cubby.converter.impl.EnumConverter" />
+	<component class="org.seasar.cubby.converter.impl.FloatConverter" />
+	<component class="org.seasar.cubby.converter.impl.InputStreamFileItemConverter" />
+	<component class="org.seasar.cubby.converter.impl.IntegerConverter" />
+	<component class="org.seasar.cubby.converter.impl.LongConverter" />
+	<component class="org.seasar.cubby.converter.impl.ShortConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlDateConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlTimeConverter" />
+	<component class="org.seasar.cubby.converter.impl.SqlTimestampConverter" />
+
+</components>

@@ -15,48 +15,41 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
-
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-class FlashHashMap<K, V> implements Map<K, V> {
+class FlashMap<K, V> implements Map<K, V> {
+
+	private static final String ATTRIBUTE_NAME = FlashMap.class.getName()
+			+ ".MAP";
 
 	private final HttpServletRequest request;
 
 	private final Map<K, V> map;
 
-	private boolean exportedToSession;
-
-	FlashHashMap(final HttpServletRequest request) {
+	FlashMap(final HttpServletRequest request) {
 		this.request = request;
-		final HttpSession session = request.getSession(false);
-		if (session == null) {
-			this.map = new HashMap<K, V>();
-			this.exportedToSession = false;
-		} else {
-			final Map<K, V> map = getAttribute(session, ATTR_FLASH);
-			if (map == null) {
-				this.exportedToSession = false;
-				this.map = new HashMap<K, V>();
-			} else {
-				this.exportedToSession = true;
-				this.map = map;
-			}
-		}
+		this.map = buildMap(request);
 	}
 
-	private void exportToSession() {
-		if (!this.exportedToSession) {
-			final HttpSession session = request.getSession();
-			session.setAttribute(ATTR_FLASH, this.map);
-			this.exportedToSession = true;
+	private Map<K, V> buildMap(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			final Map<K, V> map = getAttribute(session, ATTRIBUTE_NAME);
+			if (map != null) {
+				return map;
+			}
 		}
+		return new ConcurrentHashMap<K, V>();
+	}
+
+	private void export(final HttpSession session) {
+		session.setAttribute(ATTRIBUTE_NAME, this.map);
 	}
 
 	public int size() {
@@ -81,21 +74,30 @@ class FlashHashMap<K, V> implements Map<K, V> {
 
 	public V put(final K key, final V value) {
 		final V previousValue = map.put(key, value);
-		exportToSession();
+		export(request.getSession());
 		return previousValue;
 	}
 
 	public V remove(final Object key) {
-		return map.remove(key);
+		final V removedValue = map.remove(key);
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			export(session);
+		}
+		return removedValue;
 	}
 
 	public void putAll(final Map<? extends K, ? extends V> t) {
 		map.putAll(t);
-		exportToSession();
+		export(request.getSession());
 	}
 
 	public void clear() {
 		map.clear();
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			export(session);
+		}
 	}
 
 	public Set<K> keySet() {

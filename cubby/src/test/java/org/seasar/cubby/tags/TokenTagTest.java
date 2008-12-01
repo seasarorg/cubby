@@ -41,7 +41,7 @@ public class TokenTagTest extends SimpleTagTestCase {
 	public void doTag1() throws Exception {
 		HttpServletRequest request = HttpServletRequest.class.cast(context
 				.getRequest());
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		tag.doTag();
 		Element element = getResultAsElementFromContext();
@@ -60,7 +60,7 @@ public class TokenTagTest extends SimpleTagTestCase {
 	public void doTag2() throws Exception {
 		HttpServletRequest request = HttpServletRequest.class.cast(context
 				.getRequest());
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		tag.setName("cubby.token2");
 		tag.doTag();
@@ -79,7 +79,7 @@ public class TokenTagTest extends SimpleTagTestCase {
 	public void testDoTag3() throws Exception {
 		HttpServletRequest request = HttpServletRequest.class.cast(context
 				.getRequest());
-		ThreadContext.setRequest(request);
+		ThreadContext.newContext(request);
 
 		tag.setDynamicAttribute(null, "id", "token");
 		tag.doTag();
@@ -98,7 +98,7 @@ public class TokenTagTest extends SimpleTagTestCase {
 
 	@Test
 	public void requestIsNull() throws Exception {
-		ThreadContext.setRequest(null);
+		ThreadContext.newContext(null);
 
 		tag.setDynamicAttribute(null, "id", "token");
 		try {

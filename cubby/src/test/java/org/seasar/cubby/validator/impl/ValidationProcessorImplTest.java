@@ -15,8 +15,12 @@
  */
 package org.seasar.cubby.validator.impl;
 
+import static org.easymock.EasyMock.anyBoolean;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,6 +33,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
@@ -39,6 +44,7 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
@@ -54,6 +60,8 @@ public class ValidationProcessorImplTest {
 	private Map<String, Object[]> params = new HashMap<String, Object[]>();
 
 	private HttpServletRequest request;
+
+	private boolean validationFail;
 
 	@Before
 	public void setupContainer() {
@@ -72,14 +80,25 @@ public class ValidationProcessorImplTest {
 	@Before
 	public void setupMock() throws Exception {
 		request = createMock(HttpServletRequest.class);
-		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andReturn(
-				params).anyTimes();
-		replay(request);
-		// include(this.getClass().getName().replaceAll("\\.", "/") + ".dicon");
-		// action = new MockAction();
-		// params = new HashMap<String, Object[]>();
-		// getRequest().setAttribute(CubbyConstants.ATTR_PARAMS, params);
+		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andStubReturn(
+				params);
+		expect(request.getLocale()).andStubReturn(null);
+		request.setAttribute(eq(CubbyConstants.ATTR_VALIDATION_FAIL),
+				anyBoolean());
+		expectLastCall().andStubAnswer(new IAnswer<Object>() {
 
+			public Object answer() throws Throwable {
+				validationFail = (Boolean) getCurrentArguments()[1];
+				return null;
+			}
+
+		});
+		replay(request);
+		ThreadContext.newContext(request);
+	}
+
+	public void teardownMock() {
+		ThreadContext.restoreContext();
 	}
 
 	@Test
@@ -97,7 +116,8 @@ public class ValidationProcessorImplTest {
 		}
 	}
 
-	public void testProcess2() throws Exception {
+	@Test
+	public void process2() throws Exception {
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "bob" });
 
@@ -114,7 +134,8 @@ public class ValidationProcessorImplTest {
 		}
 	}
 
-	public void testProcess3() throws Exception {
+	@Test
+	public void process3() throws Exception {
 		params.put("name", new Object[] { "bob" });
 		params.put("age", new Object[] { "5" });
 
@@ -127,7 +148,8 @@ public class ValidationProcessorImplTest {
 		}
 	}
 
-	public void testHandleValidationException() throws Exception {
+	@Test
+	public void handleValidationException() throws Exception {
 		ValidationException e = new ValidationException("message", "field1");
 		ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, MockAction.class.getMethod("dummy"));
@@ -136,6 +158,7 @@ public class ValidationProcessorImplTest {
 		assertTrue(result instanceof Forward);
 		Forward forward = (Forward) result;
 		assertEquals("error.jsp", forward.getPath("UTF-8"));
+		assertTrue(validationFail);
 	}
 
 }

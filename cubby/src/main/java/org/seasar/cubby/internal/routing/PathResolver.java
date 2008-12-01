@@ -18,7 +18,6 @@ package org.seasar.cubby.internal.routing;
 import java.util.Collection;
 import java.util.Map;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.RequestMethod;
 
 /**
@@ -43,8 +42,8 @@ public interface PathResolver {
 	 *            URI のエンコーディング
 	 * @return フォワード情報
 	 */
-	PathInfo getPathInfo(String path,
-			String requestMethod, String characterEncoding);
+	PathInfo getPathInfo(String path, String requestMethod,
+			String characterEncoding);
 
 	/**
 	 * ルーティング情報の一覧を取得します。 ルーティング情報は優先度順にソートされています。
@@ -55,7 +54,7 @@ public interface PathResolver {
 	Map<Routing, Routing> getRoutings();
 
 	// TODO
-	void addAllActionClasses(Collection<Class<? extends Action>> actionClasses);
+	void addAllActionClasses(Collection<Class<?>> actionClasses);
 
 	// TODO
 	void clearAllActionClasses();
@@ -77,8 +76,8 @@ public interface PathResolver {
 	 *            {@link RequestMethod#POST} がデフォルト値として設定されます。
 	 * @see org.seasar.cubby.action.Path#priority() 自動設定の際のプライオリティ
 	 */
-	void add(String actionPath, Class<? extends Action> actionClass,
-			String actionMethodName, RequestMethod... requestMethods);
+	void add(String actionPath, Class<?> actionClass, String actionMethodName,
+			RequestMethod... requestMethods);
 
 	/**
 	 * 指定されたアクションクラス、メソッド名、パラメータからパスを逆引きします。
@@ -94,8 +93,7 @@ public interface PathResolver {
 	 * @return リダイレクト用のパス
 	 * @since 1.1.0
 	 */
-	String reverseLookup(Class<? extends Action> actionClass,
-			String methodName, Map<String, String[]> parameters,
-			String characterEncoding);
+	String reverseLookup(Class<?> actionClass, String methodName,
+			Map<String, String[]> parameters, String characterEncoding);
 
 }

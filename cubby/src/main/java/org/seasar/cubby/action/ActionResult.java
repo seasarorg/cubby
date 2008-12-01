@@ -18,7 +18,6 @@ package org.seasar.cubby.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * アクションメソッド実行後の処理を表す結果オブジェクトのインターフェイス
  * 
@@ -33,9 +32,9 @@ public interface ActionResult {
 	 * @param actionContext
 	 *            アクションコンテキスト
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param response
-	 *            レスポンス
+	 *            応答
 	 * @throws Exception
 	 */
 	void execute(ActionContext actionContext, HttpServletRequest request,

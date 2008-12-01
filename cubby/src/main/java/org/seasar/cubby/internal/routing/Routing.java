@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.RequestMethod;
 
 /**
@@ -35,7 +34,7 @@ public interface Routing {
 	 * 
 	 * @return アクションクラス
 	 */
-	Class<? extends Action> getActionClass();
+	Class<?> getActionClass();
 
 	/**
 	 * メソッドを取得します。

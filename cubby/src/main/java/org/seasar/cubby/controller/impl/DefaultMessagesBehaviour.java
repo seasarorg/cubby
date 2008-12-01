@@ -17,13 +17,12 @@ package org.seasar.cubby.controller.impl;
 
 import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
 
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.seasar.cubby.controller.MessagesBehaviour;
+import org.seasar.cubby.internal.util.ResourceBundleMap;
 
 /**
  * メッセージの振る舞いのデフォルト実装です。
@@ -57,30 +56,18 @@ public class DefaultMessagesBehaviour implements MessagesBehaviour {
 	 * {@inheritDoc}
 	 */
 	public ResourceBundle getBundle(final Locale locale) {
+		final ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
 		final ResourceBundle bundle = ResourceBundle.getBundle(baseName,
-				sLocale(locale));
+				(locale == null ? Locale.getDefault() : locale), classLoader);
 		return bundle;
-	}
-
-	private Locale sLocale(Locale locale) {
-		if (locale == null) {
-			return Locale.getDefault();
-		}
-		return locale;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Map<String, String> toMap(final ResourceBundle bundle) {
-		final Map<String, String> map = new HashMap<String, String>();
-		for (final Enumeration<String> keys = bundle.getKeys(); keys
-				.hasMoreElements();) {
-			final String key = keys.nextElement();
-			final String value = bundle.getString(key);
-			map.put(key, value);
-		}
-		return map;
+	public Map<String, Object> toMap(final ResourceBundle bundle) {
+		return new ResourceBundleMap(bundle);
 	}
 
 }

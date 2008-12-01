@@ -15,10 +15,9 @@ public class ExceptionActionHandler implements ActionHandler {
 	public ActionResult handle(final HttpServletRequest request,
 			final HttpServletResponse response,
 			final ActionContext actionContext,
-			final ActionHandlerChain actionInvocationChain) throws Exception {
+			final ActionHandlerChain actionHandlerChain) throws Exception {
 		try {
-			return actionInvocationChain
-					.chain(request, response, actionContext);
+			return actionHandlerChain.chain(request, response, actionContext);
 		} catch (final InvocationTargetException e) {
 			final Throwable target = e.getTargetException();
 			if (target instanceof Error) {

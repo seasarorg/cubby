@@ -45,7 +45,7 @@ public class PathResolverImplTest {
 	@Before
 	public void setupPathResolver() {
 		pathResolver = new PathResolverImpl();
-		List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+		List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 		actionClasses.add(MockAction.class);
 		actionClasses.add(MockRootAction.class);
 		actionClasses.add(MockPathAction.class);

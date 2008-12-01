@@ -15,9 +15,17 @@
  */
 package org.seasar.cubby.validator;
 
+import static org.easymock.EasyMock.createMock;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
@@ -26,14 +34,25 @@ import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.validator.validators.ArrayMaxSizeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
-import static org.junit.Assert.*;
 
 public class FieldValidationRuleTest {
 
 	private ActionErrors errors = new ActionErrorsImpl();
+
+	@Before
+	public void setupThreadContext() {
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		ThreadContext.newContext(request);
+	}
+
+	@After
+	public void teardownThreadContext() {
+		ThreadContext.restoreContext();
+	}
 
 	@Before
 	public void setupContainer() {

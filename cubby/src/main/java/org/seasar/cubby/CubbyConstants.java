@@ -24,11 +24,6 @@ package org.seasar.cubby;
  */
 public class CubbyConstants {
 
-//	/**
-//	 * 内部フォワード先のディレクトリ。
-//	 */
-//	public static final String INTERNAL_FORWARD_DIRECTORY = "/__internal_forward";
-
 	/**
 	 * Cubbyのデフォルトメッセージリソースの名前。
 	 */
@@ -45,6 +40,11 @@ public class CubbyConstants {
 	public static final String ATTR_MESSAGES = "messages";
 
 	/**
+	 * アクションエラーのリクエストの属性中の名前。
+	 */
+	public static final String ATTR_ERRORS = "errors";
+
+	/**
 	 * コンテキストパスのリクエストの属性中の名前。
 	 */
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
@@ -53,14 +53,6 @@ public class CubbyConstants {
 	 * パラメータオブジェクトのリクエストの属性中の名前。
 	 */
 	public static final String ATTR_PARAMS = "org.seasar.cubby.params";
-
-//	public static final String ATTR_URI_PARAMS = "org.seasar.cubby.uriarams";
-
-//TODO
-//	/**
-//	 * 内部フォワード時にルーティング情報を引き渡すための名前。
-//	 */
-//	public static final String ATTR_ROUTINGS = "org.seasar.cubby.routings";
 
 	/**
 	 * 内部フォワード時にルーティング情報を引き渡すための名前。
@@ -80,7 +72,7 @@ public class CubbyConstants {
 	/**
 	 * フラッシュメッセージのセッションの属性中の名前。
 	 */
-	public static final String ATTR_FLASH = "org.seasar.cubby.flash";
+	public static final String ATTR_FLASH = "flash";
 
 	/**
 	 * トークンのMapをセッションに保存する名前。

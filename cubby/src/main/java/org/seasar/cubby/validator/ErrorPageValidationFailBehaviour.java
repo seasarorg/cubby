@@ -21,7 +21,6 @@ import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
@@ -84,7 +83,7 @@ class ErrorPageValidationFailBehaviour implements ValidationFailBehaviour,
 			errorPage = validation.errorPage();
 		}
 
-		final Action action = actionContext.getAction();
+		final Object action = actionContext.getAction();
 		final ValidationRules validationRules = getValidationRules(action,
 				validation.rules());
 		return validationRules.fail(errorPage);
