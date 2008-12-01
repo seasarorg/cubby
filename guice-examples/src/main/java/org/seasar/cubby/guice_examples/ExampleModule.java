@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.guice_examples.action.HelloAction;
 import org.seasar.cubby.guice_examples.action.IndexAction;
 import org.seasar.cubby.guice_examples.service.HelloService;
@@ -22,26 +21,22 @@ public class ExampleModule extends AbstractModule {
 		install(new AbstractCubbyModule() {
 
 			@Override
-			protected Collection<Class<? extends Action>> getActionClasses() {
-				List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+			protected Collection<Class<?>> getActionClasses() {
+				List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 				actionClasses.add(IndexAction.class);
 				actionClasses.add(HelloAction.class);
 				return actionClasses;
 			}
 
 		});
-//		install(new ServletModule());
+		// install(new ServletModule());
 		setUpServletModule();
 
 		bind(HelloService.class).to(HelloServiceImpl.class).in(Singleton.class);
 	}
-	
-	protected void setUpServletModule(){
-		install(new ServletModule());		
+
+	protected void setUpServletModule() {
+		install(new ServletModule());
 	}
-	
-	
-	
-	
 
 }
