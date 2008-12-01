@@ -19,7 +19,6 @@ import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
 
 import java.util.Map;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
@@ -44,7 +43,7 @@ import org.seasar.framework.aop.annotation.InvalidateSession;
  * @author baba
  */
 @Path("todo/login")
-public class LoginAction extends Action {
+public class LoginAction {
 
 	// ----------------------------------------------[Validation]
 

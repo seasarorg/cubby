@@ -16,10 +16,10 @@
 package org.seasar.cubby.examples.todo.action;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
+import static org.seasar.cubby.util.ActionUtils.flash;
 
 import java.util.List;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
@@ -43,7 +43,7 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
  * 
  * @author agata
  */
-public class TodoAction extends Action {
+public class TodoAction {
 
 	// ----------------------------------------------[Validation]
 
@@ -138,11 +138,11 @@ public class TodoAction extends Action {
 		if (this.id == null) {
 			Todo todo = todoDxo.convert(this);
 			todoDao.insert(todo);
-			flash.put("notice", todo.getText() + "を追加しました。");
+			flash().put("notice", todo.getText() + "を追加しました。");
 		} else {
 			Todo todo = todoDxo.convert(this);
 			todoDao.update(todo);
-			flash.put("notice", todo.getText() + "を更新しました。");
+			flash().put("notice", todo.getText() + "を更新しました。");
 		}
 		return new Redirect("/todo/");
 	}
@@ -153,7 +153,7 @@ public class TodoAction extends Action {
 	public ActionResult delete() {
 		Todo todo = todoDao.selectById(this.id);
 		todoDao.delete(todo);
-		flash.put("notice", todo.getText() + "を削除しました。");
+		flash().put("notice", todo.getText() + "を削除しました。");
 		return new Redirect("/todo/");
 	}
 
