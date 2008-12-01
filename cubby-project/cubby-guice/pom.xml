@@ -28,6 +28,10 @@
   </build>
   <repositories>
     <repository>
+      <id>local</id>
+      <url>file:${basedir}/m2repo</url>
+    </repository>
+    <repository>
       <id>gson</id>
       <url>http://google-gson.googlecode.com/svn/mavenrepo</url>
       <snapshots>
