@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.impl.FormatPatternImpl;
 import org.seasar.cubby.converter.Converter;
@@ -33,24 +32,21 @@ public class ApplicationModule extends AbstractModule {
 		bind(FormatPattern.class).to(FormatPatternImpl.class).in(
 				Singleton.class);
 		install(new ApplicationCubbyModule());
-		bindInterceptor(
-				anyAction(),
-				anyActionMethod(), 
+		bindInterceptor(anyAction(), anyActionMethod(),
 				new LoggingInterceptor());
 	}
 
 	protected Matcher<Class<?>> anyAction() {
 		return ANY_ACTION;
 	}
-	
+
 	protected Matcher<Method> anyActionMethod() {
 		return ANY_ACTION_METHOD;
 	}
-	
+
 	protected void bindActionMethodInterceptor(
 			MethodInterceptor... interceptors) {
-		bindInterceptor(ANY_ACTION, ANY_ACTION_METHOD,
-				interceptors);
+		bindInterceptor(ANY_ACTION, ANY_ACTION_METHOD, interceptors);
 	}
 
 	static Matcher<Class<?>> ANY_ACTION = new AbstractMatcher<Class<?>>() {
@@ -77,8 +73,8 @@ public class ApplicationModule extends AbstractModule {
 
 	private static class ApplicationCubbyModule extends AbstractCubbyModule {
 		@Override
-		protected Collection<Class<? extends Action>> getActionClasses() {
-			List<Class<? extends Action>> actionClasses = new ArrayList<Class<? extends Action>>();
+		protected Collection<Class<?>> getActionClasses() {
+			List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 			actionClasses.add(PageAction.class);
 			return Collections.unmodifiableCollection(actionClasses);
 		}
