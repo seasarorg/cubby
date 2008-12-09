@@ -217,7 +217,7 @@ public class SelectTag extends DynamicAttributesTagSupport {
 				return "";
 			}
 			if (contains(values, value)) {
-				return "selected=\"true\"";
+				return "selected=\"selected\"";
 			} else {
 				return "";
 			}
