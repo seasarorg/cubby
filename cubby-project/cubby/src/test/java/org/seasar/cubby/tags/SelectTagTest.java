@@ -69,7 +69,7 @@ public class SelectTagTest extends SimpleTagTestCase {
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -117,14 +117,14 @@ public class SelectTagTest extends SimpleTagTestCase {
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
 			} else if ("name3".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "3", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else {
 				fail(message);
 			}
@@ -163,7 +163,7 @@ public class SelectTagTest extends SimpleTagTestCase {
 			} else if ("1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else if ("2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -205,7 +205,7 @@ public class SelectTagTest extends SimpleTagTestCase {
 			if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
@@ -249,7 +249,7 @@ public class SelectTagTest extends SimpleTagTestCase {
 			} else if ("name1".equals(value)) {
 				assertEquals(message, 2, child.getAttributes().size());
 				assertEquals(message, "1", child.getAttributeValue("value"));
-				assertEquals(message, "true", child.getAttributeValue("selected"));
+				assertEquals(message, "selected", child.getAttributeValue("selected"));
 			} else if ("name2".equals(value)) {
 				assertEquals(message, 1, child.getAttributes().size());
 				assertEquals(message, "2", child.getAttributeValue("value"));
