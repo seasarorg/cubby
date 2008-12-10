@@ -74,12 +74,10 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
-	<!-- 
     <servlet>
         <servlet-name>cubbyAdminServlet</servlet-name>
         <servlet-class>org.seasar.cubby.admin.servlet.CubbyAdminServlet</servlet-class>
     </servlet>
-    -->
 
 <!-- trim white spaces(Tomcat 5.5 or higher)
     <servlet>
@@ -102,12 +100,10 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 -->
-	<!-- 
     <servlet-mapping>
         <servlet-name>cubbyAdminServlet</servlet-name>
         <url-pattern>/cubby-admin</url-pattern>
     </servlet-mapping>
-	-->
 
 <!-- trim white spaces(Tomcat 5.5 or higher)
     <servlet-mapping>
