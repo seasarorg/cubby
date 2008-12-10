@@ -50,14 +50,16 @@ public interface PathResolver {
 	 * 
 	 * @return ルーティング情報の一覧
 	 */
-	// List<Routing> getRoutings();
-	Map<Routing, Routing> getRoutings();
+	Collection<Routing> getRoutings();
 
 	// TODO
-	void addAllActionClasses(Collection<Class<?>> actionClasses);
+	void add(Class<?> actionClass);
 
 	// TODO
-	void clearAllActionClasses();
+	void addAll(Collection<Class<?>> actionClasses);
+
+	// TODO
+	void clear();
 
 	/**
 	 * ルーティング情報を手動登録します。

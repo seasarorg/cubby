@@ -13,15 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.handler;
+package org.seasar.cubby.internal.spi;
+
+import org.seasar.cubby.converter.Converter;
 
 /**
+ * {@link Converter コンバータ}のプロバイダです。
  * 
  * @author baba
  * @since 2.0.0
  */
-public interface ActionHandlerChainFactory {
+public interface ConverterProvider {
 
-	ActionHandlerChain getActionHandlerChain();
+	/**
+	 * <code>converterType</code>への変換が可能なコンバータを返します。
+	 * <p>
+	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。
+	 * </p>
+	 * 
+	 * @param parameterType
+	 *            リクエストパラメータの型
+	 * @param objectType
+	 *            変換先のクラス
+	 * 
+	 * @return コンバータ
+	 */
+	Converter getConverter(Class<?> parameterType, Class<?> objectType);
 
 }

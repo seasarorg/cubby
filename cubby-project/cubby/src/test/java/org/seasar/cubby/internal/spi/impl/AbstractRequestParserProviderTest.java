@@ -1,4 +1,4 @@
-package org.seasar.cubby.internal.factory.impl;
+package org.seasar.cubby.internal.spi.impl;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
-import org.seasar.cubby.internal.factory.RequestParserFactory;
-import org.seasar.cubby.internal.factory.impl.AbstractRequestParserFactory;
+import org.seasar.cubby.internal.spi.RequestParserProvider;
+import org.seasar.cubby.internal.spi.impl.AbstractRequestParserProvider;
 
-public class AbstractRequestParserFactoryTest {
+public class AbstractRequestParserProviderTest {
 
-	private RequestParserFactory factory = new AbstractRequestParserFactory() {
+	private RequestParserProvider provider = new AbstractRequestParserProvider() {
 
 		private List<RequestParser> parsers = Arrays
 				.asList(new RequestParser[] { new DefaultRequestParserImpl(),
@@ -38,7 +38,7 @@ public class AbstractRequestParserFactoryTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getContentType()).andReturn(null).anyTimes();
 		replay(request);
-		RequestParser requestParser = factory.getRequestParser(request);
+		RequestParser requestParser = provider.getRequestParser(request);
 		assertTrue(requestParser instanceof DefaultRequestParserImpl);
 	}
 
@@ -48,7 +48,7 @@ public class AbstractRequestParserFactoryTest {
 		expect(request.getContentType()).andReturn(
 				"application/x-www-form-urlencoded").anyTimes();
 		replay(request);
-		RequestParser requestParser = factory.getRequestParser(request);
+		RequestParser requestParser = provider.getRequestParser(request);
 		assertTrue(requestParser instanceof DefaultRequestParserImpl);
 	}
 
@@ -65,7 +65,7 @@ public class AbstractRequestParserFactoryTest {
 		expect(request.getContentType()).andReturn("application/atom+xml")
 				.anyTimes();
 		replay(request);
-		RequestParser requestParser = factory.getRequestParser(request);
+		RequestParser requestParser = provider.getRequestParser(request);
 		assertTrue(requestParser instanceof DefaultRequestParserImpl);
 	}
 
@@ -74,7 +74,7 @@ public class AbstractRequestParserFactoryTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getContentType()).andReturn("foo/bar").anyTimes();
 		replay(request);
-		RequestParser requestParser = factory.getRequestParser(request);
+		RequestParser requestParser = provider.getRequestParser(request);
 		assertTrue(requestParser instanceof MyRequestParserImpl);
 	}
 

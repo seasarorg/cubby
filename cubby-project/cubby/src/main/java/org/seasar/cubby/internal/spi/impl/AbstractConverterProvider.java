@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.factory.impl;
+package org.seasar.cubby.internal.spi.impl;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.internal.factory.ConverterFactory;
+import org.seasar.cubby.internal.spi.ConverterProvider;
 import org.seasar.cubby.internal.util.ClassUtils;
 
-public abstract class AbstractConverterFactory implements ConverterFactory {
+public abstract class AbstractConverterProvider implements ConverterProvider {
 
 	/**
 	 * コンバータの一覧を返します。

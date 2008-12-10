@@ -30,7 +30,8 @@ public class PathProcessorImplTest {
 	public void testHasPathInfo1() {
 		Routing routing = createMock(Routing.class);		
 		request = createMock(HttpServletRequest.class);
-		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(routing);		
+		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(routing);
+		request.removeAttribute(CubbyConstants.ATTR_ROUTING);
 		replay(request,routing);
 		
 		pathProcessor = new PathProcessorImpl(request, response,

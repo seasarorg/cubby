@@ -22,12 +22,27 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 
 /**
+ * アクションハンドラーのチェーンです。
  * 
+ * @see ActionHandler
  * @author baba
  * @since 2.0.0
  */
 public interface ActionHandlerChain {
 
+	/**
+	 * チェーン内の次のハンドラーを呼び出します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションのコンテキスト
+	 * @return 次のハンドラーの実行結果
+	 * @throws Exception
+	 *             ハンドラーの実行で例外が発生した場合
+	 */
 	ActionResult chain(HttpServletRequest request,
 			HttpServletResponse response, ActionContext actionContext)
 			throws Exception;

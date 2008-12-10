@@ -14,10 +14,7 @@ import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
-import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
-import org.seasar.cubby.mock.MockConverterFactory;
 
 public class FormWrapperFactoryImplTest {
 
@@ -28,9 +25,6 @@ public class FormWrapperFactoryImplTest {
 		MockContainerProvider.setContainer(new Container() {
 
 			public <T> T lookup(Class<T> type) {
-				if (ConverterFactory.class.equals(type)) {
-					return type.cast(new MockConverterFactory());
-				}
 				throw new LookupException();
 			}
 

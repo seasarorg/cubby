@@ -15,6 +15,10 @@
  */
 package org.seasar.cubby.plugins.s2.detector.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.seasar.cubby.internal.util.ClassUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
 import org.seasar.framework.container.ComponentDef;
@@ -43,14 +47,21 @@ public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 	/** 検出されたクラスを処理するクラスの配列です。 */
 	private DetectClassProcessor[] processors;
 
+	/** 処理済みのクラス。 */
+	private Set<String> processedClasses = new HashSet<String>();
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void processClass(final String packageName,
 			final String shortClassName) {
-		for (final DetectClassProcessor processor : processors) {
-			processor.processClass(packageName, shortClassName);
+		final String fqcn = ClassUtils.concatName(packageName, shortClassName);
+		if (!processedClasses.contains(fqcn)) {
+			processedClasses.add(fqcn);
+			for (final DetectClassProcessor processor : processors) {
+				processor.processClass(packageName, shortClassName);
+			}
 		}
 	}
 
@@ -59,9 +70,11 @@ public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 	 */
 	public void detect() {
 		if (!initialized) {
+			processedClasses.clear();
 			processors = DetectClassProcessor[].class.cast(getContainer()
 					.getRoot().findAllComponents(DetectClassProcessor.class));
 			registerAll();
+			processedClasses.clear();
 			DisposableUtil.add(this);
 			initialized = true;
 		}

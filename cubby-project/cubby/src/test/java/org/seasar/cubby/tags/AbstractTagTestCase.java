@@ -42,9 +42,8 @@ import org.jdom.input.SAXBuilder;
 import org.junit.Before;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.factory.ConverterFactory;
+import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.mock.MockContainerProvider;
-import org.seasar.cubby.mock.MockConverterFactory;
 
 public abstract class AbstractTagTestCase {
 
@@ -93,13 +92,14 @@ public abstract class AbstractTagTestCase {
 		request = createMock(HttpServletRequest.class);
 		expect(request.getCharacterEncoding()).andStubReturn("UTF-8");
 		expect(request.getSession()).andStubReturn(session);
-		expect(response.encodeURL(isA(String.class))).andStubAnswer(new IAnswer<String>() {
+		expect(response.encodeURL(isA(String.class))).andStubAnswer(
+				new IAnswer<String>() {
 
-			public String answer() throws Throwable {
-				return String.class.cast(getCurrentArguments()[0]);
-			}
-			
-		});
+					public String answer() throws Throwable {
+						return String.class.cast(getCurrentArguments()[0]);
+					}
+
+				});
 		replay(request, response, session, servletContext);
 
 		context = new MockJspContext(servletContext, request, response);
@@ -112,10 +112,7 @@ public abstract class AbstractTagTestCase {
 		MockContainerProvider.setContainer(new Container() {
 
 			public <T> T lookup(Class<T> type) {
-				if (ConverterFactory.class.equals(type)) {
-					return type.cast(new MockConverterFactory());
-				}
-				return null;
+				throw new LookupException();
 			}
 
 		});

@@ -1,5 +1,6 @@
 package org.seasar.cubby.handler.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +17,22 @@ public class InvocationActionHandler implements ActionHandler {
 			final HttpServletResponse response,
 			final ActionContext actionContext,
 			final ActionHandlerChain actionInvocationChain) throws Exception {
-		final Object action = actionContext.getAction();
-		final Method actionMethod = actionContext.getActionMethod();
-		final ActionResult actionResult = ActionResult.class.cast(actionMethod
-				.invoke(action));
-		return actionResult;
+		try {
+			final Object action = actionContext.getAction();
+			final Method actionMethod = actionContext.getActionMethod();
+			final ActionResult actionResult = (ActionResult) actionMethod
+					.invoke(action);
+			return actionResult;
+		} catch (final InvocationTargetException e) {
+			final Throwable target = e.getTargetException();
+			if (target instanceof Error) {
+				throw (Error) target;
+			} else if (target instanceof RuntimeException) {
+				throw (RuntimeException) target;
+			} else {
+				throw (Exception) target;
+			}
+		}
 	}
 
 }

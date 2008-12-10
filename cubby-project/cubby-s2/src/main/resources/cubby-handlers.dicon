@@ -3,16 +3,14 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components namespace="cubby-handlers">
 
-	<component name="exceptionActionHandler" class="org.seasar.cubby.handler.impl.ExceptionActionHandler" />
 	<component name="initializeActionHandler" class="org.seasar.cubby.handler.impl.InitializeActionHandler" />
 	<component name="parameterBindingActionHandler" class="org.seasar.cubby.handler.impl.ParameterBindingActionHandler" />
 	<component name="validationActionHandler" class="org.seasar.cubby.handler.impl.ValidationActionHandler" />
 	<component name="invocationActionHandler" class="org.seasar.cubby.handler.impl.InvocationActionHandler" />
 
-	<component class="org.seasar.cubby.plugins.s2.factory.S2ActionHandlerChainFactory$ActionHandlersFactoryImpl">
+	<component class="org.seasar.cubby.internal.handler.impl.ActionHandlerChainImpl" instance="prototype" >
 		<arg>
 			{
-				exceptionActionHandler,
 				initializeActionHandler,
 				parameterBindingActionHandler,
 				validationActionHandler,

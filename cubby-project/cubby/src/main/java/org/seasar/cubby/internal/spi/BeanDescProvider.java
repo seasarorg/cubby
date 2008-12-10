@@ -16,7 +16,6 @@
 package org.seasar.cubby.internal.spi;
 
 import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.util.ServiceLoader;
 
 /**
  * {@link BeanDesc} のプロバイダです。
@@ -34,38 +33,5 @@ public interface BeanDescProvider {
 	 * @return 指定されたクラスの {@link BeanDesc}
 	 */
 	BeanDesc getBeanDesc(Class<?> clazz);
-
-	/**
-	 * {@link BeanDescProvider} のファクトリです。
-	 * 
-	 * @author baba
-	 * @since 2.0.0
-	 */
-	class Factory {
-
-		/** プロバイダ。 */
-		private static final BeanDescProvider PROVIDER;
-		static {
-			final ServiceLoader<BeanDescProvider> serviceLoader = ServiceLoader
-					.load(BeanDescProvider.class);
-			PROVIDER = serviceLoader.getProvider();
-		}
-
-		/**
-		 * インスタンス化を禁止します。
-		 */
-		private Factory() {
-		}
-
-		/**
-		 * {@link BeanDescProvider} を取得します。
-		 * 
-		 * @return {@link BeanDescProvider}
-		 */
-		public static BeanDescProvider get() {
-			return PROVIDER;
-		}
-
-	}
 
 }

@@ -33,10 +33,9 @@ import org.seasar.cubby.internal.beans.BeanDesc;
 import org.seasar.cubby.internal.beans.BeanDescFactory;
 import org.seasar.cubby.internal.beans.ParameterizedClassDesc;
 import org.seasar.cubby.internal.beans.PropertyDesc;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
-import org.seasar.cubby.internal.factory.ConverterFactory;
+import org.seasar.cubby.internal.spi.ConverterProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスの実装です。
@@ -49,16 +48,6 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/** 変換のヘルパクラス。 */
 	private ConversionHelper conversionHelper = new ConversionHelperImpl();
 
-//	/**
-//	 * 変換のヘルパクラスを設定します。
-//	 * 
-//	 * @param conversionHelper
-//	 *            変換のヘルパクラス
-//	 */
-//	public void setConversionHelper(final ConversionHelper conversionHelper) {
-//		this.conversionHelper = conversionHelper;
-//	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -67,9 +56,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (parameterMap == null) {
 			return;
 		}
-		final Container container = ContainerFactory.getContainer();
-		final ConverterFactory converterFactory = container
-				.lookup(ConverterFactory.class);
+		final ConverterProvider converterProvider = ProviderFactory
+				.get(ConverterProvider.class);
 		final BeanDesc destBeanDesc = BeanDescFactory.getBeanDesc(dest
 				.getClass());
 		for (final Entry<String, Object[]> entry : parameterMap.entrySet()) {
@@ -88,7 +76,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 					}
 
 					try {
-						final Object value = convert(converterFactory, entry
+						final Object value = convert(converterProvider, entry
 								.getValue(), destPropertyDesc);
 						destPropertyDesc.setValue(dest, value);
 					} catch (final Exception e) {
@@ -102,19 +90,19 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/**
 	 * 指定されたリクエストパラメータの値を出力先のプロパティの型に変換します。
 	 * 
-	 * @param converterFacotry
-	 *            コンバータファクトリ
+	 * @param converterProvider
+	 *            コンバータプロバイダ
 	 * @param values
 	 *            リクエストパラメータの値
 	 * @param destPropertyDesc
 	 *            出力先のプロパティの定義
 	 * @return 変換された値
 	 */
-	private Object convert(final ConverterFactory converterFacotry,
+	private Object convert(final ConverterProvider converterProvider,
 			final Object[] values, final PropertyDesc destPropertyDesc) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
-		final Converter converter = converterFacotry.getConverter(values[0]
+		final Converter converter = converterProvider.getConverter(values[0]
 				.getClass(), destClass);
 		if (converter != null) {
 			return converter.convertToObject(values[0], destClass,
@@ -122,39 +110,40 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		}
 
 		if (destClass.isArray()) {
-			return convertToArray(converterFacotry, values, destClass
+			return convertToArray(converterProvider, values, destClass
 					.getComponentType());
 		}
 		if (List.class.isAssignableFrom(destClass)) {
 			final List<Object> list = new ArrayList<Object>();
-			convertToCollection(converterFacotry, values, list,
+			convertToCollection(converterProvider, values, list,
 					destPropertyDesc);
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
 			final Set<Object> set = new LinkedHashSet<Object>();
-			convertToCollection(converterFacotry, values, set, destPropertyDesc);
+			convertToCollection(converterProvider, values, set,
+					destPropertyDesc);
 			return set;
 		}
-		return convertToScalar(converterFacotry, values[0], destClass);
+		return convertToScalar(converterProvider, values[0], destClass);
 	}
 
 	/**
 	 * 指定された値を指定された要素の型の配列に変換します。
 	 * 
 	 * @param converterFactory
-	 *            コンバータファクトリ
+	 *            コンバータプロバイダ
 	 * @param values
 	 *            変換する値
 	 * @param componentType
 	 *            要素の型
 	 * @return 変換後の値
 	 */
-	private Object convertToArray(final ConverterFactory converterFactory,
+	private Object convertToArray(final ConverterProvider converterProvider,
 			final Object[] values, final Class<?> componentType) {
 		final Object dest = Array.newInstance(componentType, values.length);
 		for (int i = 0; i < values.length; i++) {
-			final Object convertedValue = convertToScalar(converterFactory,
+			final Object convertedValue = convertToScalar(converterProvider,
 					values[i], componentType);
 			Array.set(dest, i, convertedValue);
 		}
@@ -164,8 +153,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/**
 	 * 指定された値を変換してコレクションに追加します。
 	 * 
-	 * @param converterFactory
-	 *            コンバータファクトリ
+	 * @param converterProvider
+	 *            コンバータプロバイダ
 	 * @param values
 	 *            変換する値
 	 * @param collection
@@ -173,7 +162,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @param propertyDesc
 	 *            プロパティの定義
 	 */
-	private void convertToCollection(final ConverterFactory converterFactory,
+	private void convertToCollection(final ConverterProvider converterProvider,
 			final Object[] values, final Collection<Object> collection,
 			final PropertyDesc propertyDesc) {
 		if (propertyDesc.isParameterized()) {
@@ -182,8 +171,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
 			for (final Object value : values) {
-				final Object convertedValue = convertToScalar(converterFactory,
-						value, destElementType);
+				final Object convertedValue = convertToScalar(
+						converterProvider, value, destElementType);
 				collection.add(convertedValue);
 			}
 		} else {
@@ -196,15 +185,15 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	/**
 	 * 指定された値を指定された型に変換します。
 	 * 
-	 * @param converterFactory
-	 *            コンバータファクトリ
+	 * @param converterProvider
+	 *            コンバータプロバイダ
 	 * @param value
 	 *            変換する値
 	 * @param destClass
 	 *            変換する型
 	 * @return 変換後の値
 	 */
-	private Object convertToScalar(final ConverterFactory converterFactory,
+	private Object convertToScalar(final ConverterProvider converterProvider,
 			final Object value, final Class<?> destClass) {
 		if (value == null) {
 			return null;
@@ -212,7 +201,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (destClass.isAssignableFrom(value.getClass())) {
 			return value;
 		}
-		final Converter converter = converterFactory.getConverter(value
+		final Converter converter = converterProvider.getConverter(value
 				.getClass(), destClass);
 		if (converter == null) {
 			return null;

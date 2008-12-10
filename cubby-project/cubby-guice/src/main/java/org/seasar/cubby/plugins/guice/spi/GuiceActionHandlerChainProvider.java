@@ -1,25 +1,27 @@
-package org.seasar.cubby.plugins.guice.factory;
+package org.seasar.cubby.plugins.guice.spi;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
-import org.seasar.cubby.handler.ActionHandlerChainFactory;
 import org.seasar.cubby.internal.handler.impl.ActionHandlerChainImpl;
+import org.seasar.cubby.internal.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.plugins.guice.InjectorFactory;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-public class GuiceActionHandlerChainFactory implements
-		ActionHandlerChainFactory {
+public class GuiceActionHandlerChainProvider implements
+		ActionHandlerChainProvider {
 
-	private final List<ActionHandler> actionHandlers;
+	private Collection<ActionHandler> actionHandlers;
 
-	@Inject
-	public GuiceActionHandlerChainFactory(final Injector injector,
-			final ActionHandlerClassesFactory actionHandlerClassesFactory) {
+	public GuiceActionHandlerChainProvider() {
+		final Injector injector = InjectorFactory.getInjector();
 		final List<ActionHandler> actionHandlers = new ArrayList<ActionHandler>();
+		final ActionHandlerClassesFactory actionHandlerClassesFactory = injector
+				.getInstance(ActionHandlerClassesFactory.class);
 		for (final Class<? extends ActionHandler> actionHandlerClass : actionHandlerClassesFactory
 				.getActionHandlerClasses()) {
 			final ActionHandler actionHandler = injector
@@ -30,13 +32,11 @@ public class GuiceActionHandlerChainFactory implements
 	}
 
 	public ActionHandlerChain getActionHandlerChain() {
-		final ActionHandlerChain actionHandlerChain = new ActionHandlerChainImpl(
-				actionHandlers.iterator());
-		return actionHandlerChain;
+		return new ActionHandlerChainImpl(actionHandlers);
 	}
 
 	public interface ActionHandlerClassesFactory {
-		List<Class<? extends ActionHandler>> getActionHandlerClasses();
+		Collection<Class<? extends ActionHandler>> getActionHandlerClasses();
 	}
 
 }

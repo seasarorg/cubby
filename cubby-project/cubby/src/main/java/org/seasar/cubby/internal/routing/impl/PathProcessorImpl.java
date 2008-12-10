@@ -15,18 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
-import org.seasar.cubby.internal.factory.RequestParserFactory;
 import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathProcessor;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.RoutingException;
+import org.seasar.cubby.internal.spi.ProviderFactory;
+import org.seasar.cubby.internal.spi.RequestParserProvider;
 import org.seasar.cubby.internal.util.CubbyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +73,7 @@ public class PathProcessorImpl implements PathProcessor {
 		final Routing routing = CubbyUtils.getAttribute(request, ATTR_ROUTING);
 		if (routing != null) {
 			this.pathInfo = new PathInfoImpl(routing);
+			request.removeAttribute(ATTR_ROUTING);
 		} else {
 			this.pathInfo = router.routing(request, response,
 					ignorePathPatterns);
@@ -100,6 +100,7 @@ public class PathProcessorImpl implements PathProcessor {
 
 	/**
 	 * PathInfo を利用し、オリジナルのリクエストをラップする
+	 * 
 	 * @return
 	 */
 	protected final HttpServletRequest wrapRequest() {
@@ -116,11 +117,9 @@ public class PathProcessorImpl implements PathProcessor {
 	 */
 	protected final Map<String, Object[]> parseRequest(
 			final HttpServletRequest wrappedRequest) {
-		
-		final Container container = ContainerFactory.getContainer();
-		final RequestParserFactory requestParserFactory = container
-				.lookup(RequestParserFactory.class);
-		final RequestParser requestParser = requestParserFactory
+		final RequestParserProvider requestParserProvider = ProviderFactory
+				.get(RequestParserProvider.class);
+		final RequestParser requestParser = requestParserProvider
 				.getRequestParser(wrappedRequest);
 		if (requestParser == null) {
 			throw new NullPointerException("requestParser");

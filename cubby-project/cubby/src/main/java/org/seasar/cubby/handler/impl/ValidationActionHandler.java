@@ -31,35 +31,25 @@ import org.seasar.cubby.validator.ValidationProcessor;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
+ * @since 2.0.0
  */
 public class ValidationActionHandler implements ActionHandler {
 
 	/** 入力検証処理。 */
-	private ValidationProcessor validationProcessor = new ValidationProcessorImpl();
-
-	// /**
-	// * 入力検証処理を設定します。
-	// *
-	// * @param validationProcessor
-	// * 入力検証処理
-	// */
-	// public void setValidationProcessor(
-	// final ValidationProcessor validationProcessor) {
-	// this.validationProcessor = validationProcessor;
-	// }
+	private final ValidationProcessor validationProcessor = new ValidationProcessorImpl();
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * メソッドの実行前に入力検証を実行します。
+	 * 入力検証を実行します。
 	 * </p>
 	 * 
 	 * @throws Exception
 	 */
-	public ActionResult handle(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext,
-			ActionHandlerChain actionHandlerChain) throws Exception {
+	public ActionResult handle(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext,
+			final ActionHandlerChain actionHandlerChain) throws Exception {
 		try {
 			validationProcessor.process(request, actionContext);
 			return actionHandlerChain.chain(request, response, actionContext);

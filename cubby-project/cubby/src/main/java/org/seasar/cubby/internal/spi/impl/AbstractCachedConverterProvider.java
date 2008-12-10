@@ -1,4 +1,4 @@
-package org.seasar.cubby.internal.factory.impl;
+package org.seasar.cubby.internal.spi.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,10 +6,11 @@ import java.util.Map;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.util.ClassUtils;
 
-public abstract class AbstractCachedConverterFactory extends AbstractConverterFactory {
+public abstract class AbstractCachedConverterProvider extends
+		AbstractConverterProvider {
 
 	/** コンバータのキャッシュです。 */
-	private Map<String, Converter> converterCache = new HashMap<String, Converter>();
+	private final Map<String, Converter> converterCache = new HashMap<String, Converter>();
 
 	/**
 	 * {@inheritDoc}

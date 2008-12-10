@@ -22,8 +22,10 @@ import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,8 +92,8 @@ import org.seasar.cubby.internal.util.IteratorEnumeration;
  */
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	/** URI パラメータを含むリクエストパラメータの {@link Map} です。 */
-	private final Map<String, String[]> parameterMap;
+	/** URI パラメータの {@link Map} です。 */
+	private final Map<String, String[]> uriParameters;
 
 	/**
 	 * 指定された要求をラップした要求オブジェクトを構築します。
@@ -102,55 +104,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
 			final Map<String, String[]> uriParameters) {
 		super(request);
-		this.parameterMap = buildParameterMap(request, uriParameters);
-	}
-
-	/**
-	 * 要求パラメータを構築します。
-	 * 
-	 * @param request
-	 *            要求
-	 * @param uriParameters
-	 *            URI パラメータの {@link Map}
-	 * @return URI パラメータを含むリクエストパラメータの {@link Map}
-	 */
-	private Map<String, String[]> buildParameterMap(
-			final HttpServletRequest request,
-			final Map<String, String[]> uriParameters) {
-		final Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
-
-		final Map<?, ?> originalParameterMap = request.getParameterMap();
-		for (final Entry<?, ?> entry : originalParameterMap.entrySet()) {
-			final String name = (String) entry.getKey();
-			final List<String> values = new ArrayList<String>();
-			for (final String value : (String[]) entry.getValue()) {
-				values.add(value);
-			}
-			extendedParameterMap.put(name, values);
-		}
-		for (final Entry<String, String[]> entry : uriParameters.entrySet()) {
-			final String name = entry.getKey();
-			if (extendedParameterMap.containsKey(name)) {
-				final List<String> values = extendedParameterMap.get(name);
-				for (final String value : entry.getValue()) {
-					values.add(value);
-				}
-			} else {
-				final List<String> values = new ArrayList<String>();
-				for (final String value : entry.getValue()) {
-					values.add(value);
-				}
-				extendedParameterMap.put(name, values);
-			}
-		}
-
-		final Map<String, String[]> parameterMap = new HashMap<String, String[]>();
-		for (final Entry<String, List<String>> entry : extendedParameterMap
-				.entrySet()) {
-			parameterMap.put(entry.getKey(), entry.getValue().toArray(
-					new String[0]));
-		}
-		return parameterMap;
+		this.uriParameters = uriParameters;
 	}
 
 	/**
@@ -200,7 +154,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getAttributeNames() {
-		final List attributeNames = new ArrayList();
+		final Set attributeNames = new HashSet();
 
 		attributeNames.add(ATTR_CONTEXT_PATH);
 		attributeNames.add(ATTR_ACTION);
@@ -236,7 +190,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 */
 	@Override
 	public String getParameter(final String name) {
-		final String[] parameters = this.parameterMap.get(name);
+		final String[] parameters = this.getParameterValues(name);
 		if (parameters == null) {
 			return null;
 		} else {
@@ -254,7 +208,8 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration getParameterNames() {
-		return new IteratorEnumeration(parameterMap.keySet().iterator());
+		return new IteratorEnumeration(this.getParameterMap().keySet()
+				.iterator());
 	}
 
 	/**
@@ -267,8 +222,10 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 *            取得したいパラメータの名前を表す <code>String</code>
 	 * @return パラメータの値が格納された <code>String</code> オブジェクトの配列
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String[] getParameterValues(final String name) {
+		final Map<String, String[]> parameterMap = this.getParameterMap();
 		return parameterMap.get(name);
 	}
 
@@ -284,7 +241,57 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map getParameterMap() {
-		return this.parameterMap;
+		final Map<String, String[]> parameterMap = buildParameterMap(
+				(HttpServletRequest) getRequest(), uriParameters);
+		return parameterMap;
+	}
+
+	/**
+	 * 要求パラメータを構築します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param uriParameters
+	 *            URI パラメータの {@link Map}
+	 * @return URI パラメータを含むリクエストパラメータの {@link Map}
+	 */
+	private Map<String, String[]> buildParameterMap(
+			final HttpServletRequest request,
+			final Map<String, String[]> uriParameters) {
+		final Map<String, List<String>> extendedParameterMap = new HashMap<String, List<String>>();
+
+		final Map<?, ?> originalParameterMap = request.getParameterMap();
+		for (final Entry<?, ?> entry : originalParameterMap.entrySet()) {
+			final String name = (String) entry.getKey();
+			final List<String> values = new ArrayList<String>();
+			for (final String value : (String[]) entry.getValue()) {
+				values.add(value);
+			}
+			extendedParameterMap.put(name, values);
+		}
+		for (final Entry<String, String[]> entry : uriParameters.entrySet()) {
+			final String name = entry.getKey();
+			if (extendedParameterMap.containsKey(name)) {
+				final List<String> values = extendedParameterMap.get(name);
+				for (final String value : entry.getValue()) {
+					values.add(value);
+				}
+			} else {
+				final List<String> values = new ArrayList<String>();
+				for (final String value : entry.getValue()) {
+					values.add(value);
+				}
+				extendedParameterMap.put(name, values);
+			}
+		}
+
+		final Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+		for (final Entry<String, List<String>> entry : extendedParameterMap
+				.entrySet()) {
+			parameterMap.put(entry.getKey(), entry.getValue().toArray(
+					new String[0]));
+		}
+		return parameterMap;
 	}
 
 }

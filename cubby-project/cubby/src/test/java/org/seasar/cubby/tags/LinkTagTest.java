@@ -28,10 +28,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.factory.PathResolverFactory;
+import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockPathResolverProvider;
 
 public class LinkTagTest extends AbstractStandardTagTestCase {
 
@@ -53,21 +54,11 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 				"foo");
 		pathResolver.add("/mockFormTagTest/bar/{id}",
 				MockFormTagTestAction.class, "bar");
-
-		final PathResolverFactory pathResolverFactory = new PathResolverFactory() {
-
-			public PathResolver getPathResolver() {
-				return pathResolver;
-			}
-
-		};
+		MockPathResolverProvider.setPathResolver(pathResolver);
 		MockContainerProvider.setContainer(new Container() {
 
 			public <T> T lookup(Class<T> type) {
-				if (PathResolverFactory.class.equals(type)) {
-					return type.cast(pathResolverFactory);
-				}
-				return null;
+				throw new LookupException();
 			}
 
 		});

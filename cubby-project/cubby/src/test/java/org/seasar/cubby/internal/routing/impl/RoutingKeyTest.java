@@ -22,19 +22,18 @@ import static org.seasar.cubby.action.RequestMethod.GET;
 import static org.seasar.cubby.action.RequestMethod.POST;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.internal.routing.impl.RoutingImpl;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl.RoutingComparator;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl.RoutingKey;
 
-public class RoutingComparatorTest {
+public class RoutingKeyTest {
 
-	private RoutingComparator comparator = new RoutingComparator();
 	private Routing routing1;
 	private Routing routing1d;
 	private Routing routing2;
@@ -76,37 +75,43 @@ public class RoutingComparatorTest {
 
 	@Test
 	public void duplicate() {
-		assertEquals(0, comparator.compare(routing1, routing1d));
-		assertEquals(0, comparator.compare(routing5, routing5d));
+		assertEquals(0, new RoutingKey(routing1).compareTo(new RoutingKey(
+				routing1d)));
+		assertEquals(0, new RoutingKey(routing5).compareTo(new RoutingKey(
+				routing5d)));
 	}
 
 	@Test
 	public void sort() {
-		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
-				routing3, routing5, routing1, routing4, routing2 }));
-		Collections.sort(routings, comparator);
-		System.out.println(routings);
-		assertSame("1", routing1, routings.get(0));
-		assertSame("2", routing2, routings.get(1));
-		assertSame("3", routing3, routings.get(2));
-		assertSame("4", routing4, routings.get(3));
-		assertSame("5", routing5, routings.get(4));
+		Map<RoutingKey, Routing> map = new TreeMap<RoutingKey, Routing>();
+		map.put(new RoutingKey(routing3), routing3);
+		map.put(new RoutingKey(routing5), routing5);
+		map.put(new RoutingKey(routing1), routing1);
+		map.put(new RoutingKey(routing4), routing4);
+		map.put(new RoutingKey(routing2), routing2);
+		List<Routing> actualList = new ArrayList<Routing>(asList(new Routing[] {
+				routing1, routing2, routing3, routing4, routing5 }));
+		for (Routing routing : map.values()) {
+			assertSame(actualList.remove(0), routing);
+		}
 	}
 
 	@Test
 	public void sort2() {
-		List<Routing> routings = new ArrayList<Routing>(asList(new Routing[] {
-				routing3, routing5, routing1, routing4, routing2, routing6,
-				routing6d }));
-		Collections.sort(routings, comparator);
-		System.out.println(routings);
-		assertSame("0", routing6d, routings.get(0));
-		assertSame("1", routing6, routings.get(1));
-		assertSame("2", routing1, routings.get(2));
-		assertSame("3", routing2, routings.get(3));
-		assertSame("4", routing3, routings.get(4));
-		assertSame("5", routing4, routings.get(5));
-		assertSame("6", routing5, routings.get(6));
+		Map<RoutingKey, Routing> map = new TreeMap<RoutingKey, Routing>();
+		map.put(new RoutingKey(routing3), routing3);
+		map.put(new RoutingKey(routing5), routing5);
+		map.put(new RoutingKey(routing1), routing1);
+		map.put(new RoutingKey(routing4), routing4);
+		map.put(new RoutingKey(routing2), routing2);
+		map.put(new RoutingKey(routing6), routing6);
+		map.put(new RoutingKey(routing6d), routing6d);
+		List<Routing> actualList = new ArrayList<Routing>(asList(new Routing[] {
+				routing6d, routing6, routing1, routing2, routing3, routing4,
+				routing5 }));
+		for (Routing routing : map.values()) {
+			assertSame(actualList.remove(0), routing);
+		}
 	}
 
 }

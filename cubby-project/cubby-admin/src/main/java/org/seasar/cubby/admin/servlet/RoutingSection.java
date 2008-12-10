@@ -29,11 +29,10 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 class RoutingSection implements Section {
 
@@ -90,13 +89,13 @@ class RoutingSection implements Section {
 		out.println("</thead>");
 		out.println("<tbody>");
 
-		final Container container = ContainerFactory.getContainer();
-		final PathResolverFactory pathResolverFactory = container
-				.lookup(PathResolverFactory.class);
-		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
+		final PathResolverProvider pathResolverProvider = ProviderFactory
+				.get(PathResolverProvider.class);
+		final PathResolver pathResolver = pathResolverProvider
+				.getPathResolver();
 
 		int no = 1;
-		for (final Routing routing : pathResolver.getRoutings().values()) {
+		for (final Routing routing : pathResolver.getRoutings()) {
 			final boolean write;
 			final Map<String, String> pathParameters;
 			if (path == null || path.length() == 0) {

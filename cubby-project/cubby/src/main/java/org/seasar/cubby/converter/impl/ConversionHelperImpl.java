@@ -30,22 +30,10 @@ public class ConversionHelperImpl implements ConversionHelper {
 	/** 日付や時刻のフォーマットパターンを保持するクラス。 */
 	private FormatPattern formatPattern;
 
-	// /**
-	// * 設定情報を設定します。
-	// *
-	// * @param cubbyConfiguration
-	// * 設定情報
-	// */
-	// public void setCubbyConfiguration(
-	// final CubbyConfiguration cubbyConfiguration) {
-	// this.formatPattern = cubbyConfiguration.getFormatPattern();
-	// }
-
+	/**
+	 * 新しい変換のヘルパクラスを生成します。
+	 */
 	public ConversionHelperImpl() {
-		// final Container container = ContainerFactory.getContainer();
-		// final CubbyConfiguration configuration = container
-		// .lookup(CubbyConfiguration.class);
-		// this.formatPattern = configuration.getFormatPattern();
 		this.formatPattern = ServiceFactory.getProvider(FormatPattern.class);
 	}
 

@@ -32,7 +32,6 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.handler.ActionHandlerChain;
-import org.seasar.cubby.handler.ActionHandlerChainFactory;
 import org.seasar.cubby.internal.action.impl.ActionContextImpl;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.container.Container;
@@ -40,6 +39,7 @@ import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.spi.ActionHandlerChainProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,9 +86,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 				actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
 
-		final ActionHandlerChainFactory actionHandlerChainFactory = container
-				.lookup(ActionHandlerChainFactory.class);
-		final ActionHandlerChain actionHandlerChain = actionHandlerChainFactory
+		final ActionHandlerChainProvider actionHandlerChainProvider = ActionHandlerChainProvider.Factory
+				.get();
+		final ActionHandlerChain actionHandlerChain = actionHandlerChainProvider
 				.getActionHandlerChain();
 		final ActionResult actionResult = actionHandlerChain.chain(request,
 				response, actionContext);

@@ -16,6 +16,7 @@
 package org.seasar.cubby.internal.beans;
 
 import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 /**
  * {@link BeanDesc} のファクトリです。
@@ -33,7 +34,8 @@ public class BeanDescFactory {
 	 * @return 指定されたクラスの {@link BeanDesc}
 	 */
 	public static BeanDesc getBeanDesc(final Class<?> clazz) {
-		final BeanDescProvider provider = BeanDescProvider.Factory.get();
+		final BeanDescProvider provider = ProviderFactory
+				.get(BeanDescProvider.class);
 		return provider.getBeanDesc(clazz);
 	}
 

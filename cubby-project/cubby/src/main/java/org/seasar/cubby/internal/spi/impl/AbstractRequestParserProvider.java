@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.factory.impl;
+package org.seasar.cubby.internal.spi.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.factory.RequestParserFactory;
+import org.seasar.cubby.internal.spi.RequestParserProvider;
 
 /**
  * リクエスト解析器プロバイダの抽象的な実装です。
@@ -32,8 +32,8 @@ import org.seasar.cubby.internal.factory.RequestParserFactory;
  * @author baba
  * @since 2.0.0
  */
-public abstract class AbstractRequestParserFactory implements
-		RequestParserFactory {
+public abstract class AbstractRequestParserProvider implements
+		RequestParserProvider {
 
 	/** リクエスト解析器の {@link Comparator}。 */
 	private Comparator<RequestParser> requestParserComparator = new Comparator<RequestParser>() {
