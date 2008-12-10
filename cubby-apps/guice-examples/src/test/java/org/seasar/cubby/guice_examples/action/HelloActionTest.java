@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.plugins.guice.ModuleFactory;
+import org.seasar.cubby.plugins.guice.InjectorFactory;
 import org.seasar.cubby.plugins.guice.unit.MockServletModule;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
@@ -41,8 +41,7 @@ public class HelloActionTest {
 	@Before
 	public void before() throws Exception {
 
-		ModuleFactory
-				.setModuleClassName("org.seasar.cubby.guice_examples.action.MockExampleModule");
+		InjectorFactory.setModuleClassName(MockExampleModule.class.getName());
 		request = createMock(HttpServletRequest.class);
 		response = createMock(HttpServletResponse.class);
 		MockServletModule.setUpContext(request, response);
