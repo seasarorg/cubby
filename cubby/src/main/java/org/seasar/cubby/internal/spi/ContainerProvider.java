@@ -16,7 +16,6 @@
 package org.seasar.cubby.internal.spi;
 
 import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.util.ServiceLoader;
 
 /**
  * コンテナのプロバイダです。
@@ -32,38 +31,5 @@ public interface ContainerProvider {
 	 * @return コンテナ
 	 */
 	Container getContainer();
-
-	/**
-	 * {@link ContainerProvider} のファクトリです。
-	 * 
-	 * @author baba
-	 * @since 2.0.0
-	 */
-	class Factory {
-
-		/** プロバイダ。 */
-		private static final ContainerProvider PROVIDER;
-		static {
-			final ServiceLoader<ContainerProvider> serviceLoader = ServiceLoader
-					.load(ContainerProvider.class);
-			PROVIDER = serviceLoader.getProvider();
-		}
-
-		/**
-		 * インスタンス化を禁止します。
-		 */
-		private Factory() {
-		}
-
-		/**
-		 * {@link ContainerProvider} を取得します。
-		 * 
-		 * @return {@link ContainerProvider}
-		 */
-		public static ContainerProvider get() {
-			return PROVIDER;
-		}
-
-	}
 
 }

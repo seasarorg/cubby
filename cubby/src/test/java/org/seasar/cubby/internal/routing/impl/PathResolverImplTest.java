@@ -49,13 +49,13 @@ public class PathResolverImplTest {
 		actionClasses.add(MockAction.class);
 		actionClasses.add(MockRootAction.class);
 		actionClasses.add(MockPathAction.class);
-		pathResolver.addAllActionClasses(actionClasses);
+		pathResolver.addAll(actionClasses);
 	}
 
 	@Test
 	public void testGetRoutings() {
 		List<Routing> routings = new ArrayList<Routing>(pathResolver
-				.getRoutings().values());
+				.getRoutings());
 		assertEquals(24, routings.size());
 	}
 
@@ -68,7 +68,7 @@ public class PathResolverImplTest {
 				RequestMethod.PUT);
 
 		List<Routing> routings = new ArrayList<Routing>(pathResolver
-				.getRoutings().values());
+				.getRoutings());
 		assertEquals(28, routings.size());
 
 		Iterator<Routing> iterator = routings.iterator();
@@ -329,7 +329,7 @@ public class PathResolverImplTest {
 		}
 		pathResolver.add("/child/m1", ChildAction.class, "m1");
 		pathResolver.add("/child/m2", ChildAction.class, "m2");
-		Collection<Routing> routings = pathResolver.getRoutings().values();
+		Collection<Routing> routings = pathResolver.getRoutings();
 		assertEquals("正常に登録できたルーティング情報の数", 28, routings.size());
 		Iterator<Routing> it = routings.iterator();
 		assertRouting(it.next(), "/child/m1", RequestMethod.GET,

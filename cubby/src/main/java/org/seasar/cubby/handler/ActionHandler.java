@@ -22,7 +22,7 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 
 /**
- * アクションの実行要求を処理するためのハンドラーです。
+ * アクションハンドラーはアクションの実行要求を処理するためのハンドラーです。
  * 
  * @author baba
  * @since 2.0.0
@@ -30,7 +30,7 @@ import org.seasar.cubby.action.ActionResult;
 public interface ActionHandler {
 
 	/**
-	 * アクションの実行要求をハンドルします。
+	 * アクションの実行要求を処理します。
 	 * 
 	 * @param request
 	 *            要求
@@ -39,10 +39,10 @@ public interface ActionHandler {
 	 * @param actionContext
 	 *            アクションのコンテキスト
 	 * @param actionHandlerChain
-	 *            アクションハンドラーのチェイン
-	 * @return アクションの実行結果
+	 *            ハンドラーのチェーン
+	 * @return 実行結果
 	 * @throws Exception
-	 *             アクションハンドラーで例外が発生した場合
+	 *             ハンドラーの実行中に例外が発生した場合
 	 */
 	ActionResult handle(HttpServletRequest request,
 			HttpServletResponse response, ActionContext actionContext,

@@ -17,14 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockPathResolverProvider;
 
 public class RouterImplTest {
 
@@ -34,22 +31,7 @@ public class RouterImplTest {
 
 	@Test
 	public void routing1() {
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) throws LookupException {
-				if (PathResolverFactory.class.equals(type)) {
-					return type.cast(new PathResolverFactory() {
-
-						public PathResolver getPathResolver() {
-							return pathResolver;
-						}
-
-					});
-				}
-				return null;
-			}
-
-		});
+		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -71,24 +53,8 @@ public class RouterImplTest {
 	@Test
 	public void routing2() throws Exception {
 
-		pathResolver.addAllActionClasses(Arrays
-				.asList(new Class<?>[] { Foo.class }));
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) throws LookupException {
-				if (PathResolverFactory.class.equals(type)) {
-					return type.cast(new PathResolverFactory() {
-
-						public PathResolver getPathResolver() {
-							return pathResolver;
-						}
-
-					});
-				}
-				return null;
-			}
-
-		});
+		pathResolver.addAll(Arrays.asList(new Class<?>[] { Foo.class }));
+		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -109,22 +75,7 @@ public class RouterImplTest {
 
 	@Test
 	public void routingWithIgnorePath1() {
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) throws LookupException {
-				if (PathResolverFactory.class.equals(type)) {
-					return type.cast(new PathResolverFactory() {
-
-						public PathResolver getPathResolver() {
-							return pathResolver;
-						}
-
-					});
-				}
-				return null;
-			}
-
-		});
+		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -142,22 +93,7 @@ public class RouterImplTest {
 
 	@Test
 	public void routingWithIgnorePath2() {
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) throws LookupException {
-				if (PathResolverFactory.class.equals(type)) {
-					return type.cast(new PathResolverFactory() {
-
-						public PathResolver getPathResolver() {
-							return pathResolver;
-						}
-
-					});
-				}
-				return null;
-			}
-
-		});
+		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/exists/bar");
 		expect(request.getPathInfo()).andStubReturn("");

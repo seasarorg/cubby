@@ -24,11 +24,10 @@ import org.seasar.cubby.converter.impl.ConversionHelperImpl;
 import org.seasar.cubby.internal.beans.BeanDesc;
 import org.seasar.cubby.internal.beans.BeanDescFactory;
 import org.seasar.cubby.internal.beans.PropertyDesc;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.factory.ConverterFactory;
+import org.seasar.cubby.internal.spi.ConverterProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 /**
  * フォームオブジェクトのラッパーファクトリの実装です。
@@ -40,17 +39,6 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 
 	/** 変換のヘルパクラス。 */
 	private ConversionHelper conversionHelper = new ConversionHelperImpl();
-
-	// /**
-	// * 変換のヘルパクラスを設定します。
-	// *
-	// * @param conversionHelper
-	// * 変換のヘルパクラス
-	// */
-	// public void setConversionHelper(final ConversionHelper conversionHelper)
-	// {
-	// this.conversionHelper = conversionHelper;
-	// }
 
 	/**
 	 * {@inheritDoc}
@@ -143,10 +131,9 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			if (value == null) {
 				return null;
 			}
-			final Container container = ContainerFactory.getContainer();
-			final ConverterFactory converterFactory = container
-					.lookup(ConverterFactory.class);
-			final Converter converter = converterFactory.getConverter(null,
+			final ConverterProvider converterProvider = ProviderFactory
+					.get(ConverterProvider.class);
+			final Converter converter = converterProvider.getConverter(null,
 					value.getClass());
 			if (converter == null) {
 				if (value == null) {

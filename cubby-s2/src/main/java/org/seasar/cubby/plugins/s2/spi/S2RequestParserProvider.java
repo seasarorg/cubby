@@ -1,14 +1,14 @@
-package org.seasar.cubby.plugins.s2.factory;
+package org.seasar.cubby.plugins.s2.spi;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.factory.impl.AbstractRequestParserFactory;
+import org.seasar.cubby.internal.spi.impl.AbstractRequestParserProvider;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
-public class S2RequestParserFactory extends AbstractRequestParserFactory {
+public class S2RequestParserProvider extends AbstractRequestParserProvider {
 
 	@Override
 	protected Collection<RequestParser> getRequestParsers() {

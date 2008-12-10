@@ -24,7 +24,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -61,12 +60,8 @@ public class PathResolverImpl implements PathResolver {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PathResolverImpl.class);
 
-	/** ルーティングのコンパレータ。 */
-	private final Comparator<Routing> routingComparator = new RoutingComparator();
-
 	/** 登録されたルーティングのマップ。 */
-	private final Map<Routing, Routing> routings = new TreeMap<Routing, Routing>(
-			routingComparator);
+	private final Map<RoutingKey, Routing> routings = new TreeMap<RoutingKey, Routing>();
 
 	/** パステンプレートのパーサー。 */
 	private final PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
@@ -85,29 +80,41 @@ public class PathResolverImpl implements PathResolver {
 	 * 
 	 * @return ルーティング情報
 	 */
-	public Map<Routing, Routing> getRoutings() {
-		return routings;
+	public Collection<Routing> getRoutings() {
+		return routings.values();
 	}
 
-	// TODO
-	public void addAllActionClasses(final Collection<Class<?>> actionClasses) {
-		for (final Class<?> actionClass : actionClasses) {
-			for (final Method method : actionClass.getMethods()) {
-				if (CubbyUtils.isActionMethod(method)) {
-					final String actionPath = CubbyUtils.getActionPath(
-							actionClass, method);
-					final RequestMethod[] acceptableRequestMethods = CubbyUtils
-							.getAcceptableRequestMethods(actionClass, method);
-					for (final RequestMethod requestMethod : acceptableRequestMethods) {
-						this.add(actionPath, actionClass, method,
-								requestMethod, true);
-					}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void add(final Class<?> actionClass) {
+		for (final Method method : actionClass.getMethods()) {
+			if (CubbyUtils.isActionMethod(method)) {
+				final String actionPath = CubbyUtils.getActionPath(actionClass,
+						method);
+				final RequestMethod[] acceptableRequestMethods = CubbyUtils
+						.getAcceptableRequestMethods(actionClass, method);
+				for (final RequestMethod requestMethod : acceptableRequestMethods) {
+					this.add(actionPath, actionClass, method, requestMethod,
+							true);
 				}
 			}
 		}
 	}
 
-	public void clearAllActionClasses() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void addAll(final Collection<Class<?>> actionClasses) {
+		for (final Class<?> actionClass : actionClasses) {
+			add(actionClass);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void clear() {
 		routings.clear();
 	}
 
@@ -164,10 +171,10 @@ public class PathResolverImpl implements PathResolver {
 	private void add(final String actionPath, final Class<?> actionClass,
 			final Method method, final RequestMethod requestMethod,
 			final boolean auto) {
-
 		if (!CubbyUtils.isActionClass(actionClass)) {
 			throw new RoutingException(format("ECUB0002", actionClass));
-		} else if (!CubbyUtils.isActionMethod(method)) {
+		}
+		if (!CubbyUtils.isActionMethod(method)) {
 			throw new RoutingException(format("ECUB0003", method));
 		}
 
@@ -191,20 +198,16 @@ public class PathResolverImpl implements PathResolver {
 		final Routing routing = new RoutingImpl(actionClass, method,
 				actionPath, uriParameterNames, pattern, requestMethod,
 				onSubmit, priority, auto);
+		final RoutingKey key = new RoutingKey(routing);
 
-		if (routings.containsKey(routing)) {
-			final Routing duplication = routings.get(routing);
-			if (!routing.getActionClass().equals(duplication.getActionClass())
-					|| !routing.getMethod().equals(duplication.getMethod())) {
-				throw new RoutingException(format("ECUB0001", routing,
-						duplication));
-			}
-		} else {
-			routings.put(routing, routing);
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0007", routing));
-			}
+		if (logger.isDebugEnabled()) {
+			logger.debug(format("DCUB0007", routing));
 		}
+		if (routings.containsKey(key)) {
+			final Routing duplication = routings.get(key);
+			throw new RoutingException(format("ECUB0001", routing, duplication));
+		}
+		routings.put(key, routing);
 	}
 
 	/**
@@ -213,7 +216,7 @@ public class PathResolverImpl implements PathResolver {
 	public PathInfo getPathInfo(final String path, final String requestMethod,
 			final String characterEncoding) {
 		final String decodedPath = decode(path, characterEncoding);
-		final Iterator<Routing> iterator = getRoutings().values().iterator();
+		final Iterator<Routing> iterator = getRoutings().iterator();
 		while (iterator.hasNext()) {
 			final Routing routing = iterator.next();
 			final Matcher matcher = routing.getPattern().matcher(decodedPath);
@@ -263,73 +266,12 @@ public class PathResolverImpl implements PathResolver {
 	}
 
 	/**
-	 * ルーティングのコンパレータ。
-	 * 
-	 * @author baba
-	 */
-	static class RoutingComparator implements Comparator<Routing> {
-
-		/**
-		 * routing1 と routing2 を比較します。
-		 * <p>
-		 * 正規表現パターンと HTTP メソッドが同じ場合は同値とみなします。
-		 * </p>
-		 * <p>
-		 * また、大小関係は以下のようになります。
-		 * <ul>
-		 * <li>優先度(@link {@link Path#priority()})が小さい順</li>
-		 * <li>URI 埋め込みパラメータが少ない順</li>
-		 * <li>正規表現の順(@link {@link String#compareTo(String)})</li>
-		 * </ul>
-		 * </p>
-		 * 
-		 * @param routing1
-		 *            比較対象1
-		 * @param routing2
-		 *            比較対象2
-		 * @return 比較結果
-		 */
-		public int compare(final Routing routing1, final Routing routing2) {
-			int compare = routing1.getPriority() - routing2.getPriority();
-			if (compare != 0) {
-				return compare;
-			}
-			compare = routing1.getUriParameterNames().size()
-					- routing2.getUriParameterNames().size();
-			if (compare != 0) {
-				return compare;
-			}
-			compare = routing1.getPattern().pattern().compareTo(
-					routing2.getPattern().pattern());
-			if (compare != 0) {
-				return compare;
-			}
-			compare = routing1.getRequestMethod().compareTo(
-					routing2.getRequestMethod());
-			if (compare != 0) {
-				return compare;
-			}
-			if (routing1.getOnSubmit() == routing2.getOnSubmit()) {
-				compare = 0;
-			} else if (routing1.getOnSubmit() == null) {
-				compare = -1;
-			} else if (routing2.getOnSubmit() == null) {
-				compare = 1;
-			} else {
-				compare = routing1.getOnSubmit().compareTo(
-						routing2.getOnSubmit());
-			}
-			return compare;
-		}
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public String reverseLookup(final Class<?> actionClass,
 			final String methodName, final Map<String, String[]> parameters,
 			final String characterEncoding) {
-		final Collection<Routing> routings = getRoutings().values();
+		final Collection<Routing> routings = getRoutings();
 		final Routing routing = findRouting(routings, actionClass, methodName);
 		final String actionPath = routing.getActionPath();
 		final Map<String, String[]> copyOfParameters = new HashMap<String, String[]>(
@@ -437,6 +379,155 @@ public class PathResolverImpl implements PathResolver {
 		} catch (final IOException e) {
 			throw new RoutingException(e);
 		}
+	}
+
+	/**
+	 * ルーティングのキーです。
+	 * 
+	 * @author baba
+	 * @since 2.0.0
+	 */
+	static class RoutingKey implements Comparable<RoutingKey> {
+
+		private final int priority;
+
+		private final List<String> uriParameterNames;
+
+		private final Pattern pattern;
+
+		private final RequestMethod requestMethod;
+
+		private final String onSubmit;
+
+		public RoutingKey(final Routing routing) {
+			this.priority = routing.getPriority();
+			this.uriParameterNames = routing.getUriParameterNames();
+			this.pattern = routing.getPattern();
+			this.requestMethod = routing.getRequestMethod();
+			this.onSubmit = routing.getOnSubmit();
+		}
+
+		/**
+		 * このキーと指定されたキーを比較します。
+		 * <p>
+		 * 正規表現パターンと HTTP メソッドが同じ場合は同値とみなします。
+		 * </p>
+		 * <p>
+		 * また、大小関係は以下のようになります。
+		 * <ul>
+		 * <li>優先度(@link {@link Path#priority()})が小さい順</li>
+		 * <li>URI 埋め込みパラメータが少ない順</li>
+		 * <li>正規表現の順(@link {@link String#compareTo(String)})</li>
+		 * </ul>
+		 * </p>
+		 * 
+		 * @param another
+		 *            比較対象のキー
+		 * @return 比較結果
+		 */
+		public int compareTo(final RoutingKey another) {
+			int compare = this.priority - another.priority;
+			if (compare != 0) {
+				return compare;
+			}
+			compare = this.uriParameterNames.size()
+					- another.uriParameterNames.size();
+			if (compare != 0) {
+				return compare;
+			}
+			compare = this.pattern.pattern().compareTo(
+					another.pattern.pattern());
+			if (compare != 0) {
+				return compare;
+			}
+			compare = this.requestMethod.compareTo(another.requestMethod);
+			if (compare != 0) {
+				return compare;
+			}
+			if (this.onSubmit == another.onSubmit) {
+				compare = 0;
+			} else if (this.onSubmit == null) {
+				compare = -1;
+			} else if (another.onSubmit == null) {
+				compare = 1;
+			} else {
+				compare = this.onSubmit.compareTo(another.onSubmit);
+			}
+			return compare;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((onSubmit == null) ? 0 : onSubmit.hashCode());
+			result = prime
+					* result
+					+ ((pattern.pattern() == null) ? 0 : pattern.pattern()
+							.hashCode());
+			result = prime * result + priority;
+			result = prime * result
+					+ ((requestMethod == null) ? 0 : requestMethod.hashCode());
+			result = prime
+					* result
+					+ ((uriParameterNames == null) ? 0 : uriParameterNames
+							.hashCode());
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			RoutingKey other = (RoutingKey) obj;
+			if (onSubmit == null) {
+				if (other.onSubmit != null) {
+					return false;
+				}
+			} else if (!onSubmit.equals(other.onSubmit)) {
+				return false;
+			}
+			if (pattern == null) {
+				if (other.pattern != null) {
+					return false;
+				}
+			} else if (!pattern.pattern().equals(other.pattern.pattern())) {
+				return false;
+			}
+			if (priority != other.priority) {
+				return false;
+			}
+			if (requestMethod == null) {
+				if (other.requestMethod != null) {
+					return false;
+				}
+			} else if (!requestMethod.equals(other.requestMethod)) {
+				return false;
+			}
+			if (uriParameterNames == null) {
+				if (other.uriParameterNames != null) {
+					return false;
+				}
+			} else if (!uriParameterNames.equals(other.uriParameterNames)) {
+				return false;
+			}
+			return true;
+		}
+
 	}
 
 }

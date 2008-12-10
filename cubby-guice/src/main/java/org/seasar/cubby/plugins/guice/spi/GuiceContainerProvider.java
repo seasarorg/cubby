@@ -22,11 +22,9 @@ import java.util.Set;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.plugins.guice.ModuleFactory;
+import org.seasar.cubby.plugins.guice.InjectorFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * Guice の {@link Injector} による {@link Container} の実装を提供します。
@@ -51,8 +49,7 @@ public class GuiceContainerProvider implements ContainerProvider {
 	 * インスタンス化します。
 	 */
 	public GuiceContainerProvider() {
-		final Module module = ModuleFactory.getModule();
-		final Injector injector = Guice.createInjector(module);
+		final Injector injector = InjectorFactory.getInjector();
 		this.container = new GuiceContainerImpl(injector);
 	}
 

@@ -16,6 +16,7 @@
 package org.seasar.cubby.internal.container;
 
 import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 /**
  * オブジェクトを生成、管理するコンテナのファクトリです。
@@ -31,7 +32,8 @@ public class ContainerFactory {
 	 * @return オブジェクトを生成、管理するコンテナ
 	 */
 	public static Container getContainer() {
-		final ContainerProvider provider = ContainerProvider.Factory.get();
+		final ContainerProvider provider = ProviderFactory
+				.get(ContainerProvider.class);
 		return provider.getContainer();
 	}
 

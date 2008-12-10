@@ -26,10 +26,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.cubby.internal.util.QueryStringBuilder;
 import org.seasar.cubby.internal.util.StringUtils;
@@ -263,10 +262,9 @@ public class Redirect implements ActionResult {
 	 */
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
-			final Container container = ContainerFactory.getContainer();
-			final PathResolverFactory pathResolverFactory = container
-					.lookup(PathResolverFactory.class);
-			final PathResolver pathResolver = pathResolverFactory
+			final PathResolverProvider pathResolverProvider = ProviderFactory
+					.get(PathResolverProvider.class);
+			final PathResolver pathResolver = pathResolverProvider
 					.getPathResolver();
 			final String redirectPath = pathResolver.reverseLookup(actionClass,
 					methodName, parameters, characterEncoding);

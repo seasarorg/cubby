@@ -1,5 +1,7 @@
 package org.seasar.cubby.internal.handler.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +16,8 @@ public class ActionHandlerChainImpl implements ActionHandlerChain {
 
 	private final Iterator<ActionHandler> iterator;
 
-	public ActionHandlerChainImpl(final Iterator<ActionHandler> iterator) {
-		this.iterator = iterator;
+	public ActionHandlerChainImpl(final Collection<ActionHandler> actionHandlers) {
+		this.iterator = actionHandlers.iterator();
 	}
 
 	public ActionResult chain(final HttpServletRequest request,

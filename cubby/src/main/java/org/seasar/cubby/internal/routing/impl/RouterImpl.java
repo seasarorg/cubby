@@ -25,12 +25,11 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.factory.PathResolverFactory;
 import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Router;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.internal.util.CubbyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,10 +73,10 @@ public class RouterImpl implements Router {
 			return null;
 		}
 
-		final Container container = ContainerFactory.getContainer();
-		final PathResolverFactory pathResolverFactory = container
-				.lookup(PathResolverFactory.class);
-		final PathResolver pathResolver = pathResolverFactory.getPathResolver();
+		final PathResolverProvider pathResolverProvider = ProviderFactory
+				.get(PathResolverProvider.class);
+		final PathResolver pathResolver = pathResolverProvider
+				.getPathResolver();
 		final PathInfo internalForwardInfo = pathResolver.getPathInfo(path,
 				request.getMethod(), null);
 		return internalForwardInfo;

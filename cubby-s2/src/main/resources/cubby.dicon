@@ -5,14 +5,13 @@
 	<include path="convention.dicon" />
 
 	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
+	<component class="org.seasar.cubby.internal.routing.impl.PathResolverImpl" />
 
 	<!-- request parsers -->
 	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
 
 	<!-- spi -->
-	<component class="org.seasar.cubby.plugins.s2.factory.S2PathResolverFactory" />
-	<component class="org.seasar.cubby.plugins.s2.factory.S2RequestParserFactory" />
-	<component class="org.seasar.cubby.plugins.s2.factory.S2ConverterFactory" />
-	<component class="org.seasar.cubby.plugins.s2.factory.S2ActionHandlerChainFactory" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider$Component" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider$Component" />
 
 </components>

@@ -59,6 +59,7 @@ public class CubbyRunner {
 
 		/**
 		 * PathProcessor の process 処理をエミュレートする
+		 * 
 		 * @return
 		 */
 		public ActionResultWrapper doProcess() throws Exception {
@@ -68,7 +69,7 @@ public class CubbyRunner {
 
 			final HttpServletRequest wrappedRequest = super.wrapRequest();
 			final Map<String, Object[]> parameterMap = super
-			.parseRequest(wrappedRequest);
+					.parseRequest(wrappedRequest);
 			request.setAttribute(ATTR_PARAMS, parameterMap);
 			final Routing routing = super.dispatch(parameterMap);
 			ThreadContext.newContext(wrappedRequest);
@@ -78,7 +79,7 @@ public class CubbyRunner {
 			} finally {
 				ThreadContext.restoreContext();
 			}
-		}				
+		}
 	}
 
 }

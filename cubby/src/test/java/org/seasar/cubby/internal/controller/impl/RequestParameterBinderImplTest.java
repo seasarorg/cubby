@@ -56,11 +56,8 @@ import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
-import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
-import org.seasar.cubby.internal.factory.ConverterFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
-import org.seasar.cubby.mock.MockConverterFactory;
 
 /**
  * 
@@ -75,9 +72,6 @@ public class RequestParameterBinderImplTest {
 		MockContainerProvider.setContainer(new Container() {
 
 			public <T> T lookup(Class<T> type) {
-				if (ConverterFactory.class.equals(type)) {
-					return type.cast(new MockConverterFactory());
-				}
 				throw new LookupException();
 			}
 

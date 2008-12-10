@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.internal.spi;
 
-import org.seasar.cubby.internal.util.ServiceLoader;
-
 /**
  * JSON のプロバイダです。
  * 
@@ -33,38 +31,5 @@ public interface JsonProvider {
 	 * @return JSON 形式の文字列
 	 */
 	String toJson(Object o);
-
-	/**
-	 * {@link JsonProvider} のファクトリです。
-	 * 
-	 * @author baba
-	 * @since 2.0.0
-	 */
-	class Factory {
-
-		/** プロバイダ。 */
-		private static final JsonProvider PROVIDER;
-		static {
-			final ServiceLoader<JsonProvider> serviceLoader = ServiceLoader
-					.load(JsonProvider.class);
-			PROVIDER = serviceLoader.getProvider();
-		}
-
-		/**
-		 * インスタンス化を禁止します。
-		 */
-		private Factory() {
-		}
-
-		/**
-		 * {@link JsonProvider} を取得します。
-		 * 
-		 * @return {@link JsonProvider}
-		 */
-		public static JsonProvider get() {
-			return PROVIDER;
-		}
-
-	}
 
 }

@@ -1,10 +1,10 @@
-package org.seasar.cubby.internal.factory;
+package org.seasar.cubby.internal.spi;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.RequestParser;
 
-public interface RequestParserFactory {
+public interface RequestParserProvider {
 
 	/**
 	 * 指定されたリクエストを解析可能なリクエスト解析器を取得します。
@@ -13,6 +13,6 @@ public interface RequestParserFactory {
 	 *            リクエスト
 	 * @return 指定されたリクエストを解析可能なリクエスト解析器
 	 */
-	RequestParser getRequestParser(final HttpServletRequest request);
+	RequestParser getRequestParser(HttpServletRequest request);
 
 }

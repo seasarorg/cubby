@@ -1,8 +1,8 @@
-package org.seasar.cubby.internal.factory;
+package org.seasar.cubby.internal.spi;
 
 import org.seasar.cubby.internal.routing.PathResolver;
 
-public interface PathResolverFactory {
+public interface PathResolverProvider {
 
 	PathResolver getPathResolver();
 

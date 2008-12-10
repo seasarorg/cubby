@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.internal.spi.JsonProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.internal.util.StringUtils;
 
 /**
@@ -187,7 +188,8 @@ public class Json implements ActionResult {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
-		final JsonProvider jsonProvider = JsonProvider.Factory.get();
+		final JsonProvider jsonProvider = ProviderFactory
+				.get(JsonProvider.class);
 		final String script;
 		if (isJsonp()) {
 			script = appendCallbackFunction(jsonProvider.toJson(bean),
