@@ -11,6 +11,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.impl.FormatPatternImpl;
 import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.internal.routing.PathResolver;
+import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.wiki.action.PageAction;
@@ -72,11 +74,12 @@ public class ApplicationModule extends AbstractModule {
 	}
 
 	private static class ApplicationCubbyModule extends AbstractCubbyModule {
+
 		@Override
-		protected Collection<Class<?>> getActionClasses() {
-			List<Class<?>> actionClasses = new ArrayList<Class<?>>();
-			actionClasses.add(PageAction.class);
-			return Collections.unmodifiableCollection(actionClasses);
+		protected PathResolver getPathResolver() {
+			PathResolver pathResolver = new PathResolverImpl();
+			pathResolver.add(PageAction.class);
+			return pathResolver;
 		}
 
 		@Override
@@ -86,5 +89,6 @@ public class ApplicationModule extends AbstractModule {
 			converterClasses.add(PageConverter.class);
 			return Collections.unmodifiableCollection(converterClasses);
 		}
+
 	}
 }
