@@ -11,15 +11,16 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.seasar.cubby.plugins.guice.ModuleFactory;
+import org.seasar.cubby.plugins.guice.InjectorFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class TransactionFilter implements Filter {
-	Injector injector;
+
+	private Injector injector;
+
 	public void init(FilterConfig config) throws ServletException {
-		injector = Guice.createInjector(ModuleFactory.getModule());
+		injector = InjectorFactory.getInjector();
 	}
 
 	public void destroy() {
