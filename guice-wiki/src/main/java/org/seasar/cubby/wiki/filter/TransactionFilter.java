@@ -17,33 +17,35 @@ import com.google.inject.Injector;
 
 public class TransactionFilter implements Filter {
 
-	private Injector injector;
+	private EntityManager entityManager;
 
 	public void init(FilterConfig config) throws ServletException {
-		injector = InjectorFactory.getInjector();
+		final Injector injector = InjectorFactory.getInjector();
+		this.entityManager = injector.getInstance(EntityManager.class);
 	}
 
 	public void destroy() {
+		if (entityManager != null) {
+			entityManager.close();
+		}
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		EntityManager entityManager = null;
-		EntityTransaction transaction = null;
-		boolean commit = false;
+		EntityTransaction transaction = entityManager.getTransaction();
 		try {
-			entityManager = injector.getInstance(EntityManager.class);
-			transaction = entityManager.getTransaction();
 			transaction.begin();
 			chain.doFilter(request, response);
 			transaction.commit();
-			commit = true;
-		} finally {
-			if (transaction != null && transaction.isActive() && !commit) {
+		} catch (Throwable e) {
+			if (transaction.isActive()) {
 				transaction.rollback();
 			}
-			if (entityManager != null) {
-				entityManager.close();
+			if (e instanceof Error) {
+				throw (Error) e;
+			}
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException) e;
 			}
 		}
 	}

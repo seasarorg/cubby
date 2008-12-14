@@ -7,9 +7,10 @@ import javax.persistence.Persistence;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
-import com.google.inject.servlet.ServletScopes;
+import com.google.inject.Singleton;
 
 public class JpaModule extends AbstractModule {
+
 	@Override
 	protected void configure() {
 		bind(EntityManager.class).toProvider(new Provider<EntityManager>() {
@@ -21,6 +22,7 @@ public class JpaModule extends AbstractModule {
 				return manager;
 			}
 
-		}).in(ServletScopes.REQUEST);
+		}).in(Singleton.class);
 	}
+
 }
