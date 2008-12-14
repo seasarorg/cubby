@@ -79,6 +79,10 @@ line.separator=\n
   </build>
   <repositories>
     <repository>
+      <id>local</id>
+      <url>file:${basedir}/m2repo</url>
+    </repository>
+    <repository>
       <id>maven.seasar.org</id>
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>

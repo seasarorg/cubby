@@ -4,18 +4,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.guice_examples.ExampleModule;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
-import org.seasar.cubby.plugins.guice.unit.MockServletModule;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import com.google.inject.servlet.GuiceFilter;
+
 public class HelloActionTest {
 
 	@Before
 	public void before() throws Exception {
-		InjectorFactory.setModuleClassName(MockExampleModule.class.getName());
+		InjectorFactory.setModuleClassName(ExampleModule.class.getName());
 	}
 
 	@Test
@@ -25,9 +27,8 @@ public class HelloActionTest {
 		request.setServletPath("/hello/");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		MockServletModule.setUpContext(request, response);
-		ActionResult actualResult = CubbyRunner
-				.processAction(request, response);
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response, new GuiceFilter());
 		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
 	}
 
@@ -38,9 +39,8 @@ public class HelloActionTest {
 		request.setServletPath("/hello/message");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		MockServletModule.setUpContext(request, response);
-		ActionResult actualResult = CubbyRunner
-				.processAction(request, response);
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response, new GuiceFilter());
 		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
 
 	}
@@ -53,9 +53,8 @@ public class HelloActionTest {
 		request.addParameter("name", "cubby");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		MockServletModule.setUpContext(request, response);
-		ActionResult actualResult = CubbyRunner
-				.processAction(request, response);
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response, new GuiceFilter());
 		CubbyAssert.assertPathEquals(Forward.class, "hello.jsp", actualResult);
 	}
 
