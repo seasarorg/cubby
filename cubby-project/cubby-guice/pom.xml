@@ -28,10 +28,6 @@
   </build>
   <repositories>
     <repository>
-      <id>local</id>
-      <url>file:${basedir}/m2repo</url>
-    </repository>
-    <repository>
       <id>gson</id>
       <url>http://google-gson.googlecode.com/svn/mavenrepo</url>
       <snapshots>
@@ -70,11 +66,6 @@
       <artifactId>gson</artifactId>
       <version>1.2</version>
     </dependency>
-    <dependency>
-      <groupId>com.google.code.guice</groupId>
-      <artifactId>guice-servlet</artifactId>
-      <version>1.0</version>
-    </dependency>    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
