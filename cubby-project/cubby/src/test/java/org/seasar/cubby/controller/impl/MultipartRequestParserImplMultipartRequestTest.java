@@ -49,10 +49,13 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.PartSource;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.easymock.IAnswer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class MultipartRequestParserImplMultipartRequestTest {
@@ -128,21 +131,27 @@ public class MultipartRequestParserImplMultipartRequestTest {
 		final FileUpload fileUpload = new ServletFileUpload();
 		fileUpload.setFileItemFactory(new DiskFileItemFactory());
 		final RequestContext requestContext = new ServletRequestContext(request);
-		MockContainerProvider.setContainer(new Container() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
 
-			public <T> T lookup(final Class<T> type) {
-				if (FileUpload.class.equals(type)) {
-					return type.cast(fileUpload);
-				}
+					public <T> T lookup(final Class<T> type) {
+						if (FileUpload.class.equals(type)) {
+							return type.cast(fileUpload);
+						}
 
-				if (RequestContext.class.equals(type)) {
-					return type.cast(requestContext);
-				}
+						if (RequestContext.class.equals(type)) {
+							return type.cast(requestContext);
+						}
 
-				return null;
-			}
+						return null;
+					}
 
-		});
+				}));
+	}
+
+	@After
+	public void teardown() {
+		ProviderFactory.clear();
 	}
 
 	@Test

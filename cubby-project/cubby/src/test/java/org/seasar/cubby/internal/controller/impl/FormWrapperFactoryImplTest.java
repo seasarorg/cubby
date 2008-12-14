@@ -8,28 +8,45 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ConverterProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterProvider;
 
 public class FormWrapperFactoryImplTest {
 
 	public FormWrapperFactory formWrapperFactory;
 
 	@Before
-	public void setupContainerAndFormWrapperFactory() {
-		MockContainerProvider.setContainer(new Container() {
+	public void setup() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
 
-			public <T> T lookup(Class<T> type) {
-				throw new LookupException();
-			}
+					public <T> T lookup(Class<T> type) {
+						throw new LookupException();
+					}
+				}));
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
+		ProviderFactory.bind(ConverterProvider.class).toInstance(
+				new MockConverterProvider());
 
-		});
 		formWrapperFactory = new FormWrapperFactoryImpl();
+	}
+
+	@After
+	public void teadown() {
+		ProviderFactory.clear();
 	}
 
 	@Test

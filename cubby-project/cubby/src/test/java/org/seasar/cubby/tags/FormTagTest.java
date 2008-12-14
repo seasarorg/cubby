@@ -32,12 +32,38 @@ import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ConverterProvider;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 
 public class FormTagTest extends AbstractStandardTagTestCase {
 
 	private FormTag tag;
+
+	@Before
+	public void setupProvider() {
+		final PathResolver pathResolver = new PathResolverImpl();
+		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
+				"foo");
+		pathResolver.add("/mockFormTagTest/bar/{id}",
+				MockFormTagTestAction.class, "bar");
+		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+				new MockPathResolverProvider(pathResolver));
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
+
+					public <T> T lookup(Class<T> type) {
+						throw new LookupException();
+					}
+
+				}));
+		ProviderFactory.bind(ConverterProvider.class).toInstance(
+				new MockConverterProvider());
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -46,23 +72,6 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		setupErrors(context);
 		context.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/brabra",
 				PageContext.REQUEST_SCOPE);
-	}
-
-	@Before
-	public void setupContainer() {
-		final PathResolver pathResolver = new PathResolverImpl();
-		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
-				"foo");
-		pathResolver.add("/mockFormTagTest/bar/{id}",
-				MockFormTagTestAction.class, "bar");
-		MockPathResolverProvider.setPathResolver(pathResolver);
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) {
-				throw new LookupException();
-			}
-
-		});
 	}
 
 	@Test

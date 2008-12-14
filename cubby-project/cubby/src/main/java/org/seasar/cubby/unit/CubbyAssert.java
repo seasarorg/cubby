@@ -9,7 +9,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 
-public class CubbyAssert  {
+public class CubbyAssert {
 
 	private static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
 
@@ -59,6 +59,7 @@ public class CubbyAssert  {
 			final ActionResult actualResult,
 			List<ActionResultAssert<?, E>> asserters, E expected,
 			Object... args) {
+		Assert.assertNotNull("ActionResult が null でないこと", actualResult);
 		Assert.assertEquals("ActionResultの型をチェック", resultClass, actualResult
 				.getClass());
 		for (ActionResultAssert<?, E> asserter : asserters) {
