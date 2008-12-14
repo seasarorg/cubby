@@ -35,6 +35,8 @@ import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.validator.validators.ArrayMaxSizeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
@@ -44,28 +46,26 @@ public class FieldValidationRuleTest {
 	private ActionErrors errors = new ActionErrorsImpl();
 
 	@Before
-	public void setupThreadContext() {
+	public void setup() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
+
+					public <T> T lookup(Class<T> type) {
+						if (type.equals(MessagesBehaviour.class)) {
+							return type.cast(new DefaultMessagesBehaviour());
+						}
+						return null;
+					}
+
+				}));
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		ThreadContext.newContext(request);
 	}
 
 	@After
-	public void teardownThreadContext() {
+	public void teardown() {
 		ThreadContext.restoreContext();
-	}
-
-	@Before
-	public void setupContainer() {
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) {
-				if (type.equals(MessagesBehaviour.class)) {
-					return type.cast(new DefaultMessagesBehaviour());
-				}
-				return null;
-			}
-
-		});
+		ProviderFactory.clear();
 	}
 
 	@Test

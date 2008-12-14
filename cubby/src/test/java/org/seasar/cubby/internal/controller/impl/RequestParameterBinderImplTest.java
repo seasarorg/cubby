@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
@@ -53,11 +54,17 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ConverterProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.mock.MockConverterProvider;
 
 /**
  * 
@@ -68,15 +75,24 @@ public class RequestParameterBinderImplTest {
 	private RequestParameterBinder requestParameterBinder;
 
 	@Before
-	public void setupContainerAndRequestParameterBinder() {
-		MockContainerProvider.setContainer(new Container() {
+	public void setup() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
 
-			public <T> T lookup(Class<T> type) {
-				throw new LookupException();
-			}
-
-		});
+					public <T> T lookup(Class<T> type) {
+						throw new LookupException();
+					}
+				}));
+		ProviderFactory.bind(ConverterProvider.class).toInstance(
+				new MockConverterProvider());
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
 		requestParameterBinder = new RequestParameterBinderImpl();
+	}
+
+	@After
+	public void teardown() {
+		ProviderFactory.clear();
 	}
 
 	@Test

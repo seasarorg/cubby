@@ -49,9 +49,6 @@ import org.slf4j.LoggerFactory;
  */
 public class SelectTag extends DynamicAttributesTagSupport {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(SelectTag.class);
-
 	/** name属性。 */
 	private String name;
 
@@ -290,13 +287,17 @@ public class SelectTag extends DynamicAttributesTagSupport {
 	private class EntryItemAdaptor implements ItemAdaptor {
 
 		EntryItemAdaptor() {
-			if (logger.isWarnEnabled()) {
-				if (valueProperty != null) {
+			if (valueProperty != null) {
+				final Logger logger = LoggerFactory.getLogger(SelectTag.class);
+				if (logger.isWarnEnabled()) {
 					logger.warn(format("WCUB1001", "items", Map.class
 							.getSimpleName(), "valueProperty", valueProperty,
 							Entry.class.getSimpleName() + "#getKey()"));
 				}
-				if (labelProperty != null) {
+			}
+			if (labelProperty != null) {
+				final Logger logger = LoggerFactory.getLogger(SelectTag.class);
+				if (logger.isWarnEnabled()) {
 					logger.warn(format("WCUB1002", "items", Map.class
 							.getSimpleName(), "labelProperty", labelProperty,
 							Entry.class.getSimpleName() + "#getValue()"));

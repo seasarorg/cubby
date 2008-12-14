@@ -28,11 +28,26 @@ import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.seasar.cubby.internal.spi.JsonProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockJsonProvider;
 
 public class JsonTest {
+
+	@Before
+	public void setupProvider() {
+		ProviderFactory.bind(JsonProvider.class).toInstance(
+				new MockJsonProvider());
+	}
+
+	@After
+	public void teardownProvider() {
+		ProviderFactory.clear();
+	}
 
 	@Test
 	public void execute() throws Exception {
@@ -76,8 +91,8 @@ public class JsonTest {
 
 		Method method = action.getClass().getMethod("dummy1");
 
-		Json json = new Json(createBean()).contentType("text/javascript+json").encoding(
-				"Shift_JIS");
+		Json json = new Json(createBean()).contentType("text/javascript+json")
+				.encoding("Shift_JIS");
 		ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 		json.execute(actionContext, request, response);

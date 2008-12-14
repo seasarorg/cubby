@@ -37,28 +37,32 @@ import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public class ThreadContextTest {
 
 	@Before
 	public void setup() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
+
+					public <T> T lookup(Class<T> type) {
+						if (MessagesBehaviour.class.equals(type)) {
+							return type.cast(new DefaultMessagesBehaviour());
+						}
+						throw new LookupException();
+					}
+
+				}));
 		ThreadContext.remove();
-		MockContainerProvider.setContainer(new Container() {
-
-			public <T> T lookup(Class<T> type) {
-				if (MessagesBehaviour.class.equals(type)) {
-					return type.cast(new DefaultMessagesBehaviour());
-				}
-				throw new LookupException();
-			}
-
-		});
 	}
 
 	@After
 	public void teardown() {
 		ThreadContext.remove();
+		ProviderFactory.clear();
 	}
 
 	@Test

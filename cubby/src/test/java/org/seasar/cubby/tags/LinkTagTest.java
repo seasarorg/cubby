@@ -24,6 +24,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspTag;
 
 import org.jdom.Element;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
@@ -31,6 +32,9 @@ import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 
@@ -49,19 +53,25 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 
 	@Before
 	public void setupContainer() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
+
+					public <T> T lookup(Class<T> type) {
+						throw new LookupException();
+					}
+				}));
 		final PathResolver pathResolver = new PathResolverImpl();
 		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
 				"foo");
 		pathResolver.add("/mockFormTagTest/bar/{id}",
 				MockFormTagTestAction.class, "bar");
-		MockPathResolverProvider.setPathResolver(pathResolver);
-		MockContainerProvider.setContainer(new Container() {
+		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+				new MockPathResolverProvider(pathResolver));
+	}
 
-			public <T> T lookup(Class<T> type) {
-				throw new LookupException();
-			}
-
-		});
+	@After
+	public void teardown() {
+		ProviderFactory.clear();
 	}
 
 	@Test

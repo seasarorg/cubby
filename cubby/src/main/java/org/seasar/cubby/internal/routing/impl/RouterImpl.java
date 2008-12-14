@@ -77,9 +77,9 @@ public class RouterImpl implements Router {
 				.get(PathResolverProvider.class);
 		final PathResolver pathResolver = pathResolverProvider
 				.getPathResolver();
-		final PathInfo internalForwardInfo = pathResolver.getPathInfo(path,
-				request.getMethod(), null);
-		return internalForwardInfo;
+		final PathInfo pathInfo = pathResolver.getPathInfo(path, request
+				.getMethod(), null);
+		return pathInfo;
 	}
 
 	/**

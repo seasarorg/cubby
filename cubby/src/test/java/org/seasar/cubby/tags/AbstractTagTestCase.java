@@ -39,10 +39,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 
 public abstract class AbstractTagTestCase {
@@ -109,13 +114,21 @@ public abstract class AbstractTagTestCase {
 
 	@Before
 	public void setupContainer() {
-		MockContainerProvider.setContainer(new Container() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
 
-			public <T> T lookup(Class<T> type) {
-				throw new LookupException();
-			}
+					public <T> T lookup(Class<T> type) throws LookupException {
+						return null;
+					}
 
-		});
+				}));
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
+	}
+
+	@After
+	public void teardownContainer() {
+		ProviderFactory.clear();
 	}
 
 	protected Element getResultAsElementFromContext() throws JDOMException,

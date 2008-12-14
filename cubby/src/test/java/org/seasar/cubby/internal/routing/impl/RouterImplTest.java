@@ -15,12 +15,16 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 
 public class RouterImplTest {
@@ -29,9 +33,19 @@ public class RouterImplTest {
 
 	private PathResolver pathResolver = new PathResolverImpl();
 
+	@Before
+	public void setupProvider() {
+		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+				new MockPathResolverProvider(pathResolver));
+	}
+
+	@After
+	public void teardownProvider() {
+		ProviderFactory.clear();
+	}
+
 	@Test
 	public void routing1() {
-		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -52,9 +66,7 @@ public class RouterImplTest {
 
 	@Test
 	public void routing2() throws Exception {
-
 		pathResolver.addAll(Arrays.asList(new Class<?>[] { Foo.class }));
-		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -75,7 +87,6 @@ public class RouterImplTest {
 
 	@Test
 	public void routingWithIgnorePath1() {
-		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/foo/bar");
 		expect(request.getPathInfo()).andStubReturn("");
@@ -93,7 +104,6 @@ public class RouterImplTest {
 
 	@Test
 	public void routingWithIgnorePath2() {
-		MockPathResolverProvider.setPathResolver(pathResolver);
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getServletPath()).andStubReturn("/exists/bar");
 		expect(request.getPathInfo()).andStubReturn("");

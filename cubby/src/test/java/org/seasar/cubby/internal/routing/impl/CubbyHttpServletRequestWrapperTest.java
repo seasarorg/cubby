@@ -36,10 +36,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.easymock.IAnswer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 
 /**
  * 
@@ -48,6 +52,17 @@ import org.seasar.cubby.action.Action;
 public class CubbyHttpServletRequestWrapperTest {
 
 	private HttpServletRequest request;
+
+	@Before
+	public void setupProvider() {
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
+	}
+
+	@After
+	public void teardownProvider() {
+		ProviderFactory.clear();
+	}
 
 	@Before
 	@SuppressWarnings("unchecked")
@@ -90,14 +105,13 @@ public class CubbyHttpServletRequestWrapperTest {
 					}
 
 				});
-		expect(request.getParameterMap()).andStubAnswer(
-				new IAnswer<Map>() {
+		expect(request.getParameterMap()).andStubAnswer(new IAnswer<Map>() {
 
-					public Map answer() throws Throwable {
-						return parameters;
-					}
+			public Map answer() throws Throwable {
+				return parameters;
+			}
 
-				});
+		});
 		expect(request.getParameterNames()).andAnswer(
 				new IAnswer<Enumeration>() {
 

@@ -22,4 +22,28 @@ public class ProviderFactory {
 		}
 	}
 
+	public static void clear() {
+		PROVIDERS.clear();
+	}
+
+	// --- for test
+
+	public static <S> Binder<S> bind(Class<S> service) {
+		return new Binder<S>(service);
+	}
+
+	public static class Binder<S> {
+
+		private final Class<S> key;
+
+		private Binder(final Class<S> key) {
+			this.key = key;
+		}
+
+		public void toInstance(final S instance) {
+			PROVIDERS.put(key, instance);
+		}
+
+	}
+
 }

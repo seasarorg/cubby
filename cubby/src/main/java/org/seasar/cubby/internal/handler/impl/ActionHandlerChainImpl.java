@@ -1,6 +1,5 @@
 package org.seasar.cubby.internal.handler.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 

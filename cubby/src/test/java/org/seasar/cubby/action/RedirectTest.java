@@ -43,6 +43,8 @@ import org.junit.Test;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.RoutingException;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 
@@ -62,7 +64,12 @@ public class RedirectTest {
 		actionClasses.add(MockAction.class);
 		final PathResolver pathResolver = new PathResolverImpl();
 		pathResolver.addAll(actionClasses);
-		MockPathResolverProvider.setPathResolver(pathResolver);
+		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+				new MockPathResolverProvider(pathResolver));
+	}
+
+	public void teardownContainer() {
+		ProviderFactory.clear();
 	}
 
 	@Before

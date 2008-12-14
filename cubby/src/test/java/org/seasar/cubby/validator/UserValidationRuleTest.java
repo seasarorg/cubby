@@ -28,12 +28,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
 import org.seasar.cubby.mock.MockActionContext;
 
@@ -42,6 +47,17 @@ public class UserValidationRuleTest {
 	public ValidationProcessorImpl validationProcessor = new ValidationProcessorImpl();
 
 	public MockAction action = new MockAction();
+
+	@Before
+	public void setup() {
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
+	}
+
+	@After
+	public void teardown() {
+		ProviderFactory.clear();
+	}
 
 	@Test
 	public void userValidation() throws Exception {

@@ -34,6 +34,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.easymock.IAnswer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
@@ -43,8 +44,13 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.internal.container.Container;
+import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
@@ -64,17 +70,25 @@ public class ValidationProcessorImplTest {
 	private boolean validationFail;
 
 	@Before
-	public void setupContainer() {
-		MockContainerProvider.setContainer(new Container() {
+	public void setupProvider() {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
 
-			public <T> T lookup(Class<T> type) {
-				if (type.equals(MessagesBehaviour.class)) {
-					return type.cast(new DefaultMessagesBehaviour());
-				}
-				return null;
-			}
+					public <T> T lookup(Class<T> type) {
+						if (type.equals(MessagesBehaviour.class)) {
+							return type.cast(new DefaultMessagesBehaviour());
+						}
+						throw new LookupException();
+					}
 
-		});
+				}));
+		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
+	}
+
+	@After
+	public void teardownProvider() {
+		ProviderFactory.clear();
 	}
 
 	@Before
@@ -97,6 +111,7 @@ public class ValidationProcessorImplTest {
 		ThreadContext.newContext(request);
 	}
 
+	@After
 	public void teardownMock() {
 		ThreadContext.restoreContext();
 	}

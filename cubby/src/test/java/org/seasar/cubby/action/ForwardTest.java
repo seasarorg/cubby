@@ -37,12 +37,15 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.easymock.IAnswer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
+import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 
@@ -57,12 +60,18 @@ public class ForwardTest {
 	private HttpServletResponse response;
 
 	@Before
-	public void setupContainer() {
+	public void setupProvider() {
 		final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 		actionClasses.add(MockAction.class);
 		final PathResolver pathResolver = new PathResolverImpl();
 		pathResolver.addAll(actionClasses);
-		MockPathResolverProvider.setPathResolver(pathResolver);
+		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+				new MockPathResolverProvider(pathResolver));
+	}
+
+	@After
+	public void teardownProvider() {
+		ProviderFactory.clear();
 	}
 
 	@Before
