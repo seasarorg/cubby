@@ -85,6 +85,10 @@ line.separator=\n
 	</build>
 	<repositories>
 		<repository>
+			<id>local</id>
+			<url>file:m2repo</url>
+		</repository>
+		<repository>
 			<id>maven.seasar.org</id>
 			<name>The Seasar Foundation Maven2 Repository</name>
 			<url>http://maven.seasar.org/maven2</url>
@@ -130,7 +134,7 @@ line.separator=\n
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
