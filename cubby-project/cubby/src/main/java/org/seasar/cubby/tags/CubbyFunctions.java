@@ -26,7 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.HtmlUtils;
 
 /**
  * Cubby の JSP functions を提供します。
@@ -119,7 +119,8 @@ public class CubbyFunctions {
 	/**
 	 * HTMLをエスケープします。
 	 * <p>
-	 * JSTLのoutタグの代わりに使用します。EL式で出力された文字列はエスケープされないため、エスケープを行いたい場合はこのfunctionを使用します。
+	 * JSTLのoutタグの代わりに使用します。EL式で出力された文字列はエスケープされないため、
+	 * エスケープを行いたい場合はこのfunctionを使用します。
 	 * </p>
 	 * 
 	 * @param str
@@ -127,7 +128,7 @@ public class CubbyFunctions {
 	 * @return エスケープされた HTML
 	 */
 	public static String out(final Object str) {
-		return str == null ? "" : CubbyUtils.escapeHtml(str.toString());
+		return str == null ? "" : HtmlUtils.escapeHtml(str.toString());
 	}
 
 	/**
@@ -174,12 +175,12 @@ public class CubbyFunctions {
 	/**
 	 * 文字列を Base64 でエンコードします。
 	 * <p>
-	 * JSTL の url タグの代わりに使用します。
-	 * {@code HttpServletRequest#getCharacterEncoding()}で取得した文字コードでエンコードされます。
+	 * JSTL の url タグの代わりに使用します。 {@code
+	 * HttpServletRequest#getCharacterEncoding()}で取得した文字コードでエンコードされます。
 	 * </p>
 	 * <p>
 	 * 例：<br/>
-	 * 		${f:url('abc あいう'))} -> abc+%E3%81%82%E3%81%84%E3%81%86
+	 * ${f:url('abc あいう'))} -> abc+%E3%81%82%E3%81%84%E3%81%86
 	 * </p>
 	 * 
 	 * @param str
@@ -187,10 +188,11 @@ public class CubbyFunctions {
 	 * @return エンコードされた文字列
 	 * @see HttpServletRequest#setCharacterEncoding(String)
 	 * @see HttpServletRequest#getCharacterEncoding()
-	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException
 	 */
-	public static String url(final Object str) throws UnsupportedEncodingException {
-		String enc = ThreadContext.getRequest().getCharacterEncoding();
+	public static String url(final Object str)
+			throws UnsupportedEncodingException {
+		final String enc = ThreadContext.getRequest().getCharacterEncoding();
 		return str == null ? "" : URLEncoder.encode(str.toString(), enc);
 	}
 }

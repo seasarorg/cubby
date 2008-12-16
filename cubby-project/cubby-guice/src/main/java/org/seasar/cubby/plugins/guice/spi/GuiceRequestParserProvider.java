@@ -3,8 +3,8 @@ package org.seasar.cubby.plugins.guice.spi;
 import java.util.Collection;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.spi.impl.AbstractRequestParserProvider;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;

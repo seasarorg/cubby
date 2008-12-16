@@ -23,9 +23,9 @@ import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspTagException;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 
 /**
  * リンク用の補助クラスです。

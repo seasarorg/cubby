@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.plugins.s2.spi;
 
-import org.seasar.cubby.internal.spi.JsonProvider;
+import org.seasar.cubby.spi.JsonProvider;
 import org.seasar.framework.util.JSONSerializer;
 
 /**

@@ -14,10 +14,10 @@ import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.BeanDescFactory;
-import org.seasar.cubby.internal.beans.PropertyDesc;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.BeanDescFactory;
+import org.seasar.cubby.spi.beans.PropertyDesc;
 
 public class MockActionContext implements ActionContext {
 

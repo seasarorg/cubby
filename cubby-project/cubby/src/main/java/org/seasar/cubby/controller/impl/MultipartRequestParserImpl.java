@@ -35,10 +35,10 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.ContainerFactory;
+import org.seasar.cubby.spi.container.LookupException;
 
 /**
  * マルチパートの要求に対応した解析器です。

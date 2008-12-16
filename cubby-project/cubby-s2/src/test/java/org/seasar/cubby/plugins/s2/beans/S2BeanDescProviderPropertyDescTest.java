@@ -24,11 +24,11 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import org.junit.Test;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.IllegalPropertyException;
-import org.seasar.cubby.internal.beans.PropertyDesc;
-import org.seasar.cubby.internal.spi.BeanDescProvider;
 import org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider;
+import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.IllegalPropertyException;
+import org.seasar.cubby.spi.beans.PropertyDesc;
 
 public class S2BeanDescProviderPropertyDescTest {
 

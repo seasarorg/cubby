@@ -29,7 +29,7 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationFailBehaviour;
 import org.seasar.cubby.validator.ValidationPhase;
@@ -53,7 +53,7 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 		final Validation validation = getValidation(actionContext
 				.getActionMethod());
 		if (validation != null) {
-			final Map<String, Object[]> params = CubbyUtils.getAttribute(
+			final Map<String, Object[]> params = RequestUtils.getAttribute(
 					request, ATTR_PARAMS);
 			final ValidationRules validationRules = getValidationRules(
 					actionContext.getAction(), validation.rules());

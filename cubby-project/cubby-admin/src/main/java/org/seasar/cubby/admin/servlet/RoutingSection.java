@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.admin.servlet;
 
-import static org.seasar.cubby.internal.util.CubbyUtils.escapeHtml;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -29,10 +27,11 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
+import org.seasar.cubby.internal.util.HtmlUtils;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 
 class RoutingSection implements Section {
 
@@ -64,7 +63,7 @@ class RoutingSection implements Section {
 		out.print(messages.getString("lbl.path"));
 		out.print("</label>");
 		out.print("<input type=\"text\" name=\"path\" size=\"40\" value=\"");
-		out.print(escapeHtml(path));
+		out.print(HtmlUtils.escapeHtml(path));
 		out.println("\" />");
 
 		out.print("<input type=\"submit\" value=\"");

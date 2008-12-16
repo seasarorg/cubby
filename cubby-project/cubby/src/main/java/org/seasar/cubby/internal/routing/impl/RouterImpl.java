@@ -25,12 +25,12 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.routing.PathInfo;
-import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.RequestUtils;
+import org.seasar.cubby.routing.PathInfo;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class RouterImpl implements Router {
 	public PathInfo routing(final HttpServletRequest request,
 			final HttpServletResponse response,
 			final List<Pattern> ignorePathPatterns) {
-		final String path = CubbyUtils.getPath(request);
+		final String path = RequestUtils.getPath(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug(format("DCUB0006", path));
 		}

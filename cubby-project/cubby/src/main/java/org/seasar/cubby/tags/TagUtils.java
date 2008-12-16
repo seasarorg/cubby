@@ -30,7 +30,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.HtmlUtils;
 import org.seasar.cubby.internal.util.StringUtils;
 
 /**
@@ -255,7 +255,7 @@ class TagUtils {
 			}
 			builder.append(key);
 			builder.append("=\"");
-			builder.append(CubbyUtils.escapeHtml(entry.getValue()));
+			builder.append(HtmlUtils.escapeHtml(entry.getValue()));
 			builder.append("\" ");
 		}
 		return builder.toString();

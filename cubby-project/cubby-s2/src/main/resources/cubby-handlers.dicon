@@ -8,7 +8,7 @@
 	<component name="validationActionHandler" class="org.seasar.cubby.handler.impl.ValidationActionHandler" />
 	<component name="invocationActionHandler" class="org.seasar.cubby.handler.impl.InvocationActionHandler" />
 
-	<component class="org.seasar.cubby.internal.handler.impl.ActionHandlerChainImpl" instance="prototype" >
+	<component class="org.seasar.cubby.handler.impl.ActionHandlerChainImpl" instance="prototype" >
 		<arg>
 			{
 				initializeActionHandler,

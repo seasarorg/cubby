@@ -1,7 +1,7 @@
 package org.seasar.cubby.mock;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.PathResolverProvider;
 
 public class MockPathResolverProvider implements PathResolverProvider {
 

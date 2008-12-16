@@ -19,7 +19,9 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ThreadContext;
 
 /**
@@ -82,6 +86,57 @@ public class ActionUtilsTest {
 		assertSame(flashMap, ActionUtils.flash());
 
 		verify(actionContext, request);
+	}
+
+	@Test
+	public void isActionClass() throws Exception {
+		assertTrue("アクションクラスであればtrue", ActionUtils
+				.isActionClass(ChildAction.class));
+		assertTrue("Actionを継承していないクラスでもアクションクラスである", ActionUtils
+				.isActionClass(Object.class));
+		assertFalse("抽象クラスはアクションクラスではない", ActionUtils
+				.isActionClass(ParentAction.class));
+	}
+
+	@Test
+	public void isActionMethod() throws Exception {
+		assertTrue("親クラスのアクションメソッド", ActionUtils
+				.isActionMethod(ChildAction.class.getMethod("m1")));
+		assertTrue("オーバーライドした親クラスのアクションメソッド", ActionUtils
+				.isActionMethod(ChildAction.class.getMethod("m2")));
+		assertTrue("子クラスのアクションメソッド", ActionUtils
+				.isActionMethod(ChildAction.class.getMethod("m3")));
+		assertFalse("メソッドの引数が不正", ActionUtils.isActionMethod(ChildAction.class
+				.getMethod("m4", int.class)));
+		assertFalse("メソッドの戻り値が不正", ActionUtils.isActionMethod(ChildAction.class
+				.getMethod("m5")));
+	}
+
+	public abstract class ParentAction extends Action {
+		public ActionResult m1() {
+			return null;
+		}
+
+		public abstract ActionResult m2();
+	}
+
+	public class ChildAction extends ParentAction {
+		@Override
+		public ActionResult m2() {
+			return null;
+		}
+
+		public ActionResult m3() {
+			return null;
+		}
+
+		public ActionResult m4(int value) {
+			return null;
+		}
+
+		public Object m5() {
+			return null;
+		}
 	}
 
 }

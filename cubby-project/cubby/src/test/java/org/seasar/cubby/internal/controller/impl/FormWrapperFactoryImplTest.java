@@ -11,17 +11,17 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.LookupException;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.spi.BeanDescProvider;
-import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.internal.spi.ConverterProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
+import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 public class FormWrapperFactoryImplTest {
 

@@ -23,12 +23,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.IllegalPropertyException;
-import org.seasar.cubby.internal.beans.ParameterizedClassDesc;
-import org.seasar.cubby.internal.beans.PropertyDesc;
-import org.seasar.cubby.internal.beans.PropertyNotFoundException;
-import org.seasar.cubby.internal.spi.BeanDescProvider;
+import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.IllegalPropertyException;
+import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
+import org.seasar.cubby.spi.beans.PropertyDesc;
+import org.seasar.cubby.spi.beans.PropertyNotFoundException;
 import org.seasar.framework.beans.IllegalPropertyRuntimeException;
 
 /**
@@ -53,7 +53,6 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		final org.seasar.framework.beans.BeanDesc beanDesc = org.seasar.framework.beans.factory.BeanDescFactory
 				.getBeanDesc(clazz);
 		return new S2BeanDescImpl(beanDesc);
-
 	}
 
 	/**

@@ -18,11 +18,11 @@ package org.seasar.cubby.plugins.s2.detector.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.seasar.cubby.internal.util.ClassUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.cooldeploy.CoolComponentAutoRegister;
+import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
@@ -56,7 +56,7 @@ public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 	@Override
 	public void processClass(final String packageName,
 			final String shortClassName) {
-		final String fqcn = ClassUtils.concatName(packageName, shortClassName);
+		final String fqcn = ClassUtil.concatName(packageName, shortClassName);
 		if (!processedClasses.contains(fqcn)) {
 			processedClasses.add(fqcn);
 			for (final DetectClassProcessor processor : processors) {

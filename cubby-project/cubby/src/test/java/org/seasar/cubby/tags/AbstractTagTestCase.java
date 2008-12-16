@@ -42,13 +42,13 @@ import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.internal.beans.impl.DefaultBeanDescProvider;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.spi.BeanDescProvider;
-import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 public abstract class AbstractTagTestCase {
 

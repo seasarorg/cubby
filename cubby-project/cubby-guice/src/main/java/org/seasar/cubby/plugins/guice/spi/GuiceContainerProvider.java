@@ -19,10 +19,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.spi.ContainerProvider;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 import com.google.inject.Injector;
 

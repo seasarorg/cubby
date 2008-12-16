@@ -16,14 +16,17 @@
 package org.seasar.cubby.util;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
-import static org.seasar.cubby.internal.util.CubbyUtils.getAttribute;
+import static org.seasar.cubby.internal.util.RequestUtils.getAttribute;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ThreadContext;
 
 /**
@@ -65,6 +68,45 @@ public class ActionUtils {
 	 */
 	public static Map<String, Object> flash() {
 		return actionContext().getFlashMap();
+	}
+
+	/**
+	 * 指定されたクラスがアクションクラスかを示します。
+	 * <p>
+	 * アクションクラスは以下の条件を満たす必要があります。
+	 * </p>
+	 * <ul>
+	 * <li>抽象クラスでない</li>
+	 * </ul>
+	 * 
+	 * @param clazz
+	 *            クラス
+	 * @return 指定されたクラスがアクションクラスの場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static boolean isActionClass(final Class<?> clazz) {
+		return !Modifier.isAbstract(clazz.getModifiers());
+	}
+
+	/**
+	 * 指定されたメソッドがアクションメソッドかを示します。
+	 * <p>
+	 * アクションメソッドは以下の条件を満たす必要があります。
+	 * </p>
+	 * <ul>
+	 * <li>publicなインスタンスメソッド</li>
+	 * <li>戻り値が{@code ActionResult}</li>
+	 * <li>引数が0</li>
+	 * </ul>
+	 * 
+	 * @param method
+	 *            メソッド
+	 * @return 指定されたメソッドがアクションメソッドの場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static boolean isActionMethod(final Method method) {
+		return ActionResult.class.isAssignableFrom(method.getReturnType())
+				&& (method.getParameterTypes().length == 0);
 	}
 
 }

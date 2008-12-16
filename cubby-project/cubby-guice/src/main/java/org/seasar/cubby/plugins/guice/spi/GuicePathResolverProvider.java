@@ -1,8 +1,8 @@
 package org.seasar.cubby.plugins.guice.spi;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.PathResolverProvider;
 
 import com.google.inject.Injector;
 
