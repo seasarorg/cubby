@@ -11,10 +11,10 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.action.FormatPattern;
 import org.seasar.cubby.action.impl.FormatPatternImpl;
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
-import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.util.ActionUtils;
 import org.seasar.cubby.wiki.action.PageAction;
 import org.seasar.cubby.wiki.converter.PageConverter;
 import org.slf4j.Logger;
@@ -53,13 +53,13 @@ public class ApplicationModule extends AbstractModule {
 
 	static Matcher<Class<?>> ANY_ACTION = new AbstractMatcher<Class<?>>() {
 		public boolean matches(Class<?> clazz) {
-			return CubbyUtils.isActionClass(clazz);
+			return ActionUtils.isActionClass(clazz);
 		}
 	};
 
 	static Matcher<Method> ANY_ACTION_METHOD = new AbstractMatcher<Method>() {
 		public boolean matches(Method method) {
-			return CubbyUtils.isActionMethod(method);
+			return ActionUtils.isActionMethod(method);
 		}
 	};
 
