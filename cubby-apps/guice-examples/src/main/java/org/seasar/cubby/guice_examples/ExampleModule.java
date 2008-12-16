@@ -4,9 +4,9 @@ import org.seasar.cubby.guice_examples.action.HelloAction;
 import org.seasar.cubby.guice_examples.action.IndexAction;
 import org.seasar.cubby.guice_examples.service.HelloService;
 import org.seasar.cubby.guice_examples.service.impl.HelloServiceImpl;
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
