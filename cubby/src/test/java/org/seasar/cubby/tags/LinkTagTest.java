@@ -28,15 +28,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.LookupException;
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
-import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 public class LinkTagTest extends AbstractStandardTagTestCase {
 

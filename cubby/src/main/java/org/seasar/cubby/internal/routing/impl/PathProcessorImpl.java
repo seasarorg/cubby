@@ -19,14 +19,14 @@ import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
-import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathProcessor;
 import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.RoutingException;
-import org.seasar.cubby.internal.spi.ProviderFactory;
-import org.seasar.cubby.internal.spi.RequestParserProvider;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.RequestUtils;
+import org.seasar.cubby.routing.PathInfo;
+import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.RequestParserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +70,7 @@ public class PathProcessorImpl implements PathProcessor {
 	 * PathInfo を設定する初期化処理
 	 */
 	private void initialize() {
-		final Routing routing = CubbyUtils.getAttribute(request, ATTR_ROUTING);
+		final Routing routing = RequestUtils.getAttribute(request, ATTR_ROUTING);
 		if (routing != null) {
 			this.pathInfo = new PathInfoImpl(routing);
 			request.removeAttribute(ATTR_ROUTING);

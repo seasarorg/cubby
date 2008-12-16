@@ -41,13 +41,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 
 public class ForwardTest {
 

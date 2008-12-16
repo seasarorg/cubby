@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
-import org.seasar.cubby.internal.handler.impl.ActionHandlerChainImpl;
-import org.seasar.cubby.internal.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.handler.impl.ActionHandlerChainImpl;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.spi.ActionHandlerChainProvider;
 
 import com.google.inject.Injector;
 

@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.internal.spi.impl.AbstractCachedConverterProvider;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 
 import com.google.inject.Injector;
 

@@ -31,11 +31,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.internal.controller.ActionProcessor;
-import org.seasar.cubby.internal.routing.PathInfo;
 import org.seasar.cubby.internal.routing.PathProcessor;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.routing.PathInfo;
 
 /**
  * Cubby用のフィルター。

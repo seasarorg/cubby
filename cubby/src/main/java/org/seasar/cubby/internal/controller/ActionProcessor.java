@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.internal.routing.Routing;
+import org.seasar.cubby.routing.Routing;
 
 /**
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスです。

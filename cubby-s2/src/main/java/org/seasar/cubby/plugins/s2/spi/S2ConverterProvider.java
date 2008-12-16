@@ -22,14 +22,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.internal.spi.ConverterProvider;
-import org.seasar.cubby.internal.spi.impl.AbstractCachedConverterProvider;
-import org.seasar.cubby.internal.util.ClassUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
+import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;
+import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
@@ -146,7 +146,7 @@ public class S2ConverterProvider implements ConverterProvider {
 			if (shortClassName.indexOf('$') != -1) {
 				return;
 			}
-			final String className = ClassUtils.concatName(packageName,
+			final String className = ClassUtil.concatName(packageName,
 					shortClassName);
 			if (!namingConvention.isTargetClassName(className)) {
 				return;
@@ -154,7 +154,7 @@ public class S2ConverterProvider implements ConverterProvider {
 			if (!className.endsWith(namingConvention.getConverterSuffix())) {
 				return;
 			}
-			final Class<?> clazz = ClassUtils.forName(className);
+			final Class<?> clazz = ClassUtil.forName(className);
 			if (namingConvention.isSkipClass(clazz)) {
 				return;
 			}

@@ -23,8 +23,8 @@ import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
-import org.seasar.cubby.internal.routing.Routing;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
+import org.seasar.cubby.routing.Routing;
 
 public class CubbyRunner {
 

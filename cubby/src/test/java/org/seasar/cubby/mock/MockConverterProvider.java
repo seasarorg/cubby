@@ -22,7 +22,7 @@ import org.seasar.cubby.converter.impl.ShortConverter;
 import org.seasar.cubby.converter.impl.SqlDateConverter;
 import org.seasar.cubby.converter.impl.SqlTimeConverter;
 import org.seasar.cubby.converter.impl.SqlTimestampConverter;
-import org.seasar.cubby.internal.spi.impl.AbstractConverterProvider;
+import org.seasar.cubby.spi.impl.AbstractConverterProvider;
 
 public class MockConverterProvider extends AbstractConverterProvider {
 

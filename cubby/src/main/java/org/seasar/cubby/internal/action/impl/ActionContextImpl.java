@@ -31,9 +31,9 @@ import org.seasar.cubby.action.InitializeMethod;
 import org.seasar.cubby.action.PostRenderMethod;
 import org.seasar.cubby.action.PreRenderMethod;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.BeanDescFactory;
-import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.BeanDescFactory;
+import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * アクションのコンテキストの実装です。

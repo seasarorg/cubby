@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.spi.impl.AbstractRequestParserProvider;
+import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 

@@ -1,7 +1,7 @@
 package org.seasar.cubby.mock;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.spi.ContainerProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.container.Container;
 
 public class MockContainerProvider implements ContainerProvider {
 

@@ -21,6 +21,9 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.routing.PathInfo;
+import org.seasar.cubby.routing.PathResolver;
+
 /**
  * ルーター。
  * 

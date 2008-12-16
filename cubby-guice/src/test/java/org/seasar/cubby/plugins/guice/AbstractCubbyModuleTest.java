@@ -2,10 +2,10 @@ package org.seasar.cubby.plugins.guice;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.impl.PathResolverImpl;
-import org.seasar.cubby.internal.spi.ConverterProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;

@@ -34,9 +34,9 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.BeanDescFactory;
-import org.seasar.cubby.internal.beans.PropertyDesc;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.BeanDescFactory;
+import org.seasar.cubby.spi.beans.PropertyDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

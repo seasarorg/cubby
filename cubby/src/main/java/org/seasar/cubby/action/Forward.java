@@ -31,13 +31,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.MetaUtils;
 import org.seasar.cubby.internal.util.QueryStringBuilder;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -251,7 +251,7 @@ public class Forward implements ActionResult {
 		if (getPath(characterEncoding).startsWith("/")) {
 			absolutePath = path;
 		} else {
-			final String actionDirectory = CubbyUtils
+			final String actionDirectory = MetaUtils
 					.getActionDirectory(actionClass);
 			if (StringUtils.isEmpty(actionDirectory)) {
 				absolutePath = "/" + path;

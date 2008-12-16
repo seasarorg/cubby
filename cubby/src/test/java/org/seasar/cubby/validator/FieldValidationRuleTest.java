@@ -33,11 +33,11 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.internal.container.Container;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.validator.validators.ArrayMaxSizeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 

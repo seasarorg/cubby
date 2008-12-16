@@ -1,7 +1,5 @@
 package org.seasar.cubby.plugins.guice;
 
-import org.seasar.cubby.internal.util.ClassUtils;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -12,11 +10,14 @@ public class InjectorFactory {
 
 	public synchronized static void setModuleClassName(
 			final String moduleClassName) {
-		final Class<? extends Module> moduleClass = ClassUtils
-				.forName(moduleClassName);
+		final ClassLoader loader = Thread.currentThread()
+				.getContextClassLoader();
 		try {
-			final Module module = moduleClass.newInstance();
+			final Class<?> clazz = Class.forName(moduleClassName, true, loader);
+			final Module module = Module.class.cast(clazz.newInstance());
 			injector = Guice.createInjector(module);
+		} catch (final ClassNotFoundException e) {
+			throw new IllegalModuleException(e);
 		} catch (InstantiationException e) {
 			throw new IllegalModuleException(e);
 		} catch (IllegalAccessException e) {

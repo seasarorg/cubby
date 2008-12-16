@@ -31,10 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.internal.spi.JsonProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockJsonProvider;
+import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 
 public class JsonTest {
 

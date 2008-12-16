@@ -21,13 +21,13 @@ import java.util.Collection;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.ConversionHelperImpl;
-import org.seasar.cubby.internal.beans.BeanDesc;
-import org.seasar.cubby.internal.beans.BeanDescFactory;
-import org.seasar.cubby.internal.beans.PropertyDesc;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.spi.ConverterProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
+import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.beans.BeanDesc;
+import org.seasar.cubby.spi.beans.BeanDescFactory;
+import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * フォームオブジェクトのラッパーファクトリの実装です。

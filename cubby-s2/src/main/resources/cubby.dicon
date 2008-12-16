@@ -5,9 +5,7 @@
 	<include path="convention.dicon" />
 
 	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
-	<component class="org.seasar.cubby.internal.routing.impl.PathResolverImpl" />
-
-	<!-- request parsers -->
+	<component class="org.seasar.cubby.routing.impl.PathResolverImpl" />
 	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
 
 	<!-- spi -->

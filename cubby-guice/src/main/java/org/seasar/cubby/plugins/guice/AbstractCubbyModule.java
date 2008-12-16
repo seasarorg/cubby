@@ -32,9 +32,9 @@ import org.seasar.cubby.handler.impl.InitializeActionHandler;
 import org.seasar.cubby.handler.impl.InvocationActionHandler;
 import org.seasar.cubby.handler.impl.ParameterBindingActionHandler;
 import org.seasar.cubby.handler.impl.ValidationActionHandler;
-import org.seasar.cubby.internal.routing.PathResolver;
 import org.seasar.cubby.plugins.guice.spi.GuiceActionHandlerChainProvider.ActionHandlerClassesFactory;
 import org.seasar.cubby.plugins.guice.spi.GuiceConverterProvider.ConverterClassesFactory;
+import org.seasar.cubby.routing.PathResolver;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;

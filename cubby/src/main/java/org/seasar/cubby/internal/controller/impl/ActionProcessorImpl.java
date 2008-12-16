@@ -34,12 +34,12 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.internal.action.impl.ActionContextImpl;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
-import org.seasar.cubby.internal.routing.Routing;
-import org.seasar.cubby.internal.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.ContainerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

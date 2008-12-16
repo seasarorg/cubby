@@ -53,10 +53,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.spi.ContainerProvider;
-import org.seasar.cubby.internal.spi.ProviderFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 
 public class MultipartRequestParserImplMultipartRequestTest {
 

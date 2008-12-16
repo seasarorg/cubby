@@ -28,7 +28,7 @@ import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.internal.util.RequestUtils;
 
 /**
  * 要求パラメータをフォームオブジェクトにバインドするアクションハンドラーです。
@@ -55,7 +55,7 @@ public class ParameterBindingActionHandler implements ActionHandler {
 
 		final Object formBean = actionContext.getFormBean();
 		if (formBean != null) {
-			final Map<String, Object[]> parameterMap = CubbyUtils.getAttribute(
+			final Map<String, Object[]> parameterMap = RequestUtils.getAttribute(
 					request, ATTR_PARAMS);
 			requestParameterBinder.bind(parameterMap, formBean, actionContext);
 		}

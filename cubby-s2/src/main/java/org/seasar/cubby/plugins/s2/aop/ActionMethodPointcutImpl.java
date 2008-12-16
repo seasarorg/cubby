@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.internal.util.CubbyUtils;
+import org.seasar.cubby.util.ActionUtils;
 import org.seasar.framework.aop.Pointcut;
 import org.seasar.framework.exception.EmptyRuntimeException;
 
@@ -73,7 +73,7 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 	 * {@inheritDoc}
 	 */
 	public boolean isApplied(final Method targetMethod) {
-		if (!CubbyUtils.isActionMethod(targetMethod)) {
+		if (!ActionUtils.isActionMethod(targetMethod)) {
 			return false;
 		}
 

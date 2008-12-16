@@ -1,8 +1,8 @@
 package org.seasar.cubby.internal.util;
 
-import org.seasar.cubby.internal.container.Container;
-import org.seasar.cubby.internal.container.ContainerFactory;
-import org.seasar.cubby.internal.container.LookupException;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.ContainerFactory;
+import org.seasar.cubby.spi.container.LookupException;
 
 public class ServiceFactory {
 

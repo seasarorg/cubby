@@ -18,15 +18,15 @@ package org.seasar.cubby.plugins.s2.spi;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seasar.cubby.internal.routing.PathResolver;
-import org.seasar.cubby.internal.spi.PathResolverProvider;
-import org.seasar.cubby.internal.util.ClassUtils;
-import org.seasar.cubby.internal.util.CubbyUtils;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
+import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.util.ActionUtils;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;
+import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
@@ -132,7 +132,7 @@ public class S2PathResolverProvider implements PathResolverProvider {
 			if (shortClassName.indexOf('$') != -1) {
 				return;
 			}
-			final String className = ClassUtils.concatName(packageName,
+			final String className = ClassUtil.concatName(packageName,
 					shortClassName);
 			if (!namingConvention.isTargetClassName(className)) {
 				return;
@@ -140,11 +140,11 @@ public class S2PathResolverProvider implements PathResolverProvider {
 			if (!className.endsWith(namingConvention.getActionSuffix())) {
 				return;
 			}
-			final Class<?> clazz = ClassUtils.forName(className);
+			final Class<?> clazz = ClassUtil.forName(className);
 			if (namingConvention.isSkipClass(clazz)) {
 				return;
 			}
-			if (!CubbyUtils.isActionClass(clazz)) {
+			if (!ActionUtils.isActionClass(clazz)) {
 				return;
 			}
 			actionClasses.add(clazz);

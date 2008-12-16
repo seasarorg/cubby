@@ -1,7 +1,7 @@
 package org.seasar.cubby.plugins.s2.spi;
 
 import org.seasar.cubby.handler.ActionHandlerChain;
-import org.seasar.cubby.internal.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
