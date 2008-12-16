@@ -13,7 +13,7 @@
       <pattern>%d [%t] %-5p %c - %m%n</pattern>
     </layout>
   </appender>
-  <logger name="org.seasar.cubby.wiki" additivity="false">
+  <logger name="org.seasar.cubby" additivity="false">
     <level value="DEBUG"/>
     <appender-ref ref="C"/>
   </logger>
