@@ -21,7 +21,7 @@ import java.util.Map;
 import org.seasar.cubby.action.RequestMethod;
 
 /**
- * {@link Router} がフォワードするための情報を抽出するクラス。
+ * パスに対応するアクションメソッドを解決するためのクラスです。
  * 
  * @author baba
  * @since 1.0.0

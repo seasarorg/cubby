@@ -111,7 +111,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockRootAction.class, routing.getActionClass());
 		assertEquals(MockRootAction.class.getMethod("index"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -128,7 +128,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockRootAction.class, routing.getActionClass());
 		assertEquals(MockRootAction.class.getMethod("dummy1"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -145,7 +145,7 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("update"), routing.getMethod());
+		assertEquals(MockAction.class.getMethod("update"), routing.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -162,7 +162,7 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("insert"), routing.getMethod());
+		assertEquals(MockAction.class.getMethod("insert"), routing.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -179,7 +179,7 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("delete"), routing.getMethod());
+		assertEquals(MockAction.class.getMethod("delete"), routing.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -205,7 +205,7 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("name"), routing.getMethod());
+		assertEquals(MockAction.class.getMethod("name"), routing.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -226,7 +226,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("update"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -247,7 +247,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("insert"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -268,7 +268,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("delete"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(2, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -299,7 +299,7 @@ public class PathResolverImplTest {
 		Routing routing = routings.get(null);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("name"), routing
-				.getMethod());
+				.getActionMethod());
 		assertEquals(2, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -349,7 +349,7 @@ public class PathResolverImplTest {
 		assertEquals(path, routing.getActionPath());
 		assertEquals(requestMethod, routing.getRequestMethod());
 		assertEquals(actionClass, routing.getActionClass());
-		assertEquals(actionMethod, routing.getMethod().getName());
+		assertEquals(actionMethod, routing.getActionMethod().getName());
 	}
 
 	public abstract class ParentAction extends Action {

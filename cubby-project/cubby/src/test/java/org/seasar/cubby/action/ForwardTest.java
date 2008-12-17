@@ -170,7 +170,7 @@ public class ForwardTest {
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("dummy2");
-				assertEquals(forwardMethod, routing.getMethod());
+				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
 
@@ -201,7 +201,7 @@ public class ForwardTest {
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("index");
-				assertEquals(forwardMethod, routing.getMethod());
+				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
 
@@ -231,7 +231,7 @@ public class ForwardTest {
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
 				Method forwardMethod = action.getClass().getMethod("dummy2");
-				assertEquals(forwardMethod, routing.getMethod());
+				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
 

@@ -23,7 +23,7 @@ import org.seasar.cubby.spi.container.Container;
  * @author baba
  * @since 2.0.0
  */
-public interface ContainerProvider {
+public interface ContainerProvider extends Provider {
 
 	/**
 	 * コンテナを取得します。

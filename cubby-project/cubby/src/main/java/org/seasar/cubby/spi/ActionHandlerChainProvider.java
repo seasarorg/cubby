@@ -16,48 +16,20 @@
 package org.seasar.cubby.spi;
 
 import org.seasar.cubby.handler.ActionHandlerChain;
-import org.seasar.cubby.internal.util.ServiceLoader;
 
 /**
+ * {@link ActionHandlerChain} のプロバイダです。
  * 
  * @author baba
  * @since 2.0.0
  */
-public interface ActionHandlerChainProvider {
-
-	ActionHandlerChain getActionHandlerChain();
+public interface ActionHandlerChainProvider extends Provider {
 
 	/**
-	 * {@link ActionHandlerChainProvider} のファクトリです。
+	 * {@link ActionHandlerChain} を返します。
 	 * 
-	 * @author baba
-	 * @since 2.0.0
+	 * @return ActionHandlerChain
 	 */
-	class Factory {
-
-		/** プロバイダ。 */
-		private static final ActionHandlerChainProvider PROVIDER;
-		static {
-			final ServiceLoader<ActionHandlerChainProvider> serviceLoader = ServiceLoader
-					.load(ActionHandlerChainProvider.class);
-			PROVIDER = serviceLoader.getProvider();
-		}
-
-		/**
-		 * インスタンス化を禁止します。
-		 */
-		private Factory() {
-		}
-
-		/**
-		 * {@link ActionHandlerChainProvider} を取得します。
-		 * 
-		 * @return {@link ActionHandlerChainProvider}
-		 */
-		public static ActionHandlerChainProvider get() {
-			return PROVIDER;
-		}
-
-	}
+	ActionHandlerChain getActionHandlerChain();
 
 }

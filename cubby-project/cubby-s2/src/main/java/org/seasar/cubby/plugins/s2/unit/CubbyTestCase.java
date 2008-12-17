@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
 import org.seasar.framework.mock.servlet.MockHttpServletRequest;
@@ -191,18 +190,7 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	 */
 	protected ActionResult processAction(final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
-		setupThreadContext(request);
 		return CubbyRunner.processAction(request, response);
-	}
-
-	/**
-	 * {@link ThreadContext}に要求をセットします。
-	 * 
-	 * @param request
-	 *            要求
-	 */
-	protected void setupThreadContext(final HttpServletRequest request) {
-		ThreadContext.newContext(request);
 	}
 
 }

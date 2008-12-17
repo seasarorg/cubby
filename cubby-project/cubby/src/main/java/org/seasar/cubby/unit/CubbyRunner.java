@@ -22,6 +22,7 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
 import org.seasar.cubby.routing.Routing;
@@ -112,7 +113,7 @@ public class CubbyRunner {
 		/**
 		 * PathProcessor の process 処理をエミュレートする
 		 * 
-		 * @return
+		 * @return アクションの実行結果
 		 */
 		public ActionResultWrapper doProcess() throws Exception {
 			if (!super.hasPathInfo()) {
@@ -124,13 +125,18 @@ public class CubbyRunner {
 					.parseRequest(wrappedRequest);
 			request.setAttribute(ATTR_PARAMS, parameterMap);
 			final Routing routing = super.dispatch(parameterMap);
-			ThreadContext.newContext(wrappedRequest);
-			try {
-				return actionProcessor.process(wrappedRequest, response,
-						routing);
-			} finally {
-				ThreadContext.restoreContext();
-			}
+			final ActionResultWrapper actionResultWrapper = ThreadContext
+					.runInContext(wrappedRequest, response,
+							new Command<ActionResultWrapper>() {
+
+								public ActionResultWrapper execute()
+										throws Exception {
+									return actionProcessor.process(
+											wrappedRequest, response, routing);
+								}
+
+							});
+			return actionResultWrapper;
 		}
 	}
 

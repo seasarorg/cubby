@@ -37,11 +37,11 @@ public interface Routing {
 	Class<?> getActionClass();
 
 	/**
-	 * メソッドを取得します。
+	 * アクションメソッドを取得します。
 	 * 
-	 * @return メソッド
+	 * @return アクションメソッド
 	 */
-	Method getMethod();
+	Method getActionMethod();
 
 	/**
 	 * アクションのパスを取得します。
@@ -86,8 +86,7 @@ public interface Routing {
 	/**
 	 * 自動登録されたルーティングかを示します。
 	 * 
-	 * @return 自動登録されたルーティングの場合は <code>true</code>、そうでない場合は
-	 *         <code>false</code>
+	 * @return 自動登録されたルーティングの場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
 	boolean isAuto();
 

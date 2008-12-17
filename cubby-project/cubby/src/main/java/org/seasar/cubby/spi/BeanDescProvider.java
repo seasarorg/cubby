@@ -23,7 +23,7 @@ import org.seasar.cubby.spi.beans.BeanDesc;
  * @author baba
  * @since 2.0.0
  */
-public interface BeanDescProvider {
+public interface BeanDescProvider extends Provider {
 
 	/**
 	 * 指定されたクラスの {@link BeanDesc} を返します。

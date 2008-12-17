@@ -339,7 +339,7 @@ public class Forward implements ActionResult {
 	}
 
 	/**
-	 * アクションメソッドへフォワードするためのルーティング。
+	 * アクションメソッドへフォワードするためのルーティングです。
 	 * 
 	 * @author baba
 	 * @since 1.1.0
@@ -350,14 +350,15 @@ public class Forward implements ActionResult {
 		private final Class<?> actionClass;
 
 		/** アクションメソッド。 */
-		private final Method method;
+		private final Method actionMethod;
 
 		/**
-		 * {@inheritDoc}
+		 * 指定されたアクションメソッドを実行する新規ルーティングを生成します。
 		 */
-		private ForwardRouting(final Class<?> actionClass, final Method method) {
+		private ForwardRouting(final Class<?> actionClass,
+				final Method actionMethod) {
 			this.actionClass = actionClass;
-			this.method = method;
+			this.actionMethod = actionMethod;
 		}
 
 		/**
@@ -370,8 +371,8 @@ public class Forward implements ActionResult {
 		/**
 		 * {@inheritDoc}
 		 */
-		public Method getMethod() {
-			return method;
+		public Method getActionMethod() {
+			return actionMethod;
 		}
 
 		/**
@@ -435,8 +436,8 @@ public class Forward implements ActionResult {
 		 */
 		@Override
 		public String toString() {
-			return new StringBuilder().append("[").append(method).append("]")
-					.toString();
+			return new StringBuilder().append("[").append(actionMethod).append(
+					"]").toString();
 		}
 
 	}

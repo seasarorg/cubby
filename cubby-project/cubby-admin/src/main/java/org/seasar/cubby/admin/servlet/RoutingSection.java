@@ -124,7 +124,7 @@ class RoutingSection implements Section {
 				out.println(td(routing.getPattern().pattern()));
 				out.println(td(routing.getRequestMethod()));
 				out.println(td(routing.getActionClass().getName() + "#"
-						+ routing.getMethod().getName()));
+						+ routing.getActionMethod().getName()));
 				if (pathParameters == null) {
 					out.println(td(routing.getUriParameterNames()));
 				} else {

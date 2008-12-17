@@ -34,7 +34,7 @@ public class InitializeActionHandler implements ActionHandler {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * {@link ActionContext#invokeInitializeMethod()} を呼び出します。
+	 * {@link ActionContext#invokeInitializeMethod()} を呼び出してアクションを初期化します。
 	 * </p>
 	 */
 	public ActionResult handle(final HttpServletRequest request,

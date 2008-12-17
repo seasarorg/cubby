@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.internal.util.ServiceFactory;
@@ -34,11 +35,11 @@ public class ThreadContext {
 	/** ThreadContext を保存するスレッドローカル。 */
 	private static final ThreadLocal<ThreadContext> THREAD_LOCAL = new ThreadLocal<ThreadContext>();
 
-	/** 前回のコンテキスト。 */
-	private final ThreadContext previous;
-
 	/** 要求。 */
 	private final HttpServletRequest request;
+
+	/** 応答 */
+	private final HttpServletResponse response;
 
 	/** メッセージのリソースバンドル。 */
 	private ResourceBundle messagesResourceBundle = null;
@@ -52,15 +53,15 @@ public class ThreadContext {
 	/**
 	 * インスタンス化します。
 	 * 
-	 * @param previous
-	 *            前回のコンテキスト
 	 * @param request
 	 *            要求
+	 * @param response
+	 *            応答
 	 */
-	private ThreadContext(final ThreadContext previous,
-			final HttpServletRequest request) {
-		this.previous = previous;
+	private ThreadContext(final HttpServletRequest request,
+			final HttpServletResponse response) {
 		this.request = request;
+		this.response = response;
 	}
 
 	/**
@@ -71,42 +72,46 @@ public class ThreadContext {
 	private static ThreadContext getContext() {
 		final ThreadContext context = THREAD_LOCAL.get();
 		if (context == null) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("out of context scope.");
 		}
 		return context;
 	}
 
-	/**
-	 * 現在の実行スレッドに対するコンテキストを保存し、指定された情報をもつ新規コンテキストを関連付けます。
-	 * 
-	 * @param request
-	 *            要求
-	 */
-	public static void newContext(final HttpServletRequest request) {
-		final ThreadContext previous = THREAD_LOCAL.get();
-		final ThreadContext context = new ThreadContext(previous, request);
-		THREAD_LOCAL.set(context);
-	}
-
-	/**
-	 * スレッドローカル変数を {@link ThreadContext#newContext(HttpServletRequest)}
-	 * 呼び出し以前の状態に戻します。
-	 */
-	public static void restoreContext() {
-		final ThreadContext context = THREAD_LOCAL.get();
-		if (context != null) {
-			THREAD_LOCAL.set(context.previous);
-		} else {
-			remove();
-		}
-	}
-
-	/**
-	 * スレッドローカル変数から現在の実行スレッドに関する情報を削除します。
-	 */
-	public static void remove() {
-		THREAD_LOCAL.remove();
-	}
+	// /**
+	// * 現在の実行スレッドに対するコンテキストを保存し、指定された情報をもつ新規コンテキストを関連付けます。
+	// *
+	// * @param request
+	// * 要求
+	// * @param response
+	// * 応答
+	// */
+	// public static void newContext(final HttpServletRequest request,
+	// final HttpServletResponse response) {
+	// final ThreadContext previous = THREAD_LOCAL.get();
+	// final ThreadContext context = new ThreadContext(previous, request,
+	// response);
+	// THREAD_LOCAL.set(context);
+	// }
+	//
+	// /**
+	// * スレッドローカル変数を {@link ThreadContext#newContext(HttpServletRequest)}
+	// * 呼び出し以前の状態に戻します。
+	// */
+	// public static void restoreContext() {
+	// final ThreadContext context = THREAD_LOCAL.get();
+	// if (context != null) {
+	// THREAD_LOCAL.set(context.previous);
+	// } else {
+	// remove();
+	// }
+	// }
+	//
+	// /**
+	// * スレッドローカル変数から現在の実行スレッドに関する情報を削除します。
+	// */
+	// public static void remove() {
+	// THREAD_LOCAL.remove();
+	// }
 
 	/**
 	 * 現在の実行スレッドに関連付けられた要求を取得します。
@@ -115,6 +120,15 @@ public class ThreadContext {
 	 */
 	public static HttpServletRequest getRequest() {
 		return getContext().request;
+	}
+
+	/**
+	 * 現在の実行スレッドに関連付けられた応答を取得します。
+	 * 
+	 * @return 応答
+	 */
+	public static HttpServletResponse getResponse() {
+		return getContext().response;
 	}
 
 	/**
@@ -163,6 +177,53 @@ public class ThreadContext {
 					.getProvider(MessagesBehaviour.class);
 		}
 		return context.messagesBehaviour;
+	}
+
+	/**
+	 * 指定されたコマンドを新しいコンテキスト内で実行します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param command
+	 *            コンテキスト内で実行するコマンド
+	 * @return コマンドの実行結果
+	 * @throws Exception
+	 *             コマンドの実行中に例外が発生した場合
+	 */
+	public static <T> T runInContext(final HttpServletRequest request,
+			final HttpServletResponse response, final Command<T> command)
+			throws Exception {
+		final ThreadContext previous = THREAD_LOCAL.get();
+		final ThreadContext context = new ThreadContext(request, response);
+		THREAD_LOCAL.set(context);
+		try {
+			return command.execute();
+		} finally {
+			if (previous == null) {
+				THREAD_LOCAL.remove();
+			} else {
+				THREAD_LOCAL.set(previous);
+			}
+		}
+	}
+
+	/**
+	 * コンテキスト内で実行するコマンドのインターフェイスです。
+	 * 
+	 * @author baba
+	 */
+	public interface Command<T> {
+
+		/**
+		 * コマンドを実行します。
+		 * 
+		 * @return コマンドの実行結果
+		 * @exception コマンドの実行中に例外が発生した場合
+		 */
+		T execute() throws Exception;
+
 	}
 
 }

@@ -20,11 +20,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jdom.Element;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.util.TokenHelper;
 
 public class TokenTagTest extends SimpleTagTestCase {
@@ -39,72 +41,108 @@ public class TokenTagTest extends SimpleTagTestCase {
 
 	@Test
 	public void doTag1() throws Exception {
-		HttpServletRequest request = HttpServletRequest.class.cast(context
-				.getRequest());
-		ThreadContext.newContext(request);
+		final HttpServletRequest request = (HttpServletRequest) context
+				.getRequest();
+		final HttpServletResponse response = (HttpServletResponse) context
+				.getResponse();
 
-		tag.doTag();
-		Element element = getResultAsElementFromContext();
-		String message = "nameが指定されている場合";
-		assertEquals(message, 3, element.getAttributes().size());
-		assertEquals(message, "input", element.getName());
-		assertEquals(message, "hidden", element.getAttributeValue("type"));
-		assertTrue(message, element.getAttributeValue("value").length() != 0);
-		assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
-				.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(request.getSession(),
-				element.getAttributeValue("value")));
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				tag.doTag();
+				Element element = getResultAsElementFromContext();
+				String message = "nameが指定されている場合";
+				assertEquals(message, 3, element.getAttributes().size());
+				assertEquals(message, "input", element.getName());
+				assertEquals(message, "hidden", element
+						.getAttributeValue("type"));
+				assertTrue(message,
+						element.getAttributeValue("value").length() != 0);
+				assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
+						.getAttributeValue("name"));
+				assertTrue(message, TokenHelper.validateToken(request
+						.getSession(), element.getAttributeValue("value")));
+				return null;
+			}
+
+		});
+
 	}
 
 	@Test
 	public void doTag2() throws Exception {
-		HttpServletRequest request = HttpServletRequest.class.cast(context
-				.getRequest());
-		ThreadContext.newContext(request);
+		final HttpServletRequest request = (HttpServletRequest) context
+				.getRequest();
+		final HttpServletResponse response = (HttpServletResponse) context
+				.getResponse();
 
-		tag.setName("cubby.token2");
-		tag.doTag();
-		Element element = getResultAsElementFromContext();
-		String message = "nameが指定されている場合";
-		assertEquals(message, 3, element.getAttributes().size());
-		assertEquals(message, "input", element.getName());
-		assertEquals(message, "hidden", element.getAttributeValue("type"));
-		assertTrue(message, element.getAttributeValue("value").length() != 0);
-		assertEquals(message, "cubby.token2", element.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(request.getSession(),
-				element.getAttributeValue("value")));
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				tag.setName("cubby.token2");
+				tag.doTag();
+				Element element = getResultAsElementFromContext();
+				String message = "nameが指定されている場合";
+				assertEquals(message, 3, element.getAttributes().size());
+				assertEquals(message, "input", element.getName());
+				assertEquals(message, "hidden", element
+						.getAttributeValue("type"));
+				assertTrue(message,
+						element.getAttributeValue("value").length() != 0);
+				assertEquals(message, "cubby.token2", element
+						.getAttributeValue("name"));
+				assertTrue(message, TokenHelper.validateToken(request
+						.getSession(), element.getAttributeValue("value")));
+				return null;
+			}
+		});
 	}
 
 	@Test
 	public void testDoTag3() throws Exception {
-		HttpServletRequest request = HttpServletRequest.class.cast(context
-				.getRequest());
-		ThreadContext.newContext(request);
+		final HttpServletRequest request = (HttpServletRequest) context
+				.getRequest();
+		final HttpServletResponse response = (HttpServletResponse) context
+				.getResponse();
 
-		tag.setDynamicAttribute(null, "id", "token");
-		tag.doTag();
-		Element element = getResultAsElementFromContext();
-		String message = "idが指定されている場合";
-		assertEquals(message, 4, element.getAttributes().size());
-		assertEquals(message, "input", element.getName());
-		assertEquals(message, "token", element.getAttributeValue("id"));
-		assertEquals(message, "hidden", element.getAttributeValue("type"));
-		assertTrue(message, element.getAttributeValue("value").length() != 0);
-		assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
-				.getAttributeValue("name"));
-		assertTrue(message, TokenHelper.validateToken(request.getSession(),
-				element.getAttributeValue("value")));
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				tag.setDynamicAttribute(null, "id", "token");
+				tag.doTag();
+				Element element = getResultAsElementFromContext();
+				String message = "idが指定されている場合";
+				assertEquals(message, 4, element.getAttributes().size());
+				assertEquals(message, "input", element.getName());
+				assertEquals(message, "token", element.getAttributeValue("id"));
+				assertEquals(message, "hidden", element
+						.getAttributeValue("type"));
+				assertTrue(message,
+						element.getAttributeValue("value").length() != 0);
+				assertEquals(message, TokenHelper.DEFAULT_TOKEN_NAME, element
+						.getAttributeValue("name"));
+				assertTrue(message, TokenHelper.validateToken(request
+						.getSession(), element.getAttributeValue("value")));
+				return null;
+			}
+		});
 	}
 
 	@Test
 	public void requestIsNull() throws Exception {
-		ThreadContext.newContext(null);
+		ThreadContext.runInContext(null, null, new Command<Void>() {
 
-		tag.setDynamicAttribute(null, "id", "token");
-		try {
-			tag.doTag();
-			fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
-		} catch (IllegalStateException e) {
-		}
+			public Void execute() throws Exception {
+
+				tag.setDynamicAttribute(null, "id", "token");
+				try {
+					tag.doTag();
+					fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
+				} catch (IllegalStateException e) {
+				}
+				return null;
+			}
+		});
 	}
+
 }
