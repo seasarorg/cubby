@@ -34,7 +34,7 @@ dd {
 </dd>
 <dt><a href="todo/">Todoサンプルアプリケーション</a></dt>
 <dd>
-ドキュメントの2分間チュートリアルと同じ内容です。<br/>ログイン、一覧、追加、編集、削除など基本的なアプリケーションのサンプルです。
+ドキュメントの5分間チュートリアルと同じ内容です。<br/>ログイン、一覧、追加、編集、削除など基本的なアプリケーションのサンプルです。
 (<a href="sourceviewer/?title=Todo
 &dirs=%2FWEB-INF%2Fsrc%2Fmain%2Fresources%2Fddl.sql
 &dirs=%2Ftodo%2F
