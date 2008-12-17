@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.validator;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +35,7 @@ import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
@@ -58,50 +60,83 @@ public class FieldValidationRuleTest {
 					}
 
 				}));
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		ThreadContext.newContext(request);
 	}
 
 	@After
 	public void teardown() {
-		ThreadContext.restoreContext();
 		ProviderFactory.clear();
 	}
 
 	@Test
 	public void apply1() throws Exception {
-		Map<String, Object[]> params = new HashMap<String, Object[]>();
-		params.put("name", new Object[] { "aa" });
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		ValidationRule rule = new FieldValidationRule("name",
-				new RequiredValidator(), new ArrayMaxSizeValidator(1));
-		rule.apply(params, null, errors);
-		assertTrue(errors.isEmpty());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				Map<String, Object[]> params = new HashMap<String, Object[]>();
+				params.put("name", new Object[] { "aa" });
+
+				ValidationRule rule = new FieldValidationRule("name",
+						new RequiredValidator(), new ArrayMaxSizeValidator(1));
+				rule.apply(params, null, errors);
+				assertTrue(errors.isEmpty());
+				return null;
+			}
+
+		});
 	}
 
 	@Test
 	public void apply2() throws Exception {
-		Map<String, Object[]> params = new HashMap<String, Object[]>();
-		params.put("name", new Object[] { "aa", "bb" });
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getLocale()).andStubReturn(null);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		ValidationRule rule = new FieldValidationRule("name",
-				new RequiredValidator(), new ArrayMaxSizeValidator(1));
-		rule.apply(params, null, errors);
-		assertFalse(errors.isEmpty());
-		assertFalse(errors.getFields().get("name").isEmpty());
-		assertTrue(errors.getIndexedFields().get("name").get(0).isEmpty());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+
+				Map<String, Object[]> params = new HashMap<String, Object[]>();
+				params.put("name", new Object[] { "aa", "bb" });
+
+				ValidationRule rule = new FieldValidationRule("name",
+						new RequiredValidator(), new ArrayMaxSizeValidator(1));
+				rule.apply(params, null, errors);
+				assertFalse(errors.isEmpty());
+				assertFalse(errors.getFields().get("name").isEmpty());
+				assertTrue(errors.getIndexedFields().get("name").get(0)
+						.isEmpty());
+				return null;
+			}
+		});
 	}
 
 	@Test
 	public void apply3() throws Exception {
-		Map<String, Object[]> params = new HashMap<String, Object[]>();
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getLocale()).andStubReturn(null);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		ValidationRule rule = new FieldValidationRule("name",
-				new RequiredValidator(), new ArrayMaxSizeValidator(1));
-		rule.apply(params, null, errors);
-		assertFalse(errors.isEmpty());
-		assertFalse(errors.getFields().get("name").isEmpty());
-		assertEquals(1, errors.getIndexedFields().get("name").get(0).size());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				Map<String, Object[]> params = new HashMap<String, Object[]>();
+
+				ValidationRule rule = new FieldValidationRule("name",
+						new RequiredValidator(), new ArrayMaxSizeValidator(1));
+				rule.apply(params, null, errors);
+				assertFalse(errors.isEmpty());
+				assertFalse(errors.getFields().get("name").isEmpty());
+				assertEquals(1, errors.getIndexedFields().get("name").get(0)
+						.size());
+				return null;
+			}
+		});
 	}
 
 	public static class MockAction extends Action {

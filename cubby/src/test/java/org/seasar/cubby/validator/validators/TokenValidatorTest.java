@@ -30,11 +30,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.easymock.IAnswer;
 import org.junit.Test;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.validator.ValidationContext;
 
@@ -42,10 +44,8 @@ public class TokenValidatorTest {
 
 	@Test
 	public void validate() throws Exception {
-		TokenValidator validator = new TokenValidator();
-
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		HttpSession session = createMock(HttpSession.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpSession session = createMock(HttpSession.class);
 		expect(request.getSession()).andReturn(session).anyTimes();
 
 		final Map<String, Object> sessionAttributes = new HashMap<String, Object>();
@@ -53,8 +53,7 @@ public class TokenValidatorTest {
 				new IAnswer<Object>() {
 
 					public Object answer() throws Throwable {
-						return sessionAttributes
-								.get((String) getCurrentArguments()[0]);
+						return sessionAttributes.get(getCurrentArguments()[0]);
 					}
 
 				}).anyTimes();
@@ -67,40 +66,53 @@ public class TokenValidatorTest {
 				return null;
 			}
 		}).anyTimes();
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, session, response);
 
-		replay(request, session);
+		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-		ThreadContext.newContext(request);
+			public Void execute() throws Exception {
+				final TokenValidator validator = new TokenValidator();
 
-		ValidationContext context = new ValidationContext();
-		validator.validate(context, new Object[] { "tokenstring" });
-		assertFalse("セッション中にトークン文字列が存在しないためエラー", context.getMessageInfos()
-				.isEmpty());
+				ValidationContext context = new ValidationContext();
+				validator.validate(context, new Object[] { "tokenstring" });
+				assertFalse("セッション中にトークン文字列が存在しないためエラー", context
+						.getMessageInfos().isEmpty());
 
-		TokenHelper.setToken(session, "tokenstring");
-		context = new ValidationContext();
-		validator.validate(context, new Object[] { "tokenstring" });
-		assertTrue("セッション中にトークン文字列が存在するためエラーではない", context.getMessageInfos()
-				.isEmpty());
+				TokenHelper.setToken(session, "tokenstring");
+				context = new ValidationContext();
+				validator.validate(context, new Object[] { "tokenstring" });
+				assertTrue("セッション中にトークン文字列が存在するためエラーではない", context
+						.getMessageInfos().isEmpty());
 
-		context = new ValidationContext();
-		validator.validate(context, new Object[] { "tokenstring" });
-		assertFalse("セッション中のトークン文字列が除去された（２重サブミットの状態）ためエラー", context
-				.getMessageInfos().isEmpty());
+				context = new ValidationContext();
+				validator.validate(context, new Object[] { "tokenstring" });
+				assertFalse("セッション中のトークン文字列が除去された（２重サブミットの状態）ためエラー", context
+						.getMessageInfos().isEmpty());
+				return null;
+			}
 
-		verify(request, session);
+		});
+
+		verify(request, session, response);
 	}
 
 	@Test
 	public void requestIsNull() throws Exception {
-		ThreadContext.newContext(null);
-		TokenValidator validator = new TokenValidator();
-		ValidationContext context = new ValidationContext();
-		try {
-			validator.validate(context, new Object[] { "tokenstring" });
-			fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
-		} catch (IllegalStateException ex) {
-		}
+		ThreadContext.runInContext(null, null, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final TokenValidator validator = new TokenValidator();
+				final ValidationContext context = new ValidationContext();
+				try {
+					validator.validate(context, new Object[] { "tokenstring" });
+					fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
+				} catch (final IllegalStateException ex) {
+				}
+				return null;
+			}
+
+		});
 	}
 
 }

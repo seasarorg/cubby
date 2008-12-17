@@ -333,7 +333,7 @@ public class PathResolverImpl implements PathResolver {
 		for (final Routing routing : routings) {
 			if (actionClass.getCanonicalName().equals(
 					routing.getActionClass().getCanonicalName())) {
-				if (methodName.equals(routing.getMethod().getName())) {
+				if (methodName.equals(routing.getActionMethod().getName())) {
 					return routing;
 				}
 			}

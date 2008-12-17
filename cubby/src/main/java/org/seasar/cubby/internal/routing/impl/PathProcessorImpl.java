@@ -18,6 +18,7 @@ import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.routing.PathProcessor;
 import org.seasar.cubby.internal.routing.Router;
@@ -70,7 +71,8 @@ public class PathProcessorImpl implements PathProcessor {
 	 * PathInfo を設定する初期化処理
 	 */
 	private void initialize() {
-		final Routing routing = RequestUtils.getAttribute(request, ATTR_ROUTING);
+		final Routing routing = RequestUtils
+				.getAttribute(request, ATTR_ROUTING);
 		if (routing != null) {
 			this.pathInfo = new PathInfoImpl(routing);
 			request.removeAttribute(ATTR_ROUTING);
@@ -95,7 +97,44 @@ public class PathProcessorImpl implements PathProcessor {
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 
 		final Routing routing = dispatch(parameterMap);
-		invoke(wrappedRequest, routing);
+		final ActionProcessorInvokeCommand actionProcessorInvokeCommand = new ActionProcessorInvokeCommand(
+				wrappedRequest, response, routing);
+		try {
+			ThreadContext.runInContext(wrappedRequest, response,
+					actionProcessorInvokeCommand);
+		} catch (final Exception e) {
+			if (e instanceof IOException) {
+				throw (IOException) e;
+			} else if (e instanceof ServletException) {
+				throw (ServletException) e;
+			} else {
+				throw new ServletException(e);
+			}
+		}
+	}
+
+	private class ActionProcessorInvokeCommand implements Command<Void> {
+
+		private final HttpServletRequest request;
+
+		private final HttpServletResponse response;
+
+		private final Routing routing;
+
+		public ActionProcessorInvokeCommand(HttpServletRequest request,
+				HttpServletResponse response, Routing routing) {
+			this.request = request;
+			this.response = response;
+			this.routing = routing;
+		}
+
+		public Void execute() throws Exception {
+			final ActionResultWrapper actionResultWrapper = actionProcessor
+					.process(request, response, routing);
+			actionResultWrapper.execute(request, response);
+			return null;
+		}
+
 	}
 
 	/**
@@ -141,34 +180,6 @@ public class PathProcessorImpl implements PathProcessor {
 			}
 		}
 		return routings.get(null);
-	}
-
-	/**
-	 * {@link ActionProcessor} を実行する
-	 * 
-	 * @param wrappedRequest
-	 * @param routing
-	 * @throws IOException
-	 * @throws ServletException
-	 */
-	private void invoke(final HttpServletRequest wrappedRequest,
-			final Routing routing) throws IOException, ServletException {
-		ThreadContext.newContext(wrappedRequest);
-		try {
-			final ActionResultWrapper actionResultWrapper = actionProcessor
-					.process(wrappedRequest, response, routing);
-			actionResultWrapper.execute(wrappedRequest, response);
-		} catch (final Exception e) {
-			if (e instanceof IOException) {
-				throw (IOException) e;
-			} else if (e instanceof ServletException) {
-				throw (ServletException) e;
-			} else {
-				throw new ServletException(e);
-			}
-		} finally {
-			ThreadContext.restoreContext();
-		}
 	}
 
 	private class PathInfoImpl implements PathInfo {

@@ -38,8 +38,9 @@ import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
-import org.seasar.cubby.spi.container.ContainerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +63,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 			final HttpServletResponse response, final Routing routing)
 			throws Exception {
 
-		final Method actionMethod = routing.getMethod();
+		final Method actionMethod = routing.getActionMethod();
 		if (logger.isDebugEnabled()) {
 			logger.debug(format("DCUB0004", request.getRequestURI()));
 			logger.debug(format("DCUB0005", actionMethod));
@@ -70,7 +71,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 
 		final Class<?> actionClass = routing.getActionClass();
 
-		final Container container = ContainerFactory.getContainer();
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
 
 		final ActionErrors actionErrors = new ActionErrorsImpl();
 		request.setAttribute(ATTR_ERRORS, actionErrors);
@@ -86,10 +88,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 				actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
 
-		final ActionHandlerChainProvider actionHandlerChainProvider = ActionHandlerChainProvider.Factory
-				.get();
-		final ActionHandlerChain actionHandlerChain = actionHandlerChainProvider
-				.getActionHandlerChain();
+		final ActionHandlerChain actionHandlerChain = ProviderFactory.get(
+				ActionHandlerChainProvider.class).getActionHandlerChain();
 		final ActionResult actionResult = actionHandlerChain.chain(request,
 				response, actionContext);
 		if (actionResult == null) {

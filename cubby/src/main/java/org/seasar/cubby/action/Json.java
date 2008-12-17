@@ -62,9 +62,9 @@ import org.seasar.cubby.spi.ProviderFactory;
  * 
  * </p>
  * 
- * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)< /a>
+ * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)</a>
  * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON
- *      * with Padding)< /a>
+ *      with Padding)</a>
  * @see JsonProvider#toJson(Object)
  * @author baba
  * @author agata
@@ -168,10 +168,23 @@ public class Json implements ActionResult {
 		return this.encoding;
 	}
 
+	/**
+	 * JSON 文字列を応答ボディではなく X-JSON 応答ヘッダに設定することを指定します。
+	 * <p>
+	 * prototype.js の Ajax.Request を使うときに使用してください。
+	 * </p>
+	 * @see <a href="http://www.prototypejs.org/api/ajax/options">www.prototypejs.org&nbsp;-&nbsp;Ajax Options</a>
+	 */
 	public void xjson() {
 		this.xjson = true;
 	}
 
+	/**
+	 * JSON 文字列を X-JOSN 応答ヘッダに設定するかを示します。
+	 * 
+	 * @return JSON 文字列を X-JOSN 応答ヘッダに設定する場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
 	public boolean isXjson() {
 		return xjson;
 	}

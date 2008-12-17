@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * リクエストをこの注釈で修飾されたアクションメソッドへ振り分けるためのリクエストパラメータ名を指定します。
+ * 要求をこの注釈で修飾されたアクションメソッドへ振り分けるための要求パラメータ名を指定します。
  * <p>
  * ひとつのフォームに複数のボタンを配置し、それぞれ異なるアクションメソッドを実行させたい場合に使用します。
  * </p>
@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
  * (2) &lt;input type=&quot;submit&quot; name=&quot;confirm_back&quot; value=&quot;戻る&quot;/&gt;
  * &lt;/t:form&gt;
  * </pre>
+ * 
  * <pre>
  * public TodoAction extends Action {
  * 
@@ -55,6 +56,11 @@ import java.lang.annotation.Target;
 @Target( { ElementType.METHOD })
 public @interface OnSubmit {
 
+	/**
+	 * 要求パラメータ名を返します。
+	 * 
+	 * @return 要求パラメータ名
+	 */
 	String value();
 
 }

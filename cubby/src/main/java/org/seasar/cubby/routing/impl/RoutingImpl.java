@@ -91,7 +91,7 @@ class RoutingImpl implements Routing {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Method getMethod() {
+	public Method getActionMethod() {
 		return method;
 	}
 

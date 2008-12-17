@@ -13,28 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.spi.container;
-
-import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
+package org.seasar.cubby.spi;
 
 /**
- * オブジェクトを生成、管理するコンテナのファクトリです。
+ * サービスのプロバイダであることを表すマーカインターフェイスです。
  * 
  * @author baba
  * @since 2.0.0
  */
-public class ContainerFactory {
-
-	/**
-	 * オブジェクトを生成、管理するコンテナを取得します。
-	 * 
-	 * @return オブジェクトを生成、管理するコンテナ
-	 */
-	public static Container getContainer() {
-		final ContainerProvider provider = ProviderFactory
-				.get(ContainerProvider.class);
-		return provider.getContainer();
-	}
+public interface Provider {
 
 }

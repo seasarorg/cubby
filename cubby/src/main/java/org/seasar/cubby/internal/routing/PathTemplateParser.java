@@ -32,7 +32,7 @@ public interface PathTemplateParser {
 	 *            パステンプレート
 	 * @param handler
 	 *            プレースホルダのハンドラ
-	 * @return
+	 * @return パース後の文字列
 	 */
 	String parse(String template, Handler handler);
 

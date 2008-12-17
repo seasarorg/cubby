@@ -36,8 +36,9 @@ import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
-import org.seasar.cubby.spi.container.ContainerFactory;
 import org.seasar.cubby.spi.container.LookupException;
 
 /**
@@ -90,7 +91,8 @@ public class MultipartRequestParserImpl implements RequestParser {
 			final HttpServletRequest request) {
 		final Map<String, Object[]> parameterMap = new HashMap<String, Object[]>(
 				request.getParameterMap());
-		final Container container = ContainerFactory.getContainer();
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
 		try {
 			final RequestContext requestContext = container
 					.lookup(RequestContext.class);
@@ -195,7 +197,8 @@ public class MultipartRequestParserImpl implements RequestParser {
 	 * @see FileUpload#isMultipartContent(RequestContext)
 	 */
 	public boolean isParsable(final HttpServletRequest request) {
-		final Container container = ContainerFactory.getContainer();
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
 		try {
 			final RequestContext requestContext = container
 					.lookup(RequestContext.class);

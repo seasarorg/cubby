@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
@@ -35,6 +36,7 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 
 /**
  * 
@@ -43,47 +45,66 @@ import org.seasar.cubby.internal.controller.ThreadContext;
 public class ActionUtilsTest {
 
 	@Test
-	public void actionContext() {
-		ActionContext actionContext = createMock(ActionContext.class);
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+	public void actionContext() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
 				.andReturn(actionContext);
-		replay(actionContext, request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
 
-		ThreadContext.newContext(request);
-		assertSame(actionContext, ActionUtils.actionContext());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				assertSame(actionContext, ActionUtils.actionContext());
+				return null;
+			}
+
+		});
 
 		verify(request, actionContext);
 	}
 
 	@Test
-	public void errors() {
-		ActionContext actionContext = createMock(ActionContext.class);
-		ActionErrors actionErrors = createMock(ActionErrors.class);
+	public void errors() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final ActionErrors actionErrors = createMock(ActionErrors.class);
 		expect(actionContext.getActionErrors()).andReturn(actionErrors);
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
 				.andReturn(actionContext);
-		replay(actionContext, actionErrors, request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, actionErrors, request, response);
 
-		ThreadContext.newContext(request);
-		assertSame(actionErrors, ActionUtils.errors());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				assertSame(actionErrors, ActionUtils.errors());
+				return null;
+			}
+		});
 
 		verify(actionContext, actionErrors, request);
 	}
 
 	@Test
-	public void flash() {
-		ActionContext actionContext = createMock(ActionContext.class);
-		Map<String, Object> flashMap = new HashMap<String, Object>();
+	public void flash() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final Map<String, Object> flashMap = new HashMap<String, Object>();
 		expect(actionContext.getFlashMap()).andReturn(flashMap);
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
 				.andReturn(actionContext);
-		replay(actionContext, request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
 
-		ThreadContext.newContext(request);
-		assertSame(flashMap, ActionUtils.flash());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				assertSame(flashMap, ActionUtils.flash());
+				return null;
+			}
+		});
 
 		verify(actionContext, request);
 	}
@@ -130,7 +151,7 @@ public class ActionUtilsTest {
 			return null;
 		}
 
-		public ActionResult m4(int value) {
+		public ActionResult m4(final int value) {
 			return null;
 		}
 

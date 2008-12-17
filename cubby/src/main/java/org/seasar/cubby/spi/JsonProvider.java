@@ -21,7 +21,7 @@ package org.seasar.cubby.spi;
  * @author baba
  * @since 2.0.0
  */
-public interface JsonProvider {
+public interface JsonProvider extends Provider {
 
 	/**
 	 * 指定されたオブジェクトを JSON 形式の文字列にシリアライズします。

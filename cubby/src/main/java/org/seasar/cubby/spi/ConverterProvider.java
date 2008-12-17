@@ -23,7 +23,7 @@ import org.seasar.cubby.converter.Converter;
  * @author baba
  * @since 2.0.0
  */
-public interface ConverterProvider {
+public interface ConverterProvider extends Provider {
 
 	/**
 	 * <code>converterType</code>への変換が可能なコンバータを返します。

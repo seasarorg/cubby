@@ -29,12 +29,14 @@ import java.util.Map;
 import java.util.PropertyResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
@@ -48,7 +50,7 @@ public class ThreadContextTest {
 		ProviderFactory.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
-					public <T> T lookup(Class<T> type) {
+					public <T> T lookup(final Class<T> type) {
 						if (MessagesBehaviour.class.equals(type)) {
 							return type.cast(new DefaultMessagesBehaviour());
 						}
@@ -56,92 +58,136 @@ public class ThreadContextTest {
 					}
 
 				}));
-		ThreadContext.remove();
 	}
 
 	@After
 	public void teardown() {
-		ThreadContext.remove();
 		ProviderFactory.clear();
 	}
 
 	@Test
-	public void getMessagesMap_ja() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+	public void getMessagesMap_ja() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
-		replay(request);
-		ThreadContext.newContext(request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		Map<?, ?> result = ThreadContext.getMessagesMap();
-		assertEquals("result.size()", 14, result.size());
-		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
-				"{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final Map<?, ?> result = ThreadContext.getMessagesMap();
+				assertEquals("result.size()", 14, result.size());
+				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
+						"{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
+				return null;
+			}
+
+		});
 	}
 
 	@Test
-	public void getMessagesMap_en() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+	public void getMessagesMap_en() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
-		replay(request);
-		ThreadContext.newContext(request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		Map<?, ?> result = ThreadContext.getMessagesMap();
-		assertEquals("result.size()", 14, result.size());
-		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
-				"{0} : selects <= {1}.", result.get("valid.arrayMaxSize"));
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final Map<?, ?> result = ThreadContext.getMessagesMap();
+				assertEquals("result.size()", 14, result.size());
+				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
+						"{0} : selects <= {1}.", result
+								.get("valid.arrayMaxSize"));
+				return null;
+			}
+		});
 	}
 
 	@Test
-	public void getMessagesResourceBundle_ja() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+	public void getMessagesResourceBundle_ja() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
-		replay(request);
-		ThreadContext.newContext(request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
-				.getMessagesResourceBundle();
-		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
-				.hasMoreElements());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
+						.getMessagesResourceBundle();
+				assertTrue("result.getKeys().hasMoreElements()", result
+						.getKeys().hasMoreElements());
+				return null;
+			}
+		});
 	}
 
 	@Test
-	public void getMessagesResourceBundle_en() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
+	public void getMessagesResourceBundle_en() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
-		replay(request);
-		ThreadContext.newContext(request);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
-				.getMessagesResourceBundle();
-		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
-				.hasMoreElements());
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
+						.getMessagesResourceBundle();
+				assertTrue("result.getKeys().hasMoreElements()", result
+						.getKeys().hasMoreElements());
+				return null;
+			}
+		});
 	}
 
 	@Test
-	public void getRequest() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		replay(request);
-		ThreadContext.newContext(request);
+	public void getRequest() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-		HttpServletRequest result = ThreadContext.getRequest();
-		assertSame("ThreadContext.getRequest()", request, result);
-		verify(request);
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				final HttpServletRequest result = ThreadContext.getRequest();
+				assertSame("ThreadContext.getRequest()", request, result);
+				verify(request);
+				return null;
+			}
+		});
 	}
 
 	@Test
-	public void lifeCycle() {
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		replay(request);
-		ThreadContext.newContext(request);
-		assertSame(request, ThreadContext.getRequest());
-		ThreadContext.restoreContext();
+	public void lifeCycle() throws Exception {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
+
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute() throws Exception {
+				assertSame(request, ThreadContext.getRequest());
+				return null;
+			}
+		});
+
 		try {
 			ThreadContext.getRequest();
 			fail();
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			// ok
 		}
-		verify(request);
+
+		try {
+			ThreadContext.getResponse();
+			fail();
+		} catch (final IllegalStateException e) {
+			// ok
+		}
+		verify(request, response);
 	}
 
 }
