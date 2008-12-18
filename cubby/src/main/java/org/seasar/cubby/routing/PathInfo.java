@@ -27,6 +27,8 @@ public interface PathInfo {
 
 	/**
 	 * URI から抽出したパラメータを取得します。
+	 * 
+	 * @return URI から抽出したパラメータ
 	 */
 	Map<String, String[]> getURIParameters();
 

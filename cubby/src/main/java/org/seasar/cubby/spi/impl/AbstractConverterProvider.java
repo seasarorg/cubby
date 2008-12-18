@@ -22,6 +22,12 @@ import java.util.TreeMap;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.spi.ConverterProvider;
 
+/**
+ * コンバータプロバイダのスケルトン実装です。
+ * 
+ * @author baba
+ * @since 2.0.0
+ */
 public abstract class AbstractConverterProvider implements ConverterProvider {
 
 	/**

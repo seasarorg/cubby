@@ -182,6 +182,8 @@ public class ThreadContext {
 	/**
 	 * 指定されたコマンドを新しいコンテキスト内で実行します。
 	 * 
+	 * @param <T>
+	 *            コマンドの戻り値
 	 * @param request
 	 *            要求
 	 * @param response
@@ -213,6 +215,8 @@ public class ThreadContext {
 	 * コンテキスト内で実行するコマンドのインターフェイスです。
 	 * 
 	 * @author baba
+	 * @param <T>
+	 *            コマンドの戻り値
 	 */
 	public interface Command<T> {
 
@@ -220,7 +224,8 @@ public class ThreadContext {
 		 * コマンドを実行します。
 		 * 
 		 * @return コマンドの実行結果
-		 * @exception コマンドの実行中に例外が発生した場合
+		 * @throws Exception
+		 *             コマンドの実行中に例外が発生した場合
 		 */
 		T execute() throws Exception;
 

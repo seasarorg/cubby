@@ -180,6 +180,8 @@ public class ServiceLoader<S> implements Iterable<S> {
 
 	/**
 	 * プロバイダの {@link Iterator} を取得します。
+	 * 
+	 * @return プロバイダの {@link Iterator}
 	 */
 	public Iterator<S> iterator() {
 		return new ProviderIterator();

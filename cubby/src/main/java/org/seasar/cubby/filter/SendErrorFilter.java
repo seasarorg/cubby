@@ -56,10 +56,11 @@ public class SendErrorFilter implements Filter {
 	/**
 	 * このフィルタを初期化します。
 	 * <p>
-	 * <table> <caption>使用可能な初期化パラメータ</caption> <thead>
-	 * <th> 初期化パラメータ名 </th>
-	 * <th> 初期化パラメータの値 </th>
-	 * <th> 例 </th>
+	 * <table>
+	 * <caption>使用可能な初期化パラメータ</caption> <thead>
+	 * <th>初期化パラメータ名</th>
+	 * <th>初期化パラメータの値</th>
+	 * <th>例</th>
 	 * </thead> <thead>
 	 * <tr>
 	 * <td>{@link #STATUS_CODE}</td>
@@ -69,7 +70,7 @@ public class SendErrorFilter implements Filter {
 	 * <tr>
 	 * <td>{@link #IGNORE_PATH_PATTERN}</td>
 	 * <td>対象外とするパスの正規表現をカンマ区切りで指定します。 filter-mapping の url-pattern
-	 * で指定する、このフィルタを適用する URL のうち、適用を除外したいパスを指定してください。 </td>
+	 * で指定する、このフィルタを適用する URL のうち、適用を除外したいパスを指定してください。</td>
 	 * <td>
 	 * 
 	 * <pre>
@@ -130,6 +131,17 @@ public class SendErrorFilter implements Filter {
 
 	/**
 	 * {@link HttpServletResponse#sendError(int)} によって、異常系の HTTP ステータスコードを返します。
+	 * 
+	 * @param req
+	 *            要求
+	 * @param res
+	 *            応答
+	 * @param chain
+	 *            フィルターチェーン
+	 * @throws IOException
+	 *             要求の転送や要求のチェーンがこの例外をスローする場合
+	 * @throws ServletException
+	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {

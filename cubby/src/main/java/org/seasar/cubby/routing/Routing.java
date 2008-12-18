@@ -45,6 +45,8 @@ public interface Routing {
 
 	/**
 	 * アクションのパスを取得します。
+	 * 
+	 * @return アクションのパス
 	 */
 	String getActionPath();
 

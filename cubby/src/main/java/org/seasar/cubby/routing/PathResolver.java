@@ -52,14 +52,21 @@ public interface PathResolver {
 	 */
 	Collection<Routing> getRoutings();
 
-	// TODO
+	/**
+	 * 指定されたアクションクラスのルーティング情報を登録します。
+	 * 
+	 * @param actionClass
+	 *            アクションクラス
+	 */
 	void add(Class<?> actionClass);
 
-	// TODO
+	/**
+	 * 指定されたアクションクラスのコレクションからすべてのルーティング情報を登録します。
+	 * 
+	 * @param actionClasses
+	 *            アクションクラスのコレクション
+	 */
 	void addAll(Collection<Class<?>> actionClasses);
-
-	// TODO
-	void clear();
 
 	/**
 	 * ルーティング情報を手動登録します。
@@ -80,6 +87,11 @@ public interface PathResolver {
 	 */
 	void add(String actionPath, Class<?> actionClass, String actionMethodName,
 			RequestMethod... requestMethods);
+
+	/**
+	 * 登録されたルーティング情報をクリアします。
+	 */
+	void clear();
 
 	/**
 	 * 指定されたアクションクラス、メソッド名、パラメータからパスを逆引きします。
