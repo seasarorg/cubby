@@ -37,6 +37,8 @@ public class DefaultMessagesBehaviour implements MessagesBehaviour {
 
 	/**
 	 * リソースバンドル、完全指定されたクラス名の基底名を取得します。
+	 * 
+	 * @return リソースバンドル、完全指定されたクラス名の基底名
 	 */
 	public String getBaseName() {
 		return baseName;

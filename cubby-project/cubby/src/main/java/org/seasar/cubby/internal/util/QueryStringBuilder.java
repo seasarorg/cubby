@@ -46,15 +46,15 @@ public class QueryStringBuilder {
 	 */
 	private String encode = "UTF-8";
 
-	/** 
-	 * URI部分
+	/**
+	 * URI 部分
 	 */
 	private final String baseUri;
 
 	/**
-	 * URI部分なしでインスタンスを生成します。
+	 * URI 部分なしでインスタンスを生成します。
 	 * <p>
-	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI部分は付加されません。
+	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI 部分は付加されません。
 	 * </p>
 	 */
 	public QueryStringBuilder() {
@@ -62,14 +62,16 @@ public class QueryStringBuilder {
 	}
 
 	/**
-	 * URI部分を指定してインスタンスを生成します。
+	 * URI 部分を指定してインスタンスを生成します。
 	 * <p>
-	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI部分と「?」が付加されます。
+	 * {@code QueryStringBuilder#toString()}が呼び出された時に、URI 部分と「?」が付加されます。
 	 * </p>
-	 * @param baseUri URI部分
+	 * 
+	 * @param baseUri
+	 *            URI部分
 	 */
-	public QueryStringBuilder(String baseUrl) {
-		this.baseUri = baseUrl;
+	public QueryStringBuilder(String baseUri) {
+		this.baseUri = baseUri;
 	}
 
 	/**

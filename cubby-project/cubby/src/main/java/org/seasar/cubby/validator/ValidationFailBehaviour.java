@@ -27,10 +27,11 @@ import org.seasar.cubby.action.ActionResult;
 public interface ValidationFailBehaviour {
 
 	/**
-	 * 入力検証でエラーがあった場合の画面遷移を制御するための {@link ActionResult} を取得します。
+	 * 入力検証でエラーがあった場合に画面遷移を制御するための {@link ActionResult} を取得します。
 	 * 
 	 * @param actionContext
 	 *            アクションコンテキスト
+	 * @return 画面遷移を制御するための {@link ActionResult}
 	 */
 	ActionResult getActionResult(ActionContext actionContext);
 

@@ -23,30 +23,30 @@ package org.seasar.cubby.spi.beans;
  */
 public interface ParameterizedClassDesc {
 
-    /**
-     * このインスタンスが表現するクラスがパラメタ化されていれば<code>true</code>を返します。
-     * 
-     * @return このインスタンスが表現するクラスがパラメタ化されていれば<code>true</code>
-     */
-    boolean isParameterizedClass();
+	/**
+	 * このインスタンスが表現するクラスがパラメタ化されていれば<code>true</code>を返します。
+	 * 
+	 * @return このインスタンスが表現するクラスがパラメタ化されていれば<code>true</code>
+	 */
+	boolean isParameterizedClass();
 
-    /**
-     * 原型となるクラスを返します。
-     * 
-     * @return 原型となるクラス
-     * @see lava.lang.ParameterizedType#getRawType()
-     */
-    Class<?> getRawClass();
+	/**
+	 * 原型となるクラスを返します。
+	 * 
+	 * @return 原型となるクラス
+	 * @see java.lang.reflect.ParameterizedType#getRawType()
+	 */
+	Class<?> getRawClass();
 
-    /**
-     * 型引数を表す{@link ParameterizedClassDesc}の配列を返します。
-     * <p>
-     * このインスタンスが表現するクラスがパラメタ化されたクラスでない場合は、<code>null</code>を返します。
-     * </p>
-     * 
-     * @return 型引数を表す{@link ParameterizedClassDesc}の配列
-     * @see java.lang.ParameterizedType#getActualTypeArguments()
-     */
-    ParameterizedClassDesc[] getArguments();
+	/**
+	 * 型引数を表す{@link ParameterizedClassDesc}の配列を返します。
+	 * <p>
+	 * このインスタンスが表現するクラスがパラメタ化されたクラスでない場合は、<code>null</code>を返します。
+	 * </p>
+	 * 
+	 * @return 型引数を表す{@link ParameterizedClassDesc}の配列
+	 * @see java.lang.reflect.ParameterizedType#getActualTypeArguments()
+	 */
+	ParameterizedClassDesc[] getArguments();
 
 }

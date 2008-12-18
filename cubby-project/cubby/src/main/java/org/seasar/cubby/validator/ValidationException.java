@@ -33,6 +33,9 @@ public class ValidationException extends RuntimeException {
 
 	/**
 	 * 新規例外を構築します。
+	 * 
+	 * @param behaviour
+	 *            入力検証でエラーがあった場合の振る舞い
 	 */
 	public ValidationException(final ValidationFailBehaviour behaviour) {
 		this.behaviour = behaviour;

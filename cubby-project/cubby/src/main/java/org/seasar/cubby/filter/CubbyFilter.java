@@ -83,9 +83,9 @@ public class CubbyFilter implements Filter {
 	 * </p>
 	 * 
 	 * @param config
-	 *            Filter 設定のためのオブジェクト
-	 * @exception ServletException
-	 *                初期化処理で例外が発生した場合
+	 *            フィルタ設定のためのオブジェクト
+	 * @throws ServletException
+	 *             初期化処理で例外が発生した場合
 	 */
 	public void init(final FilterConfig config) throws ServletException {
 		final String ignorePathPatternString = config
@@ -119,28 +119,29 @@ public class CubbyFilter implements Filter {
 	 * リクエストの処理を {@link PathProcessor} に委譲します。
 	 * </p>
 	 * 
-	 * @param req
-	 *            リクエスト
-	 * @param res
-	 *            レスポンス
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
 	 * @param chain
-	 *            フィルタチェイン
+	 *            フィルターチェーン
 	 * @throws IOException
-	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
+	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 * @throws ServletException
-	 *             リクエストディスパッチャやフィルタチェインで例外が発生した場合
+	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
-	 * @see PathProcessor#process(HttpServletRequest, HttpServletResponse)
+	 * @see PathProcessor#process()
 	 */
-	public void doFilter(final ServletRequest req, final ServletResponse res,
-			final FilterChain chain) throws IOException, ServletException {
+	public void doFilter(final ServletRequest request,
+			final ServletResponse response, final FilterChain chain)
+			throws IOException, ServletException {
 		PathProcessor delegate = new PathProcessorImpl(
-				HttpServletRequest.class.cast(req), HttpServletResponse.class.cast(res),
+				(HttpServletRequest) request, (HttpServletResponse) response,
 				ignorePathPatterns);
 		if (delegate.hasPathInfo()) {
 			delegate.process();
 		} else {
-			chain.doFilter(req, res);
+			chain.doFilter(request, response);
 		}
 	}
 
