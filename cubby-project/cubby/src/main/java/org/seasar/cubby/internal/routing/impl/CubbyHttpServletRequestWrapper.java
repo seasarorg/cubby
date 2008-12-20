@@ -100,6 +100,8 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 * 
 	 * @param request
 	 *            要求
+	 * @param uriParameters
+	 *            URI パラメータの {@link Map}
 	 */
 	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
 			final Map<String, String[]> uriParameters) {

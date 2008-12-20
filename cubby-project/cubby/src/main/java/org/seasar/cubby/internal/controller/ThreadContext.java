@@ -141,8 +141,7 @@ public class ThreadContext {
 		if (context.messagesResourceBundle == null) {
 			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
 			context.messagesResourceBundle = messagesBehaviour
-					.getBundle(context.request == null ? null : context.request
-							.getLocale());
+					.getBundle(context.request.getLocale());
 		}
 		return context.messagesResourceBundle;
 	}

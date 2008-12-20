@@ -80,13 +80,15 @@ public interface PathResolver {
 	 *            アクションクラス
 	 * @param actionMethodName
 	 *            アクションメソッド名
-	 * @param requestMethods
-	 *            リクエストメソッド。<code>null</code> の場合、{@link RequestMethod#GET},
-	 *            {@link RequestMethod#POST} がデフォルト値として設定されます。
-	 * @see org.seasar.cubby.action.Path#priority() 自動設定の際のプライオリティ
+	 * @param requestMethod
+	 *            リクエストメソッド
+	 * @param onSubmit
+	 *            アクションメソッドへ振り分けるための要求パラメータ名
+	 * @param priority
+	 *            プライオリティ
 	 */
 	void add(String actionPath, Class<?> actionClass, String actionMethodName,
-			RequestMethod... requestMethods);
+			RequestMethod requestMethod, String onSubmit, int priority);
 
 	/**
 	 * 登録されたルーティング情報をクリアします。

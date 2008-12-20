@@ -48,30 +48,28 @@ public class RoutingKeyTest {
 	@Before
 	public void setupRoutings() throws Exception {
 		routing1 = new RoutingImpl(null, null, null, asList(new String[0]),
-				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE, true);
+				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE);
 		routing1d = new RoutingImpl(null, null, null, asList(new String[0]),
-				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE, true);
+				Pattern.compile("/foo/bar"), GET, null, Integer.MAX_VALUE);
 		routing2 = new RoutingImpl(null, null, null,
 				asList(new String[] { "p1" }), Pattern.compile("/foo/bar/a"),
-				GET, null, Integer.MAX_VALUE, true);
+				GET, null, Integer.MAX_VALUE);
 		routing3 = new RoutingImpl(null, null, null, asList(new String[] {
 				"p1", "p2" }), Pattern.compile("/foo/bar/bbb"), GET, null,
-				Integer.MAX_VALUE, true);
+				Integer.MAX_VALUE);
 		routing4 = new RoutingImpl(null, null, null, asList(new String[] {
 				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), GET, null,
-				Integer.MAX_VALUE, true);
+				Integer.MAX_VALUE);
 		routing5 = new RoutingImpl(null, null, null, asList(new String[] {
 				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), POST, null,
-				Integer.MAX_VALUE, true);
+				Integer.MAX_VALUE);
 		routing5d = new RoutingImpl(null, null, null, asList(new String[] {
 				"p1", "p2" }), Pattern.compile("/foo/bar/cc"), POST, null,
-				Integer.MAX_VALUE, true);
+				Integer.MAX_VALUE);
 		routing6 = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 1,
-				false);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 1);
 		routing6d = new RoutingImpl(null, null, null, asList(new String[] {
-				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 0,
-				false);
+				"p1", "p2" }), Pattern.compile("/foo/bar/cc/dd"), GET, null, 0);
 	}
 
 	@Test

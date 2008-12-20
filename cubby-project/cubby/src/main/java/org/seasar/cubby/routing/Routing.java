@@ -86,13 +86,6 @@ public interface Routing {
 	int getPriority();
 
 	/**
-	 * 自動登録されたルーティングかを示します。
-	 * 
-	 * @return 自動登録されたルーティングの場合は <code>true</code>、そうでない場合は <code>false</code>
-	 */
-	boolean isAuto();
-
-	/**
 	 * 指定されたリクエストメソッドがこのルーティングの対象かどうかを示します。
 	 * 
 	 * @param requestMethod

@@ -40,9 +40,6 @@ class RoutingImpl implements Routing {
 	/** 優先順位。 */
 	private final int priority;
 
-	/** 自動登録されたかどうか。 */
-	private final boolean auto;
-
 	/**
 	 * インスタンス化します。
 	 * 
@@ -63,13 +60,11 @@ class RoutingImpl implements Routing {
 	 * @param priority
 	 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}
 	 *            が常にセットされます。
-	 * @param auto
-	 *            自動登録されたかどうか
 	 */
 	RoutingImpl(final Class<?> actionClass, final Method method,
 			final String actionPath, final List<String> uriParameterNames,
 			final Pattern pattern, final RequestMethod requestMethod,
-			final String onSubmit, final int priority, final boolean auto) {
+			final String onSubmit, final int priority) {
 		this.actionClass = actionClass;
 		this.method = method;
 		this.actionPath = actionPath;
@@ -78,7 +73,6 @@ class RoutingImpl implements Routing {
 		this.requestMethod = requestMethod;
 		this.onSubmit = onSubmit;
 		this.priority = priority;
-		this.auto = auto;
 	}
 
 	/**
@@ -140,13 +134,6 @@ class RoutingImpl implements Routing {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isAuto() {
-		return auto;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isAcceptable(final String requestMethod) {
 		return StringUtils.equalsIgnoreCase(this.requestMethod.name(),
 				requestMethod);
@@ -164,7 +151,6 @@ class RoutingImpl implements Routing {
 						",uriParameterNames=").append(this.uriParameterNames)
 				.append(",requestMethod=").append(this.requestMethod).append(
 						",onSubmit=").append(onSubmit).append(",priority=")
-				.append(this.priority).append(",auto=").append(this.auto)
-				.append("]").toString();
+				.append(this.priority).append(",auto=").append("]").toString();
 	}
 }
