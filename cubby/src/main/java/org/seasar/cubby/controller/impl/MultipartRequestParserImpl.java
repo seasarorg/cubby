@@ -96,17 +96,14 @@ public class MultipartRequestParserImpl implements RequestParser {
 		try {
 			final RequestContext requestContext = container
 					.lookup(RequestContext.class);
-			if (FileUpload.isMultipartContent(requestContext)) {
-				final FileUpload fileUpload = container
-						.lookup(FileUpload.class);
-				final Map<String, Object[]> multipartParameterMap = getMultipartParameterMap(
-						fileUpload, requestContext);
-				parameterMap.putAll(multipartParameterMap);
-			}
+			final FileUpload fileUpload = container.lookup(FileUpload.class);
+			final Map<String, Object[]> multipartParameterMap = getMultipartParameterMap(
+					fileUpload, requestContext);
+			parameterMap.putAll(multipartParameterMap);
+			return parameterMap;
 		} catch (final LookupException e) {
 			throw new IllegalStateException(e);
 		}
-		return parameterMap;
 	}
 
 	@SuppressWarnings("unchecked")
