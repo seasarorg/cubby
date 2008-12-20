@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2008 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.cubby.unit;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
@@ -27,13 +42,29 @@ import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
 import org.seasar.cubby.routing.Routing;
 
+/**
+ * アクションを実行するためのクラスです。
+ * 
+ * @author someda
+ * @author baba
+ * @since 2.0.0
+ */
 public class CubbyRunner {
 
 	/**
+	 * リクエストに応じたアクションを実行します。
+	 * <p>
+	 * <code>filters</code> が指定された場合はアクションを実行する前後に
+	 * {@link Filter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+	 * を実行します。
+	 * </p>
+	 * 
 	 * @param request
-	 *            テスト用のリクエスト
+	 *            テスト用の要求
 	 * @param response
-	 *            テスト用のレスポンス
+	 *            テスト用の応答
+	 * @param filters
+	 *            実行するサーブレットフィルタ
 	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
 	 * @throws Exception
 	 *             アクションメソッドの実行時に例外が発生した場合
@@ -114,6 +145,8 @@ public class CubbyRunner {
 		 * PathProcessor の process 処理をエミュレートする
 		 * 
 		 * @return アクションの実行結果
+		 * @throws Exception
+		 *             アクションの実行中に例外が発生した場合
 		 */
 		public ActionResultWrapper doProcess() throws Exception {
 			if (!super.hasPathInfo()) {

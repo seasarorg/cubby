@@ -15,28 +15,32 @@
  */
 package org.seasar.cubby.internal.util;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * LRU用の {@link HashMap} です。
+ * LRU (Least Recently Used) アルゴリズムによって最近最も使われなかったエントリを削除することによって、一定のサイズを保つ
+ * {@link Map} です。
+ * <p>
+ * 最近最も使われなかったもの
+ * </p>
  * 
+ * @param <K>
+ *            キーの型
+ * @param <V>
+ *            値の型
  * @author baba
  * @since 2.0.0
  */
 public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
 
+	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * デフォルトの初期容量です。
-	 */
+	/** デフォルトの初期容量です。 */
 	protected static final int DEFAULT_INITIAL_CAPACITY = 16;
 
-	/**
-	 * デフォルトのロードファクタです。
-	 */
+	/** デフォルトのロードファクタです。 */
 	protected static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
 	/**
@@ -45,9 +49,10 @@ public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
 	protected int limitSize;
 
 	/**
-	 * {@link LruHashMap}を作成します。
+	 * {@link LruHashMap} を作成します。
 	 * 
 	 * @param limitSize
+	 *            上限サイズ
 	 */
 	public LruHashMap(final int limitSize) {
 		this(limitSize, DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
@@ -80,7 +85,7 @@ public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
 	 */
 	@Override
 	protected boolean removeEldestEntry(final Map.Entry<K, V> entry) {
-		return size() > limitSize;
+		return this.size() > limitSize;
 	}
 
 }

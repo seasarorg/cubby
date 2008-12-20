@@ -62,7 +62,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	/** リンク用の補助クラス。 */
 	private final LinkSupport linkSupport = new LinkSupport();
 
-	//TODO
+	/** フォームオブジェクトのラッパーファクトリ。 */
 	private final FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
 
 	/** フォームオブジェクトのラッパー。 */
@@ -143,12 +143,6 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		// TODO
-		// final S2Container container = SingletonS2ContainerFactory
-		// .getContainer();
-//		final Container container = ContainerFactory.getContainer();
-//		final FormWrapperFactory formWrapperFactory = container
-//				.lookup(FormWrapperFactory.class);
 		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;
 	}
