@@ -420,13 +420,6 @@ public class Forward implements ActionResult {
 		/**
 		 * {@inheritDoc}
 		 */
-		public boolean isAuto() {
-			return false;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
 		public boolean isAcceptable(final String requestMethod) {
 			return true;
 		}

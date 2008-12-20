@@ -62,11 +62,15 @@ public class PathResolverImplTest {
 
 	@Test
 	public void testAdd() {
-		pathResolver.add("/wiki/edit/{name,.+}", MockAction.class, "update");
+		int priority = 0;
+		pathResolver.add("/wiki/edit/{name,.+}", MockAction.class, "update",
+				RequestMethod.GET, null, priority++);
+		pathResolver.add("/wiki/edit/{name,.+}", MockAction.class, "update",
+				RequestMethod.POST, null, priority++);
 		pathResolver.add("/wiki/{name,.+}", MockAction.class, "update2",
-				RequestMethod.POST);
+				RequestMethod.POST, null, priority++);
 		pathResolver.add("/wiki/{name,.+}", MockAction.class, "name",
-				RequestMethod.PUT);
+				RequestMethod.PUT, null, priority++);
 
 		List<Routing> routings = new ArrayList<Routing>(pathResolver
 				.getRoutings());
@@ -145,7 +149,8 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("update"), routing.getActionMethod());
+		assertEquals(MockAction.class.getMethod("update"), routing
+				.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -162,7 +167,8 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("insert"), routing.getActionMethod());
+		assertEquals(MockAction.class.getMethod("insert"), routing
+				.getActionMethod());
 		assertEquals(0, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -179,7 +185,8 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("delete"), routing.getActionMethod());
+		assertEquals(MockAction.class.getMethod("delete"), routing
+				.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -205,7 +212,8 @@ public class PathResolverImplTest {
 		assertEquals(1, routings.size());
 		Routing routing = routings.get(null);
 		assertEquals(MockAction.class, routing.getActionClass());
-		assertEquals(MockAction.class.getMethod("name"), routing.getActionMethod());
+		assertEquals(MockAction.class.getMethod("name"), routing
+				.getActionMethod());
 		assertEquals(1, routing.getUriParameterNames().size());
 
 		Map<String, String[]> uriParameters = info.getURIParameters();
@@ -315,21 +323,29 @@ public class PathResolverImplTest {
 	@Test
 	public void testAddAbstractClass() throws Exception {
 		try {
-			pathResolver.add("/parent/m1", ParentAction.class, "m1");
+			pathResolver.add("/parent/m1", ParentAction.class, "m1",
+					RequestMethod.GET, null, 0);
 			fail();
 		} catch (RoutingException e) {
 			// assertEquals("アクションクラスではないクラスを登録するとエラー(抽象クラス)", "ECUB0002",
 			// e.getMessageCode());
 		}
 		try {
-			pathResolver.add("/child/m3", ChildAction.class, "m3");
+			pathResolver.add("/child/m3", ChildAction.class, "m3",
+					RequestMethod.GET, null, 0);
 			fail();
 		} catch (RoutingException e) {
 			// assertEquals("アクションメソッドではないメソッドを登録するとエラー(戻り値がObject)",
 			// "ECUB0003", e.getMessageCode());
 		}
-		pathResolver.add("/child/m1", ChildAction.class, "m1");
-		pathResolver.add("/child/m2", ChildAction.class, "m2");
+		pathResolver.add("/child/m1", ChildAction.class, "m1",
+				RequestMethod.GET, null, 0);
+		pathResolver.add("/child/m1", ChildAction.class, "m1",
+				RequestMethod.POST, null, 0);
+		pathResolver.add("/child/m2", ChildAction.class, "m2",
+				RequestMethod.GET, null, 0);
+		pathResolver.add("/child/m2", ChildAction.class, "m2",
+				RequestMethod.POST, null, 0);
 		Collection<Routing> routings = pathResolver.getRoutings();
 		assertEquals("正常に登録できたルーティング情報の数", 28, routings.size());
 		Iterator<Routing> it = routings.iterator();

@@ -217,22 +217,6 @@ public class ActionContextImpl implements ActionContext {
 	}
 
 	/**
-	 * 指定されたメソッドを実行します。
-	 * 
-	 * @param method
-	 *            メソッド
-	 */
-	protected void invoke(final Method method) {
-		try {
-			method.invoke(action);
-		} catch (final IllegalAccessException e) {
-			throw new ActionException(e);
-		} catch (final InvocationTargetException e) {
-			throw new ActionException(e);
-		}
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public ActionErrors getActionErrors() {
@@ -258,17 +242,16 @@ public class ActionContextImpl implements ActionContext {
 	 * 
 	 * @param methodName
 	 *            メソッド名
-	 * @since 1.1.0
 	 */
 	private void invoke(final Object action, final String methodName) {
 		try {
 			final Method method = action.getClass().getMethod(methodName);
-			method.invoke(this);
-		} catch (NoSuchMethodException e) {
+			method.invoke(action);
+		} catch (final NoSuchMethodException e) {
 			throw new ActionException(e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new ActionException(e);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw new ActionException(e);
 		}
 	}

@@ -28,6 +28,7 @@ import org.jdom.Element;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
@@ -48,9 +49,9 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 	public void setupProvider() {
 		final PathResolver pathResolver = new PathResolverImpl();
 		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
-				"foo");
+				"foo", RequestMethod.GET, null, 0);
 		pathResolver.add("/mockFormTagTest/bar/{id}",
-				MockFormTagTestAction.class, "bar");
+				MockFormTagTestAction.class, "bar", RequestMethod.GET, null, 0);
 		ProviderFactory.bind(PathResolverProvider.class).toInstance(
 				new MockPathResolverProvider(pathResolver));
 		ProviderFactory.bind(ContainerProvider.class).toInstance(

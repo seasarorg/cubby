@@ -150,26 +150,63 @@ public class ThreadContextTest {
 		replay(request, response);
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
-
 			public Void execute() throws Exception {
-				final HttpServletRequest result = ThreadContext.getRequest();
-				assertSame("ThreadContext.getRequest()", request, result);
-				verify(request);
+				assertSame("ThreadContext.getRequest()", request, ThreadContext
+						.getRequest());
+				assertSame("ThreadContext.getResponse()", response,
+						ThreadContext.getResponse());
 				return null;
 			}
 		});
+		verify(request);
 	}
 
 	@Test
 	public void lifeCycle() throws Exception {
-		final HttpServletRequest request = createMock(HttpServletRequest.class);
-		final HttpServletResponse response = createMock(HttpServletResponse.class);
-		replay(request, response);
+		final HttpServletRequest request1 = createMock(HttpServletRequest.class);
+		final HttpServletResponse response1 = createMock(HttpServletResponse.class);
+		final HttpServletRequest request2 = createMock(HttpServletRequest.class);
+		final HttpServletResponse response2 = createMock(HttpServletResponse.class);
+		replay(request1, response1, request2, response2);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request1, response1, new Command<Void>() {
 
 			public Void execute() throws Exception {
-				assertSame(request, ThreadContext.getRequest());
+				assertSame(request1, ThreadContext.getRequest());
+				assertSame(response1, ThreadContext.getResponse());
+
+				ThreadContext.runInContext(request2, response2,
+						new Command<Void>() {
+
+							public Void execute() throws Exception {
+								assertSame(request2, ThreadContext.getRequest());
+								assertSame(response2, ThreadContext
+										.getResponse());
+								return null;
+							}
+
+						});
+				assertSame(request1, ThreadContext.getRequest());
+				assertSame(response1, ThreadContext.getResponse());
+
+				try {
+					ThreadContext.runInContext(request2, response2,
+							new Command<Void>() {
+
+								public Void execute() throws Exception {
+									assertSame(request2, ThreadContext
+											.getRequest());
+									assertSame(response2, ThreadContext
+											.getResponse());
+									throw new Exception();
+								}
+
+							});
+				} catch (Exception e) {
+					assertSame(request1, ThreadContext.getRequest());
+					assertSame(response1, ThreadContext.getResponse());
+				}
+
 				return null;
 			}
 		});
@@ -187,7 +224,34 @@ public class ThreadContextTest {
 		} catch (final IllegalStateException e) {
 			// ok
 		}
-		verify(request, response);
-	}
 
+		try {
+			ThreadContext.runInContext(request1, response1,
+					new Command<Void>() {
+
+						public Void execute() throws Exception {
+							assertSame(request1, ThreadContext.getRequest());
+							assertSame(response1, ThreadContext.getResponse());
+							throw new Exception();
+						}
+
+					});
+		} catch (Exception e) {
+			try {
+				ThreadContext.getRequest();
+				fail();
+			} catch (final IllegalStateException e1) {
+				// ok
+			}
+
+			try {
+				ThreadContext.getResponse();
+				fail();
+			} catch (final IllegalStateException e1) {
+				// ok
+			}
+		}
+
+		verify(request1, response1, request2, response2);
+	}
 }

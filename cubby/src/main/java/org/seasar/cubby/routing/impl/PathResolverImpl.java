@@ -68,9 +68,6 @@ public class PathResolverImpl implements PathResolver {
 	/** パステンプレートのパーサー。 */
 	private final PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
 
-	/** 手動登録用のプライオリティカウンタ。 */
-	private int priorityCounter = 0;
-
 	/**
 	 * インスタンス化します。
 	 */
@@ -97,8 +94,10 @@ public class PathResolverImpl implements PathResolver {
 				final RequestMethod[] acceptableRequestMethods = MetaUtils
 						.getAcceptableRequestMethods(actionClass, method);
 				for (final RequestMethod requestMethod : acceptableRequestMethods) {
+					final String onSubmit = MetaUtils.getOnSubmit(method);
+					final int priority = MetaUtils.getPriority(method);
 					this.add(actionPath, actionClass, method, requestMethod,
-							true);
+							onSubmit, priority);
 				}
 			}
 		}
@@ -121,36 +120,15 @@ public class PathResolverImpl implements PathResolver {
 	}
 
 	/**
-	 * ルーティング情報を登録します。
-	 * <p>
-	 * クラスパスを検索して自動登録されるルーティング情報以外にも、このメソッドによって手動でルーティング情報を登録できます。
-	 * </p>
-	 * 
-	 * @param actionPath
-	 *            アクションのパス
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param methodName
-	 *            アクションメソッド名
-	 * @param requestMethods
-	 *            リクエストメソッド
+	 * {@inheritDoc}
 	 */
 	public void add(final String actionPath, final Class<?> actionClass,
-			final String methodName, final RequestMethod... requestMethods) {
+			final String methodName, final RequestMethod requestMethod,
+			final String onSubmit, final int priority) {
 		try {
 			final Method method = actionClass.getMethod(methodName);
-			if (requestMethods == null || requestMethods.length == 0) {
-				for (final RequestMethod requestMethod : MetaUtils.DEFAULT_ACCEPT_ANNOTATION
-						.value()) {
-					this.add(actionPath, actionClass, method, requestMethod,
-							false);
-				}
-			} else {
-				for (final RequestMethod requestMethod : requestMethods) {
-					this.add(actionPath, actionClass, method, requestMethod,
-							false);
-				}
-			}
+			this.add(actionPath, actionClass, method, requestMethod, onSubmit,
+					priority);
 		} catch (final NoSuchMethodException e) {
 			throw new RoutingException(e);
 		}
@@ -167,12 +145,14 @@ public class PathResolverImpl implements PathResolver {
 	 *            アクションメソッド
 	 * @param requestMethods
 	 *            リクエストメソッド
-	 * @param auto
-	 *            自動登録かどうか
+	 * @param onSubmit
+	 *            アクションメソッドへ振り分けるための要求パラメータ名
+	 * @param priority
+	 *            プライオリティ
 	 */
 	private void add(final String actionPath, final Class<?> actionClass,
 			final Method method, final RequestMethod requestMethod,
-			final boolean auto) {
+			final String onSubmit, final int priority) {
 		if (!ActionUtils.isActionClass(actionClass)) {
 			throw new RoutingException(format("ECUB0002", actionClass));
 		}
@@ -192,14 +172,9 @@ public class PathResolverImpl implements PathResolver {
 				});
 		final Pattern pattern = Pattern.compile("^" + uriRegex + "$");
 
-		final String onSubmit = MetaUtils.getOnSubmit(method);
-
-		final int priority = auto ? MetaUtils.getPriority(method)
-				: priorityCounter++;
-
 		final Routing routing = new RoutingImpl(actionClass, method,
 				actionPath, uriParameterNames, pattern, requestMethod,
-				onSubmit, priority, auto);
+				onSubmit, priority);
 		final RoutingKey key = new RoutingKey(routing);
 
 		if (logger.isDebugEnabled()) {
