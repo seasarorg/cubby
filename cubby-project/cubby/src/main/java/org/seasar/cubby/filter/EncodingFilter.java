@@ -193,7 +193,7 @@ public class EncodingFilter implements Filter {
 	 * @author baba
 	 * @since 1.1.1
 	 */
-	private class EncodingHttpServletRequestWrapper extends
+	private static class EncodingHttpServletRequestWrapper extends
 			HttpServletRequestWrapper {
 
 		/** URI エンコーディング。 */

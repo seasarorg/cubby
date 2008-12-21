@@ -29,7 +29,7 @@ import org.seasar.cubby.converter.Converter;
 public abstract class AbstractConverter implements Converter {
 
 	/** プリミティブ型の配列クラスとラッパー型の配列クラスのマッピング */
-	protected static Map<Class<?>, Class<?>> PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY = new HashMap<Class<?>, Class<?>>();
+	private static final Map<Class<?>, Class<?>> PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY = new HashMap<Class<?>, Class<?>>();
 	static {
 		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(boolean[].class, Boolean[].class);
 		PRIMITIVE_ARRAY_TO_WRAPPER_ARRAY.put(char[].class, Character[].class);

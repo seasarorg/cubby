@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.tags;
 
-import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
@@ -26,7 +25,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
-import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.validator.validators.TokenValidator;
@@ -67,6 +65,10 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		final JspWriter out = context.getOut();
 
 		final String token = TokenHelper.generateGUID();
+		final HttpServletRequest request = getRequest();
+		final HttpSession session = request.getSession();
+		TokenHelper.setToken(session, token);
+
 		out.append("<input type=\"hidden\" name=\"");
 		if (StringUtils.isEmpty(name)) {
 			out.append(TokenHelper.DEFAULT_TOKEN_NAME);
@@ -78,11 +80,6 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		out.append("\" ");
 		out.write(toAttr(getDynamicAttribute()));
 		out.append("/>");
-		final HttpServletRequest request = ThreadContext.getRequest();
-		if (request == null) {
-			throw new IllegalStateException(format("ECUB0401"));
-		}
-		final HttpSession session = request.getSession();
-		TokenHelper.setToken(session, token);
 	}
+
 }

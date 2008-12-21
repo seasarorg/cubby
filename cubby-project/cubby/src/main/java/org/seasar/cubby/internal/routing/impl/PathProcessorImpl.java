@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
@@ -174,15 +175,15 @@ public class PathProcessorImpl implements PathProcessor {
 	protected final Routing dispatch(Map<String, Object[]> parameterMap) {
 
 		final Map<String, Routing> routings = pathInfo.getOnSubmitRoutings();
-		for (final String onSubmit : routings.keySet()) {
-			if (parameterMap.containsKey(onSubmit)) {
-				return routings.get(onSubmit);
+		for (final Entry<String, Routing> entry : routings.entrySet()) {
+			if (parameterMap.containsKey(entry.getKey())) {
+				return entry.getValue();
 			}
 		}
 		return routings.get(null);
 	}
 
-	private class PathInfoImpl implements PathInfo {
+	private static class PathInfoImpl implements PathInfo {
 
 		private Map<String, Routing> routings;
 

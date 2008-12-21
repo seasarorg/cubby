@@ -47,7 +47,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	private final Map<String, Object> attrs = new HashMap<String, Object>();
 
 	/** リンクの補助クラス。 */
-	private final LinkSupport linkSupport = new LinkSupport();
+	private transient final LinkSupport linkSupport = new LinkSupport();
 
 	/** 出力するタグ。 */
 	private String tag;

@@ -119,7 +119,7 @@ public class ActionErrorsImpl implements ActionErrors {
 	 */
 	public void add(final String message, final String... fieldNames) {
 		final FieldInfo[] fieldInfos = new FieldInfo[fieldNames.length];
-		for (int i = 0 ; i < fieldNames.length; i++) {
+		for (int i = 0; i < fieldNames.length; i++) {
 			fieldInfos[i] = new FieldInfo(fieldNames[i]);
 		}
 		this.add(message, fieldInfos);
@@ -167,9 +167,9 @@ public class ActionErrorsImpl implements ActionErrors {
 
 		private static final long serialVersionUID = 1L;
 
-		private final EmptyValueFactory<V> emptyValueFactory;
+		private transient final EmptyValueFactory<V> emptyValueFactory;
 
-		private NotNullHashMap(EmptyValueFactory<V> emptyValueFactory) {
+		private NotNullHashMap(final EmptyValueFactory<V> emptyValueFactory) {
 			this.emptyValueFactory = emptyValueFactory;
 		}
 

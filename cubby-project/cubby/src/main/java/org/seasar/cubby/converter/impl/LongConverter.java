@@ -35,7 +35,7 @@ public class LongConverter extends AbstractNumberConverter {
 	 */
 	@Override
 	protected Number convert(final Number number) {
-		return new Long(number.longValue());
+		return Long.valueOf(number.longValue());
 	}
 
 }

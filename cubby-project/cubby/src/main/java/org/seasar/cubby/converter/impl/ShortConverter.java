@@ -35,7 +35,7 @@ public class ShortConverter extends AbstractNumberConverter {
 	 */
 	@Override
 	protected Number convert(final Number number) {
-		return new Short(number.shortValue());
+		return Short.valueOf(number.shortValue());
 	}
 
 }

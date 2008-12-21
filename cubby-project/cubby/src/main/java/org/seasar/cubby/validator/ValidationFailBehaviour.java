@@ -33,6 +33,6 @@ public interface ValidationFailBehaviour {
 	 *            アクションコンテキスト
 	 * @return 画面遷移を制御するための {@link ActionResult}
 	 */
-	ActionResult getActionResult(ActionContext actionContext);
+	ActionResult getValidationErrorActionResult(ActionContext actionContext);
 
 }

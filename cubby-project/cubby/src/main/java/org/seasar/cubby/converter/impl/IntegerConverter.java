@@ -35,7 +35,7 @@ public class IntegerConverter extends AbstractNumberConverter {
 	 */
 	@Override
 	protected Number convert(final Number number) {
-		return new Integer(number.intValue());
+		return Integer.valueOf(number.intValue());
 	}
 
 }

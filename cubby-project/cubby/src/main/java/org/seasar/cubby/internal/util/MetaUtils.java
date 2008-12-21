@@ -34,7 +34,7 @@ public class MetaUtils {
 	private static final String INDEX_METHOD_NAME = "index";
 
 	/** デフォルトの{@link Accept}アノテーション。 */
-	public static Accept DEFAULT_ACCEPT_ANNOTATION;
+	private static final Accept DEFAULT_ACCEPT_ANNOTATION;
 	static {
 		@Accept
 		class AcceptDummy {
@@ -113,7 +113,7 @@ public class MetaUtils {
 		final String path;
 		final String actionMethodName = getActionMethodName(method);
 		if (actionMethodName.startsWith("/")) {
-			return path = actionMethodName;
+			path = actionMethodName;
 		} else {
 			final String actionDirectory = getActionDirectory(actionClass);
 			if ("/".equals(actionDirectory)) {
