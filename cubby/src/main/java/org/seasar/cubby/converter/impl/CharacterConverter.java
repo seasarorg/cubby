@@ -20,8 +20,8 @@ import org.seasar.cubby.converter.ConversionHelper;
 /**
  * 任意のオブジェクトから{@link Character}への変換を行うコンバータです。
  * <p>
- * 変換元のオブジェクトの文字列表現の先頭の文字を表す{@link Character}へ変換します。 そうでない場合は
- * <code>null</code> とします。
+ * 変換元のオブジェクトの文字列表現の先頭の文字を表す{@link Character}へ変換します。 そうでない場合は <code>null</code>
+ * とします。
  * </p>
  * 
  * @author baba
@@ -39,7 +39,8 @@ public class CharacterConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -63,7 +64,8 @@ public class CharacterConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
+	public String convertToString(final Object value,
+			final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

@@ -46,6 +46,7 @@ public interface BeanDesc {
 
 	/**
 	 * すべてのプロパティの{@link PropertyDesc}を返します。
+	 * 
 	 * @return {@link PropertyDesc}の配列
 	 */
 	PropertyDesc[] getPropertyDescs();

@@ -18,7 +18,6 @@ package org.seasar.cubby.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * エラーのレスポンスを返すことを示す {@link ActionResult} です。
  * <p>
@@ -56,7 +55,7 @@ public class SendError implements ActionResult {
 	 *            メッセージ
 	 * @see HttpServletResponse#sendError(int, String)
 	 */
-	public SendError(final int statusCode, String message) {
+	public SendError(final int statusCode, final String message) {
 		this.statusCode = statusCode;
 		this.message = message;
 	}

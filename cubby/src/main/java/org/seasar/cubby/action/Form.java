@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
  * 
  * <p>
  * この注釈によって、どのようにリクエストパラメータがバインドされるかが変わります。
+ * 
  * <pre>
  * import static org.seasar.cubby.action.RequestParameterBindingType.*;
  * 
@@ -74,10 +75,12 @@ import java.lang.annotation.Target;
  * 	}
  * }
  * </pre>
+ * 
  * </p>
  * 
  * <p>
  * クラスとメソッドの両方に注釈をつけた場合は、メソッドの注釈が優先されます。
+ * 
  * <pre>
  * &#064;Form(&quot;barDto&quot;)
  * // 全アクションメソッドに対して一括でバインディングの指定を行います。
@@ -97,6 +100,7 @@ import java.lang.annotation.Target;
  * 	}
  * }
  * </pre>
+ * 
  * </p>
  * 
  * <p>
@@ -108,8 +112,7 @@ import java.lang.annotation.Target;
  * <th>バインド対象のオブジェクト</th>
  * <th>バインド対象のプロパティ</th>
  * </tr>
- * </thead>
- * <tbody>
+ * </thead> <tbody>
  * <tr>
  * <td>1.0.x</td>
  * <td>アクション</td>
@@ -123,7 +126,7 @@ import java.lang.annotation.Target;
  * </tbody>
  * </table>
  * </p>
- *
+ * 
  * @author agata
  * @since 1.0.0
  * @see RequestParameter

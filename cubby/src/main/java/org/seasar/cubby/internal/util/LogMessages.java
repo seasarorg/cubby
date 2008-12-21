@@ -39,7 +39,7 @@ public class LogMessages {
 	 *            フォーマットするかまたは置き換えるオブジェクトからなる配列
 	 * @return フォーマットされた文字列
 	 */
-	public static String format(String key, Object... arguments) {
+	public static String format(final String key, final Object... arguments) {
 		return MessageFormat.format(resourceBundle.getString(key), arguments);
 	}
 

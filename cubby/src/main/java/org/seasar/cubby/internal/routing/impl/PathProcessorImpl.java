@@ -40,12 +40,12 @@ import org.slf4j.LoggerFactory;
 public class PathProcessorImpl implements PathProcessor {
 
 	/** オリジナルのリクエスト */
-	private HttpServletRequest request;
+	private final HttpServletRequest request;
 
 	/** オリジナルのレスポンス */
-	private HttpServletResponse response;
+	private final HttpServletResponse response;
 
-	private List<Pattern> ignorePathPatterns;
+	private final List<Pattern> ignorePathPatterns;
 
 	// TODO
 	private final Router router = new RouterImpl();
@@ -60,8 +60,9 @@ public class PathProcessorImpl implements PathProcessor {
 	/** 内部フォワード情報 */
 	private PathInfo pathInfo;
 
-	public PathProcessorImpl(HttpServletRequest request,
-			HttpServletResponse response, List<Pattern> ignorePathPatterns) {
+	public PathProcessorImpl(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final List<Pattern> ignorePathPatterns) {
 		this.request = request;
 		this.response = response;
 		this.ignorePathPatterns = ignorePathPatterns;
@@ -122,8 +123,8 @@ public class PathProcessorImpl implements PathProcessor {
 
 		private final Routing routing;
 
-		public ActionProcessorInvokeCommand(HttpServletRequest request,
-				HttpServletResponse response, Routing routing) {
+		public ActionProcessorInvokeCommand(final HttpServletRequest request,
+				final HttpServletResponse response, final Routing routing) {
 			this.request = request;
 			this.response = response;
 			this.routing = routing;
@@ -172,7 +173,7 @@ public class PathProcessorImpl implements PathProcessor {
 		return parameterMap;
 	}
 
-	protected final Routing dispatch(Map<String, Object[]> parameterMap) {
+	protected final Routing dispatch(final Map<String, Object[]> parameterMap) {
 
 		final Map<String, Routing> routings = pathInfo.getOnSubmitRoutings();
 		for (final Entry<String, Routing> entry : routings.entrySet()) {
@@ -185,11 +186,11 @@ public class PathProcessorImpl implements PathProcessor {
 
 	private static class PathInfoImpl implements PathInfo {
 
-		private Map<String, Routing> routings;
+		private final Map<String, Routing> routings;
 
-		private Map<String, String[]> uriParameters = new HashMap<String, String[]>();
+		private final Map<String, String[]> uriParameters = new HashMap<String, String[]>();
 
-		public PathInfoImpl(Routing routing) {
+		public PathInfoImpl(final Routing routing) {
 			routings = new HashMap<String, Routing>();
 			routings.put(null, routing);
 		}

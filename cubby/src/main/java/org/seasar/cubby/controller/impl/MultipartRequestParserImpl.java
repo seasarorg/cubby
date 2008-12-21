@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
@@ -199,7 +200,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 		try {
 			final RequestContext requestContext = container
 					.lookup(RequestContext.class);
-			return FileUpload.isMultipartContent(requestContext);
+			return FileUploadBase.isMultipartContent(requestContext);
 		} catch (final LookupException e) {
 			return false;
 		}

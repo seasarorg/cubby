@@ -135,7 +135,7 @@ public class CubbyFilter implements Filter {
 	public void doFilter(final ServletRequest request,
 			final ServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
-		PathProcessor delegate = new PathProcessorImpl(
+		final PathProcessor delegate = new PathProcessorImpl(
 				(HttpServletRequest) request, (HttpServletResponse) response,
 				ignorePathPatterns);
 		if (delegate.hasPathInfo()) {

@@ -36,7 +36,7 @@ public abstract class AbstractRequestParserProvider implements
 		RequestParserProvider {
 
 	/** リクエスト解析器の {@link Comparator}。 */
-	private Comparator<RequestParser> requestParserComparator = new Comparator<RequestParser>() {
+	private final Comparator<RequestParser> requestParserComparator = new Comparator<RequestParser>() {
 
 		/**
 		 * {@inheritDoc}
@@ -44,8 +44,8 @@ public abstract class AbstractRequestParserProvider implements
 		 * 優先順位の昇順にソートします。
 		 * </p>
 		 */
-		public int compare(RequestParser reuqestParser1,
-				RequestParser reuqestParser2) {
+		public int compare(final RequestParser reuqestParser1,
+				final RequestParser reuqestParser2) {
 			return reuqestParser1.getPriority() - reuqestParser2.getPriority();
 		}
 
@@ -71,7 +71,7 @@ public abstract class AbstractRequestParserProvider implements
 	 * @return ソートされた {@link Iterable}
 	 */
 	protected Iterable<RequestParser> sort(
-			Collection<RequestParser> requestParsers) {
+			final Collection<RequestParser> requestParsers) {
 		final List<RequestParser> requestParserList = new ArrayList<RequestParser>(
 				requestParsers);
 		Collections.sort(requestParserList, requestParserComparator);

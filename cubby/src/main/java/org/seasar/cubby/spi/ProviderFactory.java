@@ -76,7 +76,7 @@ public class ProviderFactory {
 	 *            サービス
 	 * @return バインダー
 	 */
-	public static <S extends Provider> Binder<S> bind(Class<S> service) {
+	public static <S extends Provider> Binder<S> bind(final Class<S> service) {
 		return new Binder<S>(service);
 	}
 

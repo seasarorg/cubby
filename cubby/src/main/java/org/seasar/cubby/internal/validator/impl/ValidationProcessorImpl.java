@@ -78,7 +78,7 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 	private void validate(final ValidationRules validationRules,
 			final Map<String, Object[]> params, final Object form,
 			final ActionErrors errors) {
-		for (ValidationPhase validationPhase : validationRules
+		for (final ValidationPhase validationPhase : validationRules
 				.getValidationPhases()) {
 			validate(validationRules, validationPhase, params, form, errors);
 		}

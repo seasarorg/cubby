@@ -178,7 +178,9 @@ public class FieldValidationRule implements ValidationRule {
 	private static class ArrayFieldValidationInvoker implements
 			ValidationInvoker {
 
-		/** {@link #invoke(FieldValidationRule, Object[], ActionErrors)}で呼び出す入力検証。 */
+		/**
+		 * {@link #invoke(FieldValidationRule, Object[], ActionErrors)}で呼び出す入力検証。
+		 */
 		private final ArrayFieldValidator validator;
 
 		/**
@@ -219,7 +221,9 @@ public class FieldValidationRule implements ValidationRule {
 	private static class ScalarFieldValidationInvoker implements
 			ValidationInvoker {
 
-		/** {@link #invoke(FieldValidationRule, Object[], ActionErrors)}で呼び出す入力検証。 */
+		/**
+		 * {@link #invoke(FieldValidationRule, Object[], ActionErrors)}で呼び出す入力検証。
+		 */
 		private final ScalarFieldValidator validator;
 
 		/**

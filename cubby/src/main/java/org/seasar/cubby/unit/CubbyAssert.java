@@ -72,7 +72,7 @@ public class CubbyAssert {
 			final String expectedPath, final ActionResult actualResult,
 			final String characterEncoding) {
 
-		List<ActionResultAssert<?, String>> asserters = new ArrayList<ActionResultAssert<?, String>>();
+		final List<ActionResultAssert<?, String>> asserters = new ArrayList<ActionResultAssert<?, String>>();
 		asserters.add(new ForwardAssert());
 		asserters.add(new RedirectAssert());
 		assertActionResult(resultClass, actualResult, asserters, expectedPath,
@@ -82,12 +82,12 @@ public class CubbyAssert {
 	protected static <E> void assertActionResult(
 			final Class<? extends ActionResult> resultClass,
 			final ActionResult actualResult,
-			List<ActionResultAssert<?, E>> asserters, E expected,
-			Object... args) {
+			final List<ActionResultAssert<?, E>> asserters, final E expected,
+			final Object... args) {
 		Assert.assertNotNull("ActionResult が null でないこと", actualResult);
 		Assert.assertEquals("ActionResultの型をチェック", resultClass, actualResult
 				.getClass());
-		for (ActionResultAssert<?, E> asserter : asserters) {
+		for (final ActionResultAssert<?, E> asserter : asserters) {
 			asserter.assertType(actualResult, expected, args);
 		}
 	}
@@ -96,8 +96,8 @@ public class CubbyAssert {
 
 		protected Class<T> clazz;
 
-		public void assertType(ActionResult actualResult, E expected,
-				Object... args) {
+		public void assertType(final ActionResult actualResult,
+				final E expected, final Object... args) {
 			if (clazz.isInstance(actualResult)) {
 				doAssert(clazz.cast(actualResult), expected, args);
 			}
@@ -110,7 +110,8 @@ public class CubbyAssert {
 	protected static abstract class PathAssert<T extends ActionResult> extends
 			ActionResultAssert<T, String> {
 
-		protected void doPathAssert(String expectedPath, String actualPath) {
+		protected void doPathAssert(final String expectedPath,
+				final String actualPath) {
 			Assert.assertEquals("パスのチェック", expectedPath, actualPath);
 		}
 	}
@@ -122,7 +123,8 @@ public class CubbyAssert {
 		}
 
 		@Override
-		void doAssert(Forward actualResult, String expected, Object... args) {
+		void doAssert(final Forward actualResult, final String expected,
+				final Object... args) {
 			doPathAssert(expected, actualResult.getPath(args[0].toString()));
 		}
 	}
@@ -134,7 +136,8 @@ public class CubbyAssert {
 		}
 
 		@Override
-		void doAssert(Redirect actualResult, String expected, Object... args) {
+		void doAssert(final Redirect actualResult, final String expected,
+				final Object... args) {
 			doPathAssert(expected, actualResult.getPath(args[0].toString()));
 		}
 	}

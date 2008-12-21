@@ -19,9 +19,13 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.seasar.cubby.internal.controller.ActionProcessor;
+
 /**
  * フィルタからのパスの処理を委譲されるクラス
- * <p>パスに対応するアクションクラスを呼び出し、処理を行う</p>
+ * <p>
+ * パスに対応するアクションクラスを呼び出し、処理を行う
+ * </p>
  * 
  * @author someda
  */
@@ -29,7 +33,9 @@ public interface PathProcessor {
 
 	/**
 	 * 現在のリクエストが内部フォワード情報を持つかどうかを返す
-	 * <p>ActionProcessor での処理を行うかどうかの判別に利用する</p>
+	 * <p>
+	 * ActionProcessor での処理を行うかどうかの判別に利用する
+	 * </p>
 	 * 
 	 * @return 存在する場合には「真」、そうでない場合は「偽」を返す
 	 */

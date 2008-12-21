@@ -41,7 +41,7 @@ public class LookupException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public LookupException(String message, Throwable cause) {
+	public LookupException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -51,7 +51,7 @@ public class LookupException extends RuntimeException {
 	 * @param message
 	 *            詳細メッセージ
 	 */
-	public LookupException(String message) {
+	public LookupException(final String message) {
 		super(message);
 	}
 
@@ -61,7 +61,7 @@ public class LookupException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public LookupException(Throwable cause) {
+	public LookupException(final Throwable cause) {
 		super(cause);
 	}
 

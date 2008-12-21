@@ -27,9 +27,9 @@ public class IllegalPropertyException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	private Class<?> targetClass;
+	private final Class<?> targetClass;
 
-	private String propertyName;
+	private final String propertyName;
 
 	/**
 	 * {@link IllegalPropertyException}を作成します。
@@ -38,8 +38,8 @@ public class IllegalPropertyException extends RuntimeException {
 	 * @param propertyName
 	 * @param cause
 	 */
-	public IllegalPropertyException(Class<?> targetClass, String propertyName,
-			Throwable cause) {
+	public IllegalPropertyException(final Class<?> targetClass,
+			final String propertyName, final Throwable cause) {
 		super(format("ECUB0051", targetClass.getName(), propertyName, cause),
 				cause);
 		this.targetClass = targetClass;

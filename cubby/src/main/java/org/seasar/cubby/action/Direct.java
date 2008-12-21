@@ -18,7 +18,6 @@ package org.seasar.cubby.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * アクションメソッドから直接レスポンスを返すことを示す {@link ActionResult} です。
  * <p>

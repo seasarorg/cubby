@@ -58,7 +58,7 @@ public class FormatPatternImpl implements FormatPattern {
 	 * @param datePattern
 	 *            日付フォーマットパターン
 	 */
-	public void setDatePattern(String datePattern) {
+	public void setDatePattern(final String datePattern) {
 		this.datePattern = datePattern;
 	}
 
@@ -77,7 +77,7 @@ public class FormatPatternImpl implements FormatPattern {
 	 * @param timePattern
 	 *            時刻フォーマットパターン
 	 */
-	public void setTimePattern(String timePattern) {
+	public void setTimePattern(final String timePattern) {
 		this.timePattern = timePattern;
 	}
 
@@ -96,7 +96,7 @@ public class FormatPatternImpl implements FormatPattern {
 	 * @param timestampPattern
 	 *            日付時刻フォーマットパターン
 	 */
-	public void setTimestampPattern(String timestampPattern) {
+	public void setTimestampPattern(final String timestampPattern) {
 		this.timestampPattern = timestampPattern;
 	}
 
@@ -134,7 +134,7 @@ public class FormatPatternImpl implements FormatPattern {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 		builder.append("[datePattern=");
 		builder.append(datePattern);

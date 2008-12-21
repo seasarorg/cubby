@@ -30,8 +30,8 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  * @author agata
  * @since 1.0.0
  */
-abstract class DynamicAttributesTagSupport extends SimpleTagSupport
-		implements DynamicAttributes {
+abstract class DynamicAttributesTagSupport extends SimpleTagSupport implements
+		DynamicAttributes {
 
 	/**
 	 * DynamicAttributes

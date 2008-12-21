@@ -41,8 +41,8 @@ public class InputStreamFileItemConverter extends AbstractFileItemConverter {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * 指定された{@link FileItem}から取得した{@link InputStream}を返します。変換時に{@link IOException}が発生した場合は
-	 * <code>null</code> を返します。
+	 * 指定された{@link FileItem}から取得した{@link InputStream}を返します。変換時に
+	 * {@link IOException}が発生した場合は <code>null</code> を返します。
 	 * </p>
 	 * 
 	 * @return 指定された{@link FileItem}から取得した{@link InputStream}

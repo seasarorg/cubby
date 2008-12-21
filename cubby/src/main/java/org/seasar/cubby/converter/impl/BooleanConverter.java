@@ -17,12 +17,12 @@ package org.seasar.cubby.converter.impl;
 
 import org.seasar.cubby.converter.ConversionHelper;
 
-
 /**
  * {@link Boolean}への変換を行うコンバータです。
  * <p>
- * 変換元オブジェクトの文字列表現が<code>yes</code>、<code>y</code>、<code>true</code>、<code>on</code>、<code>1</code>なら<code>true</code>、
- * そうでなければ<code>false</code>とします。
+ * 変換元オブジェクトの文字列表現が<code>yes</code>、<code>y</code>、<code>true</code>、
+ * <code>on</code>、<code>1</code>なら<code>true</code>、 そうでなければ<code>false</code>
+ * とします。
  * </p>
  * 
  * @author baba
@@ -44,7 +44,8 @@ public class BooleanConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -70,7 +71,8 @@ public class BooleanConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
+	public String convertToString(final Object value,
+			final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

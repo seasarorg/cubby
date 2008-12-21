@@ -17,7 +17,6 @@ package org.seasar.cubby.converter.impl;
 
 import org.seasar.cubby.converter.ConversionHelper;
 
-
 /**
  * 列挙定数へ変換するコンバータです。
  * 
@@ -37,7 +36,8 @@ public class EnumConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -48,7 +48,8 @@ public class EnumConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
+	public String convertToString(final Object value,
+			final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

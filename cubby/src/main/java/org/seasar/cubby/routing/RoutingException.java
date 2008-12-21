@@ -41,7 +41,7 @@ public class RoutingException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public RoutingException(String message, Throwable cause) {
+	public RoutingException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -51,7 +51,7 @@ public class RoutingException extends RuntimeException {
 	 * @param message
 	 *            詳細メッセージ
 	 */
-	public RoutingException(String message) {
+	public RoutingException(final String message) {
 		super(message);
 	}
 
@@ -61,7 +61,7 @@ public class RoutingException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public RoutingException(Throwable cause) {
+	public RoutingException(final Throwable cause) {
 		super(cause);
 	}
 

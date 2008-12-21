@@ -43,8 +43,7 @@ public interface Router {
 	 *         <code>null</code>
 	 * @see #routing(HttpServletRequest, HttpServletResponse, List)
 	 */
-	PathInfo routing(HttpServletRequest request,
-			HttpServletResponse response);
+	PathInfo routing(HttpServletRequest request, HttpServletResponse response);
 
 	/**
 	 * リクエストのルーティング処理を行い、内部フォワード情報を返します。
@@ -64,7 +63,7 @@ public interface Router {
 	 * @see org.seasar.cubby.action.Path
 	 * @see org.seasar.cubby.action.Accept
 	 */
-	PathInfo routing(HttpServletRequest request,
-			HttpServletResponse response, List<Pattern> ignorePathPatterns);
+	PathInfo routing(HttpServletRequest request, HttpServletResponse response,
+			List<Pattern> ignorePathPatterns);
 
 }

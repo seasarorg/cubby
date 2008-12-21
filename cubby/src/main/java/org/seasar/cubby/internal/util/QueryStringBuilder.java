@@ -39,7 +39,7 @@ public class QueryStringBuilder {
 	/**
 	 * パラメータ文字列
 	 */
-	private StringBuilder queryString = new StringBuilder();
+	private final StringBuilder queryString = new StringBuilder();
 
 	/**
 	 * エンコード
@@ -70,7 +70,7 @@ public class QueryStringBuilder {
 	 * @param baseUri
 	 *            URI部分
 	 */
-	public QueryStringBuilder(String baseUri) {
+	public QueryStringBuilder(final String baseUri) {
 		this.baseUri = baseUri;
 	}
 
@@ -110,7 +110,7 @@ public class QueryStringBuilder {
 		if (this.baseUri == null) {
 			return queryString.toString();
 		} else {
-			StringBuilder baseUrlBuf = new StringBuilder(this.baseUri);
+			final StringBuilder baseUrlBuf = new StringBuilder(this.baseUri);
 			if (baseUrlBuf.indexOf("?") == -1) {
 				baseUrlBuf.append("?");
 			} else if (queryString.indexOf("?") < queryString.length()) {
