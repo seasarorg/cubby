@@ -22,9 +22,9 @@ import org.seasar.cubby.converter.impl.ShortConverter;
 import org.seasar.cubby.converter.impl.SqlDateConverter;
 import org.seasar.cubby.converter.impl.SqlTimeConverter;
 import org.seasar.cubby.converter.impl.SqlTimestampConverter;
-import org.seasar.cubby.spi.impl.AbstractConverterProvider;
+import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 
-public class MockConverterProvider extends AbstractConverterProvider {
+public class MockConverterProvider extends AbstractCachedConverterProvider {
 
 	private List<Converter> converters = Arrays.asList(new Converter[] {
 			new BigDecimalConverter(),

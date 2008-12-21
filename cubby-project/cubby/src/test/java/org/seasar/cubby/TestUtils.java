@@ -17,7 +17,13 @@ package org.seasar.cubby;
 
 import java.lang.reflect.Field;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TestUtils {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(TestUtils.class);
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getPrivateField(Object obj, String fieldName)
@@ -45,6 +51,31 @@ public class TestUtils {
 		}
 
 		throw new NoSuchFieldException(fieldName);
+	}
+
+	public static void bind(Object client, Object injectee) {
+		Class<?> clientType = client.getClass();
+		bind(client, clientType, injectee);
+	}
+
+	private static void bind(Object client, Class<?> clientType, Object injectee) {
+		for (Field field : clientType.getDeclaredFields()) {
+			if (field.getType().isAssignableFrom(injectee.getClass())) {
+				field.setAccessible(true);
+				try {
+					field.set(client, injectee);
+					logger.debug("Bind [" + field + "] to " + injectee);
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException(e);
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+		Class<?> superType = clientType.getSuperclass();
+		if (!superType.equals(Object.class)) {
+			bind(client, superType, injectee);
+		}
 	}
 
 }
