@@ -377,18 +377,15 @@ public class Redirect implements ActionResult {
 			}
 		}
 
-		if (protocol == null) {
+		if (this.protocol == null) {
 			return redirectPath;
 		} else {
 			try {
 				final URL currentURL = new URL(request.getRequestURL()
 						.toString());
-				final String redirectProtocol = this.protocol == null ? currentURL
-						.getProtocol()
-						: this.protocol;
 				final int redirectPort = this.port < 0 ? currentURL.getPort()
 						: this.port;
-				final URL redirectURL = new URL(redirectProtocol, currentURL
+				final URL redirectURL = new URL(this.protocol, currentURL
 						.getHost(), redirectPort, redirectPath);
 				return redirectURL.toExternalForm();
 			} catch (MalformedURLException e) {

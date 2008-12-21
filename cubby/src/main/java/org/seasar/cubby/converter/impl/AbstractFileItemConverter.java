@@ -43,7 +43,8 @@ public abstract class AbstractFileItemConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object convertToObject(final Object value, final Class<?> objectType, ConversionHelper helper) {
+	public Object convertToObject(final Object value,
+			final Class<?> objectType, ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -54,7 +55,8 @@ public abstract class AbstractFileItemConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
+	public String convertToString(final Object value,
+			final ConversionHelper helper) {
 		return null;
 	}
 

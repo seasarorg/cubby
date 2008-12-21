@@ -136,11 +136,7 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			final Converter converter = converterProvider.getConverter(null,
 					value.getClass());
 			if (converter == null) {
-				if (value == null) {
-					return null;
-				} else {
-					return value.toString();
-				}
+				return value.toString();
 			} else {
 				return converter.convertToString(value, conversionHelper);
 			}

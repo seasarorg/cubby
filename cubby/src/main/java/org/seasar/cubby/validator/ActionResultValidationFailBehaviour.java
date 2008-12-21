@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.validator;
 
-import java.io.Serializable;
-
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 
@@ -26,11 +24,7 @@ import org.seasar.cubby.action.ActionResult;
  * @author baba
  * @since 1.1.0
  */
-class ActionResultValidationFailBehaviour implements ValidationFailBehaviour,
-		Serializable {
-
-	/** シリアルバージョンUID。 */
-	private static final long serialVersionUID = 1L;
+class ActionResultValidationFailBehaviour implements ValidationFailBehaviour {
 
 	/** 入力検証でエラーがあった場合に実行する {@link ActionResult}。 */
 	private final ActionResult actionResult;
@@ -48,7 +42,8 @@ class ActionResultValidationFailBehaviour implements ValidationFailBehaviour,
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult getActionResult(final ActionContext actionContext) {
+	public ActionResult getValidationErrorActionResult(
+			final ActionContext actionContext) {
 		return actionResult;
 	}
 

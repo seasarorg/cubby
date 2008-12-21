@@ -35,7 +35,7 @@ public class ByteConverter extends AbstractNumberConverter {
 	 */
 	@Override
 	protected Number convert(final Number number) {
-		return new Byte(number.byteValue());
+		return Byte.valueOf(number.byteValue());
 	}
 
 }

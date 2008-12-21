@@ -60,13 +60,13 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	private boolean encodeURL = true;
 
 	/** リンク用の補助クラス。 */
-	private final LinkSupport linkSupport = new LinkSupport();
+	private final transient LinkSupport linkSupport = new LinkSupport();
 
 	/** フォームオブジェクトのラッパーファクトリ。 */
-	private final FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
+	private final transient FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
 
 	/** フォームオブジェクトのラッパー。 */
-	private FormWrapper formWrapper;
+	private transient FormWrapper formWrapper;
 
 	/**
 	 * {@inheritDoc} DynamicAttributeをセットします。

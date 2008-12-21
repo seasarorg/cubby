@@ -69,7 +69,9 @@ public class MessageInfo {
 	 *            置換文字列
 	 */
 	public void setArguments(final Object... arguments) {
-		this.arguments = arguments;
+		final Object[] copyArguments = new Object[arguments.length];
+		System.arraycopy(arguments, 0, copyArguments, 0, arguments.length);
+		this.arguments = copyArguments;
 	}
 
 	/**
@@ -88,7 +90,7 @@ public class MessageInfo {
 	 * @see Messages
 	 * @author baba
 	 */
-	public class MessageBuilder {
+	public static class MessageBuilder {
 
 		/** メッセージキー。 */
 		private final String messageKey;

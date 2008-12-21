@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.validator.validators;
 
-import static org.seasar.cubby.internal.util.LogMessages.format;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -43,10 +41,13 @@ import org.seasar.cubby.validator.ValidationContext;
  */
 public class TokenValidator implements ArrayFieldValidator {
 
+	/**
+	 * メッセージヘルパ。
+	 */
 	private final MessageHelper messageHelper;
 
 	/**
-	 * コンストラクタ
+	 * コンストラクタ。
 	 */
 	public TokenValidator() {
 		this("valid.token");
@@ -66,17 +67,19 @@ public class TokenValidator implements ArrayFieldValidator {
 	 * {@inheritDoc}
 	 */
 	public void validate(final ValidationContext context, final Object[] values) {
-		if (values != null && values.length != 1) {
+		if (values == null) {
+			return;
+		}
+		if (values.length != 1) {
 			context.addMessageInfo(this.messageHelper.createMessageInfo());
 		} else {
 			final String token = (String) values[0];
 			final HttpServletRequest request = ThreadContext.getRequest();
-			if (request == null) {
-				throw new IllegalStateException(format("ECUB0401"));
-			}
-			final HttpSession session = request.getSession();
-			if (!TokenHelper.validateToken(session, token)) {
-				context.addMessageInfo(this.messageHelper.createMessageInfo());
+			final HttpSession session = request.getSession(false);
+			if (session != null) {
+				if (!TokenHelper.validateToken(session, token)) {
+					context.addMessageInfo(this.messageHelper.createMessageInfo());
+				}
 			}
 		}
 	}

@@ -72,46 +72,11 @@ public class ThreadContext {
 	private static ThreadContext getContext() {
 		final ThreadContext context = THREAD_LOCAL.get();
 		if (context == null) {
-			throw new IllegalStateException("out of context scope.");
+			throw new IllegalStateException(
+					"Could not get context from ThreadLocal. run in context scope.");
 		}
 		return context;
 	}
-
-	// /**
-	// * 現在の実行スレッドに対するコンテキストを保存し、指定された情報をもつ新規コンテキストを関連付けます。
-	// *
-	// * @param request
-	// * 要求
-	// * @param response
-	// * 応答
-	// */
-	// public static void newContext(final HttpServletRequest request,
-	// final HttpServletResponse response) {
-	// final ThreadContext previous = THREAD_LOCAL.get();
-	// final ThreadContext context = new ThreadContext(previous, request,
-	// response);
-	// THREAD_LOCAL.set(context);
-	// }
-	//
-	// /**
-	// * スレッドローカル変数を {@link ThreadContext#newContext(HttpServletRequest)}
-	// * 呼び出し以前の状態に戻します。
-	// */
-	// public static void restoreContext() {
-	// final ThreadContext context = THREAD_LOCAL.get();
-	// if (context != null) {
-	// THREAD_LOCAL.set(context.previous);
-	// } else {
-	// remove();
-	// }
-	// }
-	//
-	// /**
-	// * スレッドローカル変数から現在の実行スレッドに関する情報を削除します。
-	// */
-	// public static void remove() {
-	// THREAD_LOCAL.remove();
-	// }
 
 	/**
 	 * 現在の実行スレッドに関連付けられた要求を取得します。
@@ -196,6 +161,16 @@ public class ThreadContext {
 	public static <T> T runInContext(final HttpServletRequest request,
 			final HttpServletResponse response, final Command<T> command)
 			throws Exception {
+		if (request == null) {
+			throw new NullPointerException("request");
+		}
+		if (response == null) {
+			throw new NullPointerException("response");
+		}
+		if (command == null) {
+			throw new NullPointerException("command");
+		}
+
 		final ThreadContext previous = THREAD_LOCAL.get();
 		final ThreadContext context = new ThreadContext(request, response);
 		THREAD_LOCAL.set(context);

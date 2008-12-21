@@ -69,24 +69,18 @@ class ErrorPageValidationFailBehaviour implements ValidationFailBehaviour,
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult getActionResult(final ActionContext actionContext) {
+	public ActionResult getValidationErrorActionResult(
+			final ActionContext actionContext) {
 		if (errorMessage != null && errorMessage.length() > 0) {
 			final ActionErrors actionErrors = actionContext.getActionErrors();
 			actionErrors.add(errorMessage, fieldNames);
 		}
-		final String errorPage;
+		final Object action = actionContext.getAction();
 		final Method actionMethod = actionContext.getActionMethod();
 		final Validation validation = getValidation(actionMethod);
-		if (validation == null) {
-			errorPage = null;
-		} else {
-			errorPage = validation.errorPage();
-		}
-
-		final Object action = actionContext.getAction();
 		final ValidationRules validationRules = getValidationRules(action,
 				validation.rules());
-		return validationRules.fail(errorPage);
+		return validationRules.fail(validation.errorPage());
 	}
 
 }

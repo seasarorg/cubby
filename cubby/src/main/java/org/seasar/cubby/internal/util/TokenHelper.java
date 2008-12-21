@@ -23,15 +23,11 @@ import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
-import org.seasar.cubby.CubbyConstants;
-import org.seasar.cubby.tags.TokenTag;
-import org.seasar.cubby.validator.validators.TokenValidator;
-
 /**
  * 2重サブミット防止処理のヘルパークラス
  * 
- * @see TokenTag
- * @see TokenValidator
+ * @see org.seasar.cubby.tags.TokenTag
+ * @see org.seasar.cubby.validator.validators.TokenValidator
  * @author agata
  * @since 1.0.0
  */
@@ -40,7 +36,7 @@ public class TokenHelper {
 	/**
 	 * トークン用Mapに保持するトークンの個数（1セッションあたり何個のトークンを保持するか？）
 	 */
-	public static int TOKEN_HISTORY_SIZE = 16;
+	private static final int TOKEN_HISTORY_SIZE = 16;
 
 	/**
 	 * デフォルトのトークン用パラメータ名
@@ -62,10 +58,10 @@ public class TokenHelper {
 	}
 
 	/**
-	 * トークン用のマップをセッションから取得します。
+	 * トークン用の <code>Map</code> をセッションから取得します。
 	 * <p>
-	 * セッション中にトークン用のマップが存在しない場合、新規に生成します。 トークン用のマップは{@link LruHashMap}
-	 * を使い、トークンの保持上限付きのMapになります。
+	 * セッション中にトークン用の <code>Map</code> が存在しない場合、新規に生成します。 トークン用のマップは
+	 * {@link LruHashMap} を使い、トークンの保持上限付きの <code>Map</code> になります。
 	 * </p>
 	 * 
 	 * @param session
@@ -75,7 +71,7 @@ public class TokenHelper {
 	@SuppressWarnings("unchecked")
 	public static Map<String, String> getTokenMap(final HttpSession session) {
 		Map<String, String> tokenMap = (Map<String, String>) session
-				.getAttribute(CubbyConstants.ATTR_TOKEN);
+				.getAttribute(ATTR_TOKEN);
 		if (tokenMap == null) {
 			tokenMap = new LruHashMap<String, String>(TOKEN_HISTORY_SIZE);
 			session.setAttribute(ATTR_TOKEN, tokenMap);
@@ -84,7 +80,7 @@ public class TokenHelper {
 	}
 
 	/**
-	 * トークンをセッション中のトークン用のMapにセットします。
+	 * トークンをセッション中のトークン用の <code>Map</code> にセットします。
 	 * 
 	 * @param session
 	 *            セッション
@@ -101,7 +97,8 @@ public class TokenHelper {
 	/**
 	 * パラメータ中のトークン文字列とセッション中のトークン文字列を検証します。
 	 * <p>
-	 * セッション中に格納されたトークン用のMapのキーに、 指定されたトークン文字列が含まれるかどうかを判定し、Mapから取り除きます。
+	 * セッション中に格納されたトークン用の <code>Map</code> のキーに指定されたトークン文字列が含まれるかどうかを判定し、
+	 * <code>Map</code> から取り除きます。
 	 * </p>
 	 * 
 	 * @param session
@@ -120,4 +117,5 @@ public class TokenHelper {
 			return success;
 		}
 	}
+
 }

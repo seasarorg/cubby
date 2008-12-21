@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class MultipartRequestParserImplTest {
 		try {
 			Map<String, Object[]> parameterMap = requestParser
 					.getParameterMap(request);
-			assertEquals("parameterMap.size()", 0, parameterMap.size());
+			fail();
 		} catch (RequestParseException e) {
 			assertTrue(e.getCause() instanceof InvalidContentTypeException);
 		}

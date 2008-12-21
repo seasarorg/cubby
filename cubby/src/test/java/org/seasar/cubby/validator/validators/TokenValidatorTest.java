@@ -46,7 +46,8 @@ public class TokenValidatorTest {
 	public void validate() throws Exception {
 		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		final HttpSession session = createMock(HttpSession.class);
-		expect(request.getSession()).andReturn(session).anyTimes();
+		expect(request.getSession()).andStubReturn(session);
+		expect(request.getSession(false)).andStubReturn(session);
 
 		final Map<String, Object> sessionAttributes = new HashMap<String, Object>();
 		expect(session.getAttribute((String) anyObject())).andAnswer(
@@ -99,20 +100,19 @@ public class TokenValidatorTest {
 
 	@Test
 	public void requestIsNull() throws Exception {
-		ThreadContext.runInContext(null, null, new Command<Void>() {
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
 
-			public Void execute() throws Exception {
-				final TokenValidator validator = new TokenValidator();
-				final ValidationContext context = new ValidationContext();
-				try {
-					validator.validate(context, new Object[] { "tokenstring" });
-					fail("ThreadContext.getRequest()がnullの場合、ここは通らない");
-				} catch (final IllegalStateException ex) {
-				}
-				return null;
-			}
+		final TokenValidator validator = new TokenValidator();
+		final ValidationContext context = new ValidationContext();
+		try {
+			validator.validate(context, new Object[] { "tokenstring" });
+			fail("ThreadContext 外で実行した場合、ここは通らない");
+		} catch (final IllegalStateException ex) {
+		}
 
-		});
+		verify(request, response);
 	}
 
 }
