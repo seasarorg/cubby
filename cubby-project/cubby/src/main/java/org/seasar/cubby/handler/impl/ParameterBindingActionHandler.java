@@ -55,8 +55,8 @@ public class ParameterBindingActionHandler implements ActionHandler {
 
 		final Object formBean = actionContext.getFormBean();
 		if (formBean != null) {
-			final Map<String, Object[]> parameterMap = RequestUtils.getAttribute(
-					request, ATTR_PARAMS);
+			final Map<String, Object[]> parameterMap = RequestUtils
+					.getAttribute(request, ATTR_PARAMS);
 			requestParameterBinder.bind(parameterMap, formBean, actionContext);
 		}
 

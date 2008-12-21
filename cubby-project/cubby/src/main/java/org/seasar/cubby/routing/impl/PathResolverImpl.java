@@ -460,7 +460,7 @@ public class PathResolverImpl implements PathResolver {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj) {
 				return true;
 			}
@@ -470,7 +470,7 @@ public class PathResolverImpl implements PathResolver {
 			if (getClass() != obj.getClass()) {
 				return false;
 			}
-			RoutingKey other = (RoutingKey) obj;
+			final RoutingKey other = (RoutingKey) obj;
 			if (onSubmit == null) {
 				if (other.onSubmit != null) {
 					return false;

@@ -72,9 +72,9 @@ import org.seasar.cubby.spi.ProviderFactory;
  */
 public class Json implements ActionResult {
 
-	private Object bean;
+	private final Object bean;
 
-	private String calllback;
+	private final String calllback;
 
 	private String contentType = "text/javascript";
 
@@ -130,7 +130,7 @@ public class Json implements ActionResult {
 	 *            コンテントタイプ。(例："text/javascript+json")
 	 * @return {@link Json}
 	 */
-	public Json contentType(String contentType) {
+	public Json contentType(final String contentType) {
 		this.contentType = contentType;
 		return this;
 	}
@@ -154,7 +154,7 @@ public class Json implements ActionResult {
 	 *            エンコーディング。　（例："Shift_JIS" ）
 	 * @return {@link Json}
 	 */
-	public Json encoding(String encoding) {
+	public Json encoding(final String encoding) {
 		this.encoding = encoding;
 		return this;
 	}
@@ -173,7 +173,10 @@ public class Json implements ActionResult {
 	 * <p>
 	 * prototype.js の Ajax.Request を使うときに使用してください。
 	 * </p>
-	 * @see <a href="http://www.prototypejs.org/api/ajax/options">www.prototypejs.org&nbsp;-&nbsp;Ajax Options</a>
+	 * 
+	 * @see <a
+	 *      href="http://www.prototypejs.org/api/ajax/options">www.prototypejs.org&nbsp;-&nbsp;Ajax
+	 *      Options</a>
 	 */
 	public void xjson() {
 		this.xjson = true;

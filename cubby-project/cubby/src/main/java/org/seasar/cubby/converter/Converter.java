@@ -41,8 +41,8 @@ public interface Converter {
 	 *            リクエストパラメータの型
 	 * @param objectType
 	 *            値の型
-	 * @return このコンバータが指定されたリクエストパラメータの型を指定された値の型に変換できる場合は <code>true</code>、そうでない場合は
-	 *         <code>false</code>
+	 * @return このコンバータが指定されたリクエストパラメータの型を指定された値の型に変換できる場合は <code>true</code>
+	 *         、そうでない場合は <code>false</code>
 	 */
 	boolean canConvert(Class<?> parameterType, Class<?> objectType);
 

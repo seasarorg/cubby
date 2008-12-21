@@ -41,7 +41,7 @@ public class PathTemplateException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public PathTemplateException(String message, Throwable cause) {
+	public PathTemplateException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -51,7 +51,7 @@ public class PathTemplateException extends RuntimeException {
 	 * @param message
 	 *            詳細メッセージ
 	 */
-	public PathTemplateException(String message) {
+	public PathTemplateException(final String message) {
 		super(message);
 	}
 
@@ -61,7 +61,7 @@ public class PathTemplateException extends RuntimeException {
 	 * @param cause
 	 *            原因
 	 */
-	public PathTemplateException(Throwable cause) {
+	public PathTemplateException(final Throwable cause) {
 		super(cause);
 	}
 

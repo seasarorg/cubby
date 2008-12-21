@@ -30,7 +30,8 @@ public abstract class AbstractFileItemConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+	public boolean canConvert(final Class<?> parameterType,
+			final Class<?> objectType) {
 		if (parameterType == null) {
 			return false;
 		}
@@ -44,7 +45,7 @@ public abstract class AbstractFileItemConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

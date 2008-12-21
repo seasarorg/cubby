@@ -56,7 +56,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 
 	private static final Set<String> MULTIPLE_VALUE_TYPES;
 	static {
-		Set<String> set = new HashSet<String>();
+		final Set<String> set = new HashSet<String>();
 		set.add("checkbox");
 		set.add("radio");
 		MULTIPLE_VALUE_TYPES = Collections.unmodifiableSet(set);

@@ -43,7 +43,7 @@ public class DateConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}
@@ -74,7 +74,8 @@ public class DateConverter extends AbstractConverter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String convertToString(final Object value, ConversionHelper helper) {
+	public String convertToString(final Object value,
+			final ConversionHelper helper) {
 		if (value == null) {
 			return null;
 		}

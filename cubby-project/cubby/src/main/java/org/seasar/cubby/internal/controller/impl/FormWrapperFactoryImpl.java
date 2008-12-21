@@ -38,7 +38,7 @@ import org.seasar.cubby.spi.beans.PropertyDesc;
 public class FormWrapperFactoryImpl implements FormWrapperFactory {
 
 	/** 変換のヘルパクラス。 */
-	private ConversionHelper conversionHelper = new ConversionHelperImpl();
+	private final ConversionHelper conversionHelper = new ConversionHelperImpl();
 
 	/**
 	 * {@inheritDoc}

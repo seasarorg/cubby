@@ -321,7 +321,7 @@ public class Redirect implements ActionResult {
 		try {
 			final String redirectURL = new URL(path).toExternalForm();
 			return redirectURL;
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			final String redirectURL = calculateInternalRedirectURL(path,
 					actionClass, request);
 			return redirectURL;
@@ -388,7 +388,7 @@ public class Redirect implements ActionResult {
 				final URL redirectURL = new URL(this.protocol, currentURL
 						.getHost(), redirectPort, redirectPath);
 				return redirectURL.toExternalForm();
-			} catch (MalformedURLException e) {
+			} catch (final MalformedURLException e) {
 				throw new ActionException(e);
 			}
 		}
@@ -438,7 +438,7 @@ public class Redirect implements ActionResult {
 	 * @return このオブジェクト
 	 * @since 1.1.0
 	 */
-	public Redirect param(String paramName, Object paramValue) {
+	public Redirect param(final String paramName, final Object paramValue) {
 		return param(paramName, new String[] { paramValue.toString() });
 	}
 
@@ -473,7 +473,7 @@ public class Redirect implements ActionResult {
 			}
 			this.parameters.put(paramName, paramValues);
 		} else {
-			QueryStringBuilder builder = new QueryStringBuilder(this.path);
+			final QueryStringBuilder builder = new QueryStringBuilder(this.path);
 			builder.addParam(paramName, paramValues);
 			this.path = builder.toString();
 		}
@@ -491,7 +491,7 @@ public class Redirect implements ActionResult {
 	 * @return {@code Object#toString()}型の配列。
 	 */
 	private String[] toStringArray(final Object[] paramValues) {
-		String[] values = new String[paramValues.length];
+		final String[] values = new String[paramValues.length];
 		for (int i = 0; i < paramValues.length; i++) {
 			values[i] = paramValues[i].toString();
 		}

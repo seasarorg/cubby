@@ -44,8 +44,8 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	 * @param actionContext
 	 *            アクションコンテキスト
 	 */
-	public ActionResultWrapperImpl(ActionResult actionResult,
-			ActionContext actionContext) {
+	public ActionResultWrapperImpl(final ActionResult actionResult,
+			final ActionContext actionContext) {
 		super();
 		this.actionResult = actionResult;
 		this.actionContext = actionContext;

@@ -69,7 +69,7 @@ public class ParamTag extends SimpleTagSupport {
 		}
 		final String value;
 		if (this.value == null) {
-			StringWriter writer = new StringWriter();
+			final StringWriter writer = new StringWriter();
 			getJspBody().invoke(writer);
 			value = writer.toString().trim();
 		} else {

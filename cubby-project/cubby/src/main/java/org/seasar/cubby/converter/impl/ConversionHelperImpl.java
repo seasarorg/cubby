@@ -28,7 +28,7 @@ import org.seasar.cubby.internal.util.ServiceFactory;
 public class ConversionHelperImpl implements ConversionHelper {
 
 	/** 日付や時刻のフォーマットパターンを保持するクラス。 */
-	private FormatPattern formatPattern;
+	private final FormatPattern formatPattern;
 
 	/**
 	 * 新しい変換のヘルパクラスを生成します。

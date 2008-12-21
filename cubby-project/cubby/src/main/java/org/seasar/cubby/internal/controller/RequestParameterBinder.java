@@ -37,6 +37,7 @@ public interface RequestParameterBinder {
 	 * @param actionContext
 	 *            アクションコンテキスト
 	 */
-	void bind(Map<String, Object[]> parameterMap, Object dest, ActionContext actionContext);
+	void bind(Map<String, Object[]> parameterMap, Object dest,
+			ActionContext actionContext);
 
 }

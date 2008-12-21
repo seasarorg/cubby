@@ -46,7 +46,7 @@ import org.seasar.cubby.spi.beans.PropertyDesc;
 public class RequestParameterBinderImpl implements RequestParameterBinder {
 
 	/** 変換のヘルパクラス。 */
-	private ConversionHelper conversionHelper = new ConversionHelperImpl();
+	private final ConversionHelper conversionHelper = new ConversionHelperImpl();
 
 	/**
 	 * {@inheritDoc}

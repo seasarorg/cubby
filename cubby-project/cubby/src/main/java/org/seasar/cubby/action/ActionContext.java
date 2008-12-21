@@ -18,7 +18,6 @@ package org.seasar.cubby.action;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-
 /**
  * アクションのコンテキストです。
  * 

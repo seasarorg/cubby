@@ -78,7 +78,8 @@ public class TokenValidator implements ArrayFieldValidator {
 			final HttpSession session = request.getSession(false);
 			if (session != null) {
 				if (!TokenHelper.validateToken(session, token)) {
-					context.addMessageInfo(this.messageHelper.createMessageInfo());
+					context.addMessageInfo(this.messageHelper
+							.createMessageInfo());
 				}
 			}
 		}
