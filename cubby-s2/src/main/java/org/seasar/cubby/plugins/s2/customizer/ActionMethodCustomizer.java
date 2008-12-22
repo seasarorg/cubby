@@ -30,8 +30,8 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * <p>
  * コンポーネントに適用するインターセプタのインスタンス属性が<code>singleton</code>以外の場合は、
- * {@link #setUseLookupAdapter(boolean) useLookupAdapter}プロパティを<code>true</code>に設定します。
- * これにより、コンポーネントのメソッドが呼び出される度に、コンテナからインターセプタのインスタンスをルックアップするようになります。
+ * {@link #setUseLookupAdapter(boolean) useLookupAdapter}プロパティを<code>true</code>
+ * に設定します。 これにより、コンポーネントのメソッドが呼び出される度に、コンテナからインターセプタのインスタンスをルックアップするようになります。
  * </p>
  * 
  * @author baba
@@ -39,39 +39,39 @@ import org.seasar.framework.util.StringUtil;
  */
 public class ActionMethodCustomizer extends AspectCustomizer {
 
-    private String pointcut;
+	private String pointcut;
 
-    /**
-     * コンポーネント定義に登録するアスペクト定義のポイントカットを設定します。
-     * 
-     * @param pointcut
-     *            ポイントカット
-     */
-    @Override
+	/**
+	 * コンポーネント定義に登録するアスペクト定義のポイントカットを設定します。
+	 * 
+	 * @param pointcut
+	 *            ポイントカット
+	 */
+	@Override
 	public void setPointcut(final String pointcut) {
-    	super.setPointcut(pointcut);
-        this.pointcut = pointcut;
-    }
+		super.setPointcut(pointcut);
+		this.pointcut = pointcut;
+	}
 
-    /**
-     * ポイントカットを作成して返します。
-     * <p>
-     * <code>pointcut</code>プロパティが指定されている場合は、その文字列からポイントカットを作成します。
-     * <code>targetInterface</code>プロパティが指定されている場合は、そのインターフェースからポイントカットを作成します。
-     * それ以外の場合は<code>null</code>を返します。
-     * </p>
-     * 
-     * @return ポイントカット
-     */
-    @Override
+	/**
+	 * ポイントカットを作成して返します。
+	 * <p>
+	 * <code>pointcut</code>プロパティが指定されている場合は、その文字列からポイントカットを作成します。
+	 * <code>targetInterface</code>プロパティが指定されている場合は、そのインターフェースからポイントカットを作成します。
+	 * それ以外の場合は<code>null</code>を返します。
+	 * </p>
+	 * 
+	 * @return ポイントカット
+	 */
+	@Override
 	protected Pointcut createPointcut() {
-        if (!StringUtil.isEmpty(pointcut)) {
-            return PointcutFactory.createPointcut(pointcut);
-        }
-        if (targetInterface != null) {
-            return PointcutFactory.createPointcut(targetInterface);
-        }
-        return null;
-    }
+		if (!StringUtil.isEmpty(pointcut)) {
+			return PointcutFactory.createPointcut(pointcut);
+		}
+		if (targetInterface != null) {
+			return PointcutFactory.createPointcut(targetInterface);
+		}
+		return null;
+	}
 
 }

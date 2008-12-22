@@ -125,8 +125,8 @@ public class ActionMethodPointcutImpl implements Pointcut, Serializable {
 	private static void addInterfaceMethodNames(
 			final Set<String> methodNameSet, final Class<?> interfaceClass) {
 		final Method[] methods = interfaceClass.getDeclaredMethods();
-		for (int j = 0; j < methods.length; j++) {
-			methodNameSet.add(methods[j].getName());
+		for (final Method method : methods) {
+			methodNameSet.add(method.getName());
 		}
 		final Class<?>[] interfaces = interfaceClass.getInterfaces();
 		for (int i = 0; i < interfaces.length; ++i) {

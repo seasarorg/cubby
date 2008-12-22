@@ -48,7 +48,7 @@ public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 	private DetectClassProcessor[] processors;
 
 	/** 処理済みのクラス。 */
-	private Set<String> processedClasses = new HashSet<String>();
+	private final Set<String> processedClasses = new HashSet<String>();
 
 	/**
 	 * {@inheritDoc}
@@ -71,8 +71,8 @@ public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 	public void detect() {
 		if (!initialized) {
 			processedClasses.clear();
-			processors = DetectClassProcessor[].class.cast(getContainer()
-					.getRoot().findAllComponents(DetectClassProcessor.class));
+			processors = (DetectClassProcessor[]) getContainer().getRoot()
+					.findAllComponents(DetectClassProcessor.class);
 			registerAll();
 			processedClasses.clear();
 			DisposableUtil.add(this);

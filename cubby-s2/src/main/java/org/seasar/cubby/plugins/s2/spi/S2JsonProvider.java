@@ -29,7 +29,7 @@ public class S2JsonProvider implements JsonProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toJson(Object bean) {
+	public String toJson(final Object bean) {
 		return JSONSerializer.serialize(bean);
 	}
 
