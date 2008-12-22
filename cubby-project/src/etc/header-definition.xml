@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2004-2008 the Seasar Foundation and the Others.
@@ -16,12 +15,13 @@
     governing permissions and limitations under the License.
 
 -->
-<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
-	"http://www.seasar.org/dtd/components21.dtd">
-<components>
-	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
-		<initMethod name="addRootPackageName">
-			<arg>"org.seasar.cubby"</arg>
-		</initMethod>
-	</component>
-</components>
+<additionalHeaders>
+  <javadoc_style>
+    <firstLine>/*</firstLine>
+    <beforeEachLine> * </beforeEachLine>
+    <endLine> */</endLine>
+    <!--skipLine></skipLine-->
+    <firstLineDetectionPattern>(\s|\t)*/\*.*$</firstLineDetectionPattern>
+    <lastLineDetectionPattern>.*\*/(\s|\t)*$</lastLineDetectionPattern>
+  </javadoc_style>
+</additionalHeaders>
