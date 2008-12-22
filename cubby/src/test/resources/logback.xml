@@ -16,7 +16,6 @@
     governing permissions and limitations under the License.
 
 -->
-
 <configuration>
   <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
     <ImmediateFlush>true</ImmediateFlush>
