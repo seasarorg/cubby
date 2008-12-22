@@ -41,7 +41,7 @@ import org.seasar.framework.util.DisposableUtil;
  */
 public class S2ConverterProvider implements ConverterProvider {
 
-	private ConverterProvider component;
+	private final ConverterProvider component;
 
 	public S2ConverterProvider() {
 		final S2Container container = SingletonS2ContainerFactory
@@ -50,7 +50,8 @@ public class S2ConverterProvider implements ConverterProvider {
 				.getComponent(Component.class);
 	}
 
-	public Converter getConverter(Class<?> parameterType, Class<?> objectType) {
+	public Converter getConverter(final Class<?> parameterType,
+			final Class<?> objectType) {
 		return component.getConverter(parameterType, objectType);
 	}
 
@@ -71,7 +72,7 @@ public class S2ConverterProvider implements ConverterProvider {
 		private boolean initialized;
 
 		/** コンバータのセットです。 */
-		private Set<Converter> converters = new LinkedHashSet<Converter>();
+		private final Set<Converter> converters = new LinkedHashSet<Converter>();
 
 		/**
 		 * 命名規約を設定します。
@@ -129,6 +130,7 @@ public class S2ConverterProvider implements ConverterProvider {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public Converter getConverter(final Class<?> parameterType,
 				final Class<?> objectType) {
 			initialize();

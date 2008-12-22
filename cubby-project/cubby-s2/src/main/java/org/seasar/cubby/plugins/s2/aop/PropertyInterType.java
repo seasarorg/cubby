@@ -307,7 +307,7 @@ public class PropertyInterType extends AbstractInterType {
 	}
 
 	private String createMethodName(final String fieldName, final String prefix) {
-		String methodName = prefix + StringUtil.capitalize(fieldName);
+		final String methodName = prefix + StringUtil.capitalize(fieldName);
 		if (methodName.endsWith("_")) {
 			return methodName.substring(0, methodName.length() - 1);
 		} else {

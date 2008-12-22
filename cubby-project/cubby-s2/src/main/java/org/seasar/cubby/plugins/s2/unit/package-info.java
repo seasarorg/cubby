@@ -18,3 +18,4 @@
  * @since 1.0.0
  */
 package org.seasar.cubby.plugins.s2.unit;
+
