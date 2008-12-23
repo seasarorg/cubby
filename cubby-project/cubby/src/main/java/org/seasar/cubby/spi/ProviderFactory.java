@@ -15,8 +15,8 @@
  */
 package org.seasar.cubby.spi;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.seasar.cubby.internal.util.ServiceLoader;
 
@@ -33,7 +33,13 @@ import org.seasar.cubby.internal.util.ServiceLoader;
 public class ProviderFactory {
 
 	/** プロバイダのシングルトン。 */
-	private static Map<Class<? extends Provider>, Provider> PROVIDERS = new ConcurrentHashMap<Class<? extends Provider>, Provider>();
+	private static Map<Class<? extends Provider>, Provider> PROVIDERS = new HashMap<Class<? extends Provider>, Provider>();
+
+	/**
+	 * インスタンス化を禁止します。
+	 */
+	private ProviderFactory() {
+	}
 
 	/**
 	 * 指定されたサービスのプロバイダを取得します。
@@ -45,16 +51,20 @@ public class ProviderFactory {
 	 * @return プロバイダ
 	 */
 	public static <S extends Provider> S get(final Class<S> service) {
-		synchronized (service) {
-			final S provider;
-			if (PROVIDERS.containsKey(service)) {
-				provider = service.cast(PROVIDERS.get(service));
-			} else {
-				provider = ServiceLoader.load(service).getProvider();
-				PROVIDERS.put(service, provider);
+		final S provider;
+		if (PROVIDERS.containsKey(service)) {
+			provider = service.cast(PROVIDERS.get(service));
+		} else {
+			synchronized (service) {
+				if (PROVIDERS.containsKey(service)) {
+					provider = service.cast(PROVIDERS.get(service));
+				} else {
+					provider = ServiceLoader.load(service).getProvider();
+					PROVIDERS.put(service, provider);
+				}
 			}
-			return provider;
 		}
+		return provider;
 	}
 
 	/**

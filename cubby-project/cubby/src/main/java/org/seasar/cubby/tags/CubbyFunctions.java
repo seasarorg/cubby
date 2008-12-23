@@ -113,7 +113,7 @@ public class CubbyFunctions {
 	 */
 	public static String odd(final Integer index, final String classNames) {
 		final String[] c = classNames.split(",");
-		return c[index % c.length];
+		return c[index % c.length].trim();
 	}
 
 	/**
@@ -195,4 +195,5 @@ public class CubbyFunctions {
 		final String enc = ThreadContext.getRequest().getCharacterEncoding();
 		return str == null ? "" : URLEncoder.encode(str.toString(), enc);
 	}
+
 }
