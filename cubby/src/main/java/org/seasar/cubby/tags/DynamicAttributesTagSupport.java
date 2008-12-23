@@ -38,9 +38,9 @@ abstract class DynamicAttributesTagSupport extends SimpleTagSupport implements
 	 */
 	private final Map<String, Object> attrs = new HashMap<String, Object>();
 
+	// TODO 現在はuriを無視しているので、必要であれば対応したほうがよいかも
 	/**
-	 * {@inheritDoc} DynamicAttributesをセットします。 FIXME
-	 * 現在はuriを無視しているので、必要であれば対応したほうがよいかも
+	 * {@inheritDoc} DynamicAttributesをセットします。
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
