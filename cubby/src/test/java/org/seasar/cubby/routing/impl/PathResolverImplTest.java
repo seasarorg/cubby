@@ -16,8 +16,10 @@
 package org.seasar.cubby.routing.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
@@ -37,7 +37,6 @@ import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.RoutingException;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 public class PathResolverImplTest {
 
@@ -51,6 +50,13 @@ public class PathResolverImplTest {
 		actionClasses.add(MockRootAction.class);
 		actionClasses.add(MockPathAction.class);
 		pathResolver.addAll(actionClasses);
+	}
+
+	@Test
+	public void testClear() {
+		assertFalse(pathResolver.getRoutings().isEmpty());
+		pathResolver.clear();
+		assertTrue(pathResolver.getRoutings().isEmpty());
 	}
 
 	@Test
@@ -401,7 +407,7 @@ public class PathResolverImplTest {
 
 				break;
 			default:
-				Assert.fail("illegal path " + path);
+				fail("illegal path " + path);
 				break;
 			}
 		}

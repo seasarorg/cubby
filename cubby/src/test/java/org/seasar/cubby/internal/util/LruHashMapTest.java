@@ -28,6 +28,7 @@ public class LruHashMapTest {
 	@Test
 	public void all() throws Exception {
 		LruHashMap<String, String> lru = new LruHashMap<String, String>(3);
+		assertEquals(3, lru.getLimitSize());
 		lru.put("aaa", "111");
 		lru.put("bbb", "222");
 		lru.put("ccc", "333");
