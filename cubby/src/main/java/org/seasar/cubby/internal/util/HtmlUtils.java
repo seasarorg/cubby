@@ -58,12 +58,7 @@ public class HtmlUtils {
 		if (str == null) {
 			return "";
 		}
-		String text;
-		if (str instanceof String) {
-			text = (String) str;
-		} else {
-			text = str.toString();
-		}
+		String text = str.toString();
 		text = StringUtils.replace(text, "&", "&amp;");
 		text = StringUtils.replace(text, "<", "&lt;");
 		text = StringUtils.replace(text, ">", "&gt;");
