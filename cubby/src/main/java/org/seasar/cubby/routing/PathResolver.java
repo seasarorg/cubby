@@ -57,6 +57,8 @@ public interface PathResolver {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
+	 * @throws RoutingException
+	 *             ルーティング情報の登録に失敗した場合
 	 */
 	void add(Class<?> actionClass);
 
@@ -65,14 +67,13 @@ public interface PathResolver {
 	 * 
 	 * @param actionClasses
 	 *            アクションクラスのコレクション
+	 * @throws RoutingException
+	 *             ルーティング情報の登録に失敗した場合
 	 */
 	void addAll(Collection<Class<?>> actionClasses);
 
 	/**
 	 * ルーティング情報を手動登録します。
-	 * <p>
-	 * 手動登録の場合、優先度は0から連番で設定されます。
-	 * </p>
 	 * 
 	 * @param actionPath
 	 *            アクションのパス
@@ -86,6 +87,8 @@ public interface PathResolver {
 	 *            アクションメソッドへ振り分けるための要求パラメータ名
 	 * @param priority
 	 *            プライオリティ
+	 * @throws RoutingException
+	 *             ルーティング情報の登録に失敗した場合
 	 */
 	void add(String actionPath, Class<?> actionClass, String actionMethodName,
 			RequestMethod requestMethod, String onSubmit, int priority);
@@ -107,6 +110,8 @@ public interface PathResolver {
 	 * @param characterEncoding
 	 *            URI のエンコーディング
 	 * @return リダイレクト用のパス
+	 * @throws RoutingException
+	 *             ルーティング情報の逆引きに失敗した場合
 	 * @since 1.1.0
 	 */
 	String reverseLookup(Class<?> actionClass, String methodName,

@@ -32,7 +32,9 @@ public interface RequestParser {
 	 * 
 	 * @param request
 	 *            リクエスト
-	 * @return アクションにバインドするパラメータの{@link Map}
+	 * @return アクションにバインドするパラメータの {@link Map}
+	 * @throws RequestParseException
+	 *             リクエストの解析に失敗した場合
 	 */
 	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 

@@ -35,7 +35,7 @@ class RoutingImpl implements Routing {
 	private final Class<?> actionClass;
 
 	/** アクソンメソッド。 */
-	private final Method method;
+	private final Method actionMethod;
 
 	/** アクションのパス。 */
 	private final String actionPath;
@@ -60,7 +60,7 @@ class RoutingImpl implements Routing {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
-	 * @param method
+	 * @param actionMethod
 	 *            アクションメソッド
 	 * @param actionPath
 	 *            アクションのパス
@@ -76,12 +76,12 @@ class RoutingImpl implements Routing {
 	 *            優先順位。手動登録の場合は登録順の連番。自動登録の場合は{@link Integer#MAX_VALUE}
 	 *            が常にセットされます。
 	 */
-	RoutingImpl(final Class<?> actionClass, final Method method,
+	RoutingImpl(final Class<?> actionClass, final Method actionMethod,
 			final String actionPath, final List<String> uriParameterNames,
 			final Pattern pattern, final RequestMethod requestMethod,
 			final String onSubmit, final int priority) {
 		this.actionClass = actionClass;
-		this.method = method;
+		this.actionMethod = actionMethod;
 		this.actionPath = actionPath;
 		this.uriParameterNames = uriParameterNames;
 		this.pattern = pattern;
@@ -101,7 +101,7 @@ class RoutingImpl implements Routing {
 	 * {@inheritDoc}
 	 */
 	public Method getActionMethod() {
-		return method;
+		return actionMethod;
 	}
 
 	/**
@@ -162,7 +162,7 @@ class RoutingImpl implements Routing {
 	@Override
 	public String toString() {
 		return new StringBuilder().append("[regex=").append(this.pattern)
-				.append(",method=").append(this.method).append(
+				.append(",actionMethod=").append(this.actionMethod).append(
 						",uriParameterNames=").append(this.uriParameterNames)
 				.append(",requestMethod=").append(this.requestMethod).append(
 						",onSubmit=").append(onSubmit).append(",priority=")
