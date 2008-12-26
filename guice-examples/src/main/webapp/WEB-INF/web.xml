@@ -10,7 +10,7 @@
 	</context-param>
 
 	<listener>
-		<listener-class>org.seasar.cubby.plugins.guice.servlet.GuiceContextListener</listener-class>
+		<listener-class>org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
 	</listener>
 
 	<filter>
