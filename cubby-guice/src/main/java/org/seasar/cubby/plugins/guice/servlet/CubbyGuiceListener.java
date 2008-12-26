@@ -21,7 +21,7 @@ import javax.servlet.ServletContextListener;
 
 import org.seasar.cubby.plugins.guice.InjectorFactory;
 
-public class GuiceContextListener implements ServletContextListener {
+public class CubbyGuiceListener implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent event) {
 		final ServletContext servletContext = event.getServletContext();
