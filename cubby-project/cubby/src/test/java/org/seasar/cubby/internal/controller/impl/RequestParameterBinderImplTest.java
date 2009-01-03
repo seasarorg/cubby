@@ -1275,4 +1275,12 @@ public class RequestParameterBinderImplTest {
 		return bytes;
 	}
 
+	public interface SeparationAction {
+		
+	}
+
+	public static class SeparationActionImpl implements SeparationAction {
+		
+	}
+
 }

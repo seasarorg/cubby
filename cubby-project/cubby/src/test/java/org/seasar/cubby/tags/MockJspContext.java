@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.el.ELContext;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -236,6 +237,11 @@ public class MockJspContext extends PageContext {
 		outStack.push(writer);
 		writer = new MockBodyContent(writer);
 		return (BodyContent) writer;
+	}
+
+	@Override
+	public ELContext getELContext() {
+		throw new UnsupportedOperationException();
 	}
 
 }

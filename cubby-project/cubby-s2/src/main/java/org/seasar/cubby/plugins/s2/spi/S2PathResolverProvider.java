@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.plugins.s2.spi;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,6 @@ import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.cubby.util.ActionUtils;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;
@@ -144,7 +144,7 @@ public class S2PathResolverProvider implements PathResolverProvider {
 			if (namingConvention.isSkipClass(clazz)) {
 				return;
 			}
-			if (!ActionUtils.isActionClass(clazz)) {
+			if (Modifier.isAbstract(clazz.getModifiers())) {
 				return;
 			}
 			actionClasses.add(clazz);

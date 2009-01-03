@@ -117,10 +117,6 @@ public class DateFormatValidator implements ScalarFieldValidator {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
 		final String pattern;
 		if (StringUtils.isEmpty(this.pattern)) {
-			// final CubbyConfiguration configuration = ThreadContext
-			// .getConfiguration();
-			// final FormatPattern formatPattern = configuration
-			// .getFormatPattern();
 			final FormatPattern formatPattern = ServiceFactory
 					.getProvider(FormatPattern.class);
 			if (formatPattern == null) {

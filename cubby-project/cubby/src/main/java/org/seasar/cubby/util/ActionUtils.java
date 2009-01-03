@@ -19,7 +19,6 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.internal.util.RequestUtils.getAttribute;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,24 +67,6 @@ public class ActionUtils {
 	 */
 	public static Map<String, Object> flash() {
 		return actionContext().getFlashMap();
-	}
-
-	/**
-	 * 指定されたクラスがアクションクラスかを示します。
-	 * <p>
-	 * アクションクラスは以下の条件を満たす必要があります。
-	 * </p>
-	 * <ul>
-	 * <li>抽象クラスでない</li>
-	 * </ul>
-	 * 
-	 * @param clazz
-	 *            クラス
-	 * @return 指定されたクラスがアクションクラスの場合は <code>true</code>、そうでない場合は
-	 *         <code>false</code>
-	 */
-	public static boolean isActionClass(final Class<?> clazz) {
-		return !Modifier.isAbstract(clazz.getModifiers());
 	}
 
 	/**

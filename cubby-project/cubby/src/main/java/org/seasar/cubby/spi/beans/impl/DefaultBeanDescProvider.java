@@ -75,7 +75,13 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	public BeanDesc getBeanDesc(final Class<?> clazz) {
 		if (beanDescCache.containsKey(clazz)) {
 			return beanDescCache.get(clazz);
-		} else {
+		}
+
+		synchronized (clazz) {
+			if (beanDescCache.containsKey(clazz)) {
+				return beanDescCache.get(clazz);
+			}
+
 			try {
 				final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
 				final BeanDesc beanDesc = new BeanDescImpl(clazz, beanInfo);
@@ -167,6 +173,9 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 
 		/** パラメタ化されたクラスの記述。 */
 		private final ParameterizedClassDesc parameterizedClassDesc;
+
+		/** アノテーションのキャッシュ。 */
+		private final Map<Class<? extends Annotation>, Annotation> annotationCache = new HashMap<Class<? extends Annotation>, Annotation>();
 
 		/**
 		 * インスタンス化します。
@@ -330,16 +339,128 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 */
 		public <T extends Annotation> T getAnnotation(
 				final Class<T> annotationClass) {
-			final Method readMethod = getReadMethod();
-			if (readMethod != null
-					&& readMethod.isAnnotationPresent(annotationClass)) {
-				return readMethod.getAnnotation(annotationClass);
+			if (annotationCache.containsKey(annotationClass)) {
+				return annotationClass.cast(annotationCache
+						.get(annotationClass));
 			}
-			final Method writeMethod = getWriteMethod();
-			if (writeMethod != null
-					&& writeMethod.isAnnotationPresent(annotationClass)) {
-				return writeMethod.getAnnotation(annotationClass);
+
+			final Method readMethod = this.getReadMethod();
+			if (readMethod != null) {
+				final T annotation = findAnnotation(annotationClass, readMethod);
+				if (annotation != null) {
+					annotationCache.put(annotationClass, annotation);
+					return annotation;
+				}
 			}
+
+			final Method writeMethod = this.getWriteMethod();
+			if (writeMethod != null) {
+				final T annotation = findAnnotation(annotationClass,
+						writeMethod);
+				if (annotation != null) {
+					annotationCache.put(annotationClass, annotation);
+					return annotation;
+				}
+			}
+
+			annotationCache.put(annotationClass, null);
+			return null;
+		}
+
+		/**
+		 * 指定されたメソッドのアノテーションを検索します。
+		 * <p>
+		 * インターフェイスやスーパークラスに定義されたメソッドの定義からもアノテーションが見つかるまで検索します。
+		 * アノテーションが見つからなかった場合は <code>null</code> を返します。
+		 * </p>
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param method
+		 *            メソッド
+		 * @return アノテーションが見つかった場合はそのアノテーション、見つからなかった場合は <code>null</code>
+		 */
+		private static <T extends Annotation> T findAnnotation(
+				final Class<T> annotationClass, final Method method) {
+			final String methodName = method.getName();
+			final Class<?>[] parameterTypes = method.getParameterTypes();
+			for (Class<?> target = method.getDeclaringClass(); !target
+					.equals(Object.class); target = target.getSuperclass()) {
+				final T annotation = getAnnotation(annotationClass, target,
+						methodName, parameterTypes);
+				if (annotation != null) {
+					return annotation;
+				}
+				final T annotationOfInterfaces = getAnnotationOfInterfaces(
+						annotationClass, target, methodName, parameterTypes);
+				if (annotationOfInterfaces != null) {
+					return annotationOfInterfaces;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * 指定されたクラスが実装するインターフェイスにメソッド名、パラメータ型でシグニチャを指定されたメソッドが定義されていれば、
+		 * そのメソッドに定義されたアノテーションを返します。
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param clazz
+		 *            クラス
+		 * @param methodName
+		 *            メソッド名
+		 * @param parameterTypes
+		 *            パラメータの型
+		 * @return アノテーション
+		 */
+		private static <T extends Annotation> T getAnnotationOfInterfaces(
+				final Class<T> annotationClass, final Class<?> clazz,
+				final String methodName, final Class<?>[] parameterTypes) {
+			for (final Class<?> interfaceClass : clazz.getInterfaces()) {
+				final T annotation = getAnnotation(annotationClass,
+						interfaceClass, methodName, parameterTypes);
+				if (annotation != null) {
+					return annotation;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * 指定されたクラスにメソッド名、パラメータ型でシグニチャを指定されたメソッドが定義されていれば、
+		 * そのメソッドに定義されたアノテーションを返します。
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param clazz
+		 *            クラス
+		 * @param methodName
+		 *            メソッド名
+		 * @param parameterTypes
+		 *            パラメータの型
+		 * @return アノテーション
+		 */
+		private static <T extends Annotation> T getAnnotation(
+				final Class<T> annotationClass, final Class<?> clazz,
+				final String methodName,
+				@SuppressWarnings("unchecked") final Class[] parameterTypes) {
+			try {
+				final Method method = clazz.getDeclaredMethod(methodName,
+						parameterTypes);
+				if (method.isAnnotationPresent(annotationClass)) {
+					return method.getAnnotation(annotationClass);
+				}
+			} catch (final NoSuchMethodException e) {
+				// do nothing
+			}
+
 			return null;
 		}
 
@@ -348,12 +469,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 */
 		public boolean isAnnotationPresent(
 				final Class<? extends Annotation> annotationClass) {
-			final Method readMethod = getReadMethod();
-			final Method writeMethod = getWriteMethod();
-			return (readMethod != null && readMethod
-					.isAnnotationPresent(annotationClass))
-					|| (writeMethod != null && writeMethod
-							.isAnnotationPresent(annotationClass));
+			return this.getAnnotation(annotationClass) != null;
 		}
 
 	}
