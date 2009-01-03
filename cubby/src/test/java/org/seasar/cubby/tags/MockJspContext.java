@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.el.ELContext;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -33,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-//import javax.servlet.jsp.el.ExpressionEvaluator;
-//import javax.servlet.jsp.el.VariableResolver;
+import javax.servlet.jsp.el.ExpressionEvaluator;
+import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.tagext.BodyContent;
 
 public class MockJspContext extends PageContext {
@@ -238,10 +237,5 @@ public class MockJspContext extends PageContext {
 		writer = new MockBodyContent(writer);
 		return (BodyContent) writer;
 	}
-
-	// // @Override
-	// public ELContext getELContext() {
-	// throw new UnsupportedOperationException();
-	// }
 
 }
