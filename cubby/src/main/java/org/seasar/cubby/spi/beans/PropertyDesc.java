@@ -16,7 +16,9 @@
 package org.seasar.cubby.spi.beans;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * プロパティを扱うためのインターフェースです。
@@ -121,6 +123,24 @@ public interface PropertyDesc {
 
 	/**
 	 * プロパティから指定されたアノテーションを取得します。
+	 * <p>
+	 * 以下の順序でプロパティのメソッドの定義を検索し、最初に見つかったアノテーションを返します。
+	 * <ol>
+	 * <li>プロパティ値の読み込みに使用するメソッド {@link #getReadMethod()}</li>
+	 * <li>プロパティ値の書き込みに使用するメソッド {@link #getWriteMethod()}</li>
+	 * </ol>
+	 * </p>
+	 * <p>
+	 * また、クラスが {@link Proxy} になどよって動的に生成されている場合などは、メソッドからアノテーションを取得することができません。
+	 * (アノテーションが {@link Inherited} で修飾されている場合でも取得できません。)
+	 * そのため、読み込み/書き込みメソッドの定義を以下のように検索し、アノテーションを取得します。
+	 * <ul>
+	 * <li>読み込み/書き込みメソッドが定義されたクラス ({@link Method#getDeclaringClass()})
+	 * を検索対象クラスの起点とします。</li>
+	 * <li>検索対象クラスと、そのインターフェイスから読み込み/書き込みメソッドの定義を検索します。
+	 * <li>アノテーションが取得できなかった場合は、検索対象クラスをそのスーパークラスとし、再度検索を行います。</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param <T>
 	 *            アノテーション

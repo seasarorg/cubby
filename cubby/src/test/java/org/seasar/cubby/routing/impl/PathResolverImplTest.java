@@ -326,7 +326,7 @@ public class PathResolverImplTest {
 		assertEquals("cubby", value[0]);
 	}
 
-	@Test
+//	@Test
 	public void testAddAbstractClass() throws Exception {
 		try {
 			pathResolver.add("/parent/m1", ParentAction.class, "m1",

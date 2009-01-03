@@ -110,16 +110,6 @@ public class ActionUtilsTest {
 	}
 
 	@Test
-	public void isActionClass() throws Exception {
-		assertTrue("アクションクラスであればtrue", ActionUtils
-				.isActionClass(ChildAction.class));
-		assertTrue("Actionを継承していないクラスでもアクションクラスである", ActionUtils
-				.isActionClass(Object.class));
-		assertFalse("抽象クラスはアクションクラスではない", ActionUtils
-				.isActionClass(ParentAction.class));
-	}
-
-	@Test
 	public void isActionMethod() throws Exception {
 		assertTrue("親クラスのアクションメソッド", ActionUtils
 				.isActionMethod(ChildAction.class.getMethod("m1")));

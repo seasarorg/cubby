@@ -153,9 +153,6 @@ public class PathResolverImpl implements PathResolver {
 	private void add(final String actionPath, final Class<?> actionClass,
 			final Method method, final RequestMethod requestMethod,
 			final String onSubmit, final int priority) {
-		if (!ActionUtils.isActionClass(actionClass)) {
-			throw new RoutingException(format("ECUB0002", actionClass));
-		}
 		if (!ActionUtils.isActionMethod(method)) {
 			throw new RoutingException(format("ECUB0003", method));
 		}

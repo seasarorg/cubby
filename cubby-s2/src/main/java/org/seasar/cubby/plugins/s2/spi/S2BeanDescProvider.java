@@ -19,9 +19,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.beans.BeanDesc;
@@ -30,6 +32,8 @@ import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
 import org.seasar.cubby.spi.beans.PropertyDesc;
 import org.seasar.cubby.spi.beans.PropertyNotFoundException;
 import org.seasar.framework.beans.IllegalPropertyRuntimeException;
+import org.seasar.framework.util.Disposable;
+import org.seasar.framework.util.DisposableUtil;
 
 /**
  * {@link BeanDesc} の Seasar2 向け実装を提供します。
@@ -46,13 +50,47 @@ import org.seasar.framework.beans.IllegalPropertyRuntimeException;
  */
 public class S2BeanDescProvider implements BeanDescProvider {
 
+	private static volatile boolean initialized;
+
+	/** <code>BeanDesc</code> のキャッシュ。 */
+	private final Map<Class<?>, BeanDesc> beanDescCache = new ConcurrentHashMap<Class<?>, BeanDesc>(
+			1024);
+
+	private void initialize() {
+		if (!initialized) {
+			DisposableUtil.add(new Disposable() {
+
+				public void dispose() {
+					beanDescCache.clear();
+					initialized = false;
+				}
+
+			});
+			initialized = true;
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public BeanDesc getBeanDesc(final Class<?> clazz) {
-		final org.seasar.framework.beans.BeanDesc beanDesc = org.seasar.framework.beans.factory.BeanDescFactory
-				.getBeanDesc(clazz);
-		return new S2BeanDescImpl(beanDesc);
+		initialize();
+
+		if (beanDescCache.containsKey(clazz)) {
+			return beanDescCache.get(clazz);
+		}
+
+		synchronized (clazz) {
+			if (beanDescCache.containsKey(clazz)) {
+				return beanDescCache.get(clazz);
+			}
+
+			final org.seasar.framework.beans.BeanDesc s2beanDesc = org.seasar.framework.beans.factory.BeanDescFactory
+					.getBeanDesc(clazz);
+			final BeanDesc beanDesc = new S2BeanDescImpl(s2beanDesc);
+			beanDescCache.put(clazz, beanDesc);
+			return beanDesc;
+		}
 	}
 
 	/**
@@ -140,6 +178,9 @@ public class S2BeanDescProvider implements BeanDescProvider {
 
 		/** パラメタ化されたクラスの定義。 */
 		private final ParameterizedClassDesc parameterizedClassDesc;
+
+		/** アノテーションのキャッシュ。 */
+		private final Map<Class<? extends Annotation>, Annotation> annotationCache = new HashMap<Class<? extends Annotation>, Annotation>();
 
 		/**
 		 * インスタンス化します。
@@ -255,22 +296,132 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		 */
 		public <T extends Annotation> T getAnnotation(
 				final Class<T> annotationClass) {
+			if (annotationCache.containsKey(annotationClass)) {
+				return annotationClass.cast(annotationCache
+						.get(annotationClass));
+			}
+
 			if (s2PropertyDesc.hasReadMethod()) {
 				final Method method = s2PropertyDesc.getReadMethod();
-				if (method.isAnnotationPresent(annotationClass)) {
-					return method.getAnnotation(annotationClass);
+				final T annotation = findAnnotation(annotationClass, method);
+				if (annotation != null) {
+					annotationCache.put(annotationClass, annotation);
+					return annotation;
 				}
 			}
 			if (s2PropertyDesc.hasWriteMethod()) {
 				final Method method = s2PropertyDesc.getWriteMethod();
-				if (method.isAnnotationPresent(annotationClass)) {
-					return method.getAnnotation(annotationClass);
+				final T annotation = findAnnotation(annotationClass, method);
+				if (annotation != null) {
+					annotationCache.put(annotationClass, annotation);
+					return annotation;
 				}
 			}
 			final Field field = s2PropertyDesc.getField();
-			if (field != null && field.isAnnotationPresent(annotationClass)) {
-				return field.getAnnotation(annotationClass);
+			if (field != null) {
+				final T annotation = field.getAnnotation(annotationClass);
+				if (annotation != null) {
+					annotationCache.put(annotationClass, annotation);
+					return field.getAnnotation(annotationClass);
+				}
 			}
+			return null;
+		}
+
+		/**
+		 * 指定されたメソッドのアノテーションを検索します。
+		 * <p>
+		 * インターフェイスやスーパークラスに定義されたメソッドの定義からもアノテーションが見つかるまで検索します。
+		 * アノテーションが見つからなかった場合は <code>null</code> を返します。
+		 * </p>
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param method
+		 *            メソッド
+		 * @return アノテーションが見つかった場合はそのアノテーション、見つからなかった場合は <code>null</code>
+		 */
+		private static <T extends Annotation> T findAnnotation(
+				final Class<T> annotationClass, final Method method) {
+			final String methodName = method.getName();
+			final Class<?>[] parameterTypes = method.getParameterTypes();
+			for (Class<?> target = method.getDeclaringClass(); !target
+					.equals(Object.class); target = target.getSuperclass()) {
+				final T annotation = getAnnotation(annotationClass, target,
+						methodName, parameterTypes);
+				if (annotation != null) {
+					return annotation;
+				}
+				final T annotationOfInterfaces = getAnnotationOfInterfaces(
+						annotationClass, target, methodName, parameterTypes);
+				if (annotationOfInterfaces != null) {
+					return annotationOfInterfaces;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * 指定されたクラスが実装するインターフェイスにメソッド名、パラメータ型でシグニチャを指定されたメソッドが定義されていれば、
+		 * そのメソッドに定義されたアノテーションを返します。
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param clazz
+		 *            クラス
+		 * @param methodName
+		 *            メソッド名
+		 * @param parameterTypes
+		 *            パラメータの型
+		 * @return アノテーション
+		 */
+		private static <T extends Annotation> T getAnnotationOfInterfaces(
+				final Class<T> annotationClass, final Class<?> clazz,
+				final String methodName, final Class<?>[] parameterTypes) {
+			for (final Class<?> interfaceClass : clazz.getInterfaces()) {
+				final T annotation = getAnnotation(annotationClass,
+						interfaceClass, methodName, parameterTypes);
+				if (annotation != null) {
+					return annotation;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * 指定されたクラスにメソッド名、パラメータ型でシグニチャを指定されたメソッドが定義されていれば、
+		 * そのメソッドに定義されたアノテーションを返します。
+		 * 
+		 * @param <T>
+		 *            アノテーションの型
+		 * @param annotationClass
+		 *            アノテーションの型
+		 * @param clazz
+		 *            クラス
+		 * @param methodName
+		 *            メソッド名
+		 * @param parameterTypes
+		 *            パラメータの型
+		 * @return アノテーション
+		 */
+		private static <T extends Annotation> T getAnnotation(
+				final Class<T> annotationClass, final Class<?> clazz,
+				final String methodName,
+				@SuppressWarnings("unchecked") final Class[] parameterTypes) {
+			try {
+				final Method method = clazz.getDeclaredMethod(methodName,
+						parameterTypes);
+				if (method.isAnnotationPresent(annotationClass)) {
+					return method.getAnnotation(annotationClass);
+				}
+			} catch (final NoSuchMethodException e) {
+				// do nothing
+			}
+
 			return null;
 		}
 
@@ -279,14 +430,7 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		 */
 		public boolean isAnnotationPresent(
 				final Class<? extends Annotation> annotationClass) {
-			return (s2PropertyDesc.hasReadMethod() && s2PropertyDesc
-					.getReadMethod().isAnnotationPresent(annotationClass))
-					|| (s2PropertyDesc.hasWriteMethod() && s2PropertyDesc
-							.getWriteMethod().isAnnotationPresent(
-									annotationClass))
-					|| s2PropertyDesc.getField() != null
-					&& s2PropertyDesc.getField().isAnnotationPresent(
-							annotationClass);
+			return this.getAnnotation(annotationClass) != null;
 		}
 
 	}
