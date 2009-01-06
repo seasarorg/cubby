@@ -1,6 +1,7 @@
 package org.seasar.cubby.wiki;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,12 +35,12 @@ public class ApplicationModule extends AbstractModule {
 		bind(FormatPattern.class).to(FormatPatternImpl.class).in(
 				Singleton.class);
 		install(new ApplicationCubbyModule());
-		bindInterceptor(anyAction(), anyActionMethod(),
+		bindInterceptor(anyConcreteClass(), anyActionMethod(),
 				new LoggingInterceptor());
 	}
 
-	protected Matcher<Class<?>> anyAction() {
-		return ANY_ACTION;
+	protected Matcher<Class<?>> anyConcreteClass() {
+		return ANY_CONCRETE_CLASS;
 	}
 
 	protected Matcher<Method> anyActionMethod() {
@@ -48,12 +49,12 @@ public class ApplicationModule extends AbstractModule {
 
 	protected void bindActionMethodInterceptor(
 			MethodInterceptor... interceptors) {
-		bindInterceptor(ANY_ACTION, ANY_ACTION_METHOD, interceptors);
+		bindInterceptor(ANY_CONCRETE_CLASS, ANY_ACTION_METHOD, interceptors);
 	}
 
-	static Matcher<Class<?>> ANY_ACTION = new AbstractMatcher<Class<?>>() {
+	static Matcher<Class<?>> ANY_CONCRETE_CLASS = new AbstractMatcher<Class<?>>() {
 		public boolean matches(Class<?> clazz) {
-			return ActionUtils.isActionClass(clazz);
+			return !Modifier.isAbstract(clazz.getModifiers());
 		}
 	};
 
