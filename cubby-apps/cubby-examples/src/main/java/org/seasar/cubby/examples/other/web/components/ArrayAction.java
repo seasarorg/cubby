@@ -35,7 +35,7 @@ public class ArrayAction extends Action {
 
 	// ----------------------------------------------[Attribute]
 
-	public final ValidationRules validation = new DefaultValidationRules("color.") {
+	public ValidationRules validation = new DefaultValidationRules("color.") {
 		public void initialize() {
 			add("name", new RequiredValidator());
 			add("value", new RequiredValidator());
