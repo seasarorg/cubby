@@ -38,17 +38,12 @@ import org.seasar.framework.util.DisposableUtil;
  */
 public class S2PathResolverProvider implements PathResolverProvider {
 
-	private final PathResolverProvider component;
-
-	public S2PathResolverProvider() {
+	public PathResolver getPathResolver() {
 		final S2Container container = SingletonS2ContainerFactory
 				.getContainer();
-		this.component = (PathResolverProvider) container
+		final PathResolverProvider provider = (PathResolverProvider) container
 				.getComponent(Component.class);
-	}
-
-	public PathResolver getPathResolver() {
-		return component.getPathResolver();
+		return provider.getPathResolver();
 	}
 
 	public static class Component implements PathResolverProvider,
