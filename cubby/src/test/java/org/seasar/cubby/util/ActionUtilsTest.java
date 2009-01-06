@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +46,11 @@ import org.seasar.cubby.internal.controller.ThreadContext.Command;
 public class ActionUtilsTest {
 
 	@Test
-	public void actionContext() throws Exception {
+	public void actionContextFromThredLocal() throws Exception {
 		final ActionContext actionContext = createMock(ActionContext.class);
 		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
-				.andReturn(actionContext);
+				.andStubReturn(actionContext);
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
@@ -62,11 +63,60 @@ public class ActionUtilsTest {
 
 		});
 
-		verify(request, actionContext);
+		verify(actionContext, request, response);
 	}
 
 	@Test
-	public void errors() throws Exception {
+	public void actionContextFromRequest() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
+				.andStubReturn(actionContext);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
+
+		assertSame(actionContext, ActionUtils.actionContext(request));
+
+		verify(actionContext, request, response);
+	}
+
+	@Test
+	public void actionContextThrowsException() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
+
+		try {
+			ActionUtils.actionContext();
+			fail();
+		} catch (IllegalStateException e) {
+			// ok
+		}
+
+		verify(actionContext, request, response);
+	}
+
+	@Test
+	public void errorsFromThrealLocal() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final ActionErrors actionErrors = createMock(ActionErrors.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, actionErrors, request, response);
+
+		try {
+			ActionUtils.errors();
+			fail();
+		} catch (IllegalStateException e) {
+			// ok
+		}
+
+		verify(actionContext, actionErrors, request, response);
+	}
+
+	@Test
+	public void errorsFromRequest() throws Exception {
 		final ActionContext actionContext = createMock(ActionContext.class);
 		final ActionErrors actionErrors = createMock(ActionErrors.class);
 		expect(actionContext.getActionErrors()).andReturn(actionErrors);
@@ -76,19 +126,31 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, actionErrors, request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		assertSame(actionErrors, ActionUtils.errors(request));
 
-			public Void execute() throws Exception {
-				assertSame(actionErrors, ActionUtils.errors());
-				return null;
-			}
-		});
-
-		verify(actionContext, actionErrors, request);
+		verify(actionContext, actionErrors, request, response);
 	}
 
 	@Test
-	public void flash() throws Exception {
+	public void errorsThrowsException() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final ActionErrors actionErrors = createMock(ActionErrors.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, actionErrors, request, response);
+
+		try {
+			ActionUtils.errors();
+			fail();
+		} catch (IllegalStateException e) {
+			// ok
+		}
+
+		verify(actionContext, actionErrors, request, response);
+	}
+
+	@Test
+	public void flashFromThreadLocal() throws Exception {
 		final ActionContext actionContext = createMock(ActionContext.class);
 		final Map<String, Object> flashMap = new HashMap<String, Object>();
 		expect(actionContext.getFlashMap()).andReturn(flashMap);
@@ -106,7 +168,41 @@ public class ActionUtilsTest {
 			}
 		});
 
-		verify(actionContext, request);
+		verify(actionContext, request, response);
+	}
+
+	@Test
+	public void flashFromRequest() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final Map<String, Object> flashMap = new HashMap<String, Object>();
+		expect(actionContext.getFlashMap()).andReturn(flashMap);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getAttribute(CubbyConstants.ATTR_ACTION_CONTEXT))
+				.andReturn(actionContext);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
+
+		assertSame(flashMap, ActionUtils.flash(request));
+
+		verify(actionContext, request, response);
+	}
+
+	@Test
+	public void flashThrowsException() throws Exception {
+		final ActionContext actionContext = createMock(ActionContext.class);
+		final Map<String, Object> flashMap = new HashMap<String, Object>();
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(actionContext, request, response);
+
+		try {
+			ActionUtils.flash();
+			fail();
+		} catch (IllegalStateException e) {
+			// ok
+		}
+
+		verify(actionContext, request, response);
 	}
 
 	@Test
