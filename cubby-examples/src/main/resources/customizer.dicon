@@ -4,21 +4,12 @@
 <components>
   <include path="default-customizer.dicon"/>
 
-  <component name="propertyInterType" class="org.seasar.cubby.plugins.s2.aop.PropertyInterType">
-    <property name="trace">true</property>
-  </component>
-
-  <component name="propertyInterTypeCustomizer" class="org.seasar.framework.container.customizer.InterTypeCustomizer">
-    <property name="interTypeName">"propertyInterType"</property>
-  </component>
-
   <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
   </component>
   <component name="actionCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
-    <initMethod name="addCustomizer"><arg>propertyInterTypeCustomizer</arg></initMethod>
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
