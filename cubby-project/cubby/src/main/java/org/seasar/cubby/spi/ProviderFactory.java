@@ -33,7 +33,7 @@ import org.seasar.cubby.internal.util.ServiceLoader;
 public class ProviderFactory {
 
 	/** プロバイダのシングルトン。 */
-	private static Map<Class<? extends Provider>, Provider> PROVIDERS = new HashMap<Class<? extends Provider>, Provider>();
+	private static Map<String, Provider> PROVIDERS = new HashMap<String, Provider>();
 
 	/**
 	 * インスタンス化を禁止します。
@@ -52,15 +52,16 @@ public class ProviderFactory {
 	 */
 	public static <S extends Provider> S get(final Class<S> service) {
 		final S provider;
-		if (PROVIDERS.containsKey(service)) {
-			provider = service.cast(PROVIDERS.get(service));
+		final String serviceClassName = service.getName();
+		if (PROVIDERS.containsKey(serviceClassName)) {
+			provider = service.cast(PROVIDERS.get(serviceClassName));
 		} else {
 			synchronized (service) {
 				if (PROVIDERS.containsKey(service)) {
 					provider = service.cast(PROVIDERS.get(service));
 				} else {
 					provider = ServiceLoader.load(service).getProvider();
-					PROVIDERS.put(service, provider);
+					PROVIDERS.put(serviceClassName, provider);
 				}
 			}
 		}
@@ -120,7 +121,7 @@ public class ProviderFactory {
 		 *            インスタンス
 		 */
 		public void toInstance(final S instance) {
-			PROVIDERS.put(service, instance);
+			PROVIDERS.put(service.getName(), instance);
 		}
 
 	}
