@@ -75,7 +75,8 @@ public class FieldValidationRuleTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
 				params.put("name", new Object[] { "aa" });
 
@@ -98,7 +99,8 @@ public class FieldValidationRuleTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
 				params.put("name", new Object[] { "aa", "bb" });
@@ -124,7 +126,8 @@ public class FieldValidationRuleTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
 
 				ValidationRule rule = new FieldValidationRule("name",

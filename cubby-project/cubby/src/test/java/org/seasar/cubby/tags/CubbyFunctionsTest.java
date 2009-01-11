@@ -122,7 +122,8 @@ public class CubbyFunctionsTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
 						.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));
@@ -143,7 +144,8 @@ public class CubbyFunctionsTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				assertEquals("abc+%82%A0%82%A2%82%A4", CubbyFunctions
 						.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));

@@ -56,7 +56,8 @@ public class ActionUtilsTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				assertSame(actionContext, ActionUtils.actionContext());
 				return null;
 			}
@@ -162,7 +163,8 @@ public class ActionUtilsTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				assertSame(flashMap, ActionUtils.flash());
 				return null;
 			}

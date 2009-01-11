@@ -119,7 +119,8 @@ public class ValidationProcessorImplTest {
 	public void process1() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				ActionContext actionContext = new MockActionContext(action,
 						MockAction.class, MockAction.class.getMethod("dummy"));
 				try {
@@ -141,7 +142,8 @@ public class ValidationProcessorImplTest {
 	public void process2() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				params.put("name", new Object[] { "bob" });
 				params.put("age", new Object[] { "bob" });
 
@@ -165,7 +167,8 @@ public class ValidationProcessorImplTest {
 	public void process3() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				params.put("name", new Object[] { "bob" });
 				params.put("age", new Object[] { "5" });
 
@@ -185,7 +188,8 @@ public class ValidationProcessorImplTest {
 	public void handleValidationException() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				ValidationException e = new ValidationException("message",
 						"field1");
 				ActionContext actionContext = new MockActionContext(action,

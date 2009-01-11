@@ -72,7 +72,8 @@ public class TokenValidatorTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				final TokenValidator validator = new TokenValidator();
 
 				ValidationContext context = new ValidationContext();

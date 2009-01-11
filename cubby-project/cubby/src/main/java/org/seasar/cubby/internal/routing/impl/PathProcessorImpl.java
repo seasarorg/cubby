@@ -115,7 +115,7 @@ public class PathProcessorImpl implements PathProcessor {
 
 		final Routing routing = dispatch(parameterMap);
 		final ActionProcessorInvokeCommand actionProcessorInvokeCommand = new ActionProcessorInvokeCommand(
-				wrappedRequest, response, routing);
+				routing);
 		try {
 			ThreadContext.runInContext(wrappedRequest, response,
 					actionProcessorInvokeCommand);
@@ -132,20 +132,14 @@ public class PathProcessorImpl implements PathProcessor {
 
 	private class ActionProcessorInvokeCommand implements Command<Void> {
 
-		private final HttpServletRequest request;
-
-		private final HttpServletResponse response;
-
 		private final Routing routing;
 
-		public ActionProcessorInvokeCommand(final HttpServletRequest request,
-				final HttpServletResponse response, final Routing routing) {
-			this.request = request;
-			this.response = response;
+		public ActionProcessorInvokeCommand(final Routing routing) {
 			this.routing = routing;
 		}
 
-		public Void execute() throws Exception {
+		public Void execute(final HttpServletRequest request,
+				final HttpServletResponse response) throws Exception {
 			final ActionResultWrapper actionResultWrapper = actionProcessor
 					.process(request, response, routing);
 			actionResultWrapper.execute(request, response);
