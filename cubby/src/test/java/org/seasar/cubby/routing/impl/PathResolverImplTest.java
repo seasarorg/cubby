@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -115,10 +116,8 @@ public class PathResolverImplTest {
 	public void testRoot1() throws Exception {
 		PathInfo info = pathResolver.getPathInfo("/", "GET", "UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockRootAction.class, routing.getActionClass());
 		assertEquals(MockRootAction.class.getMethod("index"), routing
 				.getActionMethod());
@@ -132,10 +131,8 @@ public class PathResolverImplTest {
 	public void testRoot2() throws Exception {
 		PathInfo info = pathResolver.getPathInfo("/dummy1", "GET", "UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockRootAction.class, routing.getActionClass());
 		assertEquals(MockRootAction.class.getMethod("dummy1"), routing
 				.getActionMethod());
@@ -150,10 +147,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver
 				.getPathInfo("/mock/update", "GET", "UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("update"), routing
 				.getActionMethod());
@@ -168,10 +163,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver
 				.getPathInfo("/mock/create", "GET", "UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("insert"), routing
 				.getActionMethod());
@@ -186,10 +179,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver.getPathInfo("/mock/delete/10", "GET",
 				"UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("delete"), routing
 				.getActionMethod());
@@ -213,10 +204,8 @@ public class PathResolverImplTest {
 	public void testDefault5() throws Exception {
 		PathInfo info = pathResolver.getPathInfo("/mock/cubby", "GET", "UTf-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockAction.class, routing.getActionClass());
 		assertEquals(MockAction.class.getMethod("name"), routing
 				.getActionMethod());
@@ -234,10 +223,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver.getPathInfo("/foo/4/update", "GET",
 				"UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("update"), routing
 				.getActionMethod());
@@ -255,10 +242,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver.getPathInfo("/foo/4/create", "GET",
 				"UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("insert"), routing
 				.getActionMethod());
@@ -276,10 +261,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver.getPathInfo("/foo/4/delete/10", "GET",
 				"UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("delete"), routing
 				.getActionMethod());
@@ -307,10 +290,8 @@ public class PathResolverImplTest {
 		PathInfo info = pathResolver
 				.getPathInfo("/foo/4/cubby", "GET", "UTF-8");
 		assertNotNull(info);
-		Map<String, Routing> routings = info.getOnSubmitRoutings();
-		assertNotNull(routings);
-		assertEquals(1, routings.size());
-		Routing routing = routings.get(null);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
 		assertEquals(MockPathAction.class, routing.getActionClass());
 		assertEquals(MockPathAction.class.getMethod("name"), routing
 				.getActionMethod());
@@ -326,7 +307,7 @@ public class PathResolverImplTest {
 		assertEquals("cubby", value[0]);
 	}
 
-//	@Test
+	// @Test
 	public void testAddAbstractClass() throws Exception {
 		try {
 			pathResolver.add("/parent/m1", ParentAction.class, "m1",

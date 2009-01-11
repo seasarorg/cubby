@@ -18,8 +18,11 @@ package org.seasar.cubby.internal.routing;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.internal.controller.ActionProcessor;
+import org.seasar.cubby.routing.PathInfo;
 
 /**
  * フィルタからのパスの処理を委譲されるクラス
@@ -32,21 +35,12 @@ import org.seasar.cubby.internal.controller.ActionProcessor;
 public interface PathProcessor {
 
 	/**
-	 * 現在のリクエストが内部フォワード情報を持つかどうかを返す
-	 * <p>
-	 * ActionProcessor での処理を行うかどうかの判別に利用する
-	 * </p>
-	 * 
-	 * @return 存在する場合には「真」、そうでない場合は「偽」を返す
-	 */
-	boolean hasPathInfo();
-
-	/**
 	 * パスに該当するアクションを {@link ActionProcessor} で実行する
 	 * 
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	void process() throws IOException, ServletException;
+	void process(HttpServletRequest request, HttpServletResponse response,
+			PathInfo pathInfo) throws IOException, ServletException;
 
 }

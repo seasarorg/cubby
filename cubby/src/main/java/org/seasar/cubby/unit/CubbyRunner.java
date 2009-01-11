@@ -18,12 +18,9 @@ package org.seasar.cubby.unit;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,7 +36,10 @@ import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
+import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
+import org.seasar.cubby.internal.routing.impl.RouterImpl;
+import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
 
 /**
@@ -81,14 +81,19 @@ public class CubbyRunner {
 	private static class ActionInvoker {
 		public ActionResult invoke(final HttpServletRequest request,
 				final HttpServletResponse response) throws Exception {
-			final MockPathProccessorImpl pathProccessor = new MockPathProccessorImpl(
-					request, response, new ArrayList<Pattern>());
-			final ActionResultWrapper actionResultWrapper = pathProccessor
-					.doProcess();
-			if (actionResultWrapper == null) {
+			final Router router = new RouterImpl();
+			final PathInfo pathInfo = router.routing(request, response);
+			if (pathInfo != null) {
+				final MockPathProccessorImpl pathProccessor = new MockPathProccessorImpl();
+				final ActionResultWrapper actionResultWrapper = pathProccessor
+						.doProcess(request, response, pathInfo);
+				if (actionResultWrapper == null) {
+					return null;
+				}
+				return actionResultWrapper.getActionResult();
+			} else {
 				return null;
 			}
-			return actionResultWrapper.getActionResult();
 		}
 	}
 
@@ -127,19 +132,7 @@ public class CubbyRunner {
 
 	protected static class MockPathProccessorImpl extends PathProcessorImpl {
 
-		private final HttpServletRequest request;
-
-		private final HttpServletResponse response;
-
 		private final ActionProcessor actionProcessor = new ActionProcessorImpl();
-
-		public MockPathProccessorImpl(final HttpServletRequest request,
-				final HttpServletResponse response,
-				final List<Pattern> ignorePathPatterns) {
-			super(request, response, ignorePathPatterns);
-			this.request = request;
-			this.response = response;
-		}
 
 		/**
 		 * PathProcessor の process 処理をエミュレートする
@@ -148,16 +141,19 @@ public class CubbyRunner {
 		 * @throws Exception
 		 *             アクションの実行中に例外が発生した場合
 		 */
-		public ActionResultWrapper doProcess() throws Exception {
-			if (!super.hasPathInfo()) {
+		public ActionResultWrapper doProcess(HttpServletRequest request,
+				HttpServletResponse response, PathInfo pathInfo)
+				throws Exception {
+			if (pathInfo == null) {
 				return null;
 			}
 
-			final HttpServletRequest wrappedRequest = super.wrapRequest();
+			final HttpServletRequest wrappedRequest = super.wrapRequest(
+					request, pathInfo);
 			final Map<String, Object[]> parameterMap = super
 					.parseRequest(wrappedRequest);
 			request.setAttribute(ATTR_PARAMS, parameterMap);
-			final Routing routing = super.dispatch(parameterMap);
+			final Routing routing = pathInfo.dispatch(parameterMap);
 			final ActionResultWrapper actionResultWrapper = ThreadContext
 					.runInContext(wrappedRequest, response,
 							new Command<ActionResultWrapper>() {

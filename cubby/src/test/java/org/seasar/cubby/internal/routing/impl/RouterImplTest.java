@@ -19,11 +19,12 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.internal.routing.Router;
@@ -67,15 +69,37 @@ public class RouterImplTest {
 		expect(request.getServletPath()).andStubReturn("/foo/");
 		expect(request.getPathInfo()).andStubReturn("");
 		expect(request.getMethod()).andStubReturn("GET");
+		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(
+				null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
 		PathInfo pathInfo = router.routing(request, response);
-		Map<String, Routing> routings = pathInfo.getOnSubmitRoutings();
-		assertEquals(1, routings.size());
-		assertTrue(routings.containsKey(null));
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = pathInfo.dispatch(parameterMap);
+		assertNotNull(routing);
 
 		verify(request, response);
+	}
+
+	@Test
+	public void routingWithInternalForward() {
+		Routing routing = createMock(Routing.class);
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		expect(request.getServletPath()).andStubReturn("/foo/");
+		expect(request.getPathInfo()).andStubReturn("");
+		expect(request.getMethod()).andStubReturn("GET");
+		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(
+				routing);
+		request.removeAttribute(CubbyConstants.ATTR_ROUTING);
+		HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(routing, request, response);
+
+		PathInfo pathInfo = router.routing(request, response);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		assertSame(routing, pathInfo.dispatch(parameterMap));
+
+		verify(routing, request, response);
 	}
 
 	@Test
@@ -84,6 +108,8 @@ public class RouterImplTest {
 		expect(request.getServletPath()).andStubReturn("/js/ignore");
 		expect(request.getPathInfo()).andStubReturn("");
 		expect(request.getMethod()).andStubReturn("GET");
+		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(
+				null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
