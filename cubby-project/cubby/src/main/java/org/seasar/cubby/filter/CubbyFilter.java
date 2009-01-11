@@ -34,6 +34,7 @@ import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.routing.PathProcessor;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
+import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.routing.PathInfo;
 
@@ -54,6 +55,9 @@ public class CubbyFilter implements Filter {
 
 	/** ルーティングの対象外とするパスの正規表現パターンのリスト。 */
 	private final List<Pattern> ignorePathPatterns = new ArrayList<Pattern>();
+
+	/** ルーター。 */
+	private final Router router = new RouterImpl();
 
 	/**
 	 * このフィルタを初期化します。
@@ -119,9 +123,9 @@ public class CubbyFilter implements Filter {
 	 * リクエストの処理を {@link PathProcessor} に委譲します。
 	 * </p>
 	 * 
-	 * @param request
+	 * @param req
 	 *            要求
-	 * @param response
+	 * @param res
 	 *            応答
 	 * @param chain
 	 *            フィルターチェーン
@@ -132,14 +136,15 @@ public class CubbyFilter implements Filter {
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
 	 * @see PathProcessor#process()
 	 */
-	public void doFilter(final ServletRequest request,
-			final ServletResponse response, final FilterChain chain)
-			throws IOException, ServletException {
-		final PathProcessor delegate = new PathProcessorImpl(
-				(HttpServletRequest) request, (HttpServletResponse) response,
+	public void doFilter(final ServletRequest req, final ServletResponse res,
+			final FilterChain chain) throws IOException, ServletException {
+		final HttpServletRequest request = (HttpServletRequest) req;
+		final HttpServletResponse response = (HttpServletResponse) res;
+		final PathInfo pathInfo = router.routing(request, response,
 				ignorePathPatterns);
-		if (delegate.hasPathInfo()) {
-			delegate.process();
+		if (pathInfo != null) {
+			final PathProcessor delegate = new PathProcessorImpl();
+			delegate.process(request, response, pathInfo);
 		} else {
 			chain.doFilter(request, response);
 		}

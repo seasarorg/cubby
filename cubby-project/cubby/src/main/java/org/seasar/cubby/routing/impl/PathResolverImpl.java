@@ -504,4 +504,53 @@ public class PathResolverImpl implements PathResolver {
 
 	}
 
+	/**
+	 * パスから取得した情報の実装です。
+	 * 
+	 * @author baba
+	 * @since 2.0.0
+	 */
+	static class PathInfoImpl implements PathInfo {
+
+		/** URI から抽出したパラメータ。 */
+		private final Map<String, String[]> uriParameters;
+
+		/** リクエストパラメータ名と対応するルーティングのマッピング。 */
+		private final Map<String, Routing> routings;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param uriParameters
+		 *            URI から抽出したパラメータ
+		 * @param routings
+		 *            リクエストパラメータ名とルーティングのマッピング
+		 */
+		public PathInfoImpl(final Map<String, String[]> uriParameters,
+				final Map<String, Routing> routings) {
+			this.uriParameters = uriParameters;
+			this.routings = routings;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Map<String, String[]> getURIParameters() {
+			return uriParameters;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Routing dispatch(final Map<String, Object[]> parameterMap) {
+			for (final Entry<String, Routing> entry : routings.entrySet()) {
+				if (parameterMap.containsKey(entry.getKey())) {
+					return entry.getValue();
+				}
+			}
+			return routings.get(null);
+		}
+
+	}
+
 }

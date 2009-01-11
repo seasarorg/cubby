@@ -33,10 +33,12 @@ public interface PathInfo {
 	Map<String, String[]> getURIParameters();
 
 	/**
-	 * リクエストパラメータ名とルーティングのマッピングを取得します。
+	 * 指定された要求パラメータの {@link Map} に対応するルーティングを取得します。
 	 * 
-	 * @return OnSubmit リクエストパラメータ名とルーティングのマッピング
+	 * @param parameterMap
+	 *            要求パラメータの {@link Map}
+	 * @return ルーティング
 	 */
-	Map<String, Routing> getOnSubmitRoutings();
+	Routing dispatch(Map<String, Object[]> parameterMap);
 
 }

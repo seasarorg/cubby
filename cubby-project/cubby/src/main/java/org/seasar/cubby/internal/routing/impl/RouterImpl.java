@@ -15,10 +15,12 @@
  */
 package org.seasar.cubby.internal.routing.impl;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_ROUTING;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +31,7 @@ import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.slf4j.Logger;
@@ -69,6 +72,14 @@ public class RouterImpl implements Router {
 			logger.debug(format("DCUB0006", path));
 		}
 
+		final Routing routing = RequestUtils
+				.getAttribute(request, ATTR_ROUTING);
+		if (routing != null) {
+			request.removeAttribute(ATTR_ROUTING);
+			final PathInfo pathInfo = new ForwardFromActionPathInfo(routing);
+			return pathInfo;
+		}
+
 		if (isIgnorePath(path, ignorePathPatterns)) {
 			return null;
 		}
@@ -101,6 +112,27 @@ public class RouterImpl implements Router {
 			}
 		}
 		return false;
+	}
+
+	static class ForwardFromActionPathInfo implements PathInfo {
+
+		private final Routing routing;
+
+		private final Map<String, String[]> uriParameters = Collections
+				.emptyMap();
+
+		public ForwardFromActionPathInfo(final Routing routing) {
+			this.routing = routing;
+		}
+
+		public Map<String, String[]> getURIParameters() {
+			return uriParameters;
+		}
+
+		public Routing dispatch(Map<String, Object[]> parameterMap) {
+			return routing;
+		}
+
 	}
 
 }
