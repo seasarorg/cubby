@@ -175,7 +175,7 @@ public class ThreadContext {
 		final ThreadContext context = new ThreadContext(request, response);
 		THREAD_LOCAL.set(context);
 		try {
-			return command.execute();
+			return command.execute(request, response);
 		} finally {
 			if (previous == null) {
 				THREAD_LOCAL.remove();
@@ -197,11 +197,16 @@ public class ThreadContext {
 		/**
 		 * コマンドを実行します。
 		 * 
+		 * @param request
+		 *            要求
+		 * @param response
+		 *            応答
 		 * @return コマンドの実行結果
 		 * @throws Exception
 		 *             コマンドの実行中に例外が発生した場合
 		 */
-		T execute() throws Exception;
+		T execute(HttpServletRequest request, HttpServletResponse response)
+				throws Exception;
 
 	}
 

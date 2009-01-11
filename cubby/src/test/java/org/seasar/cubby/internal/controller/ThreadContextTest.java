@@ -74,7 +74,8 @@ public class ThreadContextTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				final Map<?, ?> result = ThreadContext.getMessagesMap();
 				assertEquals("result.size()", 14, result.size());
 				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
@@ -94,7 +95,8 @@ public class ThreadContextTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				final Map<?, ?> result = ThreadContext.getMessagesMap();
 				assertEquals("result.size()", 14, result.size());
 				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
@@ -114,7 +116,8 @@ public class ThreadContextTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				final PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
 						.getMessagesResourceBundle();
 				assertTrue("result.getKeys().hasMoreElements()", result
@@ -133,7 +136,8 @@ public class ThreadContextTest {
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				final PropertyResourceBundle result = (PropertyResourceBundle) ThreadContext
 						.getMessagesResourceBundle();
 				assertTrue("result.getKeys().hasMoreElements()", result
@@ -150,7 +154,8 @@ public class ThreadContextTest {
 		replay(request, response);
 
 		ThreadContext.runInContext(request, response, new Command<Void>() {
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				assertSame("ThreadContext.getRequest()", request, ThreadContext
 						.getRequest());
 				assertSame("ThreadContext.getResponse()", response,
@@ -171,16 +176,20 @@ public class ThreadContextTest {
 
 		ThreadContext.runInContext(request1, response1, new Command<Void>() {
 
-			public Void execute() throws Exception {
-				assertSame(request1, ThreadContext.getRequest());
-				assertSame(response1, ThreadContext.getResponse());
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
+				assertSame(request, ThreadContext.getRequest());
+				assertSame(response, ThreadContext.getResponse());
 
 				ThreadContext.runInContext(request2, response2,
 						new Command<Void>() {
 
-							public Void execute() throws Exception {
-								assertSame(request2, ThreadContext.getRequest());
-								assertSame(response2, ThreadContext
+							public Void execute(
+									final HttpServletRequest request,
+									final HttpServletResponse response)
+									throws Exception {
+								assertSame(request, ThreadContext.getRequest());
+								assertSame(response, ThreadContext
 										.getResponse());
 								return null;
 							}
@@ -193,10 +202,13 @@ public class ThreadContextTest {
 					ThreadContext.runInContext(request2, response2,
 							new Command<Void>() {
 
-								public Void execute() throws Exception {
-									assertSame(request2, ThreadContext
+								public Void execute(
+										final HttpServletRequest request,
+										final HttpServletResponse response)
+										throws Exception {
+									assertSame(request, ThreadContext
 											.getRequest());
-									assertSame(response2, ThreadContext
+									assertSame(response, ThreadContext
 											.getResponse());
 									throw new Exception();
 								}
@@ -229,9 +241,11 @@ public class ThreadContextTest {
 			ThreadContext.runInContext(request1, response1,
 					new Command<Void>() {
 
-						public Void execute() throws Exception {
-							assertSame(request1, ThreadContext.getRequest());
-							assertSame(response1, ThreadContext.getResponse());
+						public Void execute(final HttpServletRequest request,
+								final HttpServletResponse response)
+								throws Exception {
+							assertSame(request, ThreadContext.getRequest());
+							assertSame(response, ThreadContext.getResponse());
 							throw new Exception();
 						}
 

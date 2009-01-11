@@ -197,7 +197,7 @@ public class CubbyHttpServletRequestWrapperTest {
 	public void getAttribute() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute() throws Exception {
+			public Void execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 				CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
 						request, new HashMap<String, String[]>());
 

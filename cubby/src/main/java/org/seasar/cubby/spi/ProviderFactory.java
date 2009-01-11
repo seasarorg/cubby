@@ -57,8 +57,8 @@ public class ProviderFactory {
 			provider = service.cast(PROVIDERS.get(serviceClassName));
 		} else {
 			synchronized (service) {
-				if (PROVIDERS.containsKey(service)) {
-					provider = service.cast(PROVIDERS.get(service));
+				if (PROVIDERS.containsKey(serviceClassName)) {
+					provider = service.cast(PROVIDERS.get(serviceClassName));
 				} else {
 					provider = ServiceLoader.load(service).getProvider();
 					PROVIDERS.put(serviceClassName, provider);

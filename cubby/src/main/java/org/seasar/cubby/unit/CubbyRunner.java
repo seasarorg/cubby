@@ -162,10 +162,12 @@ public class CubbyRunner {
 					.runInContext(wrappedRequest, response,
 							new Command<ActionResultWrapper>() {
 
-								public ActionResultWrapper execute()
+								public ActionResultWrapper execute(
+										final HttpServletRequest request,
+										final HttpServletResponse response)
 										throws Exception {
-									return actionProcessor.process(
-											wrappedRequest, response, routing);
+									return actionProcessor.process(request,
+											response, routing);
 								}
 
 							});
