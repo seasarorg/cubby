@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.action.impl.FormatPatternImpl;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
@@ -22,18 +20,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.servlet.ServletModule;
 
 public class ApplicationModule extends AbstractModule {
+
 	@Override
 	protected void configure() {
 		install(new ServletModule());
 		install(new JpaModule());
-		bind(FormatPattern.class).to(FormatPatternImpl.class).in(
-				Singleton.class);
 		install(new ApplicationCubbyModule());
 		bindInterceptor(anyConcreteClass(), anyActionMethod(),
 				new LoggingInterceptor());
