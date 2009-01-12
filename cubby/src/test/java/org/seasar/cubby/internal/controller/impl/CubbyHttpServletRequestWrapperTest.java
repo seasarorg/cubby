@@ -44,6 +44,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.MessagesBehaviour;
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.CubbyHttpServletRequestWrapper;
@@ -71,11 +75,15 @@ public class CubbyHttpServletRequestWrapperTest {
 	public void setupProvider() {
 		ProviderFactory.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
+		final MessagesBehaviour messagesBehaviour = new DefaultMessagesBehaviour();
 		ProviderFactory.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
-						throw new LookupException();
+						if (MessagesBehaviour.class.equals(type)) {
+							return type.cast(messagesBehaviour);
+						}
+						throw new LookupException(type.getName());
 					}
 
 				}));
@@ -198,7 +206,8 @@ public class CubbyHttpServletRequestWrapperTest {
 	public void getAttribute() throws Exception {
 		ThreadContext.runInContext(request, response, new Command<Void>() {
 
-			public Void execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+			public Void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
 				CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
 						request, new HashMap<String, String[]>());
 
@@ -264,6 +273,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		public String getName() {
 			return "expect name";
 		}
+
 		public void setValue(String value) {
 		}
 	}

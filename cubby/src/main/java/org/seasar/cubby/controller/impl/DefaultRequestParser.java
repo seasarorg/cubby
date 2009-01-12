@@ -27,7 +27,7 @@ import org.seasar.cubby.controller.RequestParser;
  * @author baba
  * @since 1.0.0
  */
-public class DefaultRequestParserImpl implements RequestParser {
+public class DefaultRequestParser implements RequestParser {
 
 	/** デフォルトの優先順位。 */
 	static final int DEFAULT_PRIORITY = Integer.MAX_VALUE;

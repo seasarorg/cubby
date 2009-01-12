@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.util.HtmlUtils;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.spi.PathResolverProvider;
@@ -63,7 +63,7 @@ class RoutingSection implements Section {
 		out.print(messages.getString("lbl.path"));
 		out.print("</label>");
 		out.print("<input type=\"text\" name=\"path\" size=\"40\" value=\"");
-		out.print(HtmlUtils.escapeHtml(path));
+		out.print(escapeHtml(path));
 		out.println("\" />");
 
 		out.print("<input type=\"submit\" value=\"");
@@ -139,19 +139,62 @@ class RoutingSection implements Section {
 		out.println("</table>");
 	}
 
-	// private String messages.getString(final String key, final Object... args)
-	// {
-	// final ResourceBundle bundle = ResourceBundleUtil.getBundle(
-	// "messages", locale);
-	// return Messages.messages.getString(bundle, key, args);
-	// }
-
 	private static String th(final Object body) {
 		return "<th>" + String.valueOf(body) + "</th>";
 	}
 
 	private static String td(final Object body) {
 		return "<td>" + String.valueOf(body) + "</td>";
+	}
+
+	/**
+	 * 指定された文字列をHTMLとしてエスケープします。
+	 * <p>
+	 * <table>
+	 * <thead>
+	 * <tr>
+	 * <th>変換前</th>
+	 * <th>変換後</th>
+	 * </tr>
+	 * </thead> <tbody>
+	 * <tr>
+	 * <td>&amp;</td>
+	 * <td>&amp;amp;</td>
+	 * </tr>
+	 * <tr>
+	 * <td>&lt;</td>
+	 * <td>&amp;lt;</td>
+	 * </tr>
+	 * <tr>
+	 * <td>&gt;</td>
+	 * <td>&amp;gt;</td>
+	 * </tr>
+	 * <tr>
+	 * <td>&quot;</td>
+	 * <td>&amp;quot;</td>
+	 * </tr>
+	 * <tr>
+	 * <td>&#39</td>
+	 * <td>&amp;#39</td>
+	 * </tr>
+	 * </tbody>
+	 * </table>
+	 * </p>
+	 * 
+	 * @param str
+	 * @return エスケープされた文字列
+	 */
+	public static String escapeHtml(final Object str) {
+		if (str == null) {
+			return "";
+		}
+		String text = str.toString();
+		text = StringUtils.replace(text, "&", "&amp;");
+		text = StringUtils.replace(text, "<", "&lt;");
+		text = StringUtils.replace(text, ">", "&gt;");
+		text = StringUtils.replace(text, "\"", "&quot;");
+		text = StringUtils.replace(text, "'", "&#39;");
+		return text;
 	}
 
 }

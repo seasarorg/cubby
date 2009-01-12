@@ -26,8 +26,8 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.action.impl.FormatPatternImpl;
+import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 
 public class FormatPatternImplTest {
 
@@ -35,7 +35,7 @@ public class FormatPatternImplTest {
 
 	@Before
 	public void setupFormatPattern() {
-		FormatPatternImpl formatPattern = new FormatPatternImpl();
+		DefaultFormatPattern formatPattern = new DefaultFormatPattern();
 		formatPattern.setDatePattern("yyyy-MM-dd");
 		formatPattern.setTimePattern("HH:mm:ss");
 		formatPattern.setTimestampPattern("yyyy-MM-dd HH:mm:ss");
@@ -44,7 +44,7 @@ public class FormatPatternImplTest {
 
 	@Test
 	public void defaultPattern() {
-		FormatPattern formatPattern = new FormatPatternImpl();
+		FormatPattern formatPattern = new DefaultFormatPattern();
 		assertEquals("yyyy-MM-dd", formatPattern.getDatePattern());
 		assertEquals("HH:mm:ss", formatPattern.getTimePattern());
 		assertEquals("yyyy-MM-dd HH:mm:ss", formatPattern.getTimestampPattern());

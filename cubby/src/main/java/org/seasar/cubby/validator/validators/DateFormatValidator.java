@@ -22,9 +22,11 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.cubby.action.FormatPattern;
-import org.seasar.cubby.internal.util.ServiceFactory;
+import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
@@ -117,8 +119,10 @@ public class DateFormatValidator implements ScalarFieldValidator {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
 		final String pattern;
 		if (StringUtils.isEmpty(this.pattern)) {
-			final FormatPattern formatPattern = ServiceFactory
-					.getProvider(FormatPattern.class);
+			final Container container = ProviderFactory.get(
+					ContainerProvider.class).getContainer();
+			final FormatPattern formatPattern = container
+					.lookup(FormatPattern.class);
 			if (formatPattern == null) {
 				throw new IllegalStateException(format("ECUB0301", this, value));
 			}

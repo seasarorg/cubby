@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.internal.controller.RequestProcessor;
 import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
@@ -52,7 +52,7 @@ public class RequestProcessorImplTest {
 	@Before
 	public void setupProvider() {
 		final List<RequestParser> requestParsers = new ArrayList<RequestParser>();
-		requestParsers.add(new DefaultRequestParserImpl());
+		requestParsers.add(new DefaultRequestParser());
 
 		ProviderFactory.bind(RequestParserProvider.class).toInstance(
 				new AbstractRequestParserProvider() {

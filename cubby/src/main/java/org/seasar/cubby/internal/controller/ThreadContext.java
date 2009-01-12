@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.controller.MessagesBehaviour;
-import org.seasar.cubby.internal.util.ServiceFactory;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 
 /**
  * 実行スレッドのコンテキスト情報です。
@@ -137,8 +139,10 @@ public class ThreadContext {
 	private static MessagesBehaviour getMessagesBehaviour(
 			final ThreadContext context) {
 		if (context.messagesBehaviour == null) {
-			context.messagesBehaviour = ServiceFactory
-					.getProvider(MessagesBehaviour.class);
+			final Container container = ProviderFactory.get(
+					ContainerProvider.class).getContainer();
+			context.messagesBehaviour = container
+					.lookup(MessagesBehaviour.class);
 		}
 		return context.messagesBehaviour;
 	}

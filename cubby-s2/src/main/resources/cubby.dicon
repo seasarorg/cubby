@@ -23,7 +23,6 @@
 
 	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
 	<component class="org.seasar.cubby.routing.impl.PathResolverImpl" />
-	<component class="org.seasar.cubby.controller.impl.DefaultRequestParserImpl" />
 
 	<!-- spi -->
 	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider$Component" />

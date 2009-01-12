@@ -15,9 +15,11 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.converter.ConversionHelper;
-import org.seasar.cubby.internal.util.ServiceFactory;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 
 /**
  * 変換のヘルパクラスの実装。
@@ -34,7 +36,9 @@ public class ConversionHelperImpl implements ConversionHelper {
 	 * 新しい変換のヘルパクラスを生成します。
 	 */
 	public ConversionHelperImpl() {
-		this.formatPattern = ServiceFactory.getProvider(FormatPattern.class);
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
+		this.formatPattern = container.lookup(FormatPattern.class);
 	}
 
 	/**

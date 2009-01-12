@@ -22,8 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultFormatPattern;
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.converter.impl.BigIntegerConverter;
@@ -63,18 +67,10 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	public void configure() {
 		configureRequestParsersProvider();
 		configureConverterClassesProvider();
-		// configureActionClassesProvider();
 		configureActionHandlerClassesProvider();
 		configurePathResolver();
-
-		// bind(RequestParserFactory.class).to(GuiceRequestParserFactory.class)
-		// .in(Singleton.class);
-		// bind(ConverterFactory.class).to(GuiceConverterFactory.class).in(
-		// Singleton.class);
-		// bind(PathResolverFactory.class).to(GuicePathResolverFactory.class).in(
-		// Singleton.class);
-		// bind(ActionHandlerChainFactory.class).to(
-		// GuiceActionHandlerChainFactory.class).in(Singleton.class);
+		configureMessagesBehaviour();
+		configureFormatPattern();
 	}
 
 	protected void configureConverterClassesProvider() {
@@ -100,18 +96,9 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 			final Injector injector) {
 		final Set<RequestParser> requestParsers = new HashSet<RequestParser>();
 		requestParsers
-				.add(injector.getInstance(DefaultRequestParserImpl.class));
-		// requestParsers.add(injector
-		// .getInstance(MultipartRequestParserImpl.class));
+				.add(injector.getInstance(DefaultRequestParser.class));
 		return Collections.unmodifiableCollection(requestParsers);
 	}
-
-	// protected void configureActionClassesProvider() {
-	// bind(ActionClassesFactory.class).toInstance(
-	// new ActionClassesFactoryImpl());
-	// }
-
-	// protected abstract Collection<Class<?>> getActionClasses();
 
 	protected Collection<Class<? extends Converter>> getConverterClasses() {
 		List<Class<? extends Converter>> converterClasses = new ArrayList<Class<? extends Converter>>();
@@ -144,14 +131,6 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 
 	}
 
-	// private class ActionClassesFactoryImpl implements ActionClassesFactory {
-	//
-	// public Collection<Class<?>> getActionClasses() {
-	// return AbstractCubbyModule.this.getActionClasses();
-	// }
-	//
-	// }
-
 	protected void configureActionHandlerClassesProvider() {
 		bind(ActionHandlerClassesFactory.class).toInstance(
 				new ActionHandlersFactoryImpl());
@@ -180,5 +159,15 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	}
 
 	protected abstract PathResolver getPathResolver();
+
+	protected void configureMessagesBehaviour() {
+		bind(MessagesBehaviour.class).to(DefaultMessagesBehaviour.class).in(
+				Singleton.class);
+	}
+
+	protected void configureFormatPattern() {
+		bind(FormatPattern.class).to(DefaultFormatPattern.class).in(
+				Singleton.class);
+	}
 
 }

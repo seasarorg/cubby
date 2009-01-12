@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.converter;
 
-import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.FormatPattern;
 
 /**
  * 変換のヘルパクラス。
