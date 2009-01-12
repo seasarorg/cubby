@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.internal.controller;
 
-
 /**
  * フォームオブジェクトのラッパーファクトリです。
  * 

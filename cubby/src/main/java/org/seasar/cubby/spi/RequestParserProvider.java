@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.spi;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.RequestParser;
@@ -28,12 +30,12 @@ import org.seasar.cubby.controller.RequestParser;
 public interface RequestParserProvider extends Provider {
 
 	/**
-	 * 指定されたリクエストを解析可能なリクエスト解析器を取得します。
+	 * 指定された要求を解析可能な解析器によって解析し、要求パラメータの {@link Map} を返します。
 	 * 
 	 * @param request
-	 *            リクエスト
-	 * @return 指定されたリクエストを解析可能なリクエスト解析器
+	 *            要求
+	 * @return 要求パラメータの {@link Map}
 	 */
-	RequestParser getRequestParser(HttpServletRequest request);
+	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 
 }

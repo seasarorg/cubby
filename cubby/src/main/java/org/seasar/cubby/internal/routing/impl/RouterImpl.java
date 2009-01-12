@@ -129,7 +129,7 @@ public class RouterImpl implements Router {
 			return uriParameters;
 		}
 
-		public Routing dispatch(Map<String, Object[]> parameterMap) {
+		public Routing dispatch(final Map<String, Object[]> parameterMap) {
 			return routing;
 		}
 

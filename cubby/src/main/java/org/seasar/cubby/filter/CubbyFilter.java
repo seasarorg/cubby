@@ -31,17 +31,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.internal.controller.ActionProcessor;
-import org.seasar.cubby.internal.routing.PathProcessor;
+import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.internal.controller.RequestProcessor;
+import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
+import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
 import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.routing.PathInfo;
+import org.seasar.cubby.routing.Routing;
 
 /**
- * Cubby用のフィルター。
+ * Cubby 用のフィルター。
  * <p>
- * リクエストの処理を{@link ActionProcessor}に委譲します。
+ * 要求を解析し、対応するアクションが登録されている場合はアクションを実行します。
  * </p>
  * 
  * @author agata
@@ -58,6 +63,15 @@ public class CubbyFilter implements Filter {
 
 	/** ルーター。 */
 	private final Router router = new RouterImpl();
+
+	/** 要求を処理します。 */
+	private final RequestProcessor requestProcessor = new RequestProcessorImpl();
+
+	/** コマンドのファクトリ。 */
+	private final CommandFactory<Void> commandFactory = new CubbyFilterCommandFactory();
+
+	/** アクションを処理します。 */
+	private final ActionProcessor actionProcessor = new ActionProcessorImpl();
 
 	/**
 	 * このフィルタを初期化します。
@@ -111,16 +125,11 @@ public class CubbyFilter implements Filter {
 	public void destroy() {
 	}
 
-	// TODO コメント修正
 	/**
-	 * フィルター処理。
+	 * フィルター処理を行います。
 	 * <p>
-	 * リクエストされた URI に対応する内部フォワード情報が {@link Router} から取得できた場合は、そこに設定されている
-	 * {@link PathInfo#getOnSubmitRoutings()} をリクエストに設定し、 {@link CubbyFilter}
-	 * が処理することを期待します。 URI に対応する内部フォワード情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を委譲します。
-	 * </p>
-	 * <p>
-	 * リクエストの処理を {@link PathProcessor} に委譲します。
+	 * 要求された URI に対応する情報が {@link Router} から取得できた場合は、 {@link RequestProcessor}
+	 * によってリクエストを処理します。URI に対応する情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を委譲します。
 	 * </p>
 	 * 
 	 * @param req
@@ -134,7 +143,8 @@ public class CubbyFilter implements Filter {
 	 * @throws ServletException
 	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
-	 * @see PathProcessor#process()
+	 * @see RequestProcessor#process(HttpServletRequest, HttpServletResponse,
+	 *      PathInfo, CommandFactory)
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {
@@ -143,11 +153,54 @@ public class CubbyFilter implements Filter {
 		final PathInfo pathInfo = router.routing(request, response,
 				ignorePathPatterns);
 		if (pathInfo != null) {
-			final PathProcessor delegate = new PathProcessorImpl();
-			delegate.process(request, response, pathInfo);
+			try {
+				requestProcessor.process(request, response, pathInfo,
+						commandFactory);
+			} catch (final Exception e) {
+				if (e instanceof IOException) {
+					throw (IOException) e;
+				} else if (e instanceof ServletException) {
+					throw (ServletException) e;
+				} else {
+					throw new ServletException(e);
+				}
+			}
 		} else {
 			chain.doFilter(request, response);
 		}
+	}
+
+	/**
+	 * アクションを実行するコマンドです。
+	 * 
+	 * @author baba
+	 */
+	class CubbyFilterCommandFactory implements CommandFactory<Void> {
+
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * {@link ActionProcessor} でアクションを実行後、その結果を実行します。
+		 * {@link ActionResultWrapper#execute(HttpServletRequest, HttpServletResponse)}
+		 * </p>
+		 */
+		public Command<Void> create(final Routing routing) {
+			return new Command<Void>() {
+
+				/**
+				 * {@inheritDoc}
+				 */
+				public Void execute(final HttpServletRequest request,
+						final HttpServletResponse response) throws Exception {
+					final ActionResultWrapper actionResultWrapper = actionProcessor
+							.process(request, response, routing);
+					actionResultWrapper.execute(request, response);
+					return null;
+				}
+
+			};
+		}
+
 	}
 
 }

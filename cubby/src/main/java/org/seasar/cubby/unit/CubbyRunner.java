@@ -15,12 +15,9 @@
  */
 package org.seasar.cubby.unit;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -33,11 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
-import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.RequestProcessor;
+import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
+import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
 import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.routing.impl.PathProcessorImpl;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
@@ -78,26 +76,7 @@ public class CubbyRunner {
 		return chain.getActionResult();
 	}
 
-	private static class ActionInvoker {
-		public ActionResult invoke(final HttpServletRequest request,
-				final HttpServletResponse response) throws Exception {
-			final Router router = new RouterImpl();
-			final PathInfo pathInfo = router.routing(request, response);
-			if (pathInfo != null) {
-				final MockPathProccessorImpl pathProccessor = new MockPathProccessorImpl();
-				final ActionResultWrapper actionResultWrapper = pathProccessor
-						.doProcess(request, response, pathInfo);
-				if (actionResultWrapper == null) {
-					return null;
-				}
-				return actionResultWrapper.getActionResult();
-			} else {
-				return null;
-			}
-		}
-	}
-
-	private static class ActionInvokeFilterChain implements FilterChain {
+	static class ActionInvokeFilterChain implements FilterChain {
 
 		private final Iterator<Filter> iterator;
 
@@ -115,13 +94,30 @@ public class CubbyRunner {
 				filter.doFilter(request, response, this);
 			} else {
 				try {
-					this.actionResult = new ActionInvoker().invoke(
-							(HttpServletRequest) request,
+					this.actionResult = invoke((HttpServletRequest) request,
 							(HttpServletResponse) response);
 				} catch (final Exception e) {
 					throw new ServletException(e);
 				}
 			}
+		}
+
+		private ActionResult invoke(final HttpServletRequest request,
+				final HttpServletResponse response) throws Exception {
+			final Router router = new RouterImpl();
+			final PathInfo pathInfo = router.routing(request, response);
+			if (pathInfo == null) {
+				return null;
+			}
+
+			final RequestProcessor pathProcessor = new RequestProcessorImpl();
+			final CommandFactory<ActionResultWrapper> commandFactory = new CubbyRunnerCommandFactory();
+			final ActionResultWrapper actionResultWrapper = pathProcessor
+					.process(request, response, pathInfo, commandFactory);
+			if (actionResultWrapper == null) {
+				return null;
+			}
+			return actionResultWrapper.getActionResult();
 		}
 
 		public ActionResult getActionResult() {
@@ -130,45 +126,23 @@ public class CubbyRunner {
 
 	}
 
-	protected static class MockPathProccessorImpl extends PathProcessorImpl {
+	static class CubbyRunnerCommandFactory implements
+			CommandFactory<ActionResultWrapper> {
 
-		private final ActionProcessor actionProcessor = new ActionProcessorImpl();
+		final ActionProcessor actionProcessor = new ActionProcessorImpl();
 
-		/**
-		 * PathProcessor の process 処理をエミュレートする
-		 * 
-		 * @return アクションの実行結果
-		 * @throws Exception
-		 *             アクションの実行中に例外が発生した場合
-		 */
-		public ActionResultWrapper doProcess(HttpServletRequest request,
-				HttpServletResponse response, PathInfo pathInfo)
-				throws Exception {
-			if (pathInfo == null) {
-				return null;
-			}
+		public Command<ActionResultWrapper> create(final Routing routing) {
+			return new Command<ActionResultWrapper>() {
 
-			final HttpServletRequest wrappedRequest = super.wrapRequest(
-					request, pathInfo);
-			final Map<String, Object[]> parameterMap = super
-					.parseRequest(wrappedRequest);
-			request.setAttribute(ATTR_PARAMS, parameterMap);
-			final Routing routing = pathInfo.dispatch(parameterMap);
-			final ActionResultWrapper actionResultWrapper = ThreadContext
-					.runInContext(wrappedRequest, response,
-							new Command<ActionResultWrapper>() {
+				public ActionResultWrapper execute(
+						final HttpServletRequest request,
+						final HttpServletResponse response) throws Exception {
+					return actionProcessor.process(request, response, routing);
+				}
 
-								public ActionResultWrapper execute(
-										final HttpServletRequest request,
-										final HttpServletResponse response)
-										throws Exception {
-									return actionProcessor.process(request,
-											response, routing);
-								}
-
-							});
-			return actionResultWrapper;
+			};
 		}
+
 	}
 
 }
