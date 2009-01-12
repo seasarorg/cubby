@@ -26,7 +26,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.util.HtmlUtils;
 
 /**
  * Cubby の JSP functions を提供します。
@@ -128,7 +127,7 @@ public class CubbyFunctions {
 	 * @return エスケープされた HTML
 	 */
 	public static String out(final Object str) {
-		return str == null ? "" : HtmlUtils.escapeHtml(str.toString());
+		return str == null ? "" : TagUtils.escapeHtml(str.toString());
 	}
 
 	/**

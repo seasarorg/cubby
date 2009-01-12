@@ -34,6 +34,8 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.TestUtils;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
@@ -47,11 +49,15 @@ public class ParameterBindingActionHandlerTest {
 
 	@Before
 	public void setup() {
+		final FormatPattern formatPattern = new DefaultFormatPattern();
 		ProviderFactory.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
-						throw new LookupException();
+						if (FormatPattern.class.equals(type)) {
+							return type.cast(formatPattern);
+						}
+						throw new LookupException(type.getName());
 					}
 
 				}));

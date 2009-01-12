@@ -46,7 +46,7 @@ import org.seasar.cubby.spi.container.Container;
 
 public class MultipartRequestParserImplTest {
 
-	private RequestParser requestParser = new MultipartRequestParserImpl();
+	private RequestParser requestParser = new MultipartRequestParser();
 
 	private HttpServletRequest request;
 
@@ -117,7 +117,7 @@ public class MultipartRequestParserImplTest {
 	}
 
 	public void testPriority() {
-		assertEquals(DefaultRequestParserImpl.DEFAULT_PRIORITY - 1,
+		assertEquals(DefaultRequestParser.DEFAULT_PRIORITY - 1,
 				requestParser.getPriority());
 	}
 

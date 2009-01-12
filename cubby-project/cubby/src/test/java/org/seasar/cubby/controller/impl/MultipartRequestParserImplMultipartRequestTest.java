@@ -60,7 +60,7 @@ import org.seasar.cubby.spi.container.Container;
 
 public class MultipartRequestParserImplMultipartRequestTest {
 
-	private final RequestParser requestParser = new MultipartRequestParserImpl();
+	private final RequestParser requestParser = new MultipartRequestParser();
 
 	private HttpServletRequest request;
 

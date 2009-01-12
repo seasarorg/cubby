@@ -53,10 +53,10 @@ import org.seasar.cubby.spi.container.LookupException;
  * @see <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
  * @since 1.0.0
  */
-public class MultipartRequestParserImpl implements RequestParser {
+public class MultipartRequestParser implements RequestParser {
 
 	/** デフォルトの優先順位。 */
-	static final int DEFAULT_PRIORITY = DefaultRequestParserImpl.DEFAULT_PRIORITY - 1;
+	static final int DEFAULT_PRIORITY = DefaultRequestParser.DEFAULT_PRIORITY - 1;
 
 	/** 優先順位。 */
 	private int priority = DEFAULT_PRIORITY;
@@ -209,7 +209,7 @@ public class MultipartRequestParserImpl implements RequestParser {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * デフォルトの優先順位は {@link DefaultRequestParserImpl#DEFAULT_PRIORITY} - 1 です。
+	 * デフォルトの優先順位は {@link DefaultRequestParser#DEFAULT_PRIORITY} - 1 です。
 	 * </p>
 	 */
 	public int getPriority() {

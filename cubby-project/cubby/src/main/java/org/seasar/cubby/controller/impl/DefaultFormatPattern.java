@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action.impl;
+package org.seasar.cubby.controller.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.seasar.cubby.action.FormatPattern;
+import org.seasar.cubby.controller.FormatPattern;
 
 /**
  * 日付や時刻のフォーマットパターンを保持するクラスの実装です。
@@ -26,7 +26,7 @@ import org.seasar.cubby.action.FormatPattern;
  * @author baba
  * @since 1.0.0
  */
-public class FormatPatternImpl implements FormatPattern {
+public class DefaultFormatPattern implements FormatPattern {
 
 	/**
 	 * 日付フォーマットパターン

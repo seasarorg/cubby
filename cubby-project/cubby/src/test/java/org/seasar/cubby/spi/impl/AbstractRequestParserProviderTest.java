@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
-import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.spi.RequestParserProvider;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
@@ -39,7 +39,7 @@ public class AbstractRequestParserProviderTest {
 	private RequestParserProvider provider = new AbstractRequestParserProvider() {
 
 		private List<RequestParser> parsers = Arrays
-				.asList(new RequestParser[] { new DefaultRequestParserImpl(),
+				.asList(new RequestParser[] { new DefaultRequestParser(),
 						new MyRequestParserImpl() });
 
 		@Override

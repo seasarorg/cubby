@@ -26,6 +26,8 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
@@ -44,11 +46,15 @@ public class FormWrapperFactoryImplTest {
 
 	@Before
 	public void setup() {
+		final FormatPattern formatPattern = new DefaultFormatPattern();
 		ProviderFactory.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
-						throw new LookupException();
+						if (FormatPattern.class.equals(type)) {
+							return type.cast(formatPattern);
+						}
+						throw new LookupException(type.getName());
 					}
 				}));
 		ProviderFactory.bind(BeanDescProvider.class).toInstance(

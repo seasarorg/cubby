@@ -28,11 +28,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.seasar.cubby.controller.impl.DefaultRequestParserImpl;
+import org.seasar.cubby.controller.impl.DefaultRequestParser;
 
 public class DefaultRequestParserImplTest {
 
-	public DefaultRequestParserImpl requestParser = new DefaultRequestParserImpl();
+	public DefaultRequestParser requestParser = new DefaultRequestParser();
 
 	@Test
 	public void getEmptyParameterMap() {
@@ -101,7 +101,7 @@ public class DefaultRequestParserImplTest {
 
 	@Test
 	public void priority() {
-		assertEquals(DefaultRequestParserImpl.DEFAULT_PRIORITY, requestParser
+		assertEquals(DefaultRequestParser.DEFAULT_PRIORITY, requestParser
 				.getPriority());
 		requestParser.setPriority(5);
 		assertEquals(5, requestParser.getPriority());
