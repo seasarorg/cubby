@@ -15,19 +15,27 @@
  */
 package org.seasar.cubby.spi.impl;
 
+import static org.seasar.cubby.internal.util.LogMessages.format;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.spi.RequestParserProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * リクエスト解析器プロバイダの抽象的な実装です。
+ * {@link RequestParser} のプロバイダの抽象的な実装です。
+ * <p>
+ * このクラスのサブクラスは {{@link #getRequestParsers()} をオーバーライドして使用可能な要求解析機の一覧を返してください。
+ * </p>
  * 
  * @author baba
  * @since 2.0.0
@@ -35,7 +43,11 @@ import org.seasar.cubby.spi.RequestParserProvider;
 public abstract class AbstractRequestParserProvider implements
 		RequestParserProvider {
 
-	/** リクエスト解析器の {@link Comparator}。 */
+	/** ロガー。 */
+	private static final Logger logger = LoggerFactory
+			.getLogger(AbstractRequestParserProvider.class);
+
+	/** 要求解析器の {@link Comparator}。 */
 	private final Comparator<RequestParser> requestParserComparator = new Comparator<RequestParser>() {
 
 		/**
@@ -54,17 +66,23 @@ public abstract class AbstractRequestParserProvider implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public RequestParser getRequestParser(final HttpServletRequest request) {
+	public Map<String, Object[]> getParameterMap(
+			final HttpServletRequest request) {
 		for (final RequestParser requestParser : sort(getRequestParsers())) {
 			if (requestParser.isParsable(request)) {
-				return requestParser;
+				if (logger.isDebugEnabled()) {
+					logger.debug(format("DCUB0016", requestParser));
+				}
+				final Map<String, Object[]> parameterMap = requestParser
+						.getParameterMap(request);
+				return parameterMap;
 			}
 		}
-		return null;
+		throw new NullPointerException("requestParser");
 	}
 
 	/**
-	 * リクエスト解析器のコレクションをソートします。
+	 * 要求解析器のコレクションをソートします。
 	 * 
 	 * @param requestParsers
 	 *            リクエスト解析器のコレクション
@@ -79,8 +97,9 @@ public abstract class AbstractRequestParserProvider implements
 	}
 
 	/**
+	 * 要求解析機の一覧を取得します。
 	 * 
-	 * @return
+	 * @return 要求解析機の一覧
 	 */
 	protected abstract Collection<RequestParser> getRequestParsers();
 

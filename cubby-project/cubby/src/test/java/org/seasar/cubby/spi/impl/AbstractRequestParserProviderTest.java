@@ -17,11 +17,12 @@ package org.seasar.cubby.spi.impl;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,53 +51,59 @@ public class AbstractRequestParserProviderTest {
 
 	@Test
 	public void testSelect1() {
+		Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
 		HttpServletRequest request = createMock(HttpServletRequest.class);
-		expect(request.getContentType()).andReturn(null).anyTimes();
+		expect(request.getContentType()).andStubReturn(null);
+		expect(request.getParameterMap()).andStubReturn(parameterMap);
 		replay(request);
-		RequestParser requestParser = provider.getRequestParser(request);
-		assertTrue(requestParser instanceof DefaultRequestParserImpl);
+		assertEquals(parameterMap, provider.getParameterMap(request));
+		verify(request);
 	}
 
 	@Test
 	public void testSelect2() {
+		Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
 		HttpServletRequest request = createMock(HttpServletRequest.class);
-		expect(request.getContentType()).andReturn(
-				"application/x-www-form-urlencoded").anyTimes();
+		expect(request.getContentType()).andStubReturn(
+				"application/x-www-form-urlencoded");
+		expect(request.getParameterMap()).andStubReturn(parameterMap);
 		replay(request);
-		RequestParser requestParser = provider.getRequestParser(request);
-		assertTrue(requestParser instanceof DefaultRequestParserImpl);
+		assertEquals(parameterMap, provider.getParameterMap(request));
+		verify(request);
 	}
-
-	// public void testSelect3() {
-	// MockHttpServletRequest request = getRequest();
-	// request.setContentType("multipart/form-data");
-	// RequestParser requestParser = requestParserSelector.select(request);
-	// assertTrue(requestParser instanceof MultipartRequestParserImpl);
-	// }
 
 	@Test
 	public void testSelect4() {
+		Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
 		HttpServletRequest request = createMock(HttpServletRequest.class);
-		expect(request.getContentType()).andReturn("application/atom+xml")
-				.anyTimes();
+		expect(request.getContentType()).andStubReturn("application/atom+xml");
+		expect(request.getParameterMap()).andStubReturn(parameterMap);
 		replay(request);
-		RequestParser requestParser = provider.getRequestParser(request);
-		assertTrue(requestParser instanceof DefaultRequestParserImpl);
+		assertEquals(parameterMap, provider.getParameterMap(request));
+		verify(request);
 	}
 
 	@Test
 	public void testSelect5() {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
-		expect(request.getContentType()).andReturn("foo/bar").anyTimes();
+		expect(request.getContentType()).andStubReturn("foo/bar");
 		replay(request);
-		RequestParser requestParser = provider.getRequestParser(request);
-		assertTrue(requestParser instanceof MyRequestParserImpl);
+		assertEquals(MY_REQUEST_PARSER_PARAMETER_MAP, provider
+				.getParameterMap(request));
+		verify(request);
+	}
+
+	private static Map<String, Object[]> MY_REQUEST_PARSER_PARAMETER_MAP;
+	static {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("abc", new Object[] { "def" });
+		MY_REQUEST_PARSER_PARAMETER_MAP = map;
 	}
 
 	private static class MyRequestParserImpl implements RequestParser {
 
 		public Map<String, Object[]> getParameterMap(HttpServletRequest request) {
-			return null;
+			return MY_REQUEST_PARSER_PARAMETER_MAP;
 		}
 
 		public int getPriority() {

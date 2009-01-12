@@ -33,7 +33,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.internal.routing.PathTemplateParser;
@@ -49,9 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * クラスパスから {@link Action} を検索し、クラス名やメソッド名、そのクラスやメソッドに指定された
- * {@link org.seasar.cubby.action.Path}
- * の情報からアクションのパスを抽出し、リクエストされたパスをどのメソッドに振り分けるかを決定します。
+ * パスに対応するアクションメソッドを解決するためのクラスの実装です。
  * 
  * @author baba
  * @since 1.0.0
@@ -217,8 +214,8 @@ public class PathResolverImpl implements PathResolver {
 						uriParameters.put(name, new String[] { value });
 					}
 
-					final PathInfo pathInfo = new PathInfoImpl(uriParameters,
-							onSubmitRoutings);
+					final PathInfo pathInfo = new ResolvedPathInfo(
+							uriParameters, onSubmitRoutings);
 
 					return pathInfo;
 				}
@@ -510,7 +507,7 @@ public class PathResolverImpl implements PathResolver {
 	 * @author baba
 	 * @since 2.0.0
 	 */
-	static class PathInfoImpl implements PathInfo {
+	static class ResolvedPathInfo implements PathInfo {
 
 		/** URI から抽出したパラメータ。 */
 		private final Map<String, String[]> uriParameters;
@@ -526,7 +523,7 @@ public class PathResolverImpl implements PathResolver {
 		 * @param routings
 		 *            リクエストパラメータ名とルーティングのマッピング
 		 */
-		public PathInfoImpl(final Map<String, String[]> uriParameters,
+		public ResolvedPathInfo(final Map<String, String[]> uriParameters,
 				final Map<String, Routing> routings) {
 			this.uriParameters = uriParameters;
 			this.routings = routings;
