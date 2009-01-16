@@ -17,10 +17,11 @@ package org.seasar.cubby.handler.impl;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 
@@ -35,6 +36,18 @@ import org.seasar.cubby.handler.ActionHandlerChain;
 
 public class InvocationActionHandlerTest {
 
+	public static class SimpleAction {
+		private final ActionResult result;
+
+		private SimpleAction(ActionResult result) {
+			this.result = result;
+		}
+
+		public ActionResult method1() {
+			return result;
+		}
+	}
+
 	@Test
 	public void handle() throws Exception {
 		final ActionResult result = new ActionResult() {
@@ -46,11 +59,7 @@ public class InvocationActionHandlerTest {
 
 		};
 
-		Object action = new Object() {
-			public ActionResult method1() {
-				return result;
-			}
-		};
+		Object action = new SimpleAction(result);
 		Method actionMethod = action.getClass().getMethod("method1");
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
@@ -67,13 +76,15 @@ public class InvocationActionHandlerTest {
 		verify(request, response, context, chain);
 	}
 
+	public static class ErrorThrownAction {
+		public ActionResult method1() {
+			throw new Error("expect Error thrown");
+		}
+	}
+
 	@Test
 	public void handleWithErrorThrown() throws Exception {
-		Object action = new Object() {
-			public ActionResult method1() {
-				throw new Error("expect Error thrown");
-			}
-		};
+		Object action = new ErrorThrownAction();
 		Method actionMethod = action.getClass().getMethod("method1");
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
@@ -95,13 +106,15 @@ public class InvocationActionHandlerTest {
 		verify(request, response, context, chain);
 	}
 
+	public static class RuntimeExceptionThrownAction {
+		public ActionResult method1() {
+			throw new RuntimeException("expect RuntimeException thrown");
+		}
+	}
+
 	@Test
 	public void handleWithRuntimeExceptionThrown() throws Exception {
-		Object action = new Object() {
-			public ActionResult method1() {
-				throw new RuntimeException("expect RuntimeException thrown");
-			}
-		};
+		Object action = new RuntimeExceptionThrownAction();
 		Method actionMethod = action.getClass().getMethod("method1");
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
@@ -123,13 +136,15 @@ public class InvocationActionHandlerTest {
 		verify(request, response, context, chain);
 	}
 
+	public static class ExceptionThrownAction {
+		public ActionResult method1() throws Exception {
+			throw new Exception("expect Exception thrown");
+		}
+	}
+
 	@Test
 	public void handleWithExceptionThrown() throws Exception {
-		Object action = new Object() {
-			public ActionResult method1() throws Exception {
-				throw new Exception("expect Exception thrown");
-			}
-		};
+		Object action = new ExceptionThrownAction();
 		Method actionMethod = action.getClass().getMethod("method1");
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);

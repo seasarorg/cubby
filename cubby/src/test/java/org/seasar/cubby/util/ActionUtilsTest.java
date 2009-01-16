@@ -192,7 +192,6 @@ public class ActionUtilsTest {
 	@Test
 	public void flashThrowsException() throws Exception {
 		final ActionContext actionContext = createMock(ActionContext.class);
-		final Map<String, Object> flashMap = new HashMap<String, Object>();
 		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);

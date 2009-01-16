@@ -82,6 +82,7 @@ public class RequestProcessorImplTest {
 		expect(pathInfo.dispatch(parameterMap)).andReturn(routing);
 		expect(pathInfo.getURIParameters()).andReturn(
 				new HashMap<String, String[]>());
+		@SuppressWarnings("unchecked")
 		CommandFactory<Void> commandFactory = createMock(CommandFactory.class);
 		expect(commandFactory.create(routing)).andReturn(new Command<Void>() {
 

@@ -66,15 +66,6 @@ public class ValidationActionHandlerTest {
 
 	@Test
 	public void handleWithValidationFail() throws Exception {
-		ActionResult result = new ActionResult() {
-
-			public void execute(ActionContext actionContext,
-					HttpServletRequest request, HttpServletResponse response)
-					throws Exception {
-			}
-
-		};
-
 		ActionResult failResult = new ActionResult() {
 
 			public void execute(ActionContext actionContext,
