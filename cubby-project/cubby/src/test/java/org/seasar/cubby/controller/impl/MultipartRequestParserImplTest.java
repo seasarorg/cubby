@@ -96,6 +96,7 @@ public class MultipartRequestParserImplTest {
 	public void invalidCotntentType() {
 		contentType = "application/x-www-form-urlencoded";
 		try {
+			@SuppressWarnings("unused")
 			Map<String, Object[]> parameterMap = requestParser
 					.getParameterMap(request);
 			fail();

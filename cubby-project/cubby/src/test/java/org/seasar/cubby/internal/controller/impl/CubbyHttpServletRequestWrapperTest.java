@@ -22,18 +22,20 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,13 +46,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
-import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
-import org.seasar.cubby.internal.controller.impl.CubbyHttpServletRequestWrapper;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
@@ -247,6 +246,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		expects.put("def", new String[] { "value2" });
 		expects.put("ghi", new String[] { "value4" });
 
+		@SuppressWarnings("unchecked")
 		Enumeration parameterNames = wrapper.getParameterNames();
 		while (parameterNames.hasMoreElements()) {
 			String parameterName = (String) parameterNames.nextElement();
@@ -260,6 +260,7 @@ public class CubbyHttpServletRequestWrapperTest {
 
 		assertNull(wrapper.getParameter("jkl"));
 
+		@SuppressWarnings("unchecked")
 		Map<String, String[]> parameterMap = wrapper.getParameterMap();
 		assertEquals(3, parameterMap.size());
 		assertArrayEquals(new String[] { "value1", "value3" }, parameterMap

@@ -33,8 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.tagext.BodyContent;
 
 public class MockJspContext extends PageContext {
@@ -106,18 +104,8 @@ public class MockJspContext extends PageContext {
 	}
 
 	@Override
-	public ExpressionEvaluator getExpressionEvaluator() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public JspWriter getOut() {
 		return writer;
-	}
-
-	@Override
-	public VariableResolver getVariableResolver() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -241,6 +229,18 @@ public class MockJspContext extends PageContext {
 
 	@Override
 	public ELContext getELContext() {
+		throw new UnsupportedOperationException();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public javax.servlet.jsp.el.ExpressionEvaluator getExpressionEvaluator() {
+		throw new UnsupportedOperationException();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public javax.servlet.jsp.el.VariableResolver getVariableResolver() {
 		throw new UnsupportedOperationException();
 	}
 
