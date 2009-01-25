@@ -44,7 +44,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	private static final long serialVersionUID = 1L;
 
 	/** DynamicAttributes */
-	private final Map<String, Object> attrs = new HashMap<String, Object>();
+	private final Map<String, Object> dynamicAttributes = new HashMap<String, Object>();
 
 	/** リンクの補助クラス。 */
 	private transient final LinkSupport linkSupport = new LinkSupport();
@@ -63,7 +63,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
-		this.attrs.put(localName, value);
+		this.dynamicAttributes.put(localName, value);
 	}
 
 	/**
@@ -165,11 +165,11 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 					bodyContent.writeOut(out);
 				}
 			} else {
-				attrs.put(attr, url);
+				dynamicAttributes.put(attr, url);
 				out.write("<");
 				out.write(tag);
 				out.write(" ");
-				out.write(toAttr(attrs));
+				out.write(toAttr(dynamicAttributes));
 				out.write(">");
 				final BodyContent bodyContent = getBodyContent();
 				if (bodyContent != null) {
@@ -191,7 +191,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	private void reset() {
 		linkSupport.clear();
-		attrs.clear();
+		dynamicAttributes.clear();
 		tag = null;
 		attr = null;
 		encodeURL = true;

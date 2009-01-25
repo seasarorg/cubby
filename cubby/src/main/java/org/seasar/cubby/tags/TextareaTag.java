@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
-import static org.seasar.cubby.tags.TagUtils.addClassName;
+import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
@@ -31,45 +31,48 @@ import javax.servlet.jsp.JspWriter;
 import org.seasar.cubby.action.ActionErrors;
 
 /**
- * textareaを出力するタグ
+ * <code>&lt;textarea&gt;</code> タグを出力します。
  * 
  * @author agata
  * @author baba
  * @since 1.0.0
  */
-public class TextareaTag extends DynamicAttributesTagSupport {
+public class TextareaTag extends DynamicAttributesSimpleTagSupport {
 
+	/** <code>name</code> 属性。 */
 	private String name;
 
+	/** <code>value</code> 属性。 */
 	private Object value;
 
+	/** <code>index</code> 属性。 */
 	private Integer index;
 
 	/**
-	 * name属性を設定します。
+	 * <code>name</code> 属性を設定します。
 	 * 
 	 * @param name
-	 *            name属性
+	 *            <code>name</code> 属性
 	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
 	/**
-	 * value属性を設定します。
+	 * <code>value</code> 属性を設定します。
 	 * 
 	 * @param value
-	 *            value属性
+	 *            <code>value</code> 属性
 	 */
 	public void setValue(final Object value) {
 		this.value = value;
 	}
 
 	/**
-	 * index属性を設定します。
+	 * <code>index</code> 属性を設定します。
 	 * 
 	 * @param index
-	 *            index属性
+	 *            <code>index</code> 属性
 	 */
 	public void setIndex(final Integer index) {
 		this.index = index;
@@ -83,17 +86,17 @@ public class TextareaTag extends DynamicAttributesTagSupport {
 		final JspContext context = this.getJspContext();
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
-		final Map<String, Object> dyn = this.getDynamicAttribute();
+		final Map<String, Object> dyn = this.getDynamicAttributes();
 		final String[] outputValues = getOutputValues(this, this.name);
 
 		if (this.index == null) {
 			if (!errors.getFields().get(this.name).isEmpty()) {
-				addClassName(dyn, "fieldError");
+				addCSSClassName(dyn, "fieldError");
 			}
 		} else {
 			if (!errors.getIndexedFields().get(this.name).get(this.index)
 					.isEmpty()) {
-				addClassName(dyn, "fieldError");
+				addCSSClassName(dyn, "fieldError");
 			}
 		}
 		final Object value = formValue(context, outputValues, this.name,

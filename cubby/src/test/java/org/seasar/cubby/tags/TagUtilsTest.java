@@ -38,7 +38,7 @@ public class TagUtilsTest {
 	public void addClassName() throws Exception {
 		Map<String, Object> dyn = new HashMap<String, Object>();
 		dyn.put("class", "testString");
-		TagUtils.addClassName(dyn, "testTagUtilsClassName");
+		TagUtils.addCSSClassName(dyn, "testTagUtilsClassName");
 		assertEquals("(HashMap) dyn.get(\"class\")",
 				"testString testTagUtilsClassName", dyn.get("class"));
 	}
@@ -46,7 +46,7 @@ public class TagUtilsTest {
 	@Test
 	public void addClassName1() throws Exception {
 		Map<String, Object> dyn = new HashMap<String, Object>();
-		TagUtils.addClassName(dyn, "testTagUtilsClassName");
+		TagUtils.addCSSClassName(dyn, "testTagUtilsClassName");
 		assertEquals("(HashMap) dyn.size()", 1, dyn.size());
 		assertEquals("(HashMap) dyn.get(\"class\")", "testTagUtilsClassName",
 				dyn.get("class"));
@@ -309,7 +309,7 @@ public class TagUtilsTest {
 	@Test
 	public void addClassNameThrowsNullPointerException() throws Exception {
 		try {
-			TagUtils.addClassName(null, "testTagUtilsClassName");
+			TagUtils.addCSSClassName(null, "testTagUtilsClassName");
 			fail("Expected NullPointerException to be thrown");
 		} catch (NullPointerException ex) {
 			assertNull("ex.getMessage()", ex.getMessage());

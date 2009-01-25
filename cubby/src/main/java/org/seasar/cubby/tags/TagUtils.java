@@ -17,6 +17,7 @@ package org.seasar.cubby.tags;
 
 import static java.lang.Boolean.TRUE;
 import static javax.servlet.jsp.PageContext.REQUEST_SCOPE;
+import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
@@ -39,9 +40,6 @@ import org.seasar.cubby.internal.util.StringUtils;
  * @since 1.0.0
  */
 class TagUtils {
-
-	/** リクエストスコープから{@link ActionErrors}を取得するためのキー。 */
-	private static final String ATTR_ERRORS = "errors";
 
 	/**
 	 * 指定されたJSPコンテキストから{@link ActionErrors}を取得します。
@@ -309,22 +307,22 @@ class TagUtils {
 	}
 
 	/**
-	 * Dynamic-Attributes に指定された class 属性を追加します。
+	 * 動的な属性の {@link Map} に、指定された <code>class</code> 属性を追加します。
 	 * 
-	 * @param dyn
-	 *            Dynamic-Attributes
+	 * @param dynamicAttributes
+	 *            動的な属性の {@link Map}
 	 * @param className
-	 *            class属性の名前
+	 *            <code>class</code> 属性の名前
 	 */
-	public static void addClassName(final Map<String, Object> dyn,
-			final String className) {
-		String classValue = (String) dyn.get("class");
+	public static void addCSSClassName(
+			final Map<String, Object> dynamicAttributes, final String className) {
+		String classValue = (String) dynamicAttributes.get("class");
 		if (StringUtils.isEmpty(classValue)) {
 			classValue = className;
 		} else {
 			classValue = classValue + " " + className;
 		}
-		dyn.put("class", classValue);
+		dynamicAttributes.put("class", classValue);
 	}
 
 	/**
@@ -395,6 +393,17 @@ class TagUtils {
 		text = StringUtils.replace(text, "\"", "&quot;");
 		text = StringUtils.replace(text, "'", "&#39;");
 		return text;
+	}
+
+	/**
+	 * オブジェクトを文字列に変換します。 オブジェクトが<code>null</code>の場合、空文字を返します。
+	 * 
+	 * @param object
+	 *            対象のオブジェクト
+	 * @return オブジェクトのtoString結果。
+	 */
+	public static String toString(final Object object) {
+		return object == null ? "" : object.toString();
 	}
 
 }

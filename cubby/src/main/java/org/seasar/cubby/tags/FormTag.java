@@ -35,10 +35,7 @@ import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 
 /**
- * フォームを出力するタグライブラリ。
- * <p>
- * {@link InputTag}, {@link SelectTag}, {@link TextareaTag}を保持することができます。
- * </p>
+ * <code>&lt;form&gt;</code> タグを出力します。
  * 
  * @author agata
  * @author baba
@@ -51,7 +48,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	private static final long serialVersionUID = 1L;
 
 	/** DynamicAttributes */
-	private final Map<String, Object> attrs = new HashMap<String, Object>();
+	private final Map<String, Object> dynamicAttributes = new HashMap<String, Object>();
 
 	/** フォームのバインディング対象のBean。 */
 	private Object value;
@@ -73,7 +70,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	public void setDynamicAttribute(final String uri, final String localName,
 			final Object value) throws JspException {
-		this.attrs.put(localName, value);
+		this.dynamicAttributes.put(localName, value);
 	}
 
 	/**
@@ -82,7 +79,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 * @return DynamicAttribute
 	 */
 	protected Map<String, Object> getDynamicAttribute() {
-		return this.attrs;
+		return this.dynamicAttributes;
 	}
 
 	/**
@@ -159,15 +156,15 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 					.getCharacterEncoding();
 			final String url = contextPath
 					+ linkSupport.getPath(characterEncoding);
-			attrs.put("action", url);
+			dynamicAttributes.put("action", url);
 		}
 
-		if (encodeURL && attrs.containsKey("action")) {
-			final String url = (String) attrs.get("action");
+		if (encodeURL && dynamicAttributes.containsKey("action")) {
+			final String url = (String) dynamicAttributes.get("action");
 			final HttpServletResponse response = (HttpServletResponse) pageContext
 					.getResponse();
 			final String encodedUrl = response.encodeURL(url);
-			attrs.put("action", encodedUrl);
+			dynamicAttributes.put("action", encodedUrl);
 		}
 
 		final JspWriter out = pageContext.getOut();
@@ -192,7 +189,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	private void reset() {
 		linkSupport.clear();
-		attrs.clear();
+		dynamicAttributes.clear();
 		value = null;
 		formWrapper = null;
 	}

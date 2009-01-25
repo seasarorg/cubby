@@ -16,7 +16,7 @@
 package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
-import static org.seasar.cubby.tags.TagUtils.addClassName;
+import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.getOutputValues;
@@ -41,91 +41,89 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * selectを出力するタグ
+ * <code>&lt;select&gt;</code> タグを出力します。
  * 
  * @author agata
  * @author baba
  * @since 1.0.0
  */
-public class SelectTag extends DynamicAttributesTagSupport {
+public class SelectTag extends DynamicAttributesSimpleTagSupport {
 
-	/** name属性。 */
+	/** <code>name</code> 属性。 */
 	private String name;
 
-	/** option要素リスト。 */
+	/** <code>&lt;option&gt;</code> 要素のリスト。 */
 	private Object items;
 
-	/** optionのラベルのプロパティ名。 */
+	/** <code>option</code> のラベルのプロパティ名。 */
 	private String labelProperty;
 
-	/** optionの値のプロパティ名。 */
+	/** <code>option</code> の値のプロパティ名。 */
 	private String valueProperty;
 
-	/**
-	 * 空のoption要素を出力するかどうか。
-	 */
+	/** 空の <code>&lt;option&gt;</code> 要素を出力するかどうか。 */
 	private Boolean emptyOption = Boolean.TRUE;
 
-	/**
-	 * 空のoption要素を出力した場合のラベル文字列
-	 */
+	/** 空の <code>&lt;option&gt;</code> 要素を出力した場合のラベル文字列。 */
 	private String emptyOptionLabel;
 
 	/**
-	 * option要素リストをセットします。
+	 * <code>&lt;option&gt;</code> 要素のリストを設定します。
 	 * 
 	 * @param items
-	 *            option要素リスト
+	 *            <code>&lt;option&gt;</code> 要素のリスト
 	 */
 	public void setItems(final Object items) {
 		this.items = items;
 	}
 
 	/**
-	 * optionのラベルのプロパティ名をセットします。
+	 * <code>items</code> から <code>&lt;option&gtl</code> 要素をのラベルを取得する時の名前を設定します。
 	 * 
 	 * @param labelProperty
-	 *            optionのラベルのプロパティ名
+	 *            <code>items</code> から <code>&lt;option&gtl</code>
+	 *            要素をのラベルを取得する時の名前
 	 */
 	public void setLabelProperty(final String labelProperty) {
 		this.labelProperty = labelProperty;
 	}
 
 	/**
-	 * optionのラベルのプロパティ名をセットします。
+	 * <code>items</code> から <code>&lt;option&gtl</code> 要素をの値を取得する時の名前を設定します。
 	 * 
 	 * @param valueProperty
-	 *            optionのラベルのプロパティ名
+	 *            <code>items</code> から <code>&lt;option&gtl</code>
+	 *            要素をの値を取得する時の名前
 	 */
 	public void setValueProperty(final String valueProperty) {
 		this.valueProperty = valueProperty;
 	}
 
 	/**
-	 * 空のoption要素を出力するかどうかをセットします。
+	 * 空の <code>&lt;option&gtl</code> 要素を出力するかどうかを設定します。
 	 * 
 	 * @param emptyOption
-	 *            空のoption要素を出力するかどうか
+	 *            空の <code>&lt;option&gtl</code> 要素を出力するかどうか
 	 */
 	public void setEmptyOption(final Boolean emptyOption) {
 		this.emptyOption = emptyOption;
 	}
 
 	/**
-	 * 空のoption要素を出力した場合のラベル文字列をセットします。
+	 * 空の <code>&lt;option&gtl</code> 要素を出力した場合のラベル文字列を設定します。
 	 * 
 	 * @param emptyOptionLabel
-	 *            空のoption要素を出力した場合のラベル文字列
+	 *            空の <code>&lt;option&gtl</code> 要素を出力した場合のラベル文字列
 	 */
 	public void setEmptyOptionLabel(final String emptyOptionLabel) {
 		this.emptyOptionLabel = emptyOptionLabel;
 	}
 
 	/**
-	 * name属性を設定します。
+	 * <code>name</code> 属性を設定します。
 	 * 
 	 * @param name
-	 *            name属性
+	 *            <code>name</code> 属性
 	 */
 	public void setName(final String name) {
 		this.name = name;
@@ -139,11 +137,11 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		final JspContext context = this.getJspContext();
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
-		final Map<String, Object> dyn = this.getDynamicAttribute();
+		final Map<String, Object> dyn = this.getDynamicAttributes();
 		final String[] outputValues = getOutputValues(this, this.name);
 
 		if (!errors.getFields().get(this.name).isEmpty()) {
-			addClassName(dyn, "fieldError");
+			addCSSClassName(dyn, "fieldError");
 		}
 
 		final Object[] value = multipleFormValues(context, outputValues,
@@ -199,10 +197,10 @@ public class SelectTag extends DynamicAttributesTagSupport {
 		void write(final JspWriter out, final Object item, final Object value)
 				throws IOException {
 			out.write("<option value=\"");
-			final String itemValue = DynamicAttributesTagSupport
-					.toString(itemAdaptor.getItemValue(item));
-			final String labelValue = DynamicAttributesTagSupport
-					.toString(itemAdaptor.getLabelValue(item));
+			final String itemValue = TagUtils.toString(itemAdaptor
+					.getItemValue(item));
+			final String labelValue = TagUtils.toString(itemAdaptor
+					.getLabelValue(item));
 			out.write(CubbyFunctions.out(itemValue));
 			out.write("\" ");
 			out.write(selected(itemValue, value));

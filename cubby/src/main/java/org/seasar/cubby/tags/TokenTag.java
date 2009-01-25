@@ -30,11 +30,10 @@ import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.validator.validators.TokenValidator;
 
 /**
- * 2重サブミット防止用の<input type="hidden"/>を出力するタグ。
+ * 2重サブミット防止用の <code>&lt;input type="hidden"/&gt;</code> タグを出力するタグ。
  * <p>
- * このタグが呼び出されると一意なトークン文字列を生成してhiddenとセッションに格納します。
- * サブミットされた先の処理の検証フェーズで、ポストされたhidden値とセッション中の値を比較して、
- * 一致しない場合、不正な経路からのアクセスとみなしてエラー処理を行います。
+ * このタグが呼び出されると一意なトークン文字列を生成して hidden とセッションに格納します。 サブミットされた先の処理の検証フェーズで、ポストされた
+ * hidden 値とセッション中の値を比較して、 一致しない場合、不正な経路からのアクセスとみなしてエラー処理を行います。
  * </p>
  * 
  * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext,
@@ -42,7 +41,7 @@ import org.seasar.cubby.validator.validators.TokenValidator;
  * @author agata
  * @since 1.0.0
  */
-public class TokenTag extends DynamicAttributesTagSupport {
+public class TokenTag extends DynamicAttributesSimpleTagSupport {
 
 	private String name;
 
@@ -65,7 +64,9 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		final JspWriter out = context.getOut();
 
 		final String token = TokenHelper.generateGUID();
-		final HttpServletRequest request = getRequest();
+		final PageContext pageContext = (PageContext) getJspContext();
+		final HttpServletRequest request = (HttpServletRequest) pageContext
+				.getRequest();
 		final HttpSession session = request.getSession();
 		TokenHelper.setToken(session, token);
 
@@ -78,7 +79,7 @@ public class TokenTag extends DynamicAttributesTagSupport {
 		out.append("\" value=\"");
 		out.append(token);
 		out.append("\" ");
-		out.write(toAttr(getDynamicAttribute()));
+		out.write(toAttr(getDynamicAttributes()));
 		out.append("/>");
 	}
 
