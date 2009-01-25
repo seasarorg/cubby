@@ -16,7 +16,7 @@
 package org.seasar.cubby.tags;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
-import static org.seasar.cubby.tags.TagUtils.addClassName;
+import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
@@ -38,21 +38,33 @@ import javax.servlet.jsp.JspWriter;
 import org.seasar.cubby.action.ActionErrors;
 
 /**
- * inputを出力するタグ。
+ * <code>&lt;input&gt;</code> タグを出力します。
  * <p>
- * 入力検証にエラーがある場合、class属性に「fieldError」を追加します。 なおこのタグはtype属性により挙動が変わります。
+ * このタグは type 属性により挙動が変わります。
+ * <table>
+ * <tbody>
+ * <tr>
+ * <td><code>type</code> 属性が <code>checkbox</code> または </code> radio の場合</td>
+ * <td>
+ * <code>value</code> 属性をそのまま <code>value</code> 属性として出力します。 フォームオブジェクトの値と
+ * <code>value</code> 属性が一致した場合 <code>checked=&quot;checked&quot;</code> を出力します。
+ * </td>
+ * </tr>
+ * <tr>
+ * <td>上記以外の場合</td>
+ * <td>
+ * フォームオブジェクトの値を <code>value</code> 属性として出力します。フォームオブジェクトに値がない場合は
+ * <code>value</code> 属性をそのまま <code>value</code> 属性として出力します。</td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
- * <ul>
- * <li>type値がcheckbox/radio -
- * value値をvalue属性の値として出力します。フォームオブジェクトの値とvalueが一致した場合checked="checked"を出力します。</li>
- * <li>その他 - value値をvalue属性の値として出力します。</li>
- * </ul>
  * 
  * @author agata
  * @author baba
  * @since 1.0.0
  */
-public class InputTag extends DynamicAttributesTagSupport {
+public class InputTag extends DynamicAttributesSimpleTagSupport {
 
 	private static final Set<String> MULTIPLE_VALUE_TYPES;
 	static {
@@ -62,61 +74,66 @@ public class InputTag extends DynamicAttributesTagSupport {
 		MULTIPLE_VALUE_TYPES = Collections.unmodifiableSet(set);
 	}
 
+	/** <code>type</code> 属性。 */
 	private String type;
 
+	/** <code>name</code> 属性。 */
 	private String name;
 
+	/** <code>value</code> 属性。 */
 	private Object value;
 
+	/** <code>checkedValue</code> 属性。 */
 	private String checkedValue;
 
+	/** <code>index</code> 属性。 */
 	private Integer index;
 
 	/**
-	 * type属性を設定します。
+	 * <code>type</code> 属性を設定します。
 	 * 
 	 * @param type
-	 *            type属性
+	 *            <code>type</code> 属性
 	 */
 	public void setType(final String type) {
 		this.type = type;
 	}
 
 	/**
-	 * name属性を設定します。
+	 * <code>name</code> 属性を設定します。
 	 * 
 	 * @param name
-	 *            name属性
+	 *            <code>name</code> 属性
 	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
 	/**
-	 * checkedValue属性を設定します。
+	 * <code>checkedValue</code> 属性を設定します。
 	 * 
 	 * @param checkedValue
-	 *            checkedValue属性
+	 *            <code>checkedValue</code> 属性
 	 */
 	public void setCheckedValue(final String checkedValue) {
 		this.checkedValue = checkedValue;
 	}
 
 	/**
-	 * value属性を設定します。
+	 * <code>value</code> 属性を設定します。
 	 * 
 	 * @param value
-	 *            value属性
+	 *            <code>value</code> 属性
 	 */
 	public void setValue(final Object value) {
 		this.value = value;
 	}
 
 	/**
-	 * index属性を設定します。
+	 * <code>index</code> 属性を設定します。
 	 * 
 	 * @param index
-	 *            index属性
+	 *            <code>index</code> 属性
 	 */
 	public void setIndex(final Integer index) {
 		this.index = index;
@@ -130,16 +147,16 @@ public class InputTag extends DynamicAttributesTagSupport {
 		final JspContext context = this.getJspContext();
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
-		final Map<String, Object> dyn = this.getDynamicAttribute();
+		final Map<String, Object> dyn = this.getDynamicAttributes();
 		final String[] outputValues = getOutputValues(this, this.name);
 
 		if (this.index == null) {
 			if (!errors.getFields().get(this.name).isEmpty()) {
-				addClassName(dyn, "fieldError");
+				addCSSClassName(dyn, "fieldError");
 			}
 		} else {
 			if (!errors.getIndexedFields().get(this.name).get(index).isEmpty()) {
-				addClassName(dyn, "fieldError");
+				addCSSClassName(dyn, "fieldError");
 			}
 		}
 
@@ -160,7 +177,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write("\" ");
 			out.write(toAttr(dyn));
 			out.write(" ");
-			out.write(checked(toString(this.value), values));
+			out.write(checked(TagUtils.toString(this.value), values));
 			out.write("/>");
 		} else {
 			final Object value = formValue(context, outputValues, this.name,
@@ -171,7 +188,7 @@ public class InputTag extends DynamicAttributesTagSupport {
 			out.write("\" name=\"");
 			out.write(this.name);
 			out.write("\" value=\"");
-			out.write(CubbyFunctions.out(toString(value)));
+			out.write(CubbyFunctions.out(TagUtils.toString(value)));
 			out.write("\" ");
 			out.write(toAttr(dyn));
 			out.write("/>");
