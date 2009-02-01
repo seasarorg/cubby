@@ -30,19 +30,37 @@ import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.PropertyDesc;
 
+/**
+ * S2Container の public フィールドをプロパティとして認識させるための {@link ELResolver} です。
+ * 
+ * @author baba
+ */
 public class S2BeanELResolver extends ELResolver {
 
+	/** 読み込み専用。 */
 	private final boolean readOnly;
 
+	/**
+	 * インスタンスを生成します。
+	 */
 	public S2BeanELResolver() {
 		this(false);
 	}
 
-	public S2BeanELResolver(boolean readOnly) {
+	/**
+	 * インスタンスを生成します。
+	 * 
+	 * @param readOnly
+	 *            読み込み専用とする場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
+	public S2BeanELResolver(final boolean readOnly) {
 		super();
 		this.readOnly = readOnly;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Object getValue(final ELContext context, final Object base,
 			final Object property) throws NullPointerException,
@@ -71,6 +89,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Class<?> getType(final ELContext context, final Object base,
 			final Object property) {
@@ -99,6 +120,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setValue(final ELContext context, final Object base,
 			final Object property, final Object value) {
@@ -132,6 +156,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isReadOnly(final ELContext context, final Object base,
 			final Object property) {
@@ -163,6 +190,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterator<FeatureDescriptor> getFeatureDescriptors(
 			final ELContext context, final Object base) {
@@ -192,11 +222,14 @@ public class S2BeanELResolver extends ELResolver {
 
 			return descriptors.iterator();
 		} catch (final Exception e) {
-			//
+			// do nothing
 		}
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Class<?> getCommonPropertyType(final ELContext context,
 			final Object base) {
