@@ -13,24 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.plugins.s2.spi;
+package org.seasar.cubby.plugins.gson.spi;
 
 import org.seasar.cubby.spi.JsonProvider;
-import org.seasar.framework.util.JSONSerializer;
+
+import com.google.gson.Gson;
 
 /**
- * Seasar2 の {@link JSONSerializer} を利用した JSON の機能を提供します。
+ * {@link http://code.google.com/p/google-gson/ google-gson} を用いる
+ * {@link JsonProvider} の実装です。
  * 
+ * @see <a href="http://sites.google.com/site/gson/gson-user-guide">Gson User Guide</a>
  * @author baba
- * @since 2.0.0
  */
-public class S2JsonProvider implements JsonProvider {
+public class GsonJsonProvider implements JsonProvider {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toJson(final Object bean) {
-		return JSONSerializer.serialize(bean);
+	public String toJson(Object o) {
+		final Gson gson = new Gson();
+		return gson.toJson(o);
 	}
 
 }
