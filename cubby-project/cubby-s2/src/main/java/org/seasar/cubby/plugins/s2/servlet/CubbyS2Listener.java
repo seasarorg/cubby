@@ -24,17 +24,33 @@ import javax.servlet.jsp.JspFactory;
 
 import org.seasar.cubby.plugins.s2.el.S2BeanELResolver;
 
+/**
+ * {@link S2BeanELResolver} を {@link JspApplicationContext} に登録する
+ * {@link ServletContext} です。
+ * 
+ * @author baba
+ */
 public class CubbyS2Listener implements ServletContextListener {
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * {@link S2BeanELResolver} を {@link JspApplicationContext} に登録します。
+	 * </p>
+	 */
 	public void contextInitialized(final ServletContextEvent event) {
 		final ServletContext context = event.getServletContext();
 		final JspApplicationContext jspContext = JspFactory.getDefaultFactory()
 				.getJspApplicationContext(context);
 		final ELResolver elResolver = new S2BeanELResolver();
 		jspContext.addELResolver(elResolver);
-		event.getServletContext().log("Registered " + elResolver);
+		final ServletContext servletContext = event.getServletContext();
+		servletContext.log("Registered " + elResolver);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void contextDestroyed(final ServletContextEvent event) {
 	}
 
