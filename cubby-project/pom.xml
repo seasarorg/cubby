@@ -373,6 +373,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     <module>cubby</module>
     <module>cubby-s2</module>
     <module>cubby-guice</module>
+    <module>cubby-gson</module>
     <module>cubby-archetype</module>
     <module>cubby-admin</module>
     <module>cubby-skin</module>

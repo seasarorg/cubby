@@ -13,49 +13,50 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.plugins.s2.spi;
+package org.seasar.cubby.plugins.gson.spi;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import org.junit.Test;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.Scriptable;
+import org.seasar.cubby.spi.JsonProvider;
 
-public class S2JsonProviderTest {
+import com.google.gson.Gson;
 
-	private S2JsonProvider jsonProvider = new S2JsonProvider();
+public class GsonJsonProviderTest {
+
+	private JsonProvider jsonProvider = new GsonJsonProvider();
 
 	@Test
 	public void execute() throws Exception {
 		Foo bean = new Foo();
 		bean.setName("カビー");
 		bean.setAge(30);
+		bean.field = "field";
+		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
+		calendar.setTimeInMillis(0L);
+		calendar.set(2009, Calendar.FEBRUARY, 2);
+		bean.setDate(new Date(calendar.getTimeInMillis()));
 
 		String json = jsonProvider.toJson(bean);
-
-		Foo result = evaluate(json);
+		System.out.println(json);
+		Gson gson = new Gson();
+		Foo result = gson.fromJson(json, Foo.class);
 
 		assertEquals("カビー", result.getName());
 		assertEquals(new Integer(30), result.getAge());
-	}
-
-	private static Foo evaluate(String responseString) {
-		ContextFactory contextFactory = new ContextFactory();
-		Context context = contextFactory.enterContext();
-		Scriptable scope = context.initStandardObjects();
-		Foo result = new Foo();
-		scope.put("result", scope, result);
-		String source = "var data = eval(" + responseString + ");"
-				+ "result.name = data.name;" + "result.age = data.age";
-		context.evaluateString(scope, source, null, 0, null);
-		Context.exit();
-		return result;
+		assertEquals("field", result.field);
+		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
 	}
 
 	public static class Foo {
 		private String name;
 		private Integer age;
+		public String field;
+		private Date date;
 
 		public String getName() {
 			return name;
@@ -72,6 +73,15 @@ public class S2JsonProviderTest {
 		public void setAge(Integer age) {
 			this.age = age;
 		}
+
+		public Date getDate() {
+			return date;
+		}
+
+		public void setDate(Date date) {
+			this.date = date;
+		}
+
 	}
 
 }
