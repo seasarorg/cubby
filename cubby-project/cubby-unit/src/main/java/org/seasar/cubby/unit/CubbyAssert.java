@@ -94,7 +94,11 @@ public class CubbyAssert {
 
 	protected static abstract class ActionResultAssert<T extends ActionResult, E> {
 
-		protected Class<T> clazz;
+		private final Class<T> clazz;
+
+		ActionResultAssert(Class<T> clazz) {
+			this.clazz = clazz;
+		}
 
 		public void assertType(final ActionResult actualResult,
 				final E expected, final Object... args) {
@@ -110,6 +114,10 @@ public class CubbyAssert {
 	protected static abstract class PathAssert<T extends ActionResult> extends
 			ActionResultAssert<T, String> {
 
+		PathAssert(final Class<T> clazz) {
+			super(clazz);
+		}
+
 		protected void doPathAssert(final String expectedPath,
 				final String actualPath) {
 			Assert.assertEquals("パスのチェック", expectedPath, actualPath);
@@ -119,7 +127,7 @@ public class CubbyAssert {
 	private static class ForwardAssert extends PathAssert<Forward> {
 
 		protected ForwardAssert() {
-			super.clazz = Forward.class;
+			super(Forward.class);
 		}
 
 		@Override
@@ -127,12 +135,13 @@ public class CubbyAssert {
 				final Object... args) {
 			doPathAssert(expected, actualResult.getPath(args[0].toString()));
 		}
+
 	}
 
 	private static class RedirectAssert extends PathAssert<Redirect> {
 
 		protected RedirectAssert() {
-			super.clazz = Redirect.class;
+			super(Redirect.class);
 		}
 
 		@Override
@@ -140,6 +149,7 @@ public class CubbyAssert {
 				final Object... args) {
 			doPathAssert(expected, actualResult.getPath(args[0].toString()));
 		}
+
 	}
 
 }
