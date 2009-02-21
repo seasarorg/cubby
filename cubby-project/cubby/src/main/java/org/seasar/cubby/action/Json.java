@@ -52,8 +52,8 @@ import org.seasar.cubby.spi.ProviderFactory;
  * 
  * </p>
  * <p>
- * 使用例3 : コンテントタイプと文字コードを指定して JSON 形式のレスポンスを返す。<br>
- * セットされるコンテントタイプは"text/javascript+json; charset=Shift_JIS"になります。
+ * 使用例3 : MIME タイプと文字コードを指定して JSON 形式のレスポンスを返す。<br>
+ * 設定される MIME タイプは"text/javascript+json; charset=Shift_JIS"になります。
  * 
  * <pre>
  * MyBean bean = ...;
@@ -62,9 +62,10 @@ import org.seasar.cubby.spi.ProviderFactory;
  * 
  * </p>
  * 
- * @see <a href="http://www.json.org/">JSON(JavaScript Object Notation)</a>
- * @see <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON
- *      with Padding)</a>
+ * @see <a
+ *      href="http://www.json.org/">JSON(JavaScript&nbsp;Object&nbsp;Notation)</a>
+ * @see <a
+ *      href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP(JSON&nbsp;with&nbsp;Padding)</a>
  * @see JsonProvider#toJson(Object)
  * @author baba
  * @author agata
@@ -72,37 +73,76 @@ import org.seasar.cubby.spi.ProviderFactory;
  */
 public class Json implements ActionResult {
 
+	/** 変換対象のオブジェクト。 */
 	private final Object bean;
 
+	/** 変換に使用する {@link JsonProvider}。 */
+	private final JsonProvider jsonProvider;
+
+	/** コールバック関数名。 */
 	private final String calllback;
 
+	/** MIME タイプ。 */
 	private String contentType = "text/javascript";
 
+	/** エンコーディング。 */
 	private String encoding = "utf-8";
 
+	/** X-JSON 応答ヘッダを使用するか。 */
 	private boolean xjson = false;
 
 	/**
 	 * JSON 形式でレスポンスを返すインスタンスを生成します。
 	 * 
 	 * @param bean
-	 *            JSON 形式に変換する JavaBean/{@link Map}/配列/{@link Collection}など
+	 *            JSON 形式に変換するオブジェクト
 	 */
 	public Json(final Object bean) {
-		this(bean, null);
+		this(bean, null, ProviderFactory.get(JsonProvider.class));
+	}
+
+	/**
+	 * JSON 形式でレスポンスを返すインスタンスを生成します。
+	 * 
+	 * @param bean
+	 *            JSON 形式に変換するオブジェクト
+	 * @param jsonProvider
+	 *            JSON のプロバイダ
+	 */
+	public Json(final Object bean, final JsonProvider jsonProvider) {
+		this(bean, null, jsonProvider);
 	}
 
 	/**
 	 * JSONP 形式でレスポンスを返すインスタンスを生成します。
 	 * 
 	 * @param bean
-	 *            JSONP 形式に変換する JavaBean/{@link Map}/配列/{@link Collection}など
+	 *            JSONP 形式に変換するオブジェクト
 	 * @param callback
 	 *            コールバック関数名
 	 */
 	public Json(final Object bean, final String callback) {
+		this(bean, callback, ProviderFactory.get(JsonProvider.class));
+	}
+
+	/**
+	 * JSONP 形式でレスポンスを返すインスタンスを生成します。
+	 * 
+	 * @param bean
+	 *            JSONP 形式に変換するオブジェクト
+	 * @param callback
+	 *            コールバック関数名
+	 * @param jsonProvider
+	 *            JSON のプロバイダ
+	 */
+	public Json(final Object bean, final String callback,
+			final JsonProvider jsonProvider) {
+		if (jsonProvider == null) {
+			throw new NullPointerException("jsonProvider");
+		}
 		this.bean = bean;
 		this.calllback = callback;
+		this.jsonProvider = jsonProvider;
 	}
 
 	/**
@@ -124,10 +164,10 @@ public class Json implements ActionResult {
 	}
 
 	/**
-	 * コンテントタイプをセットします。
+	 * MIME タイプを設定します。
 	 * 
 	 * @param contentType
-	 *            コンテントタイプ。(例："text/javascript+json")
+	 *            MIME タイプ (例："text/javascript+json")
 	 * @return {@link Json}
 	 */
 	public Json contentType(final String contentType) {
@@ -136,22 +176,22 @@ public class Json implements ActionResult {
 	}
 
 	/**
-	 * コンテントタイプを取得します。
+	 * MIME タイプを取得します。
 	 * 
-	 * @return コンテントタイプ
+	 * @return MIME タイプ
 	 */
 	public String getContentType() {
 		return this.contentType;
 	}
 
 	/**
-	 * エンコーディングをセットします。
+	 * エンコーディングを設定します。
 	 * <p>
-	 * セットされたエンコーディングはコンテントタイプのcharsetとして使用されます。
+	 * 設定されたエンコーディングは MIME タイプの charset として使用されます。
 	 * </p>
 	 * 
 	 * @param encoding
-	 *            エンコーディング。　（例："Shift_JIS" ）
+	 *            エンコーディング (例："Shift_JIS")
 	 * @return {@link Json}
 	 */
 	public Json encoding(final String encoding) {
@@ -171,12 +211,11 @@ public class Json implements ActionResult {
 	/**
 	 * JSON 文字列を応答ボディではなく X-JSON 応答ヘッダに設定することを指定します。
 	 * <p>
-	 * prototype.js の Ajax.Request を使うときに使用してください。
+	 * prototype.js の <code>Ajax.Request</code> を使うときに使用してください。
 	 * </p>
 	 * 
 	 * @see <a
-	 *      href="http://www.prototypejs.org/api/ajax/options">www.prototypejs.org&nbsp;-&nbsp;Ajax
-	 *      Options</a>
+	 *      href="http://www.prototypejs.org/api/ajax/options">www.prototypejs.org&nbsp;-&nbsp;Ajax&nbsp;Options</a>
 	 */
 	public void xjson() {
 		this.xjson = true;
@@ -204,8 +243,6 @@ public class Json implements ActionResult {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setHeader("Pragma", "no-cache");
 
-		final JsonProvider jsonProvider = ProviderFactory
-				.get(JsonProvider.class);
 		final String script;
 		if (isJsonp()) {
 			script = appendCallbackFunction(jsonProvider.toJson(bean),
@@ -223,10 +260,24 @@ public class Json implements ActionResult {
 		}
 	}
 
+	/**
+	 * JSONP 形式に変換するかどうかを示します。
+	 * 
+	 * @return JSONP 形式に変換する場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
 	private boolean isJsonp() {
 		return !StringUtils.isEmpty(calllback);
 	}
 
+	/**
+	 * JSON 形式のスクリプトに指定されたコールバック関数を付加します。
+	 * 
+	 * @param script
+	 *            JSON 形式のスクリプト
+	 * @param callback
+	 *            コールバック関数名
+	 * @return コールバック関数が追加された JSON 形式のスクリプト
+	 */
 	private static String appendCallbackFunction(final String script,
 			final String callback) {
 		final StringBuilder builder = new StringBuilder(script.length()
