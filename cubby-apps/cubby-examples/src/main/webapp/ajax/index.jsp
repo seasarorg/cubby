@@ -20,6 +20,9 @@ function loadTextFromString() {
 		}
 	});
 }
+function clearTextFromString() {
+	$("textFromStringResult").innerHTML = "";
+}
 function loadJsonFromBean() {
 	new Ajax.Request("jsonFromBean", {
 		method: 'get', 
@@ -28,6 +31,9 @@ function loadJsonFromBean() {
 			$("jsonFromBeanResult").innerHTML = obj.text;
 		}
 	});
+}
+function clearJsonFromBean() {
+	$("jsonFromBeanResult").innerHTML = "";
 }
 function loadJsonFromMap() {
 	new Ajax.Request("jsonFromMap", {
@@ -38,6 +44,9 @@ function loadJsonFromMap() {
 		}
 	});
 }
+function clearJsonFromMap() {
+	$("jsonFromMapResult").innerHTML = "";
+}
 function loadJsonFromCollection() {
 	new Ajax.Request("jsonFromCollection", {
 		method: 'get', 
@@ -47,16 +56,32 @@ function loadJsonFromCollection() {
 		}
 	});
 }
+function clearJsonFromCollection() {
+	$("jsonFromCollectionResult").innerHTML = "";
+}
 </script>
 <body>
 <h1>Cubby Exmaples - Ajax</h1>
+
 <h2>Text</h2>
-<input type="button" value="call" onclick="loadTextFromString()"/>Result:<span id="textFromStringResult"></span>
+<input type="button" value="call" onclick="loadTextFromString()"/>
+<input type="button" value="clear" onclick="clearTextFromString()"/>
+Result:<span id="textFromStringResult"></span>
+
 <h2>Json from Bean</h2>
-<input type="button" value="call" onclick="loadJsonFromBean()"/>Result:<span id="jsonFromBeanResult"></span>
+<input type="button" value="call" onclick="loadJsonFromBean()"/>
+<input type="button" value="clear" onclick="clearJsonFromBean()"/>
+Result:<span id="jsonFromBeanResult"></span>
+
 <h2>Json from Map</h2>
-<input type="button" value="call" onclick="loadJsonFromMap()"/>Result:<span id="jsonFromMapResult"></span>
+<input type="button" value="call" onclick="loadJsonFromMap()"/>
+<input type="button" value="clear" onclick="clearJsonFromMap()"/>
+Result:<span id="jsonFromMapResult"></span>
+
 <h2>Json from Collection</h2>
-<input type="button" value="call" onclick="loadJsonFromCollection()"/>Result:<span id="jsonFromCollectionResult"></span>
+<input type="button" value="call" onclick="loadJsonFromCollection()"/>
+<input type="button" value="clear" onclick="clearJsonFromCollection()"/>
+Result:<span id="jsonFromCollectionResult"></span>
+
 </body>
 </html>
