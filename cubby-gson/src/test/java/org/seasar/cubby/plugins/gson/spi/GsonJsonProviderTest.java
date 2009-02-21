@@ -22,22 +22,53 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GsonJsonProviderTest {
 
 	private JsonProvider jsonProvider = new GsonJsonProvider();
 
+	private abstract class MockContainerProvider implements ContainerProvider {
+		public Container getContainer() {
+			return new Container() {
+
+				public <T> T lookup(Class<T> type) throws LookupException {
+					if (Gson.class.equals(type)) {
+						return type.cast(createGson());
+					}
+					throw new LookupException();
+				}
+
+			};
+		}
+
+		protected abstract Gson createGson();
+	}
+
 	@Test
 	public void execute() throws Exception {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider() {
+
+					@Override
+					protected Gson createGson() {
+						throw new LookupException();
+					}
+				});
+
 		Foo bean = new Foo();
-		bean.setName("カビー");
+		bean.setName("\u30ab\u30d3\u30fc");	// unicode
 		bean.setAge(30);
 		bean.field = "field";
 		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
-		calendar.setTimeInMillis(0L);
+		calendar.clear();
 		calendar.set(2009, Calendar.FEBRUARY, 2);
 		bean.setDate(new Date(calendar.getTimeInMillis()));
 
@@ -46,7 +77,40 @@ public class GsonJsonProviderTest {
 		Gson gson = new Gson();
 		Foo result = gson.fromJson(json, Foo.class);
 
-		assertEquals("カビー", result.getName());
+		assertEquals("\u30ab\u30d3\u30fc", result.getName());
+		assertEquals(new Integer(30), result.getAge());
+		assertEquals("field", result.field);
+		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
+	}
+
+	@Test
+	public void executeByCustomizedGson() throws Exception {
+		ProviderFactory.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider() {
+
+					@Override
+					protected Gson createGson() {
+						Gson gson = new GsonBuilder().setDateFormat(
+								"yyyy-MM-dd").create();
+						return gson;
+					}
+				});
+
+		Foo bean = new Foo();
+		bean.setName("\u30ab\u30d3\u30fc");	// unicode
+		bean.setAge(30);
+		bean.field = "field";
+		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
+		calendar.clear();
+		calendar.set(2009, Calendar.FEBRUARY, 2);
+		bean.setDate(new Date(calendar.getTimeInMillis()));
+
+		String json = jsonProvider.toJson(bean);
+		System.out.println(json);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		Foo result = gson.fromJson(json, Foo.class);
+
+		assertEquals("\u30ab\u30d3\u30fc", result.getName());
 		assertEquals(new Integer(30), result.getAge());
 		assertEquals("field", result.field);
 		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());

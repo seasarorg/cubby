@@ -15,7 +15,11 @@
  */
 package org.seasar.cubby.plugins.gson.spi;
 
+import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 
 import com.google.gson.Gson;
 
@@ -31,9 +35,23 @@ public class GsonJsonProvider implements JsonProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toJson(Object o) {
-		final Gson gson = new Gson();
+	public String toJson(final Object o) {
+		final Gson gson = buildGson();
 		return gson.toJson(o);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private Gson buildGson() {
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
+		try {
+			return container.lookup(Gson.class);
+		} catch (final LookupException e) {
+			return new Gson();
+		}
 	}
 
 }
