@@ -63,6 +63,36 @@
 			</fieldset>
 		</t:form>
 	</li>
+	<li>
+		<t:link tag="a" attr="href"
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="foo"
+                protocol="https">
+			hyper reference (with protocol)
+		</t:link>
+		- link to "<t:link actionClass="org.seasar.cubby.examples.other.web.link.LinkAction" actionMethod="foo" protocol="https"/>"
+	</li>
+	<li>
+		<t:link tag="a" attr="href"
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="foo"
+                port="9999">
+			hyper reference (with port)
+		</t:link>
+		- link to "<t:link actionClass="org.seasar.cubby.examples.other.web.link.LinkAction" actionMethod="foo" port="9999"/>"
+	</li>
+	<li>
+		<t:form method="POST" value="${action}"
+				actionClass="org.seasar.cubby.examples.other.web.link.LinkAction"
+				actionMethod="bar" protocol="https">
+			<t:param name="id" value="7890" />
+			<fieldset>
+				<legend>form ("action" attribute with protocol)</legend>
+				<label for="token">token:</label><t:input name="token" type="text" />
+				<t:input name="submit" value="submit" type="submit" />
+			</fieldset>
+		</t:form>
+	</li>
 </ul>
 <hr/>
 <ul>
