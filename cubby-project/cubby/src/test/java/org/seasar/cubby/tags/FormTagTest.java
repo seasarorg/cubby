@@ -208,4 +208,61 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, "", child.getValue());
 	}
 
+	public void testDoTagProtocol() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+		
+		tag.setValue(form);
+		tag.setDynamicAttribute(null, "action", "/todo/save");
+		tag.setProtocol("https");
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n</form>\n"
+
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが指定";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "https://localhost/todo/save", element.getAttributeValue("action"));
+		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
+	}
+
+	public void testDoTagPort() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+		
+		tag.setValue(form);
+		tag.setDynamicAttribute(null, "action", "/todo/save");
+		tag.setPort(8080);
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n</form>\n"
+
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが指定";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "http://localhost:8080/todo/save", element.getAttributeValue("action"));
+		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
+	}
+
+	public void testDoTagProtocolAndPort() throws Exception {
+		FormDto form = new FormDto();
+		form.setStringField("value1");
+		
+		tag.setValue(form);
+		tag.setDynamicAttribute(null, "action", "/todo/save");
+		tag.setProtocol("https");
+		tag.setPort(8080);
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+		// "<form action=\"/todo/save\" >\n</form>\n"
+
+		Element element = getResultAsElementFromContext();
+		String message = "フォームオブジェクトが指定";
+		assertEquals(message, 1, element.getAttributes().size());
+		assertEquals(message, "https://localhost:8080/todo/save", element.getAttributeValue("action"));
+		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
+	}
 }
