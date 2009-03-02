@@ -45,7 +45,7 @@
 <p></p>
 <b>Example:</b>
 <br>
-<pre>[1] URL をそのまま出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" /&gt; (実行結果) /(contextPath)/foo/bar [2] URL を a タグに出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/bar"&gt; link to action &lt;/a&gt; [3] パラメータ指定 (アクションメソッドに @Path("baz/{id}") という指定があった場合) (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; &lt;t:param name="id" value="123" /&gt; &lt;t:param name="token" value="abc" /&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/baz/123&amp;token=abc"&gt; link to action &lt;/a&gt;</pre>
+<pre>[1] URL をそのまま出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" /&gt; (実行結果) /(contextPath)/foo/bar [2] URL を a タグに出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/bar"&gt; link to action &lt;/a&gt; [3] パラメータ指定 (アクションメソッドに @Path("baz/{id}") という指定があった場合) (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" tag="a" attr="href"&gt; &lt;t:param name="id" value="123" /&gt; &lt;t:param name="token" value="abc" /&gt; link to action &lt;/t:link&gt; (実行結果) &lt;a href="/(contextPath)/foo/bar/123&amp;token=abc"&gt; link to action &lt;/a&gt; [4] プロトコル(HTTPS)を指定して出力 (JSP) &lt;t:link actionClass="com.example.action.FooAction" actionMethod="bar" protocol="https"/&gt; (実行結果) https://www.example.com/(contextPath)/foo/bar</pre>
 <p></p>
 <hr>
 <table border="1" cellpadding="3" cellspacing="0" width="100%">
@@ -88,6 +88,12 @@
 </tr>
 <tr valign="top">
 <td>encodeURL</td><td>false</td><td>true</td><td><code>java.lang.Boolean</code></td><td>出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。</td>
+</tr>
+<tr valign="top">
+<td>protocol</td><td>false</td><td>true</td><td><code>java.lang.String</code></td><td>出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。</td>
+</tr>
+<tr valign="top">
+<td>port</td><td>false</td><td>true</td><td><code>java.lang.Integer</code></td><td>出力する URL のポートを指定します。</td>
 </tr>
 </table>
 <br>

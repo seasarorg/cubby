@@ -59,8 +59,8 @@
             
   
     
-             最終更新: 2008-12-10
-              &nbsp;| バージョン: 1.1.3
+             最終更新: 2009-03-03
+              &nbsp;| バージョン: 1.1.4
             </div>
       <div class="clear">
         <hr/>
@@ -307,6 +307,17 @@
 &lt;form action=&quot;/(contextPath)/foo/var&quot; &gt;
   ...
 &lt;/form&gt;
+
+[3] プロトコル(HTTPS)を指定する
+(JSP)
+&lt;t:form actionClass=&quot;com.example.action.FooAction&quot; actionMethod=&quot;bar&quot; value=&quot;${action}&quot; protocol=&quot;https&quot;&gt;
+  ...
+&lt;/t:form&gt;
+
+(実行結果)
+&lt;form action=&quot;https://www.example.com/(contextPath)/foo/bar&quot; &gt;
+  ...
+&lt;/form&gt;
 	  
     </pre>
 </div>
@@ -350,6 +361,22 @@
 <td>
         
         出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。
+        
+      </td>
+<td>String</td>
+</tr>
+<tr class="a"><td>port</td>
+<td>
+        
+        出力する URL のポートを指定します。
+        
+      </td>
+<td>String</td>
+</tr>
+<tr class="b"><td>protocol</td>
+<td>
+        
+        出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。
         
       </td>
 <td>String</td>
@@ -486,9 +513,16 @@
 &lt;/t:link&gt;
 
 (実行結果)
-&lt;a href=&quot;/(contextPath)/foo/baz/123&amp;token=abc&quot;&gt;
+&lt;a href=&quot;/(contextPath)/foo/bar/123&amp;token=abc&quot;&gt;
     link to action
 &lt;/a&gt;
+
+[4] プロトコル(HTTPS)を指定して出力
+(JSP)
+&lt;t:link actionClass=&quot;com.example.action.FooAction&quot; actionMethod=&quot;bar&quot; protocol=&quot;https&quot;/&gt;
+
+(実行結果)
+https://www.example.com/(contextPath)/foo/bar
       
     </pre>
 </div>
@@ -530,6 +564,22 @@
 <td>
         
         出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。
+        
+      </td>
+<td>String</td>
+</tr>
+<tr class="a"><td>port</td>
+<td>
+        
+        出力する URL のポートを指定します。
+        
+      </td>
+<td>String</td>
+</tr>
+<tr class="b"><td>protocol</td>
+<td>
+        
+        出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。
         
       </td>
 <td>String</td>
@@ -813,7 +863,7 @@ public class TokenAction extends Action {
     <div id="footer">
       <div class="xright">&#169;      Copyright
     
-          2006-2008
+          2006-2009
     
           The Seasar Foundation and the others. All rights reserved.
           

@@ -45,7 +45,7 @@
 <p></p>
 <b>Example:</b>
 <br>
-<pre>[1] action 属性を JSP 上で指定する (JSP) &lt;t:form action="${contextPath}/foo/bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var"&amp;&gt; ... &lt;/form&gt; [2] action 属性をクラス、メソッドで指定する (JSP) &lt;t:form actionClass="com.example.action.FooAction" actionMethod="bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var" &gt; ... &lt;/form&gt;</pre>
+<pre>[1] action 属性を JSP 上で指定する (JSP) &lt;t:form action="${contextPath}/foo/bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var"&amp;&gt; ... &lt;/form&gt; [2] action 属性をクラス、メソッドで指定する (JSP) &lt;t:form actionClass="com.example.action.FooAction" actionMethod="bar" value="${action}"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="/(contextPath)/foo/var" &gt; ... &lt;/form&gt; [3] プロトコル(HTTPS)を指定する (JSP) &lt;t:form actionClass="com.example.action.FooAction" actionMethod="bar" value="${action}" protocol="https"&gt; ... &lt;/t:form&gt; (実行結果) &lt;form action="https://www.example.com/(contextPath)/foo/bar" &gt; ... &lt;/form&gt;</pre>
 <p></p>
 <hr>
 <table border="1" cellpadding="3" cellspacing="0" width="100%">
@@ -85,6 +85,12 @@
 </tr>
 <tr valign="top">
 <td>encodeURL</td><td>false</td><td>true</td><td><code>java.lang.Boolean</code></td><td>出力する URL を HttpServletResponse#encodeURL(String) でエンコードするかを指定します。デフォルトは true です。</td>
+</tr>
+<tr valign="top">
+<td>protocol</td><td>false</td><td>true</td><td><code>java.lang.String</code></td><td>出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。</td>
+</tr>
+<tr valign="top">
+<td>port</td><td>false</td><td>true</td><td><code>java.lang.Integer</code></td><td>出力する URL のポートを指定します。</td>
 </tr>
 </table>
 <br>
