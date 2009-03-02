@@ -77,6 +77,28 @@
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.Boolean</type>
     </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。
+        ]]>
+      </description>
+      <name>protocol</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL のポートを指定します。
+        ]]>
+      </description>
+      <name>port</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Integer</type>
+    </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
       <![CDATA[
@@ -99,6 +121,17 @@
 
 (実行結果)
 <form action="/(contextPath)/foo/var" >
+  ...
+</form>
+
+[3] プロトコル(HTTPS)を指定する
+(JSP)
+<t:form actionClass="com.example.action.FooAction" actionMethod="bar" value="${action}" protocol="https">
+  ...
+</t:form>
+
+(実行結果)
+<form action="https://www.example.com/(contextPath)/foo/bar" >
   ...
 </form>
 	  ]]>
@@ -490,6 +523,28 @@ public class TokenAction extends Action {
       <rtexprvalue>true</rtexprvalue>
       <type>java.lang.Boolean</type>
     </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL のプロトコルを指定します。主にhttps/httpの切り替えに使用します。
+        ]]>
+      </description>
+      <name>protocol</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+      <description>
+        <![CDATA[
+        出力する URL のポートを指定します。
+        ]]>
+      </description>
+      <name>port</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.Integer</type>
+    </attribute>
     <dynamic-attributes>true</dynamic-attributes>
     <example>
       <![CDATA[
@@ -522,9 +577,16 @@ public class TokenAction extends Action {
 </t:link>
 
 (実行結果)
-<a href="/(contextPath)/foo/baz/123&token=abc">
+<a href="/(contextPath)/foo/bar/123&token=abc">
     link to action
 </a>
+
+[4] プロトコル(HTTPS)を指定して出力
+(JSP)
+<t:link actionClass="com.example.action.FooAction" actionMethod="bar" protocol="https"/>
+
+(実行結果)
+https://www.example.com/(contextPath)/foo/bar
       ]]>
     </example>
   </tag>

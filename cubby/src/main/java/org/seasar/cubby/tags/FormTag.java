@@ -19,9 +19,11 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -32,6 +34,7 @@ import javax.servlet.jsp.tagext.DynamicAttributes;
 
 import org.seasar.cubby.controller.FormWrapper;
 import org.seasar.cubby.controller.FormWrapperFactory;
+import org.seasar.cubby.util.LinkBuilder;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
@@ -62,6 +65,9 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 
 	/** リンク用の補助クラス。 */
 	private final LinkSupport linkSupport = new LinkSupport();
+
+	/** リンクビルダ。 */
+	private final LinkBuilder linkBuilder = new LinkBuilder();
 
 	/** フォームオブジェクトのラッパー。 */
 	private FormWrapper formWrapper;
@@ -125,6 +131,26 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
+	 * 出力する URL のプロトコルを設定します。
+	 * 
+	 * @param protocol
+	 *            出力する URL のプロトコル
+	 */
+	public void setProtocol(final String protocol) {
+		linkBuilder.setProtocol(protocol);
+	}
+
+	/**
+	 * 出力する URL のポートを設定します。
+	 * 
+	 * @param port
+	 *            出力する URL のポート
+	 */
+	public void setPort(final int port) {
+		linkBuilder.setPort(port);
+	}
+
+	/**
 	 * リクエストパラメータを追加します。
 	 * 
 	 * @param name
@@ -165,9 +191,17 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		}
 
 		if (encodeURL && attrs.containsKey("action")) {
-			final String url = (String) attrs.get("action");
+			final HttpServletRequest request = (HttpServletRequest) pageContext
+					.getRequest();
 			final HttpServletResponse response = (HttpServletResponse) pageContext
 					.getResponse();
+			final String actionPath = (String) attrs.get("action");
+			final String url;
+			try {
+				url = linkBuilder.file(actionPath).toLink(request);
+			} catch (final MalformedURLException e) {
+				throw new JspException(e);
+			}
 			final String encodedUrl = response.encodeURL(url);
 			attrs.put("action", encodedUrl);
 		}
@@ -194,6 +228,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	private void reset() {
 		linkSupport.clear();
+		linkBuilder.clear();
 		attrs.clear();
 		value = null;
 		formWrapper = null;

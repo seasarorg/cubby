@@ -124,4 +124,40 @@ public class LinkTagTest extends AbstractStandardTagTestCase {
 		assertEquals(message, 0, element.getChildren().size());
 	}
 
+	public void testDoTagWithProtocol() throws Exception {
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("foo");
+		tag.setProtocol("https");
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+
+		assertEquals("URL出力", "https://localhost/brabra/mockFormTagTest/foo", context
+				.getResult());
+	}
+
+	public void testDoTagWithPort() throws Exception {
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("foo");
+		tag.setPort(8080);
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+
+		assertEquals("URL出力", "http://localhost:8080/brabra/mockFormTagTest/foo", context
+				.getResult());
+	}
+
+	public void testDoTagWithProtocolAndPort() throws Exception {
+		tag.setActionClass(MockFormTagTestAction.class.getCanonicalName());
+		tag.setActionMethod("foo");
+		tag.setProtocol("https");
+		tag.setPort(8080);
+		doLifecycle(tag);
+
+		System.out.println(context.getResult());
+
+		assertEquals("URL出力", "https://localhost:8080/brabra/mockFormTagTest/foo", context
+				.getResult());
+	}
 }
