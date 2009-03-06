@@ -56,6 +56,8 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
@@ -90,7 +92,7 @@ public class RequestParameterBinderImplTest {
 					}
 				}));
 		ProviderFactory.bind(ConverterProvider.class).toInstance(
-				new MockConverterProvider());
+				new MockConverterProvider(new BraceConverter()));
 		ProviderFactory.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
 		requestParameterBinder = new RequestParameterBinderImpl();
@@ -198,6 +200,27 @@ public class RequestParameterBinderImplTest {
 		assertEquals("zzz", dto.getNum3().get(0));
 		assertNull(dto.getNum3().get(1));
 		assertEquals("xxx", dto.getNum3().get(2));
+	}
+
+	@Test
+	public void mapToBean_annotated() {
+		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("normal", new Object[] { "abcd" });
+		map.put("specifiedName", new Object[] { "efgh" });
+		map.put("foo", new Object[] { "ijkl" });
+		map.put("specifiedConverter", new Object[] { "mnop" });
+		map.put("specifiedNameAndConverter", new Object[] { "qrst" });
+		map.put("bar", new Object[] { "uvwx" });
+
+		AnnotatedDto dto = new AnnotatedDto();
+
+		ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		requestParameterBinder.bind(map, dto, actionContext);
+		assertEquals("abcd", dto.getNormal());
+		assertEquals("ijkl", dto.getSpecifiedName());
+		assertEquals("{mnop}", dto.getSpecifiedConverter());
+		assertEquals("{uvwx}", dto.getSpecifiedNameAndConverter());
 	}
 
 	@Test
@@ -1282,11 +1305,87 @@ public class RequestParameterBinderImplTest {
 	}
 
 	public interface SeparationAction {
-		
+
 	}
 
 	public static class SeparationActionImpl implements SeparationAction {
-		
+
+	}
+
+	public static class AnnotatedDto {
+
+		private String normal;
+
+		private String specifiedName;
+
+		private String specifiedConverter;
+
+		private String specifiedNameAndConverter;
+
+		public String getNormal() {
+			return normal;
+		}
+
+		@RequestParameter
+		public void setNormal(String normal) {
+			this.normal = normal;
+		}
+
+		public String getSpecifiedName() {
+			return specifiedName;
+		}
+
+		@RequestParameter(name = "foo")
+		public void setSpecifiedName(String specifiedName) {
+			this.specifiedName = specifiedName;
+		}
+
+		public String getSpecifiedConverter() {
+			return specifiedConverter;
+		}
+
+		@RequestParameter(converter = BraceConverter.class)
+		public void setSpecifiedConverter(String specifiedConverter) {
+			this.specifiedConverter = specifiedConverter;
+		}
+
+		public String getSpecifiedNameAndConverter() {
+			return specifiedNameAndConverter;
+		}
+
+		@RequestParameter(name = "bar", converter = BraceConverter.class)
+		public void setSpecifiedNameAndConverter(
+				String specifiedNameAndConverter) {
+			this.specifiedNameAndConverter = specifiedNameAndConverter;
+		}
+
+	}
+
+	public static class BraceConverter implements Converter {
+
+		public Object convertToObject(Object value, Class<?> objectType,
+				ConversionHelper helper) {
+			if (value == null) {
+				return null;
+			}
+			return "{" + value + "}";
+		}
+
+		public String convertToString(Object value, ConversionHelper helper) {
+			if (value == null) {
+				return null;
+			}
+			return value.toString().substring(1, value.toString().length() - 1);
+		}
+
+		public Class<?> getObjectType() {
+			return String.class;
+		}
+
+		public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+			return false;
+		}
+
 	}
 
 }

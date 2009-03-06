@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -26,8 +27,11 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
@@ -60,7 +64,7 @@ public class FormWrapperFactoryImplTest {
 		ProviderFactory.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
 		ProviderFactory.bind(ConverterProvider.class).toInstance(
-				new MockConverterProvider());
+				new MockConverterProvider(new BraceConverter()));
 
 		formWrapperFactory = new FormWrapperFactoryImpl();
 	}
@@ -133,6 +137,37 @@ public class FormWrapperFactoryImplTest {
 		assertNull(noprop);
 	}
 
+	@Test
+	public void beanToMap3() {
+		AnnotatedBean bean = new AnnotatedBean();
+		bean.setNormal("abc");
+		bean.setSpecifiedName("def");
+		bean.setSpecifiedConverter("{ghi}");
+		bean.setSpecifiedNameAndConverter("{jkl}");
+
+		FormWrapper formWrapper = formWrapperFactory.create(bean);
+
+		String[] normal = formWrapper.getValues("normal");
+		assertArrayEquals(new String[] { "abc" }, normal);
+
+		String[] specifiedName = formWrapper.getValues("specifiedName");
+		assertNull(specifiedName);
+
+		String[] foo = formWrapper.getValues("foo");
+		assertArrayEquals(new String[] { "def" }, foo);
+
+		String[] specifiedConverter = formWrapper
+				.getValues("specifiedConverter");
+		assertArrayEquals(new String[] { "ghi" }, specifiedConverter);
+
+		String[] specifiedNameAndConverter = formWrapper
+				.getValues("specifiedNameAndConverter");
+		assertNull(specifiedNameAndConverter);
+
+		String[] bar = formWrapper.getValues("bar");
+		assertArrayEquals(new String[] { "jkl" }, bar);
+	}
+
 	public static class TestBean {
 
 		Date date;
@@ -180,6 +215,82 @@ public class FormWrapperFactoryImplTest {
 
 		public void setNum3(List<String> num3) {
 			this.num3 = num3;
+		}
+
+	}
+
+	public static class AnnotatedBean {
+
+		private String normal;
+
+		private String specifiedName;
+
+		private String specifiedConverter;
+
+		private String specifiedNameAndConverter;
+
+		public String getNormal() {
+			return normal;
+		}
+
+		@RequestParameter
+		public void setNormal(String normal) {
+			this.normal = normal;
+		}
+
+		public String getSpecifiedName() {
+			return specifiedName;
+		}
+
+		@RequestParameter(name = "foo")
+		public void setSpecifiedName(String specifiedName) {
+			this.specifiedName = specifiedName;
+		}
+
+		public String getSpecifiedConverter() {
+			return specifiedConverter;
+		}
+
+		@RequestParameter(converter = BraceConverter.class)
+		public void setSpecifiedConverter(String specifiedConverter) {
+			this.specifiedConverter = specifiedConverter;
+		}
+
+		public String getSpecifiedNameAndConverter() {
+			return specifiedNameAndConverter;
+		}
+
+		@RequestParameter(name = "bar", converter = BraceConverter.class)
+		public void setSpecifiedNameAndConverter(
+				String specifiedNameAndConverter) {
+			this.specifiedNameAndConverter = specifiedNameAndConverter;
+		}
+
+	}
+
+	public static class BraceConverter implements Converter {
+
+		public Object convertToObject(Object value, Class<?> objectType,
+				ConversionHelper helper) {
+			if (value == null) {
+				return null;
+			}
+			return "{" + value + "}";
+		}
+
+		public String convertToString(Object value, ConversionHelper helper) {
+			if (value == null) {
+				return null;
+			}
+			return value.toString().substring(1, value.toString().length() - 1);
+		}
+
+		public Class<?> getObjectType() {
+			return String.class;
+		}
+
+		public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+			return false;
 		}
 
 	}

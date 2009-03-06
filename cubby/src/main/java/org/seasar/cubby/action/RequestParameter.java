@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.seasar.cubby.converter.Converter;
+
 /**
  * リクエストパラメータのバインド対象であることを表す注釈です。
  * <p>
@@ -40,4 +42,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.FIELD })
 public @interface RequestParameter {
+
+	/** バインドする要求パラメータ名、指定しない場合はプロパティ名が使用されます。 */
+	String name() default "";
+
+	/** 型変換に用いるコンバータ、指定しない場合はプロパティの型によって自動的に選択されます。 */
+	Class<? extends Converter> converter() default Converter.class;
+
 }
