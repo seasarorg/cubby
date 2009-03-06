@@ -26,6 +26,15 @@ import org.seasar.cubby.converter.Converter;
 public interface ConverterProvider extends Provider {
 
 	/**
+	 * 指定された型のコンバータを取得します。
+	 * 
+	 * @param converterType
+	 *            コンバータの型
+	 * @return コンバータ
+	 */
+	Converter getConverter(Class<? extends Converter> converterType);
+
+	/**
 	 * <code>converterType</code>への変換が可能なコンバータを返します。
 	 * <p>
 	 * 該当するコンバータが複数ある場合は、最も適合するコンバータが選択されます。

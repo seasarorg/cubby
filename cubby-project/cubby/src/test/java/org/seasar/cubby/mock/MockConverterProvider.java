@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.mock;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +42,9 @@ import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 
 public class MockConverterProvider extends AbstractCachedConverterProvider {
 
-	private List<Converter> converters = Arrays.asList(new Converter[] {
+	private final List<Converter> converters;
+
+	private final List<Converter> defaults = Arrays.asList(new Converter[] {
 			new BigDecimalConverter(),
 			new BigIntegerConverter(),
 			new BooleanConverter(),
@@ -59,6 +62,15 @@ public class MockConverterProvider extends AbstractCachedConverterProvider {
 			new SqlDateConverter(),
 			new SqlTimeConverter(),
 			new SqlTimestampConverter() });
+
+	public MockConverterProvider(Converter... additionalConverters) {
+		final List<Converter> converters = new ArrayList<Converter>();
+		converters.addAll(defaults);
+		for (final Converter additionalConverter : additionalConverters) {
+			converters.add(additionalConverter);
+		}
+		this.converters = converters;
+	}
 
 	@Override
 	protected Collection<Converter> getConverters() {

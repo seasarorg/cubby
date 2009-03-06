@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.internal.util.LogMessages;
 import org.seasar.cubby.spi.ConverterProvider;
 
 /**
@@ -36,6 +37,19 @@ public abstract class AbstractConverterProvider implements ConverterProvider {
 	 * @return コンバータの一覧
 	 */
 	protected abstract Collection<Converter> getConverters();
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Converter getConverter(final Class<? extends Converter> converterType) {
+		for (final Converter converter : getConverters()) {
+			if (converterType.isAssignableFrom(converter.getClass())) {
+				return converter;
+			}
+		}
+		throw new IllegalArgumentException(LogMessages.format("ECUB0110",
+				converterType));
+	}
 
 	/**
 	 * {@inheritDoc}

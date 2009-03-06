@@ -22,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.RequestParameter;
@@ -30,6 +29,7 @@ import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.ConversionHelperImpl;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
+import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.BeanDesc;
@@ -53,36 +53,49 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 */
 	public void bind(final Map<String, Object[]> parameterMap,
 			final Object dest, final ActionContext actionContext) {
-		if (parameterMap == null) {
+		if (parameterMap == null || parameterMap.isEmpty()) {
 			return;
 		}
 		final ConverterProvider converterProvider = ProviderFactory
 				.get(ConverterProvider.class);
 		final BeanDesc destBeanDesc = BeanDescFactory.getBeanDesc(dest
 				.getClass());
-		for (final Entry<String, Object[]> entry : parameterMap.entrySet()) {
-			final String sourceName = entry.getKey();
-			if (destBeanDesc.hasPropertyDesc(sourceName)) {
-				final PropertyDesc destPropertyDesc = destBeanDesc
-						.getPropertyDesc(sourceName);
-				if (destPropertyDesc.isReadable()
-						&& destPropertyDesc.isWritable()) {
-					if (!actionContext.isBindRequestParameterToAllProperties()) {
-						final RequestParameter requestParameter = destPropertyDesc
-								.getAnnotation(RequestParameter.class);
-						if (requestParameter == null) {
-							continue;
-						}
-					}
 
-					try {
-						final Object value = convert(converterProvider, entry
-								.getValue(), destPropertyDesc);
-						destPropertyDesc.setValue(dest, value);
-					} catch (final Exception e) {
-						destPropertyDesc.setValue(dest, null);
-					}
-				}
+		for (final PropertyDesc destPropertyDesc : destBeanDesc
+				.getPropertyDescs()) {
+			final RequestParameter requestParameter = destPropertyDesc
+					.getAnnotation(RequestParameter.class);
+			if (!actionContext.isBindRequestParameterToAllProperties()
+					&& requestParameter == null) {
+				continue;
+			}
+
+			final String parameterName;
+			if (requestParameter != null
+					&& !StringUtils.isEmpty(requestParameter.name())) {
+				parameterName = requestParameter.name();
+			} else {
+				parameterName = destPropertyDesc.getPropertyName();
+			}
+
+			if (!parameterMap.containsKey(parameterName)) {
+				continue;
+			}
+			final Object[] parameterValue = parameterMap.get(parameterName);
+
+			final Class<? extends Converter> converterType;
+			if (requestParameter != null) {
+				converterType = requestParameter.converter();
+			} else {
+				converterType = null;
+			}
+
+			try {
+				final Object value = convert(converterProvider, parameterValue,
+						destPropertyDesc, converterType);
+				destPropertyDesc.setValue(dest, value);
+			} catch (final Exception e) {
+				destPropertyDesc.setValue(dest, null);
 			}
 		}
 	}
@@ -96,14 +109,22 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 *            リクエストパラメータの値
 	 * @param destPropertyDesc
 	 *            出力先のプロパティの定義
+	 * @param converterType
+	 *            コンバータの型
 	 * @return 変換された値
 	 */
 	private Object convert(final ConverterProvider converterProvider,
-			final Object[] values, final PropertyDesc destPropertyDesc) {
+			final Object[] values, final PropertyDesc destPropertyDesc,
+			final Class<? extends Converter> converterType) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
-		final Converter converter = converterProvider.getConverter(values[0]
-				.getClass(), destClass);
+		final Converter converter;
+		if (converterType != null && !converterType.equals(Converter.class)) {
+			converter = converterProvider.getConverter(converterType);
+		} else {
+			converter = converterProvider.getConverter(values[0].getClass(),
+					destClass);
+		}
 		if (converter != null) {
 			return converter.convertToObject(values[0], destClass,
 					conversionHelper);

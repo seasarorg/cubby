@@ -18,6 +18,7 @@ package org.seasar.cubby.internal.controller.impl;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
+import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.ConversionHelperImpl;
@@ -80,23 +81,35 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			}
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.form
 					.getClass());
-			if (!beanDesc.hasPropertyDesc(name)) {
+			final PropertyDesc propertyDesc = findPropertyDesc(beanDesc, name);
+			if (propertyDesc == null) {
 				return null;
 			}
-			final PropertyDesc propertyDesc = beanDesc.getPropertyDesc(name);
 			final Object value = propertyDesc.getValue(this.form);
 			if (value == null) {
 				return null;
 			} else if (value instanceof String[]) {
 				return (String[]) value;
 			} else {
+				final Class<? extends Converter> converterType;
+				if (propertyDesc.isAnnotationPresent(RequestParameter.class)) {
+					final RequestParameter requestParameter = propertyDesc
+							.getAnnotation(RequestParameter.class);
+					if (Converter.class.equals(requestParameter.converter())) {
+						converterType = null;
+					} else {
+						converterType = requestParameter.converter();
+					}
+				} else {
+					converterType = null;
+				}
 				if (value.getClass().isArray()) {
 					final int length = Array.getLength(value);
 					final String[] array = (String[]) Array.newInstance(
 							String.class, length);
 					for (int i = 0; i < length; i++) {
 						final Object element = Array.get(value, i);
-						final String converted = convert(element);
+						final String converted = convert(element, converterType);
 						Array.set(array, i, converted);
 					}
 					return array;
@@ -106,14 +119,14 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 							String.class, collection.size());
 					int i = 0;
 					for (final Object element : collection) {
-						final String converted = convert(element);
+						final String converted = convert(element, converterType);
 						Array.set(array, i++, converted);
 					}
 					return array;
 				} else {
 					final String[] array = (String[]) Array.newInstance(
 							String.class, 1);
-					final String converted = convert(value);
+					final String converted = convert(value, converterType);
 					Array.set(array, 0, converted);
 					return array;
 				}
@@ -121,20 +134,62 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		}
 
 		/**
+		 * 指定された名前に対応するプロパティを検索します。
+		 * 
+		 * @param beanDesc
+		 *            Java Beans の定義
+		 * @param name
+		 *            名前
+		 * @return プロパティの定義
+		 */
+		private PropertyDesc findPropertyDesc(final BeanDesc beanDesc,
+				final String name) {
+			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
+				if (propertyDesc.isAnnotationPresent(RequestParameter.class)) {
+					final RequestParameter requestParameter = propertyDesc
+							.getAnnotation(RequestParameter.class);
+					final String parameterName = requestParameter.name();
+					if (parameterName == null || parameterName.length() == 0) {
+						if (name.equals(propertyDesc.getPropertyName())) {
+							return propertyDesc;
+						}
+					} else {
+						if (name.equals(parameterName)) {
+							return propertyDesc;
+						}
+					}
+				} else {
+					if (name.equals(propertyDesc.getPropertyName())) {
+						return propertyDesc;
+					}
+				}
+			}
+			return null;
+		}
+
+		/**
 		 * 指定されたオブジェクトを文字列に変換します。
 		 * 
 		 * @param value
 		 *            値
+		 * @param converterType
+		 *            コンバータの型
 		 * @return <code>value</code>を変換した文字列
 		 */
-		private String convert(final Object value) {
+		private String convert(final Object value,
+				final Class<? extends Converter> converterType) {
 			if (value == null) {
 				return null;
 			}
 			final ConverterProvider converterProvider = ProviderFactory
 					.get(ConverterProvider.class);
-			final Converter converter = converterProvider.getConverter(null,
-					value.getClass());
+			final Converter converter;
+			if (converterType == null) {
+				converter = converterProvider.getConverter(null, value
+						.getClass());
+			} else {
+				converter = converterProvider.getConverter(converterType);
+			}
 			if (converter == null) {
 				return value.toString();
 			} else {
