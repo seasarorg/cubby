@@ -41,6 +41,14 @@ import org.seasar.framework.util.DisposableUtil;
  */
 public class S2ConverterProvider implements ConverterProvider {
 
+	public Converter getConverter(Class<? extends Converter> converterType) {
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final ConverterProvider provider = (ConverterProvider) container
+				.getComponent(Component.class);
+		return provider.getConverter(converterType);
+	}
+
 	public Converter getConverter(final Class<?> parameterType,
 			final Class<?> objectType) {
 		final S2Container container = SingletonS2ContainerFactory
