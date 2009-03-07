@@ -71,7 +71,6 @@ public abstract class AbstractTagTestCase {
 	@Before
 	public void setupMocks() throws Exception {
 		servletContext = createMock(ServletContext.class);
-		request = createMock(HttpServletRequest.class);
 		response = createMock(HttpServletResponse.class);
 		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
 		session = createMock(HttpSession.class);
@@ -105,6 +104,8 @@ public abstract class AbstractTagTestCase {
 					}
 
 				});
+		expect(request.getRequestURL()).andStubReturn(
+				new StringBuffer("http://localhost:8080/test/test"));
 		replay(request, response, session, servletContext);
 
 		context = new MockJspContext(servletContext, request, response);

@@ -19,10 +19,11 @@ import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -30,6 +31,8 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
+
+import org.seasar.cubby.util.LinkBuilder;
 
 /**
  * 指定されたアクションクラス、アクションメソッドへリンクする URL を特定の属性にもつタグを出力するカスタムタグです。
@@ -48,6 +51,9 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 
 	/** リンクの補助クラス。 */
 	private transient final LinkSupport linkSupport = new LinkSupport();
+
+	/** リンクビルダ。 */
+	private final LinkBuilder linkBuilder = new LinkBuilder();
 
 	/** 出力するタグ。 */
 	private String tag;
@@ -118,6 +124,26 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
+	 * 出力する URL のプロトコルを設定します。
+	 * 
+	 * @param protocol
+	 *            出力する URL のプロトコル
+	 */
+	public void setProtocol(final String protocol) {
+		linkBuilder.setProtocol(protocol);
+	}
+
+	/**
+	 * 出力する URL のポートを設定します。
+	 * 
+	 * @param port
+	 *            出力する URL のポート
+	 */
+	public void setPort(final int port) {
+		linkBuilder.setPort(port);
+	}
+
+	/**
 	 * リクエストパラメータを追加します。
 	 * 
 	 * @param name
@@ -144,16 +170,24 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	public int doEndTag() throws JspException {
 		final String contextPath = (String) pageContext.getAttribute(
 				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
-		final String url;
-		final ServletRequest request = pageContext.getRequest();
+		final String actionPath;
+		final HttpServletRequest request = (HttpServletRequest) pageContext
+				.getRequest();
 		final String characterEncoding = request.getCharacterEncoding();
 		if (encodeURL) {
 			final HttpServletResponse response = (HttpServletResponse) pageContext
 					.getResponse();
-			url = response.encodeURL(contextPath
+			actionPath = response.encodeURL(contextPath
 					+ linkSupport.getPath(characterEncoding));
 		} else {
-			url = contextPath + linkSupport.getPath(characterEncoding);
+			actionPath = contextPath + linkSupport.getPath(characterEncoding);
+		}
+
+		final String url;
+		try {
+			url = linkBuilder.file(actionPath).toLink(request);
+		} catch (final MalformedURLException e) {
+			throw new JspException(e);
 		}
 
 		try {
@@ -191,6 +225,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	private void reset() {
 		linkSupport.clear();
+		linkBuilder.clear();
 		dynamicAttributes.clear();
 		tag = null;
 		attr = null;
