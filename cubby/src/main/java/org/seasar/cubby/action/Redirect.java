@@ -32,6 +32,7 @@ import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.util.LinkBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,14 +107,11 @@ public class Redirect implements ActionResult {
 	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
 			.emptyMap();
 
+	/** リンクビルダ。 */
+	private final LinkBuilder linkBuilder = new LinkBuilder();
+
 	/** リダイレクト先のパス。 */
 	private String path;
-
-	/** リダイレクト先のプロトコル。 */
-	private final String protocol;
-
-	/** リダイレクト先のポート。 */
-	private final int port;
 
 	/** リダイレクト先のアクションクラス。 */
 	private Class<?> actionClass;
@@ -137,7 +135,7 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のパス
 	 */
 	public Redirect(final String path) {
-		this(path, null);
+		this.path = path;
 	}
 
 	/**
@@ -150,7 +148,8 @@ public class Redirect implements ActionResult {
 	 * @since 1.1.0
 	 */
 	public Redirect(final String path, final String protocol) {
-		this(path, protocol, -1);
+		this(path);
+		linkBuilder.setProtocol(protocol);
 	}
 
 	/**
@@ -165,9 +164,9 @@ public class Redirect implements ActionResult {
 	 * @since 1.1.0
 	 */
 	public Redirect(final String path, final String protocol, final int port) {
-		this.path = path;
-		this.protocol = protocol;
-		this.port = port;
+		this(path);
+		linkBuilder.setProtocol(protocol);
+		linkBuilder.setPort(port);
 	}
 
 	/**
@@ -207,7 +206,9 @@ public class Redirect implements ActionResult {
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters) {
-		this(actionClass, methodName, parameters, null);
+		this.actionClass = actionClass;
+		this.methodName = methodName;
+		this.parameters = parameters;
 	}
 
 	/**
@@ -225,7 +226,8 @@ public class Redirect implements ActionResult {
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters, final String protocol) {
-		this(actionClass, methodName, parameters, protocol, -1);
+		this(actionClass, methodName, parameters);
+		linkBuilder.setProtocol(protocol);
 	}
 
 	/**
@@ -246,11 +248,9 @@ public class Redirect implements ActionResult {
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters, final String protocol,
 			final int port) {
-		this.actionClass = actionClass;
-		this.methodName = methodName;
-		this.parameters = parameters;
-		this.protocol = protocol;
-		this.port = port;
+		this(actionClass, methodName, parameters);
+		linkBuilder.setProtocol(protocol);
+		linkBuilder.setPort(port);
 	}
 
 	/**
@@ -377,20 +377,10 @@ public class Redirect implements ActionResult {
 			}
 		}
 
-		if (this.protocol == null) {
-			return redirectPath;
-		} else {
-			try {
-				final URL currentURL = new URL(request.getRequestURL()
-						.toString());
-				final int redirectPort = this.port < 0 ? currentURL.getPort()
-						: this.port;
-				final URL redirectURL = new URL(this.protocol, currentURL
-						.getHost(), redirectPort, redirectPath);
-				return redirectURL.toExternalForm();
-			} catch (final MalformedURLException e) {
-				throw new ActionException(e);
-			}
+		try {
+			return linkBuilder.file(redirectPath).toLink(request);
+		} catch (final MalformedURLException e) {
+			throw new ActionException(e);
 		}
 	}
 
