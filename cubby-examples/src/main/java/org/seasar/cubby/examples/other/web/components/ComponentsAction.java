@@ -23,10 +23,9 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.cubby.validator.validators.DateFormatValidator;
-import org.seasar.cubby.validator.validators.NumberValidator;
 import org.seasar.cubby.validator.validators.RangeValidator;
 
 public class ComponentsAction extends Action {
@@ -38,8 +37,8 @@ public class ComponentsAction extends Action {
 	public ValidationRules validation = new DefaultValidationRules() {
 		@Override
 		public void initialize() {
-			add("date", new DateFormatValidator("yyyy-MM-dd"));
-			add("intValue", new NumberValidator(), new RangeValidator(1, 10));
+			add(new ConversionValidationRule());
+			add("intValue", new RangeValidator(1, 10));
 		}
 	};
 
