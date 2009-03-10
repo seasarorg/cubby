@@ -36,8 +36,24 @@ public class BigDecimalConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Number convert(final Number number) {
-		return new BigDecimal(number.toString());
+	protected Number convert(final BigDecimal decimal) {
+		return decimal;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMinValue() {
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMaxValue() {
+		return null;
 	}
 
 }

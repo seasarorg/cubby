@@ -15,9 +15,6 @@
  */
 package org.seasar.cubby.controller.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import org.seasar.cubby.controller.FormatPattern;
 
 /**
@@ -98,33 +95,6 @@ public class DefaultFormatPattern implements FormatPattern {
 	 */
 	public void setTimestampPattern(final String timestampPattern) {
 		this.timestampPattern = timestampPattern;
-	}
-
-	/**
-	 * 日付フォーマットを取得します。
-	 * 
-	 * @return 日付フォーマット
-	 */
-	public DateFormat getDateFormat() {
-		return new SimpleDateFormat(this.datePattern);
-	}
-
-	/**
-	 * 時刻フォーマットを取得します。
-	 * 
-	 * @return 時刻フォーマット
-	 */
-	public DateFormat getTimeFormat() {
-		return new SimpleDateFormat(this.timePattern);
-	}
-
-	/**
-	 * 日付時刻フォーマットを取得します。
-	 * 
-	 * @return 日付時刻フォーマット
-	 */
-	public DateFormat getTimestampFormat() {
-		return new SimpleDateFormat(this.timestampPattern);
 	}
 
 	/**

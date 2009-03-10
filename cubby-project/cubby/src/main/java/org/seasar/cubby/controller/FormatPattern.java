@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.controller;
 
-import java.text.DateFormat;
-
 /**
  * 日付や時刻のフォーマットパターンを保持するクラスです。
  * 
@@ -45,26 +43,5 @@ public interface FormatPattern {
 	 * @return 日付時刻パターン
 	 */
 	String getTimestampPattern();
-
-	/**
-	 * 日付フォーマットを取得します。
-	 * 
-	 * @return 日付フォーマット
-	 */
-	DateFormat getDateFormat();
-
-	/**
-	 * 時刻フォーマットを取得します。
-	 * 
-	 * @return 時刻フォーマット
-	 */
-	DateFormat getTimeFormat();
-
-	/**
-	 * 日付時刻フォーマットを取得します。
-	 * 
-	 * @return 日付時刻フォーマット
-	 */
-	DateFormat getTimestampFormat();
 
 }

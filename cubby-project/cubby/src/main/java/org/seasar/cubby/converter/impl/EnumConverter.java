@@ -15,7 +15,9 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 列挙定数へ変換するコンバータです。
@@ -37,12 +39,19 @@ public class EnumConverter extends AbstractConverter {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, final ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper)
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}
 		final String name = value.toString();
-		return Enum.valueOf((Class<? extends Enum>) objectType, name);
+		try {
+			return Enum.valueOf((Class<? extends Enum>) objectType, name);
+		} catch (final IllegalArgumentException e) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.enum");
+			throw new ConversionException(messageInfo, e);
+		}
 	}
 
 	/**

@@ -15,12 +15,20 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import java.math.BigDecimal;
+
 /**
  * {@link Float}への変換を行うコンバータです。
  * 
  * @author baba
  */
 public class FloatConverter extends AbstractNumberConverter {
+
+	/** 最小値。 */
+	private static final BigDecimal MIN_VALUE = new BigDecimal(Float.MIN_VALUE);
+
+	/** 最大値。 */
+	private static final BigDecimal MAX_VALUE = new BigDecimal(Float.MAX_VALUE);
 
 	/**
 	 * {@inheritDoc}
@@ -33,8 +41,24 @@ public class FloatConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Number convert(final Number number) {
-		return new Float(number.floatValue());
+	protected Number convert(final BigDecimal decimal) {
+		return new Float(decimal.floatValue());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMinValue() {
+		return MIN_VALUE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMaxValue() {
+		return MAX_VALUE;
 	}
 
 }

@@ -16,9 +16,12 @@
 package org.seasar.cubby.handler.impl;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.same;
 import static org.easymock.EasyMock.verify;
 
 import java.util.HashMap;
@@ -33,6 +36,7 @@ import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.TestUtils;
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
@@ -84,6 +88,8 @@ public class ParameterBindingActionHandlerTest {
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andReturn(
 				params);
+		request.setAttribute(eq(CubbyConstants.ATTR_CONVERSION_ERRORS),
+				isA(ActionErrors.class));
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ActionContext context = createMock(ActionContext.class);
 		expect(context.getFormBean()).andReturn(formObject);
@@ -91,7 +97,8 @@ public class ParameterBindingActionHandlerTest {
 		ActionHandlerChain chain = createMock(ActionHandlerChain.class);
 		expect(chain.chain(request, response, context)).andReturn(result);
 		RequestParameterBinder binder = createMock(RequestParameterBinder.class);
-		binder.bind(params, formObject, context);
+		binder.bind(same(params), same(formObject), same(context),
+				isA(ActionErrors.class));
 		replay(request, response, context, chain, binder);
 
 		ActionHandler handler = new ParameterBindingActionHandler();

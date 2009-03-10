@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import java.math.BigDecimal;
+
 /**
  * {@link Double}への変換を行うコンバータです。
  * 
@@ -22,6 +24,12 @@ package org.seasar.cubby.converter.impl;
  * @since 1.1.0
  */
 public class DoubleConverter extends AbstractNumberConverter {
+
+	/** 最小値。 */
+	private static final BigDecimal MIN_VALUE = new BigDecimal(Double.MIN_VALUE);
+
+	/** 最大値。 */
+	private static final BigDecimal MAX_VALUE = new BigDecimal(Double.MAX_VALUE);
 
 	/**
 	 * {@inheritDoc}
@@ -34,8 +42,24 @@ public class DoubleConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Number convert(final Number number) {
-		return new Double(number.doubleValue());
+	protected Number convert(final BigDecimal decimal) {
+		return new Double(decimal.doubleValue());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMinValue() {
+		return MIN_VALUE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BigDecimal getMaxValue() {
+		return MAX_VALUE;
 	}
 
 }

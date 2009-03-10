@@ -65,6 +65,11 @@ public class CubbyConstants {
 	public static final String ATTR_ACTION_CONTEXT = "org.seasar.cubby.actionContext";
 
 	/**
+	 * 型変換エラーの属性中の名前。
+	 */
+	public static final String ATTR_CONVERSION_ERRORS = "org.seasar.cubby.conversionErrors";
+
+	/**
 	 * バリデーションエラーを表すオブジェクトのリクエストの属性中の名前。
 	 */
 	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";

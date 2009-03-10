@@ -15,9 +15,9 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
+import java.util.Date;
 
+import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
 
 /**
@@ -29,7 +29,7 @@ import org.seasar.cubby.converter.ConversionHelper;
  * @author baba
  * @since 1.1.0
  */
-public class SqlDateConverter extends AbstractConverter {
+public class SqlDateConverter extends AbstractDateConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -42,33 +42,14 @@ public class SqlDateConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, final ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper)
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = helper.getFormatPattern().getDateFormat();
-		return toDate((String) value, dateFormat);
-	}
-
-	/**
-	 * 文字列を{@link java.sql.Date}に変換して返します。
-	 * 
-	 * @param date
-	 *            変換元のオブジェクトの文字列表現
-	 * @param dateFormat
-	 *            フォーマット
-	 * @return 変換した結果の{@link java.sql.Date}
-	 */
-	protected java.sql.Date toDate(final String date,
-			final DateFormat dateFormat) {
-		if (date == null || date.length() == 0) {
-			return null;
-		}
-		try {
-			return new java.sql.Date(dateFormat.parse(date).getTime());
-		} catch (final ParseException e) {
-			return null;
-		}
+		final String pattern = helper.getFormatPattern().getDatePattern();
+		final Date date = toDate(value.toString(), pattern);
+		return new java.sql.Date(date.getTime());
 	}
 
 	/**
@@ -79,8 +60,8 @@ public class SqlDateConverter extends AbstractConverter {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = helper.getFormatPattern().getDateFormat();
-		return formatter.format((java.sql.Date) value);
+		final String pattern = helper.getFormatPattern().getDatePattern();
+		return toString((java.sql.Date) value, pattern);
 	}
 
 }
