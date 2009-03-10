@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -44,21 +45,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.controller.FormatPattern;
+import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
+import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
@@ -81,12 +91,16 @@ public class RequestParameterBinderImplTest {
 	@Before
 	public void setup() {
 		final FormatPattern formatPattern = new DefaultFormatPattern();
+		final MessagesBehaviour messagesBehaviour = new DefaultMessagesBehaviour();
 		ProviderFactory.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
 						if (FormatPattern.class.equals(type)) {
 							return type.cast(formatPattern);
+						}
+						if (MessagesBehaviour.class.equals(type)) {
+							return type.cast(messagesBehaviour);
 						}
 						throw new LookupException(type.getName());
 					}
@@ -108,7 +122,9 @@ public class RequestParameterBinderImplTest {
 		FormDto dto = new FormDto();
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(null, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(null, dto, actionContext, errors);
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -120,11 +136,13 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		assertEquals(format.format(cal.getTime()), format.format(dto.getDate()));
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -138,7 +156,8 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getNum1());
 		assertEquals(Integer.valueOf(1), dto.getNum1());
 		assertNotNull(dto.getNum2());
@@ -147,6 +166,7 @@ public class RequestParameterBinderImplTest {
 		assertNotNull(dto.getNum3());
 		assertEquals(1, dto.getNum3().size());
 		assertEquals("def", dto.getNum3().get(0));
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -159,7 +179,8 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getNum2());
 		assertEquals(2, dto.getNum2().length);
 		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
@@ -168,6 +189,7 @@ public class RequestParameterBinderImplTest {
 		assertEquals(2, dto.getNum3().size());
 		assertEquals("abc", dto.getNum3().get(0));
 		assertEquals("def", dto.getNum3().get(1));
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -179,11 +201,13 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertEquals(3, dto.getNum2().length);
 		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
 		assertEquals(null, dto.getNum2()[1]);
 		assertEquals(Integer.valueOf(2), dto.getNum2()[2]);
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -195,11 +219,13 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertEquals(3, dto.getNum3().size());
 		assertEquals("zzz", dto.getNum3().get(0));
 		assertNull(dto.getNum3().get(1));
 		assertEquals("xxx", dto.getNum3().get(2));
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -216,11 +242,13 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertEquals("abcd", dto.getNormal());
 		assertEquals("ijkl", dto.getSpecifiedName());
 		assertEquals("{mnop}", dto.getSpecifiedConverter());
 		assertEquals("{uvwx}", dto.getSpecifiedNameAndConverter());
+		assertTrue(errors.isEmpty());
 	}
 
 	@Test
@@ -278,7 +306,8 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 
 		assertNotNull(dto.getDecimal());
 		assertTrue(new BigDecimal("12.3").compareTo(dto.getDecimal()) == 0);
@@ -467,7 +496,210 @@ public class RequestParameterBinderImplTest {
 		assertEquals(new Timestamp(fromTimestampToMillis(2008, 10, 30, 23, 44,
 				00)), dto.getSqltimestamps()[1]);
 
+		assertTrue(errors.isEmpty());
+
 		System.out.println(dto);
+	}
+
+	@Test
+	public void convertersWithError() throws Exception {
+		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("decimal", new Object[] { "a" });
+		map.put("decimals", new Object[] { "45.6", "b" });
+		map.put("bigint", new Object[] { "c" });
+		map.put("bigints", new Object[] { "d", "10" });
+		map.put("byte1", new Object[] { "12a" });
+		map.put("bytes1", new Object[] { "3324234e456789", "56" });
+		map.put("byte2", new Object[] { "98o" });
+		map.put("bytes2", new Object[] { "76p", "54" });
+		map.put("date", new Object[] { "2009-2-29" });
+		map.put("dates", new Object[] { "2008-8-14", "2008/10/30" });
+		map.put("double1", new Object[] { "1.2a" });
+		map.put("doubles1", new Object[] { "3.4", "5.6b" });
+		map.put("double2", new Object[] { "9.8c" });
+		map.put("doubles2", new Object[] { "7.6d", "5.4" });
+		map.put("en", new Object[] { "VALUE4" });
+		map.put("ens", new Object[] { "VALUE2", "VALUE5" });
+		map.put("float1", new Object[] { "1.2a" });
+		map.put("floats1", new Object[] { "3.4b", "5.6" });
+		map.put("float2", new Object[] { "9.8c" });
+		map.put("floats2", new Object[] { "7.6d", "5.4" });
+		map.put("int1", new Object[] { "12e" });
+		map.put("ints1", new Object[] { "34f", "56" });
+		map.put("int2", new Object[] { "98g" });
+		map.put("ints2", new Object[] { "76", "54h" });
+		map.put("long1", new Object[] { "12i" });
+		map.put("longs1", new Object[] { "34j", "56" });
+		map.put("long2", new Object[] { "98k" });
+		map.put("longs2", new Object[] { "76l", "54" });
+		map.put("short1", new Object[] { "12m" });
+		map.put("shorts1", new Object[] { "34n", "56" });
+		map.put("short2", new Object[] { "98o" });
+		map.put("shorts2", new Object[] { "76p", "54" });
+		map.put("sqldate", new Object[] { "2008-7-280" });
+		map.put("sqldates", new Object[] { "2008-8-14-", "2008-10-30" });
+		map.put("sqltime", new Object[] { "25:34:56" });
+		map.put("sqltimes", new Object[] { "13:45:99", "23:44:00" });
+		map.put("sqltimestamp", new Object[] { "2008-7-28-12:34:56" });
+		map.put("sqltimestamps", new Object[] { "2008-8-32 13:45:24",
+				"2008-10-30 23:44:00" });
+
+		final ConvertersDto dto = new ConvertersDto();
+
+		final ActionContext actionContext = new MockActionContext(null,
+				MockAction.class, actionMethod(MockAction.class, "all"));
+		final ActionErrors errors = new ActionErrorsImpl();
+		// requestParameterBinder.bind(map, dto, actionContext, errors);
+
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute(HttpServletRequest request,
+					HttpServletResponse response) throws Exception {
+				requestParameterBinder.bind(map, dto, actionContext, errors);
+				return null;
+			}
+
+		});
+
+		assertFalse(errors.isEmpty());
+
+		System.out.println(errors.getFields().get("decimals"));
+		assertFalse(errors.getFields().get("decimals").isEmpty());
+		System.out.println(errors.getIndexedFields().get("decimals").get(0));
+		assertTrue(errors.getIndexedFields().get("decimals").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("decimals").get(1));
+		assertFalse(errors.getIndexedFields().get("decimals").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("bigint"));
+		assertFalse(errors.getFields().get("bigint").isEmpty());
+		System.out.println(errors.getIndexedFields().get("bigints").get(0));
+		assertFalse(errors.getIndexedFields().get("bigints").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("bigints").get(1));
+		assertTrue(errors.getIndexedFields().get("bigints").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("byte1"));
+		assertFalse(errors.getFields().get("byte1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("bytes1").get(0));
+		assertFalse(errors.getIndexedFields().get("bytes1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("bytes1").get(1));
+		assertTrue(errors.getIndexedFields().get("bytes1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("byte2"));
+		assertFalse(errors.getFields().get("byte2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("bytes2").get(0));
+		assertFalse(errors.getIndexedFields().get("bytes2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("bytes2").get(1));
+		assertTrue(errors.getIndexedFields().get("bytes2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("double1"));
+		assertFalse(errors.getFields().get("double1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("doubles1").get(0));
+		assertTrue(errors.getIndexedFields().get("doubles1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("doubles1").get(1));
+		assertFalse(errors.getIndexedFields().get("doubles1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("double2"));
+		assertFalse(errors.getFields().get("double2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("doubles2").get(0));
+		assertFalse(errors.getIndexedFields().get("doubles2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("doubles2").get(1));
+		assertTrue(errors.getIndexedFields().get("doubles2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("float1"));
+		assertFalse(errors.getFields().get("float1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("floats1").get(0));
+		assertFalse(errors.getIndexedFields().get("floats1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("floats1").get(1));
+		assertTrue(errors.getIndexedFields().get("floats1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("float2"));
+		assertFalse(errors.getFields().get("float2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("floats2").get(0));
+		assertFalse(errors.getIndexedFields().get("floats2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("floats2").get(1));
+		assertTrue(errors.getIndexedFields().get("floats2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("int1"));
+		assertFalse(errors.getFields().get("int1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("ints1").get(0));
+		assertFalse(errors.getIndexedFields().get("ints1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("ints1").get(1));
+		assertTrue(errors.getIndexedFields().get("ints1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("int2"));
+		assertFalse(errors.getFields().get("int2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("ints2").get(0));
+		assertTrue(errors.getIndexedFields().get("ints2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("ints2").get(1));
+		assertFalse(errors.getIndexedFields().get("ints2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("long1"));
+		assertFalse(errors.getFields().get("long1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("longs1").get(0));
+		assertFalse(errors.getIndexedFields().get("longs1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("longs1").get(1));
+		assertTrue(errors.getIndexedFields().get("longs1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("long2"));
+		assertFalse(errors.getFields().get("long2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("longs2").get(0));
+		assertFalse(errors.getIndexedFields().get("longs2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("longs2").get(1));
+		assertTrue(errors.getIndexedFields().get("longs2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("short1"));
+		assertFalse(errors.getFields().get("short1").isEmpty());
+		System.out.println(errors.getIndexedFields().get("shorts1").get(0));
+		assertFalse(errors.getIndexedFields().get("shorts1").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("shorts1").get(1));
+		assertTrue(errors.getIndexedFields().get("shorts1").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("short2"));
+		assertFalse(errors.getFields().get("short2").isEmpty());
+		System.out.println(errors.getIndexedFields().get("shorts2").get(0));
+		assertFalse(errors.getIndexedFields().get("shorts2").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("shorts2").get(1));
+		assertTrue(errors.getIndexedFields().get("shorts2").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("date"));
+		assertFalse(errors.getFields().get("date").isEmpty());
+		System.out.println(errors.getIndexedFields().get("dates").get(0));
+		assertTrue(errors.getIndexedFields().get("dates").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("dates").get(1));
+		assertFalse(errors.getIndexedFields().get("dates").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("sqldate"));
+		assertFalse(errors.getFields().get("sqldate").isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqldates").get(0));
+		assertFalse(errors.getIndexedFields().get("sqldates").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqldates").get(1));
+		assertTrue(errors.getIndexedFields().get("sqldates").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("sqltime"));
+		assertFalse(errors.getFields().get("sqltime").isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimes").get(0));
+		assertFalse(errors.getIndexedFields().get("sqltimes").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimes").get(1));
+		assertTrue(errors.getIndexedFields().get("sqltimes").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("sqltimestamp"));
+		assertFalse(errors.getFields().get("sqltimestamp").isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimestamps").get(0));
+		assertFalse(errors.getIndexedFields().get("sqltimestamps").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimestamps").get(1));
+		assertTrue(errors.getIndexedFields().get("sqltimestamps").get(1).isEmpty());
+
+		System.out.println(errors.getFields().get("en"));
+		assertFalse(errors.getFields().get("en").isEmpty());
+		System.out.println(errors.getIndexedFields().get("ens").get(0));
+		assertTrue(errors.getIndexedFields().get("ens").get(0).isEmpty());
+		System.out.println(errors.getIndexedFields().get("ens").get(1));
+		assertFalse(errors.getIndexedFields().get("ens").get(1).isEmpty());
+
 	}
 
 	@Test
@@ -485,7 +717,8 @@ public class RequestParameterBinderImplTest {
 
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		String encoding = "UTF-8";
 		assertNotNull(dto.getFile());
 		assertEquals("123", new String(dto.getFile().get(), encoding));
@@ -502,6 +735,7 @@ public class RequestParameterBinderImplTest {
 		assertEquals("JKL", new String(it.next(), encoding));
 		assertNotNull(dto.getInput());
 		assertEquals("QQ", new String(getBytes(dto.getInput()), encoding));
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeNoAnnotated() {
@@ -511,10 +745,12 @@ public class RequestParameterBinderImplTest {
 		FormDto2 dto = new FormDto2();
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "noAnnotated"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeNoBindingType() {
@@ -525,11 +761,13 @@ public class RequestParameterBinderImplTest {
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class,
 						"noBindingType"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeAllProperties() {
@@ -539,11 +777,13 @@ public class RequestParameterBinderImplTest {
 		FormDto2 dto = new FormDto2();
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeOnlySpecifiedProperties() {
@@ -553,10 +793,12 @@ public class RequestParameterBinderImplTest {
 		FormDto2 dto = new FormDto2();
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "specified"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeNoAnnotatedOnClass() {
@@ -567,11 +809,13 @@ public class RequestParameterBinderImplTest {
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class,
 						"noAnnotated"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	public void testBindTypeOnlySpecifiedPropertiesOnClass() {
@@ -581,10 +825,12 @@ public class RequestParameterBinderImplTest {
 		FormDto2 dto = new FormDto2();
 		ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class, "specified"));
-		requestParameterBinder.bind(map, dto, actionContext);
+		ActionErrors errors = new ActionErrorsImpl();
+		requestParameterBinder.bind(map, dto, actionContext, errors);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
+		assertTrue(errors.isEmpty());
 	}
 
 	private Method actionMethod(Class<? extends Action> actionClass,

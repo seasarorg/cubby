@@ -77,7 +77,7 @@ public class ThreadContextTest {
 			public Void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				final Map<?, ?> result = ThreadContext.getMessagesMap();
-				assertEquals("result.size()", 14, result.size());
+				assertEquals("result.size()", 16, result.size());
 				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
 						"{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
 				return null;
@@ -98,7 +98,7 @@ public class ThreadContextTest {
 			public Void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				final Map<?, ?> result = ThreadContext.getMessagesMap();
-				assertEquals("result.size()", 14, result.size());
+				assertEquals("result.size()", 16, result.size());
 				assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
 						"{0} : selects <= {1}.", result
 								.get("valid.arrayMaxSize"));

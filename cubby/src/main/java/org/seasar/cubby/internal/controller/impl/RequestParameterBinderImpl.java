@@ -24,7 +24,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.FieldInfo;
 import org.seasar.cubby.action.RequestParameter;
+import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.ConversionHelperImpl;
@@ -36,6 +39,7 @@ import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
 import org.seasar.cubby.spi.beans.PropertyDesc;
+import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスの実装です。
@@ -52,7 +56,8 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * {@inheritDoc}
 	 */
 	public void bind(final Map<String, Object[]> parameterMap,
-			final Object dest, final ActionContext actionContext) {
+			final Object dest, final ActionContext actionContext,
+			final ActionErrors errors) {
 		if (parameterMap == null || parameterMap.isEmpty()) {
 			return;
 		}
@@ -90,13 +95,9 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 				converterType = null;
 			}
 
-			try {
-				final Object value = convert(converterProvider, parameterValue,
-						destPropertyDesc, converterType);
-				destPropertyDesc.setValue(dest, value);
-			} catch (final Exception e) {
-				destPropertyDesc.setValue(dest, null);
-			}
+			final Object value = convert(converterProvider, parameterValue,
+					destPropertyDesc, converterType, parameterName, errors);
+			destPropertyDesc.setValue(dest, value);
 		}
 	}
 
@@ -111,42 +112,64 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 *            出力先のプロパティの定義
 	 * @param converterType
 	 *            コンバータの型
+	 * @param errors
+	 * @param parameterName
 	 * @return 変換された値
 	 */
 	private Object convert(final ConverterProvider converterProvider,
 			final Object[] values, final PropertyDesc destPropertyDesc,
-			final Class<? extends Converter> converterType) {
+			final Class<? extends Converter> converterType,
+			final String parameterName, final ActionErrors errors) {
 		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
 		final Converter converter;
 		if (converterType != null && !converterType.equals(Converter.class)) {
 			converter = converterProvider.getConverter(converterType);
-		} else {
+		} else if (values[0] != null) {
 			converter = converterProvider.getConverter(values[0].getClass(),
 					destClass);
+		} else {
+			converter = null;
 		}
 		if (converter != null) {
-			return converter.convertToObject(values[0], destClass,
-					conversionHelper);
+			try {
+				return converter.convertToObject(values[0], destClass,
+						conversionHelper);
+			} catch (final ConversionException e) {
+				final FieldInfo fieldInfo = new FieldInfo(parameterName);
+				final MessageInfo messageInfo = e.getMessageInfo();
+				errors.add(messageInfo.builder().fieldNameKey(parameterName)
+						.toString(), fieldInfo);
+				return null;
+			}
 		}
 
 		if (destClass.isArray()) {
 			return convertToArray(converterProvider, values, destClass
-					.getComponentType());
+					.getComponentType(), parameterName, errors);
 		}
 		if (List.class.isAssignableFrom(destClass)) {
 			final List<Object> list = new ArrayList<Object>();
 			convertToCollection(converterProvider, values, list,
-					destPropertyDesc);
+					destPropertyDesc, parameterName, errors);
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
 			final Set<Object> set = new LinkedHashSet<Object>();
 			convertToCollection(converterProvider, values, set,
-					destPropertyDesc);
+					destPropertyDesc, parameterName, errors);
 			return set;
 		}
-		return convertToScalar(converterProvider, values[0], destClass);
+
+		try {
+			return convertToScalar(converterProvider, values[0], destClass);
+		} catch (final ConversionException e) {
+			final FieldInfo fieldInfo = new FieldInfo(parameterName);
+			final MessageInfo messageInfo = e.getMessageInfo();
+			errors.add(messageInfo.builder().fieldNameKey(parameterName)
+					.toString(), fieldInfo);
+			return null;
+		}
 	}
 
 	/**
@@ -161,12 +184,20 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @return 変換後の値
 	 */
 	private Object convertToArray(final ConverterProvider converterProvider,
-			final Object[] values, final Class<?> componentType) {
+			final Object[] values, final Class<?> componentType,
+			final String parameterName, final ActionErrors errors) {
 		final Object dest = Array.newInstance(componentType, values.length);
 		for (int i = 0; i < values.length; i++) {
-			final Object convertedValue = convertToScalar(converterProvider,
-					values[i], componentType);
-			Array.set(dest, i, convertedValue);
+			try {
+				final Object convertedValue = convertToScalar(
+						converterProvider, values[i], componentType);
+				Array.set(dest, i, convertedValue);
+			} catch (final ConversionException e) {
+				final FieldInfo fieldInfo = new FieldInfo(parameterName, i);
+				final MessageInfo messageInfo = e.getMessageInfo();
+				errors.add(messageInfo.builder().fieldNameKey(parameterName)
+						.toString(), fieldInfo);
+			}
 		}
 		return dest;
 	}
@@ -185,16 +216,26 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 */
 	private void convertToCollection(final ConverterProvider converterProvider,
 			final Object[] values, final Collection<Object> collection,
-			final PropertyDesc propertyDesc) {
+			final PropertyDesc propertyDesc, final String parameterName,
+			final ActionErrors errors) {
 		if (propertyDesc.isParameterized()) {
 			final ParameterizedClassDesc parameterizedClassDesc = propertyDesc
 					.getParameterizedClassDesc();
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
-			for (final Object value : values) {
-				final Object convertedValue = convertToScalar(
-						converterProvider, value, destElementType);
-				collection.add(convertedValue);
+			for (int i = 0; i < values.length; i++) {
+				final Object value = values[i];
+				try {
+					final Object convertedValue = convertToScalar(
+							converterProvider, value, destElementType);
+					collection.add(convertedValue);
+				} catch (final ConversionException e) {
+					collection.add(null);
+					final FieldInfo fieldInfo = new FieldInfo(parameterName, i);
+					final MessageInfo messageInfo = e.getMessageInfo();
+					errors.add(messageInfo.builder()
+							.fieldNameKey(parameterName).toString(), fieldInfo);
+				}
 			}
 		} else {
 			for (final Object value : values) {
@@ -213,9 +254,12 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @param destClass
 	 *            変換する型
 	 * @return 変換後の値
+	 * @throws ConversionException
+	 *             型変換に失敗した場合
 	 */
 	private Object convertToScalar(final ConverterProvider converterProvider,
-			final Object value, final Class<?> destClass) {
+			final Object value, final Class<?> destClass)
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}

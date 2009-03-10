@@ -18,6 +18,7 @@ package org.seasar.cubby.internal.controller;
 import java.util.Map;
 
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスです。
@@ -36,8 +37,10 @@ public interface RequestParameterBinder {
 	 *            リクエストパラメータをバインドするオブジェクト
 	 * @param actionContext
 	 *            アクションコンテキスト
+	 * @param errors
+	 *            型変換で発生したエラーを保持する
 	 */
 	void bind(Map<String, Object[]> parameterMap, Object dest,
-			ActionContext actionContext);
+			ActionContext actionContext, ActionErrors errors);
 
 }

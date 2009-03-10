@@ -15,10 +15,9 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
 
+import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
 
 /**
@@ -30,7 +29,7 @@ import org.seasar.cubby.converter.ConversionHelper;
  * @author baba
  * @since 1.1.0
  */
-public class DateConverter extends AbstractConverter {
+public class DateConverter extends AbstractDateConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -43,32 +42,13 @@ public class DateConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, final ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper)
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat dateFormat = helper.getFormatPattern().getDateFormat();
-		return toDate(value.toString(), dateFormat);
-	}
-
-	/**
-	 * 文字列を{@link Date}に変換して返します。
-	 * 
-	 * @param date
-	 *            変換元のオブジェクトの文字列表現
-	 * @param dateFormat
-	 *            フォーマット
-	 * @return 変換した結果の{@link Date}
-	 */
-	protected Date toDate(final String date, final DateFormat dateFormat) {
-		if (date == null || date.length() == 0) {
-			return null;
-		}
-		try {
-			return dateFormat.parse(date);
-		} catch (final ParseException e) {
-			return null;
-		}
+		final String pattern = helper.getFormatPattern().getDatePattern();
+		return toDate(value.toString(), pattern);
 	}
 
 	/**
@@ -79,8 +59,8 @@ public class DateConverter extends AbstractConverter {
 		if (value == null) {
 			return null;
 		}
-		final DateFormat formatter = helper.getFormatPattern().getDateFormat();
-		return formatter.format((Date) value);
+		final String pattern = helper.getFormatPattern().getDatePattern();
+		return toString((Date) value, pattern);
 	}
 
 }

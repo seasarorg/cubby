@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.handler.impl;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_CONVERSION_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 
 import java.util.Map;
@@ -22,10 +23,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
 import org.seasar.cubby.internal.util.RequestUtils;
@@ -47,6 +51,10 @@ public class ParameterBindingActionHandler implements ActionHandler {
 	 * アクションメソッドにフォームオブジェクトが定義されている場合に、{@link RequestParameterBinder}
 	 * によって要求パラメータをフォームオブジェクトにバインドします。
 	 * </p>
+	 * <p>
+	 * バインド時に発生した型変換エラーは要求の属性 {@link CubbyConstants#ATTR_CONVERSION_ERRORS}
+	 * に設定されます。
+	 * </p>
 	 */
 	public ActionResult handle(final HttpServletRequest request,
 			final HttpServletResponse response,
@@ -57,7 +65,10 @@ public class ParameterBindingActionHandler implements ActionHandler {
 		if (formBean != null) {
 			final Map<String, Object[]> parameterMap = RequestUtils
 					.getAttribute(request, ATTR_PARAMS);
-			requestParameterBinder.bind(parameterMap, formBean, actionContext);
+			final ActionErrors conversionErros = new ActionErrorsImpl();
+			requestParameterBinder.bind(parameterMap, formBean, actionContext,
+					conversionErros);
+			request.setAttribute(ATTR_CONVERSION_ERRORS, conversionErros);
 		}
 
 		final ActionResult result = actionHandlerChain.chain(request, response,

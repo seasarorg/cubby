@@ -136,11 +136,15 @@ public class MessageInfo {
 		public String toString() {
 			final Object[] args;
 			if (fieldNameKey != null) {
-				args = new Object[this.arguments.length + 1];
-				final String paramNameText = Messages.getText(fieldNameKey);
-				args[0] = paramNameText;
-				System.arraycopy(this.arguments, 0, args, 1,
-						this.arguments.length);
+				if (this.arguments != null) {
+					args = new Object[this.arguments.length + 1];
+					final String paramNameText = Messages.getText(fieldNameKey);
+					args[0] = paramNameText;
+					System.arraycopy(this.arguments, 0, args, 1,
+							this.arguments.length);
+				} else {
+					args = new Object[] { Messages.getText(fieldNameKey) };
+				}
 			} else {
 				args = this.arguments;
 			}

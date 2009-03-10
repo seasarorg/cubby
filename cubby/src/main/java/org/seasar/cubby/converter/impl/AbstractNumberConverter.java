@@ -17,7 +17,9 @@ package org.seasar.cubby.converter.impl;
 
 import java.math.BigDecimal;
 
+import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * {@link Number 数}への変換を行うコンバータの抽象クラスです。
@@ -34,7 +36,8 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 	 * {@inheritDoc}
 	 */
 	public Object convertToObject(final Object value,
-			final Class<?> objectType, final ConversionHelper helper) {
+			final Class<?> objectType, final ConversionHelper helper)
+			throws ConversionException {
 		if (value == null) {
 			return null;
 		}
@@ -43,18 +46,81 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 
 	/**
 	 * 数を表す文字列から数値に変換して返します。
+	 * <p>
+	 * 型変換に失敗した場合はメッセージのキーを <code>valid.number</code> とした
+	 * {@link ConversionException} をスローします。
+	 * </p>
 	 * 
-	 * @param number
+	 * @param value
 	 *            数を表す文字列
 	 * @return 変換結果の数値
+	 * @throws ConversionException
+	 *             型変換に失敗した場合
 	 */
-	protected Number convert(final String number) {
-		if (number == null || number.length() == 0) {
+	protected Number convert(final String value) throws ConversionException {
+		if (value == null || value.length() == 0) {
 			return null;
 		}
-		final BigDecimal decimal = new BigDecimal(number);
-		return convert(decimal);
+
+		final BigDecimal decimal;
+		try {
+			decimal = new BigDecimal(value);
+		} catch (final NumberFormatException e) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.number");
+			throw new ConversionException(messageInfo);
+		}
+
+		final Number number;
+		try {
+			number = convert(decimal);
+		} catch (final ArithmeticException e) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.integer");
+			throw new ConversionException(messageInfo);
+		}
+
+		final BigDecimal min = this.getMinValue();
+		final BigDecimal max = this.getMaxValue();
+		if ((min != null && min.compareTo(decimal) > 0)
+				|| (max != null && max.compareTo(decimal) < 0)) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.range");
+			messageInfo.setArguments(min.toPlainString(), max.toPlainString());
+			throw new ConversionException(messageInfo);
+		}
+
+		return number;
 	}
+
+	/**
+	 * 数値を変換して返します。
+	 * 
+	 * @param decimal
+	 *            変換元の数値
+	 * @return 変換結果の数値
+	 */
+	protected abstract Number convert(BigDecimal decimal);
+
+	/**
+	 * 最小値を取得します。
+	 * <p>
+	 * 最小値をチェックしない場合は <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @return 最小値
+	 */
+	protected abstract BigDecimal getMinValue();
+
+	/**
+	 * 最大値を取得します。
+	 * <p>
+	 * 最大値をチェックしない場合は <code>null</code> を返します。
+	 * </p>
+	 * 
+	 * @return 最大値
+	 */
+	protected abstract BigDecimal getMaxValue();
 
 	/**
 	 * {@inheritDoc}
@@ -66,14 +132,5 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 		}
 		return value.toString();
 	}
-
-	/**
-	 * 数値を変換して返します。
-	 * 
-	 * @param number
-	 *            変換元の数値
-	 * @return 変換結果の数値
-	 */
-	protected abstract Number convert(Number number);
 
 }

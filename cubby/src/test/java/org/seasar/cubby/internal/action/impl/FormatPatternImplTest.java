@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -60,7 +61,8 @@ public class FormatPatternImplTest {
 		System.out.println(pattern);
 		assertEquals("yyyy-MM-dd", pattern);
 
-		DateFormat dateFormat = formatPattern.getDateFormat();
+		DateFormat dateFormat = new SimpleDateFormat(formatPattern
+				.getDatePattern());
 		String actual = dateFormat.format(date);
 		System.out.println(actual);
 		assertEquals("2007-09-02", actual);
@@ -76,7 +78,8 @@ public class FormatPatternImplTest {
 		System.out.println(pattern);
 		assertEquals("yyyy-MM-dd", pattern);
 
-		DateFormat dateFormat = formatPattern.getDateFormat();
+		DateFormat dateFormat = new SimpleDateFormat(formatPattern
+				.getDatePattern());
 		String actual = dateFormat.format(date);
 		System.out.println(actual);
 		assertEquals("2007-09-02", actual);
@@ -92,7 +95,8 @@ public class FormatPatternImplTest {
 		System.out.println(pattern);
 		assertEquals("HH:mm:ss", pattern);
 
-		DateFormat dateFormat = formatPattern.getTimeFormat();
+		DateFormat dateFormat = new SimpleDateFormat(formatPattern
+				.getTimePattern());
 		String actual = dateFormat.format(time);
 		System.out.println(actual);
 		assertEquals("08:05:06", actual);
@@ -108,7 +112,8 @@ public class FormatPatternImplTest {
 		System.out.println(pattern);
 		assertEquals("HH:mm:ss", pattern);
 
-		DateFormat dateFormat = formatPattern.getTimeFormat();
+		DateFormat dateFormat = new SimpleDateFormat(formatPattern
+				.getTimePattern());
 		String actual = dateFormat.format(time);
 		System.out.println(actual);
 		assertEquals("18:05:06", actual);
@@ -124,7 +129,8 @@ public class FormatPatternImplTest {
 		System.out.println(pattern);
 		assertEquals("yyyy-MM-dd HH:mm:ss", pattern);
 
-		DateFormat dateFormat = formatPattern.getTimestampFormat();
+		DateFormat dateFormat = new SimpleDateFormat(formatPattern
+				.getTimestampPattern());
 		String actual = dateFormat.format(timestamp);
 		System.out.println(actual);
 		assertEquals("2007-09-02 08:05:06", actual);

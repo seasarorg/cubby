@@ -55,11 +55,12 @@ public interface Converter {
 	 *            値の型
 	 * @param helper
 	 *            変換のヘルパクラス
-	 * 
 	 * @return <code>value</code>を変換したオブジェクト
+	 * @throws ConversionException
+	 *             型変換に失敗した場合
 	 */
 	Object convertToObject(Object value, Class<?> objectType,
-			ConversionHelper helper);
+			ConversionHelper helper) throws ConversionException;
 
 	/**
 	 * このコンバータがサポートしているクラスのインスタンスである<code>value</code>を文字列に変換します。
