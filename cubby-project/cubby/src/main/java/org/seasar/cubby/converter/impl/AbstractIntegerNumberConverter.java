@@ -16,21 +16,22 @@
 package org.seasar.cubby.converter.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.validator.MessageInfo;
 
 /**
- * {@link Number 数}への変換を行うコンバータの抽象クラスです。
+ * 整数への変換を行うコンバータの抽象クラスです。
  * <p>
- * 変換元のオブジェクトの文字列表現を値とする{@link BigDecimal}からサブクラスが変換した結果を変換先とします。
+ * 変換元のオブジェクトの文字列表現を値とする{@link BigInteger}からサブクラスが変換した結果を変換先とします。
  * </p>
  * 
  * @author baba
  * @since 1.1.0
  */
-public abstract class AbstractNumberConverter extends AbstractConverter {
+public abstract class AbstractIntegerNumberConverter extends AbstractConverter {
 
 	/**
 	 * {@inheritDoc}
@@ -62,45 +63,43 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 			return null;
 		}
 
-		final BigDecimal decimal;
+		final BigInteger integer;
 		try {
-			decimal = new BigDecimal(value);
+			integer = new BigInteger(value);
 		} catch (final NumberFormatException e) {
-			final MessageInfo messageInfo = new MessageInfo();
-			messageInfo.setKey("valid.number");
-			throw new ConversionException(messageInfo);
+			try {
+				new BigDecimal(value);
+				final MessageInfo messageInfo = new MessageInfo();
+				messageInfo.setKey("valid.integer");
+				throw new ConversionException(messageInfo);
+			} catch (final NumberFormatException e1) {
+				final MessageInfo messageInfo = new MessageInfo();
+				messageInfo.setKey("valid.number");
+				throw new ConversionException(messageInfo);
+			}
 		}
 
-		final Number number;
-		try {
-			number = convert(decimal);
-		} catch (final ArithmeticException e) {
-			final MessageInfo messageInfo = new MessageInfo();
-			messageInfo.setKey("valid.integer");
-			throw new ConversionException(messageInfo);
-		}
-
-		final BigDecimal min = this.getMinValue();
-		final BigDecimal max = this.getMaxValue();
-		if ((min != null && min.compareTo(decimal) > 0)
-				|| (max != null && max.compareTo(decimal) < 0)) {
+		final BigInteger min = this.getMinValue();
+		final BigInteger max = this.getMaxValue();
+		if ((min != null && min.compareTo(integer) > 0)
+				|| (max != null && max.compareTo(integer) < 0)) {
 			final MessageInfo messageInfo = new MessageInfo();
 			messageInfo.setKey("valid.range");
-			messageInfo.setArguments(min.toPlainString(), max.toPlainString());
+			messageInfo.setArguments(min, max);
 			throw new ConversionException(messageInfo);
 		}
 
-		return number;
+		return convert(integer);
 	}
 
 	/**
 	 * 数値を変換して返します。
 	 * 
-	 * @param decimal
+	 * @param integer
 	 *            変換元の数値
 	 * @return 変換結果の数値
 	 */
-	protected abstract Number convert(BigDecimal decimal);
+	protected abstract Number convert(BigInteger integer);
 
 	/**
 	 * 最小値を取得します。
@@ -110,7 +109,7 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 	 * 
 	 * @return 最小値
 	 */
-	protected abstract BigDecimal getMinValue();
+	protected abstract BigInteger getMinValue();
 
 	/**
 	 * 最大値を取得します。
@@ -120,7 +119,7 @@ public abstract class AbstractNumberConverter extends AbstractConverter {
 	 * 
 	 * @return 最大値
 	 */
-	protected abstract BigDecimal getMaxValue();
+	protected abstract BigInteger getMaxValue();
 
 	/**
 	 * {@inheritDoc}

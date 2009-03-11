@@ -24,7 +24,7 @@ import java.math.BigInteger;
  * @author baba
  * @since 1.1.0
  */
-public class BigIntegerConverter extends AbstractNumberConverter {
+public class BigIntegerConverter extends AbstractDecimalNumberConverter {
 
 	/**
 	 * {@inheritDoc}

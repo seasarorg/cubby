@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * {@link Long}への変換を行うコンバータです。
@@ -23,14 +23,14 @@ import java.math.BigDecimal;
  * @author baba
  * @since 1.1.0
  */
-public class LongConverter extends AbstractNumberConverter {
+public class LongConverter extends AbstractIntegerNumberConverter {
 
 	/** 最小値。 */
-	private static final BigDecimal MIN_VALUE = BigDecimal
+	private static final BigInteger MIN_VALUE = BigInteger
 			.valueOf(Long.MIN_VALUE);
 
 	/** 最大値。 */
-	private static final BigDecimal MAX_VALUE = BigDecimal
+	private static final BigInteger MAX_VALUE = BigInteger
 			.valueOf(Long.MAX_VALUE);
 
 	/**
@@ -44,15 +44,15 @@ public class LongConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Number convert(final BigDecimal decimal) {
-		return Long.valueOf(decimal.longValueExact());
+	protected Number convert(final BigInteger integer) {
+		return Long.valueOf(integer.longValue());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected BigDecimal getMinValue() {
+	protected BigInteger getMinValue() {
 		return MIN_VALUE;
 	}
 
@@ -60,7 +60,7 @@ public class LongConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected BigDecimal getMaxValue() {
+	protected BigInteger getMaxValue() {
 		return MAX_VALUE;
 	}
 

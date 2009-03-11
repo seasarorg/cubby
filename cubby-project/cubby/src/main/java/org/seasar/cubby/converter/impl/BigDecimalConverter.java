@@ -23,7 +23,7 @@ import java.math.BigDecimal;
  * @author baba
  * @since 1.1.0
  */
-public class BigDecimalConverter extends AbstractNumberConverter {
+public class BigDecimalConverter extends AbstractDecimalNumberConverter {
 
 	/**
 	 * {@inheritDoc}
