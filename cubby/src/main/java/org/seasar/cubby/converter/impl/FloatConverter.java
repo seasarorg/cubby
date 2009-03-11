@@ -22,7 +22,7 @@ import java.math.BigDecimal;
  * 
  * @author baba
  */
-public class FloatConverter extends AbstractNumberConverter {
+public class FloatConverter extends AbstractDecimalNumberConverter {
 
 	/** 最小値。 */
 	private static final BigDecimal MIN_VALUE = new BigDecimal(Float.MIN_VALUE);

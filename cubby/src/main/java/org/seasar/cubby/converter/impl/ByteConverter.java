@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.converter.impl;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * {@link Byte}への変換を行うコンバータです。
@@ -23,14 +23,14 @@ import java.math.BigDecimal;
  * @author baba
  * @since 1.1.0
  */
-public class ByteConverter extends AbstractNumberConverter {
+public class ByteConverter extends AbstractIntegerNumberConverter {
 
 	/** 最小値。 */
-	private static final BigDecimal MIN_VALUE = BigDecimal
+	private static final BigInteger MIN_VALUE = BigInteger
 			.valueOf(Byte.MIN_VALUE);
 
 	/** 最大値。 */
-	private static final BigDecimal MAX_VALUE = BigDecimal
+	private static final BigInteger MAX_VALUE = BigInteger
 			.valueOf(Byte.MAX_VALUE);
 
 	/**
@@ -44,15 +44,15 @@ public class ByteConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Number convert(final BigDecimal decimal) {
-		return new Byte(decimal.byteValueExact());
+	protected Number convert(final BigInteger decimal) {
+		return new Byte(decimal.byteValue());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected BigDecimal getMinValue() {
+	protected BigInteger getMinValue() {
 		return MIN_VALUE;
 	}
 
@@ -60,7 +60,7 @@ public class ByteConverter extends AbstractNumberConverter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected BigDecimal getMaxValue() {
+	protected BigInteger getMaxValue() {
 		return MAX_VALUE;
 	}
 

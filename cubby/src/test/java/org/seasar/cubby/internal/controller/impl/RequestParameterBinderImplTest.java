@@ -15,7 +15,8 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -513,7 +514,7 @@ public class RequestParameterBinderImplTest {
 		map.put("bigint", new Object[] { "c" });
 		map.put("bigints", new Object[] { "d", "10" });
 		map.put("byte1", new Object[] { "12a" });
-		map.put("bytes1", new Object[] { "3324234e456789", "56" });
+		map.put("bytes1", new Object[] { "3324234456789", "56" });
 		map.put("byte2", new Object[] { "98o" });
 		map.put("bytes2", new Object[] { "76p", "54" });
 		map.put("date", new Object[] { "2009-2-29" });
@@ -528,7 +529,7 @@ public class RequestParameterBinderImplTest {
 		map.put("floats1", new Object[] { "3.4b", "5.6" });
 		map.put("float2", new Object[] { "9.8c" });
 		map.put("floats2", new Object[] { "7.6d", "5.4" });
-		map.put("int1", new Object[] { "12e" });
+		map.put("int1", new Object[] { "12.1" });
 		map.put("ints1", new Object[] { "34f", "56" });
 		map.put("int2", new Object[] { "98g" });
 		map.put("ints2", new Object[] { "76", "54h" });
