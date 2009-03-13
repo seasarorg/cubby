@@ -16,6 +16,7 @@
 package org.seasar.cubby.examples.todo.action;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.seasar.cubby.action.ActionResult;
@@ -104,7 +105,8 @@ public class TodoListAction {
 							.getName()).append(" ");
 		}
 		if (todoConditionDto.hasLimitDate()) {
-			DateFormat dateFormat = formatPattern.getDateFormat();
+			DateFormat dateFormat = new SimpleDateFormat(formatPattern
+					.getDatePattern());
 			sb.append("期限日<=").append(
 					dateFormat.format(todoConditionDto.getLimitDate()));
 		}
