@@ -1,0 +1,311 @@
+~~
+~~ Copyright 2004-2009 the Seasar Foundation and the Others.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+  --------
+  Guice 統合
+  --------
+  baba
+  --------
+  2009-03-13
+  --------
+
+{目次}
+
+ *{{{#前提}前提}}
+
+ *{{{#プロジェクトの作成}プロジェクトの作成}}
+
+  *{{{#Maven2_によるプロジェクトの雛形作成}Maven2 によるプロジェクトの雛形作成}}
+
+ *{{{#各種ファイル}各種ファイル}}
+
+  *{{{#必要なライブラリ_WEB-INFlib}必要なライブラリ (WEB-INF/lib)}}
+
+  *{{{#デプロイメント記述子_WEB-INFweb.xml}デプロイメント記述子 (WEB-INF/web.xml)}}
+
+  *{{{#プロパティファイル_WEB-INFclasses}プロパティファイル (WEB-INF/classes)}}
+
+{前提}
+
+ Guice と統合する場合、guice-servlet-*.jar が依存ライブラリになりますが、これはセントラルリポジトリにアップロードされていないので、ローカルリポジトリなどに登録しておいてください。
+
+[]
+
+{プロジェクトの作成}
+
+ *{Maven2 によるプロジェクトの雛形作成}
+
+   まずは以下のコマンドを入力してください。\
+   もし「BUILD FAILURE」と表示されエラーになった場合は、maven-archetype-plugin が古い可能性があります。
+   その場合「M2_REPO/org/apache/maven/plugins/maven-archetype-plugin/」をディレクトリごと削除して再実行することで、
+   最新のmaven-archetype-pluginを使用して実行することができます。(M2_REPOはMavenのローカルリポジトリ)
+
++------------------------------------------------------+
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org 
++------------------------------------------------------+
+
+   コマンド入力後、いくつかの質問に回答していきます。
+
++------------------------------------------------------+
+Choose archetype:
+1: remote -> cubby-s2-archetype (Cubby 2.0.0 Seasar2 Integration)
+2: remote -> cubby-guice-archetype (Cubby 2.0.0 Guice Integration)
+3: remote -> cubby-archetype (Cubby 1.1.4)
+Choose a number:  (1/2/3): 
++------------------------------------------------------+
+
+   2を入力して、cubby-guice-archetype (Cubby 2.0.0 Guice Integration) を選んでください。
+
++------------------------------------------------------+
+Define value for groupId: :
++------------------------------------------------------+
+
+   作成するプロジェクトのグループIDを入力してください。 例 : com.example.foo
+
++------------------------------------------------------+
+Define value for artifactId: :
++------------------------------------------------------+
+
+   作成するプロジェクトのアーティファクトIDを入力してください。 例 : barapp
+
++------------------------------------------------------+
+Define value for version: :
++------------------------------------------------------+
+
+   作成するプロジェクトのバージョンを入力してください。 例 : 1.0-SNAPSHOT
+
++------------------------------------------------------+
+Define value for package: :
++------------------------------------------------------+
+
+   作成するプロジェクトのパッケージを入力してください。 例 : com.example.foo.barapp
+
++------------------------------------------------------+
+Confirm properties configuration:
+cubby-version: 2.0.0
+guice-version: 1.0
+groupId: com.example.foo
+artifactId: barapp
+version: 1.0-SNAPSHOT
+package: com.example.foo.barapp
+ Y: :
++------------------------------------------------------+
+
+   いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。\
+   guice のバージョンなどの設定を変更する場合はここで N を選択して再度設定を入力してください。
+   再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）\
+
+{各種ファイル}
+
+ ディレクトリに配備する必要があるファイルを説明します。
+ Maven2 を使わずにプロジェクトを作成するときも参考にしてください。
+
+*{必要なライブラリ (WEB-INF/lib)}
+
+ {{{cubby-guice/dependencies.html}依存関係}}を参照してください。
+ WEB-INF/lib 以下に配備します。
+
+ 主な依存ライブラリを以下にあげます。
+
+*--------------------------*--------------------------*------*
+| cubby-*.jar              | Cubby 本体               | 必須 |
+*--------------------------*--------------------------*------*
+| cubby-guice-*.jar        | Guice 統合               | 必須 |
+*--------------------------*--------------------------*------*
+| cubby-unit-*.jar         | 単体テストサポート       | 任意 |
+*--------------------------*--------------------------*------*
+| cubby-gson-*.jar         | JSON サポート            | 任意 |
+*--------------------------*--------------------------*------*
+| guice-*.jar              | Guice                    | 必須 |
+| guice-servlet-*.jar      |                          |      |
+*--------------------------*--------------------------*------*
+| commons-fileupload-*.jar | ファイルアップロード機能 | 任意 |
+| commons-io-*.jar         |                          |      |
+*--------------------------*--------------------------*------*
+主な依存ライブラリ
+
+*-----------*-------------*
+| Cubby     | Guice       |
+*-----------*-------------*
+| 2.0.0     | 1.0以上     |
+*-----------*-------------*
+Cubby と Guice のバージョンの推奨の組み合わせ
+
+*{デプロイメント記述子 (WEB-INF/web.xml)}
+
+ Cubby はサーブレットフィルタとして動作します。
+ web.xml にサーブレットフィルタとフィルタマッピングを追加します。
+ 登録する際は以下の順序で登録してください。
+
+
+ [[1]]コンテキストパラメータ cubby.guice.module (必須)
+
+      Guice 初期化のために使用する Module のクラス名をコンテキストパラメータに指定します。\
+      ここで指定する Module は AbstractCubbyModule を継承したクラスとしてください。
+
++------------------------------------------------------+
+	<context-param>
+		<param-name>cubby.guice.module</param-name>
+		<param-value>com.example.foo.barapp.ApplicationModule</param-value>
+	</context-param>
++------------------------------------------------------+
+
+ [[2]]CubbyGuiceListener (必須)
+
+      サーブレットコンテキストの初期化時に Module を初期化するサーブレットコンテキストリスナです。
+
++------------------------------------------------------+
+	<listener>
+		<listener-class>org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
+	</listener>
++------------------------------------------------------+
+
+ [[2]]{{{cubby/apidocs/org/seasar/cubby/filter/SendErrorFilter}SendErrorFilter}} (任意)
+
+      \*.jsp ファイルなど、直接アクセスされたくないファイルへのアクセスを制御するフィルターです。\
+      この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>sendErrorFilter</filter-name>
+        <filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
+        <init-param>
+            <param-name>statusCode</param-name>
+            <param-value>404</param-value>
+        </init-param>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>sendErrorFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+ [[3]]{{{cubby/apidocs/org/seasar/cubby/filter/EncodingFilter}EncodingFilter}} (任意)
+
+      リクエストのエンコーディングを設定するためのフィルタです。
+
++------------------------------------------------------+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.seasar.cubby.filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
++------------------------------------------------------+
+
+ [[4]]GuiceFilter
+
+      @RequestScoped や @SessionScoped を使用するために定義します。
+
++------------------------------------------------------+
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
++------------------------------------------------------+
+
+ [[5]]{{{cubby/apidocs/org/seasar/cubby/filter/CubbyFilter}CubbyFilter}} (必須)
+
+      Cubby の主な処理を行うフィルタです。
+      リクエストの情報からアクションメソッドを起動します。
+      対象のアクションが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。
+
+      また、処理の対象外とする URL を ignorePathPattern で指定できます。
+      イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
+      対象外にするパスを正規表現のカンマ区切りで指定してください。
+
+
++------------------------------------------------------+
+    <filter>
+        <filter-name>cubbyFilter</filter-name>
+        <filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
+        <init-param>
+            <param-name>ignorePathPattern</param-name>
+            <param-value>/css/.*,/js/.*,/img/.*</param-value>
+        </init-param>
+    </filter>
++------------------------------------------------------+
+
++------------------------------------------------------+
+    <filter-mapping>
+        <filter-name>cubbyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
++------------------------------------------------------+
+
+*{プロパティファイル (WEB-INF/classes)}
+
+ [[1]]messages_ja.properties (messages_en.properties)
+
+      メッセージリソース用のプロパティファイル。
+      {{{messages.html}メッセージリソース}}を参照してください。
