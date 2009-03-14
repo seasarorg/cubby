@@ -1,0 +1,633 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Cubby - Guice 統合</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="baba" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="./index.html" id="bannerLeft">
+    
+                                            <img src="./images/logo.gif" alt="Cubby" />
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+          
+                <a href="http://www.seasar.org/" class="externalLink">The Seasar Project</a>
+                &gt;
+      
+                <a href="index.html">Cubby Project</a>
+                  </div>
+            <div class="xright">      
+  
+
+  
+    
+            
+  
+    
+             最終更新: 2009-03-14
+              &nbsp;| バージョン: 2.0.0-beta1
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+            
+  
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+                  
+            
+            
+      
+            
+      
+            
+      
+                    
+            <li class="expanded">
+                    <a href="setup.html">セットアップ</a>
+                  <ul>
+                  
+    <li class="none">
+                    <a href="setup.html#前提">前提</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="setup.html#プロジェクトの作成">プロジェクトの作成</a>
+          </li>
+                  
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="seasar2.html">Seasar2 統合</a>
+                </li>
+                  
+                
+              
+      
+            
+      
+            
+      
+              
+            <li class="expanded">
+              <strong>Guice 統合</strong>
+                <ul>
+                  
+    <li class="none">
+                    <a href="guice.html#前提">前提</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="guice.html#プロジェクトの作成">プロジェクトの作成</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="guice.html#各種ファイル">各種ファイル</a>
+          </li>
+              </ul>
+        </li>
+              </ul>
+        </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="twominute.html">2分間チュートリアル</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+                </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="action.html">アクション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="validation.html">バリデーション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="messages.html">メッセージリソース</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+                  
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="jsp.html">JSP</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="mayaa.html">Mayaa</a>
+                </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="faq.html">よくある質問(FAQ)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="migration.html">移行ガイド</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/tlddoc/index.html">TLDDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="presentation.html">プレゼン資料</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+          <a href="http://www.seasar.org/" title="The Seasar Project" class="poweredBy">
+            <img alt="The Seasar Project" src="http://www.seasar.org/images/seasar_banner.gif">
+          </a>
+                       
+  
+
+  
+    
+            
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2><a name="目次">目次</a>
+</h2>
+<ul><li><a href="#前提">前提</a>
+</li>
+<li><a href="#プロジェクトの作成">プロジェクトの作成</a>
+<ul><li><a href="#Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>
+</li>
+</ul>
+</li>
+<li><a href="#各種ファイル">各種ファイル</a>
+<ul><li><a href="#必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a>
+</li>
+<li><a href="#デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a>
+</li>
+<li><a href="#プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section"><h2><a name="前提">前提</a>
+</h2>
+<p>Guice と統合する場合、guice-servlet-*.jar が依存ライブラリになりますが、これはセントラルリポジトリにアップロードされていないので、ローカルリポジトリなどに登録しておいてください。</p>
+</div>
+<div class="section"><h2><a name="プロジェクトの作成">プロジェクトの作成</a>
+</h2>
+<ul><li><a name="Maven2_によるプロジェクトの雛形作成">Maven2 によるプロジェクトの雛形作成</a>
+<p>まずは以下のコマンドを入力してください。<br />
+もし「BUILD FAILURE」と表示されエラーになった場合は、maven-archetype-plugin が古い可能性があります。 その場合「M2_REPO/org/apache/maven/plugins/maven-archetype-plugin/」をディレクトリごと削除して再実行することで、 最新のmaven-archetype-pluginを使用して実行することができます。(M2_REPOはMavenのローカルリポジトリ)</p>
+<div class="source"><pre>mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org </pre>
+</div>
+<p>コマンド入力後、いくつかの質問に回答していきます。</p>
+<div class="source"><pre>Choose archetype:
+1: remote -&gt; cubby-s2-archetype (Cubby 2.0.0 Seasar2 Integration)
+2: remote -&gt; cubby-guice-archetype (Cubby 2.0.0 Guice Integration)
+3: remote -&gt; cubby-archetype (Cubby 1.1.4)
+Choose a number:  (1/2/3): </pre>
+</div>
+<p>2を入力して、cubby-guice-archetype (Cubby 2.0.0 Guice Integration) を選んでください。</p>
+<div class="source"><pre>Define value for groupId: :</pre>
+</div>
+<p>作成するプロジェクトのグループIDを入力してください。 例 : com.example.foo</p>
+<div class="source"><pre>Define value for artifactId: :</pre>
+</div>
+<p>作成するプロジェクトのアーティファクトIDを入力してください。 例 : barapp</p>
+<div class="source"><pre>Define value for version: :</pre>
+</div>
+<p>作成するプロジェクトのバージョンを入力してください。 例 : 1.0-SNAPSHOT</p>
+<div class="source"><pre>Define value for package: :</pre>
+</div>
+<p>作成するプロジェクトのパッケージを入力してください。 例 : com.example.foo.barapp</p>
+<div class="source"><pre>Confirm properties configuration:
+cubby-version: 2.0.0
+guice-version: 1.0
+groupId: com.example.foo
+artifactId: barapp
+version: 1.0-SNAPSHOT
+package: com.example.foo.barapp
+ Y: :</pre>
+</div>
+<p>いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。プロジェクトの雛形が作成されます。<br />
+guice のバージョンなどの設定を変更する場合はここで N を選択して再度設定を入力してください。 再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）\</p>
+</li>
+</ul>
+</div>
+<div class="section"><h2><a name="各種ファイル">各種ファイル</a>
+</h2>
+<p>ディレクトリに配備する必要があるファイルを説明します。 Maven2 を使わずにプロジェクトを作成するときも参考にしてください。</p>
+<div class="section"><h3><a name="必要なライブラリ_WEB-INFlib">必要なライブラリ (WEB-INF/lib)</a>
+</h3>
+<p><a href="cubby-guice/dependencies.html">依存関係</a>
+を参照してください。 WEB-INF/lib 以下に配備します。</p>
+<p>主な依存ライブラリを以下にあげます。</p>
+<table class="bodyTable"><tbody><tr class="a"><td align="center">cubby-*.jar</td>
+<td align="center">Cubby 本体</td>
+<td align="center">必須</td>
+</tr>
+<tr class="b"><td align="center">cubby-guice-*.jar</td>
+<td align="center">Guice 統合</td>
+<td align="center">必須</td>
+</tr>
+<tr class="a"><td align="center">cubby-unit-*.jar</td>
+<td align="center">単体テストサポート</td>
+<td align="center">任意</td>
+</tr>
+<tr class="b"><td align="center">cubby-gson-*.jar</td>
+<td align="center">JSON サポート</td>
+<td align="center">任意</td>
+</tr>
+<tr class="a"><td align="center">guice-*.jar<br />
+guice-servlet-*.jar</td>
+<td align="center">Guice</td>
+<td align="center">必須</td>
+</tr>
+<tr class="b"><td align="center">commons-fileupload-*.jar<br />
+commons-io-*.jar</td>
+<td align="center">ファイルアップロード機能</td>
+<td align="center">任意</td>
+</tr>
+</tbody>
+<caption>主な依存ライブラリ</caption>
+</table>
+<table class="bodyTable"><tbody><tr class="a"><td align="center">Cubby</td>
+<td align="center">Guice</td>
+</tr>
+<tr class="b"><td align="center">2.0.0</td>
+<td align="center">1.0以上</td>
+</tr>
+</tbody>
+<caption>Cubby と Guice のバージョンの推奨の組み合わせ</caption>
+</table>
+</div>
+<div class="section"><h3><a name="デプロイメント記述子_WEB-INFweb.xml">デプロイメント記述子 (WEB-INF/web.xml)</a>
+</h3>
+<p>Cubby はサーブレットフィルタとして動作します。 web.xml にサーブレットフィルタとフィルタマッピングを追加します。 登録する際は以下の順序で登録してください。</p>
+<ol type="1"><li>コンテキストパラメータ cubby.guice.module (必須)<p>Guice 初期化のために使用する Module のクラス名をコンテキストパラメータに指定します。<br />
+ここで指定する Module は AbstractCubbyModule を継承したクラスとしてください。</p>
+<div class="source"><pre>        &lt;context-param&gt;
+                &lt;param-name&gt;cubby.guice.module&lt;/param-name&gt;
+                &lt;param-value&gt;com.example.foo.barapp.ApplicationModule&lt;/param-value&gt;
+        &lt;/context-param&gt;</pre>
+</div>
+</li>
+<li>CubbyGuiceListener (必須)<p>サーブレットコンテキストの初期化時に Module を初期化するサーブレットコンテキストリスナです。</p>
+<div class="source"><pre>        &lt;listener&gt;
+                &lt;listener-class&gt;org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener&lt;/listener-class&gt;
+        &lt;/listener&gt;</pre>
+</div>
+</li>
+<li><a href="cubby/apidocs/org/seasar/cubby/filter/SendErrorFilter">SendErrorFilter</a>
+ (任意)<p>*.jsp ファイルなど、直接アクセスされたくないファイルへのアクセスを制御するフィルターです。<br />
+この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。</p>
+<div class="source"><pre>    &lt;filter&gt;
+        &lt;filter-name&gt;sendErrorFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.seasar.cubby.filter.SendErrorFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;statusCode&lt;/param-name&gt;
+            &lt;param-value&gt;404&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;</pre>
+</div>
+<div class="source"><pre>    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;sendErrorFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;*.jsp&lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+    &lt;/filter-mapping&gt;</pre>
+</div>
+</li>
+<li><a href="cubby/apidocs/org/seasar/cubby/filter/EncodingFilter">EncodingFilter</a>
+ (任意)<p>リクエストのエンコーディングを設定するためのフィルタです。</p>
+<div class="source"><pre>        &lt;filter&gt;
+                &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+                &lt;filter-class&gt;org.seasar.cubby.filter.EncodingFilter&lt;/filter-class&gt;
+                &lt;init-param&gt;
+                        &lt;param-name&gt;encoding&lt;/param-name&gt;
+                        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+                &lt;/init-param&gt;
+        &lt;/filter&gt;</pre>
+</div>
+<div class="source"><pre>        &lt;filter-mapping&gt;
+                &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+                &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/filter-mapping&gt;</pre>
+</div>
+</li>
+<li>GuiceFilter<p>@RequestScoped や @SessionScoped を使用するために定義します。</p>
+<div class="source"><pre>        &lt;filter&gt;
+                &lt;filter-name&gt;guiceFilter&lt;/filter-name&gt;
+                &lt;filter-class&gt;com.google.inject.servlet.GuiceFilter&lt;/filter-class&gt;
+        &lt;/filter&gt;</pre>
+</div>
+<div class="source"><pre>        &lt;filter-mapping&gt;
+                &lt;filter-name&gt;guiceFilter&lt;/filter-name&gt;
+                &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;/filter-mapping&gt;</pre>
+</div>
+</li>
+<li><a href="cubby/apidocs/org/seasar/cubby/filter/CubbyFilter">CubbyFilter</a>
+ (必須)<p>Cubby の主な処理を行うフィルタです。 リクエストの情報からアクションメソッドを起動します。 対象のアクションが見つからない場合は FilterChain で後続のフィルタに処理を移譲します。</p>
+<p>また、処理の対象外とする URL を ignorePathPattern で指定できます。 イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。 対象外にするパスを正規表現のカンマ区切りで指定してください。</p>
+<div class="source"><pre>    &lt;filter&gt;
+        &lt;filter-name&gt;cubbyFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.seasar.cubby.filter.CubbyFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;ignorePathPattern&lt;/param-name&gt;
+            &lt;param-value&gt;/css/.*,/js/.*,/img/.*&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;</pre>
+</div>
+<div class="source"><pre>    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;cubbyFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+    &lt;/filter-mapping&gt;</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section"><h3><a name="プロパティファイル_WEB-INFclasses">プロパティファイル (WEB-INF/classes)</a>
+</h3>
+<ol type="1"><li>messages_ja.properties (messages_en.properties)<p>メッセージリソース用のプロパティファイル。 <a href="messages.html">メッセージリソース</a>
+を参照してください。</p>
+</li>
+</ol>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;      Copyright
+    
+          2006-2009
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+            
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

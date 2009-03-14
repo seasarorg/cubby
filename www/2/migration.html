@@ -1,0 +1,472 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Cubby - 移行ガイド (1.0.x -> 1.1.x)</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="baba" />
+          </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="./index.html" id="bannerLeft">
+    
+                                            <img src="./images/logo.gif" alt="Cubby" />
+    
+            </a>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+          
+                <a href="http://www.seasar.org/" class="externalLink">The Seasar Project</a>
+                &gt;
+      
+                <a href="index.html">Cubby Project</a>
+                  </div>
+            <div class="xright">      
+  
+
+  
+    
+            
+  
+    
+             最終更新: 2009-03-14
+              &nbsp;| バージョン: 2.0.0-beta1
+            </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+            
+  
+    
+                   <h5>ドキュメント</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="index.html">Cubbyについて</a>
+          </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+                  
+      
+            
+      
+            
+      
+            
+      
+                    
+        <li class="collapsed">
+                    <a href="setup.html">セットアップ</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="twominute.html">2分間チュートリアル</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="fiveminute.html">5分間チュートリアル</a>
+                </li>
+              
+    <li class="none">
+                    <a href="download.html">ダウンロード</a>
+          </li>
+          </ul>
+              <h5>リファレンス</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="action.html">アクション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="validation.html">バリデーション</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="messages.html">メッセージリソース</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+                  
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="jsp.html">JSP</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="mayaa.html">Mayaa</a>
+                </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+                    <a href="customize.html">カスタマイズ</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="tips.html">Tips集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="faq.html">よくある質問(FAQ)</a>
+          </li>
+              
+    <li class="none">
+              <strong>移行ガイド</strong>
+        </li>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="link.html">リンク集</a>
+                </li>
+              
+    <li class="none">
+                    <a href="cubby/apidocs/index.html">JavaDoc</a>
+          </li>
+              
+    <li class="none">
+                    <a href="cubby/tlddoc/index.html">TLDDoc</a>
+          </li>
+          </ul>
+              <h5>リソース</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="presentation.html">プレゼン資料</a>
+          </li>
+              
+    <li class="none">
+                    <a href="mail-lists.html">メーリングリスト</a>
+          </li>
+              
+    <li class="none">
+                    <a href="issue-tracking.html">課題(JIRA)</a>
+          </li>
+              
+    <li class="none">
+                    <a href="source-repository.html">SVNリポジトリ</a>
+          </li>
+          </ul>
+              <h5>プロジェクト文書</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">プロジェクト情報</a>
+                </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">プロジェクトレポート</a>
+                </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+          <a href="http://www.seasar.org/" title="The Seasar Project" class="poweredBy">
+            <img alt="The Seasar Project" src="http://www.seasar.org/images/seasar_banner.gif">
+          </a>
+                       
+  
+
+  
+    
+            
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2><a name="目次">目次</a>
+</h2>
+<ul><li><a href="#1.0.x_から_1.1.x_への移行">1.0.x から 1.1.x への移行</a>
+</li>
+<li><a href="#互換性のない変更点">互換性のない変更点</a>
+<ul><li><a href="#リクエストパラメータをバインドするプロパティ">リクエストパラメータをバインドするプロパティ</a>
+</li>
+<li><a href="#リクエストパラメータをバインディングする際の型変換">リクエストパラメータをバインディングする際の型変換</a>
+</li>
+<li><a href="#マルチバイト文字を含む_URL_の文字化け">マルチバイト文字を含む URL の文字化け</a>
+</li>
+</ul>
+</li>
+<li><a href="#推奨されない_API">推奨されない API</a>
+<ul><li><a href="#@Form#binding">@Form#binding</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section"><h2><a name="a1.1.x_から_2.0.x_への移行">1.1.x から 2.0.x への移行</a>
+</h2>
+<p>バージョン 1.1.x から 2.0.x へ移行する際に注意すべき点を解説します。</p>
+<div class="section"><h3><a name="互換性のない変更点">互換性のない変更点</a>
+</h3>
+<div class="section"><h4><a name="公開クラスとフレームワーク内部クラスの分離">公開クラスとフレームワーク内部クラスの分離</a>
+</h4>
+<p>アクションクラスを作成するために参照するクラスとフレームワーク内部で使用するクラスを明確にするためにパッケージを分離しています。 フレームワーク内部で使用するクラスは org.seasar.cubby.internal へ移動しています。</p>
+</div>
+<div class="section"><h4><a name="モジュール分割">モジュール分割</a>
+</h4>
+<p>このバージョンからは機能毎に jar ファイルを分割しています。 詳しくは<a href="setup.html">セットアップ</a>
+の項を参照してください。</p>
+</div>
+<div class="section"><h4><a name="JSON_シリアライザデシリアライザの変更">JSON シリアライザ、デシリアライザの変更</a>
+</h4>
+<p>Json クラスで使用する JSON へのシリアライザを Seasar2 の JSONSerializer クラスから GSON へ変更しています。</p>
+</div>
+</div>
+</div>
+<div class="section"><h2><a name="a1.0.x_から_1.1.x_への移行">1.0.x から 1.1.x への移行</a>
+</h2>
+<p>バージョン 1.0.x から 1.1.x へ移行する際に注意すべき点を解説します。</p>
+<div class="section"><h3><a name="互換性のない変更点">互換性のない変更点</a>
+</h3>
+<div class="section"><h4><a name="リクエストパラメータをバインドするプロパティ">リクエストパラメータをバインドするプロパティ</a>
+</h4>
+<p>1.0.x ではリクエストパラメータはその名前と同名のプロパティにバインドされます。<br />
+これだと、想定外のパラメータが入力された場合には(インジェクションされることを想定したプロパティなど) 想定外のプロパティにバインドされてしまうことがあります。</p>
+<p>たとえば、以下のソースではリクエストに &quot;fooService&quot; というパラメータがあった場合に fooService に String 型のオブジェクトをバインドしようとして例外が発生してしまいます。</p>
+<div class="source"><pre>public class FooAction extends Action {
+        public String name;
+        public FooService fooService;
+}</pre>
+</div>
+<p>これは問題があるので、1.1.x 以降ではバインドされるプロパティとバインドされないプロパティを明確に分類できるようになっています。</p>
+<p>アクション自身にリクエストパラメータをバインドしていた場合は、リクエストパラメータをバインドしたいプロパティを @RequestParameter で修飾してください。</p>
+<div class="source"><pre>public class FooAction extends Action {
+        public @RequestParameter String name;
+        public FooService fooService;
+}</pre>
+</div>
+<p>また、1.0.x と同様にすべてのプロパティをバインド対象とすることもできます。<br />
+詳細は<a href="#リクエストパラメータのバインド">リクエストパラメータのバインド</a>
+を参照してください。</p>
+</div>
+<div class="section"><h4><a name="リクエストパラメータをバインディングする際の型変換">リクエストパラメータをバインディングする際の型変換</a>
+</h4>
+<p>1.0.x ではリクエストパラメータをバインディングする際の型変換に S2Dxo の機能、コンバータを使用していましたが、 1.1.x では型変換を内包しています。</p>
+<p>org.seasar.extension.dxo.converter.Converter を実装した独自のコンバータクラスをコンテナに登録しておくことで型変換に使用することができましたが、 そのような独自コンバータを使っていた場合は org.seasar.cubby.converter.Converter を実装したクラスに置き換えてください。</p>
+<p>@DxoConverter でプロパティごとに独自のコンバータを指定することができましたが、これは機能しません。</p>
+</div>
+<div class="section"><h4><a name="マルチバイト文字を含む_URL_の文字化け">マルチバイト文字を含む URL の文字化け</a>
+</h4>
+<p>1.0.x では HttpServletRequest#getRequestURI() からパスを取得していましたが、 1.1.x では HttpServletRequest#getServletPath() からパスを取得するようになりました。 これは、Jetty など getRequestURI() の結果に URL 埋め込みセッション情報まで含むコンテナがあるためです。</p>
+<p>しかし、副作用として Tomcat などのデフォルト状態では URL にマルチバイト文字が含まれる場合に文字化けしてしまいます。 回避するためには conf/server.xml の Connector ディレクティブに URIEncoding でエンコードを指定してください。</p>
+<div class="source"><pre>&lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; URIEncoding=&quot;UTF-8&quot; /&gt;</pre>
+</div>
+<p>この設定はサーブレットコンテナに配備されたアプリケーション全体に影響します。 バージョン 1.1.1 以降ならば特定のアプリケーションだけにエンコードを指定したい場合はサーブレットフィルタ <a href="cubby/apidocs/org/seasar/cubby/filter/EncodingFilter">org.seasar.cubby.filter.EncodingFilter</a>
+ の初期化パラメータで URI のエンコードを指定することができます。</p>
+</div>
+</div>
+<div class="section"><h3><a name="推奨されない_API">推奨されない API</a>
+</h3>
+<div class="section"><h4><a name="aFormbinding">@Form#binding</a>
+</h4>
+<p><a href="cubby/apidocs/org/seasar/cubby/action/Form.html#binding()">@Form#binding</a>
+ は推奨されない API となりました。<br />
+リクエストパラメータをオブジェクトにバインドしない場合は <a href="cubby/apidocs/org/seasar/cubby/action/Form.html#bindingType()">@Form#bindingType</a>
+ に <a href="cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#NONE">NONE)</a>
+ を指定してください。</p>
+</div>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;      Copyright
+    
+          2006-2009
+    
+          The Seasar Foundation and the others. All rights reserved.
+          
+  
+
+  
+    
+            
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
