@@ -16,30 +16,39 @@
 				<include name="cubby-${ver}.jar"/>
 				<include name="cubby-${ver}-sources.jar"/>
 			</zipfileset>
-			<zipfileset prefix="cubby/lib" dir="../cubby-guice/target">
-				<include name="cubby-guice-${ver}.jar"/>
-				<include name="cubby-guice-${ver}-sources.jar"/>
+			<zipfileset prefix="cubby-unit/lib" dir="../cubby-unit/target">
+				<include name="cubby-unit-${ver}.jar"/>
+				<include name="cubby-unit-${ver}-sources.jar"/>
 			</zipfileset>
 			<zipfileset prefix="cubby/lib" dir="../cubby-s2/target">
 				<include name="cubby-s2-${ver}.jar"/>
 				<include name="cubby-s2-${ver}-sources.jar"/>
 			</zipfileset>
-			<zipfileset prefix="cubby/lib" dir="../cubby-archetype/target">
-				<include name="cubby-archetype-${ver}.jar"/>
-				<include name="cubby-archetype-${ver}-sources.jar"/>
+			<zipfileset prefix="cubby/lib" dir="../cubby-guice/target">
+				<include name="cubby-guice-${ver}.jar"/>
+				<include name="cubby-guice-${ver}-sources.jar"/>
 			</zipfileset>
-			<zipfileset prefix="cubby/resources" dir="../cubby/src/main/resources">
-				<include name="cubby.dicon"/>
-				<include name="cubby-customizer.dicon"/>
-				<include name="cubby-dxo.dicon"/>
-				<include name="messages.properties"/>
-				<include name="routing.dicon"/>
+			<zipfileset prefix="cubby/lib" dir="../cubby-gson/target">
+				<include name="cubby-gson-${ver}.jar"/>
+				<include name="cubby-gson-${ver}-sources.jar"/>
 			</zipfileset>
-			<zipfileset prefix="cubby/resources" dir="../cubby/src/test/resources">
-				<include name="app.dicon"/>
-				<include name="app-cubby.dicon"/>
-				<include name="convention.dicon"/>
+			<zipfileset prefix="cubby/lib" dir="../cubby-s2-archetype/target">
+				<include name="cubby-s2-archetype-${ver}.jar"/>
+				<include name="cubby-s2-archetype-${ver}-sources.jar"/>
 			</zipfileset>
+			<zipfileset prefix="cubby/lib" dir="../cubby-guice-archetype/target">
+				<include name="cubby-guice-archetype-${ver}.jar"/>
+				<include name="cubby-guice-archetype-${ver}-sources.jar"/>
+			</zipfileset>
+			<!--
+			<zipfileset prefix="cubby/s2-resources" dir="../cubby-s2/src/main/resources">
+				<include name="*.properties"/>
+				<include name="*.dicon"/>
+			</zipfileset>
+			<zipfileset prefix="cubby/s2-resources" dir="../cubby-s2/src/test/resources">
+				<include name="messages*.dicon"/>
+			</zipfileset>
+			-->
 			<zipfileset prefix="cubby/doc" dir="../target/site">
 				<exclude name="**/download/**"/>
 				<exclude name="**/ja/benchmark/**"/>
@@ -47,9 +56,12 @@
 				<exclude name="**/*.zip"/>
 			</zipfileset>
 			<zipfileset prefix="cubby/doc/cubby" dir="../cubby/target/site"/>
-			<zipfileset prefix="cubby/doc/cubby-guice" dir="../cubby-guice/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-unit" dir="../cubby/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-s2" dir="../cubby-s2/target/site"/>
-			<zipfileset prefix="cubby/doc/cubby-archetype" dir="../cubby-archetype/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-guice" dir="../cubby-guice/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-gson" dir="../cubby/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-s2-archetype" dir="../cubby-s2-archetype/target/site"/>
+			<zipfileset prefix="cubby/doc/cubby-guice-archetype" dir="../cubby-guice-archetype/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-skin" dir="../cubby-skin/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-dist" dir="../cubby-dist/target/site"/>
 		</zip>
