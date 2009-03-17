@@ -56,9 +56,9 @@ line.separator=\n
               <url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip</url>
             </zipUrlInstaller>
             <output>
-              ${project.build.directory}/tomcat6x.log
+              \${project.build.directory}/tomcat6x.log
             </output>
-            <!-- log>${project.build.directory}/cargo.log</log -->
+            <!-- log>\${project.build.directory}/cargo.log</log -->
           </container>
         </configuration>
         <executions>
@@ -144,11 +144,13 @@ line.separator=\n
       <artifactId>guice</artifactId>
       <version>${guice-version}</version>
     </dependency>
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
     <dependency>
       <groupId>com.google.code.guice</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice-version}</version>
     </dependency>
+#end
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
