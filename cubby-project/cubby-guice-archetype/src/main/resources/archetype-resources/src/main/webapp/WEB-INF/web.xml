@@ -54,11 +54,13 @@
         </init-param>
     </filter>
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
 	</filter>
 
+#end
     <filter>
         <filter-name>cubbyFilter</filter-name>
         <filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
@@ -79,11 +81,13 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 	<filter-mapping>
 		<filter-name>guiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+#end
     <filter-mapping>
         <filter-name>cubbyFilter</filter-name>
         <url-pattern>/*</url-pattern>
