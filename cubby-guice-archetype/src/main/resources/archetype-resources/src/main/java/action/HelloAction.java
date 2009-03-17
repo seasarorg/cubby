@@ -26,11 +26,15 @@ import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 import com.google.inject.Inject;
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import com.google.inject.servlet.RequestScoped;
+#end
 
 import ${package}.service.HelloService;
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 @RequestScoped
+#end
 public class HelloAction extends Action {
 
 	private ValidationRules validation = new DefaultValidationRules() {

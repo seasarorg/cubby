@@ -21,7 +21,9 @@ import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import com.google.inject.servlet.ServletModule;
+#end
 
 import ${package}.action.HelloAction;
 import ${package}.action.IndexAction;
@@ -42,7 +44,9 @@ public class ApplicationModule extends AbstractModule {
 			}
 
 		});
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		install(new ServletModule());
+#end
 	}
 
 }
