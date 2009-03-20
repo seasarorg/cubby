@@ -10,9 +10,8 @@ import org.seasar.cubby.routing.impl.PathResolverImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.ServletModule;
 
-public class ExampleModule extends AbstractModule {
+public class ApplicationModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
@@ -27,7 +26,6 @@ public class ExampleModule extends AbstractModule {
 			}
 
 		});
-		install(new ServletModule());
 
 		bind(HelloService.class).to(HelloServiceImpl.class).in(Singleton.class);
 	}
