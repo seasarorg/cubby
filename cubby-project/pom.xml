@@ -9,7 +9,7 @@
   <name>Cubby Project</name>
   <version>2.0.0-beta2-SNAPSHOT</version>
   <description>Cubby Simple Web Application Framework</description>
-  <url>http://cubby.seasar.org/</url>
+  <url>http://cubby.seasar.org/2/</url>
   <inceptionYear>2006</inceptionYear>
   <organization>
     <name>The Seasar Foundation</name>
@@ -43,7 +43,7 @@
     <developer>
       <id>baba</id>
       <name>BABA Yasuyuki</name>
-      <email>baba_at_nulab.co.jp</email>
+      <email>yasuyuki.baba_at_gmail.com</email>
       <organization>Nulab Inc.</organization>
       <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
       <timezone>+9</timezone>
@@ -51,8 +51,8 @@
     <developer>
       <id>jfut</id>
       <name>Jun Futagawa</name>
-      <email/>
-      <organization/>
+      <email />
+      <organization />
       <timezone>+9</timezone>
     </developer>
     <developer>
@@ -79,10 +79,19 @@
   </issueManagement>
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</connection>
-    <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</url>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</developerConnection>
+    <url>http://svn.seasar.org/browse/branches/2.0.x/?root=cubby</url>
   </scm>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
+          <goals>clean,deploy,site-deploy</goals>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -372,8 +381,8 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
       <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
     </snapshotRepository>
     <site>
-      <id>www.seasar.org</id>
-      <url>scp://www.seasar.org/home/groups/cubby/public_html/</url>
+      <id>maven.seasar.org</id>
+      <url>dav:https://www.seasar.org/site/cubby/2</url>
      </site>
   </distributionManagement>
   <modules>
