@@ -1,1 +1,1 @@
-mvn archetype:create -DgroupId=com.foo.bar -DartifactId=barapp -Dversion=1.0-SNAPSHOT -DarchetypeGroupId=org.seasar.cubby -DarchetypeArtifactId=cubby-archetype -DarchetypeVersion=1.0.0-rc1 -DremoteRepositories=http://maven.seasar.org/maven2/
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org/2/

@@ -1,3 +1,23 @@
+# リリース手順 (2009/3/21)
+
+1.リリース情報をクリーンアップする
+> mvn release:clean
+
+2.SVN へのリリースタグ付け、pom のバージョン変更
+> mvn release:prepare
+
+3.Maven リポジトリへデプロイ、サイトのデプロイ
+> mvn release:perform
+
+4.アーカイブのアップロード
+https://www.seasar.org/svn/cubby/trunk/archives/ へ、cubby-dist の成果物をコミット
+
+* サンプルアプリもリリースすること
+
+
+
+
+# 以前の情報
 #リリース手順
 # find . -name '*.xml' -print | xargs grep -l "1.0.0-rc1" | xargs perl -pi -e 's/1\.0\.0-rc1/1\.0\.0-rc2-SNAPSHOT/g'
 
