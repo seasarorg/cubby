@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.guice_examples.ExampleModule;
+import org.seasar.cubby.guice_examples.ApplicationModule;
 import org.seasar.cubby.plugins.guice.InjectorFactory;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
@@ -17,7 +17,7 @@ public class HelloActionTest {
 
 	@Before
 	public void before() throws Exception {
-		InjectorFactory.setModuleClassName(ExampleModule.class.getName());
+		InjectorFactory.setModuleClassName(ApplicationModule.class.getName());
 	}
 
 	@Test
