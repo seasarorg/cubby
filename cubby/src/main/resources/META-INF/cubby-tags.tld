@@ -325,8 +325,8 @@
 
 (実行結果)
 <select name="typeId">
-  <option name="1">TodoType 1</option>
-  <option name="2">TodoType 2</option>
+  <option value="1">TodoType 1</option>
+  <option value="2">TodoType 2</option>
 </select>
       ]]>
     </example>
