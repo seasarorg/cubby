@@ -54,11 +54,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 
 public class MultipartRequestParserImplMultipartRequestTest {
+
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	private final RequestParser requestParser = new MultipartRequestParser();
 
@@ -131,7 +134,8 @@ public class MultipartRequestParserImplMultipartRequestTest {
 		final FileUpload fileUpload = new ServletFileUpload();
 		fileUpload.setFileItemFactory(new DiskFileItemFactory());
 		final RequestContext requestContext = new ServletRequestContext(request);
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(final Class<T> type) {
@@ -147,11 +151,12 @@ public class MultipartRequestParserImplMultipartRequestTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardown() {
-		ProviderFactory.clear();
+	public void tearDownProvider() {
+		pluginRegistry.clear();
 	}
 
 	@Test

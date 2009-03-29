@@ -22,10 +22,18 @@
 	<include path="convention.dicon" />
 
 	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
-	<component class="org.seasar.cubby.routing.impl.PathResolverImpl" />
+	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
+		<arg>
+			<component class="org.seasar.cubby.routing.impl.PathTemplateParserImpl" />
+		</arg>
+	</component>
 
 	<!-- spi -->
-	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider$Component" />
-	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider$Component" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ContainerProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2RequestParserProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ActionHandlerChainProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider" />
 
 </components>

@@ -19,11 +19,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.seasar.cubby.plugins.guice.InjectorFactory;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 /**
@@ -48,8 +48,8 @@ public class GuiceContainerProvider implements ContainerProvider {
 	/**
 	 * インスタンス化します。
 	 */
-	public GuiceContainerProvider() {
-		final Injector injector = InjectorFactory.getInjector();
+	@Inject
+	public GuiceContainerProvider(final Injector injector) {
 		this.container = new GuiceContainerImpl(injector);
 	}
 

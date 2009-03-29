@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.junit.Test;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.controller.MessagesBehaviour;
 
 public class DefaultMessagesBehaviourTest {
@@ -31,7 +30,8 @@ public class DefaultMessagesBehaviourTest {
 	@Test
 	public void defaultBaseName() {
 		DefaultMessagesBehaviour behaviour = new DefaultMessagesBehaviour();
-		assertEquals(CubbyConstants.RES_MESSAGES, behaviour.getBaseName());
+		assertEquals(DefaultMessagesBehaviour.DEFAULT_RESOURCE_NAME, behaviour
+				.getBaseName());
 	}
 
 	@Test

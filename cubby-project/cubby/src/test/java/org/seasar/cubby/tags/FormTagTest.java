@@ -34,30 +34,36 @@ import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 public class FormTagTest extends AbstractStandardTagTestCase {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	private FormTag tag;
 
 	@Before
 	public void setupProvider() {
-		final PathResolver pathResolver = new PathResolverImpl();
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		final PathResolver pathResolver = new PathResolverImpl(
+				new PathTemplateParserImpl());
 		pathResolver.add("/mockFormTagTest/foo", MockFormTagTestAction.class,
 				"foo", RequestMethod.GET, null, 0);
 		pathResolver.add("/mockFormTagTest/bar/{id}",
 				MockFormTagTestAction.class, "bar", RequestMethod.GET, null, 0);
-		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+		binderPlugin.bind(PathResolverProvider.class).toInstance(
 				new MockPathResolverProvider(pathResolver));
 		final FormatPattern formatPattern = new DefaultFormatPattern();
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
@@ -68,8 +74,9 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 					}
 
 				}));
-		ProviderFactory.bind(ConverterProvider.class).toInstance(
+		binderPlugin.bind(ConverterProvider.class).toInstance(
 				new MockConverterProvider());
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@Before
@@ -255,7 +262,7 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 	public void testDoTagProtocol() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
-		
+
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.setProtocol("https");
@@ -267,14 +274,15 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		Element element = getResultAsElementFromContext();
 		String message = "フォームオブジェクトが指定";
 		assertEquals(message, 1, element.getAttributes().size());
-		assertEquals(message, "https://localhost/todo/save", element.getAttributeValue("action"));
+		assertEquals(message, "https://localhost/todo/save", element
+				.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
 	}
 
 	public void testDoTagPort() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
-		
+
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.setPort(8080);
@@ -286,14 +294,15 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		Element element = getResultAsElementFromContext();
 		String message = "フォームオブジェクトが指定";
 		assertEquals(message, 1, element.getAttributes().size());
-		assertEquals(message, "http://localhost:8080/todo/save", element.getAttributeValue("action"));
+		assertEquals(message, "http://localhost:8080/todo/save", element
+				.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
 	}
 
 	public void testDoTagProtocolAndPort() throws Exception {
 		FormDto form = new FormDto();
 		form.setStringField("value1");
-		
+
 		tag.setValue(form);
 		tag.setDynamicAttribute(null, "action", "/todo/save");
 		tag.setProtocol("https");
@@ -306,7 +315,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		Element element = getResultAsElementFromContext();
 		String message = "フォームオブジェクトが指定";
 		assertEquals(message, 1, element.getAttributes().size());
-		assertEquals(message, "https://localhost:8080/todo/save", element.getAttributeValue("action"));
+		assertEquals(message, "https://localhost:8080/todo/save", element
+				.getAttributeValue("action"));
 		assertNull("フォームオブジェクトは除去されていること", context.findAttribute("__form"));
 	}
 }

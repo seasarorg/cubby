@@ -22,7 +22,6 @@ import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.CyclicReferenceRuntimeException;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.TooManyRegistrationRuntimeException;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
  * {@link S2Container} による {@link Container} の実装を提供します。
@@ -32,14 +31,22 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
  */
 public class S2ContainerProvider implements ContainerProvider {
 
+	public static final String s2Container_BINDING = "bindingType=must";
+
 	/** {@link Container} */
-	private final Container container;
+	private final Container container = new S2ContainerImpl();
+
+	/** S2 コンテナ。 */
+	private S2Container s2Container;
 
 	/**
-	 * インスタンス化します。
+	 * S2 コンテナを設定します。
+	 * 
+	 * @param s2Container
+	 *            S2 コンテナ
 	 */
-	public S2ContainerProvider() {
-		this.container = new S2ContainerImpl();
+	public void setS2Container(final S2Container s2Container) {
+		this.s2Container = s2Container;
 	}
 
 	/**
@@ -63,10 +70,9 @@ public class S2ContainerProvider implements ContainerProvider {
 		 * @throws LookupException
 		 */
 		public <T> T lookup(final Class<T> type) throws LookupException {
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
 			try {
-				final T component = type.cast(container.getComponent(type));
+				final T component = type.cast(s2Container.getRoot()
+						.getComponent(type));
 				if (component == null) {
 					throw new LookupException();
 				}

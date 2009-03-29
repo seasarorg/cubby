@@ -23,8 +23,6 @@ import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
@@ -36,123 +34,119 @@ import org.seasar.framework.util.DisposableUtil;
  * @author baba
  * @since 2.0.0
  */
-public class S2PathResolverProvider implements PathResolverProvider {
+public class S2PathResolverProvider implements PathResolverProvider,
+		DetectClassProcessor, Disposable {
 
-	public PathResolver getPathResolver() {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final PathResolverProvider provider = (PathResolverProvider) container
-				.getComponent(Component.class);
-		return provider.getPathResolver();
+	public static final String pathResolver_BINDING = "bindingType=must";
+
+	public static final String namingConvention_BINDING = "bindingType=must";
+
+	public static final String classDetector_BINDING = "bindingType=must";
+
+	/** パスに対応するアクションメソッドを解決するためのクラス。 */
+	private PathResolver pathResolver;
+
+	/** 命名規約。 */
+	private NamingConvention namingConvention;
+
+	/** クラスパスを走査してクラスを検出するクラス。 */
+	public ClassDetector classDetector;
+
+	/** インスタンスが初期化済みであることを示します。 */
+	private boolean initialized;
+
+	/** アクションクラスのリスト。 */
+	private final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
+
+	/**
+	 * パスに対応するアクションメソッドを解決するためのクラスを設定します。
+	 * 
+	 * @param pathResolver
+	 *            パスに対応するアクションメソッドを解決するためのクラス
+	 * 
+	 */
+	public void setPathResolver(final PathResolver pathResolver) {
+		this.pathResolver = pathResolver;
 	}
 
-	public static class Component implements PathResolverProvider,
-			DetectClassProcessor, Disposable {
+	/**
+	 * クラスパスを走査してクラスを検出するクラスを設定します。
+	 * 
+	 * @param classDetector
+	 *            クラスパスを走査してクラスを検出するクラス
+	 */
+	public void setClassDetector(final ClassDetector classDetector) {
+		this.classDetector = classDetector;
+	}
 
-		private PathResolver pathResolver;
+	/**
+	 * 命名規約を設定します。
+	 * 
+	 * @param namingConvention
+	 *            命名規約
+	 */
+	public void setNamingConvention(final NamingConvention namingConvention) {
+		this.namingConvention = namingConvention;
+	}
 
-		public static final String pathResolver_BINDING = "bindingType=must";
-
-		/** 命名規約。 */
-		private NamingConvention namingConvention;
-
-		public static final String namingConvention_BINDING = "bindingType=must";
-
-		/** クラスパスを走査してクラスを検出するクラス。 */
-		public ClassDetector classDetector;
-
-		public static final String classDetector_BINDING = "bindingType=must";
-
-		/** インスタンスが初期化済みであることを示します。 */
-		private boolean initialized;
-
-		/** アクションクラスのリスト。 */
-		private final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
-
-		/**
-		 * クラスパスを走査してクラスを検出するクラスを設定します。
-		 * 
-		 * @param classDetector
-		 *            クラスパスを走査してクラスを検出するクラス
-		 */
-		public void setClassDetector(final ClassDetector classDetector) {
-			this.classDetector = classDetector;
+	/**
+	 * 初期化します。
+	 */
+	public void initialize() {
+		if (initialized) {
+			return;
 		}
+		classDetector.detect();
+		pathResolver.addAll(actionClasses);
 
-		/**
-		 * 命名規約を設定します。
-		 * 
-		 * @param namingConvention
-		 *            命名規約
-		 */
-		public void setNamingConvention(final NamingConvention namingConvention) {
-			this.namingConvention = namingConvention;
+		DisposableUtil.add(this);
+		initialized = true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void dispose() {
+		actionClasses.clear();
+		pathResolver.clear();
+		initialized = false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたパッケージ名、クラス名から導出されるクラスがアクションクラスだった場合はルーティングを登録します。
+	 * </p>
+	 */
+	public void processClass(final String packageName,
+			final String shortClassName) {
+		if (shortClassName.indexOf('$') != -1) {
+			return;
 		}
-
-		public void setPathResolver(final PathResolver pathResolver) {
-			this.pathResolver = pathResolver;
+		final String className = ClassUtil.concatName(packageName,
+				shortClassName);
+		if (!namingConvention.isTargetClassName(className)) {
+			return;
 		}
-
-		/**
-		 * 初期化します。
-		 */
-		public void initialize() {
-			if (initialized) {
-				return;
-			}
-			classDetector.detect();
-			pathResolver.addAll(actionClasses);
-
-			DisposableUtil.add(this);
-			initialized = true;
+		if (!className.endsWith(namingConvention.getActionSuffix())) {
+			return;
 		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public void dispose() {
-			actionClasses.clear();
-			pathResolver.clear();
-			initialized = false;
+		final Class<?> clazz = ClassUtil.forName(className);
+		if (namingConvention.isSkipClass(clazz)) {
+			return;
 		}
-
-		/**
-		 * {@inheritDoc}
-		 * <p>
-		 * 指定されたパッケージ名、クラス名から導出されるクラスがアクションクラスだった場合はルーティングを登録します。
-		 * </p>
-		 */
-		public void processClass(final String packageName,
-				final String shortClassName) {
-			if (shortClassName.indexOf('$') != -1) {
-				return;
-			}
-			final String className = ClassUtil.concatName(packageName,
-					shortClassName);
-			if (!namingConvention.isTargetClassName(className)) {
-				return;
-			}
-			if (!className.endsWith(namingConvention.getActionSuffix())) {
-				return;
-			}
-			final Class<?> clazz = ClassUtil.forName(className);
-			if (namingConvention.isSkipClass(clazz)) {
-				return;
-			}
-			if (Modifier.isAbstract(clazz.getModifiers())) {
-				return;
-			}
-			actionClasses.add(clazz);
+		if (Modifier.isAbstract(clazz.getModifiers())) {
+			return;
 		}
+		actionClasses.add(clazz);
+	}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		public PathResolver getPathResolver() {
-			initialize();
-			return pathResolver;
-		}
-
+	/**
+	 * {@inheritDoc}
+	 */
+	public PathResolver getPathResolver() {
+		initialize();
+		return pathResolver;
 	}
 
 }

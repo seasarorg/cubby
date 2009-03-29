@@ -35,12 +35,11 @@ import java.util.regex.Pattern;
 
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
-import org.seasar.cubby.internal.routing.PathTemplateParser;
-import org.seasar.cubby.internal.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.internal.util.MetaUtils;
 import org.seasar.cubby.internal.util.QueryStringBuilder;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.RoutingException;
 import org.seasar.cubby.util.ActionUtils;
@@ -63,12 +62,16 @@ public class PathResolverImpl implements PathResolver {
 	private final Map<RoutingKey, Routing> routings = new TreeMap<RoutingKey, Routing>();
 
 	/** パステンプレートのパーサー。 */
-	private final PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
+	private PathTemplateParser pathTemplateParser;
 
 	/**
 	 * インスタンス化します。
+	 * 
+	 * @param pathTemplateParser
+	 *            パステンプレートのパーサー
 	 */
-	public PathResolverImpl() {
+	public PathResolverImpl(final PathTemplateParser pathTemplateParser) {
+		this.pathTemplateParser = pathTemplateParser;
 	}
 
 	/**

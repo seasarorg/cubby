@@ -38,16 +38,20 @@ import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 public class ThreadContextTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	@Before
 	public void setup() {
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(final Class<T> type) {
@@ -58,11 +62,12 @@ public class ThreadContextTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardown() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

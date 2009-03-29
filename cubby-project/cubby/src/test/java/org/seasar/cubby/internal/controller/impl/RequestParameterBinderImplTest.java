@@ -73,10 +73,11 @@ import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
@@ -87,13 +88,16 @@ import org.seasar.cubby.spi.container.LookupException;
  */
 public class RequestParameterBinderImplTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	private RequestParameterBinder requestParameterBinder;
 
 	@Before
 	public void setup() {
+		final BinderPlugin binderPlugin = new BinderPlugin();
 		final FormatPattern formatPattern = new DefaultFormatPattern();
 		final MessagesBehaviour messagesBehaviour = new DefaultMessagesBehaviour();
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
@@ -106,16 +110,19 @@ public class RequestParameterBinderImplTest {
 						throw new LookupException(type.getName());
 					}
 				}));
-		ProviderFactory.bind(ConverterProvider.class).toInstance(
+		binderPlugin.bind(ConverterProvider.class).toInstance(
 				new MockConverterProvider(new BraceConverter()));
-		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
+
+		pluginRegistry.register(binderPlugin);
+
 		requestParameterBinder = new RequestParameterBinderImpl();
 	}
 
 	@After
 	public void teardown() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test
@@ -689,10 +696,14 @@ public class RequestParameterBinderImplTest {
 
 		System.out.println(errors.getFields().get("sqltimestamp"));
 		assertFalse(errors.getFields().get("sqltimestamp").isEmpty());
-		System.out.println(errors.getIndexedFields().get("sqltimestamps").get(0));
-		assertFalse(errors.getIndexedFields().get("sqltimestamps").get(0).isEmpty());
-		System.out.println(errors.getIndexedFields().get("sqltimestamps").get(1));
-		assertTrue(errors.getIndexedFields().get("sqltimestamps").get(1).isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimestamps")
+				.get(0));
+		assertFalse(errors.getIndexedFields().get("sqltimestamps").get(0)
+				.isEmpty());
+		System.out.println(errors.getIndexedFields().get("sqltimestamps")
+				.get(1));
+		assertTrue(errors.getIndexedFields().get("sqltimestamps").get(1)
+				.isEmpty());
 
 		System.out.println(errors.getFields().get("en"));
 		assertFalse(errors.getFields().get("en").isEmpty());

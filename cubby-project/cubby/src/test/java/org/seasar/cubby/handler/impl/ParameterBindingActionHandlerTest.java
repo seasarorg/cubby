@@ -44,17 +44,21 @@ import org.seasar.cubby.handler.ActionHandler;
 import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 public class ParameterBindingActionHandlerTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	@Before
 	public void setup() {
 		final FormatPattern formatPattern = new DefaultFormatPattern();
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
@@ -65,11 +69,12 @@ public class ParameterBindingActionHandlerTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardownProvider() {
-		ProviderFactory.clear();
+	public void teardown() {
+		pluginRegistry.clear();
 	}
 
 	@Test

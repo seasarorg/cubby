@@ -21,16 +21,35 @@ import java.util.Collection;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 public class S2RequestParserProvider extends AbstractRequestParserProvider {
 
+	public static final String s2Container_BINDING = "bindingType=must";
+
+	/** S2 コンテナ。 */
+	private S2Container s2Container;
+
+	/**
+	 * S2 コンテナを設定します。
+	 * 
+	 * @param s2Container
+	 *            S2 コンテナ
+	 */
+	public void setS2Container(final S2Container s2Container) {
+		this.s2Container = s2Container;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * S2 コンテナのルートコンテナから取得できる {@link RequestParser} のインスタンスを返します。
+	 * </p>
+	 */
 	@Override
 	protected Collection<RequestParser> getRequestParsers() {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
 		final RequestParser[] requestParsers = RequestParser[].class
-				.cast(container.findAllComponents(RequestParser.class));
+				.cast(s2Container.getRoot().findAllComponents(
+						RequestParser.class));
 		return Arrays.asList(requestParsers);
 	}
 

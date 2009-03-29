@@ -18,15 +18,20 @@ package org.seasar.cubby.plugins.s2.spi;
 import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 public class S2ActionHandlerChainProvider implements ActionHandlerChainProvider {
 
+	public static final String s2Container_BINDING = "bindingType=must";
+
+	private S2Container s2Container;
+
+	public void setS2Container(final S2Container s2Container) {
+		this.s2Container = s2Container;
+	}
+
 	public ActionHandlerChain getActionHandlerChain() {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final ActionHandlerChain actionHandlerChain = (ActionHandlerChain) container
-				.getComponent(ActionHandlerChain.class);
+		final ActionHandlerChain actionHandlerChain = (ActionHandlerChain) s2Container
+				.getRoot().getComponent(ActionHandlerChain.class);
 		return actionHandlerChain;
 	}
 

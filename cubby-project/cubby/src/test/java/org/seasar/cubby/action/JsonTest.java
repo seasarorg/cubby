@@ -33,28 +33,33 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockJsonProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.JsonProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 
 public class JsonTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	@Before
 	public void setupProvider() {
-		ProviderFactory.bind(JsonProvider.class).toInstance(
-				new MockJsonProvider());
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(JsonProvider.class)
+				.toInstance(new MockJsonProvider());
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardownProvider() {
-		ProviderFactory.clear();
+	public void tearDownProvider() {
+		pluginRegistry.clear();
 	}
 
 	@Test
 	public void execute() throws Exception {
 		final MockAction action = new MockAction();
 
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		HttpServletResponse response = createMock(HttpServletResponse.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		final StringWriter writer = new StringWriter();
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/javascript; charset=utf-8");
@@ -64,10 +69,10 @@ public class JsonTest {
 
 		replay(request, response);
 
-		Method method = action.getClass().getMethod("dummy1");
+		final Method method = action.getClass().getMethod("dummy1");
 
-		Json json = new Json(createBean());
-		ActionContext actionContext = new MockActionContext(action,
+		final Json json = new Json(createBean());
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 		json.execute(actionContext, request, response);
 		assertEquals(MockJsonProvider.JSON_STRING, writer.toString());
@@ -79,8 +84,8 @@ public class JsonTest {
 	public void executeWithContentTypeAndEncoding() throws Exception {
 		final MockAction action = new MockAction();
 
-		HttpServletRequest request = createMock(HttpServletRequest.class);
-		HttpServletResponse response = createMock(HttpServletResponse.class);
+		final HttpServletRequest request = createMock(HttpServletRequest.class);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		final StringWriter writer = new StringWriter();
 		response.setCharacterEncoding("Shift_JIS");
 		response.setContentType("text/javascript+json; charset=Shift_JIS");
@@ -89,11 +94,11 @@ public class JsonTest {
 		expect(response.getWriter()).andReturn(new PrintWriter(writer));
 		replay(request, response);
 
-		Method method = action.getClass().getMethod("dummy1");
+		final Method method = action.getClass().getMethod("dummy1");
 
-		Json json = new Json(createBean()).contentType("text/javascript+json")
-				.encoding("Shift_JIS");
-		ActionContext actionContext = new MockActionContext(action,
+		final Json json = new Json(createBean()).contentType(
+				"text/javascript+json").encoding("Shift_JIS");
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 		json.execute(actionContext, request, response);
 		assertEquals(MockJsonProvider.JSON_STRING, writer.toString());
@@ -102,7 +107,7 @@ public class JsonTest {
 	}
 
 	private Foo createBean() {
-		Foo bean = new Foo();
+		final Foo bean = new Foo();
 		bean.setName("カビー");
 		bean.setAge(30);
 		return bean;
@@ -116,7 +121,7 @@ public class JsonTest {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -124,7 +129,7 @@ public class JsonTest {
 			return age;
 		}
 
-		public void setAge(Integer age) {
+		public void setAge(final Integer age) {
 			this.age = age;
 		}
 	}

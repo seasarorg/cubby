@@ -24,10 +24,16 @@ import org.seasar.cubby.spi.container.LookupException;
 import com.google.gson.Gson;
 
 /**
- * {@link http://code.google.com/p/google-gson/ google-gson} を用いる
+ * <a href="http://code.google.com/p/google-gson/">Google Gson</a> を用いる
  * {@link JsonProvider} の実装です。
+ * <p>
+ * {@link Container} から {@link Gson} のインスタンスを取得できる場合はそのインスタンスによって処理します。そうでない場合は
+ * {@link Gson#Gson()} によって生成したインスタンスによって処理します。
+ * </p>
  * 
- * @see <a href="http://sites.google.com/site/gson/gson-user-guide">Gson User Guide</a>
+ * @see <a href="http://code.google.com/p/google-gson/">Google&nbsp;Gson</a>
+ * @see <a
+ *      href="http://sites.google.com/site/gson/gson-user-guide">Gson&nbsp;User&nbsp;Guide</a>
  * @author baba
  */
 public class GsonJsonProvider implements JsonProvider {
@@ -41,8 +47,13 @@ public class GsonJsonProvider implements JsonProvider {
 	}
 
 	/**
+	 * {@link Gson} のインスタンスを構築します。
+	 * <p>
+	 * {@link Container} から {@link Gson} のインスタンス取得できる場合はそのインスタンスを、そうでない場合は
+	 * {@link Gson#Gson()} によって生成したインスタンスを返します。
+	 * </p>
 	 * 
-	 * @return
+	 * @return {@link Gson} のインスタンス
 	 */
 	private Gson buildGson() {
 		final Container container = ProviderFactory

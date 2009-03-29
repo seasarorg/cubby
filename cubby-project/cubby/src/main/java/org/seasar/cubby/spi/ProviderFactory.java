@@ -15,31 +15,14 @@
  */
 package org.seasar.cubby.spi;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.seasar.cubby.internal.util.ServiceLoader;
+import org.seasar.cubby.plugin.PluginRegistry;
 
 /**
  * サービスプロバイダのファクトリです。
- * <p>
- * このファクトリは {@link ServiceLoader} で生成されたプロバイダをシングルトンとして保持します。 同じサービスを何度
- * {@link #get(Class)} しても同じオブジェクトを返します。
- * </p>
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ProviderFactory {
-
-	/** プロバイダのシングルトン。 */
-	private static Map<String, Provider> PROVIDERS = new HashMap<String, Provider>();
-
-	/**
-	 * インスタンス化を禁止します。
-	 */
-	private ProviderFactory() {
-	}
 
 	/**
 	 * 指定されたサービスのプロバイダを取得します。
@@ -51,79 +34,8 @@ public class ProviderFactory {
 	 * @return プロバイダ
 	 */
 	public static <S extends Provider> S get(final Class<S> service) {
-		final S provider;
-		final String serviceClassName = service.getName();
-		if (PROVIDERS.containsKey(serviceClassName)) {
-			provider = service.cast(PROVIDERS.get(serviceClassName));
-		} else {
-			synchronized (service) {
-				if (PROVIDERS.containsKey(serviceClassName)) {
-					provider = service.cast(PROVIDERS.get(serviceClassName));
-				} else {
-					provider = ServiceLoader.load(service).getProvider();
-					PROVIDERS.put(serviceClassName, provider);
-				}
-			}
-		}
-		return provider;
-	}
-
-	/**
-	 * キャッシュしているプロバイダのシングルトンをクリアします。
-	 */
-	public static void clear() {
-		PROVIDERS.clear();
-	}
-
-	/**
-	 * {@link ServiceLoader} からのインスタンス取得を置換するため、指定されたサービスのバインダーを返します。
-	 * <p>
-	 * テストで使用することを想定しています。
-	 * </p>
-	 * 
-	 * @param <S>
-	 *            サービスの型
-	 * @param service
-	 *            サービス
-	 * @return バインダー
-	 */
-	public static <S extends Provider> Binder<S> bind(final Class<S> service) {
-		return new Binder<S>(service);
-	}
-
-	/**
-	 * サービスを何かに紐づけるためのクラスです。
-	 * 
-	 * @author baba
-	 * 
-	 * @param <S>
-	 *            サービスの型
-	 */
-	public static class Binder<S extends Provider> {
-
-		/** サービス。 */
-		private final Class<S> service;
-
-		/**
-		 * 指定されたサービスのバインダーを生成します。
-		 * 
-		 * @param service
-		 *            サービス
-		 */
-		private Binder(final Class<S> service) {
-			this.service = service;
-		}
-
-		/**
-		 * サービスを特定のインスタンスにバインドします。
-		 * 
-		 * @param instance
-		 *            インスタンス
-		 */
-		public void toInstance(final S instance) {
-			PROVIDERS.put(service.getName(), instance);
-		}
-
+		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		return pluginRegistry.getProvider(service);
 	}
 
 }

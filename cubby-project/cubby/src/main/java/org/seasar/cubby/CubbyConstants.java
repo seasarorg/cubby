@@ -25,62 +25,57 @@ package org.seasar.cubby;
 public class CubbyConstants {
 
 	/**
-	 * Cubbyのデフォルトメッセージリソースの名前。
-	 */
-	public static final String RES_MESSAGES = "messages";
-
-	/**
-	 * アクションオブジェクトのリクエストの属性中の名前。
+	 * アクションオブジェクトの要求の属性名。
 	 */
 	public static final String ATTR_ACTION = "action";
 
 	/**
-	 * メッセージリソースをMapに変換したオブジェクトのリクエストの属性中の名前。
+	 * メッセージリソースを <code>Map</code> に変換したオブジェクトの要求の属性名。
 	 */
 	public static final String ATTR_MESSAGES = "messages";
 
 	/**
-	 * アクションエラーのリクエストの属性中の名前。
+	 * アクションエラーの要求の属性名。
 	 */
 	public static final String ATTR_ERRORS = "errors";
 
 	/**
-	 * コンテキストパスのリクエストの属性中の名前。
+	 * コンテキストパスの要求の属性名。
 	 */
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
 
 	/**
-	 * パラメータオブジェクトのリクエストの属性中の名前。
+	 * パラメータオブジェクトの要求の属性名。
 	 */
 	public static final String ATTR_PARAMS = "org.seasar.cubby.params";
 
 	/**
-	 * 内部フォワード時にルーティング情報を引き渡すための名前。
+	 * 内部フォワード時にルーティング情報を引き渡すための要求の属性名。
 	 */
 	public static final String ATTR_ROUTING = "org.seasar.cubby.routing";
 
 	/**
-	 * アクションコンテキストのリクエストの属性中の名前。
+	 * アクションコンテキストの要求の属性名。
 	 */
 	public static final String ATTR_ACTION_CONTEXT = "org.seasar.cubby.actionContext";
 
 	/**
-	 * 型変換エラーの属性中の名前。
+	 * 型変換エラーの要求の属性名。
 	 */
 	public static final String ATTR_CONVERSION_ERRORS = "org.seasar.cubby.conversionErrors";
 
 	/**
-	 * バリデーションエラーを表すオブジェクトのリクエストの属性中の名前。
+	 * バリデーションエラーを表すオブジェクトの要求の属性名。
 	 */
 	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
 
 	/**
-	 * フラッシュメッセージのセッションの属性中の名前。
+	 * フラッシュメッセージのセッションの属性名。
 	 */
 	public static final String ATTR_FLASH = "flash";
 
 	/**
-	 * トークンのMapをセッションに保存する名前。
+	 * セッショントークンの <code>Map</code> のセッションの属性名。
 	 */
 	public static final String ATTR_TOKEN = "org.seasar.cubby.token";
 

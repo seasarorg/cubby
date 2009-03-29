@@ -24,10 +24,8 @@ import java.util.Set;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
-import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
@@ -39,143 +37,133 @@ import org.seasar.framework.util.DisposableUtil;
  * @author baba
  * @since 2.0.0
  */
-public class S2ConverterProvider implements ConverterProvider {
+public class S2ConverterProvider extends AbstractCachedConverterProvider
+		implements DetectClassProcessor, Disposable {
 
-	public Converter getConverter(Class<? extends Converter> converterType) {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final ConverterProvider provider = (ConverterProvider) container
-				.getComponent(Component.class);
-		return provider.getConverter(converterType);
+	public static final String s2Container_BINDING = "bindingType=must";
+
+	public static final String namingConvention_BINDING = "bindingType=must";
+
+	public static final String classDetector_BINDING = "bindingType=must";
+
+	/** S2 コンテナ。 */
+	private S2Container s2Container;
+
+	/** 命名規約。 */
+	private NamingConvention namingConvention;
+
+	/** クラスパスを走査してクラスを検出するクラス。 */
+	private ClassDetector classDetector;
+
+	/** インスタンスが初期化済みであることを示します。 */
+	private boolean initialized;
+
+	/** コンバータのセットです。 */
+	private final Set<Converter> converters = new LinkedHashSet<Converter>();
+
+	/**
+	 * S2 コンテナを設定します。
+	 * 
+	 * @param s2Container
+	 *            S2 コンテナ
+	 */
+	public void setS2Container(final S2Container s2Container) {
+		this.s2Container = s2Container;
 	}
 
+	/**
+	 * 命名規約を設定します。
+	 * 
+	 * @param namingConvention
+	 *            命名規約
+	 */
+	public void setNamingConvention(final NamingConvention namingConvention) {
+		this.namingConvention = namingConvention;
+	}
+
+	/**
+	 * クラスパスを走査してクラスを検出するクラスを設定します。
+	 * 
+	 * @param classDetector
+	 *            クラスパスを走査してクラスを設定します。
+	 */
+	public void setClassDetector(final ClassDetector classDetector) {
+		this.classDetector = classDetector;
+	}
+
+	@Override
+	protected Collection<Converter> getConverters() {
+		return converters;
+	}
+
+	/**
+	 * インスタンスを初期化します。
+	 */
+	public void initialize() {
+		if (initialized) {
+			return;
+		}
+		classDetector.detect();
+
+		final Converter[] converters = (Converter[]) s2Container.getRoot()
+				.findAllComponents(Converter.class);
+		this.converters.addAll(Arrays.asList(converters));
+		DisposableUtil.add(this);
+		initialized = true;
+	}
+
+	/**
+	 * キャッシュ情報等を破棄し、インスタンスを未初期化状態に戻します。
+	 * 
+	 */
+	public void dispose() {
+		this.converters.clear();
+		super.clear();
+		initialized = false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Converter getConverter(final Class<?> parameterType,
 			final Class<?> objectType) {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final ConverterProvider provider = (ConverterProvider) container
-				.getComponent(Component.class);
-		return provider.getConverter(parameterType, objectType);
+		initialize();
+		return super.getConverter(parameterType, objectType);
 	}
 
-	public static class Component extends AbstractCachedConverterProvider
-			implements DetectClassProcessor, Disposable {
-
-		/** 命名規約。 */
-		private NamingConvention namingConvention;
-
-		public static final String namingConvention_BINDING = "bindingType=must";
-
-		/** クラスパスを走査してクラスを検出するクラス。 */
-		private ClassDetector classDetector;
-
-		public static final String classDetector_BINDING = "bindingType=must";
-
-		/** インスタンスが初期化済みであることを示します。 */
-		private boolean initialized;
-
-		/** コンバータのセットです。 */
-		private final Set<Converter> converters = new LinkedHashSet<Converter>();
-
-		/**
-		 * 命名規約を設定します。
-		 * 
-		 * @param namingConvention
-		 *            命名規約
-		 */
-		public void setNamingConvention(final NamingConvention namingConvention) {
-			this.namingConvention = namingConvention;
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 指定されたパッケージ名、クラス名から導出されるクラスがコンバータだった場合はファクトリにコンバータを登録します。
+	 * </p>
+	 */
+	public void processClass(final String packageName,
+			final String shortClassName) {
+		if (shortClassName.indexOf('$') != -1) {
+			return;
 		}
-
-		/**
-		 * クラスパスを走査してクラスを検出するクラスを設定します。
-		 * 
-		 * @param classDetector
-		 *            クラスパスを走査してクラスを設定します。
-		 */
-		public void setClassDetector(final ClassDetector classDetector) {
-			this.classDetector = classDetector;
+		final String className = ClassUtil.concatName(packageName,
+				shortClassName);
+		if (!namingConvention.isTargetClassName(className)) {
+			return;
 		}
-
-		@Override
-		protected Collection<Converter> getConverters() {
-			return converters;
+		if (!className.endsWith(namingConvention.getConverterSuffix())) {
+			return;
 		}
-
-		/**
-		 * インスタンスを初期化します。
-		 */
-		public void initialize() {
-			if (initialized) {
-				return;
-			}
-			classDetector.detect();
-
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final Converter[] converters = (Converter[]) container
-					.findAllComponents(Converter.class);
-			this.converters.addAll(Arrays.asList(converters));
-			DisposableUtil.add(this);
-			initialized = true;
+		final Class<?> clazz = ClassUtil.forName(className);
+		if (namingConvention.isSkipClass(clazz)) {
+			return;
 		}
-
-		/**
-		 * キャッシュ情報等を破棄し、インスタンスを未初期化状態に戻します。
-		 * 
-		 */
-		public void dispose() {
-			this.converters.clear();
-			super.clear();
-			initialized = false;
+		if ((clazz.getModifiers() & Modifier.ABSTRACT) != 0) {
+			return;
 		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Converter getConverter(final Class<?> parameterType,
-				final Class<?> objectType) {
-			initialize();
-			return super.getConverter(parameterType, objectType);
+		if (!Converter.class.isAssignableFrom(clazz)) {
+			return;
 		}
-
-		/**
-		 * {@inheritDoc}
-		 * <p>
-		 * 指定されたパッケージ名、クラス名から導出されるクラスがコンバータだった場合はファクトリにコンバータを登録します。
-		 * </p>
-		 */
-		public void processClass(final String packageName,
-				final String shortClassName) {
-			if (shortClassName.indexOf('$') != -1) {
-				return;
-			}
-			final String className = ClassUtil.concatName(packageName,
-					shortClassName);
-			if (!namingConvention.isTargetClassName(className)) {
-				return;
-			}
-			if (!className.endsWith(namingConvention.getConverterSuffix())) {
-				return;
-			}
-			final Class<?> clazz = ClassUtil.forName(className);
-			if (namingConvention.isSkipClass(clazz)) {
-				return;
-			}
-			if ((clazz.getModifiers() & Modifier.ABSTRACT) != 0) {
-				return;
-			}
-			if (!Converter.class.isAssignableFrom(clazz)) {
-				return;
-			}
-			final S2Container container = SingletonS2ContainerFactory
-					.getContainer();
-			final Converter converter = (Converter) container
-					.getComponent(clazz);
-			this.converters.add(converter);
-		}
-
+		final Converter converter = (Converter) s2Container.getRoot()
+				.getComponent(clazz);
+		this.converters.add(converter);
 	}
 
 }

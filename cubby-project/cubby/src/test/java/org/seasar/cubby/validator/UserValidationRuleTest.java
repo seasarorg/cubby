@@ -38,25 +38,30 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
 import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 
 public class UserValidationRuleTest {
 
-	public ValidationProcessorImpl validationProcessor = new ValidationProcessorImpl();
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
-	public MockAction action = new MockAction();
+	private ValidationProcessorImpl validationProcessor = new ValidationProcessorImpl();
+
+	private MockAction action = new MockAction();
 
 	@Before
 	public void setup() {
-		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardown() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

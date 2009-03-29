@@ -15,8 +15,6 @@
  */
 package org.seasar.cubby.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.RES_MESSAGES;
-
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -32,8 +30,11 @@ import org.seasar.cubby.internal.util.ResourceBundleMap;
  */
 public class DefaultMessagesBehaviour implements MessagesBehaviour {
 
+	/** デフォルトのメッセージリソース名。 */
+	public static final String DEFAULT_RESOURCE_NAME = "messages";
+
 	/** リソースバンドル、完全指定されたクラス名の基底名。 */
-	private String baseName = RES_MESSAGES;
+	private String baseName = DEFAULT_RESOURCE_NAME;
 
 	/**
 	 * リソースバンドル、完全指定されたクラス名の基底名を取得します。
