@@ -39,28 +39,35 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 
 public class RouterImplTest {
+
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	private Router router = new RouterImpl();
 
 	@Before
 	public void setupProvider() {
-		final PathResolver pathResolver = new PathResolverImpl();
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		final PathResolver pathResolver = new PathResolverImpl(
+				new PathTemplateParserImpl());
 		pathResolver.add(FooAction.class);
-		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+		binderPlugin.bind(PathResolverProvider.class).toInstance(
 				new MockPathResolverProvider(pathResolver));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardownProvider() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

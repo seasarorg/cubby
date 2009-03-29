@@ -38,19 +38,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.easymock.IAnswer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.RoutingException;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 
 public class RedirectTest {
 
-	private MockAction action = new MockAction();
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
+	private final MockAction action = new MockAction();
 
 	private HttpServletRequest request;
 
@@ -62,14 +67,18 @@ public class RedirectTest {
 	public void setupContainer() {
 		final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 		actionClasses.add(MockAction.class);
-		final PathResolver pathResolver = new PathResolverImpl();
+		final PathResolver pathResolver = new PathResolverImpl(
+				new PathTemplateParserImpl());
 		pathResolver.addAll(actionClasses);
-		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(PathResolverProvider.class).toInstance(
 				new MockPathResolverProvider(pathResolver));
+		pluginRegistry.register(binderPlugin);
 	}
 
-	public void teardownContainer() {
-		ProviderFactory.clear();
+	@After
+	public void tearDownProvider() {
+		pluginRegistry.clear();
 	}
 
 	@Before
@@ -214,7 +223,7 @@ public class RedirectTest {
 	@Test
 	public void absolutePath() throws Exception {
 		final Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
@@ -238,7 +247,7 @@ public class RedirectTest {
 	@Test
 	public void absolutePathWithProtocol() throws Exception {
 		final Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
@@ -262,7 +271,7 @@ public class RedirectTest {
 	@Test
 	public void absoluteURL() throws Exception {
 		final Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		expect(request.getContextPath()).andReturn("/cubby").anyTimes();
@@ -286,7 +295,7 @@ public class RedirectTest {
 	@Test
 	public void rootContextPath() throws Exception {
 		final Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		expect(request.getContextPath()).andReturn("/").anyTimes();
@@ -405,7 +414,7 @@ public class RedirectTest {
 
 	@Test
 	public void pParam2() throws Exception {
-		Map<String, String[]> params = new LinkedHashMap<String, String[]>();
+		final Map<String, String[]> params = new LinkedHashMap<String, String[]>();
 		params.put("value1", new String[] { "123" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				params).param("value2", "456");
@@ -415,8 +424,8 @@ public class RedirectTest {
 
 	@Test
 	public void param3() throws Exception {
-		Redirect redirect = new Redirect("hoge").param("value1", "123").param(
-				"value2", "456");
+		final Redirect redirect = new Redirect("hoge").param("value1", "123")
+				.param("value2", "456");
 		assertEquals("hoge?value1=123&value2=456", redirect.getPath("UTF-8"));
 	}
 

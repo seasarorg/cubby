@@ -43,15 +43,19 @@ import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockPathResolverProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.PathResolverProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 
 public class ForwardTest {
 
-	private MockAction action = new MockAction();
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
+	private final MockAction action = new MockAction();
 
 	private HttpServletRequest request;
 
@@ -63,15 +67,18 @@ public class ForwardTest {
 	public void setupProvider() {
 		final List<Class<?>> actionClasses = new ArrayList<Class<?>>();
 		actionClasses.add(MockAction.class);
-		final PathResolver pathResolver = new PathResolverImpl();
+		final PathResolver pathResolver = new PathResolverImpl(
+				new PathTemplateParserImpl());
 		pathResolver.addAll(actionClasses);
-		ProviderFactory.bind(PathResolverProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(PathResolverProvider.class).toInstance(
 				new MockPathResolverProvider(pathResolver));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardownProvider() {
-		ProviderFactory.clear();
+	public void tearDownProvider() {
+		pluginRegistry.clear();
 	}
 
 	@Before
@@ -84,7 +91,7 @@ public class ForwardTest {
 
 	@Test
 	public void basicSequence() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
+		final Method method = action.getClass().getMethod("dummy1");
 		final MockActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
@@ -101,7 +108,7 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward("path.jsp");
+		final Forward forward = new Forward("path.jsp");
 		forward.execute(actionContext, request, response);
 		assertTrue(actionContext.isPostrendered());
 		verify(request, requestDispatcher, response);
@@ -109,7 +116,7 @@ public class ForwardTest {
 
 	@Test
 	public void relativePath() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
+		final Method method = action.getClass().getMethod("dummy1");
 		final MockActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
@@ -119,15 +126,15 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward("page.jsp");
+		final Forward forward = new Forward("page.jsp");
 		forward.execute(actionContext, request, response);
 		verify(request, requestDispatcher, response);
 	}
 
 	@Test
 	public void absolutePath() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		expect(request.getRequestDispatcher("/absolute/path.jsp")).andReturn(
@@ -136,29 +143,29 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward("/absolute/path.jsp");
+		final Forward forward = new Forward("/absolute/path.jsp");
 		forward.execute(actionContext, request, response);
 		verify(request, requestDispatcher, response);
 	}
 
 	@Test
 	public void getPath() throws Exception {
-		Forward forward = new Forward("/absolute/path.jsp");
+		final Forward forward = new Forward("/absolute/path.jsp");
 		assertEquals("/absolute/path.jsp", forward.getPath("UTF-8"));
 	}
 
 	@Test
 	public void param() throws Exception {
-		Forward forward = new Forward("/absolute/path.jsp").param("value1",
-				"123").param("value2", "456");
+		final Forward forward = new Forward("/absolute/path.jsp").param(
+				"value1", "123").param("value2", "456");
 		assertEquals("/absolute/path.jsp?value1=123&value2=456", forward
 				.getPath("UTF-8"));
 	}
 
 	@Test
 	public void forwardByClassAndMethodName() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
@@ -166,10 +173,12 @@ public class ForwardTest {
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
+				final Routing routing = Routing.class
+						.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
-				Method forwardMethod = action.getClass().getMethod("dummy2");
+				final Method forwardMethod = action.getClass().getMethod(
+						"dummy2");
 				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
@@ -181,15 +190,15 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward(MockAction.class, "dummy2").param(
+		final Forward forward = new Forward(MockAction.class, "dummy2").param(
 				"value1", "5").param("value2", "abc");
 		forward.execute(actionContext, request, response);
 	}
 
 	@Test
 	public void forwardByClassAndIndex() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
@@ -197,10 +206,12 @@ public class ForwardTest {
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
+				final Routing routing = Routing.class
+						.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
-				Method forwardMethod = action.getClass().getMethod("index");
+				final Method forwardMethod = action.getClass().getMethod(
+						"index");
 				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
@@ -212,14 +223,14 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward(MockAction.class);
+		final Forward forward = new Forward(MockAction.class);
 		forward.execute(actionContext, request, response);
 	}
 
 	@Test
 	public void forwardByClassAndMethodNameWithParam() throws Exception {
-		Method method = action.getClass().getMethod("dummy1");
-		ActionContext actionContext = new MockActionContext(action,
+		final Method method = action.getClass().getMethod("dummy1");
+		final ActionContext actionContext = new MockActionContext(action,
 				MockAction.class, method);
 
 		request.setAttribute(eq(CubbyConstants.ATTR_ROUTING),
@@ -227,10 +238,12 @@ public class ForwardTest {
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
 			public Object answer() throws Throwable {
-				Routing routing = Routing.class.cast(getCurrentArguments()[1]);
+				final Routing routing = Routing.class
+						.cast(getCurrentArguments()[1]);
 				assertNotNull(routing);
 				assertEquals(MockAction.class, routing.getActionClass());
-				Method forwardMethod = action.getClass().getMethod("dummy2");
+				final Method forwardMethod = action.getClass().getMethod(
+						"dummy2");
 				assertEquals(forwardMethod, routing.getActionMethod());
 				return null;
 			}
@@ -242,7 +255,7 @@ public class ForwardTest {
 		expectLastCall();
 		replay(request, requestDispatcher, response);
 
-		Forward forward = new Forward(MockAction.class, "dummy2").param(
+		final Forward forward = new Forward(MockAction.class, "dummy2").param(
 				"value1", "123").param("value2", "456");
 		forward.execute(actionContext, request, response);
 	}
@@ -253,16 +266,16 @@ public class ForwardTest {
 
 	class RequestDispatcherAssertionWrapper extends HttpServletRequestWrapper {
 
-		private Asserter asserter;
+		private final Asserter asserter;
 
-		public RequestDispatcherAssertionWrapper(HttpServletRequest request,
-				Asserter asserter) {
+		public RequestDispatcherAssertionWrapper(
+				final HttpServletRequest request, final Asserter asserter) {
 			super(request);
 			this.asserter = asserter;
 		}
 
 		@Override
-		public RequestDispatcher getRequestDispatcher(String path) {
+		public RequestDispatcher getRequestDispatcher(final String path) {
 			asserter.assertDispatchPath(path);
 			return super.getRequestDispatcher(path);
 		}

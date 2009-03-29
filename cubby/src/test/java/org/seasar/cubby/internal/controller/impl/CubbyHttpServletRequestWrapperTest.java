@@ -51,9 +51,10 @@ import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
@@ -64,6 +65,8 @@ import org.seasar.cubby.spi.container.LookupException;
  */
 public class CubbyHttpServletRequestWrapperTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	private HttpServletRequest request;
 
 	private HttpServletResponse response;
@@ -72,10 +75,11 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	@Before
 	public void setupProvider() {
-		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
 		final MessagesBehaviour messagesBehaviour = new DefaultMessagesBehaviour();
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
@@ -86,11 +90,12 @@ public class CubbyHttpServletRequestWrapperTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardownProvider() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Before

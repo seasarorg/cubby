@@ -15,39 +15,93 @@
  */
 package org.seasar.cubby.plugins.guice;
 
-import org.junit.Before;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.getCurrentArguments;
+import static org.easymock.EasyMock.replay;
+
+import java.util.Hashtable;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.easymock.IAnswer;
 import org.junit.Test;
+import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class AbstractCubbyModuleTest {
 
-	@Before
-	public void setup() {
-		InjectorFactory.setModuleClassName(TestModule.class.getName());
-	}
-
 	@Test
-	public void configure() {
-		Injector injector = InjectorFactory.getInjector();
+	public void configure() throws Exception {
+		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		ServletContext servletContext = createNiceMock(ServletContext.class);
+		expect(servletContext.getInitParameter("cubby.guice.module"))
+				.andStubReturn(TestModule.class.getName());
+		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+		expect(servletContext.getAttribute((String) anyObject()))
+				.andStubAnswer(new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		servletContext.setAttribute((String) anyObject(), anyObject());
+		expectLastCall().andAnswer(new IAnswer<Void>() {
+
+			public Void answer() throws Throwable {
+				attributes.put((String) getCurrentArguments()[0],
+						getCurrentArguments()[1]);
+				return null;
+			}
+
+		});
+		replay(servletContext);
+
+		ServletContextEvent event = new ServletContextEvent(servletContext);
+		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		GuicePlugin guicePlugin = new GuicePlugin();
+		guicePlugin.contextInitialized(event);
+		pluginRegistry.register(guicePlugin);
+
+		Injector injector = Guice.createInjector(new TestModule());
 		System.out.println(injector);
 		Foo foo = injector.getInstance(Foo.class);
 		System.out.println(foo.pathResolver);
-		ConverterProvider converterProvider = ProviderFactory
-				.get(ConverterProvider.class);
-		System.out.println(converterProvider);
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute(HttpServletRequest request,
+					HttpServletResponse response) throws Exception {
+				ConverterProvider converterProvider = ProviderFactory
+						.get(ConverterProvider.class);
+				System.out.println(converterProvider);
+				return null;
+			}
+
+		});
 	}
 
 	public static class TestModule extends AbstractCubbyModule {
 
 		@Override
 		protected PathResolver getPathResolver() {
-			return new PathResolverImpl();
+			return new PathResolverImpl(new PathTemplateParserImpl());
 		}
 
 	}

@@ -15,7 +15,9 @@
  */
 package org.seasar.cubby.validator;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -37,19 +39,23 @@ import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.validator.validators.ArrayMaxSizeValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
 public class FieldValidationRuleTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	private ActionErrors errors = new ActionErrorsImpl();
 
 	@Before
 	public void setup() {
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
@@ -60,11 +66,12 @@ public class FieldValidationRuleTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardown() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

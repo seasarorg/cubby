@@ -15,41 +15,25 @@
  */
 package org.seasar.cubby.plugins.guice.spi;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.plugins.guice.InjectorFactory;
 import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 
 public class GuiceConverterProvider extends AbstractCachedConverterProvider {
 
-	private Collection<Converter> converters;
+	private final Collection<Converter> converters;
 
-	public GuiceConverterProvider() {
-		final Injector injector = InjectorFactory.getInjector();
-		final ConverterClassesFactory converterClassesFactory = injector
-				.getInstance(ConverterClassesFactory.class);
-		final List<Converter> converters = new ArrayList<Converter>();
-		for (final Class<? extends Converter> converterClass : converterClassesFactory
-				.getConverterClasses()) {
-			final Converter converter = injector.getInstance(converterClass);
-			converters.add(converter);
-		}
-		this.converters = Collections.unmodifiableCollection(converters);
+	@Inject
+	public GuiceConverterProvider(final Collection<Converter> converters) {
+		this.converters = converters;
 	}
 
 	@Override
 	protected Collection<Converter> getConverters() {
 		return converters;
-	}
-
-	public static interface ConverterClassesFactory {
-		Collection<Class<? extends Converter>> getConverterClasses();
 	}
 
 }

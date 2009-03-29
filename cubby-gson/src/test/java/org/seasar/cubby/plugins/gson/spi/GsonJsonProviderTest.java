@@ -22,9 +22,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.JsonProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
@@ -54,7 +55,8 @@ public class GsonJsonProviderTest {
 
 	@Test
 	public void execute() throws Exception {
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider() {
 
 					@Override
@@ -62,9 +64,11 @@ public class GsonJsonProviderTest {
 						throw new LookupException();
 					}
 				});
+		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		pluginRegistry.register(binderPlugin);
 
 		Foo bean = new Foo();
-		bean.setName("\u30ab\u30d3\u30fc");	// unicode
+		bean.setName("\u30ab\u30d3\u30fc"); // unicode
 		bean.setAge(30);
 		bean.field = "field";
 		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
@@ -81,11 +85,14 @@ public class GsonJsonProviderTest {
 		assertEquals(new Integer(30), result.getAge());
 		assertEquals("field", result.field);
 		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
+
+		pluginRegistry.clear();
 	}
 
 	@Test
 	public void executeByCustomizedGson() throws Exception {
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider() {
 
 					@Override
@@ -95,9 +102,11 @@ public class GsonJsonProviderTest {
 						return gson;
 					}
 				});
+		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		pluginRegistry.register(binderPlugin);
 
 		Foo bean = new Foo();
-		bean.setName("\u30ab\u30d3\u30fc");	// unicode
+		bean.setName("\u30ab\u30d3\u30fc"); // unicode
 		bean.setAge(30);
 		bean.field = "field";
 		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
@@ -114,6 +123,8 @@ public class GsonJsonProviderTest {
 		assertEquals(new Integer(30), result.getAge());
 		assertEquals("field", result.field);
 		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
+
+		pluginRegistry.clear();
 	}
 
 	public static class Foo {

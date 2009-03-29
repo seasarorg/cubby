@@ -51,9 +51,19 @@ import org.seasar.cubby.handler.impl.InitializeActionHandler;
 import org.seasar.cubby.handler.impl.InvocationActionHandler;
 import org.seasar.cubby.handler.impl.ParameterBindingActionHandler;
 import org.seasar.cubby.handler.impl.ValidationActionHandler;
-import org.seasar.cubby.plugins.guice.spi.GuiceActionHandlerChainProvider.ActionHandlerClassesFactory;
-import org.seasar.cubby.plugins.guice.spi.GuiceConverterProvider.ConverterClassesFactory;
+import org.seasar.cubby.plugins.guice.spi.GuiceActionHandlerChainProvider;
+import org.seasar.cubby.plugins.guice.spi.GuiceContainerProvider;
+import org.seasar.cubby.plugins.guice.spi.GuiceConverterProvider;
+import org.seasar.cubby.plugins.guice.spi.GuicePathResolverProvider;
+import org.seasar.cubby.plugins.guice.spi.GuiceRequestParserProvider;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.spi.ActionHandlerChainProvider;
+import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.spi.RequestParserProvider;
+import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -65,20 +75,15 @@ import com.google.inject.TypeLiteral;
 public abstract class AbstractCubbyModule extends AbstractModule {
 
 	public void configure() {
-		configureRequestParsersProvider();
-		configureConverterClassesProvider();
-		configureActionHandlerClassesProvider();
-		configurePathResolver();
-		configureMessagesBehaviour();
-		configureFormatPattern();
-	}
+		// ContainerProvider
+		bind(ContainerProvider.class).to(GuiceContainerProvider.class).in(
+				Singleton.class);
 
-	protected void configureConverterClassesProvider() {
-		bind(ConverterClassesFactory.class).toInstance(
-				new ConverterClassesFactoryImpl());
-	}
+		// BeanDescProvider
+		bind(BeanDescProvider.class).to(DefaultBeanDescProvider.class).in(
+				Singleton.class);
 
-	protected void configureRequestParsersProvider() {
+		// RequestParserProvider
 		bind(new TypeLiteral<Collection<RequestParser>>() {
 		}).toProvider(new Provider<Collection<RequestParser>>() {
 
@@ -90,72 +95,87 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 			}
 
 		}).in(Singleton.class);
+		bind(RequestParserProvider.class).to(GuiceRequestParserProvider.class)
+				.in(Singleton.class);
+
+		// ConverterProvider
+		bind(new TypeLiteral<Collection<Converter>>() {
+		}).toProvider(new Provider<Collection<Converter>>() {
+
+			@Inject
+			public Injector injector;
+
+			public Collection<Converter> get() {
+				return createConverters(injector);
+			}
+
+		}).in(Singleton.class);
+		bind(ConverterProvider.class).to(GuiceConverterProvider.class).in(
+				Singleton.class);
+
+		// ActionHandlerChainProvider
+		bind(new TypeLiteral<Collection<ActionHandler>>() {
+		}).toProvider(new Provider<Collection<ActionHandler>>() {
+
+			@Inject
+			public Injector injector;
+
+			public Collection<ActionHandler> get() {
+				return createActionHandlers(injector);
+			}
+
+		}).in(Singleton.class);
+		bind(ActionHandlerChainProvider.class).to(
+				GuiceActionHandlerChainProvider.class).in(Singleton.class);
+
+		// PathResolverProvider
+		bind(PathResolver.class).toInstance(getPathResolver());
+		bind(PathResolverProvider.class).to(GuicePathResolverProvider.class)
+				.in(Singleton.class);
+
+		configureMessagesBehaviour();
+		configureFormatPattern();
 	}
 
 	protected Collection<RequestParser> createRequestParsers(
 			final Injector injector) {
 		final Set<RequestParser> requestParsers = new HashSet<RequestParser>();
-		requestParsers
-				.add(injector.getInstance(DefaultRequestParser.class));
+		requestParsers.add(injector.getInstance(DefaultRequestParser.class));
+		// requestParsers.add(injector.getInstance(MultipartRequestParser.class));
 		return Collections.unmodifiableCollection(requestParsers);
 	}
 
-	protected Collection<Class<? extends Converter>> getConverterClasses() {
-		List<Class<? extends Converter>> converterClasses = new ArrayList<Class<? extends Converter>>();
-		converterClasses.add(BigDecimalConverter.class);
-		converterClasses.add(BigIntegerConverter.class);
-		converterClasses.add(BooleanConverter.class);
-		converterClasses.add(ByteArrayFileItemConverter.class);
-		converterClasses.add(ByteConverter.class);
-		converterClasses.add(CharacterConverter.class);
-		converterClasses.add(DateConverter.class);
-		converterClasses.add(DoubleConverter.class);
-		converterClasses.add(EnumConverter.class);
-		converterClasses.add(FloatConverter.class);
-		converterClasses.add(InputStreamFileItemConverter.class);
-		converterClasses.add(IntegerConverter.class);
-		converterClasses.add(LongConverter.class);
-		converterClasses.add(ShortConverter.class);
-		converterClasses.add(SqlDateConverter.class);
-		converterClasses.add(SqlTimeConverter.class);
-		converterClasses.add(SqlTimestampConverter.class);
-		return Collections.unmodifiableCollection(converterClasses);
+	protected Collection<Converter> createConverters(final Injector injector) {
+		final Set<Converter> converters = new HashSet<Converter>();
+		converters.add(injector.getInstance(BigDecimalConverter.class));
+		converters.add(injector.getInstance(BigIntegerConverter.class));
+		converters.add(injector.getInstance(BooleanConverter.class));
+		converters.add(injector.getInstance(ByteArrayFileItemConverter.class));
+		converters.add(injector.getInstance(ByteConverter.class));
+		converters.add(injector.getInstance(CharacterConverter.class));
+		converters.add(injector.getInstance(DateConverter.class));
+		converters.add(injector.getInstance(DoubleConverter.class));
+		converters.add(injector.getInstance(EnumConverter.class));
+		converters.add(injector.getInstance(FloatConverter.class));
+		converters
+				.add(injector.getInstance(InputStreamFileItemConverter.class));
+		converters.add(injector.getInstance(IntegerConverter.class));
+		converters.add(injector.getInstance(LongConverter.class));
+		converters.add(injector.getInstance(ShortConverter.class));
+		converters.add(injector.getInstance(SqlDateConverter.class));
+		converters.add(injector.getInstance(SqlTimeConverter.class));
+		converters.add(injector.getInstance(SqlTimestampConverter.class));
+		return Collections.unmodifiableCollection(converters);
 	}
 
-	private class ConverterClassesFactoryImpl implements
-			ConverterClassesFactory {
-
-		public Collection<Class<? extends Converter>> getConverterClasses() {
-			return AbstractCubbyModule.this.getConverterClasses();
-		}
-
-	}
-
-	protected void configureActionHandlerClassesProvider() {
-		bind(ActionHandlerClassesFactory.class).toInstance(
-				new ActionHandlersFactoryImpl());
-	}
-
-	private class ActionHandlersFactoryImpl implements
-			ActionHandlerClassesFactory {
-
-		public Collection<Class<? extends ActionHandler>> getActionHandlerClasses() {
-			return AbstractCubbyModule.this.getActionHandlerClasses();
-		}
-
-	}
-
-	protected Collection<Class<? extends ActionHandler>> getActionHandlerClasses() {
-		Collection<Class<? extends ActionHandler>> actionHandlerClasses = new ArrayList<Class<? extends ActionHandler>>();
-		actionHandlerClasses.add(InitializeActionHandler.class);
-		actionHandlerClasses.add(ParameterBindingActionHandler.class);
-		actionHandlerClasses.add(ValidationActionHandler.class);
-		actionHandlerClasses.add(InvocationActionHandler.class);
-		return Collections.unmodifiableCollection(actionHandlerClasses);
-	}
-
-	protected void configurePathResolver() {
-		bind(PathResolver.class).toInstance(getPathResolver());
+	protected Collection<ActionHandler> createActionHandlers(Injector injector) {
+		final List<ActionHandler> actionHandlers = new ArrayList<ActionHandler>();
+		actionHandlers.add(injector.getInstance(InitializeActionHandler.class));
+		actionHandlers.add(injector
+				.getInstance(ParameterBindingActionHandler.class));
+		actionHandlers.add(injector.getInstance(ValidationActionHandler.class));
+		actionHandlers.add(injector.getInstance(InvocationActionHandler.class));
+		return Collections.unmodifiableCollection(actionHandlers);
 	}
 
 	protected abstract PathResolver getPathResolver();

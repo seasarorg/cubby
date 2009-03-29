@@ -43,14 +43,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 public abstract class AbstractTagTestCase {
+
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	protected MockJspFragment jspBody;
 
@@ -115,7 +118,8 @@ public abstract class AbstractTagTestCase {
 
 	@Before
 	public void setupContainer() {
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
@@ -123,13 +127,14 @@ public abstract class AbstractTagTestCase {
 					}
 
 				}));
-		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardownContainer() {
-		ProviderFactory.clear();
+	public void teardownPluginRegistry() {
+		pluginRegistry.clear();
 	}
 
 	protected Element getResultAsElementFromContext() throws JDOMException,

@@ -13,14 +13,15 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.routing.impl;
+package org.seasar.cubby.routing.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.seasar.cubby.internal.routing.PathTemplateException;
-import org.seasar.cubby.internal.routing.PathTemplateParser;
+import org.seasar.cubby.routing.PathTemplateException;
+import org.seasar.cubby.routing.PathTemplateParser;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 
 public class PathTemplateParserImplTest {
 

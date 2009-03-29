@@ -16,45 +16,40 @@
 package org.seasar.cubby.spi;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import org.junit.After;
 import org.junit.Test;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 
 public class ProviderFactoryTest {
 
-	@After
-	public void teardown() {
-		ProviderFactory.clear();
-	}
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	@Test
 	public void getSingletonInstanceInMultiThread() throws Exception {
-		final int size = 500;
-		ExecutorService executor = Executors.newFixedThreadPool(size);
-		List<Future<FooProvider>> futures = new ArrayList<Future<FooProvider>>(
-				size);
-		for (int i = 0; i < size; i++) {
-			futures.add(executor.submit(new Callable<FooProvider>() {
-
-				public FooProvider call() throws Exception {
-					return ProviderFactory.get(FooProvider.class);
-				}
-
-			}));
+		try {
+			ProviderFactory.get(FooProvider.class);
+			fail();
+		} catch (IllegalArgumentException e) {
+			// ok
 		}
-		Iterator<Future<FooProvider>> iterator = futures.iterator();
-		FooProvider base = iterator.next().get();
-		while (iterator.hasNext()) {
-			FooProvider another = iterator.next().get();
-			assertSame(base, another);
+
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		FooProviderImpl fooProviderImpl = new FooProviderImpl();
+		binderPlugin.bind(FooProvider.class).toInstance(fooProviderImpl);
+		pluginRegistry.register(binderPlugin);
+
+		assertSame(fooProviderImpl, ProviderFactory.get(FooProvider.class));
+		assertSame(fooProviderImpl, ProviderFactory.get(FooProvider.class)); // twice
+
+		pluginRegistry.clear();
+
+		try {
+			ProviderFactory.get(FooProvider.class);
+			fail();
+		} catch (IllegalArgumentException e) {
+			// ok
 		}
 	}
 

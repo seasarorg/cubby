@@ -30,7 +30,7 @@ import org.seasar.framework.unit.S2TigerTestCase;
 /**
  * CubbyのActionクラスの単体テスト用のクラスです。
  * <p>
- * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。 詳細はCubbyドキュメントの「アクションのテスト」を参照下さい。
+ * このクラスを継承して、それぞれのActionクラス用の単体テストを作成します。詳細はドキュメントの「アクションのテスト」を参照下さい。
  * 
  * <pre>
  * public class HelloActionTest extends CubbyTestCase {

@@ -15,13 +15,13 @@
  */
 package org.seasar.cubby.internal.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.seasar.cubby.internal.util.ServiceLoader;
-import org.seasar.cubby.internal.util.ServiceLoadingException;
-
-import static org.junit.Assert.*;
 
 public class ServiceLoaderTest {
 
@@ -42,17 +42,4 @@ public class ServiceLoaderTest {
 		assertFalse(iterator.hasNext());
 	}
 
-	@Test
-	public void load1() {
-		ServiceLoader<FooProvider> serviceLoader = ServiceLoader
-				.load(FooProvider.class);
-		try {
-			FooProvider provider = serviceLoader.getProvider();
-			System.out.println(provider);
-			fail();
-		} catch (ServiceLoadingException e) {
-			e.printStackTrace();
-			assertTrue(true);
-		}
-	}
 }

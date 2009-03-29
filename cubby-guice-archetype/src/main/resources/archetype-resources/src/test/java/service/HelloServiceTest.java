@@ -15,10 +15,13 @@
  */
 package ${package}.service;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class HelloServiceTest extends TestCase {
+import org.junit.Test;
 
+public class HelloServiceTest {
+
+	@Test
 	public void testSayHello() {
 		HelloService hello = new HelloService();
 		assertEquals("Hello!", hello.getMessage());

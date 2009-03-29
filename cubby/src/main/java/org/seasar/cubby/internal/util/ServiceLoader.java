@@ -157,28 +157,6 @@ public class ServiceLoader<S> implements Iterable<S> {
 	}
 
 	/**
-	 * 単一のプロバイダを取得します。
-	 * <p>
-	 * プロバイダが見つからなかった場合、またはプロバイダが複数見つかった場合は例外が発生します。
-	 * </p>
-	 * 
-	 * @return プロバイダ
-	 * @throws ServiceLoadingException
-	 *             プロバイダが見つからなかった場合、またはプロバイダが複数見つかった場合
-	 */
-	public S getProvider() {
-		final Iterator<S> iterator = this.iterator();
-		if (!iterator.hasNext()) {
-			throw new ServiceLoadingException(format("ECUB0053", service));
-		}
-		final S provider = iterator.next();
-		if (iterator.hasNext()) {
-			throw new ServiceLoadingException(format("ECUB0054", service));
-		}
-		return provider;
-	}
-
-	/**
 	 * プロバイダの {@link Iterator} を取得します。
 	 * 
 	 * @return プロバイダの {@link Iterator}

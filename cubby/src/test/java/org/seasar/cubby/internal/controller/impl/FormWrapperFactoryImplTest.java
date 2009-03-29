@@ -36,22 +36,26 @@ import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 public class FormWrapperFactoryImplTest {
 
-	public FormWrapperFactory formWrapperFactory;
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
+	private FormWrapperFactory formWrapperFactory;
 
 	@Before
 	public void setup() {
 		final FormatPattern formatPattern = new DefaultFormatPattern();
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		final BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
 					public <T> T lookup(Class<T> type) {
@@ -61,17 +65,19 @@ public class FormWrapperFactoryImplTest {
 						throw new LookupException(type.getName());
 					}
 				}));
-		ProviderFactory.bind(BeanDescProvider.class).toInstance(
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
 				new DefaultBeanDescProvider());
-		ProviderFactory.bind(ConverterProvider.class).toInstance(
+		binderPlugin.bind(ConverterProvider.class).toInstance(
 				new MockConverterProvider(new BraceConverter()));
+
+		pluginRegistry.register(binderPlugin);
 
 		formWrapperFactory = new FormWrapperFactoryImpl();
 	}
 
 	@After
 	public void teadown() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

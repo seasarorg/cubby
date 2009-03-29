@@ -39,22 +39,26 @@ import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.internal.controller.RequestProcessor;
 import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.RequestParserProvider;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
 public class RequestProcessorImplTest {
 
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	private RequestProcessor requestProcessor = new RequestProcessorImpl();
 
 	@Before
 	public void setupProvider() {
+		final BinderPlugin binderPlugin = new BinderPlugin();
+
 		final List<RequestParser> requestParsers = new ArrayList<RequestParser>();
 		requestParsers.add(new DefaultRequestParser());
-
-		ProviderFactory.bind(RequestParserProvider.class).toInstance(
+		binderPlugin.bind(RequestParserProvider.class).toInstance(
 				new AbstractRequestParserProvider() {
 
 					@Override
@@ -63,11 +67,13 @@ public class RequestProcessorImplTest {
 					}
 
 				});
+
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
 	public void teardownProvider() {
-		ProviderFactory.clear();
+		pluginRegistry.clear();
 	}
 
 	@Test

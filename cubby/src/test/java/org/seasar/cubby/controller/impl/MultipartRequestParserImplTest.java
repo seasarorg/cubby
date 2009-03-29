@@ -40,11 +40,14 @@ import org.junit.Test;
 import org.seasar.cubby.controller.RequestParseException;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.mock.MockContainerProvider;
+import org.seasar.cubby.plugin.BinderPlugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 
 public class MultipartRequestParserImplTest {
+
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	private RequestParser requestParser = new MultipartRequestParser();
 
@@ -69,10 +72,11 @@ public class MultipartRequestParserImplTest {
 
 		final FileUpload fileUpload = new ServletFileUpload();
 		final RequestContext requestContext = new ServletRequestContext(request);
-		ProviderFactory.bind(ContainerProvider.class).toInstance(
+		BinderPlugin binderPlugin = new BinderPlugin();
+		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
-					public <T> T lookup(Class<T> type) {
+					public <T> T lookup(final Class<T> type) {
 						if (FileUpload.class.equals(type)) {
 							return type.cast(fileUpload);
 						}
@@ -85,11 +89,12 @@ public class MultipartRequestParserImplTest {
 					}
 
 				}));
+		pluginRegistry.register(binderPlugin);
 	}
 
 	@After
-	public void teardown() {
-		ProviderFactory.clear();
+	public void tearDownProvider() {
+		pluginRegistry.clear();
 	}
 
 	@Test
@@ -118,8 +123,8 @@ public class MultipartRequestParserImplTest {
 	}
 
 	public void testPriority() {
-		assertEquals(DefaultRequestParser.DEFAULT_PRIORITY - 1,
-				requestParser.getPriority());
+		assertEquals(DefaultRequestParser.DEFAULT_PRIORITY - 1, requestParser
+				.getPriority());
 	}
 
 }
