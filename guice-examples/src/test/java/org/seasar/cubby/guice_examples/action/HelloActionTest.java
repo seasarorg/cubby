@@ -1,23 +1,35 @@
 package org.seasar.cubby.guice_examples.action;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.guice_examples.ApplicationModule;
-import org.seasar.cubby.plugins.guice.InjectorFactory;
+import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugins.guice.GuicePlugin;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import com.google.inject.Guice;
 import com.google.inject.servlet.GuiceFilter;
 
 public class HelloActionTest {
 
+	private PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	@Before
-	public void before() throws Exception {
-		InjectorFactory.setModuleClassName(ApplicationModule.class.getName());
+	public void before() {
+		GuicePlugin guicePlugin = new GuicePlugin();
+		guicePlugin.setInjector(Guice.createInjector(new ApplicationModule()));
+		pluginRegistry.register(guicePlugin);
+	}
+
+	@After
+	public void after() {
+		pluginRegistry.clear();
 	}
 
 	@Test

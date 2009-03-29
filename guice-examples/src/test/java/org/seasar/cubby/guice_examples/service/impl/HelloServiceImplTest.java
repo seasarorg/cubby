@@ -1,12 +1,15 @@
 package org.seasar.cubby.guice_examples.service.impl;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-import org.seasar.cubby.guice_examples.service.impl.HelloServiceImpl;
+import org.junit.Test;
 
-public class HelloServiceImplTest extends TestCase {
-	public void testSayHello() {
+public class HelloServiceImplTest {
+
+	@Test
+	public void sayHello() {
 		HelloServiceImpl hello = new HelloServiceImpl();
 		assertEquals("Hello!", hello.getMessage());
 	}
+
 }
