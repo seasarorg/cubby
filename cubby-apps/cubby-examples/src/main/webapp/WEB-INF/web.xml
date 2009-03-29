@@ -5,7 +5,7 @@
 		version="2.5">
 
 	<listener>
-		<listener-class>org.seasar.cubby.plugins.s2.servlet.CubbyS2Listener</listener-class>
+		<listener-class>org.seasar.cubby.servlet.CubbyServletContextListener</listener-class>
 	</listener>
 
 	<filter>

@@ -2,17 +2,19 @@ package org.seasar.cubby.wiki;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.util.ActionUtils;
 import org.seasar.cubby.wiki.action.PageAction;
 import org.seasar.cubby.wiki.converter.PageConverter;
@@ -20,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.servlet.ServletModule;
@@ -74,17 +77,18 @@ public class ApplicationModule extends AbstractModule {
 
 		@Override
 		protected PathResolver getPathResolver() {
-			PathResolver pathResolver = new PathResolverImpl();
+			PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
+			PathResolver pathResolver = new PathResolverImpl(pathTemplateParser);
 			pathResolver.add(PageAction.class);
 			return pathResolver;
 		}
 
 		@Override
-		protected Collection<Class<? extends Converter>> getConverterClasses() {
-			List<Class<? extends Converter>> converterClasses = new ArrayList<Class<? extends Converter>>();
-			converterClasses.addAll(super.getConverterClasses());
-			converterClasses.add(PageConverter.class);
-			return Collections.unmodifiableCollection(converterClasses);
+		protected Collection<Converter> createConverters(Injector injector) {
+			Set<Converter> converters = new HashSet<Converter>(super
+					.createConverters(injector));
+			converters.add(injector.getInstance(PageConverter.class));
+			return Collections.unmodifiableCollection(converters);
 		}
 
 	}

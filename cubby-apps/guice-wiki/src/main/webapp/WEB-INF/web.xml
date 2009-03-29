@@ -31,7 +31,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
+		<listener-class>org.seasar.cubby.servlet.CubbyServletContextListener</listener-class>
 	</listener>
 
 	<filter>

@@ -11,27 +11,23 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.seasar.cubby.plugins.guice.InjectorFactory;
-
-import com.google.inject.Injector;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 
 public class TransactionFilter implements Filter {
 
-	private EntityManager entityManager;
-
 	public void init(FilterConfig config) throws ServletException {
-		final Injector injector = InjectorFactory.getInjector();
-		this.entityManager = injector.getInstance(EntityManager.class);
 	}
 
 	public void destroy() {
-		if (entityManager != null) {
-			entityManager.close();
-		}
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
+		EntityManager entityManager = container.lookup(EntityManager.class);
 		EntityTransaction transaction = entityManager.getTransaction();
 		try {
 			transaction.begin();

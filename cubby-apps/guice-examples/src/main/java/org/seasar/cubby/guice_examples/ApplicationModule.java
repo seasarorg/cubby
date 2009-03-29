@@ -6,7 +6,9 @@ import org.seasar.cubby.guice_examples.service.HelloService;
 import org.seasar.cubby.guice_examples.service.impl.HelloServiceImpl;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
+import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
+import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
@@ -19,7 +21,8 @@ public class ApplicationModule extends AbstractModule {
 
 			@Override
 			protected PathResolver getPathResolver() {
-				final PathResolver pathResolver = new PathResolverImpl();
+				final PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
+				final PathResolver pathResolver = new PathResolverImpl(pathTemplateParser);
 				pathResolver.add(IndexAction.class);
 				pathResolver.add(HelloAction.class);
 				return pathResolver;
