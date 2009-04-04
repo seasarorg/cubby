@@ -36,7 +36,7 @@ import org.seasar.cubby.action.Forward;
  * @author baba
  * @since 1.0.0
  */
-public abstract class DefaultValidationRules implements ValidationRules {
+public abstract class DefaultValidationRules extends AbstractValidationRules {
 
 	/** データ型を検証するフェーズ。 */
 	public static final ValidationPhase DATA_TYPE = new ValidationPhase();
