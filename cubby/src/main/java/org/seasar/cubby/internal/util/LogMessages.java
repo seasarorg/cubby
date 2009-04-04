@@ -28,7 +28,7 @@ public class LogMessages {
 
 	/** リソースバンドル。 */
 	private static ResourceBundle resourceBundle = ResourceBundle
-			.getBundle("CUBMessages");
+			.getBundle("org.seasar.cubby.CUBMessages");
 
 	/**
 	 * 指定されたキーの文字列を取得し、指定された引数をフォーマットします。

@@ -32,12 +32,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
-import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.internal.validator.impl.ValidationProcessorImpl;
-import org.seasar.cubby.mock.MockActionContext;
+import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.plugin.BinderPlugin;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.BeanDescProvider;
@@ -47,7 +45,8 @@ public class UserValidationRuleTest {
 
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
-	private ValidationProcessorImpl validationProcessor = new ValidationProcessorImpl();
+	// private ValidationProcessorImpl validationProcessor = new
+	// ValidationProcessorImpl();
 
 	private MockAction action = new MockAction();
 
@@ -67,24 +66,25 @@ public class UserValidationRuleTest {
 	@Test
 	public void userValidation() throws Exception {
 		Method method = MockAction.class.getMethod("dummy");
-		ActionContext actionContext = new MockActionContext(action,
-				MockAction.class, method);
 
 		Map<String, Object[]> params = new HashMap<String, Object[]>();
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getAttribute(ATTR_PARAMS)).andReturn(params).anyTimes();
 		replay(request);
 
-		validationProcessor.process(request, actionContext);
+		ActionErrors actionErrors = new ActionErrorsImpl();
+
+		Validation validation = ValidationUtils.getValidation(method);
+		ValidationRules rules = ValidationUtils.getValidationRules(action,
+				validation.rules());
 
 		action.value2 = "ng";
 		try {
-			validationProcessor.process(request, actionContext);
+			rules.validate(params, action, actionErrors);
 			fail();
 		} catch (ValidationException e) {
-			ActionErrors errors = actionContext.getActionErrors();
-			assertEquals(1, errors.getAll().size());
-			assertEquals("validation failed", errors.getAll().get(0));
+			assertEquals(1, actionErrors.getAll().size());
+			assertEquals("validation failed", actionErrors.getAll().get(0));
 		}
 	}
 
