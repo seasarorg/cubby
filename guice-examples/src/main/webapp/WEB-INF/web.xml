@@ -9,10 +9,6 @@
 		<param-value>org.seasar.cubby.guice_examples.ApplicationModule</param-value>
 	</context-param>
 
-	<listener>
-		<listener-class>org.seasar.cubby.servlet.CubbyServletContextListener</listener-class>
-	</listener>
-
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
@@ -73,6 +69,12 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
+
+	<servlet>
+		<servlet-name>cubbyServlet</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
 	<servlet>
 		<servlet-name>cubbyAdminServlet</servlet-name>

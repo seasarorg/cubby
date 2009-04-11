@@ -30,10 +30,6 @@
 		<listener-class>org.h2.server.web.DbStarter</listener-class>
 	</listener>
 
-	<listener>
-		<listener-class>org.seasar.cubby.servlet.CubbyServletContextListener</listener-class>
-	</listener>
-
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
@@ -105,6 +101,12 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
+
+	<servlet>
+		<servlet-name>cubbyServlet</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
 	<!-- 
 	<servlet>
