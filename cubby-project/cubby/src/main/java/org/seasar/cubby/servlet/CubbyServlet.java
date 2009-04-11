@@ -17,12 +17,17 @@ package org.seasar.cubby.servlet;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import org.seasar.cubby.internal.util.ServiceLoader;
 import org.seasar.cubby.plugin.Plugin;
@@ -31,32 +36,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * サーブレットコンテキストの開始、シャットダウンの通知を受けて、Cubby の初期化、シャットダウン処理を行います。
- * <p>
- * Web アプリケーションの配備記述子として設定してください。
- * </p>
+ * プラグインの初期化などを行う <code>Servlet</code> です。
  * 
  * @author baba
  */
-public class CubbyServletContextListener implements ServletContextListener {
+public class CubbyServlet extends GenericServlet {
+
+	/** シリアルバージョン UID。 */
+	private static final long serialVersionUID = 1L;
 
 	/** ロガー。 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(CubbyServletContextListener.class);
+			.getLogger(CubbyServlet.class);
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * プラグインの初期化とレジストリへの登録を行います。
 	 * </p>
-	 * 
-	 * @see Plugins#initialize(ServletContextEvent)
 	 */
-	public void contextInitialized(final ServletContextEvent event) {
+	@Override
+	public void init(final ServletConfig config) throws ServletException {
+		super.init(config);
+
 		final Collection<Plugin> plugins = loadPlugins();
-		initializePlugins(event, plugins);
+		initializePlugins(config, plugins);
 		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		registerPlugins(pluginRegistry, plugins);
+		readyPlugins(plugins);
 	}
 
 	/**
@@ -67,10 +74,21 @@ public class CubbyServletContextListener implements ServletContextListener {
 	 * 
 	 * @see Plugins#destroy(ServletContextEvent)
 	 */
-	public void contextDestroyed(final ServletContextEvent event) {
+	@Override
+	public void destroy() {
+		super.destroy();
 		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		final Set<? extends Plugin> plugins = pluginRegistry.getPlugins();
-		destroyPlugins(event, plugins);
+		destroyPlugins(plugins);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void service(ServletRequest req, ServletResponse res)
+			throws ServletException, IOException {
+		// do nothing
 	}
 
 	/**
@@ -87,6 +105,28 @@ public class CubbyServletContextListener implements ServletContextListener {
 	}
 
 	/**
+	 * プラグインを初期化します。
+	 * 
+	 * @param config
+	 *            <code>CubbyServlet</code> の設定や初期化パラメータが含まれている
+	 *            <code>ServletConfig</code> オブジェクト
+	 * @param plugins
+	 *            プラグインのコレクション
+	 */
+	protected void initializePlugins(final ServletConfig config,
+			final Collection<Plugin> plugins) {
+		for (final Plugin plugin : plugins) {
+			if (logger.isDebugEnabled()) {
+				logger.debug(format("DCUB0019", plugin));
+			}
+			plugin.initialize(config);
+			if (logger.isInfoEnabled()) {
+				logger.info(format("ICUB0002", plugin));
+			}
+		}
+	}
+
+	/**
 	 * プラグインをレジストリに登録します。
 	 * 
 	 * @param pluginRegistry
@@ -97,27 +137,30 @@ public class CubbyServletContextListener implements ServletContextListener {
 	protected void registerPlugins(final PluginRegistry pluginRegistry,
 			final Collection<Plugin> plugins) {
 		for (final Plugin plugin : plugins) {
+			if (logger.isDebugEnabled()) {
+				logger.debug(format("DCUB0020", plugin));
+			}
 			pluginRegistry.register(plugin);
+			if (logger.isInfoEnabled()) {
+				logger.info(format("ICUB0003", plugin));
+			}
 		}
 	}
 
 	/**
-	 * プラグインを初期化します。
+	 * プラグインを準備します。
 	 * 
-	 * @param event
-	 *            サーブレットコンテキストイベント
 	 * @param plugins
-	 *            初期化するプラグインのコレクション
+	 *            プラグインのコレクション
 	 */
-	protected void initializePlugins(final ServletContextEvent event,
-			final Collection<Plugin> plugins) {
+	private void readyPlugins(final Collection<Plugin> plugins) {
 		for (final Plugin plugin : plugins) {
 			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0019", plugin));
+				logger.debug(format("DCUB0021", plugin));
 			}
-			plugin.contextInitialized(event);
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0020", plugin));
+			plugin.ready();
+			if (logger.isInfoEnabled()) {
+				logger.info(format("ICUB0004", plugin));
 			}
 		}
 	}
@@ -125,20 +168,17 @@ public class CubbyServletContextListener implements ServletContextListener {
 	/**
 	 * プラグインを破棄します。
 	 * 
-	 * @param event
-	 *            サーブレットコンテキストイベント
 	 * @param plugins
-	 *            破棄するプラグインのコレクション
+	 *            プラグインのコレクション
 	 */
-	protected void destroyPlugins(final ServletContextEvent event,
-			final Set<? extends Plugin> plugins) {
+	protected void destroyPlugins(final Set<? extends Plugin> plugins) {
 		for (final Plugin plugin : plugins) {
 			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0021", plugin));
-			}
-			plugin.contextDestroyed(event);
-			if (logger.isDebugEnabled()) {
 				logger.debug(format("DCUB0022", plugin));
+			}
+			plugin.destroy();
+			if (logger.isInfoEnabled()) {
+				logger.info(format("ICUB0005", plugin));
 			}
 		}
 	}

@@ -29,22 +29,14 @@ import org.seasar.cubby.spi.container.Container;
  */
 public class ConversionHelperImpl implements ConversionHelper {
 
-	/** 日付や時刻のフォーマットパターンを保持するクラス。 */
-	private final FormatPattern formatPattern;
-
-	/**
-	 * 新しい変換のヘルパクラスを生成します。
-	 */
-	public ConversionHelperImpl() {
-		final Container container = ProviderFactory
-				.get(ContainerProvider.class).getContainer();
-		this.formatPattern = container.lookup(FormatPattern.class);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public FormatPattern getFormatPattern() {
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
+		final FormatPattern formatPattern = container
+				.lookup(FormatPattern.class);
 		return formatPattern;
 	}
 

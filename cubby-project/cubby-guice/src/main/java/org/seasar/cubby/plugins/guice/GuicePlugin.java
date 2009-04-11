@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.spi.ActionHandlerChainProvider;
@@ -95,12 +95,48 @@ public class GuicePlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextInitialized(final ServletContextEvent event) {
-		final ServletContext servletContext = event.getServletContext();
+	public void initialize(final ServletConfig config) {
+		final ServletContext servletContext = config.getServletContext();
 		final String moduleClassName = servletContext
 				.getInitParameter(MODULE_INIT_PARAM_NAME);
 		final Module module = createModule(moduleClassName);
 		this.injector = Guice.createInjector(module);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void ready() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void destroy() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public <S extends Provider> S getProvider(final Class<S> service) {
+		return service.cast(injector.getInstance(service));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<Class<? extends Provider>> getSupportedServices() {
+		return SUPPORTED_SERVICES;
+	}
+
+	/**
+	 * インジェクタを設定します。
+	 * 
+	 * @param injector
+	 *            インジェクタ
+	 */
+	public void setInjector(final Injector injector) {
+		this.injector = injector;
 	}
 
 	/**
@@ -110,7 +146,7 @@ public class GuicePlugin implements Plugin {
 	 *            モジュールのクラス名
 	 * @return インジェクタ
 	 */
-	private Module createModule(final String moduleClassName) {
+	protected Module createModule(final String moduleClassName) {
 		final ClassLoader loader = Thread.currentThread()
 				.getContextClassLoader();
 		try {
@@ -127,36 +163,6 @@ public class GuicePlugin implements Plugin {
 			throw new IllegalArgumentException("Illegal module "
 					+ moduleClassName, e);
 		}
-	}
-
-	/**
-	 * インジェクタを設定します。
-	 * 
-	 * @param injector
-	 *            インジェクタ
-	 */
-	public void setInjector(final Injector injector) {
-		this.injector = injector;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void contextDestroyed(final ServletContextEvent event) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public <S extends Provider> S getProvider(final Class<S> service) {
-		return service.cast(injector.getInstance(service));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<Class<? extends Provider>> getSupportedServices() {
-		return SUPPORTED_SERVICES;
 	}
 
 }

@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.plugins.s2.el;
 
+import static org.seasar.framework.message.MessageFormatter.getMessage;
+
 import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -140,11 +142,8 @@ public class S2BeanELResolver extends ELResolver {
 		}
 
 		if (this.readOnly) {
-			// TODO message
-			// throw new PropertyNotWritableException(message(context,
-			// "resolverNotWriteable", new Object[] { base.getClass()
-			// .getName() }));
-			throw new PropertyNotWritableException("resolverNotWriteable");
+			throw new PropertyNotWritableException(getMessage("ECUB0001",
+					new Object[] { base.getClass().getName() }));
 		}
 
 		try {

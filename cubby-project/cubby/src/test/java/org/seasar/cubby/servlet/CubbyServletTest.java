@@ -1,7 +1,13 @@
 package org.seasar.cubby.servlet;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,27 +15,31 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 import org.junit.Test;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.Provider;
 
-public class CubbyServletContextListenerTest {
+public class CubbyServletTest {
 
 	private boolean initialized = false;
+
+	private boolean ready = false;
 
 	private boolean destroyed = false;
 
 	@Test
-	public void initialize() {
-		ServletContext servletContext = createMock(ServletContext.class);
-		replay(servletContext);
+	public void initialize() throws ServletException {
+		ServletConfig servletConfig = createMock(ServletConfig.class);
+		replay(servletConfig);
 
-		ServletContextListener servletContextListener = new CubbyServletContextListener() {
+		Servlet servlet = new CubbyServlet() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Collection<Plugin> loadPlugins() {
@@ -39,7 +49,6 @@ public class CubbyServletContextListenerTest {
 		};
 
 		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-		ServletContextEvent event = new ServletContextEvent(servletContext);
 
 		assertNull(pluginRegistry.getPlugin(AssertPlugin.class));
 		try {
@@ -50,17 +59,19 @@ public class CubbyServletContextListenerTest {
 		}
 
 		assertFalse(initialized);
-		servletContextListener.contextInitialized(event);
+		assertFalse(ready);
+		servlet.init(servletConfig);
 		assertTrue(initialized);
+		assertTrue(ready);
 
 		assertNotNull(pluginRegistry.getPlugin(AssertPlugin.class));
 		assertNotNull(pluginRegistry.getProvider(AssertProvider.class));
 
 		assertFalse(destroyed);
-		servletContextListener.contextDestroyed(event);
+		servlet.destroy();
 		assertTrue(destroyed);
 
-		verify(servletContext);
+		verify(servletConfig);
 	}
 
 	private class AssertProvider implements Provider {
@@ -76,11 +87,15 @@ public class CubbyServletContextListenerTest {
 
 	private class AssertPlugin implements Plugin {
 
-		public void contextInitialized(ServletContextEvent event) {
+		public void initialize(ServletConfig config) {
 			initialized = true;
 		}
 
-		public void contextDestroyed(ServletContextEvent event) {
+		public void ready() {
+			ready = true;
+		}
+
+		public void destroy() {
 			destroyed = true;
 		}
 

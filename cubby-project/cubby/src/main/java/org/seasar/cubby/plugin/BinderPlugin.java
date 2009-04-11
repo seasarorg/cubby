@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletConfig;
 
 import org.seasar.cubby.internal.util.ServiceLoader;
 import org.seasar.cubby.spi.Provider;
@@ -40,13 +40,19 @@ public class BinderPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextInitialized(ServletContextEvent event) {
+	public void initialize(final ServletConfig config) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextDestroyed(ServletContextEvent event) {
+	public void ready() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void destroy() {
 	}
 
 	/**

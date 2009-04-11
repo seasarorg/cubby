@@ -59,8 +59,18 @@
       <id>sakamoto</id>
       <name>SAKAMOTO Takashi</name>
       <email>sakamoto_at_nulab.co.jp</email>
-      <organization>Nulab Inc.</organization>
-      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>someda</id>
+      <name>SOMEDA Takashi</name>
+      <email>takashi.someda_at_gmail.com</email>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>sugmak</id>
+      <name>SUGIYAMA Makoto</name>
+      <email>sugiyama.makoto+cubby_at_gmail.com</email>
       <timezone>+9</timezone>
     </developer>
   </developers>
@@ -77,6 +87,22 @@
     <system>JIRA</system>
     <url>https://www.seasar.org/issues/browse/CUBBY</url>
   </issueManagement>
+  <ciManagement>
+    <system>hudson</system>
+    <url>https://www.seasar.org/hudson/job/Cubby-2.0.x/</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>true</sendOnWarning>
+        <configuration>
+          <recipients>cubby-dev@ml.seasar.org</recipients>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</developerConnection>
@@ -313,6 +339,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
             <link>http://s2container.seasar.org/2.4/s2-extension/ja/apidocs/</link>
             <link>http://s2container.seasar.org/2.4/s2-tiger/ja/apidocs/</link>
             <link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
+            <link>http://google-gson.googlecode.com/svn/tags/1.3/docs/javadocs/</link>
           </links>
         </configuration>
       </plugin>
@@ -382,7 +409,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
-      <url>dav:https://www.seasar.org/site/cubby/2</url>
+      <url>dav:https://www.seasar.org/site/cubby/20x</url>
      </site>
   </distributionManagement>
   <modules>
@@ -391,7 +418,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     <module>cubby-s2</module>
     <module>cubby-guice</module>
     <module>cubby-gson</module>
-    <!-- module>cubby-oval</module -->
+    <!--  module>cubby-oval</module -->
     <module>cubby-s2-archetype</module>
     <module>cubby-guice-archetype</module>
     <module>cubby-admin</module>

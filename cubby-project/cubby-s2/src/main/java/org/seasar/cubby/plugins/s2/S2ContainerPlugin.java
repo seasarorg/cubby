@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.el.ELResolver;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
@@ -36,6 +36,7 @@ import org.seasar.cubby.spi.Provider;
 import org.seasar.cubby.spi.RequestParserProvider;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
+import org.seasar.framework.log.Logger;
 
 /**
  * Cubby を <a href="http://s2container.seasar.org/2.4/ja/">S2Container</a>
@@ -57,6 +58,10 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
  */
 public class S2ContainerPlugin implements Plugin {
 
+	/** ロガー。 */
+	private static final Logger logger = Logger
+			.getLogger(S2ContainerPlugin.class);
+
 	/** このプラグインが提供するサービスプロバイダのセット。 */
 	private static final Set<Class<? extends Provider>> SUPPORTED_SERVICES;
 	static {
@@ -70,25 +75,39 @@ public class S2ContainerPlugin implements Plugin {
 		SUPPORTED_SERVICES = Collections.unmodifiableSet(services);
 	}
 
+	/** サーブレットコンテキスト。 */
+	private ServletContext servletContext;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void initialize(final ServletConfig config) {
+		this.servletContext = config.getServletContext();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * {@link S2BeanELResolver} を {@link JspApplicationContext} に登録します。
 	 * </p>
 	 */
-	public void contextInitialized(final ServletContextEvent event) {
-		final ServletContext servletContext = event.getServletContext();
+	public void ready() {
 		final JspApplicationContext jspApplicationContext = JspFactory
 				.getDefaultFactory().getJspApplicationContext(servletContext);
-		final ELResolver elResolver = new S2BeanELResolver();
-		jspApplicationContext.addELResolver(elResolver);
-		servletContext.log("Registered " + elResolver);
+		final S2Container container = SingletonS2ContainerFactory
+				.getContainer();
+		final ELResolver[] elResolvers = (ELResolver[]) container
+				.findAllComponents(ELResolver.class);
+		for (final ELResolver elResolver : elResolvers) {
+			jspApplicationContext.addELResolver(elResolver);
+			logger.log("ICUB0001", new Object[] { elResolver });
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextDestroyed(final ServletContextEvent event) {
+	public void destroy() {
 	}
 
 	/**

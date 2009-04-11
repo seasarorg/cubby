@@ -78,19 +78,13 @@ public class PluginRegistry {
 	 *            プラグイン
 	 */
 	public synchronized void register(final Plugin plugin) {
-		if (logger.isInfoEnabled()) {
-			logger.info(format("ICUB0001", plugin));
-		}
 		this.plugins.add(plugin);
 		for (final Class<? extends Provider> service : plugin
 				.getSupportedServices()) {
 			this.serviceToPlugins.put(service, plugin);
 			if (logger.isInfoEnabled()) {
-				logger.info(format("ICUB0003", plugin, service));
+				logger.info(format("ICUB0001", plugin, service));
 			}
-		}
-		if (logger.isInfoEnabled()) {
-			logger.info(format("ICUB0002", plugin));
 		}
 	}
 
