@@ -28,6 +28,9 @@
 		</arg>
 	</component>
 
+	<!-- ELResolver -->
+	<component class="org.seasar.cubby.plugins.s2.el.S2BeanELResolver" />
+
 	<!-- spi -->
 	<component class="org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2ContainerProvider" />

@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletConfig;
 
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugins.gson.spi.GsonJsonProvider;
@@ -43,6 +43,7 @@ import org.seasar.cubby.spi.Provider;
  */
 public class GsonPlugin implements Plugin {
 
+	/** このプラグインが提供するサービスプロバイダのセット。 */
 	private static final Set<Class<? extends Provider>> SUPPORTED_SERVICES;
 	static {
 		final Set<Class<? extends Provider>> services = new HashSet<Class<? extends Provider>>();
@@ -50,18 +51,25 @@ public class GsonPlugin implements Plugin {
 		SUPPORTED_SERVICES = Collections.unmodifiableSet(services);
 	}
 
+	/** JSON のプロバイダ。 */
 	private final JsonProvider jsonProvider = new GsonJsonProvider();
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextInitialized(final ServletContextEvent event) {
+	public void initialize(final ServletConfig config) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void contextDestroyed(final ServletContextEvent event) {
+	public void ready() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void destroy() {
 	}
 
 	/**

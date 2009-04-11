@@ -24,8 +24,8 @@ import static org.easymock.EasyMock.replay;
 
 import java.util.Hashtable;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -72,12 +72,13 @@ public class AbstractCubbyModuleTest {
 			}
 
 		});
-		replay(servletContext);
+		ServletConfig config = createNiceMock(ServletConfig.class);
+		expect(config.getServletContext()).andStubReturn(servletContext);
+		replay(servletContext, config);
 
-		ServletContextEvent event = new ServletContextEvent(servletContext);
 		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		GuicePlugin guicePlugin = new GuicePlugin();
-		guicePlugin.contextInitialized(event);
+		guicePlugin.initialize(config);
 		pluginRegistry.register(guicePlugin);
 
 		Injector injector = Guice.createInjector(new TestModule());

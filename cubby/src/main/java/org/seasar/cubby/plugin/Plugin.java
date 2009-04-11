@@ -17,7 +17,7 @@ package org.seasar.cubby.plugin;
 
 import java.util.Set;
 
-import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletConfig;
 
 import org.seasar.cubby.spi.Provider;
 
@@ -32,20 +32,26 @@ import org.seasar.cubby.spi.Provider;
 public interface Plugin {
 
 	/**
-	 * Web アプリケーションが要求を処理する準備ができたことの通知です。
+	 * <code>CubbyServlet</code> がサービスを提供できるようになった時に実行されます。
 	 * 
-	 * @param event
-	 * @see javax.servlet.ServletContextListener#contextInitialized(ServletContextEvent)
+	 * @param config
+	 *            <code>CubbyServlet</code> の設定や初期化パラメータが含まれている
+	 *            <code>ServletConfig</code> オブジェクト
+	 * @see javax.servlet.Servlet#init(ServletConfig)
 	 */
-	void contextInitialized(ServletContextEvent event);
+	void initialize(ServletConfig config);
 
 	/**
-	 * サーブレットコンテキストがシャットダウン処理に入ることの通知です。
-	 * 
-	 * @param event
-	 * @see javax.servlet.ServletContextListener#contextDestroyed(ServletContextEvent)
+	 * プラグインの準備が完了した時に実行されます。
 	 */
-	void contextDestroyed(ServletContextEvent event);
+	void ready();
+
+	/**
+	 * <code>CubbyServlet</code> がサービス提供を 停止するときに実行されます。
+	 * 
+	 * @see javax.servlet.Servlet#destroy()
+	 */
+	void destroy();
 
 	/**
 	 * このプラグインが提供するサービスプロバイダを取得します。
