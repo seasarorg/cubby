@@ -21,10 +21,6 @@
 		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		version="2.5">
 
-	<listener>
-		<listener-class>org.seasar.cubby.servlet.CubbyServletContextListener</listener-class>
-	</listener>
-
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
@@ -133,6 +129,12 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+	<servlet>
+		<servlet-name>cubbyServlet</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 
     <servlet>
         <servlet-name>cubbyAdminServlet</servlet-name>
