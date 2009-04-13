@@ -2,13 +2,13 @@
 <archetype-descriptor name="cubby-archetype">
   <requiredProperties>
     <requiredProperty key="cubby-version">
-      <defaultValue>1.1.4</defaultValue>
+      <defaultValue>1.1.5-SNAPSHOT</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2container-version">
       <defaultValue>2.4.34</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2dao-version">
-      <defaultValue>1.0.49</defaultValue>
+      <defaultValue>1.0.50</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-s2dao">
       <defaultValue>false</defaultValue>
