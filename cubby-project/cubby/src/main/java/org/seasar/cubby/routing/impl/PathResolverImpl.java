@@ -17,11 +17,8 @@ package org.seasar.cubby.routing.impl;
 
 import static org.seasar.cubby.CubbyConstants.INTERNAL_FORWARD_DIRECTORY;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,6 +45,7 @@ import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.util.CubbyUtils;
 import org.seasar.cubby.util.QueryStringBuilder;
+import org.seasar.cubby.util.URLBodyEncoder;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
@@ -280,8 +278,7 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 		initialize();
 
 		final InternalForwardInfo internalForwardInfo = findInternalForwardInfo(
-				decode(path, characterEncoding), requestMethod,
-				characterEncoding);
+				path, requestMethod, characterEncoding);
 		return internalForwardInfo;
 	}
 
@@ -583,29 +580,8 @@ public class PathResolverImpl implements PathResolver, DetectClassProcessor,
 			return str;
 		}
 		try {
-			return URLEncoder.encode(str, characterEncoding);
+			return URLBodyEncoder.encode(str, characterEncoding);
 		} catch (final UnsupportedEncodingException e) {
-			throw new IORuntimeException(e);
-		}
-	}
-
-	/**
-	 * 指定された URL 文字列をデコードします。
-	 * 
-	 * @param str
-	 *            文字列
-	 * @param characterEncoding
-	 *            エンコーディング
-	 * @return デコードされた文字列
-	 */
-	private static String decode(final String str,
-			final String characterEncoding) {
-		if (characterEncoding == null) {
-			return str;
-		}
-		try {
-			return URLDecoder.decode(str, characterEncoding);
-		} catch (final IOException e) {
 			throw new IORuntimeException(e);
 		}
 	}

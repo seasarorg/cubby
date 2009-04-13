@@ -40,10 +40,10 @@ public class CubbyFunctionsTest extends TestCase {
 		MockHttpServletRequestImpl request = new MockHttpServletRequestImpl(new MockServletContextImpl("/"), "/");
 		request.setCharacterEncoding("UTF-8");
 		ThreadContext.setRequest(request);
-		assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions.url("abc あいう"));
+		assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86%22", CubbyFunctions.url("abc あいう\""));
 		request.setCharacterEncoding("Windows-31J");
 		ThreadContext.setRequest(request);
-		assertEquals("abc+%82%A0%82%A2%82%A4", CubbyFunctions.url("abc あいう"));
+		assertEquals("abc%20%82%A0%82%A2%82%A4%22", CubbyFunctions.url("abc あいう\""));
 	}
 
 }

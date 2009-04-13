@@ -80,7 +80,8 @@ public class RouterImpl implements Router {
 		}
 
 		final InternalForwardInfo internalForwardInfo = pathResolver
-				.getInternalForwardInfo(path, request.getMethod(), null);
+				.getInternalForwardInfo(path, request.getMethod(), request
+						.getCharacterEncoding());
 		return internalForwardInfo;
 	}
 
