@@ -57,8 +57,10 @@ public class DefaultMessagesBehaviour implements MessagesBehaviour {
 	 * {@inheritDoc}
 	 */
 	public ResourceBundle getBundle(final Locale locale) {
+		final ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
 		final ResourceBundle bundle = ResourceBundle.getBundle(baseName,
-				locale == null ? Locale.getDefault() : locale);
+				locale == null ? Locale.getDefault() : locale, classLoader);
 		return bundle;
 	}
 
