@@ -16,7 +16,6 @@
 package org.seasar.cubby.tags;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.internal.util.URLBodyEncoder;
 
 /**
  * Cubby の JSP functions を提供します。
@@ -191,8 +191,12 @@ public class CubbyFunctions {
 	 */
 	public static String url(final Object str)
 			throws UnsupportedEncodingException {
-		final String enc = ThreadContext.getRequest().getCharacterEncoding();
-		return str == null ? "" : URLEncoder.encode(str.toString(), enc);
+		if (str == null) {
+			return "";
+		}
+		final String characterEncoding = ThreadContext.getRequest()
+				.getCharacterEncoding();
+		return URLBodyEncoder.encode(str.toString(), characterEncoding);
 	}
 
 }

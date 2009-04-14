@@ -78,6 +78,7 @@ public class RouterImplTest {
 		expect(request.getMethod()).andStubReturn("GET");
 		expect(request.getAttribute(CubbyConstants.ATTR_ROUTING)).andReturn(
 				null);
+		expect(request.getCharacterEncoding()).andReturn("UTF-8");
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 

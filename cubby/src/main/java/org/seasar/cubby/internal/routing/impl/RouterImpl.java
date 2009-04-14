@@ -89,7 +89,7 @@ public class RouterImpl implements Router {
 		final PathResolver pathResolver = pathResolverProvider
 				.getPathResolver();
 		final PathInfo pathInfo = pathResolver.getPathInfo(path, request
-				.getMethod(), null);
+				.getMethod(), request.getCharacterEncoding());
 		return pathInfo;
 	}
 
