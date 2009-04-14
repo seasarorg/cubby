@@ -124,7 +124,7 @@ public class CubbyFunctionsTest {
 
 			public Void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
-				assertEquals("abc+%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
+				assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
 						.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));
 				return null;
@@ -146,7 +146,7 @@ public class CubbyFunctionsTest {
 
 			public Void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
-				assertEquals("abc+%82%A0%82%A2%82%A4", CubbyFunctions
+				assertEquals("abc%20%82%A0%82%A2%82%A4", CubbyFunctions
 						.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));
 				return null;

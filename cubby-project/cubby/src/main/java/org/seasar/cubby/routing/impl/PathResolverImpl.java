@@ -17,11 +17,8 @@ package org.seasar.cubby.routing.impl;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,6 +34,7 @@ import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.internal.util.MetaUtils;
 import org.seasar.cubby.internal.util.QueryStringBuilder;
+import org.seasar.cubby.internal.util.URLBodyEncoder;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
@@ -189,11 +187,10 @@ public class PathResolverImpl implements PathResolver {
 	 */
 	public PathInfo getPathInfo(final String path, final String requestMethod,
 			final String characterEncoding) {
-		final String decodedPath = decode(path, characterEncoding);
 		final Iterator<Routing> iterator = getRoutings().iterator();
 		while (iterator.hasNext()) {
 			final Routing routing = iterator.next();
-			final Matcher matcher = routing.getPattern().matcher(decodedPath);
+			final Matcher matcher = routing.getPattern().matcher(path);
 			if (matcher.find()) {
 				if (routing.isAcceptable(requestMethod)) {
 					final Map<String, Routing> onSubmitRoutings = new HashMap<String, Routing>();
@@ -328,29 +325,8 @@ public class PathResolverImpl implements PathResolver {
 			return str;
 		}
 		try {
-			return URLEncoder.encode(str, characterEncoding);
+			return URLBodyEncoder.encode(str, characterEncoding);
 		} catch (final UnsupportedEncodingException e) {
-			throw new RoutingException(e);
-		}
-	}
-
-	/**
-	 * 指定された URL 文字列をデコードします。
-	 * 
-	 * @param str
-	 *            文字列
-	 * @param characterEncoding
-	 *            エンコーディング
-	 * @return デコードされた文字列
-	 */
-	private static String decode(final String str,
-			final String characterEncoding) {
-		if (characterEncoding == null) {
-			return str;
-		}
-		try {
-			return URLDecoder.decode(str, characterEncoding);
-		} catch (final IOException e) {
 			throw new RoutingException(e);
 		}
 	}
