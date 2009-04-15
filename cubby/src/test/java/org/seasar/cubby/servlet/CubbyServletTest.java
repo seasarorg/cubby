@@ -11,15 +11,13 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
 import org.junit.Test;
+import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.spi.Provider;
@@ -78,23 +76,23 @@ public class CubbyServletTest {
 
 	}
 
-	private static final Set<Class<? extends Provider>> SUPPORTED_SERVICES;
-	static {
-		final Set<Class<? extends Provider>> services = new HashSet<Class<? extends Provider>>();
-		services.add(AssertProvider.class);
-		SUPPORTED_SERVICES = Collections.unmodifiableSet(services);
-	}
+	private class AssertPlugin extends AbstractPlugin {
 
-	private class AssertPlugin implements Plugin {
+		public AssertPlugin() {
+			support(AssertProvider.class);
+		}
 
+		@Override
 		public void initialize(ServletConfig config) {
 			initialized = true;
 		}
 
+		@Override
 		public void ready() {
 			ready = true;
 		}
 
+		@Override
 		public void destroy() {
 			destroyed = true;
 		}
@@ -103,11 +101,7 @@ public class CubbyServletTest {
 			if (AssertProvider.class.equals(service)) {
 				return service.cast(new AssertProvider());
 			}
-			throw new IllegalArgumentException();
-		}
-
-		public Set<Class<? extends Provider>> getSupportedServices() {
-			return SUPPORTED_SERVICES;
+			return null;
 		}
 
 	}

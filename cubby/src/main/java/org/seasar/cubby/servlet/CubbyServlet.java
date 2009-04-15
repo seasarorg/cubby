@@ -86,7 +86,7 @@ public class CubbyServlet extends GenericServlet {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void service(ServletRequest req, ServletResponse res)
+	public void service(final ServletRequest req, final ServletResponse res)
 			throws ServletException, IOException {
 		// do nothing
 	}

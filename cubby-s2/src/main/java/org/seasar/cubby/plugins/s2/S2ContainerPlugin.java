@@ -15,17 +15,13 @@
  */
 package org.seasar.cubby.plugins.s2;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.el.ELResolver;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
-import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugins.s2.el.S2BeanELResolver;
 import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
@@ -56,23 +52,22 @@ import org.seasar.framework.log.Logger;
  * @see <a href="http://s2container.seasar.org/2.4/ja/">S2Container</a>
  * @author baba
  */
-public class S2ContainerPlugin implements Plugin {
+public class S2ContainerPlugin extends AbstractPlugin {
 
 	/** ロガー。 */
 	private static final Logger logger = Logger
 			.getLogger(S2ContainerPlugin.class);
 
-	/** このプラグインが提供するサービスプロバイダのセット。 */
-	private static final Set<Class<? extends Provider>> SUPPORTED_SERVICES;
-	static {
-		final Set<Class<? extends Provider>> services = new HashSet<Class<? extends Provider>>();
-		services.add(BeanDescProvider.class);
-		services.add(ContainerProvider.class);
-		services.add(RequestParserProvider.class);
-		services.add(ActionHandlerChainProvider.class);
-		services.add(PathResolverProvider.class);
-		services.add(ConverterProvider.class);
-		SUPPORTED_SERVICES = Collections.unmodifiableSet(services);
+	/**
+	 * インスタンス化します。
+	 */
+	public S2ContainerPlugin() {
+		support(BeanDescProvider.class);
+		support(ContainerProvider.class);
+		support(RequestParserProvider.class);
+		support(ActionHandlerChainProvider.class);
+		support(PathResolverProvider.class);
+		support(ConverterProvider.class);
 	}
 
 	/** サーブレットコンテキスト。 */
@@ -81,6 +76,7 @@ public class S2ContainerPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initialize(final ServletConfig config) {
 		this.servletContext = config.getServletContext();
 	}
@@ -91,6 +87,7 @@ public class S2ContainerPlugin implements Plugin {
 	 * {@link S2BeanELResolver} を {@link JspApplicationContext} に登録します。
 	 * </p>
 	 */
+	@Override
 	public void ready() {
 		final JspApplicationContext jspApplicationContext = JspFactory
 				.getDefaultFactory().getJspApplicationContext(servletContext);
@@ -107,23 +104,14 @@ public class S2ContainerPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void destroy() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public <S extends Provider> S getProvider(final Class<S> service) {
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		return service.cast(container.getComponent(service));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<Class<? extends Provider>> getSupportedServices() {
-		return SUPPORTED_SERVICES;
+		if (this.isSupport(service)) {
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
+			return service.cast(container.getComponent(service));
+		} else {
+			return null;
+		}
 	}
 
 }
