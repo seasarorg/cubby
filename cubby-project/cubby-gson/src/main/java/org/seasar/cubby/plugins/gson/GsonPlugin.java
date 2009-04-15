@@ -15,13 +15,7 @@
  */
 package org.seasar.cubby.plugins.gson;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.ServletConfig;
-
-import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugins.gson.spi.GsonJsonProvider;
 import org.seasar.cubby.spi.JsonProvider;
 import org.seasar.cubby.spi.Provider;
@@ -41,35 +35,16 @@ import org.seasar.cubby.spi.Provider;
  *      href="http://sites.google.com/site/gson/gson-user-guide">Gson&nbsp;User&nbsp;Guide</a>
  * @author baba
  */
-public class GsonPlugin implements Plugin {
-
-	/** このプラグインが提供するサービスプロバイダのセット。 */
-	private static final Set<Class<? extends Provider>> SUPPORTED_SERVICES;
-	static {
-		final Set<Class<? extends Provider>> services = new HashSet<Class<? extends Provider>>();
-		services.add(JsonProvider.class);
-		SUPPORTED_SERVICES = Collections.unmodifiableSet(services);
-	}
+public class GsonPlugin extends AbstractPlugin {
 
 	/** JSON のプロバイダ。 */
 	private final JsonProvider jsonProvider = new GsonJsonProvider();
 
 	/**
-	 * {@inheritDoc}
+	 * インスタンス化します。
 	 */
-	public void initialize(final ServletConfig config) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void ready() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void destroy() {
+	public GsonPlugin() {
+		support(JsonProvider.class);
 	}
 
 	/**
@@ -79,14 +54,7 @@ public class GsonPlugin implements Plugin {
 		if (JsonProvider.class.equals(service)) {
 			return service.cast(jsonProvider);
 		}
-		throw new IllegalArgumentException("Unsupported service " + service);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Set<Class<? extends Provider>> getSupportedServices() {
-		return SUPPORTED_SERVICES;
+		return null;
 	}
 
 }

@@ -107,7 +107,11 @@ public class PluginRegistry {
 		if (plugin == null) {
 			throw new IllegalArgumentException(format("ECUB0054", service));
 		}
-		return service.cast(plugin.getProvider(service));
+		final S provider = service.cast(plugin.getProvider(service));
+		if (provider == null) {
+			throw new NullPointerException("provider");
+		}
+		return provider;
 	}
 
 	/**

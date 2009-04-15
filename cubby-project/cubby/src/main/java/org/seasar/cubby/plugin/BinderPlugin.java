@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
-
 import org.seasar.cubby.internal.util.ServiceLoader;
 import org.seasar.cubby.spi.Provider;
 
@@ -32,28 +30,10 @@ import org.seasar.cubby.spi.Provider;
  * 
  * @author baba
  */
-public class BinderPlugin implements Plugin {
+public class BinderPlugin extends AbstractPlugin {
 
 	/** プロバイダ。 */
 	private Map<Class<? extends Provider>, Provider> providers = new HashMap<Class<? extends Provider>, Provider>();
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void initialize(final ServletConfig config) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void ready() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void destroy() {
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -65,6 +45,7 @@ public class BinderPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Set<Class<? extends Provider>> getSupportedServices() {
 		return providers.keySet();
 	}
