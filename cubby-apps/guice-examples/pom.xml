@@ -51,10 +51,12 @@ line.separator=\n
         <artifactId>cargo-maven2-plugin</artifactId>
         <configuration>
           <container>
-            <containerId>tomcat5x</containerId>
+            <containerId>tomcat6x</containerId>
             <zipUrlInstaller>
-              <url>http://archive.apache.org/dist/tomcat/tomcat-5/v5.5.26/bin/apache-tomcat-5.5.26.zip</url>
+              <url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip</url>
             </zipUrlInstaller>
+            <output>${project.build.directory}/tomcat6x.log</output>
+            <!-- log>\${project.build.directory}/cargo.log</log -->
           </container>
         </configuration>
         <executions>
@@ -74,6 +76,10 @@ line.separator=\n
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>tomcat-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
@@ -99,6 +105,7 @@ line.separator=\n
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>2.5</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
