@@ -13,6 +13,6 @@
 		<t:input type="text" name="message" />
 		<input type="submit" />
 	</t:form>
-	<img src="${message}.png" style="border: solid 1px"/>
+	<img src="${f:url(message)}.png" style="border: solid 1px"/>
 </body>
 </html>
