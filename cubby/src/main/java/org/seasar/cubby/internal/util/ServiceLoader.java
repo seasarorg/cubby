@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * サービスプロバイダロード機構です。
  * <p>
- * サービスプロバイダは、リソースディレクトリ <code>META-INF/cubby</code>
+ * サービスプロバイダは、リソースディレクトリ <code>META-INF/services</code>
  * に「プロバイダ構成ファイル」を配置することによって識別されます。
  * このファイルの名前は、サービスの型の完全修飾名になります。このファイルには、具象プロバイダクラスの完全修飾名が 1 行に 1
  * つずつ記述されます。それぞれの名前を囲む空白文字とタブ文字、および空白行は無視されます。コメント文字は '#' ('\u0023'、NUMBER
@@ -55,7 +55,7 @@ public class ServiceLoader<S> implements Iterable<S> {
 			.getLogger(ServiceLoader.class);
 
 	/** リソースディレクトリ。 */
-	private static final String PREFIX = "META-INF/cubby/";
+	private static final String PREFIX = "META-INF/services/";
 
 	/** プロバイダのキャッシュ。 */
 	private final Map<String, S> providers = new LinkedHashMap<String, S>();

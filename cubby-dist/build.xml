@@ -65,7 +65,6 @@
 			<zipfileset prefix="cubby/doc/cubby-gson" dir="../cubby/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-s2-archetype" dir="../cubby-s2-archetype/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-guice-archetype" dir="../cubby-guice-archetype/target/site"/>
-			<zipfileset prefix="cubby/doc/cubby-skin" dir="../cubby-skin/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-dist" dir="../cubby-dist/target/site"/>
 		</zip>
 	</target>
