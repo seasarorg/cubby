@@ -419,7 +419,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
-      <url>dav:https://www.seasar.org/site/cubby/20x</url>
+      <url>dav:https://www.seasar.org/site/cubby/20x/</url>
      </site>
   </distributionManagement>
   <modules>
