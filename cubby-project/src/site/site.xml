@@ -3,7 +3,6 @@
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
-		<version>1.1.4</version>
 	</skin>
 	<bannerLeft>
 		<name>Cubby</name>
@@ -17,16 +16,15 @@
 		<breadcrumbs>
 			<item name="The Seasar Project"
 				href="http://www.seasar.org/" />
-			<item name="Cubby Project" href="/index.html" />
+			<item name="Cubby Project" href="http://cubby.seasar.org" />
+			<item name="Cubby 1.1" href="/index.html" />
 		</breadcrumbs>
 
-		<menu name="&#x30c9;&#x30ad;&#x30e5;&#x30e1;&#x30f3;&#x30c8;">
-			<item name="Cubbyについて" href="/index.html" />
-			<item name="セットアップ" href="/setup.html" collapse="true">
-				<item name="前提" href="/setup.html#前提" />
-				<item name="プロジェクトの作成" href="/setup.html#プロジェクトの作成" />
-				<item name="各種ファイル" href="/setup.html#各種ファイル" />
-			</item>
+		<menu name="Cubby 1.1">
+			<item name="ホーム" href="/index.html" />
+		</menu>
+
+		<menu name="スタートアップガイド">
 			<item name="2分間チュートリアル" href="/twominute.html"
 				collapse="true">
 				<item name="Hello アプリケーションの概要"
@@ -50,10 +48,14 @@
 					href="/fiveminute.html#追加編集画面の作成" />
 				<item name="確認画面の作成" href="/fiveminute.html#確認画面の作成" />
 			</item>
-			<item name="ダウンロード" href="/download.html" />
 		</menu>
 
 		<menu name="リファレンス">
+			<item name="セットアップ" href="/setup.html" collapse="true">
+				<item name="前提" href="/setup.html#前提" />
+				<item name="プロジェクトの作成" href="/setup.html#プロジェクトの作成" />
+				<item name="各種ファイル" href="/setup.html#各種ファイル" />
+			</item>
 			<item name="アクション" href="/action.html" collapse="true">
 				<item name="アクション" href="/action.html#アクション" />
 				<item name="アクションの定義" href="/action.html#アクションの定義" />
@@ -96,31 +98,20 @@
 				collapse="true">
 				<item name="リクエストのパース" href="/customize.html#リクエストのパース" />
 			</item>
+			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
+			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
 			<item name="Tips集" href="/tips.html" collapse="true">
 				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
 				<item name="共通アクション" href="/tips.html#共通アクション" />
 				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
 				<item name="管理ツールの利用" href="/tips.html#管理ツールの利用" />
 			</item>
-			<item name="よくある質問(FAQ)" href="/faq.html" />
 			<item name="移行ガイド" href="/migration.html" />
-			<item name="リンク集" href="/link.html" collapse="true">
-				<item name="Servlet/JSP" href="/link.html#ServletJSP" />
-				<item name="Maven2" href="/link.html#Maven2" />
-				<item name="Eclipse WTP" href="/link.html#Eclipse_WTP" />
-			</item>
-			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
-			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
 		</menu>
 
-		<menu name="リソース">
-			<item name="プレゼン資料" href="/presentation.html" />
-			<item name="メーリングリスト" href="/mail-lists.html" />
-			<item name="課題(JIRA)" href="/issue-tracking.html" />
-			<item name="SVNリポジトリ" href="/source-repository.html" />
-		</menu>
+		<menu ref="reports" />
 
-		${reports}
+		<menu ref="modules" />
 
 	</body>
 </project>

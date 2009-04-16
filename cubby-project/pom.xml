@@ -9,7 +9,7 @@
   <name>Cubby Project</name>
   <version>1.1.5-SNAPSHOT</version>
   <description>Cubby Simple Web Application Framework</description>
-  <url>http://cubby.seasar.org/</url>
+  <url>http://cubby.seasar.org/11x/</url>
   <inceptionYear>2006</inceptionYear>
   <organization>
     <name>The Seasar Foundation</name>
@@ -100,10 +100,13 @@
       </notifier>
     </notifiers>
   </ciManagement>
+  <prerequisites>
+    <maven>2.1.0</maven>
+  </prerequisites>
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</developerConnection>
-    <url>http://svn.seasar.org/browse/branches/1.1.x/?root=cubby</url>
+    <url>https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</url>
   </scm>
   <build>
     <plugins>
@@ -360,7 +363,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
-      <url>dav:https://www.seasar.org/site/cubby</url>
+      <url>dav:https://www.seasar.org/site/cubby/11x/</url>
      </site>
   </distributionManagement>
   <modules>
