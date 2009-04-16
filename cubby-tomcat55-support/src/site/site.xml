@@ -15,9 +15,11 @@
 			<item name="${project.name}" href="/index.html"/>
 		</breadcrumbs>
 
-		${reports}
+		<menu ref="reports" />
 
-		${modules}
+		<menu ref="parent" />
+
+		<menu ref="modules" />
 
 	</body>
 </project>
