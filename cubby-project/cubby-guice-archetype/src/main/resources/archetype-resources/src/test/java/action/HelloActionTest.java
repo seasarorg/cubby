@@ -28,7 +28,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.google.inject.Guice;
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import com.google.inject.servlet.GuiceFilter;
+#end
 
 import ${package}.ApplicationModule;
 
@@ -55,8 +57,13 @@ public class HelloActionTest {
 		request.setServletPath("/hello/");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		ActionResult actualResult = CubbyRunner.processAction(request,
 				response, new GuiceFilter());
+#else
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response);
+#end
 		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
 	}
 
@@ -67,8 +74,13 @@ public class HelloActionTest {
 		request.setServletPath("/hello/message");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		ActionResult actualResult = CubbyRunner.processAction(request,
 				response, new GuiceFilter());
+#else
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response);
+#end
 		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
 
 	}
@@ -81,8 +93,13 @@ public class HelloActionTest {
 		request.addParameter("name", "cubby");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		ActionResult actualResult = CubbyRunner.processAction(request,
 				response, new GuiceFilter());
+#else
+		ActionResult actualResult = CubbyRunner.processAction(request,
+				response);
+#end
 		CubbyAssert.assertPathEquals(Forward.class, "hello.jsp", actualResult);
 	}
 

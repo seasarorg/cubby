@@ -50,56 +50,48 @@
 ~~ governing permissions and limitations under the License.
 ~~
   --------
-  Cubby について
+  Cubby 2.0
   --------
   agata
   baba
   --------
-  2009-03-14
+  2009-04-16
   --------
 
-{News}
+{Cubby とは何ですか ?}
 
- *2009-03-03 {{{download.html}バージョン 2.0.0-beta1}}がリリースされました。
-
- *2009-03-03 {{{download.html}バージョン 1.1.4}}がリリースされました。
-
- *2008-12-10 {{{download.html}バージョン 1.1.3}}がリリースされました。
-
- *2008-11-13 {{{download.html}バージョン 1.1.2}}がリリースされました。
-
- *2008-10-22 {{{download.html}バージョン 1.1.1}}がリリースされました。
-
-{What's Cubby ?}
-
- Cubby(カビー)は Java/Servlet2.4/JSP.2.0 をベースにしたシンプルな Web アプリケーションフレームワークです。\
- 以下の特徴があります。
+ Cubby (カビー)は Java / Servlet / JSP をベースにした、Web アプリケーションのためのシンプルなフレームワークです。
 
  *シンプルで小さい（薄い）フレームワークです。
 
  *設定ファイルはほとんど使用しません。
 
- *{{{cubby/apidocs/org/seasar/cubby/action/Path.html}REST っぽい URI をサポート}}します。 (/username/todo/1001、拡張子が付かない URI など)
+ *REST っぽい URI をサポートします。 (/username/todo/1001、拡張子が付かない URI など)
 
- *直感的な名前の{{{jsp.html#カスタムタグ}タグライブラリ}}
+ *直感的な名前のカスタムタグライブラリ
 
  *HTMLテンプレートエンジン「{{{http://mayaa.seasar.org}Mayaa}}」と連携することができます。
 
-{Cubbyのゴール}
+{Cubby のゴール}
 
- *Servlet/JSPとJava5とSeasar2を知っていれば使いこなせる。
+ *Servlet / JSP / Java を知っていれば使いこなせる。
 
- *美しいURLを持つWebアプリケーションをさくさく作成できる。
+ *美しい URL を持つ Web アプリケーションをさくさく作成できる。
 
  *アクションクラスを見れば何をやっているのかわかる。
 
- *トラブルに遭遇したときに、わかりやすいメッセージで原因解決がすぐにできる
- 
+ *トラブルに遭遇したときに、わかりやすいメッセージで原因解決がすぐにできる。
+
+{初めて利用される方へ}
+
+ Cubby を初めて利用される方は、リファレンスを参照しながら {{{twominute.html}2 分間チュートリアル}}、{{{fiveminute.html}5 分間チュートリアル}}を進めてみてください。
+
+ チュートリアルで作成するアプリケーションはサンプルに含まれているので、war ファイルを{{{../downloads.html}ダウンロード}}して動かしてみてください。
+
 {動作環境}
 
  *Java 5 以降
 
- *Servlet 2.5 / JSP 2.1 以降
+ *Servlet 2.5 / JSP 2.1 以降 (Java EE 5) をサポートするサーブレットコンテナ
 
  *Seasar 2.4.34 以降か Guice 1.0 以降
-

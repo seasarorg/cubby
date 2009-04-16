@@ -9,7 +9,7 @@
   <name>Cubby Project</name>
   <version>2.0.0-beta2-SNAPSHOT</version>
   <description>Cubby Simple Web Application Framework</description>
-  <url>http://cubby.seasar.org/2/</url>
+  <url>http://cubby.seasar.org/20x/</url>
   <inceptionYear>2006</inceptionYear>
   <organization>
     <name>The Seasar Foundation</name>
@@ -17,7 +17,7 @@
   </organization>
   <licenses>
     <license>
-      <name>Apache License, Version 2.0</name>
+      <name>The Apache Software License, Version 2.0</name>
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
@@ -82,6 +82,13 @@
       <post>cubby-user@ml.seasar.org</post>
       <archive>http://ml.seasar.org/archives/cubby-user/</archive>
     </mailingList>
+    <mailingList>
+      <name>cubby-dev</name>
+      <subscribe>https://ml.seasar.org/mailman/listinfo/cubby-dev</subscribe>
+      <unsubscribe>https://ml.seasar.org/mailman/listinfo/cubby-dev</unsubscribe>
+      <post>cubby-dev@ml.seasar.org</post>
+      <archive>http://ml.seasar.org/archives/cubby-dev/</archive>
+    </mailingList>
   </mailingLists>
   <issueManagement>
     <system>JIRA</system>
@@ -106,8 +113,11 @@
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</developerConnection>
-    <url>http://svn.seasar.org/browse/branches/2.0.x/?root=cubby</url>
+    <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</url>
   </scm>
+  <prerequisites>
+    <maven>2.1.0</maven>
+  </prerequisites>
   <build>
     <plugins>
       <plugin>
@@ -422,7 +432,6 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     <module>cubby-s2-archetype</module>
     <module>cubby-guice-archetype</module>
     <module>cubby-admin</module>
-    <module>cubby-skin</module>
     <module>cubby-dist</module>
   </modules>
 </project>

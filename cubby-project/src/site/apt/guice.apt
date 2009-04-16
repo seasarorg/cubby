@@ -89,7 +89,7 @@
    最新のmaven-archetype-pluginを使用して実行することができます。(M2_REPOはMavenのローカルリポジトリ)
 
 +------------------------------------------------------+
-mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org/2/ 
+mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org/
 +------------------------------------------------------+
 
    コマンド入力後、いくつかの質問に回答していきます。
