@@ -1,4 +1,4 @@
-# リリース手順 (2009/3/21)
+# maven-release-plugin によるリリース手順
 
 1.リリース情報をクリーンアップする
 > mvn release:clean
