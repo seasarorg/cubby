@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Cubby">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+	</skin>
+	<bannerLeft>
+		<name>Cubby</name>
+		<href>./index.html</href>
+		<src>./images/logo.gif</src>
+		<alt>Cubby</alt>
+	</bannerLeft>
+	<publishDate format="yyyy-MM-dd" position="right" />
+	<body>
+		<breadcrumbs>
+			<item name="The Seasar Project" href="http://www.seasar.org/" />
+			<item name="Cubby Project" href="/index.html" />
+		</breadcrumbs>
+
+		<menu name="Cubby">
+			<item name="ホーム" href="/index.html" />
+			<item name="プロジェクトライセンス" href="/license.html" />
+			<item name="ダウンロード" href="/downloads.html" />
+		</menu>
+
+		<menu name="ドキュメント">
+			<item name="Cubby 1.1 (安定版)" href="/11x/index.html" />
+			<item name="Cubby 2.0 (開発版)" href="/20x/index.html" />
+		</menu>
+
+		<menu name="サポート">
+			<item name="メーリングリスト" href="/mail-lists.html" />
+			<item name="課題追跡" href="/issue-tracking.html" />
+			<item name="よくある質問" href="/faq.html" />
+		</menu>
+
+		<menu name="リソース">
+			<item name="プレゼン資料" href="/presentation.html" />
+			<item name="リンク集" href="/link.html" collapse="true">
+				<item name="Servlet/JSP" href="/link.html#ServletJSP" />
+				<item name="Maven2" href="/link.html#Maven2" />
+				<item name="Eclipse WTP" href="/link.html#Eclipse_WTP" />
+			</item>
+		</menu>
+
+	</body>
+</project>

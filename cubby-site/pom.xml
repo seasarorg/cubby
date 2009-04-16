@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.cubby</groupId>
+  <artifactId>cubby-site</artifactId>
+  <packaging>pom</packaging>
+  <name>Cubby Site</name>
+  <version>2-SNAPSHOT</version>
+  <description>Cubby Site</description>
+  <url>http://cubby.seasar.org/</url>
+  <inceptionYear>2006</inceptionYear>
+  <organization>
+    <name>The Seasar Foundation</name>
+    <url>http://www.seasar.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>agata</id>
+      <name>AGATA Toshitaka</name>
+      <email>agata_at_nulab.co.jp</email>
+      <url>http://d.hatena.ne.jp/agt/</url>
+      <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>inumaru</id>
+      <name>INUMARU Sachie</name>
+      <email />
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>baba</id>
+      <name>BABA Yasuyuki</name>
+      <email>yasuyuki.baba_at_gmail.com</email>
+      <organization>Nulab Inc.</organization>
+      <organizationUrl>http://www.nulab.co.jp/</organizationUrl>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>jfut</id>
+      <name>Jun Futagawa</name>
+      <email/>
+      <organization/>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>sakamoto</id>
+      <name>SAKAMOTO Takashi</name>
+      <email>sakamoto_at_nulab.co.jp</email>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>someda</id>
+      <name>SOMEDA Takashi</name>
+      <email>takashi.someda_at_gmail.com</email>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>sugmak</id>
+      <name>SUGIYAMA Makoto</name>
+      <email>sugiyama.makoto+cubby_at_gmail.com</email>
+      <timezone>+9</timezone>
+    </developer>
+  </developers>
+  <mailingLists>
+    <mailingList>
+      <name>cubby-user</name>
+      <subscribe>https://ml.seasar.org/mailman/listinfo/cubby-user</subscribe>
+      <unsubscribe>https://ml.seasar.org/mailman/listinfo/cubby-user</unsubscribe>
+      <post>cubby-user@ml.seasar.org</post>
+      <archive>http://ml.seasar.org/archives/cubby-user/</archive>
+    </mailingList>
+    <mailingList>
+      <name>cubby-dev</name>
+      <subscribe>https://ml.seasar.org/mailman/listinfo/cubby-dev</subscribe>
+      <unsubscribe>https://ml.seasar.org/mailman/listinfo/cubby-dev</unsubscribe>
+      <post>cubby-dev@ml.seasar.org</post>
+      <archive>http://ml.seasar.org/archives/cubby-dev/</archive>
+    </mailingList>
+  </mailingLists>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://www.seasar.org/issues/browse/CUBBY</url>
+  </issueManagement>
+  <ciManagement>
+    <system>hudson</system>
+    <url>https://www.seasar.org/hudson/job/Cubby-2.0.x/</url>
+    <notifiers>
+      <notifier>
+        <sendOnSuccess>false</sendOnSuccess>
+        <configuration>
+          <recipients>cubby-dev@ml.seasar.org</recipients>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <scm>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/trunk/cubby-site/</connection>
+    <url>https://www.seasar.org/svn/cubby/trunk/cubby-site/</url>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>maven.seasar.org</id>
+      <url>dav:https://www.seasar.org/site/cubby</url>
+     </site>
+  </distributionManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
+          <goals>clean,deploy,site-deploy</goals>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <locales>ja</locales>
+          <encoding>UTF-8</encoding>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+      </plugin>
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+  </build>
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>maven-snapshot.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
+    </repository>
+  </repositories>
+  <modules>
+    <module>cubby-skin</module>
+  </modules>
+</project>
