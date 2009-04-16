@@ -81,10 +81,6 @@
 
   *{{{#プロパティファイル_WEB-INFclasses}プロパティファイル (WEB-INF/classes)}}
 
-{初めて Cubby を利用される方へ}
-
- Cubby を初めて利用される方は一度サンプル war を{{{download.html}ダウンロード}}して動かしながら、Cubby のドキュメントとサンプルのソースを確認しながら学習するとよいでしょう。
-
 {前提}
 
  Cubby は Seasar2 / Guice / Spring Framework に統合して動作させることを前提としています。
