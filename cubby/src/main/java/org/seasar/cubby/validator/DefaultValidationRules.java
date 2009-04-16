@@ -206,7 +206,6 @@ public abstract class DefaultValidationRules implements ValidationRules {
 	 * <p>
 	 * デフォルトでは以下の順序です。
 	 * <ul>
-	 * <li>{@link #RESOURCE}</li>
 	 * <li>{@link #DATA_TYPE}</li>
 	 * <li>{@link #DATA_CONSTRAINT}</li>
 	 * </ul>
