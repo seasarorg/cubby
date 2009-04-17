@@ -28,6 +28,7 @@ import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
+import org.seasar.cubby.controller.impl.MultipartRequestParser;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.converter.impl.BigIntegerConverter;
@@ -141,7 +142,7 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 			final Injector injector) {
 		final Set<RequestParser> requestParsers = new HashSet<RequestParser>();
 		requestParsers.add(injector.getInstance(DefaultRequestParser.class));
-		// requestParsers.add(injector.getInstance(MultipartRequestParser.class));
+		requestParsers.add(injector.getInstance(MultipartRequestParser.class));
 		return Collections.unmodifiableCollection(requestParsers);
 	}
 
