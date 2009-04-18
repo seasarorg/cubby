@@ -134,6 +134,9 @@ public class SelectTag extends DynamicAttributesSimpleTagSupport {
 	 */
 	@Override
 	public void doTag() throws JspException, IOException {
+		if (items == null) {
+			throw new JspTagException(format("ECUB1005"));
+		}
 		final JspContext context = this.getJspContext();
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
