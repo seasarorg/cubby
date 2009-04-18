@@ -28,6 +28,8 @@ public class NumberValidatorTest {
 		ScalarFieldValidator validator = new NumberValidator();
 		assertSuccess(validator, "1", "-1", "1.1", "-1.1");
 		assertFail(validator, "A", "123,456", "1.23.5");
+		// FIXED https://www.seasar.org/issues/browse/CUBBY-222
+		assertFail(validator, "１", "Ⅰ");
 	}
 
 }

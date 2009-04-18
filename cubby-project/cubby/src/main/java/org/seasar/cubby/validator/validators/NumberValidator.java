@@ -16,6 +16,7 @@
 package org.seasar.cubby.validator.validators;
 
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.validator.MessageHelper;
@@ -37,6 +38,8 @@ import org.seasar.cubby.validator.ValidationContext;
  */
 public class NumberValidator implements ScalarFieldValidator {
 
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("^[-+]?[0-9]+[.]?[0-9]*$");
+	
 	/**
 	 * メッセージヘルパ。
 	 */
@@ -68,10 +71,8 @@ public class NumberValidator implements ScalarFieldValidator {
 			if (StringUtils.isEmpty(str)) {
 				return;
 			}
-			try {
-				new BigDecimal(str);
+			if (NUMBER_PATTERN.matcher(str).find()) {
 				return;
-			} catch (final NumberFormatException e) {
 			}
 		} else if (value == null) {
 			return;
