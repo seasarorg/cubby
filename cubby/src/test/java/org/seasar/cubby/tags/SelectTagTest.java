@@ -307,6 +307,18 @@ public class SelectTagTest extends SimpleTagTestCase {
 		}
 	}
 
+	@Test
+	public void doItemsAttributeIsNull() throws Exception {
+		tag.setName("stringField");
+		tag.setItems(null);
+		try {
+			tag.doTag();
+			fail();
+		} catch (JspTagException e) {
+			// ok;
+		}
+	}
+
 	public static class ItemBean {
 		private Integer id;
 		private String name;
