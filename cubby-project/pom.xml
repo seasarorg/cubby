@@ -100,13 +100,11 @@
     <notifiers>
       <notifier>
         <type>mail</type>
+        <address>cubby-dev@ml.seasar.org</address>
         <sendOnError>true</sendOnError>
         <sendOnFailure>true</sendOnFailure>
         <sendOnSuccess>false</sendOnSuccess>
         <sendOnWarning>true</sendOnWarning>
-        <configuration>
-          <recipients>cubby-dev@ml.seasar.org</recipients>
-        </configuration>
       </notifier>
     </notifiers>
   </ciManagement>
@@ -392,17 +390,6 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
           <!--encoding>UTF-8</encoding-->
           <outputEncoding>UTF-8</outputEncoding>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>jira-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
       </plugin>
       <plugin>
         <artifactId>maven-jxr-plugin</artifactId>
