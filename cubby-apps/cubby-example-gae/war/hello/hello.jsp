@@ -32,6 +32,9 @@
   <title>Cuuby archetype sample app : /hello/message</title>
 </head>
 <body>
+<div id="banner">
+<img src="${contextPath }/img/logo.gif" alt="Cubby" />
+</div>
 <h1>Cuuby archetype sample app : /hello/message</h1>
 ${messages['msg.dummy']}<br/>
 <c:import url="/common/errors.jsp"/>
