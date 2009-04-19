@@ -100,9 +100,11 @@
       </notifier>
     </notifiers>
   </ciManagement>
+  <!--
   <prerequisites>
     <maven>2.1.0</maven>
   </prerequisites>
+  -->
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</developerConnection>
