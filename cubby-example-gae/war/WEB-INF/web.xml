@@ -8,10 +8,12 @@
 		<param-value>org.seasar.cubby.exmaple.gae.ApplicationModule</param-value>
 	</context-param>
 
+<!-- 
 	<listener>
 		<listener-class>
 			org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
 	</listener>
+ -->
 
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
@@ -69,11 +71,19 @@
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 
+	
+	<servlet>
+		<servlet-name>cubbyServlet</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
 	<servlet>
 		<servlet-name>cubbyAdminServlet</servlet-name>
 		<servlet-class>org.seasar.cubby.admin.servlet.CubbyAdminServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>		
 	</servlet>
-
+	
 	<servlet-mapping>
 		<servlet-name>cubbyAdminServlet</servlet-name>
 		<url-pattern>/cubby-admin</url-pattern>

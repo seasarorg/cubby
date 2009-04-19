@@ -1,20 +1,3 @@
-<%--
-
-    Copyright 2004-2009 the Seasar Foundation and the Others.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-    either express or implied. See the License for the specific language
-    governing permissions and limitations under the License.
-
---%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,19 +12,20 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="${contextPath }/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-  <title>Cuuby archetype sample app : /hello/</title>
+  <title>Cuuby archetype sample app : fileupload</title>
 </head>
 <body>
 <div id="banner">
 <img src="${contextPath }/img/logo.gif" alt="Cubby" />
 </div>
-<h1>Cuuby archetype sample app : /hello/</h1>
 <c:import url="/common/errors.jsp"/>
 <c:import url="/common/notice.jsp"/>
-<t:form action="message" value="${action}" method="post">
-	Your Name:
-	<t:input type="text" name="name"/>
-	<input type="submit" value="POST"/>
+<t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data" value="${form}">
+<h1>Cuuby archetype sample app : /fileupload/</h1>
+拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
+<label for="file">ファイル:</label>
+<t:input type="file" name="file"/><br/>
+<input type="submit" value="アップロード"/>
 </t:form>
 </body>
 </html>
