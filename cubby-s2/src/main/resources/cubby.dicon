@@ -35,7 +35,6 @@
 	<component class="org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2ContainerProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2RequestParserProvider" />
-	<component class="org.seasar.cubby.plugins.s2.spi.S2ActionHandlerChainProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider" />
 

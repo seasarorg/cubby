@@ -15,11 +15,12 @@
  */
 package org.seasar.cubby.plugins.guice;
 
-import javax.servlet.ServletConfig;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 
 import org.seasar.cubby.plugin.AbstractPlugin;
-import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
@@ -82,7 +83,6 @@ public class GuicePlugin extends AbstractPlugin {
 		support(BeanDescProvider.class);
 		support(ContainerProvider.class);
 		support(RequestParserProvider.class);
-		support(ActionHandlerChainProvider.class);
 		support(PathResolverProvider.class);
 		support(ConverterProvider.class);
 	}
@@ -91,12 +91,20 @@ public class GuicePlugin extends AbstractPlugin {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialize(final ServletConfig config) {
-		final ServletContext servletContext = config.getServletContext();
-		final String moduleClassName = servletContext
+	public void initialize(final ServletContext servletContext) {
+		final String moduleClassNames = servletContext
 				.getInitParameter(MODULE_INIT_PARAM_NAME);
-		final Module module = createModule(moduleClassName);
-		this.injector = Guice.createInjector(module);
+		if (moduleClassNames == null) {
+			throw new IllegalModuleException("No context parameter \""
+					+ MODULE_INIT_PARAM_NAME + "\", please set Module FQCN");
+		}
+
+		final List<Module> modules = new ArrayList<Module>();
+		for (final String moduleClassName : moduleClassNames.split(",")) {
+			final Module module = createModule(moduleClassName.trim());
+			modules.add(module);
+		}
+		this.injector = Guice.createInjector(modules.toArray(new Module[0]));
 	}
 
 	/**
@@ -137,10 +145,10 @@ public class GuicePlugin extends AbstractPlugin {
 		} catch (final ClassNotFoundException e) {
 			throw new IllegalArgumentException("Illegal module "
 					+ moduleClassName, e);
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			throw new IllegalArgumentException("Illegal module "
 					+ moduleClassName, e);
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			throw new IllegalArgumentException("Illegal module "
 					+ moduleClassName, e);
 		}

@@ -1,6 +1,7 @@
 package org.seasar.cubby.servlet;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertFalse;
@@ -14,6 +15,7 @@ import java.util.Collection;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.junit.Test;
@@ -32,8 +34,10 @@ public class CubbyServletTest {
 
 	@Test
 	public void initialize() throws ServletException {
+		ServletContext servletContext = createMock(ServletContext.class);
 		ServletConfig servletConfig = createMock(ServletConfig.class);
-		replay(servletConfig);
+		expect(servletConfig.getServletContext()).andReturn(servletContext);
+		replay(servletContext, servletConfig);
 
 		Servlet servlet = new CubbyServlet() {
 
@@ -69,7 +73,7 @@ public class CubbyServletTest {
 		servlet.destroy();
 		assertTrue(destroyed);
 
-		verify(servletConfig);
+		verify(servletContext, servletConfig);
 	}
 
 	private class AssertProvider implements Provider {
@@ -83,7 +87,7 @@ public class CubbyServletTest {
 		}
 
 		@Override
-		public void initialize(ServletConfig config) {
+		public void initialize(ServletContext servletContext) {
 			initialized = true;
 		}
 

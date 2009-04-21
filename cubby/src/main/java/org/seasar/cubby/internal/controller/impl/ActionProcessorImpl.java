@@ -31,13 +31,13 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.handler.ActionHandlerChain;
 import org.seasar.cubby.internal.action.impl.ActionContextImpl;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.Routing;
-import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
@@ -55,6 +55,9 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/** ロガー。 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(ActionProcessorImpl.class);
+
+	/** プラグインのレジストリ。 */
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	/**
 	 * {@inheritDoc}
@@ -88,16 +91,56 @@ public class ActionProcessorImpl implements ActionProcessor {
 				actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
 
-		final ActionHandlerChain actionHandlerChain = ProviderFactory.get(
-				ActionHandlerChainProvider.class).getActionHandlerChain();
-		final ActionResult actionResult = actionHandlerChain.chain(request,
-				response, actionContext);
+		final ActionResult actionResult = invokeAction(request, response,
+				actionContext);
 		if (actionResult == null) {
 			throw new ActionException(format("ECUB0101", actionMethod));
 		}
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
 				actionResult, actionContext);
 		return actionResultWrapper;
+	}
+
+	/**
+	 * アクションコンテキスト中のアクションメソッドを実行します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションコンテキスト
+	 * @return アクションメソッドの実行結果
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
+	 */
+	protected ActionResult invokeAction(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext) throws Exception {
+		actionContext.invokeInitializeMethod();
+
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			final ActionResult pluginActionResult = plugin.beforeActionInvoke(
+					request, response, actionContext);
+			if (pluginActionResult != null) {
+				return pluginActionResult;
+			}
+		}
+
+		final Object action = actionContext.getAction();
+		final Method actionMethod = actionContext.getActionMethod();
+		final ActionResult actionResult = (ActionResult) actionMethod
+				.invoke(action);
+
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			final ActionResult pluginActionResult = plugin.afterActionInvoke(
+					request, response, actionContext, actionResult);
+			if (pluginActionResult != null) {
+				return pluginActionResult;
+			}
+		}
+
+		return actionResult;
 	}
 
 }

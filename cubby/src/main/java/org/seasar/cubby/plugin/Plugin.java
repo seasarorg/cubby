@@ -17,8 +17,12 @@ package org.seasar.cubby.plugin;
 
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.spi.Provider;
 
 /**
@@ -31,27 +35,16 @@ import org.seasar.cubby.spi.Provider;
  */
 public interface Plugin {
 
-	/**
-	 * <code>CubbyServlet</code> がサービスを提供できるようになった時に実行されます。
-	 * 
-	 * @param config
-	 *            <code>CubbyServlet</code> の設定や初期化パラメータが含まれている
-	 *            <code>ServletConfig</code> オブジェクト
-	 * @see javax.servlet.Servlet#init(ServletConfig)
-	 */
-	void initialize(ServletConfig config);
+	// プラグインのライフサイクル
 
 	/**
-	 * プラグインの準備が完了した時に実行されます。
-	 */
-	void ready();
-
-	/**
-	 * <code>CubbyServlet</code> がサービス提供を 停止するときに実行されます。
+	 * <code>CubbyFilter</code> がサービスを提供できるようになった時に実行されます。
 	 * 
-	 * @see javax.servlet.Servlet#destroy()
+	 * @param servletContext
+	 *            呼び出し元が現在実行している {@link ServletContext} への参照
+	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
 	 */
-	void destroy();
+	void initialize(ServletContext servletContext);
 
 	/**
 	 * このプラグインが提供するサービスプロバイダを取得します。
@@ -73,5 +66,112 @@ public interface Plugin {
 	 * @return このプラグインが提供するサービスプロバイダのセット
 	 */
 	Set<Class<? extends Provider>> getSupportedServices();
+
+	/**
+	 * プラグインの準備が完了した時に実行されます。
+	 */
+	void ready();
+
+	/**
+	 * <code>CubbyFilter</code> がサービス提供を 停止するときに実行されます。
+	 * 
+	 * @see javax.servlet.Filter#destroy()
+	 */
+	void destroy();
+
+	// リクエストの処理
+
+	/**
+	 * 要求に対する処理を開始する時に実行されます。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 */
+	void beginRequestProcessing(HttpServletRequest request,
+			HttpServletResponse response);
+
+	/**
+	 * アクションメソッドの実行前に実行されます。
+	 * <p>
+	 * このメソッドの戻り値が <code>null</code> でない場合はアクションメソッドを実行せず、
+	 * このメソッドの戻り値をアクションメソッドの戻り値として以降の処理を行います。
+	 * </p>
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションのコンテキスト
+	 * @return 置き換えるための実行結果
+	 */
+	ActionResult beforeActionInvoke(HttpServletRequest request,
+			HttpServletResponse response, ActionContext actionContext);
+
+	/**
+	 * アクションメソッドの実行後に実行されます。
+	 * <p>
+	 * このメソッドの戻り値が <code>null</code> でない場合はアクションメソッドの実行結果ではなく、
+	 * このメソッドの戻り値をアクションメソッドの戻り値として以降の処理を行います。
+	 * </p>
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションのコンテキスト
+	 * @param actionResult
+	 *            アクションメソッドの実行結果
+	 * @return 置き換えるための実行結果
+	 */
+	ActionResult afterActionInvoke(HttpServletRequest request,
+			HttpServletResponse response, ActionContext actionContext,
+			ActionResult actionResult);
+
+	/**
+	 * アクションの実行結果の実行前に実行されます。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションのコンテキスト
+	 * @param actionResult
+	 *            アクションメソッドの実行結果
+	 */
+	void beforeInvokeActionResult(HttpServletRequest request,
+			HttpServletResponse response, ActionContext actionContext,
+			ActionResult actionResult);
+
+	/**
+	 * アクションの実行結果の実行後に実行されます。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 * @param actionContext
+	 *            アクションのコンテキスト
+	 * @param actionResult
+	 *            アクションメソッドの実行結果
+	 */
+	void afterInvokeActionResult(HttpServletRequest request,
+			HttpServletResponse response, ActionContext actionContext,
+			ActionResult actionResult);
+
+	/**
+	 * 要求に対する処理が終了した時に実行されます。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
+	 */
+	void endRequestProcessing(HttpServletRequest request,
+			HttpServletResponse response);
 
 }

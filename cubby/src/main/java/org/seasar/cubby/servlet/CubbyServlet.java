@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -60,7 +61,7 @@ public class CubbyServlet extends GenericServlet {
 		super.init(config);
 
 		final Collection<Plugin> plugins = loadPlugins();
-		initializePlugins(config, plugins);
+		initializePlugins(config.getServletContext(), plugins);
 		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		registerPlugins(pluginRegistry, plugins);
 		readyPlugins(plugins);
@@ -107,19 +108,18 @@ public class CubbyServlet extends GenericServlet {
 	/**
 	 * プラグインを初期化します。
 	 * 
-	 * @param config
-	 *            <code>CubbyServlet</code> の設定や初期化パラメータが含まれている
-	 *            <code>ServletConfig</code> オブジェクト
+	 * @param servletContext
+	 *            呼び出し元が現在実行している {@link ServletContext} への参照
 	 * @param plugins
 	 *            プラグインのコレクション
 	 */
-	protected void initializePlugins(final ServletConfig config,
+	protected void initializePlugins(final ServletContext servletContext,
 			final Collection<Plugin> plugins) {
 		for (final Plugin plugin : plugins) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(format("DCUB0019", plugin));
 			}
-			plugin.initialize(config);
+			plugin.initialize(servletContext);
 			if (logger.isInfoEnabled()) {
 				logger.info(format("ICUB0002", plugin));
 			}

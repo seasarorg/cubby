@@ -15,11 +15,9 @@
  */
 package org.seasar.cubby.plugins.guice;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.seasar.cubby.controller.FormatPattern;
@@ -47,18 +45,11 @@ import org.seasar.cubby.converter.impl.ShortConverter;
 import org.seasar.cubby.converter.impl.SqlDateConverter;
 import org.seasar.cubby.converter.impl.SqlTimeConverter;
 import org.seasar.cubby.converter.impl.SqlTimestampConverter;
-import org.seasar.cubby.handler.ActionHandler;
-import org.seasar.cubby.handler.impl.InitializeActionHandler;
-import org.seasar.cubby.handler.impl.InvocationActionHandler;
-import org.seasar.cubby.handler.impl.ParameterBindingActionHandler;
-import org.seasar.cubby.handler.impl.ValidationActionHandler;
-import org.seasar.cubby.plugins.guice.spi.GuiceActionHandlerChainProvider;
 import org.seasar.cubby.plugins.guice.spi.GuiceContainerProvider;
 import org.seasar.cubby.plugins.guice.spi.GuiceConverterProvider;
 import org.seasar.cubby.plugins.guice.spi.GuicePathResolverProvider;
 import org.seasar.cubby.plugins.guice.spi.GuiceRequestParserProvider;
 import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
@@ -69,12 +60,22 @@ import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 
+/**
+ * Cubby の設定を行う {@link Module} の抽象クラスです。
+ * 
+ * @author baba
+ */
 public abstract class AbstractCubbyModule extends AbstractModule {
 
+	/**
+	 * Cubby を構成します。
+	 */
+	@Override
 	public void configure() {
 		// ContainerProvider
 		bind(ContainerProvider.class).to(GuiceContainerProvider.class).in(
@@ -114,21 +115,6 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 		bind(ConverterProvider.class).to(GuiceConverterProvider.class).in(
 				Singleton.class);
 
-		// ActionHandlerChainProvider
-		bind(new TypeLiteral<Collection<ActionHandler>>() {
-		}).toProvider(new Provider<Collection<ActionHandler>>() {
-
-			@Inject
-			public Injector injector;
-
-			public Collection<ActionHandler> get() {
-				return createActionHandlers(injector);
-			}
-
-		}).in(Singleton.class);
-		bind(ActionHandlerChainProvider.class).to(
-				GuiceActionHandlerChainProvider.class).in(Singleton.class);
-
 		// PathResolverProvider
 		bind(PathResolver.class).toInstance(getPathResolver());
 		bind(PathResolverProvider.class).to(GuicePathResolverProvider.class)
@@ -138,6 +124,13 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 		configureFormatPattern();
 	}
 
+	/**
+	 * リクエスト解析器のコレクションを取得します。
+	 * 
+	 * @param injector
+	 *            インジェクタ
+	 * @return リクエスト解析器のコレクション
+	 */
 	protected Collection<RequestParser> createRequestParsers(
 			final Injector injector) {
 		final Set<RequestParser> requestParsers = new HashSet<RequestParser>();
@@ -146,6 +139,13 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 		return Collections.unmodifiableCollection(requestParsers);
 	}
 
+	/**
+	 * コンバーターのコレクションを取得します。
+	 * 
+	 * @param injector
+	 *            インジェクタ
+	 * @return コンバーターのコレクション
+	 */
 	protected Collection<Converter> createConverters(final Injector injector) {
 		final Set<Converter> converters = new HashSet<Converter>();
 		converters.add(injector.getInstance(BigDecimalConverter.class));
@@ -169,16 +169,14 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 		return Collections.unmodifiableCollection(converters);
 	}
 
-	protected Collection<ActionHandler> createActionHandlers(Injector injector) {
-		final List<ActionHandler> actionHandlers = new ArrayList<ActionHandler>();
-		actionHandlers.add(injector.getInstance(InitializeActionHandler.class));
-		actionHandlers.add(injector
-				.getInstance(ParameterBindingActionHandler.class));
-		actionHandlers.add(injector.getInstance(ValidationActionHandler.class));
-		actionHandlers.add(injector.getInstance(InvocationActionHandler.class));
-		return Collections.unmodifiableCollection(actionHandlers);
-	}
-
+	/**
+	 * {@link PathResolver} を取得します。
+	 * <p>
+	 * サブクラスではアクションを登録済みの {@link PathResolver} を返してください。
+	 * </p>
+	 * 
+	 * @return {@link PathResolver}
+	 */
 	protected abstract PathResolver getPathResolver();
 
 	protected void configureMessagesBehaviour() {
@@ -186,6 +184,9 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 				Singleton.class);
 	}
 
+	/**
+	 * {@link FormatPattern} を構成します。
+	 */
 	protected void configureFormatPattern() {
 		bind(FormatPattern.class).to(DefaultFormatPattern.class).in(
 				Singleton.class);
