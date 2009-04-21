@@ -86,7 +86,7 @@ line.separator=\n
   <repositories>
     <repository>
       <id>local</id>
-      <url>file:m2repo</url>
+      <url>file:${basedir}/m2repo</url>
     </repository>
     <repository>
       <id>maven.seasar.org</id>
@@ -121,6 +121,7 @@ line.separator=\n
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-unit</artifactId>
       <version>2.0.0-beta2-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>

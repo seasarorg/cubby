@@ -2,7 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="app-cubby">
-	<include path="cubby-handlers.dicon"/>
 	<include path="cubby-converters.dicon"/>
 
 	<!-- 日付フォーマットの設定 -->
@@ -13,8 +12,11 @@
 	</component>
 
 	<!-- リクエストパーサー -->
-	<component class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
-	<component class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
+	<component name="requestParsers">
+		{ multipartRequestParser, defaultRequestParser }
+	</component>
 
 	<!-- ファイルアップロードの設定 -->
 	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
