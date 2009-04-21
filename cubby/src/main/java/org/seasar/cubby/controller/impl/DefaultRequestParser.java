@@ -29,12 +29,6 @@ import org.seasar.cubby.controller.RequestParser;
  */
 public class DefaultRequestParser implements RequestParser {
 
-	/** デフォルトの優先順位。 */
-	static final int DEFAULT_PRIORITY = Integer.MAX_VALUE;
-
-	/** 優先順位。 */
-	private int priority = DEFAULT_PRIORITY;
-
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -54,26 +48,6 @@ public class DefaultRequestParser implements RequestParser {
 	 */
 	public boolean isParsable(final HttpServletRequest request) {
 		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * デフォルトの優先順位は {@link Integer#MAX_VALUE} です。
-	 * </p>
-	 */
-	public int getPriority() {
-		return priority;
-	}
-
-	/**
-	 * 優先順位を設定します。
-	 * 
-	 * @param priority
-	 *            優先順位
-	 */
-	public void setPriority(final int priority) {
-		this.priority = priority;
 	}
 
 }

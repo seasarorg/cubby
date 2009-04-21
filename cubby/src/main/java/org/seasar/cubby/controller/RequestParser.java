@@ -48,12 +48,4 @@ public interface RequestParser {
 	 */
 	boolean isParsable(HttpServletRequest request);
 
-	/**
-	 * 優先順位を取得します。
-	 * 
-	 * @return 優先順位
-	 * @since 1.1.0
-	 */
-	int getPriority();
-
 }

@@ -39,8 +39,8 @@ public class AbstractRequestParserProviderTest {
 	private RequestParserProvider provider = new AbstractRequestParserProvider() {
 
 		private List<RequestParser> parsers = Arrays
-				.asList(new RequestParser[] { new DefaultRequestParser(),
-						new MyRequestParserImpl() });
+				.asList(new RequestParser[] { new MyRequestParserImpl(),
+						new DefaultRequestParser() });
 
 		@Override
 		protected Collection<RequestParser> getRequestParsers() {
@@ -104,10 +104,6 @@ public class AbstractRequestParserProviderTest {
 
 		public Map<String, Object[]> getParameterMap(HttpServletRequest request) {
 			return MY_REQUEST_PARSER_PARAMETER_MAP;
-		}
-
-		public int getPriority() {
-			return 1;
 		}
 
 		public boolean isParsable(HttpServletRequest request) {

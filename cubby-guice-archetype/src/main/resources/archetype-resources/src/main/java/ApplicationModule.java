@@ -17,6 +17,14 @@ package ${package};
 
 import javax.servlet.http.HttpServletRequest;
 
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
+#end
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
@@ -28,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 #if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
+import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
 #end
 
@@ -53,58 +62,53 @@ public class ApplicationModule extends AbstractModule {
 		});
 #if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		install(new ServletModule());
+
+		configureFileUpload();
 #end
-		// アプリケーションがマルチパート要求を使用する場合は以下のコメント行を有効にしてください。
-		// configureFileUpload();
+	}
+#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
+
+	protected void configureFileUpload() {
+		// "org.apache.commons.fileupload.disk.DiskFileItemFactory" uses the local file system temporary.
+		// When there is a limitation in writing in the filesystem like Goolgle App Engine,
+		// please try not DiskFileItemFactory but "org.seasar.cubby.fileupload.StreamFileItemFactory".
+		// This processes multipart-data on memory without using temporary. 
+
+		final FileItemFactory fileItemFactory = new DiskFileItemFactory();
+		bind(FileUpload.class).toInstance(
+				new ServletFileUpload(fileItemFactory));
+		bind(RequestContext.class).toProvider(RequestContextProvider.class).in(
+				RequestScoped.class);
 	}
 
-// アプリケーションがマルチパート要求を使用する場合は以下のコメント行を有効にしてください。
-//	/**
-//	 * commons-fileupload の設定を行います。
-//	 * <p>
-//	 * {@link org.apache.commons.fileupload.disk.DiskFileItemFactory}
-//	 * はテンポラリにローカルファイルシステムを使用します。Goolgle&nbsp;App&nbsp;Engine
-//	 * のようにファイルシステムへの書き込みに制限がある場合は
-//	 * {@link org.apache.commons.fileupload.disk.DiskFileItemFactory} ではなく、
-//	 * {@link org.seasar.cubby.fileupload.StreamFileItemFactory} を試してみてください。
-//	 * これはマルチパートのデータをテンポラリを使用せずにオンメモリで処理します。
-//	 * </p>
-//	 */
-//	protected void configureFileUpload() {
-//		final FileItemFactory fileItemFactory = new DiskFileItemFactory();
-//		bind(FileUpload.class).toInstance(
-//				new ServletFileUpload(fileItemFactory));
-//		bind(RequestContext.class).toProvider(RequestContextProvider.class).in(
-//				RequestScoped.class);
-//	}
-//
-//	/**
-//	 * {@link RequestContext} のプロバイダです。
-//	 */
-//	private static class RequestContextProvider implements
-//			Provider<RequestContext> {
-//
-//		/** {@link RequestContext} です。 */
-//		private RequestContext requestContext;
-//
-//		/**
-//		 * インスタンス化します。
-//		 * 
-//		 * @param request
-//		 *            要求
-//		 */
-//		@Inject
-//		public RequestContextProvider(final HttpServletRequest request) {
-//			this.requestContext = new ServletRequestContext(request);
-//		}
-//
-//		/**
-//		 * {@link RequestContext} を取得します。
-//		 */
-//		public RequestContext get() {
-//			return requestContext;
-//		}
-//
-//	}
+	/**
+	 * {@link RequestContext} provider
+	 */
+	private static class RequestContextProvider implements
+			Provider<RequestContext> {
+
+		/** {@link RequestContext} */
+		private RequestContext requestContext;
+
+		/**
+		 * Instantiate.
+		 * 
+		 * @param request
+		 *            Request
+		 */
+		@Inject
+		public RequestContextProvider(final HttpServletRequest request) {
+			this.requestContext = new ServletRequestContext(request);
+		}
+
+		/**
+		 * Get {@link RequestContext}
+		 */
+		public RequestContext get() {
+			return requestContext;
+		}
+
+	}
+#end
 
 }
