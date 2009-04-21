@@ -55,12 +55,6 @@ import org.seasar.cubby.spi.container.LookupException;
  */
 public class MultipartRequestParser implements RequestParser {
 
-	/** デフォルトの優先順位。 */
-	static final int DEFAULT_PRIORITY = DefaultRequestParser.DEFAULT_PRIORITY - 1;
-
-	/** 優先順位。 */
-	private int priority = DEFAULT_PRIORITY;
-
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -204,26 +198,6 @@ public class MultipartRequestParser implements RequestParser {
 		} catch (final LookupException e) {
 			return false;
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * デフォルトの優先順位は {@link DefaultRequestParser#DEFAULT_PRIORITY} - 1 です。
-	 * </p>
-	 */
-	public int getPriority() {
-		return priority;
-	}
-
-	/**
-	 * 優先順位を設定します。
-	 * 
-	 * @param priority
-	 *            優先順位
-	 */
-	public void setPriority(final int priority) {
-		this.priority = priority;
 	}
 
 }

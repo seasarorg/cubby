@@ -17,16 +17,13 @@ package org.seasar.cubby.spi.impl;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.controller.RequestParser;
+import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.spi.RequestParserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +35,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * @author baba
- * @since 2.0.0
  */
 public abstract class AbstractRequestParserProvider implements
 		RequestParserProvider {
@@ -47,53 +43,37 @@ public abstract class AbstractRequestParserProvider implements
 	private static final Logger logger = LoggerFactory
 			.getLogger(AbstractRequestParserProvider.class);
 
-	/** 要求解析器の {@link Comparator}。 */
-	private final Comparator<RequestParser> requestParserComparator = new Comparator<RequestParser>() {
-
-		/**
-		 * {@inheritDoc}
-		 * <p>
-		 * 優先順位の昇順にソートします。
-		 * </p>
-		 */
-		public int compare(final RequestParser reuqestParser1,
-				final RequestParser reuqestParser2) {
-			return reuqestParser1.getPriority() - reuqestParser2.getPriority();
-		}
-
-	};
+	/** デフォルトの {@link RequestParser} */
+	private final RequestParser defaultRequestParser = new DefaultRequestParser();
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public Map<String, Object[]> getParameterMap(
 			final HttpServletRequest request) {
-		for (final RequestParser requestParser : sort(getRequestParsers())) {
-			if (requestParser.isParsable(request)) {
-				if (logger.isDebugEnabled()) {
-					logger.debug(format("DCUB0016", requestParser));
-				}
-				final Map<String, Object[]> parameterMap = requestParser
-						.getParameterMap(request);
-				return parameterMap;
-			}
+		final RequestParser requestParser = findRequestParser(request);
+		if (logger.isDebugEnabled()) {
+			logger.debug(format("DCUB0016", requestParser));
 		}
-		throw new NullPointerException("requestParser");
+		final Map<String, Object[]> parameterMap = requestParser
+				.getParameterMap(request);
+		return parameterMap;
 	}
 
 	/**
-	 * 要求解析器のコレクションをソートします。
+	 * 要求を解析できる {@link RequestParser} を検索します。
 	 * 
-	 * @param requestParsers
-	 *            リクエスト解析器のコレクション
-	 * @return ソートされた {@link Iterable}
+	 * @param request
+	 *            要求
+	 * @return 要求を解析できる {@link RequestParser}
 	 */
-	protected Iterable<RequestParser> sort(
-			final Collection<RequestParser> requestParsers) {
-		final List<RequestParser> requestParserList = new ArrayList<RequestParser>(
-				requestParsers);
-		Collections.sort(requestParserList, requestParserComparator);
-		return requestParserList;
+	protected RequestParser findRequestParser(final HttpServletRequest request) {
+		for (final RequestParser requestParser : getRequestParsers()) {
+			if (requestParser.isParsable(request)) {
+				return requestParser;
+			}
+		}
+		return defaultRequestParser;
 	}
 
 	/**

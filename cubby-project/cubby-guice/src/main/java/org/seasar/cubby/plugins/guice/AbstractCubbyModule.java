@@ -15,9 +15,11 @@
  */
 package org.seasar.cubby.plugins.guice;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.seasar.cubby.controller.FormatPattern;
@@ -126,6 +128,21 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 
 	/**
 	 * リクエスト解析器のコレクションを取得します。
+	 * <p>
+	 * 戻り値のコレクションには以下の順序でリクエスト解析器のインスタンスが格納されます。
+	 * <ol>
+	 * <li>{@link MultipartRequestParser}</li>
+	 * <li>{@link DefaultRequestParser}</li>
+	 * </ol>
+	 * </p>
+	 * <p>
+	 * 要求を解析する場合は、このメソッドの戻り値のコレクションの順序で
+	 * {@link RequestParser#isParsable(javax.servlet.http.HttpServletRequest)}
+	 * が評価されて、最初に <code>true</code> を返したインスタンスを解析に使用します。
+	 * {@link DefaultRequestParser#isParsable(javax.servlet.http.HttpServletRequest)}
+	 * は、常に <code>true</code> を返すので、 このメソッドをオーバーライドする場合は
+	 * {@link DefaultRequestParser} のインスタンスがコレクションの最後になるようにしてください。
+	 * </p>
 	 * 
 	 * @param injector
 	 *            インジェクタ
@@ -133,14 +150,36 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	 */
 	protected Collection<RequestParser> createRequestParsers(
 			final Injector injector) {
-		final Set<RequestParser> requestParsers = new HashSet<RequestParser>();
-		requestParsers.add(injector.getInstance(DefaultRequestParser.class));
+		final List<RequestParser> requestParsers = new ArrayList<RequestParser>();
 		requestParsers.add(injector.getInstance(MultipartRequestParser.class));
+		requestParsers.add(injector.getInstance(DefaultRequestParser.class));
 		return Collections.unmodifiableCollection(requestParsers);
 	}
 
 	/**
 	 * コンバーターのコレクションを取得します。
+	 * <p>
+	 * 戻り値のコレクションには以下のコンバータが含まれます。
+	 * <ul>
+	 * <li>{@link BigDecimalConverter}</li>
+	 * <li>{@link BigIntegerConverter}</li>
+	 * <li>{@link BooleanConverter}</li>
+	 * <li>{@link ByteArrayFileItemConverter}</li>
+	 * <li>{@link ByteConverter}</li>
+	 * <li>{@link CharacterConverter}</li>
+	 * <li>{@link DateConverter}</li>
+	 * <li>{@link DoubleConverter}</li>
+	 * <li>{@link EnumConverter}</li>
+	 * <li>{@link FloatConverter}</li>
+	 * <li>{@link InputStreamFileItemConverter}</li>
+	 * <li>{@link IntegerConverter}</li>
+	 * <li>{@link LongConverter}</li>
+	 * <li>{@link ShortConverter}</li>
+	 * <li>{@link SqlDateConverter}</li>
+	 * <li>{@link SqlTimeConverter}</li>
+	 * <li>{@link SqlTimestampConverter}</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param injector
 	 *            インジェクタ
@@ -179,6 +218,12 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	 */
 	protected abstract PathResolver getPathResolver();
 
+	/**
+	 * {@link MessagesBehaviour} を構成します。
+	 * <p>
+	 * {@link MessagesBehaviour} を {@link DefaultMessagesBehaviour} にバインドします。
+	 * </p>
+	 */
 	protected void configureMessagesBehaviour() {
 		bind(MessagesBehaviour.class).to(DefaultMessagesBehaviour.class).in(
 				Singleton.class);
@@ -186,6 +231,9 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 
 	/**
 	 * {@link FormatPattern} を構成します。
+	 * <p>
+	 * {@link FormatPattern} を {@link DefaultFormatPattern} にバインドします。
+	 * </p>
 	 */
 	protected void configureFormatPattern() {
 		bind(FormatPattern.class).to(DefaultFormatPattern.class).in(

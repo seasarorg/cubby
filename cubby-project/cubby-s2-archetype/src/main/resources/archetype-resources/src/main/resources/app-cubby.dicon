@@ -12,8 +12,11 @@
 	</component>
 
 	<!-- request parsers -->
-	<component class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
-	<component class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
+	<component name="requestParsers">
+		{ multipartRequestParser, defaultRequestParser }
+	</component>
 
 	<!-- file upload -->
 	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">

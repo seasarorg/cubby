@@ -99,12 +99,4 @@ public class DefaultRequestParserImplTest {
 		verify(request);
 	}
 
-	@Test
-	public void priority() {
-		assertEquals(DefaultRequestParser.DEFAULT_PRIORITY, requestParser
-				.getPriority());
-		requestParser.setPriority(5);
-		assertEquals(5, requestParser.getPriority());
-	}
-
 }

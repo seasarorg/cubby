@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.plugins.s2.spi;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.seasar.cubby.controller.RequestParser;
@@ -47,10 +46,10 @@ public class S2RequestParserProvider extends AbstractRequestParserProvider {
 	 */
 	@Override
 	protected Collection<RequestParser> getRequestParsers() {
-		final RequestParser[] requestParsers = RequestParser[].class
-				.cast(s2Container.getRoot().findAllComponents(
-						RequestParser.class));
-		return Arrays.asList(requestParsers);
+		@SuppressWarnings("unchecked")
+		final Collection<RequestParser> requestParsers = (Collection<RequestParser>) s2Container
+				.getRoot().getComponent("requestParsers");
+		return requestParsers;
 	}
 
 }
