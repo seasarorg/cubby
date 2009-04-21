@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 
 /**
  * {@link org.seasar.cubby.action.ActionResult} のラッパの実装です。
@@ -29,6 +31,9 @@ import org.seasar.cubby.internal.controller.ActionResultWrapper;
  * @since 1.1.0
  */
 class ActionResultWrapperImpl implements ActionResultWrapper {
+
+	/** プラグインのレジストリ。 */
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	/** アクションの実行結果。 */
 	private final ActionResult actionResult;
@@ -56,7 +61,15 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	 */
 	public void execute(final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			plugin.beforeInvokeActionResult(request, response, actionContext,
+					actionResult);
+		}
 		actionResult.execute(actionContext, request, response);
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			plugin.afterInvokeActionResult(request, response, actionContext,
+					actionResult);
+		}
 	}
 
 	/**

@@ -13,67 +13,77 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.handler.impl;
+package org.seasar.cubby.plugins;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_CONVERSION_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
+import static org.seasar.cubby.validator.ValidationUtils.getValidation;
+import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.handler.ActionHandler;
-import org.seasar.cubby.handler.ActionHandlerChain;
+import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
 import org.seasar.cubby.internal.util.RequestUtils;
+import org.seasar.cubby.plugin.AbstractPlugin;
+import org.seasar.cubby.validator.ValidationException;
+import org.seasar.cubby.validator.ValidationFailBehaviour;
+import org.seasar.cubby.validator.ValidationRules;
 
 /**
- * 要求パラメータをフォームオブジェクトにバインドするアクションハンドラーです。
+ * 要求パラメータからフォームオブジェクトへの値のバインドと、それに伴う型変換、要求パラメータの検証を行うプラグインです。
  * 
  * @author baba
- * @since 2.0.0
  */
-public class ParameterBindingActionHandler implements ActionHandler {
+public class ValidationPlugin extends AbstractPlugin {
 
 	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
 	private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * アクションメソッドにフォームオブジェクトが定義されている場合に、{@link RequestParameterBinder}
-	 * によって要求パラメータをフォームオブジェクトにバインドします。
-	 * </p>
-	 * <p>
-	 * バインド時に発生した型変換エラーは要求の属性 {@link CubbyConstants#ATTR_CONVERSION_ERRORS}
-	 * に設定されます。
-	 * </p>
 	 */
-	public ActionResult handle(final HttpServletRequest request,
+	@Override
+	public ActionResult beforeActionInvoke(final HttpServletRequest request,
 			final HttpServletResponse response,
-			final ActionContext actionContext,
-			final ActionHandlerChain actionHandlerChain) throws Exception {
+			final ActionContext actionContext) {
+
+		final Map<String, Object[]> parameterMap = RequestUtils.getAttribute(
+				request, ATTR_PARAMS);
 
 		final Object formBean = actionContext.getFormBean();
+
 		if (formBean != null) {
-			final Map<String, Object[]> parameterMap = RequestUtils
-					.getAttribute(request, ATTR_PARAMS);
 			final ActionErrors conversionErros = new ActionErrorsImpl();
 			requestParameterBinder.bind(parameterMap, formBean, actionContext,
 					conversionErros);
 			request.setAttribute(ATTR_CONVERSION_ERRORS, conversionErros);
 		}
 
-		final ActionResult result = actionHandlerChain.chain(request, response,
-				actionContext);
-		return result;
+		try {
+			final Validation validation = getValidation(actionContext
+					.getActionMethod());
+			if (validation != null) {
+				final ValidationRules validationRules = getValidationRules(
+						actionContext.getAction(), validation.rules());
+				validationRules.validate(parameterMap, formBean, actionContext
+						.getActionErrors());
+			}
+			return null;
+		} catch (final ValidationException e) {
+			request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
+			final ValidationFailBehaviour behaviour = e.getBehaviour();
+			return behaviour.getValidationErrorActionResult(actionContext);
+		}
 	}
 
 }

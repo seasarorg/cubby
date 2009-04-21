@@ -18,8 +18,12 @@ package org.seasar.cubby.plugin;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.spi.Provider;
 
 /**
@@ -57,7 +61,21 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void initialize(final ServletConfig config) {
+	public void initialize(final ServletContext servletContext) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<Class<? extends Provider>> getSupportedServices() {
+		return supportedServices;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public <S extends Provider> S getProvider(final Class<S> service) {
+		return null;
 	}
 
 	/**
@@ -75,8 +93,49 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Set<Class<? extends Provider>> getSupportedServices() {
-		return supportedServices;
+	public void beginRequestProcessing(final HttpServletRequest request,
+			final HttpServletResponse response) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ActionResult beforeActionInvoke(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext) {
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ActionResult afterActionInvoke(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext, final ActionResult actionResult) {
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void afterInvokeActionResult(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext, final ActionResult actionResult) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void beforeInvokeActionResult(final HttpServletRequest request,
+			final HttpServletResponse response,
+			final ActionContext actionContext, final ActionResult actionResult) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void endRequestProcessing(final HttpServletRequest request,
+			final HttpServletResponse response) {
 	}
 
 }

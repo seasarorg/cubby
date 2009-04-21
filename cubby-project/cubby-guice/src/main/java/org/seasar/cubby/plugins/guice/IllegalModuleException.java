@@ -15,23 +15,52 @@
  */
 package org.seasar.cubby.plugins.guice;
 
+/**
+ * 不正なモジュールがしていされたことを示すためにスローされます。
+ * 
+ * @author baba
+ */
 public class IllegalModuleException extends RuntimeException {
 
+	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 詳細メッセージに <code>null</code> を使用して、新規例外を構築します。
+	 */
 	public IllegalModuleException() {
 		super();
 	}
 
-	public IllegalModuleException(String message, Throwable cause) {
+	/**
+	 * 指定された詳細メッセージおよび原因を使用して新規例外を構築します。
+	 * 
+	 * @param message
+	 *            詳細メッセージ
+	 * @param cause
+	 *            原因
+	 */
+	public IllegalModuleException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public IllegalModuleException(String message) {
+	/**
+	 * 指定された詳細メッセージを使用して、新規例外を構築します。
+	 * 
+	 * @param message
+	 *            詳細メッセージ
+	 */
+	public IllegalModuleException(final String message) {
 		super(message);
 	}
 
-	public IllegalModuleException(Throwable cause) {
+	/**
+	 * 指定された原因および詳細メッセージを使用して新規例外を構築します。
+	 * 
+	 * @param cause
+	 *            原因
+	 */
+	public IllegalModuleException(final Throwable cause) {
 		super(cause);
 	}
 

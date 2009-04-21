@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.internal.controller.RequestProcessor;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.spi.ProviderFactory;
@@ -38,6 +40,9 @@ import org.seasar.cubby.spi.RequestParserProvider;
  */
 public class RequestProcessorImpl implements RequestProcessor {
 
+	/** プラグインのレジストリ。 */
+	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,6 +51,11 @@ public class RequestProcessorImpl implements RequestProcessor {
 			final CommandFactory<T> commandFactory) throws Exception {
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
 				request, pathInfo.getURIParameters());
+
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			plugin.beginRequestProcessing(wrappedRequest, response);
+		}
+
 		final RequestParserProvider requestParserProvider = ProviderFactory
 				.get(RequestParserProvider.class);
 		final Map<String, Object[]> parameterMap = requestParserProvider
@@ -53,7 +63,14 @@ public class RequestProcessorImpl implements RequestProcessor {
 		request.setAttribute(ATTR_PARAMS, parameterMap);
 		final Routing routing = pathInfo.dispatch(parameterMap);
 		final Command<T> command = commandFactory.create(routing);
-		return ThreadContext.runInContext(wrappedRequest, response, command);
+		final T result = ThreadContext.runInContext(wrappedRequest, response,
+				command);
+
+		for (final Plugin plugin : pluginRegistry.getPlugins()) {
+			plugin.endRequestProcessing(wrappedRequest, response);
+		}
+
+		return result;
 	}
 
 }

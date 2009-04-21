@@ -16,14 +16,12 @@
 package org.seasar.cubby.plugins.s2;
 
 import javax.el.ELResolver;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
 import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugins.s2.el.S2BeanELResolver;
-import org.seasar.cubby.spi.ActionHandlerChainProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
@@ -65,7 +63,6 @@ public class S2ContainerPlugin extends AbstractPlugin {
 		support(BeanDescProvider.class);
 		support(ContainerProvider.class);
 		support(RequestParserProvider.class);
-		support(ActionHandlerChainProvider.class);
 		support(PathResolverProvider.class);
 		support(ConverterProvider.class);
 	}
@@ -77,8 +74,8 @@ public class S2ContainerPlugin extends AbstractPlugin {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialize(final ServletConfig config) {
-		this.servletContext = config.getServletContext();
+	public void initialize(final ServletContext servletContext) {
+		this.servletContext = servletContext;
 	}
 
 	/**
