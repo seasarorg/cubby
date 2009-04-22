@@ -56,7 +56,6 @@ import com.google.inject.Module;
  * <li>{@link BeanDescProvider}</li>
  * <li>{@link ContainerProvider}</li>
  * <li>{@link RequestParserProvider}</li>
- * <li>{@link ActionHandlerChainProvider}</li>
  * <li>{@link PathResolverProvider}</li>
  * <li>{@link ConverterProvider}</li>
  * </ul>

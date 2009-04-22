@@ -41,7 +41,6 @@ import org.seasar.framework.log.Logger;
  * <li>{@link BeanDescProvider}</li>
  * <li>{@link ContainerProvider}</li>
  * <li>{@link RequestParserProvider}</li>
- * <li>{@link ActionHandlerChainProvider}</li>
  * <li>{@link PathResolverProvider}</li>
  * <li>{@link ConverterProvider}</li>
  * </ul>
