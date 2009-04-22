@@ -19,8 +19,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.seasar.cubby.plugin.BinderPlugin;
 import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugins.BinderPlugin;
 
 public class ProviderFactoryTest {
 

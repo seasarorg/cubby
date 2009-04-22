@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.seasar.cubby.plugin.BinderPlugin;
 import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.JsonProvider;
 import org.seasar.cubby.spi.container.Container;
