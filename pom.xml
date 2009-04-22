@@ -276,12 +276,11 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
         <artifactId>maven-license-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <header>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/src/etc/header.txt</header>
+          <header>http://www.seasar.org/license/header.txt</header>
           <includes>
             <include>src/**</include>
           </includes>
           <excludes>
-            <exclude>src/etc/header.txt</exclude>
             <exclude>**/env*.txt</exclude>
           </excludes>
           <mapping>
@@ -290,7 +289,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
           </mapping>
           <encoding>UTF-8</encoding>
           <headerDefinitions>
-            <headerDefinition>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/src/etc/header-definition.xml</headerDefinition>
+            <headerDefinition>http://www.seasar.org/license/header-definition.xml</headerDefinition>
           </headerDefinitions>
         </configuration>
       </plugin>
@@ -333,17 +332,6 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     </repository>
   </repositories>
   <pluginRepositories>
-    <pluginRepository>
-      <id>mc-release</id>
-      <name>Local Maven repository of releases</name>
-      <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
     <pluginRepository>
       <id>maven2-repository.dev.java.net</id>
       <name>Java.net Repository for Maven</name>
