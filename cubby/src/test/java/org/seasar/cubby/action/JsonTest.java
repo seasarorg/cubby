@@ -33,8 +33,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockJsonProvider;
-import org.seasar.cubby.plugin.BinderPlugin;
 import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.JsonProvider;
 
 public class JsonTest {

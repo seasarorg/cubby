@@ -13,13 +13,14 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.plugin;
+package org.seasar.cubby.plugins;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.seasar.cubby.internal.util.ServiceLoader;
+import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.spi.Provider;
 
 /**
