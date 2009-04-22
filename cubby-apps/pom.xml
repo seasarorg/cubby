@@ -34,7 +34,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean,install,animal-sniffer:check,deploy,site-deploy</goals>
+          <goals>clean,install,animal-sniffer:check,deploy</goals>
         </configuration>
       </plugin>
       <plugin>
@@ -79,6 +79,24 @@
       <url>http://maven.seasar.org/maven2-snapshot</url>
     </repository>
   </repositories>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>maven.seasar.org</id>
+      <url>dav:https://www.seasar.org/site/cubby/20x/</url>
+     </site>
+  </distributionManagement>
   <modules>
     <module>cubby-examples</module>
     <module>guice-examples</module>
