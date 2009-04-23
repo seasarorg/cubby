@@ -6,6 +6,7 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>guice-wiki</artifactId>
   <packaging>war</packaging>
+  <name>Cubby Wiki</name>
   <version>2.0.0-beta2-SNAPSHOT</version>
   <build>
     <finalName>guice-wiki</finalName>
