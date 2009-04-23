@@ -55,6 +55,18 @@ public class S2ContainerPlugin extends AbstractPlugin {
 	private static final Logger logger = Logger
 			.getLogger(S2ContainerPlugin.class);
 
+	static {
+		// HACK
+		// In "mvn tomcat:run", JspFactory.getDefaultFactory() returns null.
+		// because static initializer of "JspRuntimeContext" has not been
+		// executed yet.
+		// Like "JasperListener" in "server.xml"
+		try {
+			Class.forName("org.apache.jasper.compiler.JspRuntimeContext");
+		} catch (final Exception e) {
+		}
+	}
+
 	/**
 	 * インスタンス化します。
 	 */
