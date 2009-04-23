@@ -93,7 +93,7 @@ line.separator=\n
   <repositories>
     <repository>
       <id>local</id>
-      <url>file:${basedir}/m2repo</url>
+      <url>file:\${basedir}/m2repo</url>
     </repository>
     <repository>
       <id>maven.seasar.org</id>
