@@ -38,12 +38,9 @@ public class AbstractAction extends Action {
 	}
 
 	public void prerender() {
-		String contextPath = (String) request
-				.getAttribute("javax.servlet.forward.context_path");
-		String requestURI = (String) request
-				.getAttribute("javax.servlet.forward.request_uri");
-		String queryString = (String) request
-				.getAttribute("javax.servlet.forward.query_string");
+		String contextPath = request.getContextPath();
+		String requestURI = request.getRequestURI();
+		String queryString = request.getQueryString();
 		StringBuilder builder = new StringBuilder();
 		builder.append(requestURI.substring(contextPath.length()));
 		if (!StringUtil.isEmpty(queryString)) {
