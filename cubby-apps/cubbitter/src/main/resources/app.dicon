@@ -6,7 +6,6 @@
 	<include path="aop.dicon" />
 	<include path="dxo.dicon" />
 	<include path="kuina-dao.dicon" />
-	<include path="routing.dicon" />
 	<include path="cubby.dicon" />
 	<include path="app-cubby.dicon"/>
 	<include path="transaction.dicon"/>

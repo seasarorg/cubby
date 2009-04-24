@@ -1,13 +1,13 @@
 package org.seasar.cubby.cubbitter.util;
 
-import static javax.servlet.http.HttpServletResponse.*;
-
-import java.lang.reflect.Method;
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.SendError;
 
 public class SendErrors {
@@ -20,11 +20,11 @@ public class SendErrors {
 			SC_UNAUTHORIZED) {
 
 		@Override
-		public void execute(Action action, Class<? extends Action> actionClass,
-				Method method, HttpServletRequest request,
-				HttpServletResponse response) throws Exception {
+		public void execute(ActionContext actionContext,
+				HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
 			response.setHeader("WWW-Authenticate", "BASIC realm=\"users\"");
-			super.execute(action, actionClass, method, request, response);
+			super.execute(actionContext, request, response);
 		}
 
 	};
