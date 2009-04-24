@@ -34,12 +34,13 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean,install,animal-sniffer:check,deploy</goals>
+          <goals>clean,install,deploy</goals>
         </configuration>
       </plugin>
       <plugin>
         <groupId>com.google.code.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
+        <version>1.4.0</version>
         <configuration>
           <header>http://www.seasar.org/license/header.txt</header>
           <includes>
@@ -100,6 +101,7 @@
   <modules>
     <module>cubby-examples</module>
     <module>guice-examples</module>
+    <module>cubbitter</module>
     <module>guice-wiki</module>
   </modules>
 </project>
