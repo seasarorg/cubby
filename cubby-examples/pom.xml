@@ -23,10 +23,10 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <webResources>
-             <resource>
+            <webResource>
               <directory>src</directory>
               <targetPath>WEB-INF/src</targetPath>
-            </resource>
+            </webResource>
            </webResources>
         </configuration>
       </plugin>
