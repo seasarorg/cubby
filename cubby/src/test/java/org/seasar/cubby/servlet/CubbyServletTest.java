@@ -34,6 +34,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.junit.Test;
+import org.seasar.cubby.internal.plugin.PluginManager;
 import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
@@ -59,8 +60,18 @@ public class CubbyServletTest {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Collection<Plugin> loadPlugins() {
-				return Arrays.asList(new Plugin[] { new AssertPlugin() });
+			protected PluginManager buildPluginManager() {
+				PluginManager pluginManager = new PluginManager(PluginRegistry
+						.getInstance()) {
+
+					@Override
+					protected Collection<Plugin> loadPlugins() {
+						return Arrays
+								.asList(new Plugin[] { new AssertPlugin() });
+					}
+
+				};
+				return pluginManager;
 			}
 
 		};

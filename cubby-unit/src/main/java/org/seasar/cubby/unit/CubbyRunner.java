@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -35,8 +36,10 @@ import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
+import org.seasar.cubby.internal.plugin.PluginManager;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
+import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
 
@@ -48,6 +51,10 @@ import org.seasar.cubby.routing.Routing;
  * @since 2.0.0
  */
 public class CubbyRunner {
+
+	/** プラグインマネージャ。 */
+	private static PluginManager pluginManager = new PluginManager(
+			PluginRegistry.getInstance());
 
 	/**
 	 * リクエストに応じたアクションを実行します。
@@ -70,10 +77,42 @@ public class CubbyRunner {
 	public static ActionResult processAction(final HttpServletRequest request,
 			final HttpServletResponse response, final Filter... filters)
 			throws Exception {
+		final ServletContext servletContext = new MockServletContext();
+		return processAction(servletContext, request, response, filters);
+	}
+
+	/**
+	 * リクエストに応じたアクションを実行します。
+	 * <p>
+	 * <code>filters</code> が指定された場合はアクションを実行する前後に
+	 * {@link Filter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+	 * を実行します。
+	 * </p>
+	 * 
+	 * @param servletContext
+	 *            サーブレットコンテキスト
+	 * @param request
+	 *            テスト用の要求
+	 * @param response
+	 *            テスト用の応答
+	 * @param filters
+	 *            実行するサーブレットフィルタ
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
+	 */
+	public static ActionResult processAction(
+			final ServletContext servletContext,
+			final HttpServletRequest request,
+			final HttpServletResponse response, final Filter... filters)
+			throws Exception {
+		pluginManager.init(servletContext);
 		final ActionInvokeFilterChain chain = new ActionInvokeFilterChain(
 				filters);
 		chain.doFilter(request, response);
-		return chain.getActionResult();
+		final ActionResult actionResult = chain.getActionResult();
+		pluginManager.destroy();
+		return actionResult;
 	}
 
 	static class ActionInvokeFilterChain implements FilterChain {

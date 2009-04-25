@@ -15,26 +15,17 @@
  */
 package org.seasar.cubby.servlet;
 
-import static org.seasar.cubby.internal.util.LogMessages.format;
-
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.seasar.cubby.internal.util.ServiceLoader;
-import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.internal.plugin.PluginManager;
 import org.seasar.cubby.plugin.PluginRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * プラグインの初期化などを行う <code>Servlet</code> です。
@@ -46,9 +37,16 @@ public class CubbyServlet extends GenericServlet {
 	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;
 
-	/** ロガー。 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(CubbyServlet.class);
+	/** プラグインマネージャ。 */
+	private PluginManager pluginManager;
+
+	/**
+	 * サーブレットをインスタンス化します。
+	 */
+	public CubbyServlet() {
+		super();
+		this.pluginManager = buildPluginManager();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -59,12 +57,7 @@ public class CubbyServlet extends GenericServlet {
 	@Override
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
-
-		final Collection<Plugin> plugins = loadPlugins();
-		initializePlugins(config.getServletContext(), plugins);
-		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-		registerPlugins(pluginRegistry, plugins);
-		readyPlugins(plugins);
+		pluginManager.init(config.getServletContext());
 	}
 
 	/**
@@ -78,9 +71,7 @@ public class CubbyServlet extends GenericServlet {
 	@Override
 	public void destroy() {
 		super.destroy();
-		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-		final Set<? extends Plugin> plugins = pluginRegistry.getPlugins();
-		destroyPlugins(plugins);
+		pluginManager.destroy();
 	}
 
 	/**
@@ -93,94 +84,12 @@ public class CubbyServlet extends GenericServlet {
 	}
 
 	/**
-	 * プラグインをロードします。
+	 * プラグインマネージャを構築します。
 	 * 
-	 * @return ロードしたプラグインのコレクション
+	 * @return プラグインマネージャ
 	 */
-	protected Collection<Plugin> loadPlugins() {
-		final Set<Plugin> plugins = new HashSet<Plugin>();
-		for (final Plugin plugin : ServiceLoader.load(Plugin.class)) {
-			plugins.add(plugin);
-		}
-		return plugins;
-	}
-
-	/**
-	 * プラグインを初期化します。
-	 * 
-	 * @param servletContext
-	 *            呼び出し元が現在実行している {@link ServletContext} への参照
-	 * @param plugins
-	 *            プラグインのコレクション
-	 */
-	protected void initializePlugins(final ServletContext servletContext,
-			final Collection<Plugin> plugins) {
-		for (final Plugin plugin : plugins) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0019", plugin));
-			}
-			plugin.initialize(servletContext);
-			if (logger.isInfoEnabled()) {
-				logger.info(format("ICUB0002", plugin));
-			}
-		}
-	}
-
-	/**
-	 * プラグインをレジストリに登録します。
-	 * 
-	 * @param pluginRegistry
-	 *            プラグインのレジストリ
-	 * @param plugins
-	 *            登録するプラグインのコレクション
-	 */
-	protected void registerPlugins(final PluginRegistry pluginRegistry,
-			final Collection<Plugin> plugins) {
-		for (final Plugin plugin : plugins) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0020", plugin));
-			}
-			pluginRegistry.register(plugin);
-			if (logger.isInfoEnabled()) {
-				logger.info(format("ICUB0003", plugin));
-			}
-		}
-	}
-
-	/**
-	 * プラグインを準備します。
-	 * 
-	 * @param plugins
-	 *            プラグインのコレクション
-	 */
-	private void readyPlugins(final Collection<Plugin> plugins) {
-		for (final Plugin plugin : plugins) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0021", plugin));
-			}
-			plugin.ready();
-			if (logger.isInfoEnabled()) {
-				logger.info(format("ICUB0004", plugin));
-			}
-		}
-	}
-
-	/**
-	 * プラグインを破棄します。
-	 * 
-	 * @param plugins
-	 *            プラグインのコレクション
-	 */
-	protected void destroyPlugins(final Set<? extends Plugin> plugins) {
-		for (final Plugin plugin : plugins) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("DCUB0022", plugin));
-			}
-			plugin.destroy();
-			if (logger.isInfoEnabled()) {
-				logger.info(format("ICUB0005", plugin));
-			}
-		}
+	protected PluginManager buildPluginManager() {
+		return new PluginManager(PluginRegistry.getInstance());
 	}
 
 }
