@@ -4,11 +4,19 @@
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
-  <name>cubby apps</name>
-  <version>1.1.1-SNAPSHOT</version>
+  <name>Cubby Applications</name>
+  <version>1.1.5-SNAPSHOT</version>
   <build>
     <defaultGoal>validate</defaultGoal>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
+          <goals>clean,deploy</goals>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -35,15 +43,13 @@
         <plugin>
           <artifactId>maven-eclipse-plugin</artifactId>
           <configuration>
-            <wtpversion>1.5</wtpversion>
+            <wtpversion>2.0</wtpversion>
             <attach-sources>true</attach-sources>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
-   
   </build>
-  
   <pluginRepositories>
     <pluginRepository>
       <id>maven.seasar.org</id>
@@ -63,7 +69,8 @@
       <url>http://maven.seasar.org/maven2-snapshot</url>
     </repository>
   </repositories>
-	<modules>
-		<module>cubby-examples</module>
-	</modules>
+  <modules>
+    <module>cubby-examples</module>
+    <module>cubbitter</module>
+  </modules>
 </project>
