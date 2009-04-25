@@ -97,15 +97,18 @@ public class S2ContainerPlugin extends AbstractPlugin {
 	 */
 	@Override
 	public void ready() {
-		final JspApplicationContext jspApplicationContext = JspFactory
-				.getDefaultFactory().getJspApplicationContext(servletContext);
-		final S2Container container = SingletonS2ContainerFactory
-				.getContainer();
-		final ELResolver[] elResolvers = (ELResolver[]) container
-				.findAllComponents(ELResolver.class);
-		for (final ELResolver elResolver : elResolvers) {
-			jspApplicationContext.addELResolver(elResolver);
-			logger.log("ICUB0001", new Object[] { elResolver });
+		final JspFactory jspFactory = JspFactory.getDefaultFactory();
+		if (jspFactory != null) {
+			final JspApplicationContext jspApplicationContext = jspFactory
+					.getJspApplicationContext(servletContext);
+			final S2Container container = SingletonS2ContainerFactory
+					.getContainer();
+			final ELResolver[] elResolvers = (ELResolver[]) container
+					.findAllComponents(ELResolver.class);
+			for (final ELResolver elResolver : elResolvers) {
+				jspApplicationContext.addELResolver(elResolver);
+				logger.log("ICUB0001", new Object[] { elResolver });
+			}
 		}
 	}
 
