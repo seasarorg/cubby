@@ -1,62 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Applications</name>
   <version>1.1.5-SNAPSHOT</version>
+  <description>Cubby Sample Applications</description>
+  <url>http://cubby.seasar.org/11x/cubby-apps</url>
+  <inceptionYear>2006</inceptionYear>
+  <organization>
+    <name>The Seasar Foundation</name>
+    <url>http://www.seasar.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</connection>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</developerConnection>
+    <url>https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</url>
+  </scm>
   <build>
-    <defaultGoal>validate</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean,deploy</goals>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>source-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
+          <goals>clean,install,deploy</goals>
+          </configuration>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <configuration>
-            <wtpversion>2.0</wtpversion>
-            <attach-sources>true</attach-sources>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
   </build>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven.seasar.org</id>
-      <name>The Seasar Foundation Maven2 Repository</name>
-      <url>http://maven.seasar.org/maven2</url>
-    </pluginRepository>
-  </pluginRepositories>
   <repositories>
     <repository>
       <id>maven.seasar.org</id>
@@ -69,6 +58,24 @@
       <url>http://maven.seasar.org/maven2-snapshot</url>
     </repository>
   </repositories>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>maven.seasar.org</id>
+      <url>dav:https://www.seasar.org/site/cubby/11x/</url>
+     </site>
+  </distributionManagement>
   <modules>
     <module>cubby-examples</module>
     <module>cubbitter</module>
