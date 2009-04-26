@@ -29,7 +29,6 @@ import org.seasar.cubby.action.Redirect;
  * 
  * @author someda
  * @author baba
- * @since 2.0.0
  */
 public class CubbyAssert {
 

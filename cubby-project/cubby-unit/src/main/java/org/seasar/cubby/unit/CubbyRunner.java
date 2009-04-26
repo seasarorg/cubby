@@ -48,7 +48,6 @@ import org.seasar.cubby.routing.Routing;
  * 
  * @author someda
  * @author baba
- * @since 2.0.0
  */
 public class CubbyRunner {
 
