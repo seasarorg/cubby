@@ -27,12 +27,18 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * プラグインを初期化するためのサーブレットコンテキストのモックです。
  * 
  * @author baba
  */
 class MockServletContext implements ServletContext {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(MockServletContext.class);
 
 	private Hashtable<String, String> initParameters = new Hashtable<String, String>();
 
@@ -136,22 +142,21 @@ class MockServletContext implements ServletContext {
 	 * {@inheritDoc}
 	 */
 	public void log(String msg) {
-		System.out.println(msg);
+		logger.info(msg);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void log(Exception exception, String msg) {
-		log(msg, exception);
+		this.log(msg, exception);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void log(String message, Throwable throwable) {
-		System.out.println(message);
-		throwable.printStackTrace();
+		logger.info(message, throwable);
 	}
 
 	/**
