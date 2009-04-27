@@ -15,12 +15,13 @@
  */
 package org.seasar.cubby.spi.impl;
 
+import static org.seasar.cubby.internal.util.LogMessages.format;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.seasar.cubby.converter.Converter;
-import org.seasar.cubby.internal.util.LogMessages;
 import org.seasar.cubby.spi.ConverterProvider;
 
 /**
@@ -47,8 +48,7 @@ public abstract class AbstractConverterProvider implements ConverterProvider {
 				return converter;
 			}
 		}
-		throw new IllegalArgumentException(LogMessages.format("ECUB0110",
-				converterType));
+		throw new IllegalArgumentException(format("ECUB0110", converterType));
 	}
 
 	/**
