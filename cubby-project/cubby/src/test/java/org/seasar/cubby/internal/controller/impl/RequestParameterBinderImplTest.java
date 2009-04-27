@@ -715,22 +715,35 @@ public class RequestParameterBinderImplTest {
 	}
 
 	@Test
-	public void convertFileItem() throws UnsupportedEncodingException {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("file", new Object[] { new MockFileItem("123") });
-		map.put("bytefile", new Object[] { new MockFileItem("456") });
-		map.put("bytefiles", new Object[] { new MockFileItem("abc"),
+	public void convertFileItem() throws Exception {
+		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
+		map.put("file", new FileItem[] { new MockFileItem("123") });
+		map.put("bytefile", new FileItem[] { new MockFileItem("456") });
+		map.put("bytefiles", new FileItem[] { new MockFileItem("abc"),
 				new MockFileItem("def") });
-		map.put("bytefilelist", new Object[] { new MockFileItem("GHI"),
+		map.put("bytefilelist", new FileItem[] { new MockFileItem("GHI"),
 				new MockFileItem("JKL") });
-		map.put("input", new Object[] { new MockFileItem("QQ") });
+		map.put("input", new FileItem[] { new MockFileItem("QQ") });
 
-		FileItemDto dto = new FileItemDto();
+		final FileItemDto dto = new FileItemDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final ActionErrors errors = new ActionErrorsImpl();
+		ThreadContext.runInContext(request, response, new Command<Void>() {
+
+			public Void execute(HttpServletRequest request,
+					HttpServletResponse response) throws Exception {
+				requestParameterBinder.bind(map, dto, actionContext, errors);
+				return null;
+			}
+
+		});
+
 		String encoding = "UTF-8";
 		assertNotNull(dto.getFile());
 		assertEquals("123", new String(dto.getFile().get(), encoding));
