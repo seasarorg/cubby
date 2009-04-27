@@ -20,7 +20,7 @@ import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
-import static org.seasar.cubby.tags.TagUtils.getOutputValues;
+import static org.seasar.cubby.tags.TagUtils.getFormWrapper;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -36,6 +36,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.internal.controller.FormWrapper;
 
 /**
  * <code>&lt;input&gt;</code> タグを出力します。
@@ -148,7 +149,8 @@ public class InputTag extends DynamicAttributesSimpleTagSupport {
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
 		final Map<String, Object> dyn = this.getDynamicAttributes();
-		final String[] outputValues = getOutputValues(this, this.name);
+		final FormWrapper formWrapper = getFormWrapper(this);
+		// final String[] outputValues = getOutputValues(this, this.name);
 
 		if (this.index == null) {
 			if (!errors.getFields().get(this.name).isEmpty()) {
@@ -165,7 +167,7 @@ public class InputTag extends DynamicAttributesSimpleTagSupport {
 				throw new JspTagException(format("ECUB1003",
 						MULTIPLE_VALUE_TYPES, "value"));
 			}
-			final Object[] values = multipleFormValues(context, outputValues,
+			final Object[] values = multipleFormValues(context, formWrapper,
 					this.name, this.checkedValue);
 
 			out.write("<input type=\"");
@@ -180,7 +182,7 @@ public class InputTag extends DynamicAttributesSimpleTagSupport {
 			out.write(checked(TagUtils.toString(this.value), values));
 			out.write("/>");
 		} else {
-			final Object value = formValue(context, outputValues, this.name,
+			final Object value = formValue(context, formWrapper, this.name,
 					this.index, this.value);
 
 			out.write("<input type=\"");

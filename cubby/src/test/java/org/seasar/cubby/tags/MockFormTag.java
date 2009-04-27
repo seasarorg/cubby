@@ -17,6 +17,8 @@ package org.seasar.cubby.tags;
 
 import java.util.Map;
 
+import org.seasar.cubby.internal.controller.FormWrapper;
+
 public class MockFormTag extends FormTag {
 
 	private static final long serialVersionUID = 1L;
@@ -28,9 +30,26 @@ public class MockFormTag extends FormTag {
 		this.outputValues = outputValues;
 	}
 
-	@Override
-	public String[] getValues(String name) {
-		return outputValues.get(name);
+	public FormWrapper getFormWrapper() {
+		return new FormWrapperImpl(outputValues);
+	}
+
+	static class FormWrapperImpl implements FormWrapper {
+
+		private final Map<String, String[]> outputValues;
+
+		public FormWrapperImpl(Map<String, String[]> outputValues) {
+			this.outputValues = outputValues;
+		}
+
+		public boolean hasValues(String name) {
+			return outputValues.containsKey(name);
+		}
+
+		public String[] getValues(String name) {
+			return outputValues.get(name);
+		}
+
 	}
 
 }

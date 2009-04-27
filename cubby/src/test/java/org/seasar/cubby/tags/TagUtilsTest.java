@@ -26,11 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.jsp.PageContext;
-
 import org.junit.Test;
-import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.internal.controller.FormWrapper;
 
 public class TagUtilsTest {
 
@@ -58,95 +56,95 @@ public class TagUtilsTest {
 		assertNull("result", result);
 	}
 
-	@Test
-	public void formValue() throws Exception {
-		Integer specifiedValue = -2;
-		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
-				new String[0], "testTagUtilsName", 2, specifiedValue);
-		assertEquals("result", specifiedValue, result);
-	}
-
-	@Test
-	public void formValue1() throws Exception {
-		String[] strings = new String[3];
-		strings[0] = "testString";
-		String result = (String) TagUtils.formValue(new MockJspContext(),
-				strings, "testString", 0, null);
-		assertEquals("result", "testString", result);
-	}
-
-	@Test
-	public void formValue2() throws Exception {
-		Integer specifiedValue = new Integer(0);
-		Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
-				new String[0], "testTagUtilsName", 0, specifiedValue);
-		assertSame("result", specifiedValue, result);
-	}
-
-	@Test
-	public void formValue3() throws Exception {
-		String result = (String) TagUtils.formValue(new MockJspContext(),
-				new String[0], "testTagUtilsName", 1, null);
-		assertEquals("result", "", result);
-	}
-
-	@Test
-	public void formValue4() throws Exception {
-		String result = (String) TagUtils.formValue(new MockJspContext(),
-				new String[0], "testTagUtilsName", null, null);
-		assertEquals("result", "", result);
-	}
-
-	@Test
-	public void formValue5() throws Exception {
-		Boolean specifiedValue = Boolean.FALSE;
-		Boolean result = (Boolean) TagUtils.formValue(new MockJspContext(),
-				new String[0], "testTagUtilsName", new Integer(-1),
-				specifiedValue);
-		assertSame("result", specifiedValue, result);
-	}
-
-	@Test
-	public void formValue6() throws Exception {
-		String[] strings = new String[3];
-		Object result = TagUtils.formValue(new MockJspContext(), strings,
-				"testString", new Integer(0), null);
-		assertNull("result", result);
-	}
-
-	@Test
-	public void formValueValidationFail1() throws Exception {
-		MockJspContext context = new MockJspContext();
-		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
-				PageContext.REQUEST_SCOPE);
-		String result = (String) TagUtils.formValue(context, new String[0],
-				"testString", 0, null);
-		assertEquals("result", "", result);
-	}
-
-	@Test
-	public void formValueValidationFail2() throws Exception {
-		MockJspContext context = new MockJspContext();
-		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
-				PageContext.REQUEST_SCOPE);
-		String result = (String) TagUtils.formValue(context, new String[0],
-				"testString", 0, "aaa");
-		assertEquals("result", "aaa", result);
-	}
-
-	@Test
-	public void formValueValidationFail3() throws Exception {
-		MockJspContext context = new MockJspContext();
-		context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
-				PageContext.REQUEST_SCOPE);
-		HashMap<String, Object[]> params = new HashMap<String, Object[]>();
-		params.put("testString", new String[] { "bbb" });
-		context.setAttribute(CubbyConstants.ATTR_PARAMS, params,
-				PageContext.REQUEST_SCOPE);
-		String result = (String) TagUtils.formValue(context, new String[0],
-				"testString", 0, "aaa");
-		assertEquals("result", "bbb", result);
-	}
+	// @Test
+	// public void formValue() throws Exception {
+	// Integer specifiedValue = -2;
+	// Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
+	// new String[0], "testTagUtilsName", 2, specifiedValue);
+	// assertEquals("result", specifiedValue, result);
+	// }
+	//
+	// @Test
+	// public void formValue1() throws Exception {
+	// String[] strings = new String[3];
+	// strings[0] = "testString";
+	// String result = (String) TagUtils.formValue(new MockJspContext(),
+	// strings, "testString", 0, null);
+	// assertEquals("result", "testString", result);
+	// }
+	//
+	// @Test
+	// public void formValue2() throws Exception {
+	// Integer specifiedValue = new Integer(0);
+	// Integer result = (Integer) TagUtils.formValue(new MockJspContext(),
+	// new String[0], "testTagUtilsName", 0, specifiedValue);
+	// assertSame("result", specifiedValue, result);
+	// }
+	//
+	// @Test
+	// public void formValue3() throws Exception {
+	// String result = (String) TagUtils.formValue(new MockJspContext(),
+	// new String[0], "testTagUtilsName", 1, null);
+	// assertEquals("result", "", result);
+	// }
+	//
+	// @Test
+	// public void formValue4() throws Exception {
+	// String result = (String) TagUtils.formValue(new MockJspContext(),
+	// new String[0], "testTagUtilsName", null, null);
+	// assertEquals("result", "", result);
+	// }
+	//
+	// @Test
+	// public void formValue5() throws Exception {
+	// Boolean specifiedValue = Boolean.FALSE;
+	// Boolean result = (Boolean) TagUtils.formValue(new MockJspContext(),
+	// new String[0], "testTagUtilsName", new Integer(-1),
+	// specifiedValue);
+	// assertSame("result", specifiedValue, result);
+	// }
+	//
+	// @Test
+	// public void formValue6() throws Exception {
+	// String[] strings = new String[3];
+	// Object result = TagUtils.formValue(new MockJspContext(), strings,
+	// "testString", new Integer(0), null);
+	// assertNull("result", result);
+	// }
+	//
+	// @Test
+	// public void formValueValidationFail1() throws Exception {
+	// MockJspContext context = new MockJspContext();
+	// context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
+	// PageContext.REQUEST_SCOPE);
+	// String result = (String) TagUtils.formValue(context, new String[0],
+	// "testString", 0, null);
+	// assertEquals("result", "", result);
+	// }
+	//
+	// @Test
+	// public void formValueValidationFail2() throws Exception {
+	// MockJspContext context = new MockJspContext();
+	// context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
+	// PageContext.REQUEST_SCOPE);
+	// String result = (String) TagUtils.formValue(context, new String[0],
+	// "testString", 0, "aaa");
+	// assertEquals("result", "aaa", result);
+	// }
+	//
+	// @Test
+	// public void formValueValidationFail3() throws Exception {
+	// MockJspContext context = new MockJspContext();
+	// context.setAttribute(CubbyConstants.ATTR_VALIDATION_FAIL, true,
+	// PageContext.REQUEST_SCOPE);
+	// HashMap<String, Object[]> params = new HashMap<String, Object[]>();
+	// params.put("testString", new String[] { "bbb" });
+	// context.setAttribute(CubbyConstants.ATTR_PARAMS, params,
+	// PageContext.REQUEST_SCOPE);
+	// String result = (String) TagUtils.formValue(context, new String[0],
+	// "testString", 0, "aaa");
+	// assertEquals("result", "bbb", result);
+	// }
 
 	@Test
 	public void isChecked() throws Exception {
@@ -233,23 +231,31 @@ public class TagUtilsTest {
 	@Test
 	public void multipleFormValues() throws Exception {
 		String[] strings = new String[2];
-		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), strings, "testString", null);
-		assertSame("result", strings, result);
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
+		outputValues.put("name", strings);
+		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
+				new MockFormWrapper(outputValues), "testString", "name");
+		assertEquals(1, result.length);
 		assertNull("strings[0]", strings[0]);
 	}
 
 	@Test
 	public void multipleFormValues1() throws Exception {
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new String[0], "testTagUtilsName", null);
-		assertEquals("result.length", 0, result.length);
+				new MockFormWrapper(outputValues), "testTagUtilsName",
+				"checked");
+		assertEquals(1, result.length);
+		assertEquals(result[0], "checked");
 	}
 
 	@Test
 	public void multipleFormValues2() throws Exception {
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
+		outputValues.put("testTagUtilsCheckedValue", new String[0]);
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new String[0], "testTagUtilsName", "testTagUtilsCheckedValue");
+				new MockFormWrapper(outputValues), "testTagUtilsName",
+				"testTagUtilsCheckedValue");
 		assertEquals("result.length", 1, result.length);
 		assertEquals("result[0]", "testTagUtilsCheckedValue", result[0]);
 	}
@@ -271,23 +277,31 @@ public class TagUtilsTest {
 	@Test
 	public void multipleFormValues5() throws Exception {
 		String[] strings = new String[0];
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
+		outputValues.put("testString", strings);
 		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), strings, "testString");
+				new MockJspContext(), new MockFormWrapper(outputValues),
+				"testString");
 		assertSame("result", strings, result);
 	}
 
 	@Test
 	public void multipleFormValues6() throws Exception {
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
+		outputValues.put("testTagUtilsName", new String[0]);
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				new String[0], "testTagUtilsName");
+				new MockFormWrapper(outputValues), "testTagUtilsName");
 		assertEquals("result.length", 0, result.length);
 	}
 
 	@Test
 	public void multipleFormValues7() throws Exception {
 		String[] strings = new String[3];
+		Map<String, String[]> outputValues = new HashMap<String, String[]>();
+		outputValues.put("testString", strings);
 		String[] result = (String[]) TagUtils.multipleFormValues(
-				new MockJspContext(), strings, "testString");
+				new MockJspContext(), new MockFormWrapper(outputValues),
+				"testString");
 		assertSame("result", strings, result);
 		assertNull("strings[0]", strings[0]);
 	}
@@ -357,4 +371,23 @@ public class TagUtilsTest {
 			assertNull("ex.getMessage()", ex.getMessage());
 		}
 	}
+
+	static class MockFormWrapper implements FormWrapper {
+
+		private final Map<String, String[]> outputValues;
+
+		public MockFormWrapper(Map<String, String[]> outputValues) {
+			this.outputValues = outputValues;
+		}
+
+		public boolean hasValues(String name) {
+			return outputValues.containsKey(name);
+		}
+
+		public String[] getValues(String name) {
+			return outputValues.get(name);
+		}
+
+	}
+
 }

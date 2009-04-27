@@ -31,6 +31,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.util.StringUtils;
 
 /**
@@ -80,15 +81,15 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValues
-	 *            フォームへ出力する値
+	 * @param formWrapper
+	 *            フォームオブジェクトのラッパー
 	 * @param name
 	 *            フィールド名
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object[] multipleFormValues(final JspContext context,
-			final String[] outputValues, final String name) {
-		return multipleFormValues(context, outputValues, name, null);
+			final FormWrapper formWrapper, final String name) {
+		return multipleFormValues(context, formWrapper, name, null);
 	}
 
 	/**
@@ -96,8 +97,8 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValues
-	 *            フォームへ出力する値
+	 * @param formWrapper
+	 *            フォームオブジェクトのラッパー
 	 * @param name
 	 *            フィールド名
 	 * @param checkedValue
@@ -105,7 +106,7 @@ class TagUtils {
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object[] multipleFormValues(final JspContext context,
-			final String[] outputValues, final String name,
+			final FormWrapper formWrapper, final String name,
 			final String checkedValue) {
 		final Object[] values;
 		if (isValidationFail(context)) {
@@ -113,10 +114,12 @@ class TagUtils {
 		} else {
 			if (checkedValue != null) {
 				values = new Object[] { checkedValue };
-			} else if (outputValues == null) {
-				values = paramValues(context, name);
 			} else {
-				values = outputValues;
+				if (formWrapper != null && formWrapper.hasValues(name)) {
+					values = formWrapper.getValues(name);
+				} else {
+					values = paramValues(context, name);
+				}
 			}
 		}
 		return values;
@@ -127,8 +130,8 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValues
-	 *            フォームへ出力する値
+	 * @param formWrapper
+	 *            フォームオブジェクトのラッパー
 	 * @param name
 	 *            フィールド名
 	 * @param index
@@ -138,7 +141,7 @@ class TagUtils {
 	 * @return フォームのフィールドへの出力値
 	 */
 	public static Object formValue(final JspContext context,
-			final String[] outputValues, final String name,
+			final FormWrapper formWrapper, final String name,
 			final Integer index, final Object specifiedValue) {
 		final Object value;
 
@@ -157,11 +160,13 @@ class TagUtils {
 		} else {
 			if (specifiedValue != null) {
 				value = specifiedValue;
-			} else if (outputValues == null) {
-				final Object[] values = paramValues(context, name);
-				value = value(values, index);
 			} else {
-				value = value(outputValues, index);
+				if (formWrapper != null && formWrapper.hasValues(name)) {
+					value = value(formWrapper.getValues(name), index);
+				} else {
+					final Object[] values = paramValues(context, name);
+					value = value(values, index);
+				}
 			}
 		}
 
@@ -326,23 +331,19 @@ class TagUtils {
 	}
 
 	/**
-	 * 指定されたタグの親の {@ilnk FormTag} を検索し、そこから指定されたフィールド名の値を取得します。
+	 * 指定されたタグの親の {@link FormTag} を検索し、そこからフォームオブジェクトのラッパーを取得します。
 	 * 
 	 * @param tag
 	 *            タグ
-	 * @param name
-	 *            フィールド名
-	 * @return 指定されたフィールド名の値
+	 * @return フォームオブジェクトのラッパー
 	 */
-	public static String[] getOutputValues(final SimpleTag tag,
-			final String name) {
+	public static FormWrapper getFormWrapper(final SimpleTag tag) {
 		final FormTag formTag = (FormTag) SimpleTagSupport
 				.findAncestorWithClass(tag, FormTag.class);
 		if (formTag == null) {
 			return null;
 		}
-		final String[] outputValues = formTag.getValues(name);
-		return outputValues;
+		return formTag.getFormWrapper();
 	}
 
 	/**
