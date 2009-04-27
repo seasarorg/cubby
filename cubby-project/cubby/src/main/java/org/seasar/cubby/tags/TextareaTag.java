@@ -18,7 +18,7 @@ package org.seasar.cubby.tags;
 import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.errors;
 import static org.seasar.cubby.tags.TagUtils.formValue;
-import static org.seasar.cubby.tags.TagUtils.getOutputValues;
+import static org.seasar.cubby.tags.TagUtils.getFormWrapper;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
@@ -29,6 +29,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.internal.controller.FormWrapper;
 
 /**
  * <code>&lt;textarea&gt;</code> タグを出力します。
@@ -87,7 +88,7 @@ public class TextareaTag extends DynamicAttributesSimpleTagSupport {
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
 		final Map<String, Object> dyn = this.getDynamicAttributes();
-		final String[] outputValues = getOutputValues(this, this.name);
+		final FormWrapper formWrapper = getFormWrapper(this);
 
 		if (this.index == null) {
 			if (!errors.getFields().get(this.name).isEmpty()) {
@@ -99,7 +100,7 @@ public class TextareaTag extends DynamicAttributesSimpleTagSupport {
 				addCSSClassName(dyn, "fieldError");
 			}
 		}
-		final Object value = formValue(context, outputValues, this.name,
+		final Object value = formValue(context, formWrapper, this.name,
 				this.index, this.value);
 
 		out.write("<textarea name=\"");

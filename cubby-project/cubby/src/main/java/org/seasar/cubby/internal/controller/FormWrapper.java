@@ -24,6 +24,16 @@ package org.seasar.cubby.internal.controller;
 public interface FormWrapper {
 
 	/**
+	 * フォームオブジェクトが指定されたフィールドを持つかを示します。
+	 * 
+	 * @param name
+	 *            フィールド名
+	 * @return フォームオブジェクトが指定されたフィールドを持つ場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	boolean hasValues(String name);
+
+	/**
 	 * 指定されたフィールド名の値を取得します。
 	 * <p>
 	 * ラップしているフォームオブジェクトに該当するフィールドがない場合は <code>null</code> を返します。
@@ -33,6 +43,6 @@ public interface FormWrapper {
 	 *            フィールド名
 	 * @return 指定されたフィールド名の値
 	 */
-	String[] getValues(final String name);
+	String[] getValues(String name);
 
 }

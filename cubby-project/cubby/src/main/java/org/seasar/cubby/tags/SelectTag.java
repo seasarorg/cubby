@@ -19,7 +19,7 @@ import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.addCSSClassName;
 import static org.seasar.cubby.tags.TagUtils.contains;
 import static org.seasar.cubby.tags.TagUtils.errors;
-import static org.seasar.cubby.tags.TagUtils.getOutputValues;
+import static org.seasar.cubby.tags.TagUtils.getFormWrapper;
 import static org.seasar.cubby.tags.TagUtils.multipleFormValues;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -34,6 +34,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.PropertyDesc;
@@ -141,13 +142,13 @@ public class SelectTag extends DynamicAttributesSimpleTagSupport {
 		final JspWriter out = context.getOut();
 		final ActionErrors errors = errors(context);
 		final Map<String, Object> dyn = this.getDynamicAttributes();
-		final String[] outputValues = getOutputValues(this, this.name);
+		final FormWrapper formWrapper = getFormWrapper(this);
 
 		if (!errors.getFields().get(this.name).isEmpty()) {
 			addCSSClassName(dyn, "fieldError");
 		}
 
-		final Object[] value = multipleFormValues(context, outputValues,
+		final Object[] value = multipleFormValues(context, formWrapper,
 				this.name);
 
 		out.write("<select name=\"");

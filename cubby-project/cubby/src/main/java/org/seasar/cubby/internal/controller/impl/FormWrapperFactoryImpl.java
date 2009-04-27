@@ -75,6 +75,19 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		/**
 		 * {@inheritDoc}
 		 */
+		public boolean hasValues(final String name) {
+			if (this.form == null) {
+				return false;
+			}
+			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.form
+					.getClass());
+			final PropertyDesc propertyDesc = findPropertyDesc(beanDesc, name);
+			return propertyDesc != null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
 		public String[] getValues(final String name) {
 			if (this.form == null) {
 				return null;

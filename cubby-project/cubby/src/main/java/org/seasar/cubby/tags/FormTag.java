@@ -233,15 +233,12 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
-	 * フォームへ出力する値を取得します。
+	 * フォームオブジェクトのラッパーを取得します。
 	 * 
-	 * @param name
-	 *            フィールド名
-	 * @return フォームへ出力する値
-	 * @since 1.1.0
+	 * @return フォームオブジェクトのラッパー
 	 */
-	public String[] getValues(final String name) {
-		return formWrapper.getValues(name);
+	public FormWrapper getFormWrapper() {
+		return formWrapper;
 	}
 
 }
