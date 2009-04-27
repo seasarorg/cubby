@@ -125,11 +125,10 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		final Converter converter;
 		if (converterType != null && !converterType.equals(Converter.class)) {
 			converter = converterProvider.getConverter(converterType);
-		} else if (values[0] != null) {
-			converter = converterProvider.getConverter(values[0].getClass(),
-					destClass);
 		} else {
-			converter = null;
+			final Class<?> componentType = values.getClass().getComponentType();
+			converter = converterProvider
+					.getConverter(componentType, destClass);
 		}
 		if (converter != null) {
 			try {
