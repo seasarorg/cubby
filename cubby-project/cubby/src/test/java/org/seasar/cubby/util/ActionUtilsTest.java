@@ -54,12 +54,11 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				assertSame(actionContext, ActionUtils.actionContext());
-				return null;
 			}
 
 		});
@@ -161,12 +160,11 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				assertSame(flashMap, ActionUtils.flash());
-				return null;
 			}
 		});
 

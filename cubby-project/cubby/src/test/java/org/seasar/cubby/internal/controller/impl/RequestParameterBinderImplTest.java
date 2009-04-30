@@ -563,12 +563,11 @@ public class RequestParameterBinderImplTest {
 		final ActionErrors errors = new ActionErrorsImpl();
 		// requestParameterBinder.bind(map, dto, actionContext, errors);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(HttpServletRequest request,
+			public void execute(HttpServletRequest request,
 					HttpServletResponse response) throws Exception {
 				requestParameterBinder.bind(map, dto, actionContext, errors);
-				return null;
 			}
 
 		});
@@ -734,12 +733,11 @@ public class RequestParameterBinderImplTest {
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
 		final ActionErrors errors = new ActionErrorsImpl();
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(HttpServletRequest request,
+			public void execute(HttpServletRequest request,
 					HttpServletResponse response) throws Exception {
 				requestParameterBinder.bind(map, dto, actionContext, errors);
-				return null;
 			}
 
 		});

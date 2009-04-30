@@ -22,6 +22,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import org.seasar.cubby.internal.action.impl.ActionContextImpl;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.plugin.ActionInvocation;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.Routing;
@@ -55,9 +57,6 @@ public class ActionProcessorImpl implements ActionProcessor {
 	/** ロガー。 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(ActionProcessorImpl.class);
-
-	/** プラグインのレジストリ。 */
-	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	/**
 	 * {@inheritDoc}
@@ -91,56 +90,98 @@ public class ActionProcessorImpl implements ActionProcessor {
 				actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
 
-		final ActionResult actionResult = invokeAction(request, response,
-				actionContext);
+		actionContext.invokeInitializeMethod();
+
+		final ActionInvocation actionInvocation = new ActionInvocationImpl(
+				request, response, actionContext);
+		final ActionResult actionResult = actionInvocation.proceed();
 		if (actionResult == null) {
 			throw new ActionException(format("ECUB0101", actionMethod));
 		}
+
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
 				actionResult, actionContext);
 		return actionResultWrapper;
 	}
 
 	/**
-	 * アクションコンテキスト中のアクションメソッドを実行します。
+	 * アクションの実行情報の実装です。
 	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param actionContext
-	 *            アクションコンテキスト
-	 * @return アクションメソッドの実行結果
-	 * @throws Exception
-	 *             アクションメソッドの実行時に例外が発生した場合
+	 * @author baba
 	 */
-	protected ActionResult invokeAction(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext) throws Exception {
-		actionContext.invokeInitializeMethod();
+	static class ActionInvocationImpl implements ActionInvocation {
 
-		for (final Plugin plugin : pluginRegistry.getPlugins()) {
-			final ActionResult pluginActionResult = plugin.beforeActionInvoke(
-					request, response, actionContext);
-			if (pluginActionResult != null) {
-				return pluginActionResult;
-			}
+		/** 要求。 */
+		private final HttpServletRequest request;
+
+		/** 応答。 */
+		private final HttpServletResponse response;
+
+		/** アクションのコンテキスト。 */
+		private final ActionContext actionContext;
+
+		/** プラグインのイテレータ。 */
+		private final Iterator<Plugin> pluginsIterator;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param request
+		 *            要求
+		 * @param response
+		 *            応答
+		 * @param actionContext
+		 *            アクションのコンテキスト
+		 */
+		public ActionInvocationImpl(final HttpServletRequest request,
+				final HttpServletResponse response,
+				final ActionContext actionContext) {
+			this.request = request;
+			this.response = response;
+			this.actionContext = actionContext;
+
+			final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+			this.pluginsIterator = pluginRegistry.getPlugins().iterator();
 		}
 
-		final Object action = actionContext.getAction();
-		final Method actionMethod = actionContext.getActionMethod();
-		final ActionResult actionResult = (ActionResult) actionMethod
-				.invoke(action);
-
-		for (final Plugin plugin : pluginRegistry.getPlugins()) {
-			final ActionResult pluginActionResult = plugin.afterActionInvoke(
-					request, response, actionContext, actionResult);
-			if (pluginActionResult != null) {
-				return pluginActionResult;
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionResult proceed() throws Exception {
+			final ActionResult actionResult;
+			if (pluginsIterator.hasNext()) {
+				final Plugin plugin = pluginsIterator.next();
+				actionResult = plugin.invokeAction(this);
+			} else {
+				final ActionContext actionContext = getActionContext();
+				final Object action = actionContext.getAction();
+				final Method actionMethod = actionContext.getActionMethod();
+				actionResult = (ActionResult) actionMethod.invoke(action);
 			}
+			return actionResult;
 		}
 
-		return actionResult;
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletRequest getRequest() {
+			return request;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletResponse getResponse() {
+			return response;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionContext getActionContext() {
+			return actionContext;
+		}
+
 	}
 
 }

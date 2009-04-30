@@ -30,18 +30,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.controller.ActionProcessor;
-import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.RequestProcessor;
-import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
-import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.routing.PathInfo;
-import org.seasar.cubby.routing.Routing;
 
 /**
  * Cubby 用のフィルター。
@@ -66,12 +60,6 @@ public class CubbyFilter implements Filter {
 
 	/** 要求を処理します。 */
 	private final RequestProcessor requestProcessor = new RequestProcessorImpl();
-
-	/** コマンドのファクトリ。 */
-	private final CommandFactory<Void> commandFactory = new CubbyFilterCommandFactory();
-
-	/** アクションを処理します。 */
-	private final ActionProcessor actionProcessor = new ActionProcessorImpl();
 
 	/**
 	 * このフィルタを初期化します。
@@ -154,8 +142,7 @@ public class CubbyFilter implements Filter {
 				ignorePathPatterns);
 		if (pathInfo != null) {
 			try {
-				requestProcessor.process(request, response, pathInfo,
-						commandFactory);
+				requestProcessor.process(request, response, pathInfo);
 			} catch (final Exception e) {
 				if (e instanceof IOException) {
 					throw (IOException) e;
@@ -168,39 +155,6 @@ public class CubbyFilter implements Filter {
 		} else {
 			chain.doFilter(request, response);
 		}
-	}
-
-	/**
-	 * アクションを実行するコマンドです。
-	 * 
-	 * @author baba
-	 */
-	class CubbyFilterCommandFactory implements CommandFactory<Void> {
-
-		/**
-		 * {@inheritDoc}
-		 * <p>
-		 * {@link ActionProcessor} でアクションを実行後、その結果を実行します。
-		 * {@link ActionResultWrapper#execute(HttpServletRequest, HttpServletResponse)}
-		 * </p>
-		 */
-		public Command<Void> create(final Routing routing) {
-			return new Command<Void>() {
-
-				/**
-				 * {@inheritDoc}
-				 */
-				public Void execute(final HttpServletRequest request,
-						final HttpServletResponse response) throws Exception {
-					final ActionResultWrapper actionResultWrapper = actionProcessor
-							.process(request, response, routing);
-					actionResultWrapper.execute(request, response);
-					return null;
-				}
-
-			};
-		}
-
 	}
 
 }

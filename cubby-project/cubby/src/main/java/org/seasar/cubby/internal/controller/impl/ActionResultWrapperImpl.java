@@ -15,12 +15,15 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
+import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.plugin.ActionResultInvocation;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
 
@@ -31,9 +34,6 @@ import org.seasar.cubby.plugin.PluginRegistry;
  * @since 1.1.0
  */
 class ActionResultWrapperImpl implements ActionResultWrapper {
-
-	/** プラグインのレジストリ。 */
-	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	/** アクションの実行結果。 */
 	private final ActionResult actionResult;
@@ -61,15 +61,9 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	 */
 	public void execute(final HttpServletRequest request,
 			final HttpServletResponse response) throws Exception {
-		for (final Plugin plugin : pluginRegistry.getPlugins()) {
-			plugin.beforeInvokeActionResult(request, response, actionContext,
-					actionResult);
-		}
-		actionResult.execute(actionContext, request, response);
-		for (final Plugin plugin : pluginRegistry.getPlugins()) {
-			plugin.afterInvokeActionResult(request, response, actionContext,
-					actionResult);
-		}
+		final ActionResultInvocation actionResultInvocation = new ActionResultInvocationImpl(
+				request, response, actionContext, actionResult);
+		actionResultInvocation.proceed();
 	}
 
 	/**
@@ -77,6 +71,98 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 	 */
 	public ActionResult getActionResult() {
 		return actionResult;
+	}
+
+	/**
+	 * アクションの実行結果の実行情報の実装です。
+	 * 
+	 * @author baba
+	 */
+	static class ActionResultInvocationImpl implements ActionResultInvocation {
+
+		/** 要求。 */
+		private final HttpServletRequest request;
+
+		/** 応答。 */
+		private final HttpServletResponse response;
+
+		/** アクションのコンテキスト。 */
+		private final ActionContext actionContext;
+
+		/** アクションの実行結果。 */
+		private final ActionResult actionResult;
+
+		/** プラグインのイテレータ。 */
+		private final Iterator<Plugin> pluginsIterator;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param request
+		 *            要求
+		 * @param response
+		 *            応答
+		 * @param actionContext
+		 *            アクションのコンテキスト
+		 * @param actionResult
+		 *            アクションの実行結果
+		 * @param plugins
+		 *            プラグインのコレクション
+		 */
+		public ActionResultInvocationImpl(final HttpServletRequest request,
+				final HttpServletResponse response,
+				final ActionContext actionContext,
+				final ActionResult actionResult) {
+			this.request = request;
+			this.response = response;
+			this.actionContext = actionContext;
+			this.actionResult = actionResult;
+
+			final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+			this.pluginsIterator = pluginRegistry.getPlugins().iterator();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Void proceed() throws Exception {
+			if (pluginsIterator.hasNext()) {
+				final Plugin plugin = pluginsIterator.next();
+				plugin.invokeActionResult(this);
+			} else {
+				final ActionResult actionResult = getActionResult();
+				actionResult.execute(actionContext, request, response);
+			}
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletRequest getRequest() {
+			return request;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletResponse getResponse() {
+			return response;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionContext getActionContext() {
+			return actionContext;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionResult getActionResult() {
+			return actionResult;
+		}
 	}
 
 }

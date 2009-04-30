@@ -13,36 +13,40 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller;
+package org.seasar.cubby.plugin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.routing.PathInfo;
+import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionResult;
 
 /**
- * 要求を処理します。
+ * アクションメソッドの実行情報です。
  * 
- * @author someda
  * @author baba
  */
-public interface RequestProcessor {
+public interface ActionInvocation extends Invocation<ActionResult> {
 
 	/**
-	 * 指定された {@link PathInfo} に対する処理を行います。
+	 * 要求を取得します。
 	 * 
-	 * @param <T>
-	 *            戻り値の型
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param pathInfo
-	 *            パスの情報
-	 * @throws Exception
-	 *             要求の処理で例外が発生した場合
+	 * @return 要求
 	 */
-	void process(HttpServletRequest request, HttpServletResponse response,
-			PathInfo pathInfo) throws Exception;
+	HttpServletRequest getRequest();
+
+	/**
+	 * 応答を取得します。
+	 * 
+	 * @return 応答
+	 */
+	HttpServletResponse getResponse();
+
+	/**
+	 * アクションのコンテキストを取得します。
+	 * 
+	 * @return アクションのコンテキスト
+	 */
+	ActionContext getActionContext();
 
 }

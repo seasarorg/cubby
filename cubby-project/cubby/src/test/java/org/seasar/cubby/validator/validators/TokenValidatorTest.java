@@ -70,9 +70,9 @@ public class TokenValidatorTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, session, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				final TokenValidator validator = new TokenValidator();
 
@@ -91,7 +91,6 @@ public class TokenValidatorTest {
 				validator.validate(context, new Object[] { "tokenstring" });
 				assertFalse("セッション中のトークン文字列が除去された（２重サブミットの状態）ためエラー", context
 						.getMessageInfos().isEmpty());
-				return null;
 			}
 
 		});

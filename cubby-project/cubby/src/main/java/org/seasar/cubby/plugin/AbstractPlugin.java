@@ -19,10 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.spi.Provider;
 
@@ -93,49 +90,25 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void beginRequestProcessing(final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public void invokeRequestProcessing(
+			final RequestProcessingInvocation invocation) throws Exception {
+		invocation.proceed();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult beforeActionInvoke(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext) {
-		return null;
+	public ActionResult invokeAction(final ActionInvocation invocation)
+			throws Exception {
+		return invocation.proceed();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public ActionResult afterActionInvoke(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext, final ActionResult actionResult) {
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void afterInvokeActionResult(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext, final ActionResult actionResult) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void beforeInvokeActionResult(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext, final ActionResult actionResult) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void endRequestProcessing(final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public void invokeActionResult(final ActionResultInvocation invocation)
+			throws Exception {
+		invocation.proceed();
 	}
 
 }

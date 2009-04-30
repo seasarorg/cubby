@@ -16,10 +16,11 @@
 package org.seasar.cubby.internal.controller.impl;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,16 +35,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.internal.controller.RequestProcessor;
-import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.RequestParserProvider;
+import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.spi.container.LookupException;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
 public class RequestProcessorImplTest {
@@ -67,6 +74,17 @@ public class RequestProcessorImplTest {
 					}
 
 				});
+		binderPlugin.bind(ContainerProvider.class).toInstance(
+				new MockContainerProvider(new Container() {
+
+					public <T> T lookup(Class<T> type) throws LookupException {
+						if (MockAction.class.equals(type)) {
+							return type.cast(new MockAction());
+						}
+						throw new LookupException();
+					}
+
+				}));
 
 		pluginRegistry.register(binderPlugin);
 	}
@@ -77,33 +95,42 @@ public class RequestProcessorImplTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void process() throws Exception {
 		Map<String, Object[]> parameterMap = new HashMap<String, Object[]>();
 		Routing routing = createMock(Routing.class);
+		expect(routing.getActionClass()).andReturn(
+				Class.class.cast(MockAction.class));
+		expect(routing.getActionMethod()).andReturn(
+				MockAction.class.getMethod("execute"));
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getParameterMap()).andReturn(parameterMap);
+		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		request.setAttribute(CubbyConstants.ATTR_PARAMS, parameterMap);
+		request.setAttribute(eq(CubbyConstants.ATTR_ERRORS),
+				isA(ActionErrors.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_FLASH), isA(Map.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_ACTION),
+				isA(MockAction.class));
+		request.setAttribute(eq(CubbyConstants.ATTR_ACTION_CONTEXT),
+				isA(ActionContext.class));
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		PathInfo pathInfo = createMock(PathInfo.class);
 		expect(pathInfo.dispatch(parameterMap)).andReturn(routing);
 		expect(pathInfo.getURIParameters()).andReturn(
 				new HashMap<String, String[]>());
-		@SuppressWarnings("unchecked")
-		CommandFactory<Void> commandFactory = createMock(CommandFactory.class);
-		expect(commandFactory.create(routing)).andReturn(new Command<Void>() {
+		replay(routing, request, response, pathInfo);
 
-			public Void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				assertTrue(request instanceof CubbyHttpServletRequestWrapper);
-				return null;
-			}
+		requestProcessor.process(request, response, pathInfo);
 
-		});
-		replay(routing, request, response, pathInfo, commandFactory);
+		verify(routing, request, response, pathInfo);
+	}
 
-		requestProcessor.process(request, response, pathInfo, commandFactory);
-
-		verify(routing, request, response, pathInfo, commandFactory);
+	public static class MockAction {
+		public ActionResult execute() {
+			return new Direct();
+		}
 	}
 
 }
