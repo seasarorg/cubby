@@ -20,6 +20,7 @@ import static javax.servlet.jsp.PageContext.REQUEST_SCOPE;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
+import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,6 +34,8 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * カスタムタグで使用するユーティリティクラスです。
@@ -41,6 +44,10 @@ import org.seasar.cubby.internal.util.StringUtils;
  * @since 1.0.0
  */
 class TagUtils {
+
+	/** ロガー。 */
+	private static final Logger logger = LoggerFactory
+			.getLogger(TagUtils.class);
 
 	/**
 	 * 指定されたJSPコンテキストから{@link ActionErrors}を取得します。
@@ -115,11 +122,13 @@ class TagUtils {
 			if (checkedValue != null) {
 				values = new Object[] { checkedValue };
 			} else {
-				if (formWrapper != null && formWrapper.hasValues(name)) {
-					values = formWrapper.getValues(name);
-				} else {
-					values = paramValues(context, name);
+				if (!formWrapper.hasValues(name)) {
+					if (logger.isDebugEnabled()) {
+						logger.debug(format("DCUB0023", name));
+					}
+					return null;
 				}
+				values = formWrapper.getValues(name);
 			}
 		}
 		return values;
@@ -161,12 +170,11 @@ class TagUtils {
 			if (specifiedValue != null) {
 				value = specifiedValue;
 			} else {
-				if (formWrapper != null && formWrapper.hasValues(name)) {
-					value = value(formWrapper.getValues(name), index);
-				} else {
-					final Object[] values = paramValues(context, name);
-					value = value(values, index);
+				if (!formWrapper.hasValues(name)) {
+					logger.debug(format("DCUB0023", name));
+					return null;
 				}
+				value = value(formWrapper.getValues(name), index);
 			}
 		}
 

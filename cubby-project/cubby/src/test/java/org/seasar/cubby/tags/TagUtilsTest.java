@@ -260,19 +260,19 @@ public class TagUtilsTest {
 		assertEquals("result[0]", "testTagUtilsCheckedValue", result[0]);
 	}
 
-	@Test
-	public void multipleFormValues3() throws Exception {
-		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				null, "testTagUtilsName", null);
-		assertEquals("result.length", 0, result.length);
-	}
-
-	@Test
-	public void multipleFormValues4() throws Exception {
-		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
-				null, "testTagUtilsName");
-		assertEquals("result.length", 0, result.length);
-	}
+	// @Test
+	// public void multipleFormValues3() throws Exception {
+	// Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
+	// null, "testTagUtilsName", null);
+	// assertEquals("result.length", 0, result.length);
+	// }
+	//
+	// @Test
+	// public void multipleFormValues4() throws Exception {
+	// Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
+	// null, "testTagUtilsName");
+	// assertEquals("result.length", 0, result.length);
+	// }
 
 	@Test
 	public void multipleFormValues5() throws Exception {
