@@ -47,18 +47,20 @@ import org.seasar.cubby.internal.controller.FormWrapper;
  * <tr>
  * <td><code>type</code> 属性が <code>checkbox</code> または </code> radio の場合</td>
  * <td>
- * <code>value</code> 属性をそのまま <code>value</code> 属性として出力します。 フォームオブジェクトの値と
+ * <code>value</code> 属性をそのまま <code>value</code> 属性として出力します。 フォームオブジェクトのプロパティ値と
  * <code>value</code> 属性が一致した場合 <code>checked=&quot;checked&quot;</code> を出力します。
  * </td>
  * </tr>
  * <tr>
  * <td>上記以外の場合</td>
  * <td>
- * フォームオブジェクトの値を <code>value</code> 属性として出力します。フォームオブジェクトに値がない場合は
- * <code>value</code> 属性をそのまま <code>value</code> 属性として出力します。</td>
+ * <code>value</code> 属性が指定されている場合はそのまま <code>value</code> 属性として出力します。
+ * <code>value</code> 属性が指定されていない場合はフォームオブジェクトのプロパティを <code>value</code>
+ * 属性として出力します。</td>
  * </tr>
  * </tbody>
  * </table>
+ * バリデーションエラーが発生している場合は、入力された値を復元します。
  * </p>
  * 
  * @author agata
