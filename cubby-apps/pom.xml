@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Applications</name>
-  <version>1.1.5-SNAPSHOT</version>
+  <version>1.1.5</version>
   <description>Cubby Sample Applications</description>
   <url>http://cubby.seasar.org/11x/cubby-apps</url>
   <inceptionYear>2006</inceptionYear>
@@ -23,9 +21,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</connection>
-    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</developerConnection>
-    <url>https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-apps/</url>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/tags/cubby-apps-1.1.5</connection>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/tags/cubby-apps-1.1.5</developerConnection>
+    <url>https://www.seasar.org/svn/cubby/tags/cubby-apps-1.1.5</url>
   </scm>
   <build>
     <plugins>
