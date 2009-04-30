@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>cubby-apps</artifactId>
+    <groupId>org.seasar.cubby</groupId>
+	<version>1.1.5-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
   <artifactId>cubby-examples</artifactId>
   <packaging>war</packaging>
   <name>Cubby Examples</name>
-  <version>1.1.5-SNAPSHOT</version>
   <build>
     <finalName>cubby-examples</finalName>
     <plugins>
@@ -82,6 +86,7 @@ line.separator=\n
           </container>
         </configuration>
         <executions>
+          <!--
           <execution>
             <id>tomcat-start</id>
             <phase>pre-integration-test</phase>
@@ -99,6 +104,7 @@ line.separator=\n
               <goal>stop</goal>
             </goals>
           </execution>
+          -->
         </executions>
       </plugin>
 	  <plugin>
@@ -106,6 +112,7 @@ line.separator=\n
 	    <artifactId>selenium-maven-plugin</artifactId>
         <version>1.0-beta-3</version>
 	    <executions>
+          <!-- 
 	      <execution>
 	        <id>selenese-firefox</id>
 	          <phase>integration-test</phase>
@@ -116,6 +123,7 @@ line.separator=\n
 	            <browser>*firefox</browser>
 	          </configuration>
 	        </execution>
+	        -->
 	      </executions>
 	      <configuration>
 	      	<background>true</background>
