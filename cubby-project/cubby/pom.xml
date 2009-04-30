@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>cubby-project</artifactId>
     <groupId>org.seasar.cubby</groupId>
-	<version>1.1.5-SNAPSHOT</version>
+	<version>1.1.5</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby</artifactId>
@@ -47,18 +45,18 @@
             <phase>site</phase>
             <configuration>
               <tasks>
-	              <replace file="target/site/tagreference.html" token="Tag reference report." value="タグリファレンス"/>
-	              <replace file="target/site/tagreference.html" token="Tag reference sheet" value="タグリファレンス"/>
-	              <replace file="target/site/tagreference.html" token="Tag library reference for the following tag libraries:" value="次のタグライブラリのリファレンスです。"/>
-	              <replace file="target/site/tagreference.html" token="Required attributes are marked with a &lt;b&gt;*&lt;/b&gt;" value="*が付く属性は必須です。"/>
-	              <replace file="target/site/tagreference.html" token="Can contain: JSP" value="このタグは子要素にスクリプトレットを含むことができます。"/>
-	              <replace file="target/site/tagreference.html" token="Can contain: scriptless" value="このタグは子要素にスクリプトレットを含むことができません。"/>
-	              <replace file="target/site/tagreference.html" token="This is version " value="タグのバージョン:"/>
-	              <replace file="target/site/tagreference.html" token="&lt;h4&gt;Example&lt;/h4&gt;" value="&lt;h4&gt;例&lt;/h4&gt;"/>
-	              <replace file="target/site/tagreference.html" token="&lt;h4&gt;Attributes&lt;/h4&gt;" value="&lt;h4&gt;属性&lt;/h4&gt;"/>
-	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Name&lt;/th&gt;" value="&lt;th&gt;属性名&lt;/th&gt;"/>
-	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Description&lt;/th&gt;" value="&lt;th&gt;説明&lt;/th&gt;"/>
-	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Type&lt;/th&gt;" value="&lt;th&gt;型&lt;/th&gt;"/>
+	              <replace file="target/site/tagreference.html" token="Tag reference report." value="タグリファレンス" />
+	              <replace file="target/site/tagreference.html" token="Tag reference sheet" value="タグリファレンス" />
+	              <replace file="target/site/tagreference.html" token="Tag library reference for the following tag libraries:" value="次のタグライブラリのリファレンスです。" />
+	              <replace file="target/site/tagreference.html" token="Required attributes are marked with a &lt;b&gt;*&lt;/b&gt;" value="*が付く属性は必須です。" />
+	              <replace file="target/site/tagreference.html" token="Can contain: JSP" value="このタグは子要素にスクリプトレットを含むことができます。" />
+	              <replace file="target/site/tagreference.html" token="Can contain: scriptless" value="このタグは子要素にスクリプトレットを含むことができません。" />
+	              <replace file="target/site/tagreference.html" token="This is version " value="タグのバージョン:" />
+	              <replace file="target/site/tagreference.html" token="&lt;h4&gt;Example&lt;/h4&gt;" value="&lt;h4&gt;例&lt;/h4&gt;" />
+	              <replace file="target/site/tagreference.html" token="&lt;h4&gt;Attributes&lt;/h4&gt;" value="&lt;h4&gt;属性&lt;/h4&gt;" />
+	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Name&lt;/th&gt;" value="&lt;th&gt;属性名&lt;/th&gt;" />
+	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Description&lt;/th&gt;" value="&lt;th&gt;説明&lt;/th&gt;" />
+	              <replace file="target/site/tagreference.html" token="&lt;th&gt;Type&lt;/th&gt;" value="&lt;th&gt;型&lt;/th&gt;" />
               </tasks>
             </configuration>
             <goals>
