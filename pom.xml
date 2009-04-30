@@ -113,11 +113,6 @@
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</developerConnection>
     <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</url>
   </scm>
-  <!--
-  <prerequisites>
-    <maven>2.1.0</maven>
-  </prerequisites>
-  -->
   <build>
     <plugins>
       <plugin>
