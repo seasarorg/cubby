@@ -120,14 +120,13 @@ public class CubbyFunctionsTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
-				assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
-						.url("abc あいう"));
+				assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86",
+						CubbyFunctions.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));
-				return null;
 			}
 
 		});
@@ -142,14 +141,13 @@ public class CubbyFunctionsTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				assertEquals("abc%20%82%A0%82%A2%82%A4", CubbyFunctions
 						.url("abc あいう"));
 				assertEquals("", CubbyFunctions.url(null));
-				return null;
 			}
 
 		});

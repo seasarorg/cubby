@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller;
+package org.seasar.cubby.plugin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,28 +21,31 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.routing.PathInfo;
 
 /**
- * 要求を処理します。
+ * 要求処理の実行情報です。
  * 
- * @author someda
  * @author baba
  */
-public interface RequestProcessor {
+public interface RequestProcessingInvocation extends Invocation<Void> {
 
 	/**
-	 * 指定された {@link PathInfo} に対する処理を行います。
+	 * 要求を取得します。
 	 * 
-	 * @param <T>
-	 *            戻り値の型
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param pathInfo
-	 *            パスの情報
-	 * @throws Exception
-	 *             要求の処理で例外が発生した場合
+	 * @return 要求
 	 */
-	void process(HttpServletRequest request, HttpServletResponse response,
-			PathInfo pathInfo) throws Exception;
+	HttpServletRequest getRequest();
+
+	/**
+	 * 応答を取得します。
+	 * 
+	 * @return 応答
+	 */
+	HttpServletResponse getResponse();
+
+	/**
+	 * パスから取得した情報を取得します。
+	 * 
+	 * @return パスから取得した情報
+	 */
+	PathInfo getPathInfo();
 
 }

@@ -80,9 +80,9 @@ public class FieldValidationRuleTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
 				params.put("name", new Object[] { "aa" });
@@ -91,9 +91,7 @@ public class FieldValidationRuleTest {
 						new RequiredValidator(), new ArrayMaxSizeValidator(1));
 				rule.apply(params, null, errors);
 				assertTrue(errors.isEmpty());
-				return null;
 			}
-
 		});
 	}
 
@@ -104,9 +102,9 @@ public class FieldValidationRuleTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
@@ -119,7 +117,6 @@ public class FieldValidationRuleTest {
 				assertFalse(errors.getFields().get("name").isEmpty());
 				assertTrue(errors.getIndexedFields().get("name").get(0)
 						.isEmpty());
-				return null;
 			}
 		});
 	}
@@ -131,9 +128,9 @@ public class FieldValidationRuleTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				Map<String, Object[]> params = new HashMap<String, Object[]>();
 
@@ -144,7 +141,6 @@ public class FieldValidationRuleTest {
 				assertFalse(errors.getFields().get("name").isEmpty());
 				assertEquals(1, errors.getIndexedFields().get("name").get(0)
 						.size());
-				return null;
 			}
 		});
 	}

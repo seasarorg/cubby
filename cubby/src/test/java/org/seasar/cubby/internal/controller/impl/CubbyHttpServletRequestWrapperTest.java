@@ -208,9 +208,9 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	@Test
 	public void getAttribute() throws Exception {
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(final HttpServletRequest request,
+			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
 				CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
 						request, new HashMap<String, String[]>());
@@ -228,7 +228,6 @@ public class CubbyHttpServletRequestWrapperTest {
 				assertEquals("expect name", wrapper.getAttribute("name"));
 				assertNull(wrapper.getAttribute("value"));
 				assertNull(wrapper.getAttribute("noprop"));
-				return null;
 			}
 
 		});

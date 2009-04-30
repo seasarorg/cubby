@@ -39,6 +39,7 @@ public class BinderPlugin extends AbstractPlugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <S extends Provider> S getProvider(Class<S> service) {
 		return service.cast(providers.get(service));
 	}

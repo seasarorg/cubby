@@ -158,12 +158,11 @@ public class ThreadContext {
 	 *            応答
 	 * @param command
 	 *            コンテキスト内で実行するコマンド
-	 * @return コマンドの実行結果
 	 * @throws Exception
 	 *             コマンドの実行中に例外が発生した場合
 	 */
-	public static <T> T runInContext(final HttpServletRequest request,
-			final HttpServletResponse response, final Command<T> command)
+	public static void runInContext(final HttpServletRequest request,
+			final HttpServletResponse response, final Command command)
 			throws Exception {
 		if (request == null) {
 			throw new NullPointerException("request");
@@ -179,7 +178,7 @@ public class ThreadContext {
 		final ThreadContext context = new ThreadContext(request, response);
 		THREAD_LOCAL.set(context);
 		try {
-			return command.execute(request, response);
+			command.execute(request, response);
 		} finally {
 			if (previous == null) {
 				THREAD_LOCAL.remove();
@@ -196,7 +195,7 @@ public class ThreadContext {
 	 * @param <T>
 	 *            コマンドの戻り値
 	 */
-	public interface Command<T> {
+	public interface Command {
 
 		/**
 		 * コマンドを実行します。
@@ -205,11 +204,10 @@ public class ThreadContext {
 		 *            要求
 		 * @param response
 		 *            応答
-		 * @return コマンドの実行結果
 		 * @throws Exception
 		 *             コマンドの実行中に例外が発生した場合
 		 */
-		T execute(HttpServletRequest request, HttpServletResponse response)
+		void execute(HttpServletRequest request, HttpServletResponse response)
 				throws Exception;
 
 	}

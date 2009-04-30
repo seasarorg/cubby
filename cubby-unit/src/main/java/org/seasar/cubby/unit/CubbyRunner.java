@@ -29,19 +29,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.internal.controller.ActionProcessor;
-import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.RequestProcessor;
-import org.seasar.cubby.internal.controller.RequestProcessor.CommandFactory;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
-import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
 import org.seasar.cubby.internal.plugin.PluginManager;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
+import org.seasar.cubby.plugin.AbstractPlugin;
+import org.seasar.cubby.plugin.ActionResultInvocation;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathInfo;
-import org.seasar.cubby.routing.Routing;
 
 /**
  * アクションを実行するためのクラスです。
@@ -105,20 +101,24 @@ public class CubbyRunner {
 			final HttpServletRequest request,
 			final HttpServletResponse response, final Filter... filters)
 			throws Exception {
+
+		final CubbyRunnerPlugin cubbyRunnerPlugin = new CubbyRunnerPlugin();
+		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		pluginRegistry.register(cubbyRunnerPlugin);
+
 		pluginManager.init(servletContext);
 		final ActionInvokeFilterChain chain = new ActionInvokeFilterChain(
 				filters);
 		chain.doFilter(request, response);
-		final ActionResult actionResult = chain.getActionResult();
 		pluginManager.destroy();
+
+		final ActionResult actionResult = cubbyRunnerPlugin.getActionResult();
 		return actionResult;
 	}
 
 	static class ActionInvokeFilterChain implements FilterChain {
 
 		private final Iterator<Filter> iterator;
-
-		private ActionResult actionResult = null;
 
 		public ActionInvokeFilterChain(final Filter... filters) {
 			this.iterator = Arrays.asList(filters).iterator();
@@ -132,7 +132,7 @@ public class CubbyRunner {
 				filter.doFilter(request, response, this);
 			} else {
 				try {
-					this.actionResult = invoke((HttpServletRequest) request,
+					invoke((HttpServletRequest) request,
 							(HttpServletResponse) response);
 				} catch (final Exception e) {
 					throw new ServletException(e);
@@ -140,45 +140,32 @@ public class CubbyRunner {
 			}
 		}
 
-		private ActionResult invoke(final HttpServletRequest request,
+		private void invoke(final HttpServletRequest request,
 				final HttpServletResponse response) throws Exception {
 			final Router router = new RouterImpl();
 			final PathInfo pathInfo = router.routing(request, response);
 			if (pathInfo == null) {
-				return null;
+				return;
 			}
 
-			final RequestProcessor pathProcessor = new RequestProcessorImpl();
-			final CommandFactory<ActionResultWrapper> commandFactory = new CubbyRunnerCommandFactory();
-			final ActionResultWrapper actionResultWrapper = pathProcessor
-					.process(request, response, pathInfo, commandFactory);
-			if (actionResultWrapper == null) {
-				return null;
-			}
-			return actionResultWrapper.getActionResult();
-		}
-
-		public ActionResult getActionResult() {
-			return actionResult;
+			final RequestProcessor requestProcessor = new RequestProcessorImpl();
+			requestProcessor.process(request, response, pathInfo);
 		}
 
 	}
 
-	static class CubbyRunnerCommandFactory implements
-			CommandFactory<ActionResultWrapper> {
+	static class CubbyRunnerPlugin extends AbstractPlugin {
 
-		final ActionProcessor actionProcessor = new ActionProcessorImpl();
+		private ActionResult actionResult;
 
-		public Command<ActionResultWrapper> create(final Routing routing) {
-			return new Command<ActionResultWrapper>() {
+		@Override
+		public void invokeActionResult(ActionResultInvocation invocation)
+				throws Exception {
+			this.actionResult = invocation.getActionResult();
+		}
 
-				public ActionResultWrapper execute(
-						final HttpServletRequest request,
-						final HttpServletResponse response) throws Exception {
-					return actionProcessor.process(request, response, routing);
-				}
-
-			};
+		public ActionResult getActionResult() {
+			return actionResult;
 		}
 
 	}

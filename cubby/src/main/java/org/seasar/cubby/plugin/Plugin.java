@@ -18,10 +18,7 @@ package org.seasar.cubby.plugin;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.spi.Provider;
 
@@ -79,99 +76,61 @@ public interface Plugin {
 	 */
 	void destroy();
 
-	// リクエストの処理
+	// サーブレット要求の処理
 
 	/**
-	 * 要求に対する処理を開始する時に実行されます。
-	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 */
-	void beginRequestProcessing(HttpServletRequest request,
-			HttpServletResponse response);
-
-	/**
-	 * アクションメソッドの実行前に実行されます。
+	 * 要求に対する処理を実行します。
 	 * <p>
-	 * このメソッドの戻り値が <code>null</code> でない場合はアクションメソッドを実行せず、
-	 * このメソッドの戻り値をアクションメソッドの戻り値として以降の処理を行います。
+	 * このメソッドをオーバーライドすることで、要求に対する処理の実行をインターセプトすることができます。
+	 * </p>
+	 * <p>
+	 * このメソッド内で {@link RequestProcessingInvocation#proceed()}
+	 * メソッドを実行することで、別のプラグインの
+	 * {@link #invokeRequestProcessing(RequestProcessingInvocation)}
+	 * または要求に対する処理が実行されます。
 	 * </p>
 	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param actionContext
-	 *            アクションのコンテキスト
-	 * @return 置き換えるための実行結果
+	 * @param invocation
+	 *            要求に対する処理の実行情報
+	 * @throws Exception
+	 *             要求に対する処理の実行時に例外が発生した場合
 	 */
-	ActionResult beforeActionInvoke(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext);
+	void invokeRequestProcessing(RequestProcessingInvocation invocation)
+			throws Exception;
 
 	/**
-	 * アクションメソッドの実行後に実行されます。
+	 * アクションメソッドを実行します。
 	 * <p>
-	 * このメソッドの戻り値が <code>null</code> でない場合はアクションメソッドの実行結果ではなく、
-	 * このメソッドの戻り値をアクションメソッドの戻り値として以降の処理を行います。
+	 * このメソッドをオーバーライドすることで、アクションメソッドの実行をインターセプトすることができます。
+	 * </p>
+	 * <p>
+	 * このメソッド内で {@link ActionInvocation#proceed()} メソッドを実行することで、別のプラグインの
+	 * {@link #invokeAction(ActionInvocation)} またはアクションメソッドが実行されます。
 	 * </p>
 	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param actionContext
-	 *            アクションのコンテキスト
-	 * @param actionResult
-	 *            アクションメソッドの実行結果
-	 * @return 置き換えるための実行結果
+	 * @param invocation
+	 *            アクションメソッドの実行情報
+	 * @return アクションの実行結果
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
 	 */
-	ActionResult afterActionInvoke(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext,
-			ActionResult actionResult);
+	ActionResult invokeAction(ActionInvocation invocation) throws Exception;
 
 	/**
-	 * アクションの実行結果の実行前に実行されます。
+	 * アクションの実行結果を実行します。
+	 * <p>
+	 * このメソッドをオーバーライドすることで、アクションの実行結果の実行をインターセプトすることができます。
+	 * </p>
+	 * <p>
+	 * このメソッド内で {@link ActionResultInvocation#proceed()} メソッドを実行することで、別のプラグインの
+	 * {@link #invokeActionResult(ActionResultInvocation)} またはアクションの実行結果が実行されます。
+	 * </p>
 	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param actionContext
-	 *            アクションのコンテキスト
-	 * @param actionResult
-	 *            アクションメソッドの実行結果
+	 * @param invocation
+	 *            アクションの実行結果の実行情報
+	 * @throws Exception
+	 *             アクションの実行結果の実行時に例外が発生した場合
 	 */
-	void beforeInvokeActionResult(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext,
-			ActionResult actionResult);
-
-	/**
-	 * アクションの実行結果の実行後に実行されます。
-	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 * @param actionContext
-	 *            アクションのコンテキスト
-	 * @param actionResult
-	 *            アクションメソッドの実行結果
-	 */
-	void afterInvokeActionResult(HttpServletRequest request,
-			HttpServletResponse response, ActionContext actionContext,
-			ActionResult actionResult);
-
-	/**
-	 * 要求に対する処理が終了した時に実行されます。
-	 * 
-	 * @param request
-	 *            要求
-	 * @param response
-	 *            応答
-	 */
-	void endRequestProcessing(HttpServletRequest request,
-			HttpServletResponse response);
+	void invokeActionResult(ActionResultInvocation invocation) throws Exception;
 
 }

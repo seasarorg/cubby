@@ -36,9 +36,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PluginManager {
 
-	/** シリアルバージョン UID。 */
-	private static final long serialVersionUID = 1L;
-
 	/** ロガー。 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(PluginManager.class);

@@ -24,7 +24,6 @@ import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
@@ -35,6 +34,7 @@ import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
 import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.plugin.AbstractPlugin;
+import org.seasar.cubby.plugin.ActionInvocation;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationFailBehaviour;
 import org.seasar.cubby.validator.ValidationRules;
@@ -49,17 +49,14 @@ public class ValidationPlugin extends AbstractPlugin {
 	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
 	private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public ActionResult beforeActionInvoke(final HttpServletRequest request,
-			final HttpServletResponse response,
-			final ActionContext actionContext) {
-
+	public ActionResult invokeAction(final ActionInvocation invocation)
+			throws Exception {
+		final HttpServletRequest request = invocation.getRequest();
 		final Map<String, Object[]> parameterMap = RequestUtils.getAttribute(
 				request, ATTR_PARAMS);
 
+		final ActionContext actionContext = invocation.getActionContext();
 		final Object formBean = actionContext.getFormBean();
 
 		if (formBean != null) {
@@ -78,7 +75,7 @@ public class ValidationPlugin extends AbstractPlugin {
 				validationRules.validate(parameterMap, formBean, actionContext
 						.getActionErrors());
 			}
-			return null;
+			return invocation.proceed();
 		} catch (final ValidationException e) {
 			request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
 			final ValidationFailBehaviour behaviour = e.getBehaviour();

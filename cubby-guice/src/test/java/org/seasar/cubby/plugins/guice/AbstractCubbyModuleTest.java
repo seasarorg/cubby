@@ -82,14 +82,13 @@ public class AbstractCubbyModuleTest {
 		System.out.println(injector);
 		Foo foo = injector.getInstance(Foo.class);
 		System.out.println(foo.pathResolver);
-		ThreadContext.runInContext(request, response, new Command<Void>() {
+		ThreadContext.runInContext(request, response, new Command() {
 
-			public Void execute(HttpServletRequest request,
+			public void execute(HttpServletRequest request,
 					HttpServletResponse response) throws Exception {
 				ConverterProvider converterProvider = ProviderFactory
 						.get(ConverterProvider.class);
 				System.out.println(converterProvider);
-				return null;
 			}
 
 		});
