@@ -5,13 +5,13 @@
 	<target name="dist">
 		<mkdir dir="${zipDir}"/>
 		<zip zipfile="${zipDir}/cubby-${ver}.zip">
-			<zipfileset prefix="cubby" dir="..">
-				<exclude name="**/build/**"/>
+			<zipfileset prefix="cubby/sources" dir="..">
+				<exclude name="**/.*"/>
+				<exclude name="**/.*/**"/>
 				<exclude name="**/target/**"/>
-				<exclude name="**/site/**"/>
-				<exclude name="dbf/**"/>
 				<exclude name="src/**"/>
 				<exclude name=".*"/>
+				<exclude name="RELEASE.txt"/>
 			</zipfileset>
 			<zipfileset prefix="cubby/lib" dir="../cubby/target">
 				<include name="cubby-${ver}.jar"/>
@@ -33,30 +33,7 @@
 				<include name="cubby-gson-${ver}.jar"/>
 				<include name="cubby-gson-${ver}-sources.jar"/>
 			</zipfileset>
-			<!--
-			<zipfileset prefix="cubby/lib" dir="../cubby-s2-archetype/target">
-				<include name="cubby-s2-archetype-${ver}.jar"/>
-				<include name="cubby-s2-archetype-${ver}-sources.jar"/>
-			</zipfileset>
-			<zipfileset prefix="cubby/lib" dir="../cubby-guice-archetype/target">
-				<include name="cubby-guice-archetype-${ver}.jar"/>
-				<include name="cubby-guice-archetype-${ver}-sources.jar"/>
-			</zipfileset>
-			-->
-			<!--
-			<zipfileset prefix="cubby/s2-resources" dir="../cubby-s2/src/main/resources">
-				<include name="*.properties"/>
-				<include name="*.dicon"/>
-			</zipfileset>
-			<zipfileset prefix="cubby/s2-resources" dir="../cubby-s2/src/test/resources">
-				<include name="messages*.dicon"/>
-			</zipfileset>
-			-->
 			<zipfileset prefix="cubby/doc" dir="../target/site">
-				<exclude name="**/download/**"/>
-				<exclude name="**/ja/benchmark/**"/>
-				<exclude name="**/ja/demo/**"/>
-				<exclude name="**/*.zip"/>
 			</zipfileset>
 			<zipfileset prefix="cubby/doc/cubby" dir="../cubby/target/site"/>
 			<zipfileset prefix="cubby/doc/cubby-unit" dir="../cubby/target/site"/>
