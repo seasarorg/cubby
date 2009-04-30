@@ -34,7 +34,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean,install,deploy</goals>
+          <goals>clean install deploy</goals>
         </configuration>
       </plugin>
     </plugins>
