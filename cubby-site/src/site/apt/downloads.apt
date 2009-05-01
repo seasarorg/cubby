@@ -64,15 +64,15 @@
 
 ** Cubby 1.1.5 (2009-05-01) <安定版>
 
-  リリース1.1.5です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10900}リリースノート}}）
+  リリース1.1.5です。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10908}リリースノート}}）
 
   * Cubby 本体とドキュメント {{{https://www.seasar.org/svn/cubby/trunk/archives/cubby-1.1.5.zip}ダウンロード}}
 
-  * サンプル war {{{https://www.seasar.org/svn/cubby/trunk/archives/cubby-examples-1.1.5.war}ダウンロード}}
+  * サンプル war {{{http://maven.seasar.org/maven2/org/seasar/cubby/cubby-examples/1.1.5/cubby-examples-1.1.5.war}ダウンロード}}
 
-  * サンプルアプリ(Cubbitter) war {{{https://www.seasar.org/svn/cubby/trunk/archives/cubbitter-1.1.5.war}ダウンロード}}
+  * サンプルアプリ(Cubbitter) war {{{http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/1.1.5/cubbitter-1.1.5.war}ダウンロード}}
 
-  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/1.1.5/}SVNリポジトリのtags}}からチェックアウトして下さい
+  * プロジェクト {{{https://www.seasar.org/svn/cubby/tags/cubby-project-1.1.5/}ソースコードリポジトリ}}からチェックアウトして下さい
 
   * 以前のバージョンからの移行する際の注意点
 
@@ -80,11 +80,13 @@
 
 ** Cubby 2.0.0 beta 2 (2009-05-01) <開発版>
 
-  2.0.0 ベータリリースです。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10841}リリースノート}}）
+  2.0.0 ベータリリースです。({{{https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&styleName=Html&version=10906}リリースノート}}）
 
   * Cubby 本体とドキュメント {{{https://www.seasar.org/svn/cubby/trunk/archives/cubby-2.0.0-beta2.zip}ダウンロード}}
 
-  * Eclipse プロジェクト {{{https://www.seasar.org/svn/cubby/tags/2.0.0-beta2/}SVNリポジトリのtags}}からチェックアウトして下さい
+  * サンプル war {{{http://maven.seasar.org/maven2/org/seasar/cubby/cubby-examples/1.1.5/cubby-examples-1.1.5.war}ダウンロード}}
+
+  * プロジェクト {{{https://www.seasar.org/svn/cubby/tags/cubby-project-2.0.0-beta2/}ソースコードリポジトリ}}からチェックアウトして下さい
 
   * 以前のバージョンからの移行する際の注意点
 
