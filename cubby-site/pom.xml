@@ -133,7 +133,6 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean,deploy,site-deploy</goals>
         </configuration>
       </plugin>
       <plugin>
