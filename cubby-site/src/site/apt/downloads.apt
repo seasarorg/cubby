@@ -84,8 +84,6 @@
 
   * Cubby 本体とドキュメント {{{https://www.seasar.org/svn/cubby/trunk/archives/cubby-2.0.0-beta2.zip}ダウンロード}}
 
-  * サンプル war {{{http://maven.seasar.org/maven2/org/seasar/cubby/cubby-examples/1.1.5/cubby-examples-1.1.5.war}ダウンロード}}
-
   * プロジェクト {{{https://www.seasar.org/svn/cubby/tags/cubby-project-2.0.0-beta2/}ソースコードリポジトリ}}からチェックアウトして下さい
 
   * 以前のバージョンからの移行する際の注意点
