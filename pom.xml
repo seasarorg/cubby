@@ -34,7 +34,8 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <goals>clean install deploy</goals>
+          <goals>deploy</goals>
+          <releaseProfiles>release</releaseProfiles>
         </configuration>
       </plugin>
       <plugin>
@@ -95,7 +96,7 @@
     </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
-      <url>dav:https://www.seasar.org/site/cubby/20x/</url>
+      <url>dav:https://www.seasar.org/site/cubby/20x/cubby-apps</url>
      </site>
   </distributionManagement>
   <modules>
