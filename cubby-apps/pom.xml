@@ -35,7 +35,7 @@
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
           <goals>deploy</goals>
-          <releaseProfiles>release</releaseProfiles>
+          <releaseProfiles>production</releaseProfiles>
         </configuration>
       </plugin>
       <plugin>

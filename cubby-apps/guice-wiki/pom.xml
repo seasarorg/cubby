@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>cubby-apps</artifactId>
+    <groupId>org.seasar.cubby</groupId>
+	<version>2.0.0-beta2-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
   <artifactId>guice-wiki</artifactId>
   <packaging>war</packaging>
   <name>Cubby Wiki</name>
-  <version>2.0.0-beta2-SNAPSHOT</version>
   <build>
     <finalName>guice-wiki</finalName>
     <plugins>
@@ -241,6 +245,61 @@ line.separator=\n
             <directory>src/main/resources</directory>
           </resource>
         </resources>
+      </build>
+    </profile>
+    <profile>
+      <id>tomcat6</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <configuration>
+              <container>
+                <containerId>tomcat6x</containerId>
+                <!--
+                <type>embedded</type>
+                -->
+                <!-- for use -Dtomcat.home=c:\usr\local...
+                <type>installed</type>
+                <home>${tomcat.home}</home>
+                -->
+                <zipUrlInstaller>
+                  <url>
+                    http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip
+                  </url>
+                  <installDir>${project.build.directory}</installDir>
+                </zipUrlInstaller>            
+                <output>
+                  ${project.build.directory}/tomcat6x.log
+                </output>
+                <log>${project.build.directory}/cargo.log</log>
+              </container>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-container</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <wait>false</wait>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-container</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
