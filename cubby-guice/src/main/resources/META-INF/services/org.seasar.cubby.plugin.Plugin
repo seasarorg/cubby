@@ -1,1 +1,1 @@
-org.seasar.cubby.plugins.guice.GuicePlugin
+org.seasar.cubby.plugins.spring.SpringPlugin
