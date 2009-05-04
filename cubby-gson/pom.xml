@@ -9,6 +9,21 @@
   <artifactId>cubby-gson</artifactId>
   <packaging>jar</packaging>
   <name>Cubby Gson Plugin</name>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet</groupId>
+        <artifactId>animal-sniffer</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <repositories>
     <repository>
       <id>gson</id>
