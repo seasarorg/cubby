@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="pathResolver" class="org.seasar.cubby.routing.impl.PathResolverImpl">
+		<constructor-arg>
+			<bean id="pathTemplateParser" class="org.seasar.cubby.routing.impl.PathTemplateParserImpl" />
+		</constructor-arg>
+	</bean>
+
+	<!-- spi -->
+	<bean id="containerProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringContainerProvider"
+		scope="singleton">
+	</bean>
+
+	<bean id="converterProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringConverterProvider"
+		scope="singleton" init-method="initialize">
+	</bean>
+
+	<bean id="pathResolverProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringPathResolverProvider"
+		scope="singleton" init-method="initialize">
+	</bean>
+
+	<bean id="requestParserProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringRequestParserProvider"
+		scope="singleton">
+	</bean>
+
+	<bean id="beanDescProvider" class="org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider"
+		scope="singleton">
+	</bean>
+
+
+</beans>
