@@ -111,6 +111,9 @@
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</developerConnection>
     <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-project/</url>
   </scm>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -118,7 +121,6 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
-          <!-- goals>clean install animal-sniffer:check deploy site-deploy</goals-->
         </configuration>
       </plugin>
       <plugin>
