@@ -9,10 +9,8 @@ import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.Provider;
 import org.seasar.cubby.spi.RequestParserProvider;
-import org.springframework.beans.factory.access.BeanFactoryLocator;
-import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Cubby を <a href="http://www.springsource.org/">Spring Framework</a>
@@ -44,6 +42,7 @@ public class SpringPlugin extends AbstractPlugin {
 	private ApplicationContext applicationContext;
 
 	public SpringPlugin() {
+		System.out.println("##### SpringPlugin.SpringPlugin()");
 		support(BeanDescProvider.class);
 		support(ContainerProvider.class);
 		support(RequestParserProvider.class);
@@ -53,12 +52,16 @@ public class SpringPlugin extends AbstractPlugin {
 
 	@Override
 	public void initialize(ServletContext servletContext) {
+		System.out.println("##### SpringPlugin.initialize()");
 		super.initialize(servletContext);
-		BeanFactoryLocator locator = ContextSingletonBeanFactoryLocator
-				.getInstance(CUBBY_BEANREF_LOCATION);
-		BeanFactoryReference factoryRef = locator
-				.useBeanFactory(SPI_CONTEXT_NAME);
-		this.applicationContext = (ApplicationContext) factoryRef.getFactory();
+		
+		this.applicationContext = (ApplicationContext) servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+//		BeanFactoryLocator locator = ContextSingletonBeanFactoryLocator
+//				.getInstance(CUBBY_BEANREF_LOCATION);
+//		BeanFactoryReference factoryRef = locator
+//				.useBeanFactory(SPI_CONTEXT_NAME);
+//		this.applicationContext = (ApplicationContext) factoryRef.getFactory();
+		System.out.println("##### SpringPlugin.initialize() " + applicationContext);
 	}
 
 	@Override

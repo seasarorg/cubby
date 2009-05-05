@@ -31,6 +31,7 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 	public void setApplicationContext(
 			final ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+		System.out.println("##### SpringPathResolverProvider.setApplicationContext() " + applicationContext);
 	}
 
 	public PathResolver getPathResolver() {
@@ -41,6 +42,7 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 		if (initialized) {
 			return;
 		}
+		System.out.println("##### SpringPathResolverProvider.initialized() " + applicationContext);
 		String[] names = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 				applicationContext, actionClass);
 		for (String name : names) {
