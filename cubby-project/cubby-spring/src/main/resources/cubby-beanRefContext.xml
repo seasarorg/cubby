@@ -7,7 +7,7 @@
 	<!-- spi -->
 	<bean id="spiContext"
 		class="org.springframework.context.support.ClassPathXmlApplicationContext"
-		lazy-init="true">
+		scope="singleton" lazy-init="true">
 		<constructor-arg>
 			<list>
 				<value>/cubby.xml</value>
