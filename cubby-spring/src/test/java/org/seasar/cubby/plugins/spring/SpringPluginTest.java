@@ -9,6 +9,9 @@ import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugins.spring.spi.SpringContainerProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.Provider;
+import org.springframework.beans.factory.access.BeanFactoryLocator;
+import org.springframework.beans.factory.access.BeanFactoryReference;
+import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
 
 public class SpringPluginTest {
 
