@@ -9,9 +9,8 @@ import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugins.spring.spi.SpringContainerProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.Provider;
-import org.springframework.beans.factory.access.BeanFactoryLocator;
-import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.ContextLoader;
 
 public class SpringPluginTest {
 
@@ -20,7 +19,12 @@ public class SpringPluginTest {
 	@Before
 	public void before() throws Exception {
 		plugin = new SpringPlugin();
-		plugin.initialize(null);
+		MockServletContext context = new MockServletContext();
+		context.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM,
+				"/applicationContext.xml");
+		ContextLoader contextLoader = new ContextLoader();
+		contextLoader.initWebApplicationContext(context);
+		plugin.initialize(context);
 	}
 
 	/**
