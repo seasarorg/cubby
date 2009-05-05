@@ -102,5 +102,6 @@
     <module>guice-examples</module>
     <module>cubbitter</module>
     <module>guice-wiki</module>
+    <module>spring-examples</module>
   </modules>
 </project>

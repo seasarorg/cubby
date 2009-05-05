@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+
+	<bean id="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
+
+	<bean id="requestParsers" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="multipartRequestParser" />
+				<ref bean="defaultRequestParser" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="messagesBehavior"
+		class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
+		<property name="baseName">
+			<value>messages</value>
+		</property>
+	</bean>
+
+</beans>
