@@ -30,7 +30,7 @@ public class SpringContainerProvider implements ContainerProvider,
 	}
 
 	/**
-	 * 
+	 * {@link ApplicationContext} による {@link Container} の実装です。
 	 */
 	private static class SpringContainerImpl implements Container {
 
@@ -41,14 +41,11 @@ public class SpringContainerProvider implements ContainerProvider,
 		}
 
 		public <T> T lookup(final Class<T> type) throws LookupException {
-			// String[] namesForType = applicationContext
-			// .getBeanNamesForType(type);
 			String[] names = BeanFactoryUtils
 					.beanNamesForTypeIncludingAncestors(applicationContext,
 							type);
-			// TODO : ここをどうするかは要検討
 			if (names == null || names.length < 1) {
-				throw new LookupException("should not be null");
+				throw new LookupException(type + " component not found.");
 			}
 			return type.cast(applicationContext.getBean(names[0], type));
 		}
