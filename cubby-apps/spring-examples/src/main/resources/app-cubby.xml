@@ -44,6 +44,8 @@
 			<value>10000000</value>
 		</property>
 	</bean>
+	<bean class="org.apache.commons.fileupload.servlet.ServletRequestContext"
+		scope="prototype" autowire="constructor" />
 
 	<!-- メッセージの振る舞い -->
 	<bean id="messagesBehavior"
