@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SpringRequestParserProvider extends AbstractRequestParserProvider {
 
-	@Autowired(required = false)
+	@Autowired
 	private Collection<RequestParser> requestParsers;
 
 	@Override
