@@ -62,13 +62,22 @@
     <developer>
       <id>someda</id>
       <name>SOMEDA Takashi</name>
+      <url>http://d.hatena.ne.jp/tksmd/</url>
       <email>takashi.someda_at_gmail.com</email>
+      <organization>Choistudio Inc.</organization>
+      <organizationUrl>http://www.choistudio.jp/</organizationUrl>
       <timezone>+9</timezone>
     </developer>
     <developer>
       <id>sugmak</id>
       <name>SUGIYAMA Makoto</name>
       <email>sugiyama.makoto+cubby_at_gmail.com</email>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>suzuki-kei</id>
+      <name>SUZUKI Kei</name>
+      <email />
       <timezone>+9</timezone>
     </developer>
   </developers>
@@ -360,6 +369,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
             <link>http://s2container.seasar.org/2.4/s2-tiger/ja/apidocs/</link>
             <link>http://google-guice.googlecode.com/svn/trunk/javadoc/</link>
             <link>http://google-gson.googlecode.com/svn/tags/1.3/docs/javadocs/</link>
+            <link>http://static.springframework.org/spring/docs/2.5.x/api/</link>
           </links>
         </configuration>
       </plugin>
@@ -426,6 +436,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
     <module>cubby-unit</module>
     <module>cubby-s2</module>
     <module>cubby-guice</module>
+    <module>cubby-spring</module>
     <module>cubby-gson</module>
     <!--  module>cubby-oval</module -->
     <module>cubby-s2-archetype</module>
