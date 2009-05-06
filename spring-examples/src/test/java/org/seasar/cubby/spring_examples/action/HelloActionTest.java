@@ -12,9 +12,20 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.filter.RequestContextFilter;
 
+/**
+ * {@link HelloAction} のテスト
+ * 
+ * @author suzuki-kei
+ * @author someda
+ * 
+ */
 public class HelloActionTest {
 
 	private MockServletContext servletContext;
+
+	private MockHttpServletRequest request;
+
+	private MockHttpServletResponse response;
 
 	@Before
 	public void before() throws Exception {
@@ -23,18 +34,38 @@ public class HelloActionTest {
 				"/applicationContext.xml");
 		ContextLoader contextLoader = new ContextLoader();
 		contextLoader.initWebApplicationContext(servletContext);
+
+		request = new MockHttpServletRequest();
+		response = new MockHttpServletResponse();
 	}
 
 	@Test
 	public void index1() throws Exception {
-		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 		request.setServletPath("/hello/");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-
 		ActionResult actualResult = CubbyRunner.processAction(servletContext,
 				request, response, new RequestContextFilter());
 		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
+	}
+
+	@Test
+	public void message1() throws Exception {
+		request.setMethod("GET");
+		request.setServletPath("/hello/message");
+		ActionResult actualResult = CubbyRunner.processAction(servletContext,
+				request, response, new RequestContextFilter());
+		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
+
+	}
+
+	@Test
+	public void message2() throws Exception {
+		request.setMethod("GET");
+		request.setServletPath("/hello/message");
+		request.addParameter("name", "cubby");
+		ActionResult actualResult = CubbyRunner.processAction(servletContext,
+				request, response, new RequestContextFilter());
+		CubbyAssert.assertPathEquals(Forward.class, "hello.jsp", actualResult);
 	}
 
 }
