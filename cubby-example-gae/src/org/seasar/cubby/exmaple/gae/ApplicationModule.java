@@ -9,6 +9,7 @@ import org.apache.commons.fileupload.servlet.ServletRequestContext;
 import org.seasar.cubby.exmaple.gae.action.FileuploadAction;
 import org.seasar.cubby.exmaple.gae.action.HelloAction;
 import org.seasar.cubby.exmaple.gae.action.IndexAction;
+import org.seasar.cubby.exmaple.gae.action.SearchAction;
 import org.seasar.cubby.fileupload.StreamFileItemFactory;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
@@ -35,19 +36,18 @@ public class ApplicationModule extends AbstractModule {
 				pathResolver.add(IndexAction.class);
 				pathResolver.add(HelloAction.class);
 				pathResolver.add(FileuploadAction.class);
+				pathResolver.add(SearchAction.class);
 				return pathResolver;
 			}
 
 		});
 
-
 		install(new ServletModule());
-		
+
 		bind(FileUpload.class).toInstance(
 				new ServletFileUpload(new StreamFileItemFactory()));
 		bind(RequestContext.class).toProvider(RequestContextProvider.class).in(
 				RequestScoped.class);
-
 	}
 
 	class RequestContextProvider implements Provider<RequestContext> {

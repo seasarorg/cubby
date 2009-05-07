@@ -38,6 +38,7 @@
 <ul>
 <li><a href="hello">HelloAction</a></li>
 <li><a href="fileupload">FileuploadAction</a></li>
+<li><a href="search">SearchAction</a></li>
 <li><a href="cubby-admin">Admin Tool (local only)</a></li>
 </ul>
 </body>
