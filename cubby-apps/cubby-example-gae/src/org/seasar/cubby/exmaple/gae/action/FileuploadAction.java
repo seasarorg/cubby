@@ -13,6 +13,9 @@ import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.FileRegexpValidator;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
+import com.google.inject.servlet.RequestScoped;
+
+@RequestScoped
 public class FileuploadAction extends Action {
 
 	private FileItem file;
