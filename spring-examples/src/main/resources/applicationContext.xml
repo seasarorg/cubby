@@ -11,7 +11,7 @@
 	<import resource="classpath*:cubby.xml" />
 	<import resource="app-cubby.xml" />
 
-	<context:component-scan base-package="org.seasar.cubby.spring_examples">
+	<context:component-scan base-package="org.seasar.cubby.spring_examples.action">
 		<context:include-filter type="assignable"
 			expression="org.seasar.cubby.action.Action" />
 	</context:component-scan>
