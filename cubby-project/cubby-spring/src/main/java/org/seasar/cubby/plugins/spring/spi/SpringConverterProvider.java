@@ -1,6 +1,7 @@
 package org.seasar.cubby.plugins.spring.spi;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -50,7 +51,7 @@ public class SpringConverterProvider extends AbstractCachedConverterProvider
 
 	@Override
 	protected Collection<Converter> getConverters() {
-		return this.converters;
+		return Collections.unmodifiableCollection(this.converters);
 	}
 
 }
