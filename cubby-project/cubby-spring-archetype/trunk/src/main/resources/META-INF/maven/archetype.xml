@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype>
+  <id>cubby-spring-archetype</id>
+  <sources>
+    <source>src/main/java/action/HelloAction.java</source>
+    <source>src/main/java/action/IndexAction.java</source>
+    <source>src/main/java/service/HelloService.java</source>
+    <source>src/main/java/service/impl/HelloServiceImpl.java</source>
+  </sources>
+  <resouces>
+  </resouces>
+  <testSources>
+    <source>src/test/java/action/HelloActionTest.java</source>
+  </testSources>
+  <testResources>
+  </testResources>
+</archetype>
