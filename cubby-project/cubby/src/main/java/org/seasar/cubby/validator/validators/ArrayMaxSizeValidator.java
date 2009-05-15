@@ -16,25 +16,39 @@
 package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.validator.ArrayFieldValidator;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 配列の最大サイズを検証します。
  * <p>
- * デフォルトエラーメッセージキー:valid.arrayMaxSize
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.arrayMaxSize</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * <li>このオブジェクトに設定された配列の最大サイズ</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class ArrayMaxSizeValidator implements ArrayFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 配列の最大サイズ
@@ -61,7 +75,7 @@ public class ArrayMaxSizeValidator implements ArrayFieldValidator {
 	 */
 	public ArrayMaxSizeValidator(final int max, final String messageKey) {
 		this.max = max;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -71,8 +85,14 @@ public class ArrayMaxSizeValidator implements ArrayFieldValidator {
 		if (values == null) {
 			return;
 		}
-		if (values.length > max) {
-			context.addMessageInfo(this.messageHelper.createMessageInfo(max));
+		if (values.length <= max) {
+			return;
 		}
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		messageInfo.setArguments(new Object[] { max });
+		context.addMessageInfo(messageInfo);
 	}
+
 }

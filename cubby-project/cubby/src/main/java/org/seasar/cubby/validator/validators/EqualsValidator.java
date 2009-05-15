@@ -15,26 +15,41 @@
  */
 package org.seasar.cubby.validator.validators;
 
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 指定した文字列と等しいかどうかを検証します。
+ * 指定された文字列と等しいかどうかを検証します。
  * <p>
- * デフォルトエラーメッセージキー:valid.equals
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.equals</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * <li>このオブジェクトに設定された比較対象の文字列</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
+ * @see String#equals(Object)
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class EqualsValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 対象文字列
@@ -45,7 +60,7 @@ public class EqualsValidator implements ScalarFieldValidator {
 	 * コンストラクタ
 	 * 
 	 * @param value
-	 *            対象文字列
+	 *            比較対象の文字列
 	 */
 	public EqualsValidator(final String value) {
 		this(value, "valid.equals");
@@ -59,16 +74,21 @@ public class EqualsValidator implements ScalarFieldValidator {
 	 */
 	public EqualsValidator(final String value, final String messageKey) {
 		this.value = value;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void validate(final ValidationContext context, final Object value) {
-		if (!this.value.equals(value)) {
-			context.addMessageInfo(this.messageHelper.createMessageInfo());
+		if (this.value.equals(value)) {
+			return;
 		}
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		messageInfo.setArguments(new Object[] { this.value });
+		context.addMessageInfo(messageInfo);
 	}
 
 }

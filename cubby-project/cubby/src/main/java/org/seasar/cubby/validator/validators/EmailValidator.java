@@ -21,19 +21,34 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * Eメールアドレスに対する検証を行います。
+ * <a href="http://www.ietf.org/rfc/rfc2821.txt">RFC2821</a>
+ * に準拠したメールアドレスかを検証します。
  * <p>
- * デフォルトエラーメッセージキー:valid.email
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.email</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
+ * @see <a href="http://www.ietf.org/rfc/rfc2821.txt">RFC2821</a>
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class EmailValidator implements ScalarFieldValidator {
 
@@ -54,9 +69,9 @@ public class EmailValidator implements ScalarFieldValidator {
 	private static final String ATOM_PATTERN = "(" + ATOM + ")";
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * コンストラクタ
@@ -71,7 +86,7 @@ public class EmailValidator implements ScalarFieldValidator {
 	 * @param messageKey
 	 */
 	public EmailValidator(final String messageKey) {
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -107,7 +122,9 @@ public class EmailValidator implements ScalarFieldValidator {
 			}
 		}
 
-		context.addMessageInfo(this.messageHelper.createMessageInfo());
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 
 	private boolean isValidDomain(final String domain) {

@@ -16,30 +16,45 @@
 package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 最大文字数を検証します。
+ * 文字列の最大長を検証します。
  * <p>
- * String#length()メソッドで文字列の長さを求めます。文字列のバイト数でないこと、半角全角も1文字としてカウントされることに注意してください。
+ * {@link String#length()} メソッドで文字列の長さを求めます。文字列のバイト数でないこと、半角全角も 1
+ * 文字としてカウントされることに注意してください。
  * </p>
  * <p>
- * デフォルトエラーメッセージキー:valid.maxLength
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.maxLength</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * <li>このオブジェクトに設定された文字列の最大長</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
  * @see String#length()
- * @since 1.0.0
  */
 public class MaxLengthValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 最大文字数
@@ -66,7 +81,7 @@ public class MaxLengthValidator implements ScalarFieldValidator {
 	 */
 	public MaxLengthValidator(final int max, final String messageKey) {
 		this.max = max;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -84,6 +99,10 @@ public class MaxLengthValidator implements ScalarFieldValidator {
 		} else if (value == null) {
 			return;
 		}
-		context.addMessageInfo(this.messageHelper.createMessageInfo(max));
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		messageInfo.setArguments(new Object[] { max });
+		context.addMessageInfo(messageInfo);
 	}
 }

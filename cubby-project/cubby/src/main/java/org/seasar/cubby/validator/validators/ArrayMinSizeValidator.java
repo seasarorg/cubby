@@ -16,13 +16,28 @@
 package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.validator.ArrayFieldValidator;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
  * 配列の最小サイズを検証します。
  * <p>
- * デフォルトエラーメッセージキー:valid.arrayMinSize
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.arrayMinSize</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * <li>このオブジェクトに設定された配列の最小サイズ</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
@@ -32,9 +47,9 @@ import org.seasar.cubby.validator.ValidationContext;
 public class ArrayMinSizeValidator implements ArrayFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 配列の最小サイズ
@@ -61,7 +76,7 @@ public class ArrayMinSizeValidator implements ArrayFieldValidator {
 	 */
 	public ArrayMinSizeValidator(final int min, final String messageKey) {
 		this.min = min;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -71,8 +86,14 @@ public class ArrayMinSizeValidator implements ArrayFieldValidator {
 		if (values == null) {
 			return;
 		}
-		if (values.length < min) {
-			context.addMessageInfo(this.messageHelper.createMessageInfo(min));
+		if (values.length >= min) {
+			return;
 		}
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		messageInfo.setArguments(new Object[] { min });
+		context.addMessageInfo(messageInfo);
 	}
+
 }

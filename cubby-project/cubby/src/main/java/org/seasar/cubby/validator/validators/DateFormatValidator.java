@@ -27,30 +27,43 @@ import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 日付に対する検証を行います。
+ * 日付パターンに適合するかを検証します。
  * <p>
  * 日付パターンを指定しない場合、「app-cubby.dicon」で指定した日付パターンが使用されます。
  * </p>
  * <p>
- * デフォルトエラーメッセージキー:valid.dateFormat
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.dateFormat</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
  * @see SimpleDateFormat
- * @since 1.0.0
  */
 public class DateFormatValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 日付パターン
@@ -84,7 +97,7 @@ public class DateFormatValidator implements ScalarFieldValidator {
 	 */
 	public DateFormatValidator(final String pattern, final String messageKey) {
 		this.pattern = pattern;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -111,9 +124,20 @@ public class DateFormatValidator implements ScalarFieldValidator {
 			}
 		}
 
-		context.addMessageInfo(this.messageHelper.createMessageInfo());
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 
+	/**
+	 * {@link DateFormat} のインスタンスを生成します。
+	 * 
+	 * @param context
+	 *            コンテキスト
+	 * @param value
+	 *            値
+	 * @return {@link DateFormat} のインスタンス
+	 */
 	private DateFormat createDateFormat(final ValidationContext context,
 			final Object value) {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat();
