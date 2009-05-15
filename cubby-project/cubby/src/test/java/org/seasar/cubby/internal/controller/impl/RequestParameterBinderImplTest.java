@@ -57,6 +57,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.FieldInfo;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
@@ -67,6 +68,7 @@ import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.internal.controller.ConversionFailure;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
@@ -81,6 +83,7 @@ import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
+import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 
@@ -100,7 +103,7 @@ public class RequestParameterBinderImplTest {
 		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider(new Container() {
 
-					public <T> T lookup(Class<T> type) {
+					public <T> T lookup(final Class<T> type) {
 						if (FormatPattern.class.equals(type)) {
 							return type.cast(formatPattern);
 						}
@@ -127,45 +130,45 @@ public class RequestParameterBinderImplTest {
 
 	@Test
 	public void mapToBeanNullSource() {
-		FormDto dto = new FormDto();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto dto = new FormDto();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(null, dto, actionContext, errors);
-		assertTrue(errors.isEmpty());
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(null, dto, actionContext);
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("date", new Object[] { "2006-01-01" });
 
-		FormDto dto = new FormDto();
+		final FormDto dto = new FormDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
-		Calendar cal = Calendar.getInstance();
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
+		final Calendar cal = Calendar.getInstance();
 		cal.set(2006, 0, 1);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		assertEquals(format.format(cal.getTime()), format.format(dto.getDate()));
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean_OneValue() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num1", new Object[] { "1" });
 		map.put("num2", new Object[] { "2" });
 		map.put("num3", new Object[] { "def" });
 
-		FormDto dto = new FormDto();
+		final FormDto dto = new FormDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getNum1());
 		assertEquals(Integer.valueOf(1), dto.getNum1());
 		assertNotNull(dto.getNum2());
@@ -174,21 +177,21 @@ public class RequestParameterBinderImplTest {
 		assertNotNull(dto.getNum3());
 		assertEquals(1, dto.getNum3().size());
 		assertEquals("def", dto.getNum3().get(0));
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean_MultiValue() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num2", new Object[] { "1", "2" });
 		map.put("num3", new Object[] { "abc", "def" });
 
-		FormDto dto = new FormDto();
+		final FormDto dto = new FormDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getNum2());
 		assertEquals(2, dto.getNum2().length);
 		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
@@ -197,48 +200,48 @@ public class RequestParameterBinderImplTest {
 		assertEquals(2, dto.getNum3().size());
 		assertEquals("abc", dto.getNum3().get(0));
 		assertEquals("def", dto.getNum3().get(1));
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean_MultiValueIncludesEmptyValue() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num2", new String[] { "1", "", "2" });
 
-		FormDto dto = new FormDto();
+		final FormDto dto = new FormDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertEquals(3, dto.getNum2().length);
 		assertEquals(Integer.valueOf(1), dto.getNum2()[0]);
 		assertEquals(null, dto.getNum2()[1]);
 		assertEquals(Integer.valueOf(2), dto.getNum2()[2]);
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean_MultiValueIncludesNullValue() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("num3", new String[] { "zzz", null, "xxx" });
 
-		FormDto dto = new FormDto();
+		final FormDto dto = new FormDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertEquals(3, dto.getNum3().size());
 		assertEquals("zzz", dto.getNum3().get(0));
 		assertNull(dto.getNum3().get(1));
 		assertEquals("xxx", dto.getNum3().get(2));
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void mapToBean_annotated() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("normal", new Object[] { "abcd" });
 		map.put("specifiedName", new Object[] { "efgh" });
 		map.put("foo", new Object[] { "ijkl" });
@@ -246,22 +249,22 @@ public class RequestParameterBinderImplTest {
 		map.put("specifiedNameAndConverter", new Object[] { "qrst" });
 		map.put("bar", new Object[] { "uvwx" });
 
-		AnnotatedDto dto = new AnnotatedDto();
+		final AnnotatedDto dto = new AnnotatedDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertEquals("abcd", dto.getNormal());
 		assertEquals("ijkl", dto.getSpecifiedName());
 		assertEquals("{mnop}", dto.getSpecifiedConverter());
 		assertEquals("{uvwx}", dto.getSpecifiedNameAndConverter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	@Test
 	public void converters() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("decimal", new Object[] { "12.3" });
 		map.put("decimals", new Object[] { "45.6", "78.9" });
 		map.put("bigint", new Object[] { "9876" });
@@ -310,12 +313,12 @@ public class RequestParameterBinderImplTest {
 		map.put("sqltimestamps", new Object[] { "2008-8-14 13:45:24",
 				"2008-10-30 23:44:00" });
 
-		ConvertersDto dto = new ConvertersDto();
+		final ConvertersDto dto = new ConvertersDto();
 
-		ActionContext actionContext = new MockActionContext(null,
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 
 		assertNotNull(dto.getDecimal());
 		assertTrue(new BigDecimal("12.3").compareTo(dto.getDecimal()) == 0);
@@ -504,15 +507,15 @@ public class RequestParameterBinderImplTest {
 		assertEquals(new Timestamp(fromTimestampToMillis(2008, 10, 30, 23, 44,
 				00)), dto.getSqltimestamps()[1]);
 
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 
 		System.out.println(dto);
 	}
 
 	@Test
 	public void convertersWithError() throws Exception {
-		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
-		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		final HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		final HttpServletResponse response = createNiceMock(HttpServletResponse.class);
 		replay(request, response);
 
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
@@ -560,14 +563,26 @@ public class RequestParameterBinderImplTest {
 
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		final ActionErrors errors = new ActionErrorsImpl();
 		// requestParameterBinder.bind(map, dto, actionContext, errors);
+
+		final ActionErrors errors = new ActionErrorsImpl();
 
 		ThreadContext.runInContext(request, response, new Command() {
 
-			public void execute(HttpServletRequest request,
-					HttpServletResponse response) throws Exception {
-				requestParameterBinder.bind(map, dto, actionContext, errors);
+			public void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
+				final List<ConversionFailure> conversionFailures = requestParameterBinder
+						.bind(map, dto, actionContext);
+				for (final ConversionFailure conversionFailure : conversionFailures) {
+					final MessageInfo messageInfo = conversionFailure
+							.getMessageInfo();
+					final FieldInfo[] fieldInfos = conversionFailure
+							.getFieldInfos();
+					final String message = messageInfo.builder().fieldNameKey(
+							conversionFailure.getFieldName()).toString();
+					errors.add(message, fieldInfos);
+				}
+
 			}
 
 		});
@@ -710,13 +725,12 @@ public class RequestParameterBinderImplTest {
 		assertTrue(errors.getIndexedFields().get("ens").get(0).isEmpty());
 		System.out.println(errors.getIndexedFields().get("ens").get(1));
 		assertFalse(errors.getIndexedFields().get("ens").get(1).isEmpty());
-
 	}
 
 	@Test
 	public void convertFileItem() throws Exception {
-		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
-		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		final HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		final HttpServletResponse response = createNiceMock(HttpServletResponse.class);
 		replay(request, response);
 
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
@@ -735,14 +749,22 @@ public class RequestParameterBinderImplTest {
 		final ActionErrors errors = new ActionErrorsImpl();
 		ThreadContext.runInContext(request, response, new Command() {
 
-			public void execute(HttpServletRequest request,
-					HttpServletResponse response) throws Exception {
-				requestParameterBinder.bind(map, dto, actionContext, errors);
+			public void execute(final HttpServletRequest request,
+					final HttpServletResponse response) throws Exception {
+				final List<ConversionFailure> conversionFailures = requestParameterBinder
+						.bind(map, dto, actionContext);
+				for (final ConversionFailure conversionFailure : conversionFailures) {
+					final MessageInfo messageInfo = conversionFailure
+							.getMessageInfo();
+					final String message = messageInfo.builder().fieldNameKey(
+							conversionFailure.getFieldName()).toString();
+					errors.add(message);
+				}
 			}
 
 		});
 
-		String encoding = "UTF-8";
+		final String encoding = "UTF-8";
 		assertNotNull(dto.getFile());
 		assertEquals("123", new String(dto.getFile().get(), encoding));
 		assertNotNull(dto.getBytefile());
@@ -753,7 +775,7 @@ public class RequestParameterBinderImplTest {
 		assertEquals("def", new String(dto.getBytefiles()[1], encoding));
 		assertNotNull(dto.getBytefilelist());
 		assertEquals(2, dto.getBytefilelist().size());
-		Iterator<byte[]> it = dto.getBytefilelist().iterator();
+		final Iterator<byte[]> it = dto.getBytefilelist().iterator();
 		assertEquals("GHI", new String(it.next(), encoding));
 		assertEquals("JKL", new String(it.next(), encoding));
 		assertNotNull(dto.getInput());
@@ -762,105 +784,105 @@ public class RequestParameterBinderImplTest {
 	}
 
 	public void testBindTypeNoAnnotated() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "noAnnotated"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	public void testBindTypeNoBindingType() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class,
 						"noBindingType"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	public void testBindTypeAllProperties() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	public void testBindTypeOnlySpecifiedProperties() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "specified"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	public void testBindTypeNoAnnotatedOnClass() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class,
 						"noAnnotated"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNotNull(dto.getNoRequestParameter());
 		assertEquals("def", dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
 	public void testBindTypeOnlySpecifiedPropertiesOnClass() {
-		Map<String, Object[]> map = new HashMap<String, Object[]>();
+		final Map<String, Object[]> map = new HashMap<String, Object[]>();
 		map.put("hasRequestParameter", new Object[] { "abc" });
 		map.put("noRequestParameter", new Object[] { "def" });
-		FormDto2 dto = new FormDto2();
-		ActionContext actionContext = new MockActionContext(null,
+		final FormDto2 dto = new FormDto2();
+		final ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class, "specified"));
-		ActionErrors errors = new ActionErrorsImpl();
-		requestParameterBinder.bind(map, dto, actionContext, errors);
+		final List<ConversionFailure> conversionFailures = requestParameterBinder
+				.bind(map, dto, actionContext);
 		assertNotNull(dto.getHasRequestParameter());
 		assertEquals("abc", dto.getHasRequestParameter());
 		assertNull(dto.getNoRequestParameter());
-		assertTrue(errors.isEmpty());
+		assertTrue(conversionFailures.isEmpty());
 	}
 
-	private Method actionMethod(Class<? extends Action> actionClass,
-			String methodName) {
+	private Method actionMethod(final Class<? extends Action> actionClass,
+			final String methodName) {
 		try {
 			return actionClass.getMethod(methodName);
-		} catch (NoSuchMethodException ex) {
+		} catch (final NoSuchMethodException ex) {
 			throw new RuntimeException();
 		}
 	}
@@ -906,7 +928,7 @@ public class RequestParameterBinderImplTest {
 		}
 
 		@RequestParameter
-		public void setHasRequestParameter(String hasRequestParameter) {
+		public void setHasRequestParameter(final String hasRequestParameter) {
 			this.hasRequestParameter = hasRequestParameter;
 		}
 
@@ -916,7 +938,7 @@ public class RequestParameterBinderImplTest {
 			return noRequestParameter;
 		}
 
-		public void setNoRequestParameter(String noRequestParameter) {
+		public void setNoRequestParameter(final String noRequestParameter) {
 			this.noRequestParameter = noRequestParameter;
 		}
 	}
@@ -931,7 +953,7 @@ public class RequestParameterBinderImplTest {
 			return date;
 		}
 
-		public void setDate(Date date) {
+		public void setDate(final Date date) {
 			this.date = date;
 		}
 
@@ -939,7 +961,7 @@ public class RequestParameterBinderImplTest {
 			return num1;
 		}
 
-		public void setNum1(Integer num1) {
+		public void setNum1(final Integer num1) {
 			this.num1 = num1;
 		}
 
@@ -947,7 +969,7 @@ public class RequestParameterBinderImplTest {
 			return num2;
 		}
 
-		public void setNum2(Integer[] num2) {
+		public void setNum2(final Integer[] num2) {
 			this.num2 = num2;
 		}
 
@@ -955,7 +977,7 @@ public class RequestParameterBinderImplTest {
 			return num3;
 		}
 
-		public void setNum3(List<String> num3) {
+		public void setNum3(final List<String> num3) {
 			this.num3 = num3;
 		}
 	}
@@ -1012,7 +1034,7 @@ public class RequestParameterBinderImplTest {
 			return decimal;
 		}
 
-		public void setDecimal(BigDecimal decimal) {
+		public void setDecimal(final BigDecimal decimal) {
 			this.decimal = decimal;
 		}
 
@@ -1020,7 +1042,7 @@ public class RequestParameterBinderImplTest {
 			return decimals;
 		}
 
-		public void setDecimals(BigDecimal[] decimals) {
+		public void setDecimals(final BigDecimal[] decimals) {
 			this.decimals = decimals;
 		}
 
@@ -1028,7 +1050,7 @@ public class RequestParameterBinderImplTest {
 			return bigint;
 		}
 
-		public void setBigint(BigInteger bigint) {
+		public void setBigint(final BigInteger bigint) {
 			this.bigint = bigint;
 		}
 
@@ -1036,7 +1058,7 @@ public class RequestParameterBinderImplTest {
 			return bigints;
 		}
 
-		public void setBigints(BigInteger[] bigints) {
+		public void setBigints(final BigInteger[] bigints) {
 			this.bigints = bigints;
 		}
 
@@ -1044,7 +1066,7 @@ public class RequestParameterBinderImplTest {
 			return bool1;
 		}
 
-		public void setBool1(Boolean bool1) {
+		public void setBool1(final Boolean bool1) {
 			this.bool1 = bool1;
 		}
 
@@ -1052,7 +1074,7 @@ public class RequestParameterBinderImplTest {
 			return bools1;
 		}
 
-		public void setBools1(Boolean[] bools1) {
+		public void setBools1(final Boolean[] bools1) {
 			this.bools1 = bools1;
 		}
 
@@ -1060,7 +1082,7 @@ public class RequestParameterBinderImplTest {
 			return bool2;
 		}
 
-		public void setBool2(boolean bool2) {
+		public void setBool2(final boolean bool2) {
 			this.bool2 = bool2;
 		}
 
@@ -1068,7 +1090,7 @@ public class RequestParameterBinderImplTest {
 			return bools2;
 		}
 
-		public void setBools2(boolean[] bools2) {
+		public void setBools2(final boolean[] bools2) {
 			this.bools2 = bools2;
 		}
 
@@ -1076,7 +1098,7 @@ public class RequestParameterBinderImplTest {
 			return byte1;
 		}
 
-		public void setByte1(Byte byte1) {
+		public void setByte1(final Byte byte1) {
 			this.byte1 = byte1;
 		}
 
@@ -1084,7 +1106,7 @@ public class RequestParameterBinderImplTest {
 			return bytes1;
 		}
 
-		public void setBytes1(Byte[] bytes1) {
+		public void setBytes1(final Byte[] bytes1) {
 			this.bytes1 = bytes1;
 		}
 
@@ -1092,7 +1114,7 @@ public class RequestParameterBinderImplTest {
 			return byte2;
 		}
 
-		public void setByte2(byte byte2) {
+		public void setByte2(final byte byte2) {
 			this.byte2 = byte2;
 		}
 
@@ -1100,7 +1122,7 @@ public class RequestParameterBinderImplTest {
 			return bytes2;
 		}
 
-		public void setBytes2(byte[] bytes2) {
+		public void setBytes2(final byte[] bytes2) {
 			this.bytes2 = bytes2;
 		}
 
@@ -1108,7 +1130,7 @@ public class RequestParameterBinderImplTest {
 			return char1;
 		}
 
-		public void setChar1(Character char1) {
+		public void setChar1(final Character char1) {
 			this.char1 = char1;
 		}
 
@@ -1116,7 +1138,7 @@ public class RequestParameterBinderImplTest {
 			return chars1;
 		}
 
-		public void setChars1(Character[] chars1) {
+		public void setChars1(final Character[] chars1) {
 			this.chars1 = chars1;
 		}
 
@@ -1124,7 +1146,7 @@ public class RequestParameterBinderImplTest {
 			return char2;
 		}
 
-		public void setChar2(char char2) {
+		public void setChar2(final char char2) {
 			this.char2 = char2;
 		}
 
@@ -1132,7 +1154,7 @@ public class RequestParameterBinderImplTest {
 			return chars2;
 		}
 
-		public void setChars2(char[] chars2) {
+		public void setChars2(final char[] chars2) {
 			this.chars2 = chars2;
 		}
 
@@ -1140,7 +1162,7 @@ public class RequestParameterBinderImplTest {
 			return date;
 		}
 
-		public void setDate(Date date) {
+		public void setDate(final Date date) {
 			this.date = date;
 		}
 
@@ -1148,7 +1170,7 @@ public class RequestParameterBinderImplTest {
 			return dates;
 		}
 
-		public void setDates(Date[] dates) {
+		public void setDates(final Date[] dates) {
 			this.dates = dates;
 		}
 
@@ -1156,7 +1178,7 @@ public class RequestParameterBinderImplTest {
 			return double1;
 		}
 
-		public void setDouble1(Double double1) {
+		public void setDouble1(final Double double1) {
 			this.double1 = double1;
 		}
 
@@ -1164,7 +1186,7 @@ public class RequestParameterBinderImplTest {
 			return doubles1;
 		}
 
-		public void setDoubles1(Double[] doubles1) {
+		public void setDoubles1(final Double[] doubles1) {
 			this.doubles1 = doubles1;
 		}
 
@@ -1172,7 +1194,7 @@ public class RequestParameterBinderImplTest {
 			return double2;
 		}
 
-		public void setDouble2(double double2) {
+		public void setDouble2(final double double2) {
 			this.double2 = double2;
 		}
 
@@ -1180,7 +1202,7 @@ public class RequestParameterBinderImplTest {
 			return doubles2;
 		}
 
-		public void setDoubles2(double[] doubles2) {
+		public void setDoubles2(final double[] doubles2) {
 			this.doubles2 = doubles2;
 		}
 
@@ -1188,7 +1210,7 @@ public class RequestParameterBinderImplTest {
 			return en;
 		}
 
-		public void setEn(ExEnum en) {
+		public void setEn(final ExEnum en) {
 			this.en = en;
 		}
 
@@ -1196,7 +1218,7 @@ public class RequestParameterBinderImplTest {
 			return ens;
 		}
 
-		public void setEns(ExEnum[] ens) {
+		public void setEns(final ExEnum[] ens) {
 			this.ens = ens;
 		}
 
@@ -1204,7 +1226,7 @@ public class RequestParameterBinderImplTest {
 			return float1;
 		}
 
-		public void setFloat1(Float float1) {
+		public void setFloat1(final Float float1) {
 			this.float1 = float1;
 		}
 
@@ -1212,7 +1234,7 @@ public class RequestParameterBinderImplTest {
 			return floats1;
 		}
 
-		public void setFloats1(Float[] floats1) {
+		public void setFloats1(final Float[] floats1) {
 			this.floats1 = floats1;
 		}
 
@@ -1220,7 +1242,7 @@ public class RequestParameterBinderImplTest {
 			return float2;
 		}
 
-		public void setFloat2(float float2) {
+		public void setFloat2(final float float2) {
 			this.float2 = float2;
 		}
 
@@ -1228,7 +1250,7 @@ public class RequestParameterBinderImplTest {
 			return floats2;
 		}
 
-		public void setFloats2(float[] floats2) {
+		public void setFloats2(final float[] floats2) {
 			this.floats2 = floats2;
 		}
 
@@ -1236,7 +1258,7 @@ public class RequestParameterBinderImplTest {
 			return int1;
 		}
 
-		public void setInt1(Integer int1) {
+		public void setInt1(final Integer int1) {
 			this.int1 = int1;
 		}
 
@@ -1244,7 +1266,7 @@ public class RequestParameterBinderImplTest {
 			return ints1;
 		}
 
-		public void setInts1(Integer[] ints1) {
+		public void setInts1(final Integer[] ints1) {
 			this.ints1 = ints1;
 		}
 
@@ -1252,7 +1274,7 @@ public class RequestParameterBinderImplTest {
 			return int2;
 		}
 
-		public void setInt2(int int2) {
+		public void setInt2(final int int2) {
 			this.int2 = int2;
 		}
 
@@ -1260,7 +1282,7 @@ public class RequestParameterBinderImplTest {
 			return ints2;
 		}
 
-		public void setInts2(int[] ints2) {
+		public void setInts2(final int[] ints2) {
 			this.ints2 = ints2;
 		}
 
@@ -1268,7 +1290,7 @@ public class RequestParameterBinderImplTest {
 			return long1;
 		}
 
-		public void setLong1(Long long1) {
+		public void setLong1(final Long long1) {
 			this.long1 = long1;
 		}
 
@@ -1276,7 +1298,7 @@ public class RequestParameterBinderImplTest {
 			return longs1;
 		}
 
-		public void setLongs1(Long[] longs1) {
+		public void setLongs1(final Long[] longs1) {
 			this.longs1 = longs1;
 		}
 
@@ -1284,7 +1306,7 @@ public class RequestParameterBinderImplTest {
 			return long2;
 		}
 
-		public void setLong2(long long2) {
+		public void setLong2(final long long2) {
 			this.long2 = long2;
 		}
 
@@ -1292,7 +1314,7 @@ public class RequestParameterBinderImplTest {
 			return longs2;
 		}
 
-		public void setLongs2(long[] longs2) {
+		public void setLongs2(final long[] longs2) {
 			this.longs2 = longs2;
 		}
 
@@ -1300,7 +1322,7 @@ public class RequestParameterBinderImplTest {
 			return short1;
 		}
 
-		public void setShort1(Short short1) {
+		public void setShort1(final Short short1) {
 			this.short1 = short1;
 		}
 
@@ -1308,7 +1330,7 @@ public class RequestParameterBinderImplTest {
 			return shorts1;
 		}
 
-		public void setShorts1(Short[] shorts1) {
+		public void setShorts1(final Short[] shorts1) {
 			this.shorts1 = shorts1;
 		}
 
@@ -1316,7 +1338,7 @@ public class RequestParameterBinderImplTest {
 			return short2;
 		}
 
-		public void setShort2(short short2) {
+		public void setShort2(final short short2) {
 			this.short2 = short2;
 		}
 
@@ -1324,7 +1346,7 @@ public class RequestParameterBinderImplTest {
 			return shorts2;
 		}
 
-		public void setShorts2(short[] shorts2) {
+		public void setShorts2(final short[] shorts2) {
 			this.shorts2 = shorts2;
 		}
 
@@ -1332,7 +1354,7 @@ public class RequestParameterBinderImplTest {
 			return sqldate;
 		}
 
-		public void setSqldate(java.sql.Date sqldate) {
+		public void setSqldate(final java.sql.Date sqldate) {
 			this.sqldate = sqldate;
 		}
 
@@ -1340,7 +1362,7 @@ public class RequestParameterBinderImplTest {
 			return sqldates;
 		}
 
-		public void setSqldates(java.sql.Date[] sqldates) {
+		public void setSqldates(final java.sql.Date[] sqldates) {
 			this.sqldates = sqldates;
 		}
 
@@ -1348,7 +1370,7 @@ public class RequestParameterBinderImplTest {
 			return sqltime;
 		}
 
-		public void setSqltime(Time sqltime) {
+		public void setSqltime(final Time sqltime) {
 			this.sqltime = sqltime;
 		}
 
@@ -1356,7 +1378,7 @@ public class RequestParameterBinderImplTest {
 			return sqltimes;
 		}
 
-		public void setSqltimes(Time[] sqltimes) {
+		public void setSqltimes(final Time[] sqltimes) {
 			this.sqltimes = sqltimes;
 		}
 
@@ -1364,7 +1386,7 @@ public class RequestParameterBinderImplTest {
 			return sqltimestamp;
 		}
 
-		public void setSqltimestamp(Timestamp sqltimestamp) {
+		public void setSqltimestamp(final Timestamp sqltimestamp) {
 			this.sqltimestamp = sqltimestamp;
 		}
 
@@ -1372,7 +1394,7 @@ public class RequestParameterBinderImplTest {
 			return sqltimestamps;
 		}
 
-		public void setSqltimestamps(Timestamp[] sqltimestamps) {
+		public void setSqltimestamps(final Timestamp[] sqltimestamps) {
 			this.sqltimestamps = sqltimestamps;
 		}
 	}
@@ -1392,7 +1414,7 @@ public class RequestParameterBinderImplTest {
 			return file;
 		}
 
-		public void setFile(FileItem file) {
+		public void setFile(final FileItem file) {
 			this.file = file;
 		}
 
@@ -1400,7 +1422,7 @@ public class RequestParameterBinderImplTest {
 			return bytefile;
 		}
 
-		public void setBytefile(byte[] bytefile) {
+		public void setBytefile(final byte[] bytefile) {
 			this.bytefile = bytefile;
 		}
 
@@ -1408,7 +1430,7 @@ public class RequestParameterBinderImplTest {
 			return bytefiles;
 		}
 
-		public void setBytefiles(byte[][] bytefiles) {
+		public void setBytefiles(final byte[][] bytefiles) {
 			this.bytefiles = bytefiles;
 		}
 
@@ -1416,7 +1438,7 @@ public class RequestParameterBinderImplTest {
 			return bytefilelist;
 		}
 
-		public void setBytefilelist(Set<byte[]> bytefilelist) {
+		public void setBytefilelist(final Set<byte[]> bytefilelist) {
 			this.bytefilelist = bytefilelist;
 		}
 
@@ -1424,7 +1446,7 @@ public class RequestParameterBinderImplTest {
 			return input;
 		}
 
-		public void setInput(InputStream input) {
+		public void setInput(final InputStream input) {
 			this.input = input;
 		}
 	}
@@ -1433,9 +1455,9 @@ public class RequestParameterBinderImplTest {
 
 		private static final long serialVersionUID = 1L;
 
-		private String name;
+		private final String name;
 
-		public MockFileItem(String name) {
+		public MockFileItem(final String name) {
 			this.name = name;
 		}
 
@@ -1445,7 +1467,7 @@ public class RequestParameterBinderImplTest {
 		public byte[] get() {
 			try {
 				return name.getBytes("UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				throw new RuntimeException();
 			}
 		}
@@ -1478,7 +1500,7 @@ public class RequestParameterBinderImplTest {
 			return null;
 		}
 
-		public String getString(String encoding)
+		public String getString(final String encoding)
 				throws UnsupportedEncodingException {
 			return null;
 		}
@@ -1491,19 +1513,19 @@ public class RequestParameterBinderImplTest {
 			return false;
 		}
 
-		public void setFieldName(String name) {
+		public void setFieldName(final String name) {
 		}
 
-		public void setFormField(boolean state) {
+		public void setFormField(final boolean state) {
 		}
 
-		public void write(File file) throws Exception {
+		public void write(final File file) throws Exception {
 		}
 	}
 
 	private static final Map<Integer, Integer> MONTHS;
 	static {
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		map.put(1, Calendar.JANUARY);
 		map.put(2, Calendar.FEBRUARY);
 		map.put(3, Calendar.MARCH);
@@ -1519,8 +1541,9 @@ public class RequestParameterBinderImplTest {
 		MONTHS = Collections.unmodifiableMap(map);
 	}
 
-	private static long fromDateToMillis(int year, int month, int date) {
-		Calendar c = Calendar.getInstance();
+	private static long fromDateToMillis(final int year, final int month,
+			final int date) {
+		final Calendar c = Calendar.getInstance();
 		c.clear();
 		c.set(Calendar.YEAR, year);
 		c.set(Calendar.MONTH, MONTHS.get(month));
@@ -1528,8 +1551,9 @@ public class RequestParameterBinderImplTest {
 		return c.getTimeInMillis();
 	}
 
-	private static long fromTimeToMillis(int hour, int minute, int second) {
-		Calendar c = Calendar.getInstance();
+	private static long fromTimeToMillis(final int hour, final int minute,
+			final int second) {
+		final Calendar c = Calendar.getInstance();
 		c.clear();
 		c.set(Calendar.HOUR, hour);
 		c.set(Calendar.MINUTE, minute);
@@ -1537,9 +1561,9 @@ public class RequestParameterBinderImplTest {
 		return c.getTimeInMillis();
 	}
 
-	private static long fromTimestampToMillis(int year, int month, int date,
-			int hour, int minute, int second) {
-		Calendar c = Calendar.getInstance();
+	private static long fromTimestampToMillis(final int year, final int month,
+			final int date, final int hour, final int minute, final int second) {
+		final Calendar c = Calendar.getInstance();
 		c.clear();
 		c.set(Calendar.YEAR, year);
 		c.set(Calendar.MONTH, MONTHS.get(month));
@@ -1550,23 +1574,23 @@ public class RequestParameterBinderImplTest {
 		return c.getTimeInMillis();
 	}
 
-	private static final byte[] getBytes(InputStream is) {
+	private static final byte[] getBytes(final InputStream is) {
 		byte[] bytes = null;
-		byte[] buf = new byte[8192];
+		final byte[] buf = new byte[8192];
 		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			int n = 0;
 			while ((n = is.read(buf, 0, buf.length)) != -1) {
 				baos.write(buf, 0, n);
 			}
 			bytes = baos.toByteArray();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 				}
 			}
 		}
@@ -1596,7 +1620,7 @@ public class RequestParameterBinderImplTest {
 		}
 
 		@RequestParameter
-		public void setNormal(String normal) {
+		public void setNormal(final String normal) {
 			this.normal = normal;
 		}
 
@@ -1605,7 +1629,7 @@ public class RequestParameterBinderImplTest {
 		}
 
 		@RequestParameter(name = "foo")
-		public void setSpecifiedName(String specifiedName) {
+		public void setSpecifiedName(final String specifiedName) {
 			this.specifiedName = specifiedName;
 		}
 
@@ -1614,7 +1638,7 @@ public class RequestParameterBinderImplTest {
 		}
 
 		@RequestParameter(converter = BraceConverter.class)
-		public void setSpecifiedConverter(String specifiedConverter) {
+		public void setSpecifiedConverter(final String specifiedConverter) {
 			this.specifiedConverter = specifiedConverter;
 		}
 
@@ -1624,7 +1648,7 @@ public class RequestParameterBinderImplTest {
 
 		@RequestParameter(name = "bar", converter = BraceConverter.class)
 		public void setSpecifiedNameAndConverter(
-				String specifiedNameAndConverter) {
+				final String specifiedNameAndConverter) {
 			this.specifiedNameAndConverter = specifiedNameAndConverter;
 		}
 
@@ -1632,15 +1656,16 @@ public class RequestParameterBinderImplTest {
 
 	public static class BraceConverter implements Converter {
 
-		public Object convertToObject(Object value, Class<?> objectType,
-				ConversionHelper helper) {
+		public Object convertToObject(final Object value,
+				final Class<?> objectType, final ConversionHelper helper) {
 			if (value == null) {
 				return null;
 			}
 			return "{" + value + "}";
 		}
 
-		public String convertToString(Object value, ConversionHelper helper) {
+		public String convertToString(final Object value,
+				final ConversionHelper helper) {
 			if (value == null) {
 				return null;
 			}
@@ -1651,7 +1676,8 @@ public class RequestParameterBinderImplTest {
 			return String.class;
 		}
 
-		public boolean canConvert(Class<?> parameterType, Class<?> objectType) {
+		public boolean canConvert(final Class<?> parameterType,
+				final Class<?> objectType) {
 			return false;
 		}
 

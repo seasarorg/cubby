@@ -15,21 +15,21 @@
  */
 package org.seasar.cubby.plugins;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_CONVERSION_ERRORS;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONVERSION_FAILURES;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 import static org.seasar.cubby.validator.ValidationUtils.getValidation;
 import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.ActionContext;
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.internal.controller.ConversionFailure;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.impl.RequestParameterBinderImpl;
 import org.seasar.cubby.internal.util.RequestUtils;
@@ -60,10 +60,9 @@ public class ValidationPlugin extends AbstractPlugin {
 		final Object formBean = actionContext.getFormBean();
 
 		if (formBean != null) {
-			final ActionErrors conversionErros = new ActionErrorsImpl();
-			requestParameterBinder.bind(parameterMap, formBean, actionContext,
-					conversionErros);
-			request.setAttribute(ATTR_CONVERSION_ERRORS, conversionErros);
+			final List<ConversionFailure> conversionFailures = requestParameterBinder
+					.bind(parameterMap, formBean, actionContext);
+			request.setAttribute(ATTR_CONVERSION_FAILURES, conversionFailures);
 		}
 
 		try {
