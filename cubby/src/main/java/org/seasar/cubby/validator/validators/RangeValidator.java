@@ -16,26 +16,41 @@
 package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 数値の範囲を指定して検証します。
+ * 数値の範囲を検証します。
  * <p>
- * デフォルトエラーメッセージキー:valid.range
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.range</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * <li>このオブジェクトに設定された数値の最小値</li>
+ * <li>このオブジェクトに設定された数値の最大値</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class RangeValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 最小値
@@ -73,7 +88,7 @@ public class RangeValidator implements ScalarFieldValidator {
 			final String messageKey) {
 		this.min = min;
 		this.max = max;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -95,6 +110,10 @@ public class RangeValidator implements ScalarFieldValidator {
 		} else if (value == null) {
 			return;
 		}
-		context.addMessageInfo(this.messageHelper.createMessageInfo(min, max));
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		messageInfo.setArguments(new Object[] { min, max });
+		context.addMessageInfo(messageInfo);
 	}
 }

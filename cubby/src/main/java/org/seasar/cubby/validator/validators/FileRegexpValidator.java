@@ -19,30 +19,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * ファイルアップロードのファイル名が指定された正規表現にマッチするか検証します。
+ * アップロードされたファイル({@link FileItem})のファイル名が指定された正規表現にマッチするか検証します。
  * <p>
- * 正規表現についての詳細は {@link Pattern}を参照してください。
- * </p>
- * <p>
- * デフォルトエラーメッセージキー:valid.fileRegexp
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.fileRegexp</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @see Pattern
- * @see Matcher
  * @author baba
- * @since 1.0.0
  */
 public class FileRegexpValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 正規表現パターン
@@ -91,7 +100,7 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 	 */
 	public FileRegexpValidator(final Pattern pattern, final String messageKey) {
 		this.pattern = pattern;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -101,9 +110,14 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 		if (value instanceof FileItem) {
 			final FileItem fileItem = (FileItem) value;
 			final Matcher matcher = pattern.matcher(fileItem.getName());
-			if (!matcher.matches()) {
-				context.addMessageInfo(this.messageHelper.createMessageInfo());
+			if (matcher.matches()) {
+				return;
 			}
+
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey(this.messageKey);
+			messageInfo.setArguments(new Object[] { value });
+			context.addMessageInfo(messageInfo);
 		}
 	}
 }

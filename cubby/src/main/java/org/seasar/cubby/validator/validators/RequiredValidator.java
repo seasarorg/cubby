@@ -16,29 +16,42 @@
 package org.seasar.cubby.validator.validators;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 必須検証します。
+ * 対象が入力されていることを検証します。
  * <p>
- * 文字列の長さが0の場合、検証エラーとなります。
+ * 検証対象が null の場合に検証エラーとなります。対象が文字列の場合はの長さが 0 の場合にも検証エラーとなります。
  * </p>
  * <p>
- * デフォルトエラーメッセージキー:valid.required
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.required</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class RequiredValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * コンストラクタ
@@ -54,7 +67,7 @@ public class RequiredValidator implements ScalarFieldValidator {
 	 *            エラーメッセージキー
 	 */
 	public RequiredValidator(final String messageKey) {
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -69,7 +82,10 @@ public class RequiredValidator implements ScalarFieldValidator {
 		} else if (value != null) {
 			return;
 		}
-		context.addMessageInfo(this.messageHelper.createMessageInfo());
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 
 }

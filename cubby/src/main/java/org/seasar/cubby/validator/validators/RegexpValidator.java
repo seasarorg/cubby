@@ -19,30 +19,39 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 指定された正規表現にマッチするか検証します。
+ * 指定された正規表現にマッチするかを検証します。
  * <p>
- * 正規表現についての詳細は {@link Pattern}を参照してください。
- * </p>
- * <p>
- * デフォルトエラーメッセージキー:valid.regexp
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.regexp</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
- * @author baba
  * @see Pattern
- * @see Matcher
- * @since 1.0.0
+ * @author baba
  */
 public class RegexpValidator implements ScalarFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * 正規表現パターン
@@ -91,7 +100,7 @@ public class RegexpValidator implements ScalarFieldValidator {
 	 */
 	public RegexpValidator(final Pattern pattern, final String messageKey) {
 		this.pattern = pattern;
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -111,7 +120,10 @@ public class RegexpValidator implements ScalarFieldValidator {
 				return;
 			}
 		}
-		context.addMessageInfo(this.messageHelper.createMessageInfo());
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 
 }

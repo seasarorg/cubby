@@ -22,17 +22,30 @@ import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.tags.TokenTag;
 import org.seasar.cubby.validator.ArrayFieldValidator;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 2重サブミットの検証をします。
+ * 2 重サブミットの検証をします。
  * <p>
- * ポストする画面で{@link TokenTag}を使用して、Actionクラスで TokenValidatorを使用することで、
- * ２重サブミットを防止します。
+ * ポストする画面で {@link TokenTag} を使用し、アクションクラスでこのクラスで検証することで 2 重サブミットを防止します。
  * </p>
  * <p>
- * デフォルトエラーメッセージキー:valid.token
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.token</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
@@ -42,9 +55,9 @@ import org.seasar.cubby.validator.ValidationContext;
 public class TokenValidator implements ArrayFieldValidator {
 
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * コンストラクタ。
@@ -60,7 +73,7 @@ public class TokenValidator implements ArrayFieldValidator {
 	 *            エラーメッセージキー
 	 */
 	public TokenValidator(final String messageKey) {
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -70,18 +83,21 @@ public class TokenValidator implements ArrayFieldValidator {
 		if (values == null) {
 			return;
 		}
-		if (values.length != 1) {
-			context.addMessageInfo(this.messageHelper.createMessageInfo());
-		} else {
+
+		if (values.length == 1) {
 			final String token = (String) values[0];
 			final HttpServletRequest request = ThreadContext.getRequest();
 			final HttpSession session = request.getSession(false);
-			if (session != null) {
-				if (!TokenHelper.validateToken(session, token)) {
-					context.addMessageInfo(this.messageHelper
-							.createMessageInfo());
-				}
+			if (session == null) {
+				return;
+			}
+			if (TokenHelper.validateToken(session, token)) {
+				return;
 			}
 		}
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 }

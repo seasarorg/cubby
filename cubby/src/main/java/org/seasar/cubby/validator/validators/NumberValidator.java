@@ -15,35 +15,45 @@
  */
 package org.seasar.cubby.validator.validators;
 
-import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageHelper;
+import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**
- * 数値かどうかを検証します。
+ * 数値であるかを検証します。
  * <p>
- * 数値かどうかの検証は {@link BigDecimal#BigDecimal(String)} で行っています。
- * <p>
- * デフォルトエラーメッセージキー:valid.number
+ * <table>
+ * <caption>検証エラー時に設定するエラーメッセージ</caption> <tbody>
+ * <tr>
+ * <th scope="row">デフォルトのキー</th>
+ * <td>valid.number</td>
+ * </tr>
+ * <tr>
+ * <th scope="row">置換文字列</th>
+ * <td>
+ * <ol start="0">
+ * <li>フィールド名</li>
+ * </ol></td>
+ * </tr>
+ * </tbody>
+ * </table>
  * </p>
  * 
  * @author agata
  * @author baba
- * @see BigDecimal#BigDecimal(String)
- * @since 1.0.0
  */
 public class NumberValidator implements ScalarFieldValidator {
 
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("^[-+]?[0-9]+[.]?[0-9]*$");
-	
+	private static final Pattern NUMBER_PATTERN = Pattern
+			.compile("^[-+]?[0-9]+[.]?[0-9]*$");
+
 	/**
-	 * メッセージヘルパ。
+	 * メッセージキー。
 	 */
-	private final MessageHelper messageHelper;
+	private final String messageKey;
 
 	/**
 	 * コンストラクタ
@@ -59,7 +69,7 @@ public class NumberValidator implements ScalarFieldValidator {
 	 *            エラーメッセージキー
 	 */
 	public NumberValidator(final String messageKey) {
-		this.messageHelper = new MessageHelper(messageKey);
+		this.messageKey = messageKey;
 	}
 
 	/**
@@ -77,7 +87,10 @@ public class NumberValidator implements ScalarFieldValidator {
 		} else if (value == null) {
 			return;
 		}
-		context.addMessageInfo(this.messageHelper.createMessageInfo());
+
+		final MessageInfo messageInfo = new MessageInfo();
+		messageInfo.setKey(this.messageKey);
+		context.addMessageInfo(messageInfo);
 	}
 
 }
