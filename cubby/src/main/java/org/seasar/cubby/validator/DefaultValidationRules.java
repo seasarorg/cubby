@@ -73,6 +73,7 @@ public abstract class DefaultValidationRules extends AbstractValidationRules {
 	 */
 	public DefaultValidationRules(final String resourceKeyPrefix) {
 		this.resourceKeyPrefix = resourceKeyPrefix;
+		initialize(resourceKeyPrefix);
 		initialize();
 	}
 
@@ -82,7 +83,17 @@ public abstract class DefaultValidationRules extends AbstractValidationRules {
 	 * このメソッドをサブクラスでオーバーライドして各項目の入力検証ルールを追加します。
 	 * </p>
 	 */
-	protected abstract void initialize();
+	protected void initialize(final String resourceKeyPrefix) {
+	}
+
+	/**
+	 * 初期化メソッド。
+	 * <p>
+	 * このメソッドをサブクラスでオーバーライドして各項目の入力検証ルールを追加します。
+	 * </p>
+	 */
+	protected void initialize() {
+	}
 
 	/**
 	 * 入力検証ルールを追加します。
