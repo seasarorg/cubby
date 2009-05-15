@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FieldInfo;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.internal.controller.ConversionFailure;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.RequestUtils;
@@ -74,8 +75,7 @@ public class ConversionValidationRule implements ValidationRule {
 					fieldNameKey = resourceKeyPrefix
 							+ conversionFailure.getFieldName();
 				}
-				final String message = messageInfo.builder().fieldNameKey(
-						fieldNameKey).toString();
+				final String message = messageInfo.toMessage(fieldNameKey);
 				final FieldInfo[] fieldInfos = conversionFailure
 						.getFieldInfos();
 				errors.add(message, fieldInfos);

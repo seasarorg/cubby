@@ -18,6 +18,8 @@ package org.seasar.cubby.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.cubby.action.MessageInfo;
+
 /**
  * 入力検証のコンテキスト。
  * 

@@ -15,9 +15,9 @@
  */
 package org.seasar.cubby.converter.impl;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
-import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 列挙定数へ変換するコンバータです。

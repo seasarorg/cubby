@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.fileupload.FileItem;
-import org.seasar.cubby.validator.MessageInfo;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 

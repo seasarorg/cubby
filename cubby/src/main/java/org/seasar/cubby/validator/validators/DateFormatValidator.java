@@ -22,12 +22,12 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
-import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 

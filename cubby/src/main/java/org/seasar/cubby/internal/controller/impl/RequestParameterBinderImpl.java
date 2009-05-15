@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.FieldInfo;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
@@ -39,7 +40,6 @@ import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
 import org.seasar.cubby.spi.beans.PropertyDesc;
-import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスの実装です。
