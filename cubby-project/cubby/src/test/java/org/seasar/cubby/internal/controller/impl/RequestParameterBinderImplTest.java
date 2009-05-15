@@ -59,6 +59,7 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.FieldInfo;
 import org.seasar.cubby.action.Form;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.controller.FormatPattern;
@@ -83,7 +84,6 @@ import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
-import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 
@@ -578,8 +578,8 @@ public class RequestParameterBinderImplTest {
 							.getMessageInfo();
 					final FieldInfo[] fieldInfos = conversionFailure
 							.getFieldInfos();
-					final String message = messageInfo.builder().fieldNameKey(
-							conversionFailure.getFieldName()).toString();
+					final String message = messageInfo
+							.toMessage(conversionFailure.getFieldName());
 					errors.add(message, fieldInfos);
 				}
 
@@ -756,8 +756,8 @@ public class RequestParameterBinderImplTest {
 				for (final ConversionFailure conversionFailure : conversionFailures) {
 					final MessageInfo messageInfo = conversionFailure
 							.getMessageInfo();
-					final String message = messageInfo.builder().fieldNameKey(
-							conversionFailure.getFieldName()).toString();
+					final String message = messageInfo
+							.toMessage(conversionFailure.getFieldName());
 					errors.add(message);
 				}
 			}

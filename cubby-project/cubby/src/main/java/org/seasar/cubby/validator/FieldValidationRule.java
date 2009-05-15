@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FieldInfo;
+import org.seasar.cubby.action.MessageInfo;
 
 /**
  * 入力フォームのフィールドに対する入力検証のルールです。
@@ -203,11 +204,10 @@ public class FieldValidationRule implements ValidationRule {
 			final FieldInfo fieldInfo = new FieldInfo(validationRule
 					.getFieldName());
 			this.validator.validate(context, values);
-			for (final MessageInfo message : context.getMessageInfos()) {
-				errors
-						.add(message.builder().fieldNameKey(
-								validationRule.getFieldNameKey()).toString(),
-								fieldInfo);
+			for (final MessageInfo messageInfo : context.getMessageInfos()) {
+				final String message = messageInfo.toMessage(validationRule
+						.getFieldNameKey());
+				errors.add(message, fieldInfo);
 			}
 		}
 
@@ -249,8 +249,8 @@ public class FieldValidationRule implements ValidationRule {
 						.getFieldName(), i);
 				this.validator.validate(context, values[i]);
 				for (final MessageInfo messageInfo : context.getMessageInfos()) {
-					final String message = messageInfo.builder().fieldNameKey(
-							validationRule.getFieldNameKey()).toString();
+					final String message = messageInfo.toMessage(validationRule
+							.getFieldNameKey());
 					errors.add(message, fieldInfo);
 				}
 			}

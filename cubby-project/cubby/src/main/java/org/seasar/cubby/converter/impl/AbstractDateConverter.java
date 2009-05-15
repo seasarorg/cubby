@@ -21,8 +21,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.converter.ConversionException;
-import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 文字列を日付型のオブジェクトに変換するクラスの抽象クラスです。

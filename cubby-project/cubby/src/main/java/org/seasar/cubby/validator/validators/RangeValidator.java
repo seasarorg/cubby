@@ -15,8 +15,8 @@
  */
 package org.seasar.cubby.validator.validators;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.internal.util.StringUtils;
-import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 

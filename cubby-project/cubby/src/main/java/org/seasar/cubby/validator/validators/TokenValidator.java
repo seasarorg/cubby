@@ -18,11 +18,11 @@ package org.seasar.cubby.validator.validators;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.TokenHelper;
 import org.seasar.cubby.tags.TokenTag;
 import org.seasar.cubby.validator.ArrayFieldValidator;
-import org.seasar.cubby.validator.MessageInfo;
 import org.seasar.cubby.validator.ValidationContext;
 
 /**

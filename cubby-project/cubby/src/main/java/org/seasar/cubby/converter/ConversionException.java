@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.converter;
 
-import org.seasar.cubby.validator.MessageInfo;
+import org.seasar.cubby.action.MessageInfo;
 
 /**
  * 型変換に失敗した場合にスローする例外です。

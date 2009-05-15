@@ -17,9 +17,9 @@ package org.seasar.cubby.converter.impl;
 
 import java.math.BigDecimal;
 
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.converter.ConversionException;
 import org.seasar.cubby.converter.ConversionHelper;
-import org.seasar.cubby.validator.MessageInfo;
 
 /**
  * 小数への変換を行うコンバータの抽象クラスです。

@@ -16,7 +16,7 @@
 package org.seasar.cubby.internal.controller;
 
 import org.seasar.cubby.action.FieldInfo;
-import org.seasar.cubby.validator.MessageInfo;
+import org.seasar.cubby.action.MessageInfo;
 
 /**
  * 型変換の失敗を表すクラスです。
