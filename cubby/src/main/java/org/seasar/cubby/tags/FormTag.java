@@ -69,13 +69,10 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	private boolean encodeURL = true;
 
 	/** リンク用の補助クラス。 */
-	private final transient LinkSupport linkSupport = new LinkSupport();
+	private final LinkSupport linkSupport = new LinkSupport();
 
 	/** リンクビルダ。 */
-	private final transient LinkBuilder linkBuilder = new LinkBuilder();
-
-	/** フォームオブジェクトのラッパーファクトリ。 */
-	private final transient FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
+	private final LinkBuilder linkBuilder = new LinkBuilder();
 
 	/** フォームオブジェクトのラッパー。 */
 	private transient FormWrapper formWrapper;
@@ -180,6 +177,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 				logger.debug(format("ECUB1006"));
 			}
 		}
+		final FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
 		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;
 	}

@@ -38,14 +38,13 @@ public class CubbyServlet extends GenericServlet {
 	private static final long serialVersionUID = 1L;
 
 	/** プラグインマネージャ。 */
-	private PluginManager pluginManager;
+	private transient PluginManager pluginManager;
 
 	/**
 	 * サーブレットをインスタンス化します。
 	 */
 	public CubbyServlet() {
 		super();
-		this.pluginManager = buildPluginManager();
 	}
 
 	/**
@@ -57,6 +56,7 @@ public class CubbyServlet extends GenericServlet {
 	@Override
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
+		pluginManager = buildPluginManager();
 		pluginManager.init(config.getServletContext());
 	}
 

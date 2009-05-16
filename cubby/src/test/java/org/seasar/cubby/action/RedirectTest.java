@@ -433,7 +433,7 @@ public class RedirectTest {
 		void assertDispatchPath(String path);
 	}
 
-	class RequestDispatcherAssertionWrapper extends HttpServletResponseWrapper {
+	static class RequestDispatcherAssertionWrapper extends HttpServletResponseWrapper {
 
 		private final Asserter asserter;
 

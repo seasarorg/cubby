@@ -371,7 +371,7 @@ public class PathResolverImplTest {
 		}
 	}
 
-	class Query {
+	static class Query {
 		private String path;
 		private Map<String, List<String>> params;
 

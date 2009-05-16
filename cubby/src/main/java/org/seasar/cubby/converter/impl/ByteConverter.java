@@ -45,7 +45,7 @@ public class ByteConverter extends AbstractIntegerNumberConverter {
 	 */
 	@Override
 	protected Number convert(final BigInteger decimal) {
-		return new Byte(decimal.byteValue());
+		return Byte.valueOf(decimal.byteValue());
 	}
 
 	/**

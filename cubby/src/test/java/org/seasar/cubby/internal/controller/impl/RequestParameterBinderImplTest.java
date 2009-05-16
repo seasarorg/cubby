@@ -353,12 +353,12 @@ public class RequestParameterBinderImplTest {
 		assertFalse(dto.getBools2()[2]);
 
 		assertNotNull(dto.getByte1());
-		assertEquals(new Byte((byte) 12), dto.getByte1());
+		assertEquals(Byte.valueOf((byte) 12), dto.getByte1());
 
 		assertNotNull(dto.getBytes1());
 		assertEquals(2, dto.getBytes1().length);
-		assertEquals(new Byte((byte) 34), dto.getBytes1()[0]);
-		assertEquals(new Byte((byte) 56), dto.getBytes1()[1]);
+		assertEquals(Byte.valueOf((byte) 34), dto.getBytes1()[0]);
+		assertEquals(Byte.valueOf((byte) 56), dto.getBytes1()[1]);
 
 		assertEquals((byte) 98, dto.getByte2());
 
@@ -368,12 +368,12 @@ public class RequestParameterBinderImplTest {
 		assertEquals((byte) 54, dto.getBytes2()[1]);
 
 		assertNotNull(dto.getChar1());
-		assertEquals(new Character('a'), dto.getChar1());
+		assertEquals(Character.valueOf('a'), dto.getChar1());
 
 		assertNotNull(dto.getChars1());
 		assertEquals(2, dto.getChars1().length);
-		assertEquals(new Character('b'), dto.getChars1()[0]);
-		assertEquals(new Character('c'), dto.getChars1()[1]);
+		assertEquals(Character.valueOf('b'), dto.getChars1()[0]);
+		assertEquals(Character.valueOf('c'), dto.getChars1()[1]);
 
 		assertNotNull(dto.getChar2());
 		assertEquals('d', dto.getChar2());
@@ -431,12 +431,12 @@ public class RequestParameterBinderImplTest {
 		assertEquals(5.4f, dto.getFloats2()[1], 0.0f);
 
 		assertNotNull(dto.getInt1());
-		assertEquals(new Integer(12), dto.getInt1());
+		assertEquals(Integer.valueOf(12), dto.getInt1());
 
 		assertNotNull(dto.getInts1());
 		assertEquals(2, dto.getInts1().length);
-		assertEquals(new Integer(34), dto.getInts1()[0]);
-		assertEquals(new Integer(56), dto.getInts1()[1]);
+		assertEquals(Integer.valueOf(34), dto.getInts1()[0]);
+		assertEquals(Integer.valueOf(56), dto.getInts1()[1]);
 
 		assertEquals(98, dto.getInt2());
 
@@ -446,12 +446,12 @@ public class RequestParameterBinderImplTest {
 		assertEquals(54, dto.getInts2()[1]);
 
 		assertNotNull(dto.getLong1());
-		assertEquals(new Long(12l), dto.getLong1());
+		assertEquals(Long.valueOf(12l), dto.getLong1());
 
 		assertNotNull(dto.getLongs1());
 		assertEquals(2, dto.getLongs1().length);
-		assertEquals(new Long(34l), dto.getLongs1()[0]);
-		assertEquals(new Long(56l), dto.getLongs1()[1]);
+		assertEquals(Long.valueOf(34l), dto.getLongs1()[0]);
+		assertEquals(Long.valueOf(56l), dto.getLongs1()[1]);
 
 		assertEquals(98l, dto.getLong2());
 
@@ -461,12 +461,12 @@ public class RequestParameterBinderImplTest {
 		assertEquals(54l, dto.getLongs2()[1]);
 
 		assertNotNull(dto.getShort1());
-		assertEquals(new Short((short) 12), dto.getShort1());
+		assertEquals(Short.valueOf((short) 12), dto.getShort1());
 
 		assertNotNull(dto.getShorts1());
 		assertEquals(2, dto.getShorts1().length);
-		assertEquals(new Short((short) 34), dto.getShorts1()[0]);
-		assertEquals(new Short((short) 56), dto.getShorts1()[1]);
+		assertEquals(Short.valueOf((short) 34), dto.getShorts1()[0]);
+		assertEquals(Short.valueOf((short) 56), dto.getShorts1()[1]);
 
 		assertEquals((short) 98, dto.getShort2());
 

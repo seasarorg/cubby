@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,10 @@ import org.seasar.cubby.spi.ProviderFactory;
  * @author baba
  * @since 1.1.0
  */
-class LinkSupport {
+class LinkSupport implements Serializable {
+
+	/** シリアルバージョン UID。 */
+	private static final long serialVersionUID = 1L;
 
 	/** アクションクラス名。 */
 	private String actionClassName;

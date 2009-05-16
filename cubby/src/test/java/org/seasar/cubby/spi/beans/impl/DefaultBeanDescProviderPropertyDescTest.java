@@ -214,7 +214,7 @@ public class DefaultBeanDescProviderPropertyDescTest {
 		 * @return
 		 */
 		public Number add(Number arg1, Number arg2) {
-			return new Integer(3);
+			return Integer.valueOf(3);
 		}
 
 		/**

@@ -100,7 +100,7 @@ public class ParamTagTest extends SimpleTagTestCase {
 		}
 	}
 
-	private class MockParentTag extends SimpleTagSupport implements ParamParent {
+	private static class MockParentTag extends SimpleTagSupport implements ParamParent {
 
 		private final Map<String, String> parameters = new HashMap<String, String>();
 
