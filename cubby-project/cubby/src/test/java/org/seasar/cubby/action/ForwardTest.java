@@ -264,7 +264,7 @@ public class ForwardTest {
 		void assertDispatchPath(String path);
 	}
 
-	class RequestDispatcherAssertionWrapper extends HttpServletRequestWrapper {
+	static class RequestDispatcherAssertionWrapper extends HttpServletRequestWrapper {
 
 		private final Asserter asserter;
 

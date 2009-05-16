@@ -200,7 +200,7 @@ public class TagUtilsTest {
 	@Test
 	public void isChecked7() throws Exception {
 		Object[] values = new Object[3];
-		values[1] = new Integer(100);
+		values[1] = Integer.valueOf(100);
 		boolean result = TagUtils.contains(values, "testTagUtilsValue");
 		assertFalse("result", result);
 	}
@@ -222,7 +222,7 @@ public class TagUtilsTest {
 	@Test
 	public void isChecked10() throws Exception {
 		Object[] values = new Object[2];
-		values[0] = new Integer(-2);
+		values[0] = Integer.valueOf(-2);
 		values[1] = "testString";
 		boolean result = TagUtils.contains(values, "testString");
 		assertTrue("result", result);
@@ -315,7 +315,7 @@ public class TagUtilsTest {
 	@Test
 	public void toAttr1() throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("testString", new Integer(-32));
+		map.put("testString", Integer.valueOf(-32));
 		String result = TagUtils.toAttr(map);
 		assertEquals("result", "testString=\"-32\" ", result);
 	}

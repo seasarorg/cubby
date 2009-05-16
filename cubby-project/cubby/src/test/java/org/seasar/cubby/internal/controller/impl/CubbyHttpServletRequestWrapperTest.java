@@ -274,7 +274,7 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	}
 
-	public class MockAction extends Action {
+	public static class MockAction extends Action {
 		public String getName() {
 			return "expect name";
 		}

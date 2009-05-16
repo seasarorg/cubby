@@ -75,8 +75,6 @@ public class StreamFileItemFactory implements FileItemFactory {
 
 		private static final long serialVersionUID = 1L;
 
-		private final ByteArrayOutputStream outputStream;
-
 		/** フィールド名。 */
 		private String fieldName;
 
@@ -88,6 +86,12 @@ public class StreamFileItemFactory implements FileItemFactory {
 
 		/** ファイル名。 */
 		private final String fileName;
+
+		/** 初期バッファサイズ。 */
+		private final int initialBufferSize;
+
+		/** 出力ストリーム。 */
+		private transient ByteArrayOutputStream outputStream;
 
 		/** データ。 */
 		private byte[] data;
@@ -113,7 +117,7 @@ public class StreamFileItemFactory implements FileItemFactory {
 			this.contentType = contentType;
 			this.isFormField = isFormField;
 			this.fileName = fileName;
-			this.outputStream = new ByteArrayOutputStream(initialBufferSize);
+			this.initialBufferSize = initialBufferSize;
 		}
 
 		/**
@@ -229,6 +233,9 @@ public class StreamFileItemFactory implements FileItemFactory {
 		 * {@inheritDoc}
 		 */
 		public OutputStream getOutputStream() {
+			if (outputStream == null) {
+				outputStream = new ByteArrayOutputStream(initialBufferSize);
+			}
 			return outputStream;
 		}
 

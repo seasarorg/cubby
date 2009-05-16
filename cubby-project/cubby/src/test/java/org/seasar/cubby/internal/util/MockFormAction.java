@@ -23,7 +23,7 @@ public class MockFormAction extends Action {
 
 	private Object form = new Object();
 
-	private Object nullForm = null;
+	private Object nullForm;
 
 	public Object getForm() {
 		return form;

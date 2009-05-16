@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.util;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -26,7 +27,10 @@ import javax.servlet.http.HttpServletRequest;
  * @author baba
  * @since 1.1.4
  */
-public class LinkBuilder {
+public class LinkBuilder implements Serializable {
+
+	/** シリアルバージョン UID。 */
+	private static final long serialVersionUID = 1L;
 
 	/** プロトコル。 */
 	private String protocol;
