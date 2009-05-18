@@ -37,6 +37,39 @@ line.separator=\n</content>
 				</configuration>
 			</plugin>
 			<plugin>
+			  <groupId>org.codehaus.cargo</groupId>
+			  <artifactId>cargo-maven2-plugin</artifactId>
+			  <configuration>
+			    <container>
+			      <containerId>tomcat6x</containerId>
+			      <zipUrlInstaller>
+			        <url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip</url>
+			      </zipUrlInstaller>
+			      <output>\${project.build.directory}/tomcat6x.log</output>
+			    </container>
+			  </configuration>
+			  <executions>
+			    <execution>
+			      <id>tomcat-start</id>
+			      <phase>pre-integration-test</phase>
+			      <goals>
+			        <goal>start</goal>
+			        <goal>deploy</goal>
+			      </goals>
+			      <configuration>
+			        <wait>false</wait>
+			      </configuration>
+			    </execution>
+			    <execution>
+			      <id>tomcat-stop</id>
+			      <phase>post-integration-test</phase>
+			      <goals>
+			        <goal>stop</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>			
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 			</plugin>
@@ -162,50 +195,6 @@ line.separator=\n</content>
 						<directory>src/main/resources</directory>
 					</resource>
 				</resources>
-			</build>
-		</profile>
-		<profile>
-			<id>tomcat6</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.cargo</groupId>
-						<artifactId>cargo-maven2-plugin</artifactId>
-						<configuration>
-							<container>
-								<containerId>tomcat6x</containerId>
-								<zipUrlInstaller>
-									<url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip</url>
-									<installDir>${project.build.directory}</installDir>
-								</zipUrlInstaller>
-								<output>${project.build.directory}/tomcat6x.log</output>
-								<log>${project.build.directory}/cargo.log</log>
-							</container>
-						</configuration>
-						<executions>
-							<execution>
-								<id>start-container</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<wait>false</wait>
-								</configuration>
-							</execution>
-							<execution>
-								<id>stop-container</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
 			</build>
 		</profile>
 	</profiles>
