@@ -103,6 +103,8 @@ public class DefaultBeanDescProviderTest {
 
 		private String eee;
 
+		private Boolean fff;
+
 		/**
          * 
          */
@@ -155,7 +157,7 @@ public class DefaultBeanDescProviderTest {
 		 * @return
 		 */
 		public Boolean isFff() {
-			return null;
+			return fff;
 		}
 
 		/**
@@ -210,6 +212,8 @@ public class DefaultBeanDescProviderTest {
      * 
      */
 	public class MyBean2 {
+		private Boolean bbb;
+
 		/**
          * 
          */
@@ -238,7 +242,7 @@ public class DefaultBeanDescProviderTest {
 		}
 
 		public Boolean isBbb() {
-			return null;
+			return bbb;
 		}
 	}
 

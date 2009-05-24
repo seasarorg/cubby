@@ -114,7 +114,7 @@ public class RangeLengthValidator implements ScalarFieldValidator {
 		}
 		final MessageInfo messageInfo = new MessageInfo();
 		messageInfo.setKey(this.messageKey);
-		messageInfo.setArguments(new Object[] { min, max });
+		messageInfo.setArguments(min, max);
 		context.addMessageInfo(messageInfo);
 	}
 

@@ -102,7 +102,7 @@ public class MaxLengthValidator implements ScalarFieldValidator {
 
 		final MessageInfo messageInfo = new MessageInfo();
 		messageInfo.setKey(this.messageKey);
-		messageInfo.setArguments(new Object[] { max });
+		messageInfo.setArguments(max);
 		context.addMessageInfo(messageInfo);
 	}
 }

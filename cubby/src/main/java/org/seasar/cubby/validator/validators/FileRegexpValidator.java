@@ -116,7 +116,6 @@ public class FileRegexpValidator implements ScalarFieldValidator {
 
 			final MessageInfo messageInfo = new MessageInfo();
 			messageInfo.setKey(this.messageKey);
-			messageInfo.setArguments(new Object[] { value });
 			context.addMessageInfo(messageInfo);
 		}
 	}
