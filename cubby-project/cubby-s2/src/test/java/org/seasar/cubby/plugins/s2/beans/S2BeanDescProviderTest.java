@@ -95,6 +95,8 @@ public class S2BeanDescProviderTest {
 
         private String eee;
 
+        private Boolean fff;
+
         /**
          * 
          */
@@ -147,7 +149,7 @@ public class S2BeanDescProviderTest {
          * @return
          */
         public Boolean isFff() {
-            return null;
+            return fff;
         }
 
         /**
@@ -170,7 +172,7 @@ public class S2BeanDescProviderTest {
          * @return
          */
         public Number add(Number arg1, Number arg2) {
-            return new Integer(3);
+            return Integer.valueOf(3);
         }
 
         /**

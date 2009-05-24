@@ -82,7 +82,7 @@ public class GsonJsonProviderTest {
 		Foo result = gson.fromJson(json, Foo.class);
 
 		assertEquals("\u30ab\u30d3\u30fc", result.getName());
-		assertEquals(new Integer(30), result.getAge());
+		assertEquals(Integer.valueOf(30), result.getAge());
 		assertEquals("field", result.field);
 		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
 
@@ -120,7 +120,7 @@ public class GsonJsonProviderTest {
 		Foo result = gson.fromJson(json, Foo.class);
 
 		assertEquals("\u30ab\u30d3\u30fc", result.getName());
-		assertEquals(new Integer(30), result.getAge());
+		assertEquals(Integer.valueOf(30), result.getAge());
 		assertEquals("field", result.field);
 		assertEquals(calendar.getTimeInMillis(), result.getDate().getTime());
 

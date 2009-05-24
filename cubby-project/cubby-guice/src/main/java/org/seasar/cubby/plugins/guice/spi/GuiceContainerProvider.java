@@ -66,7 +66,7 @@ public class GuiceContainerProvider implements ContainerProvider {
 	 * @author baba
 	 * @since 2.0.0
 	 */
-	private class GuiceContainerImpl implements Container {
+	private static class GuiceContainerImpl implements Container {
 
 		/** インスタンスをルックアップするための {@link Injector} */
 		private final Injector injector;
