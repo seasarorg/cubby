@@ -34,10 +34,10 @@ public class ComponentsAction extends Action {
 
 	// ----------------------------------------------[Attribute]
 
-	public ValidationRules validation = new DefaultValidationRules() {
+	public ValidationRules validation = new DefaultValidationRules("components.") {
 		@Override
-		public void initialize() {
-			add(new ConversionValidationRule());
+		public void initialize(final String resourceKeyPrefix) {
+			add(new ConversionValidationRule(resourceKeyPrefix));
 			add("intValue", new RangeValidator(1, 10));
 		}
 	};
