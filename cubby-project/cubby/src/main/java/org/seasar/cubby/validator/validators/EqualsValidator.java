@@ -87,7 +87,7 @@ public class EqualsValidator implements ScalarFieldValidator {
 
 		final MessageInfo messageInfo = new MessageInfo();
 		messageInfo.setKey(this.messageKey);
-		messageInfo.setArguments(new Object[] { this.value });
+		messageInfo.setArguments(this.value);
 		context.addMessageInfo(messageInfo);
 	}
 

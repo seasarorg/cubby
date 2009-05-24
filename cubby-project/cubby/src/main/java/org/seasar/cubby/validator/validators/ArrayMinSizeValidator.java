@@ -92,7 +92,7 @@ public class ArrayMinSizeValidator implements ArrayFieldValidator {
 
 		final MessageInfo messageInfo = new MessageInfo();
 		messageInfo.setKey(this.messageKey);
-		messageInfo.setArguments(new Object[] { min });
+		messageInfo.setArguments(min);
 		context.addMessageInfo(messageInfo);
 	}
 

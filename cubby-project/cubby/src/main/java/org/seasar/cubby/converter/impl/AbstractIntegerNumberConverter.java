@@ -63,20 +63,22 @@ public abstract class AbstractIntegerNumberConverter extends AbstractConverter {
 			return null;
 		}
 
+		final BigDecimal decimal;
+		try {
+			decimal = new BigDecimal(value);
+		} catch (final NumberFormatException e) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.number");
+			throw new ConversionException(messageInfo);
+		}
+
 		final BigInteger integer;
 		try {
-			integer = new BigInteger(value);
-		} catch (final NumberFormatException e) {
-			try {
-				new BigDecimal(value);
-				final MessageInfo messageInfo = new MessageInfo();
-				messageInfo.setKey("valid.integer");
-				throw new ConversionException(messageInfo);
-			} catch (final NumberFormatException e1) {
-				final MessageInfo messageInfo = new MessageInfo();
-				messageInfo.setKey("valid.number");
-				throw new ConversionException(messageInfo);
-			}
+			integer = decimal.toBigIntegerExact();
+		} catch (ArithmeticException e) {
+			final MessageInfo messageInfo = new MessageInfo();
+			messageInfo.setKey("valid.integer");
+			throw new ConversionException(messageInfo);
 		}
 
 		final BigInteger min = this.getMinValue();
