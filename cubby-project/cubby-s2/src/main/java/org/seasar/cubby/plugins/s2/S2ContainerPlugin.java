@@ -64,7 +64,9 @@ public class S2ContainerPlugin extends AbstractPlugin {
 		try {
 			Class.forName("org.apache.jasper.compiler.JspRuntimeContext");
 		} catch (final Exception e) {
-			// do nothing
+			if (logger.isDebugEnabled()) {
+				logger.debug(e.getMessage());
+			}
 		}
 	}
 
