@@ -17,6 +17,7 @@ package org.seasar.cubby.tags;
 
 import static java.lang.Boolean.TRUE;
 import static javax.servlet.jsp.PageContext.REQUEST_SCOPE;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
@@ -41,7 +43,6 @@ import org.slf4j.LoggerFactory;
  * カスタムタグで使用するユーティリティクラスです。
  * 
  * @author baba
- * @since 1.0.0
  */
 class TagUtils {
 
@@ -413,6 +414,22 @@ class TagUtils {
 	 */
 	public static String toString(final Object object) {
 		return object == null ? "" : object.toString();
+	}
+
+	/**
+	 * コンテキストパスを取得します。
+	 * 
+	 * @param jspContext
+	 *            JSP コンテキスト
+	 * @return コンテキストパス
+	 */
+	public static String getContextPath(final JspContext jspContext) {
+		final String contextPath = (String) jspContext.getAttribute(
+				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
+		if ("/".equals(contextPath)) {
+			return "";
+		}
+		return contextPath;
 	}
 
 }
