@@ -26,7 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
+
 import org.junit.Test;
+import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.internal.controller.FormWrapper;
 
@@ -388,6 +392,23 @@ public class TagUtilsTest {
 			return outputValues.get(name);
 		}
 
+	}
+
+	@Test
+	public void testGetContextPath() {
+		JspContext jspContext = new MockJspContext();
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("", TagUtils.getContextPath(jspContext));
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("", TagUtils.getContextPath(jspContext));
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/a",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("/a", TagUtils.getContextPath(jspContext));
 	}
 
 }
