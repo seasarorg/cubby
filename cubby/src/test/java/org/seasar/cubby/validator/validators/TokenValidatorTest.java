@@ -26,7 +26,6 @@ import org.seasar.framework.mock.servlet.MockServletContextImpl;
 
 public class TokenValidatorTest extends S2TestCase {
 
-	@SuppressWarnings("unchecked")
 	public void testValidate() throws Exception {
 		TokenValidator validator = new TokenValidator();
 		MockServletContextImpl servletContext = new MockServletContextImpl(

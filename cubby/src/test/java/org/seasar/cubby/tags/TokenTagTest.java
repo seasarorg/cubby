@@ -34,7 +34,6 @@ public class TokenTagTest extends SimpleTagTestCase {
 		setupSimpleTag(tag);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testDoTag1() throws Exception {
 		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
 		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
@@ -53,7 +52,6 @@ public class TokenTagTest extends SimpleTagTestCase {
 				.getAttributeValue("value")));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testDoTag2() throws Exception {
 		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
 		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
@@ -73,7 +71,6 @@ public class TokenTagTest extends SimpleTagTestCase {
 				.getAttributeValue("value")));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testDoTag3() throws Exception {
 		MockServletContextImpl servletContext = new MockServletContextImpl("/cubby");
 		ThreadContext.setRequest(new MockHttpServletRequestImpl(servletContext, "/servlet"));
