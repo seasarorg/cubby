@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 public class CubbyFunctionsTest extends TestCase {
 
+	@SuppressWarnings("deprecation")
 	public void testContains() {
 		List<String> action = new ArrayList<String>();
 		action.add("unvalidate");

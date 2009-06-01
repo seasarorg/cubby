@@ -98,7 +98,6 @@ public class TagUtilsTest extends TestCase {
 		assertSame("result", specifiedValue, result);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testFormValue6() throws Throwable {
 		String[] strings = new String[3];
 		Object result = TagUtils.formValue(new MockJspContext(), strings,
@@ -242,7 +241,6 @@ public class TagUtilsTest extends TestCase {
 		assertEquals("result.length", 0, result.length);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues5() throws Throwable {
 		String[] strings = new String[0];
 		String[] result = (String[]) TagUtils.multipleFormValues(
@@ -250,14 +248,12 @@ public class TagUtilsTest extends TestCase {
 		assertSame("result", strings, result);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues6() throws Throwable {
 		Object[] result = TagUtils.multipleFormValues(new MockJspContext(),
 				new String[0], "testTagUtilsName");
 		assertEquals("result.length", 0, result.length);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testMultipleFormValues7() throws Throwable {
 		String[] strings = new String[3];
 		String[] result = (String[]) TagUtils.multipleFormValues(
