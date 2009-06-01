@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
 
 import junit.framework.TestCase;
@@ -322,4 +323,21 @@ public class TagUtilsTest extends TestCase {
 			assertNull("ex.getMessage()", ex.getMessage());
 		}
 	}
+
+	public void testGetContextPath() {
+		JspContext jspContext = new MockJspContext();
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("", TagUtils.getContextPath(jspContext));
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("", TagUtils.getContextPath(jspContext));
+
+		jspContext.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/a",
+				PageContext.REQUEST_SCOPE);
+		assertEquals("/a", TagUtils.getContextPath(jspContext));
+	}
+
 }
