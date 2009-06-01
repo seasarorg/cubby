@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
+import static org.seasar.cubby.tags.TagUtils.getContextPath;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
 import java.io.IOException;
@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
@@ -168,8 +167,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doEndTag() throws JspException {
-		final String contextPath = (String) pageContext.getAttribute(
-				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
+		final String contextPath = getContextPath(pageContext);
 		final String actionPath;
 		final String characterEncoding = pageContext.getRequest()
 				.getCharacterEncoding();
