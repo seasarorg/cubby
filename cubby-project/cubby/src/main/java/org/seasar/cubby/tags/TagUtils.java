@@ -17,6 +17,7 @@ package org.seasar.cubby.tags;
 
 import static java.lang.Boolean.TRUE;
 import static javax.servlet.jsp.PageContext.REQUEST_SCOPE;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
 import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
@@ -225,8 +227,7 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @return アクションが入力検証に失敗した場合は <code>true</code>、そうでない場合は
-	 *         <code>false</code>
+	 * @return アクションが入力検証に失敗した場合は <code>true</code>、そうでない場合は <code>false</code>
 	 * @see CubbyConstants#ATTR_VALIDATION_FAIL
 	 */
 	private static boolean isValidationFail(final JspContext context) {
@@ -347,6 +348,22 @@ class TagUtils {
 		}
 		final String[] outputValues = formTag.getValues(name);
 		return outputValues;
+	}
+
+	/**
+	 * コンテキストパスを取得します。
+	 * 
+	 * @param jspContext
+	 *            JSP コンテキスト
+	 * @return コンテキストパス
+	 */
+	public static String getContextPath(final JspContext jspContext) {
+		final String contextPath = (String) jspContext.getAttribute(
+				ATTR_CONTEXT_PATH, PageContext.REQUEST_SCOPE);
+		if ("/".equals(contextPath)) {
+			return "";
+		}
+		return contextPath;
 	}
 
 }
