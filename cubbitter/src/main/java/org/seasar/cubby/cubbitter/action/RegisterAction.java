@@ -2,10 +2,10 @@ package org.seasar.cubby.cubbitter.action;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
-import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.ValidationRules;
@@ -61,17 +61,13 @@ public class RegisterAction extends AbstractAction {
 	}
 
 	public class RegistMemberNameValidator implements ScalarFieldValidator {
-		private final MessageHelper messageHelper;
-
-		public RegistMemberNameValidator() {
-			this.messageHelper = new MessageHelper("valid.existMemberName");
-		}
-
 		public void validate(final ValidationContext context, final Object value) {
 			String name = (String) value;
 			if (accountService.isDuplicate(name)) {
-				context.addMessageInfo(this.messageHelper
-						.createMessageInfo(name));
+				final MessageInfo messageInfo = new MessageInfo();
+				messageInfo.setKey("valid.existMemberName");
+				messageInfo.setArguments(name);
+				context.addMessageInfo(messageInfo);
 			}
 		}
 	}

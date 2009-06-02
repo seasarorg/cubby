@@ -2,6 +2,7 @@ package org.seasar.cubby.cubbitter.action;
 
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.action.OnSubmit;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
@@ -9,7 +10,6 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.cubbitter.entity.Account;
 import org.seasar.cubby.util.Messages;
-import org.seasar.cubby.validator.MessageHelper;
 import org.seasar.cubby.validator.ScalarFieldValidator;
 import org.seasar.cubby.validator.ValidationContext;
 import org.seasar.cubby.validator.ValidationRules;
@@ -71,19 +71,15 @@ public class SettingProfileAction extends AbstractAction {
 
 	};
 
-	class AccountNameValidationRule implements ScalarFieldValidator {
-		private final MessageHelper messageHelper;
-
-		public AccountNameValidationRule() {
-			this.messageHelper = new MessageHelper("valid.existMemberName");
-		}
-
+	public class AccountNameValidationRule implements ScalarFieldValidator {
 		public void validate(final ValidationContext context, final Object value) {
 			final String name = (String) value;
 			Account account = accountService.findByName(name);
 			if (account != null && !account.equals(loginAccount)) {
-				context.addMessageInfo(this.messageHelper
-						.createMessageInfo(name));
+				MessageInfo messageInfo = new MessageInfo();
+				messageInfo.setKey("valid.existMemberName");
+				messageInfo.setArguments(name);
+				context.addMessageInfo(messageInfo);
 			}
 		}
 	}
