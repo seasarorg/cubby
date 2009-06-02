@@ -3,7 +3,7 @@
   --------
   baba
   --------
-  2009-04-26
+  2009-06-03
   --------
 
 {目次}
@@ -79,11 +79,11 @@ mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org
 
 +------------------------------------------------------+
 Choose archetype:
-1: remote -> cubby-archetype (Cubby 1.1.5)
+1: remote -> cubby-archetype (Cubby 1.1.6)
 Choose a number:  (1):
 +------------------------------------------------------+
 
-   1 を入力して、cubby-archetype (Cubby 1.1.5) を選んでください。
+   1 を入力して、cubby-archetype (Cubby 1.1.6) を選んでください。
 
 +------------------------------------------------------+
 Define value for groupId: :
@@ -111,8 +111,8 @@ Define value for package: :
 
 +------------------------------------------------------+
 Confirm properties configuration:
-cubby-version: 1.1.5
-s2container-version: 2.4.35
+cubby-version: 1.1.6
+s2container-version: 2.4.34
 s2dao-version: 1.0.50
 use-s2dao: false
 use-s2jdbc: true
