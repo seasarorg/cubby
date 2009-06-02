@@ -18,12 +18,11 @@ package org.seasar.cubby.spi.beans;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 /**
- * プロパティが見つからなかったことを表す例外です。
+ * 属性の操作に失敗したときにスローされる例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
-public class PropertyNotFoundException extends RuntimeException {
+public class IllegalAttributeException extends RuntimeException {
 
 	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;
@@ -31,22 +30,24 @@ public class PropertyNotFoundException extends RuntimeException {
 	/** 対象のクラス。 */
 	private final Class<?> targetClass;
 
-	/** プロパティ名。 */
-	private final String propertyName;
+	/** 属性の名前。 */
+	private final String name;
 
 	/**
-	 * {@link PropertyNotFoundException}を返します。
+	 * {@link IllegalAttributeException} を作成します。
 	 * 
 	 * @param targetClass
 	 *            対象のクラス
-	 * @param propertyName
-	 *            プロパティ名
+	 * @param name
+	 *            属性の名前
+	 * @param cause
+	 *            属性の操作に失敗した理由となる例外
 	 */
-	public PropertyNotFoundException(final Class<?> targetClass,
-			final String propertyName) {
-		super(format("ECUB0052", targetClass.getName(), propertyName));
+	public IllegalAttributeException(final Class<?> targetClass,
+			final String name, final Throwable cause) {
+		super(format("ECUB0051", targetClass.getName(), name, cause), cause);
 		this.targetClass = targetClass;
-		this.propertyName = propertyName;
+		this.name = name;
 	}
 
 	/**
@@ -59,11 +60,11 @@ public class PropertyNotFoundException extends RuntimeException {
 	}
 
 	/**
-	 * プロパティ名を返します。
+	 * 属性名を返します。
 	 * 
-	 * @return プロパティ名
+	 * @return 属性名
 	 */
-	public String getPropertyName() {
-		return propertyName;
+	public String getName() {
+		return name;
 	}
 }

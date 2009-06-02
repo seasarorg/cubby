@@ -27,8 +27,8 @@ import org.junit.Test;
 import org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.IllegalPropertyException;
-import org.seasar.cubby.spi.beans.PropertyDesc;
+import org.seasar.cubby.spi.beans.IllegalAttributeException;
+import org.seasar.cubby.spi.beans.Attribute;
 
 public class S2BeanDescProviderPropertyDescTest {
 
@@ -38,8 +38,8 @@ public class S2BeanDescProviderPropertyDescTest {
 	public void setValue() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
-        propDesc.setValue(myBean, new BigDecimal(2));
+        Attribute attribute = beanDesc.getPropertyAttribute("fff");
+        attribute.setValue(myBean, new BigDecimal(2));
         assertEquals(2, myBean.getFff());
     }
 
@@ -47,8 +47,8 @@ public class S2BeanDescProviderPropertyDescTest {
     public void setValue_null() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
-        propDesc.setValue(myBean, null);
+        Attribute attribute = beanDesc.getPropertyAttribute("fff");
+        attribute.setValue(myBean, null);
         assertEquals(0, myBean.getFff());
     }
 
@@ -56,11 +56,11 @@ public class S2BeanDescProviderPropertyDescTest {
     public void setValue_notWritable() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("aaa");
+        Attribute attribute = beanDesc.getPropertyAttribute("aaa");
         try {
-            propDesc.setValue(myBean, null);
+            attribute.setValue(myBean, null);
             fail();
-        } catch (IllegalPropertyException e) {
+        } catch (IllegalAttributeException e) {
             System.out.println(e);
         }
     }
@@ -69,11 +69,11 @@ public class S2BeanDescProviderPropertyDescTest {
     public void setValue_notWritableWithField() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("jjj");
+        Attribute attribute = beanDesc.getPropertyAttribute("jjj");
         try {
-            propDesc.setValue(myBean, null);
+            attribute.setValue(myBean, null);
             fail();
-        } catch (IllegalPropertyException e) {
+        } catch (IllegalAttributeException e) {
             System.out.println(e);
         }
     }
@@ -82,11 +82,11 @@ public class S2BeanDescProviderPropertyDescTest {
     public void getValue_notReable() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("iii");
+        Attribute attribute = beanDesc.getPropertyAttribute("iii");
         try {
-            propDesc.getValue(myBean);
+            attribute.getValue(myBean);
             fail();
-        } catch (IllegalPropertyException e) {
+        } catch (IllegalAttributeException e) {
             System.out.println(e);
         }
     }
@@ -95,11 +95,11 @@ public class S2BeanDescProviderPropertyDescTest {
     public void getValue_notReableWithField() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("kkk");
+        Attribute attribute = beanDesc.getPropertyAttribute("kkk");
         try {
-            propDesc.getValue(myBean);
+            attribute.getValue(myBean);
             fail();
-        } catch (IllegalPropertyException e) {
+        } catch (IllegalAttributeException e) {
             System.out.println(e);
         }
     }
@@ -108,11 +108,11 @@ public class S2BeanDescProviderPropertyDescTest {
     public void setIllegalValue() throws Exception {
         MyBean myBean = new MyBean();
         BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
+        Attribute attribute = beanDesc.getPropertyAttribute("fff");
         try {
-            propDesc.setValue(myBean, "hoge");
+            attribute.setValue(myBean, "hoge");
             fail("1");
-        } catch (IllegalPropertyException ex) {
+        } catch (IllegalAttributeException ex) {
             System.out.println(ex);
         }
     }

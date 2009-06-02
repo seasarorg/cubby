@@ -28,9 +28,9 @@ import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
 
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * S2Container の public フィールドをプロパティとして認識させるための {@link ELResolver} です。
@@ -76,14 +76,14 @@ public class S2BeanELResolver extends ELResolver {
 
 		final String propertyName = property.toString();
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(base.getClass());
-		if (!beanDesc.hasPropertyDesc(propertyName)) {
+		if (!beanDesc.hasPropertyAttribute(propertyName)) {
 			return null;
 		}
 
 		try {
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(propertyName);
-			final Object value = propertyDesc.getValue(base);
+			final Attribute attributeDesc = beanDesc
+					.getPropertyAttribute(propertyName);
+			final Object value = attributeDesc.getValue(base);
 			context.setPropertyResolved(true);
 			return value;
 		} catch (final Exception e) {
@@ -107,14 +107,14 @@ public class S2BeanELResolver extends ELResolver {
 
 		final String propertyName = property.toString();
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(base.getClass());
-		if (!beanDesc.hasPropertyDesc(propertyName)) {
+		if (!beanDesc.hasPropertyAttribute(propertyName)) {
 			return null;
 		}
 
 		try {
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(propertyName);
-			final Class<?> propertyType = propertyDesc.getPropertyType();
+			final Attribute attributeDesc = beanDesc
+					.getPropertyAttribute(propertyName);
+			final Class<?> propertyType = attributeDesc.getType();
 			context.setPropertyResolved(true);
 			return propertyType;
 		} catch (final Exception e) {
@@ -137,7 +137,7 @@ public class S2BeanELResolver extends ELResolver {
 
 		final String propertyName = property.toString();
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(base.getClass());
-		if (!beanDesc.hasPropertyDesc(propertyName)) {
+		if (!beanDesc.hasPropertyAttribute(propertyName)) {
 			return;
 		}
 
@@ -147,9 +147,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 
 		try {
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(propertyName);
-			propertyDesc.setValue(base, value);
+			final Attribute attributeDesc = beanDesc
+					.getPropertyAttribute(propertyName);
+			attributeDesc.setValue(base, value);
 			context.setPropertyResolved(true);
 		} catch (final Exception e) {
 		}
@@ -170,7 +170,7 @@ public class S2BeanELResolver extends ELResolver {
 
 		final String propertyName = property.toString();
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(base.getClass());
-		if (!beanDesc.hasPropertyDesc(propertyName)) {
+		if (!beanDesc.hasPropertyAttribute(propertyName)) {
 			return true;
 		}
 
@@ -179,9 +179,9 @@ public class S2BeanELResolver extends ELResolver {
 		}
 
 		try {
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(propertyName);
-			final boolean readOnly = !propertyDesc.isWritable();
+			final Attribute attributeDesc = beanDesc
+					.getPropertyAttribute(propertyName);
+			final boolean readOnly = !attributeDesc.isWritable();
 			context.setPropertyResolved(true);
 			return readOnly;
 		} catch (final Exception e) {
@@ -206,8 +206,9 @@ public class S2BeanELResolver extends ELResolver {
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(base.getClass());
 		try {
 			final List<FeatureDescriptor> descriptors = new ArrayList<FeatureDescriptor>();
-			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
-				final String propertyName = propertyDesc.getPropertyName();
+			for (final Attribute attributeDesc : beanDesc
+					.findtPropertyAttributes()) {
+				final String propertyName = attributeDesc.getName();
 				final FeatureDescriptor descriptor = new FeatureDescriptor();
 				descriptor.setDisplayName(propertyName);
 				descriptor.setExpert(false);
@@ -215,7 +216,7 @@ public class S2BeanELResolver extends ELResolver {
 				descriptor.setName(propertyName);
 				descriptor.setPreferred(true);
 				descriptor.setValue(RESOLVABLE_AT_DESIGN_TIME, Boolean.TRUE);
-				descriptor.setValue(TYPE, propertyDesc.getPropertyType());
+				descriptor.setValue(TYPE, attributeDesc.getType());
 				descriptors.add(descriptor);
 			}
 

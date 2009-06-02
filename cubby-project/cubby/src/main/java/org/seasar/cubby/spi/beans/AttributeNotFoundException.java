@@ -18,38 +18,40 @@ package org.seasar.cubby.spi.beans;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 /**
- * プロパティの値の設定に失敗したときにスローされる例外です。
+ * 属性が見つからなかったことを表す例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
-public class IllegalPropertyException extends RuntimeException {
+public class AttributeNotFoundException extends RuntimeException {
 
+	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;
 
+	/** 対象のクラス。 */
 	private final Class<?> targetClass;
 
+	/** プロパティ名。 */
 	private final String propertyName;
 
 	/**
-	 * {@link IllegalPropertyException}を作成します。
+	 * インスタンス化します。
 	 * 
 	 * @param targetClass
+	 *            対象のクラス
 	 * @param propertyName
-	 * @param cause
+	 *            プロパティ名
 	 */
-	public IllegalPropertyException(final Class<?> targetClass,
-			final String propertyName, final Throwable cause) {
-		super(format("ECUB0051", targetClass.getName(), propertyName, cause),
-				cause);
+	public AttributeNotFoundException(final Class<?> targetClass,
+			final String propertyName) {
+		super(format("ECUB0052", targetClass.getName(), propertyName));
 		this.targetClass = targetClass;
 		this.propertyName = propertyName;
 	}
 
 	/**
-	 * ターゲットの{@link Class}を返します。
+	 * 対象のクラスを返します。
 	 * 
-	 * @return ターゲットの{@link Class}
+	 * @return 対象のクラス
 	 */
 	public Class<?> getTargetClass() {
 		return targetClass;

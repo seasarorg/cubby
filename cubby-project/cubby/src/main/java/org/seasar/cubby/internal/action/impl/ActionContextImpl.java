@@ -31,15 +31,14 @@ import org.seasar.cubby.action.InitializeMethod;
 import org.seasar.cubby.action.PostRenderMethod;
 import org.seasar.cubby.action.PreRenderMethod;
 import org.seasar.cubby.action.RequestParameterBindingType;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * アクションのコンテキストの実装です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ActionContextImpl implements ActionContext {
 
@@ -127,13 +126,28 @@ public class ActionContextImpl implements ActionContext {
 			return action;
 		}
 
-		final String propertyName = form.value();
+		final String attributeName = form.value();
+		final Object formBean;
 		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(actionClass);
-		final PropertyDesc propertyDesc = beanDesc
-				.getPropertyDesc(propertyName);
-		final Object formBean = propertyDesc.getValue(action);
-		if (formBean == null) {
-			throw new ActionException(format("ECUB0102", propertyName));
+		if (beanDesc.hasPropertyAttribute(attributeName)) {
+			final Attribute attribute = beanDesc
+					.getPropertyAttribute(attributeName);
+			formBean = attribute.getValue(action);
+			if (formBean == null) {
+				throw new ActionException(format("ECUB0102", actionClass,
+						attributeName));
+			}
+		} else if (beanDesc.hasFieldAttribute(attributeName)) {
+			final Attribute attribute = beanDesc
+					.getFieldAttribute(attributeName);
+			formBean = attribute.getValue(action);
+			if (formBean == null) {
+				throw new ActionException(format("ECUB0111", actionClass,
+						attributeName));
+			}
+		} else {
+			throw new ActionException(format("ECUB0112", actionClass,
+					attributeName));
 		}
 		return formBean;
 	}

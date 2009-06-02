@@ -17,219 +17,218 @@ package org.seasar.cubby.plugins.s2.beans;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider;
 import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 public class S2BeanDescProviderTest {
 
 	BeanDescProvider beanDescProvider = new S2BeanDescProvider();
 
 	@Test
-    public void propertyDesc() throws Exception {
-        BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-        assertEquals(5, beanDesc.getPropertyDescs().length);
-        PropertyDesc propDesc = beanDesc.getPropertyDesc("aaa");
-        assertEquals("aaa", propDesc.getPropertyName());
-        assertEquals(String.class, propDesc.getPropertyType());
-        assertNotNull(propDesc.getReadMethod());
-        assertNull(propDesc.getWriteMethod());
+	public void propertyDesc() throws Exception {
+		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
+		assertEquals(5, beanDesc.findtPropertyAttributes().size());
+		Attribute propDesc = beanDesc.getPropertyAttribute("aaa");
+		assertEquals("aaa", propDesc.getName());
+		assertEquals(String.class, propDesc.getType());
+		assertTrue(propDesc.isReadable());
+		assertFalse(propDesc.isWritable());
 
-        propDesc = beanDesc.getPropertyDesc("CCC");
-        assertEquals("CCC", propDesc.getPropertyName());
-        assertEquals(boolean.class, propDesc.getPropertyType());
-        assertNotNull(propDesc.getReadMethod());
-        assertNull(propDesc.getWriteMethod());
+		propDesc = beanDesc.getPropertyAttribute("CCC");
+		assertEquals("CCC", propDesc.getName());
+		assertEquals(boolean.class, propDesc.getType());
+		assertTrue(propDesc.isReadable());
+		assertFalse(propDesc.isWritable());
 
-        propDesc = beanDesc.getPropertyDesc("eee");
-        assertEquals("eee", propDesc.getPropertyName());
-        assertEquals(String.class, propDesc.getPropertyType());
-        assertNotNull(propDesc.getReadMethod());
-        assertNotNull(propDesc.getWriteMethod());
+		propDesc = beanDesc.getPropertyAttribute("eee");
+		assertEquals("eee", propDesc.getName());
+		assertEquals(String.class, propDesc.getType());
+		assertTrue(propDesc.isReadable());
+		assertTrue(propDesc.isWritable());
 
-        propDesc = beanDesc.getPropertyDesc("fff");
-        assertEquals("fff", propDesc.getPropertyName());
-        assertEquals(Boolean.class, propDesc.getPropertyType());
+		propDesc = beanDesc.getPropertyAttribute("fff");
+		assertEquals("fff", propDesc.getName());
+		assertEquals(Boolean.class, propDesc.getType());
 
-        assertFalse(beanDesc.hasPropertyDesc("hhh"));
-        assertFalse(beanDesc.hasPropertyDesc("iii"));
-    }
+		assertFalse(beanDesc.hasPropertyAttribute("hhh"));
+		assertFalse(beanDesc.hasPropertyAttribute("iii"));
+	}
 
 	@Test
-    public void invalidProperty() throws Exception {
-        BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean2.class);
-        assertEquals("1", false, beanDesc.hasPropertyDesc("aaa"));
-    }
+	public void invalidProperty() throws Exception {
+		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean2.class);
+		assertEquals("1", false, beanDesc.hasPropertyAttribute("aaa"));
+	}
 
-    /**
+	/**
      * 
      */
-    public static interface MyInterface {
-        /**
+	public static interface MyInterface {
+		/**
          * 
          */
-        String HOGE = "hoge";
-    }
+		String HOGE = "hoge";
+	}
 
-    /**
+	/**
      * 
      */
-    public static interface MyInterface2 extends MyInterface {
-        /**
+	public static interface MyInterface2 extends MyInterface {
+		/**
          * 
          */
-        String HOGE = "hoge2";
-    }
+		String HOGE = "hoge2";
+	}
 
-    /**
+	/**
      * 
      */
-    public static class MyBean implements MyInterface2 {
+	public static class MyBean implements MyInterface2 {
 
-        private String aaa;
+		private String aaa;
 
-        private String eee;
+		private String eee;
 
-        private Boolean fff;
+		private Boolean fff;
 
-        /**
+		/**
          * 
          */
-        public String ggg;
+		public String ggg;
 
-        /**
-         * @return
-         */
-        public String getAaa() {
-            return aaa;
-        }
+		/**
+		 * @return
+		 */
+		public String getAaa() {
+			return aaa;
+		}
 
-        /**
-         * @param a
-         * @return
-         */
-        public String getBbb(Object a) {
-            return null;
-        }
+		/**
+		 * @param a
+		 * @return
+		 */
+		public String getBbb(Object a) {
+			return null;
+		}
 
-        /**
-         * @return
-         */
-        public boolean isCCC() {
-            return true;
-        }
+		/**
+		 * @return
+		 */
+		public boolean isCCC() {
+			return true;
+		}
 
-        /**
-         * @return
-         */
-        public Object isDdd() {
-            return null;
-        }
+		/**
+		 * @return
+		 */
+		public Object isDdd() {
+			return null;
+		}
 
-        /**
-         * @return
-         */
-        public String getEee() {
-            return eee;
-        }
+		/**
+		 * @return
+		 */
+		public String getEee() {
+			return eee;
+		}
 
-        /**
-         * @param eee
-         */
-        public void setEee(String eee) {
-            this.eee = eee;
-        }
+		/**
+		 * @param eee
+		 */
+		public void setEee(String eee) {
+			this.eee = eee;
+		}
 
-        /**
-         * @return
-         */
-        public Boolean isFff() {
-            return fff;
-        }
+		/**
+		 * @return
+		 */
+		public Boolean isFff() {
+			return fff;
+		}
 
-        /**
-         * @param hhh
-         * @return
-         */
-        public MyBean setHhh(String hhh) {
-            return this;
-        }
+		/**
+		 * @param hhh
+		 * @return
+		 */
+		public MyBean setHhh(String hhh) {
+			return this;
+		}
 
-        /**
+		/**
          * 
          */
-        public void getIii() {
-        }
+		public void getIii() {
+		}
 
-        /**
-         * @param arg1
-         * @param arg2
-         * @return
-         */
-        public Number add(Number arg1, Number arg2) {
-            return Integer.valueOf(3);
-        }
+		/**
+		 * @param arg1
+		 * @param arg2
+		 * @return
+		 */
+		public Number add(Number arg1, Number arg2) {
+			return Integer.valueOf(3);
+		}
 
-        /**
-         * @param arg1
-         * @param arg2
-         * @return
-         */
-        public int add2(int arg1, int arg2) {
-            return arg1 + arg2;
-        }
+		/**
+		 * @param arg1
+		 * @param arg2
+		 * @return
+		 */
+		public int add2(int arg1, int arg2) {
+			return arg1 + arg2;
+		}
 
-        /**
-         * @param arg
-         * @return
-         */
-        public Integer echo(Integer arg) {
-            return arg;
-        }
+		/**
+		 * @param arg
+		 * @return
+		 */
+		public Integer echo(Integer arg) {
+			return arg;
+		}
 
-        /**
+		/**
          * 
          */
-        public void throwException() {
-            throw new IllegalStateException("hoge");
-        }
-    }
+		public void throwException() {
+			throw new IllegalStateException("hoge");
+		}
+	}
 
-    /**
+	/**
      * 
      */
-    public class MyBean2 {
-        /**
+	public class MyBean2 {
+		/**
          * 
          */
-        public MyBean2() {
-        }
+		public MyBean2() {
+		}
 
-        /**
-         * @param num
-         * @param text
-         * @param bean1
-         * @param bean2
-         */
-        public MyBean2(int num, String text, MyBean bean1, MyBean2 bean2) {
-        }
+		/**
+		 * @param num
+		 * @param text
+		 * @param bean1
+		 * @param bean2
+		 */
+		public MyBean2(int num, String text, MyBean bean1, MyBean2 bean2) {
+		}
 
-        /**
-         * @param i
-         */
-        public void setAaa(int i) {
-        }
+		/**
+		 * @param i
+		 */
+		public void setAaa(int i) {
+		}
 
-        /**
-         * @param s
-         */
-        public void setAaa(String s) {
-        }
-    }
+		/**
+		 * @param s
+		 */
+		public void setAaa(String s) {
+		}
+	}
 
 }

@@ -17,7 +17,7 @@ package org.seasar.cubby.internal.controller.impl;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -157,7 +157,10 @@ public class FormWrapperFactoryImplTest {
 		assertArrayEquals(new String[] { "abc" }, normal);
 
 		String[] specifiedName = formWrapper.getValues("specifiedName");
-		assertNull(specifiedName);
+		assertNotNull(specifiedName);
+
+		String[] specifiedName2 = formWrapper.getValues("specifiedName2");
+		assertNull(specifiedName2);
 
 		String[] foo = formWrapper.getValues("foo");
 		assertArrayEquals(new String[] { "def" }, foo);
@@ -168,7 +171,11 @@ public class FormWrapperFactoryImplTest {
 
 		String[] specifiedNameAndConverter = formWrapper
 				.getValues("specifiedNameAndConverter");
-		assertNull(specifiedNameAndConverter);
+		assertNotNull(specifiedNameAndConverter);
+
+		String[] specifiedNameAndConverter2 = formWrapper
+				.getValues("specifiedNameAndConverter2");
+		assertNull(specifiedNameAndConverter2);
 
 		String[] bar = formWrapper.getValues("bar");
 		assertArrayEquals(new String[] { "jkl" }, bar);

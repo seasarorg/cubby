@@ -36,16 +36,15 @@ import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.util.StringUtils;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * リクエストパラメータをオブジェクトへバインドするクラスの実装です。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class RequestParameterBinderImpl implements RequestParameterBinder {
 
@@ -62,31 +61,37 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		if (parameterMap == null || parameterMap.isEmpty()) {
 			return conversionFailures;
 		}
+
 		final ConverterProvider converterProvider = ProviderFactory
 				.get(ConverterProvider.class);
-		final BeanDesc destBeanDesc = BeanDescFactory.getBeanDesc(dest
-				.getClass());
+		final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
+		final Collection<Attribute> attributes;
+		if (actionContext.isBindRequestParameterToAllProperties()) {
+			attributes = new ArrayList<Attribute>();
+			attributes.addAll(beanDesc.findtPropertyAttributes());
+			attributes.addAll(beanDesc
+					.findAttributesAnnotatedWith(RequestParameter.class));
+		} else {
+			attributes = beanDesc
+					.findAttributesAnnotatedWith(RequestParameter.class);
+		}
 
-		for (final PropertyDesc destPropertyDesc : destBeanDesc
-				.getPropertyDescs()) {
-			final RequestParameter requestParameter = destPropertyDesc
+		for (final Attribute attribute : attributes) {
+			final RequestParameter requestParameter = attribute
 					.getAnnotation(RequestParameter.class);
-			if (!actionContext.isBindRequestParameterToAllProperties()
-					&& requestParameter == null) {
-				continue;
-			}
 
 			final String parameterName;
 			if (requestParameter != null
 					&& !StringUtils.isEmpty(requestParameter.name())) {
 				parameterName = requestParameter.name();
 			} else {
-				parameterName = destPropertyDesc.getPropertyName();
+				parameterName = attribute.getName();
 			}
 
 			if (!parameterMap.containsKey(parameterName)) {
 				continue;
 			}
+
 			final Object[] parameterValue = parameterMap.get(parameterName);
 
 			final Class<? extends Converter> converterType;
@@ -97,9 +102,10 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			}
 
 			final Object value = convert(converterProvider, parameterValue,
-					destPropertyDesc, converterType, parameterName,
-					conversionFailures);
-			destPropertyDesc.setValue(dest, value);
+					attribute.getType(), attribute.getParameterizedClassDesc(),
+					converterType, parameterName, conversionFailures);
+
+			attribute.setValue(dest, value);
 		}
 
 		return conversionFailures;
@@ -112,8 +118,10 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 *            コンバータプロバイダ
 	 * @param values
 	 *            リクエストパラメータの値
-	 * @param destPropertyDesc
-	 *            出力先のプロパティの定義
+	 * @param type
+	 *            変換する型
+	 * @param parameterizedClassDesc
+	 *            パラメタ化された型の情報
 	 * @param converterType
 	 *            コンバータの型
 	 * @param parameterName
@@ -122,11 +130,11 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 * @return 変換された値
 	 */
 	private Object convert(final ConverterProvider converterProvider,
-			final Object[] values, final PropertyDesc destPropertyDesc,
+			final Object[] values, final Class<?> destClass,
+			final ParameterizedClassDesc parameterizedClassDesc,
 			final Class<? extends Converter> converterType,
 			final String parameterName,
 			final List<ConversionFailure> conversionFailures) {
-		final Class<?> destClass = destPropertyDesc.getPropertyType();
 
 		final Converter converter;
 		if (converterType != null && !converterType.equals(Converter.class)) {
@@ -143,7 +151,7 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 			} catch (final ConversionException e) {
 				final FieldInfo fieldInfo = new FieldInfo(parameterName);
 				final MessageInfo messageInfo = e.getMessageInfo();
-				ConversionFailure conversionFaiure = new ConversionFailure(
+				final ConversionFailure conversionFaiure = new ConversionFailure(
 						parameterName, messageInfo, fieldInfo);
 				conversionFailures.add(conversionFaiure);
 				return null;
@@ -156,14 +164,14 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 		}
 		if (List.class.isAssignableFrom(destClass)) {
 			final List<Object> list = new ArrayList<Object>();
-			convertToCollection(converterProvider, values, list,
-					destPropertyDesc, parameterName, conversionFailures);
+			convertToCollection(converterProvider, values, list, destClass,
+					parameterizedClassDesc, parameterName, conversionFailures);
 			return list;
 		}
 		if (Set.class.isAssignableFrom(destClass)) {
 			final Set<Object> set = new LinkedHashSet<Object>();
-			convertToCollection(converterProvider, values, set,
-					destPropertyDesc, parameterName, conversionFailures);
+			convertToCollection(converterProvider, values, set, destClass,
+					parameterizedClassDesc, parameterName, conversionFailures);
 			return set;
 		}
 
@@ -224,8 +232,10 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 *            変換する値
 	 * @param collection
 	 *            コレクション
-	 * @param propertyDesc
-	 *            プロパティの定義
+	 * @param type
+	 *            変換する型
+	 * @param parameterizedClassDesc
+	 *            パラメタ化された型の情報
 	 * @param parameterName
 	 *            パラメータ名
 	 * @param conversionFailures
@@ -233,11 +243,12 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	 */
 	private void convertToCollection(final ConverterProvider converterProvider,
 			final Object[] values, final Collection<Object> collection,
-			final PropertyDesc propertyDesc, final String parameterName,
+			final Class<?> type,
+			final ParameterizedClassDesc parameterizedClassDesc,
+			final String parameterName,
 			final List<ConversionFailure> conversionFailures) {
-		if (propertyDesc.isParameterized()) {
-			final ParameterizedClassDesc parameterizedClassDesc = propertyDesc
-					.getParameterizedClassDesc();
+		if (parameterizedClassDesc != null
+				&& parameterizedClassDesc.isParameterizedClass()) {
 			final Class<?> destElementType = parameterizedClassDesc
 					.getArguments()[0].getRawClass();
 			for (int i = 0; i < values.length; i++) {

@@ -25,12 +25,11 @@ import java.util.Calendar;
 
 import org.junit.Test;
 import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.IllegalPropertyException;
-import org.seasar.cubby.spi.beans.PropertyDesc;
-import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.spi.beans.IllegalAttributeException;
 
-public class DefaultBeanDescProviderPropertyDescTest {
+public class DefaultBeanDescProviderAttributeTest {
 
 	BeanDescProvider beanDescProvider = new DefaultBeanDescProvider();
 
@@ -38,7 +37,7 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void setValue() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
+		Attribute propDesc = beanDesc.getPropertyAttribute("fff");
 		propDesc.setValue(myBean, 2);
 		assertEquals(2, myBean.getFff());
 	}
@@ -47,7 +46,7 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void setValue_null() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
+		Attribute propDesc = beanDesc.getPropertyAttribute("fff");
 		propDesc.setValue(myBean, null);
 		assertEquals(0, myBean.getFff());
 	}
@@ -56,11 +55,11 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void setValue_notWritable() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("aaa");
+		Attribute propDesc = beanDesc.getPropertyAttribute("aaa");
 		try {
 			propDesc.setValue(myBean, null);
 			fail();
-		} catch (IllegalPropertyException e) {
+		} catch (IllegalAttributeException e) {
 			System.out.println(e);
 		}
 	}
@@ -69,11 +68,11 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void setValue_notWritableWithField() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("jjj");
+		Attribute propDesc = beanDesc.getPropertyAttribute("jjj");
 		try {
 			propDesc.setValue(myBean, null);
 			fail();
-		} catch (IllegalPropertyException e) {
+		} catch (IllegalAttributeException e) {
 			System.out.println(e);
 		}
 	}
@@ -82,11 +81,11 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void getValue_notReable() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("iii");
+		Attribute propDesc = beanDesc.getPropertyAttribute("iii");
 		try {
 			propDesc.getValue(myBean);
 			fail();
-		} catch (IllegalPropertyException e) {
+		} catch (IllegalAttributeException e) {
 			System.out.println(e);
 		}
 	}
@@ -95,11 +94,11 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void getValue_notReableWithField() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("kkk");
+		Attribute propDesc = beanDesc.getPropertyAttribute("kkk");
 		try {
 			propDesc.getValue(myBean);
 			fail();
-		} catch (IllegalPropertyException e) {
+		} catch (IllegalAttributeException e) {
 			System.out.println(e);
 		}
 	}
@@ -108,11 +107,11 @@ public class DefaultBeanDescProviderPropertyDescTest {
 	public void setIllegalValue() throws Exception {
 		MyBean myBean = new MyBean();
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("fff");
+		Attribute propDesc = beanDesc.getPropertyAttribute("fff");
 		try {
 			propDesc.setValue(myBean, "hoge");
 			fail("1");
-		} catch (IllegalPropertyException ex) {
+		} catch (IllegalAttributeException ex) {
 			System.out.println(ex);
 		}
 	}

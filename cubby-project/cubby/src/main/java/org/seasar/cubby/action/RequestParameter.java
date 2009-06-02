@@ -25,7 +25,7 @@ import org.seasar.cubby.converter.Converter;
 /**
  * リクエストパラメータのバインド対象であることを表す注釈です。
  * <p>
- * 以下のいずれかの場合に、この注釈で修飾されたプロパティがリクエストパラメータをバインドする対象になります。
+ * 以下のいずれかの場合に、この注釈で修飾された属性(プロパティまたはフィールド)がリクエストパラメータをバインドする対象になります。
  * <ul>
  * <li>アクションメソッド(またはクラス)が {@link Form} で修飾されていない</li>
  * <li>アクションメソッド(またはクラス)が {@link Form} で修飾されていて、{@link Form#bindingType()} に
@@ -33,17 +33,16 @@ import org.seasar.cubby.converter.Converter;
  * </ul>
  * </p>
  * 
- * @author baba
- * @since 1.1.0
  * @see Form
  * @see RequestParameterBindingType
  * @see RequestParameterBindingType#ONLY_SPECIFIED_PROPERTIES
+ * @author baba
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.FIELD })
 public @interface RequestParameter {
 
-	/** バインドする要求パラメータ名、指定しない場合はプロパティ名が使用されます。 */
+	/** バインドする要求パラメータ名、指定しない場合は属性名が使用されます。 */
 	String name() default "";
 
 	/** 型変換に用いるコンバータ、指定しない場合はプロパティの型によって自動的に選択されます。 */

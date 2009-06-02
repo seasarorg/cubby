@@ -36,34 +36,34 @@ import java.lang.annotation.Target;
  * 	// コンテナの機能によって自動的にインジェクションされる想定です。
  * 	public BarDto barDto;
  * 
- * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティとフィールドにバインドします。
  *  // よく使用するパターンです。
  * 	public ActionResult m01() {
  * 	}
  * 
- * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	// -&gt; アクション(FooAction)の @RequestParameter で修飾されたプロパティとフィールドにバインドします。
  * 	&#064;Form(bindingType = ONLY_SPECIFIED_PROPERTIES)
  * 	public ActionResult m02() {
  * 	}
  * 
- * 	// -&gt; アクション(FooAction)の全プロパティにバインドします。
+ * 	// -&gt; アクション(FooAction)のすべてのプロパティにバインドします。フィールドにはバインドしません。
  * 	&#064;Form(bindingType = ALL_PROPERTIES)
  * 	public ActionResult m03() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の全プロパティにバインドします。
+ * 	// -&gt; リクエストパラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
  *  // よく使用するパターンです。
  * 	&#064;Form(&quot;barDto&quot;)
  * 	public ActionResult m11() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティにバインドします。
+ * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティとフィールドにバインドします。
  * 	&#064;Form(&quot;barDto&quot;
  *             bindingType = ONLY_SPECIFIED_PROPERTIES)
  * 	public ActionResult m12() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の全プロパティにバインドします。
+ * 	// リクエストパラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
  * 	&#064;Form(value = &quot;barDto&quot;,
  *             bindingType = ALL_PROPERTIES)
  * 	public ActionResult m13() {
@@ -103,32 +103,7 @@ import java.lang.annotation.Target;
  * 
  * </p>
  * 
- * <p>
- * このアノテーションをつけない場合の挙動が 1.0.x と 1.1.x で異なるのでご注意ください。
- * <table>
- * <thead>
- * <tr>
- * <th>バージョン</th>
- * <th>バインド対象のオブジェクト</th>
- * <th>バインド対象のプロパティ</th>
- * </tr>
- * </thead> <tbody>
- * <tr>
- * <td>1.0.x</td>
- * <td>アクション</td>
- * <td>すべてのプロパティ</td>
- * </tr>
- * <tr>
- * <td>1.1.x</td>
- * <td>アクション</td>
- * <td>&#64;RequestParameter で修飾されたプロパティ</td>
- * </tr>
- * </tbody>
- * </table>
- * </p>
- * 
  * @author agata
- * @since 1.0.0
  * @see RequestParameter
  * @see RequestParameterBindingType
  */

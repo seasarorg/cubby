@@ -26,15 +26,14 @@ import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * フォームオブジェクトのラッパーファクトリの実装です。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class FormWrapperFactoryImpl implements FormWrapperFactory {
 
@@ -81,8 +80,8 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			}
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.form
 					.getClass());
-			final PropertyDesc propertyDesc = findPropertyDesc(beanDesc, name);
-			return propertyDesc != null;
+			final Attribute attribute = findAttribute(beanDesc, name);
+			return attribute != null;
 		}
 
 		/**
@@ -92,21 +91,23 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 			if (this.form == null) {
 				return null;
 			}
+
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.form
 					.getClass());
-			final PropertyDesc propertyDesc = findPropertyDesc(beanDesc, name);
-			if (propertyDesc == null) {
+			final Attribute attribute = findAttribute(beanDesc, name);
+			if (attribute == null) {
 				return null;
 			}
-			final Object value = propertyDesc.getValue(this.form);
+			final Object value = attribute.getValue(this.form);
+
 			if (value == null) {
 				return null;
 			} else if (value instanceof String[]) {
 				return (String[]) value;
 			} else {
 				final Class<? extends Converter> converterType;
-				if (propertyDesc.isAnnotationPresent(RequestParameter.class)) {
-					final RequestParameter requestParameter = propertyDesc
+				if (attribute.isAnnotationPresent(RequestParameter.class)) {
+					final RequestParameter requestParameter = attribute
 							.getAnnotation(RequestParameter.class);
 					if (Converter.class.equals(requestParameter.converter())) {
 						converterType = null;
@@ -147,36 +148,38 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 		}
 
 		/**
-		 * 指定された名前に対応するプロパティを検索します。
+		 * 指定された名前に対応する属性を検索します。
 		 * 
 		 * @param beanDesc
 		 *            Java Beans の定義
 		 * @param name
 		 *            名前
-		 * @return プロパティの定義
+		 * @return 属性の定義
 		 */
-		private PropertyDesc findPropertyDesc(final BeanDesc beanDesc,
+		private Attribute findAttribute(final BeanDesc beanDesc,
 				final String name) {
-			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
-				if (propertyDesc.isAnnotationPresent(RequestParameter.class)) {
-					final RequestParameter requestParameter = propertyDesc
+
+			for (final Attribute attribute : beanDesc.findAllAttributes()) {
+				if (attribute.isAnnotationPresent(RequestParameter.class)) {
+					final RequestParameter requestParameter = attribute
 							.getAnnotation(RequestParameter.class);
 					final String parameterName = requestParameter.name();
 					if (parameterName == null || parameterName.length() == 0) {
-						if (name.equals(propertyDesc.getPropertyName())) {
-							return propertyDesc;
+						if (name.equals(attribute.getName())) {
+							return attribute;
 						}
 					} else {
 						if (name.equals(parameterName)) {
-							return propertyDesc;
+							return attribute;
 						}
 					}
 				} else {
-					if (name.equals(propertyDesc.getPropertyName())) {
-						return propertyDesc;
+					if (name.equals(attribute.getName())) {
+						return attribute;
 					}
 				}
 			}
+
 			return null;
 		}
 

@@ -15,40 +15,88 @@
  */
 package org.seasar.cubby.spi.beans;
 
+import java.lang.annotation.Annotation;
+import java.util.Set;
+
 /**
  * Java Beans を扱うためのインターフェースです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface BeanDesc {
 
 	/**
-	 * {@link PropertyDesc}を持っているかどうかを返します。
+	 * 指定された名前のプロパティへアクセスする属性があるかどうかを示します。
 	 * 
-	 * @param propertyName
-	 *            プロパティ名
-	 * @return {@link PropertyDesc}を持っているかどうか
+	 * @param name
+	 *            属性名
+	 * @return 指定された名前のプロパティへアクセスする属性がある場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
 	 */
-	boolean hasPropertyDesc(String propertyName);
+	boolean hasPropertyAttribute(String name);
 
 	/**
-	 * 指定されたプロパティの{@link PropertyDesc}を返します。
+	 * 指定された名前のプロパティへアクセスする属性を返します。
 	 * 
-	 * @param propertyName
-	 *            プロパティ名
-	 * @return {@link PropertyDesc}
-	 * @throws PropertyNotFoundException
-	 *             {@link PropertyDesc}が見つからない場合
+	 * @param name
+	 *            属性名
+	 * @return {@link Attribute}
+	 * @throws AttributeNotFoundException
+	 *             {@link Attribute} が見つからない場合
 	 */
-	PropertyDesc getPropertyDesc(String propertyName)
-			throws PropertyNotFoundException;
+	Attribute getPropertyAttribute(String name)
+			throws AttributeNotFoundException;
 
 	/**
-	 * すべてのプロパティの{@link PropertyDesc}を返します。
+	 * 指定された名前のフィールドへアクセスする属性があるかどうかを示します。
 	 * 
-	 * @return {@link PropertyDesc}の配列
+	 * @param name
+	 *            属性名
+	 * @return 指定された名前のフィールドへアクセスする属性がある場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
 	 */
-	PropertyDesc[] getPropertyDescs();
+	boolean hasFieldAttribute(String name);
+
+	/**
+	 * 指定された名前のフィールドへアクセスする属性を返します。
+	 * 
+	 * @param name
+	 *            属性名
+	 * @return {@link Attribute} のコレクション
+	 * @throws AttributeNotFoundException
+	 *             {@link Attribute} が見つからない場合
+	 */
+	Attribute getFieldAttribute(String name);
+
+	/**
+	 * すべてのプロパティへアクセスする検索します。
+	 * 
+	 * @return {@link Attribute} のコレクション
+	 */
+	Set<Attribute> findtPropertyAttributes();
+
+	/**
+	 * すべてのフィールドへアクセスする属性を検索します。
+	 * 
+	 * @return {@link Attribute} のコレクション
+	 */
+	Set<Attribute> findFieldAttributes();
+
+	/**
+	 * すべてのプロパティとフィールドへアクセスする属性を返します。
+	 * 
+	 * @return {@link Attribute} のコレクション
+	 */
+	Set<Attribute> findAllAttributes();
+
+	/**
+	 * 指定されたアノテーションで修飾された、プロパティまたはフィールドへアクセスする属性を返します。
+	 * 
+	 * @param annotationClass
+	 *            アノテーションの型
+	 * @return {@link Attribute} のコレクション
+	 */
+	Set<Attribute> findAttributesAnnotatedWith(
+			Class<? extends Annotation> annotationClass);
 
 }
