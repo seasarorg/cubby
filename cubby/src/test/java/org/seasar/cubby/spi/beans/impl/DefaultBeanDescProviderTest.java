@@ -17,61 +17,52 @@ package org.seasar.cubby.spi.beans.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.PropertyDesc;
-import org.seasar.cubby.spi.beans.PropertyNotFoundException;
-import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
+import org.seasar.cubby.spi.beans.AttributeNotFoundException;
 
 public class DefaultBeanDescProviderTest {
 
 	BeanDescProvider beanDescProvider = new DefaultBeanDescProvider();
 
 	@Test
-	public void propertyDesc() throws Exception {
+	public void attribute() throws Exception {
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
-		PropertyDesc propDesc = beanDesc.getPropertyDesc("aaa");
-		assertEquals("aaa", propDesc.getPropertyName());
-		assertEquals(String.class, propDesc.getPropertyType());
-		assertNotNull(propDesc.getReadMethod());
-		assertNull(propDesc.getWriteMethod());
+		Attribute propDesc = beanDesc.getPropertyAttribute("aaa");
+		assertEquals("aaa", propDesc.getName());
+		assertEquals(String.class, propDesc.getType());
 
-		propDesc = beanDesc.getPropertyDesc("CCC");
-		assertEquals("CCC", propDesc.getPropertyName());
-		assertEquals(boolean.class, propDesc.getPropertyType());
-		assertNotNull(propDesc.getReadMethod());
-		assertNull(propDesc.getWriteMethod());
+		propDesc = beanDesc.getPropertyAttribute("CCC");
+		assertEquals("CCC", propDesc.getName());
+		assertEquals(boolean.class, propDesc.getType());
 
-		propDesc = beanDesc.getPropertyDesc("eee");
-		assertEquals("eee", propDesc.getPropertyName());
-		assertEquals(String.class, propDesc.getPropertyType());
-		assertNotNull(propDesc.getReadMethod());
-		assertNotNull(propDesc.getWriteMethod());
+		propDesc = beanDesc.getPropertyAttribute("eee");
+		assertEquals("eee", propDesc.getName());
+		assertEquals(String.class, propDesc.getType());
 
 		try {
-			propDesc = beanDesc.getPropertyDesc("fff");
+			propDesc = beanDesc.getPropertyAttribute("fff");
 			fail();
-			assertEquals("fff", propDesc.getPropertyName());
-			assertEquals(Boolean.class, propDesc.getPropertyType());
-		} catch (PropertyNotFoundException e) {
+			assertEquals("fff", propDesc.getName());
+			assertEquals(Boolean.class, propDesc.getType());
+		} catch (AttributeNotFoundException e) {
 
 		}
 
-		assertFalse(beanDesc.hasPropertyDesc("hhh"));
-		assertFalse(beanDesc.hasPropertyDesc("iii"));
+		assertFalse(beanDesc.hasPropertyAttribute("hhh"));
+		assertFalse(beanDesc.hasPropertyAttribute("iii"));
 	}
 
 	@Test
 	public void invalidProperty() throws Exception {
 		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean2.class);
-		assertTrue("1", beanDesc.hasPropertyDesc("aaa"));
-		assertFalse("1", beanDesc.hasPropertyDesc("bbb"));
+		assertTrue("1", beanDesc.hasPropertyAttribute("aaa"));
+		assertFalse("1", beanDesc.hasPropertyAttribute("bbb"));
 	}
 
 	/**

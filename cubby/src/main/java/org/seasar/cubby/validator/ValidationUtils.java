@@ -15,18 +15,18 @@
  */
 package org.seasar.cubby.validator;
 
+import static org.seasar.cubby.internal.util.LogMessages.*;
 import java.lang.reflect.Method;
 
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * バリデーションのユーティリティクラスです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class ValidationUtils {
 
@@ -46,17 +46,28 @@ public class ValidationUtils {
 	 * 
 	 * @param action
 	 *            アクション
-	 * @param rulesPropertyName
-	 *            入力検証ルールの集合が定義されたプロパティ名
+	 * @param attributeName
+	 *            入力検証ルールの集合が定義された属性名
 	 * @return アクションメソッドの入力検証ルールの集合
 	 */
 	public static ValidationRules getValidationRules(final Object action,
-			final String rulesPropertyName) {
+			final String attributeName) {
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());
-		final PropertyDesc propertyDesc = beanDesc
-				.getPropertyDesc(rulesPropertyName);
-		final ValidationRules rules = (ValidationRules) propertyDesc
+		final Attribute attribute;
+		if (beanDesc.hasPropertyAttribute(attributeName)) {
+			attribute = beanDesc.getPropertyAttribute(attributeName);
+		} else if (beanDesc.hasFieldAttribute(attributeName)) {
+			attribute = beanDesc.getFieldAttribute(attributeName);
+		} else {
+			throw new IllegalStateException(format("ECUB0113", action,
+					attributeName));
+		}
+		if (!ValidationRules.class.isAssignableFrom(attribute.getType())) {
+			throw new IllegalStateException(format("ECUB0114", action,
+					attributeName, ValidationRules.class.getName()));
+		}
+		final ValidationRules rules = (ValidationRules) attribute
 				.getValue(action);
 		return rules;
 	}

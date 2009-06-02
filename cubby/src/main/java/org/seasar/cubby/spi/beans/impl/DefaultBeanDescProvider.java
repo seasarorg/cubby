@@ -15,38 +15,46 @@
  */
 package org.seasar.cubby.spi.beans.impl;
 
+import static org.seasar.cubby.internal.util.ReflectionUtils.findAllDeclaredField;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.Attribute;
+import org.seasar.cubby.spi.beans.AttributeNotFoundException;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.IllegalPropertyException;
+import org.seasar.cubby.spi.beans.IllegalAttributeException;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
-import org.seasar.cubby.spi.beans.PropertyDesc;
-import org.seasar.cubby.spi.beans.PropertyNotFoundException;
 
 /**
  * {@link BeanDesc} のプロバイダの標準的な実装です。
  * <p>
- * {@link Introspector} によって生成されるメタ情報を元に {@link BeanDesc} を構築します。
+ * {@link Introspector} によって生成されるメタ情報とそのフィールドの情報を元に {@link BeanDesc} を構築します。
  * </p>
  * 
  * @author baba
- * @since 2.0.0
  */
 public class DefaultBeanDescProvider implements BeanDescProvider {
 
@@ -66,7 +74,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	}
 
 	/** <code>BeanDesc</code> のキャッシュ。 */
-	private final Map<Class<?>, BeanDesc> beanDescCache = new ConcurrentHashMap<Class<?>, BeanDesc>(
+	protected final Map<Class<?>, BeanDesc> beanDescCache = new ConcurrentHashMap<Class<?>, BeanDesc>(
 			1024);
 
 	/**
@@ -82,90 +90,191 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 				return beanDescCache.get(clazz);
 			}
 
-			try {
-				final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-				final BeanDesc beanDesc = new BeanDescImpl(clazz, beanInfo);
-				beanDescCache.put(clazz, beanDesc);
-				return beanDesc;
-			} catch (final IntrospectionException e) {
-				throw new IllegalStateException(e);
-			}
+			final BeanDesc beanDesc = createBeanDesc(clazz);
+			beanDescCache.put(clazz, beanDesc);
+			return beanDesc;
 		}
 	}
 
 	/**
+	 * {@link BeanDesc} を生成します。
+	 * 
+	 * @param clazz
+	 *            操作対象のクラス
+	 * @return {@link BeanDesc}
+	 */
+	protected BeanDesc createBeanDesc(final Class<?> clazz) {
+		return new BeanDescImpl(clazz);
+	}
+
+	/**
 	 * {@link BeanDesc} の実装です。
-	 * <p>
-	 * {@link Introspector} に処理を委譲します。
-	 * </p>
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
-	private static class BeanDescImpl implements BeanDesc {
+	protected static class BeanDescImpl implements BeanDesc {
 
-		/** JavaBean のクラス。 */
+		/** 操作対象のクラス。 */
 		private final Class<?> clazz;
 
-		/** {@link PropertyDesc} のキャッシュ。 */
-		private final Map<String, PropertyDesc> propertyDescMap = new LinkedHashMap<String, PropertyDesc>();
+		/** プロパティの属性。 */
+		private final Map<String, Attribute> propertyAttributeMap;
+
+		/** フィールドの属性。 */
+		private final Map<String, List<Attribute>> fieldAttributesMap;
 
 		/**
 		 * インスタンス化します。
 		 * 
 		 * @param clazz
-		 *            JavaBean のクラス
-		 * @param beanInfo
-		 *            JavaBean の情報
+		 *            操作対象のクラス
 		 */
-		public BeanDescImpl(final Class<?> clazz, final BeanInfo beanInfo) {
+		public BeanDescImpl(final Class<?> clazz) {
 			this.clazz = clazz;
+			this.propertyAttributeMap = collectPropertyAttributeMap(clazz);
+			this.fieldAttributesMap = collectFieldAttributesMap(clazz);
+		}
+
+		/**
+		 * 指定されたクラスからプロパティの {@link Attribute} を生成します。
+		 * 
+		 * @param clazz
+		 *            対象のクラス
+		 * @return {@link Attribute} の {@link Map}
+		 */
+		protected Map<String, Attribute> collectPropertyAttributeMap(
+				final Class<?> clazz) {
+			final Map<String, Attribute> propertyAttributes = new LinkedHashMap<String, Attribute>();
+			final BeanInfo beanInfo;
+			try {
+				beanInfo = Introspector.getBeanInfo(clazz);
+			} catch (final IntrospectionException e) {
+				throw new IllegalStateException(e);
+			}
 			for (final PropertyDescriptor propertyDescriptor : beanInfo
 					.getPropertyDescriptors()) {
-				propertyDescMap.put(propertyDescriptor.getName(),
-						new PropertyDescImpl(clazz, propertyDescriptor));
+				final String propertyName = propertyDescriptor.getName();
+				final Attribute propertyDesc = new PropertyAttribute(clazz,
+						propertyDescriptor);
+				propertyAttributes.put(propertyName, propertyDesc);
 			}
+			return propertyAttributes;
 		}
 
 		/**
-		 * {@inheritDoc}
+		 * 指定されたクラスからフィールドの {@link Attribute} を生成します。
+		 * 
+		 * @param clazz
+		 *            対象のクラス
+		 * @return {@link Attribute} の {@link Map}
 		 */
-		public boolean hasPropertyDesc(final String propertyName) {
-			return propertyDescMap.containsKey(propertyName);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public PropertyDesc getPropertyDesc(final String propertyName)
-				throws PropertyNotFoundException {
-			if (!propertyDescMap.containsKey(propertyName)) {
-				throw new PropertyNotFoundException(clazz, propertyName);
+		protected Map<String, List<Attribute>> collectFieldAttributesMap(
+				final Class<?> clazz) {
+			final Map<String, List<Attribute>> fieldAttributes = new LinkedHashMap<String, List<Attribute>>();
+			for (final Field field : findAllDeclaredField(clazz)) {
+				final String fieldName = field.getName();
+				List<Attribute> fieldDescs;
+				if (!fieldAttributes.containsKey(fieldName)) {
+					fieldDescs = new ArrayList<Attribute>();
+					fieldAttributes.put(fieldName, fieldDescs);
+				} else {
+					fieldDescs = fieldAttributes.get(fieldName);
+				}
+				final Attribute attributes = new FieldAttribute(clazz, field);
+				fieldDescs.add(attributes);
 			}
-			return propertyDescMap.get(propertyName);
+			return fieldAttributes;
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public PropertyDesc[] getPropertyDescs() {
-			return propertyDescMap.values().toArray(new PropertyDesc[0]);
+		public boolean hasPropertyAttribute(final String name) {
+			return propertyAttributeMap.containsKey(name);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Attribute getPropertyAttribute(final String name)
+				throws AttributeNotFoundException {
+			if (!propertyAttributeMap.containsKey(name)) {
+				throw new AttributeNotFoundException(clazz, name);
+			}
+			return propertyAttributeMap.get(name);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Set<Attribute> findtPropertyAttributes() {
+			final Set<Attribute> attributes = new LinkedHashSet<Attribute>();
+			attributes.addAll(propertyAttributeMap.values());
+			return Collections.unmodifiableSet(attributes);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Attribute getFieldAttribute(final String fieldName) {
+			if (!fieldAttributesMap.containsKey(fieldName)) {
+				throw new AttributeNotFoundException(clazz, fieldName);
+			}
+			return fieldAttributesMap.get(fieldName).get(0);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean hasFieldAttribute(final String fieldName) {
+			return fieldAttributesMap.containsKey(fieldName);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Set<Attribute> findFieldAttributes() {
+			final Set<Attribute> fieldAttributes = new LinkedHashSet<Attribute>();
+			for (final List<Attribute> attributes : fieldAttributesMap.values()) {
+				fieldAttributes.addAll(attributes);
+			}
+			return Collections.unmodifiableSet(fieldAttributes);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Set<Attribute> findAllAttributes() {
+			final Set<Attribute> attributes = new LinkedHashSet<Attribute>();
+			attributes.addAll(this.findtPropertyAttributes());
+			attributes.addAll(this.findFieldAttributes());
+			return Collections.unmodifiableSet(attributes);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Set<Attribute> findAttributesAnnotatedWith(
+				final Class<? extends Annotation> annotationClass) {
+			final Set<Attribute> attributes = new LinkedHashSet<Attribute>();
+			for (final Attribute attribute : findAllAttributes()) {
+				if (attribute.isAnnotationPresent(annotationClass)) {
+					attributes.add(attribute);
+				}
+			}
+			return Collections.unmodifiableSet(attributes);
 		}
 
 	}
 
 	/**
-	 * {@link PropertyDesc} の実装です。
-	 * <p>
-	 * {@link PropertyDescriptor} に処理を委譲します。
-	 * </p>
+	 * プロパティに対する {@link Attribute} の実装です。
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
-	private static class PropertyDescImpl implements PropertyDesc {
+	protected static class PropertyAttribute implements Attribute {
 
-		/** JavaBean のクラス。 */
+		/** 操作対象のクラス。 */
 		private final Class<?> clazz;
 
 		/** プロパティの記述。 */
@@ -181,66 +290,38 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 * インスタンス化します。
 		 * 
 		 * @param clazz
-		 *            JavaBean のクラス
+		 *            操作対象のクラス
 		 * @param propertyDescriptor
 		 *            プロパティの記述
 		 */
-		PropertyDescImpl(final Class<?> clazz,
+		PropertyAttribute(final Class<?> clazz,
 				final PropertyDescriptor propertyDescriptor) {
 			this.clazz = clazz;
 			this.propertyDescriptor = propertyDescriptor;
 
 			if (propertyDescriptor.getReadMethod() != null) {
-				parameterizedClassDesc = createParameterizedClassDesc(propertyDescriptor
+				this.parameterizedClassDesc = createParameterizedClassDesc(propertyDescriptor
 						.getReadMethod().getGenericReturnType());
 			} else if (propertyDescriptor.getWriteMethod() != null) {
-				parameterizedClassDesc = createParameterizedClassDesc(propertyDescriptor
+				this.parameterizedClassDesc = createParameterizedClassDesc(propertyDescriptor
 						.getWriteMethod().getParameterTypes()[0]);
 			} else {
-				parameterizedClassDesc = null;
+				this.parameterizedClassDesc = null;
 			}
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public String getPropertyName() {
+		public String getName() {
 			return propertyDescriptor.getName();
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public Class<?> getPropertyType() {
+		public Class<?> getType() {
 			return propertyDescriptor.getPropertyType();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public Method getReadMethod() {
-			return propertyDescriptor.getReadMethod();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasReadMethod() {
-			return this.getReadMethod() != null;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public Method getWriteMethod() {
-			return propertyDescriptor.getWriteMethod();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasWriteMethod() {
-			return this.getWriteMethod() != null;
 		}
 
 		/**
@@ -261,24 +342,24 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 * {@inheritDoc}
 		 */
 		public Object getValue(final Object target)
-				throws IllegalPropertyException {
-			final Method method = this.getReadMethod();
+				throws IllegalAttributeException {
+			final Method method = propertyDescriptor.getReadMethod();
 			if (method == null) {
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), new IllegalStateException(
 						propertyDescriptor.getName() + " is not readable."));
 			}
 			try {
 				return method.invoke(target);
 			} catch (final IllegalAccessException e) {
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), e);
 			} catch (final InvocationTargetException e) {
 				final Throwable t = e.getTargetException();
 				if (t instanceof Error) {
 					throw (Error) t;
 				}
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), e);
 			}
 		}
@@ -287,10 +368,10 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 * {@inheritDoc}
 		 */
 		public void setValue(final Object target, final Object value)
-				throws IllegalPropertyException {
-			final Method method = this.getWriteMethod();
+				throws IllegalAttributeException {
+			final Method method = propertyDescriptor.getWriteMethod();
 			if (method == null) {
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), new IllegalStateException(
 						propertyDescriptor.getName() + " is not writable."));
 			}
@@ -304,17 +385,17 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 					method.invoke(target, value);
 				}
 			} catch (final IllegalArgumentException e) {
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), e);
 			} catch (final IllegalAccessException e) {
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), e);
 			} catch (final InvocationTargetException e) {
 				final Throwable t = e.getTargetException();
 				if (t instanceof Error) {
 					throw (Error) t;
 				}
-				throw new IllegalPropertyException(clazz, propertyDescriptor
+				throw new IllegalAttributeException(clazz, propertyDescriptor
 						.getName(), e);
 			}
 		}
@@ -336,6 +417,25 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 
 		/**
 		 * {@inheritDoc}
+		 * <p>
+		 * 以下の順序でプロパティのメソッドの定義を検索し、最初に見つかったアノテーションを返します。
+		 * <ol>
+		 * <li>プロパティ値の読み込みに使用するメソッド {@link #getReadMethod()}</li>
+		 * <li>プロパティ値の書き込みに使用するメソッド {@link #getWriteMethod()}</li>
+		 * </ol>
+		 * </p>
+		 * <p>
+		 * また、クラスが {@link Proxy}
+		 * になどよって動的に生成されている場合などは、メソッドからアノテーションを取得することができません。 (アノテーションが
+		 * {@link Inherited} で修飾されている場合でも取得できません。)
+		 * そのため、読み込み/書き込みメソッドの定義を以下のように検索し、アノテーションを取得します。
+		 * <ul>
+		 * <li>読み込み/書き込みメソッドが定義されたクラス ({@link Method#getDeclaringClass()})
+		 * を検索対象クラスの起点とします。</li>
+		 * <li>検索対象クラスと、そのインターフェイスから読み込み/書き込みメソッドの定義を検索します。
+		 * <li>アノテーションが取得できなかった場合は、検索対象クラスをそのスーパークラスとし、再度検索を行います。</li>
+		 * </ul>
+		 * </p>
 		 */
 		public <T extends Annotation> T getAnnotation(
 				final Class<T> annotationClass) {
@@ -344,7 +444,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 						.get(annotationClass));
 			}
 
-			final Method readMethod = this.getReadMethod();
+			final Method readMethod = propertyDescriptor.getReadMethod();
 			if (readMethod != null) {
 				final T annotation = findAnnotation(annotationClass, readMethod);
 				if (annotation != null) {
@@ -353,7 +453,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 				}
 			}
 
-			final Method writeMethod = this.getWriteMethod();
+			final Method writeMethod = propertyDescriptor.getWriteMethod();
 			if (writeMethod != null) {
 				final T annotation = findAnnotation(annotationClass,
 						writeMethod);
@@ -472,15 +572,198 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 			return this.getAnnotation(annotationClass) != null;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime
+					* result
+					+ ((propertyDescriptor == null) ? 0 : propertyDescriptor
+							.hashCode());
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final PropertyAttribute other = (PropertyAttribute) obj;
+			if (propertyDescriptor == null) {
+				if (other.propertyDescriptor != null) {
+					return false;
+				}
+			} else if (!propertyDescriptor.equals(other.propertyDescriptor)) {
+				return false;
+			}
+			return true;
+		}
+
+	}
+
+	/**
+	 * フィールドに対する {@link Attribute} の実装です。
+	 * 
+	 * @author baba
+	 */
+	protected static class FieldAttribute implements Attribute {
+
+		/** 操作対象のクラス。 */
+		private final Class<?> clazz;
+
+		/** フィールド。 */
+		private final Field field;
+
+		/** パラメタ化されたクラスの記述。 */
+		private final ParameterizedClassDesc parameterizedClassDesc;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param clazz
+		 *            操作対象のクラス
+		 * @param field
+		 *            フィールド
+		 */
+		public FieldAttribute(final Class<?> clazz, final Field field) {
+			this.clazz = clazz;
+			if (!field.isAccessible()) {
+				field.setAccessible(true);
+			}
+			this.field = field;
+			this.parameterizedClassDesc = createParameterizedClassDesc(field
+					.getGenericType());
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public String getName() {
+			return field.getName();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Class<?> getType() {
+			return field.getType();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Object getValue(final Object target) {
+			try {
+				return field.get(target);
+			} catch (final IllegalAccessException e) {
+				throw new IllegalAttributeException(clazz, field.getName(), e);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void setValue(final Object target, final Object value) {
+			try {
+				field.set(target, value);
+			} catch (final IllegalAccessException e) {
+				throw new IllegalAttributeException(clazz, field.getName(), e);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isReadable() {
+			return true;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isWritable() {
+			return true;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ParameterizedClassDesc getParameterizedClassDesc() {
+			return parameterizedClassDesc;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public <T extends Annotation> T getAnnotation(
+				final Class<T> annotationClass) {
+			return field.getAnnotation(annotationClass);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isAnnotationPresent(
+				final Class<? extends Annotation> annotationClass) {
+			return field.isAnnotationPresent(annotationClass);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((field == null) ? 0 : field.hashCode());
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final FieldAttribute other = (FieldAttribute) obj;
+			if (field == null) {
+				if (other.field != null) {
+					return false;
+				}
+			} else if (!field.equals(other.field)) {
+				return false;
+			}
+			return true;
+		}
+
 	}
 
 	/**
 	 * {@link ParameterizedClassDesc}の実装クラスです。
 	 * 
-	 * @since 2.0.0
 	 * @author baba
 	 */
-	private static class ParameterizedClassDescImpl implements
+	protected static class ParameterizedClassDescImpl implements
 			ParameterizedClassDesc {
 
 		/** 原型となるクラス */
@@ -549,7 +832,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	 *            型
 	 * @return 型を表現する{@link ParameterizedClassDesc}
 	 */
-	private static ParameterizedClassDesc createParameterizedClassDesc(
+	protected static ParameterizedClassDesc createParameterizedClassDesc(
 			final Type type) {
 		final Class<?> rowClass = getRawClass(type);
 		if (rowClass == null) {
@@ -581,7 +864,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	 *            タイプ
 	 * @return <code>type</code>の原型
 	 */
-	private static Class<?> getRawClass(final Type type) {
+	protected static Class<?> getRawClass(final Type type) {
 		if (Class.class.isInstance(type)) {
 			return Class.class.cast(type);
 		}
@@ -610,7 +893,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 	 *            タイプ
 	 * @return <code>type</code>の型引数の配列
 	 */
-	private static Type[] getGenericParameter(final Type type) {
+	protected static Type[] getGenericParameter(final Type type) {
 		if (ParameterizedType.class.isInstance(type)) {
 			return ParameterizedType.class.cast(type).getActualTypeArguments();
 		}

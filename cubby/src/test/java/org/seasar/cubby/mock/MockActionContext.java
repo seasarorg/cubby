@@ -30,9 +30,9 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 public class MockActionContext implements ActionContext {
 
@@ -83,9 +83,8 @@ public class MockActionContext implements ActionContext {
 		final String propertyName = form.value();
 		final BeanDesc beanDesc = BeanDescFactory
 				.getBeanDesc(action.getClass());
-		final PropertyDesc propertyDesc = beanDesc
-				.getPropertyDesc(propertyName);
-		final Object formBean = propertyDesc.getValue(action);
+		final Attribute attribute = beanDesc.getPropertyAttribute(propertyName);
+		final Object formBean = attribute.getValue(action);
 		if (formBean == null) {
 			throw new ActionException(format("ECUB0102", propertyName));
 		}

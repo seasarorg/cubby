@@ -34,9 +34,9 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.IteratorEnumeration;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 
 /**
  * 特別な属性を取得するためにサーブレットへの要求をラップします。
@@ -119,32 +119,32 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 */
 	@Override
 	public Object getAttribute(final String name) {
-		final Object attribute;
+		final Object value;
 		if (ATTR_CONTEXT_PATH.equals(name)) {
-			attribute = this.getContextPath();
+			value = this.getContextPath();
 		} else if (ATTR_MESSAGES.equals(name)) {
-			attribute = ThreadContext.getMessagesMap();
+			value = ThreadContext.getMessagesMap();
 		} else {
 			final Object action = super.getAttribute(ATTR_ACTION);
 			if (action != null) {
 				final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 						.getClass());
-				if (beanDesc.hasPropertyDesc(name)) {
-					final PropertyDesc propertyDesc = beanDesc
-							.getPropertyDesc(name);
-					if (propertyDesc.isReadable()) {
-						attribute = propertyDesc.getValue(action);
+				if (beanDesc.hasPropertyAttribute(name)) {
+					final Attribute attribute = beanDesc
+							.getPropertyAttribute(name);
+					if (attribute.isReadable()) {
+						value = attribute.getValue(action);
 					} else {
-						attribute = super.getAttribute(name);
+						value = super.getAttribute(name);
 					}
 				} else {
-					attribute = super.getAttribute(name);
+					value = super.getAttribute(name);
 				}
 			} else {
-				attribute = super.getAttribute(name);
+				value = super.getAttribute(name);
 			}
 		}
-		return attribute;
+		return value;
 	}
 
 	/**
@@ -166,9 +166,9 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (action != null) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(action
 					.getClass());
-			for (final PropertyDesc propertyDesc : beanDesc.getPropertyDescs()) {
-				if (propertyDesc.isReadable()) {
-					attributeNames.add(propertyDesc.getPropertyName());
+			for (final Attribute attribute : beanDesc.findtPropertyAttributes()) {
+				if (attribute.isReadable()) {
+					attributeNames.add(attribute.getName());
 				}
 			}
 		}

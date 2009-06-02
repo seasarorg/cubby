@@ -42,7 +42,6 @@ import org.seasar.cubby.action.RequestParameterBindingType;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.BeanDescProvider;
-import org.seasar.cubby.spi.beans.PropertyNotFoundException;
 import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 
 public class ActionContextImplTest {
@@ -275,7 +274,7 @@ public class ActionContextImplTest {
 		try {
 			assertNull(actionContext.getFormBean());
 			fail();
-		} catch (final PropertyNotFoundException e) {
+		} catch (final ActionException e) {
 			// ok
 		}
 	}

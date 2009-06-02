@@ -35,9 +35,9 @@ import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.beans.PropertyDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class SelectTag extends DynamicAttributesSimpleTagSupport {
 
@@ -276,12 +275,21 @@ public class SelectTag extends DynamicAttributesSimpleTagSupport {
 			return labelValue;
 		}
 
+		/**
+		 * 指定されたオブジェクトからプロパティの値を取得します。
+		 * 
+		 * @param bean
+		 *            値を取得するオブジェクト
+		 * @param propertyName
+		 *            プロパティ名
+		 * @return プロパティの値
+		 */
 		private Object property(final Object bean, final String propertyName) {
 			final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(bean
 					.getClass());
-			final PropertyDesc propertyDesc = beanDesc
-					.getPropertyDesc(propertyName);
-			return propertyDesc.getValue(bean);
+			final Attribute attribute = beanDesc
+					.getPropertyAttribute(propertyName);
+			return attribute.getValue(bean);
 		}
 
 	}

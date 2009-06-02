@@ -23,15 +23,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-import org.seasar.cubby.spi.BeanDescProvider;
+import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
-import org.seasar.cubby.spi.beans.IllegalPropertyException;
+import org.seasar.cubby.spi.beans.IllegalAttributeException;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
-import org.seasar.cubby.spi.beans.PropertyDesc;
-import org.seasar.cubby.spi.beans.PropertyNotFoundException;
+import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.framework.beans.IllegalPropertyRuntimeException;
+import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
@@ -46,15 +45,10 @@ import org.seasar.framework.util.DisposableUtil;
  * </p>
  * 
  * @author baba
- * @since 2.0.0
  */
-public class S2BeanDescProvider implements BeanDescProvider {
+public class S2BeanDescProvider extends DefaultBeanDescProvider {
 
 	private static volatile boolean initialized;
-
-	/** <code>BeanDesc</code> のキャッシュ。 */
-	private final Map<Class<?>, BeanDesc> beanDescCache = new ConcurrentHashMap<Class<?>, BeanDesc>(
-			1024);
 
 	private void initialize() {
 		if (!initialized) {
@@ -73,24 +67,18 @@ public class S2BeanDescProvider implements BeanDescProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public BeanDesc getBeanDesc(final Class<?> clazz) {
 		initialize();
+		return super.getBeanDesc(clazz);
+	}
 
-		if (beanDescCache.containsKey(clazz)) {
-			return beanDescCache.get(clazz);
-		}
-
-		synchronized (clazz) {
-			if (beanDescCache.containsKey(clazz)) {
-				return beanDescCache.get(clazz);
-			}
-
-			final org.seasar.framework.beans.BeanDesc s2beanDesc = org.seasar.framework.beans.factory.BeanDescFactory
-					.getBeanDesc(clazz);
-			final BeanDesc beanDesc = new S2BeanDescImpl(s2beanDesc);
-			beanDescCache.put(clazz, beanDesc);
-			return beanDesc;
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BeanDesc createBeanDesc(final Class<?> clazz) {
+		return new S2BeanDescImpl(clazz);
 	}
 
 	/**
@@ -100,64 +88,33 @@ public class S2BeanDescProvider implements BeanDescProvider {
 	 * </p>
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
-	private static class S2BeanDescImpl implements BeanDesc {
-
-		/** Seasar2 の {@link org.seasar.framework.beans.BeanDesc} */
-		private final org.seasar.framework.beans.BeanDesc s2BeanDesc;
-
-		/** {@link PropertyDesc} のキャッシュ。 */
-		private final Map<String, PropertyDesc> propertyDescMap;
+	private static class S2BeanDescImpl extends BeanDescImpl {
 
 		/**
 		 * インスタンス化します。
 		 * 
-		 * @param s2BeanDesc
-		 *            Seasar2 の {@link org.seasar.framework.beans.BeanDesc}
+		 * @param clazz
+		 *            操作対象のクラス
 		 */
-		S2BeanDescImpl(final org.seasar.framework.beans.BeanDesc s2BeanDesc) {
-			this.s2BeanDesc = s2BeanDesc;
-			this.propertyDescMap = new LinkedHashMap<String, PropertyDesc>();
+		S2BeanDescImpl(final Class<?> clazz) {
+			super(clazz);
+		}
+
+		@Override
+		protected Map<String, Attribute> collectPropertyAttributeMap(
+				final Class<?> clazz) {
+			final org.seasar.framework.beans.BeanDesc s2BeanDesc = org.seasar.framework.beans.factory.BeanDescFactory
+					.getBeanDesc(clazz);
+			final Map<String, Attribute> attributes = new LinkedHashMap<String, Attribute>();
 			for (int i = 0; i < s2BeanDesc.getPropertyDescSize(); i++) {
 				final org.seasar.framework.beans.PropertyDesc propertyDesc = s2BeanDesc
 						.getPropertyDesc(i);
-				propertyDescMap.put(propertyDesc.getPropertyName(),
-						new S2PropertyDescImpl(propertyDesc));
+				final Attribute attribute = new S2PropertyAttribute(
+						propertyDesc);
+				attributes.put(propertyDesc.getPropertyName(), attribute);
 			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public Class<?> getBeanClass() {
-			return s2BeanDesc.getBeanClass();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public PropertyDesc getPropertyDesc(final String propertyName)
-				throws PropertyNotFoundException {
-			if (!propertyDescMap.containsKey(propertyName)) {
-				throw new PropertyNotFoundException(s2BeanDesc.getBeanClass(),
-						propertyName);
-			}
-			return propertyDescMap.get(propertyName);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public PropertyDesc[] getPropertyDescs() {
-			return propertyDescMap.values().toArray(new PropertyDesc[0]);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasPropertyDesc(final String propertyName) {
-			return propertyDescMap.containsKey(propertyName);
+			return attributes;
 		}
 
 	}
@@ -169,9 +126,8 @@ public class S2BeanDescProvider implements BeanDescProvider {
 	 * </p>
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
-	private static class S2PropertyDescImpl implements PropertyDesc {
+	private static class S2PropertyAttribute implements Attribute {
 
 		/** Seasar2 の {@link org.seasar.framework.beans.PropertyDesc} */
 		private final org.seasar.framework.beans.PropertyDesc s2PropertyDesc;
@@ -188,7 +144,7 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		 * @param s2PropertyDesc
 		 *            Seasar2 の {@link org.seasar.framework.beans.PropertyDesc}
 		 */
-		S2PropertyDescImpl(
+		S2PropertyAttribute(
 				final org.seasar.framework.beans.PropertyDesc s2PropertyDesc) {
 			this.s2PropertyDesc = s2PropertyDesc;
 			this.parameterizedClassDesc = new S2ParameterizedClassDesc(
@@ -198,43 +154,15 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		/**
 		 * {@inheritDoc}
 		 */
-		public String getPropertyName() {
+		public String getName() {
 			return s2PropertyDesc.getPropertyName();
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public Class<?> getPropertyType() {
+		public Class<?> getType() {
 			return s2PropertyDesc.getPropertyType();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public Method getReadMethod() {
-			return s2PropertyDesc.getReadMethod();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasReadMethod() {
-			return s2PropertyDesc.hasReadMethod();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public Method getWriteMethod() {
-			return s2PropertyDesc.getWriteMethod();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public boolean hasWriteMethod() {
-			return s2PropertyDesc.hasWriteMethod();
 		}
 
 		/**
@@ -255,11 +183,11 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		 * {@inheritDoc}
 		 */
 		public Object getValue(final Object target)
-				throws IllegalPropertyException, IllegalStateException {
+				throws IllegalAttributeException {
 			try {
 				return s2PropertyDesc.getValue(target);
 			} catch (final IllegalPropertyRuntimeException e) {
-				throw new IllegalPropertyException(e.getTargetClass(), e
+				throw new IllegalAttributeException(e.getTargetClass(), e
 						.getPropertyName(), e);
 			}
 		}
@@ -268,11 +196,11 @@ public class S2BeanDescProvider implements BeanDescProvider {
 		 * {@inheritDoc}
 		 */
 		public void setValue(final Object target, final Object value)
-				throws IllegalPropertyException, IllegalStateException {
+				throws IllegalAttributeException {
 			try {
 				s2PropertyDesc.setValue(target, value);
 			} catch (final IllegalPropertyRuntimeException e) {
-				throw new IllegalPropertyException(e.getTargetClass(), e
+				throw new IllegalAttributeException(e.getTargetClass(), e
 						.getPropertyName(), e);
 			}
 		}
@@ -433,6 +361,65 @@ public class S2BeanDescProvider implements BeanDescProvider {
 			return this.getAnnotation(annotationClass) != null;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime
+					* result
+					+ ((s2PropertyDesc == null) ? 0 : s2PropertyDesc.hashCode());
+			result = prime * result
+					+ s2PropertyDesc.getBeanDesc().getBeanClass().hashCode();
+			result = prime * result
+					+ s2PropertyDesc.getPropertyName().hashCode();
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final S2PropertyAttribute other = (S2PropertyAttribute) obj;
+			if (s2PropertyDesc == null) {
+				if (other.s2PropertyDesc != null) {
+					return false;
+				}
+			} else {
+				if (!s2PropertyDesc.getBeanDesc().getBeanClass().equals(
+						other.s2PropertyDesc.getBeanDesc().getBeanClass())) {
+					return false;
+				}
+				if (!s2PropertyDesc.getPropertyName().equals(
+						other.s2PropertyDesc.getPropertyName())) {
+					return false;
+				}
+			}
+			return true;
+		}
+
 	}
 
 	/**
@@ -443,7 +430,6 @@ public class S2BeanDescProvider implements BeanDescProvider {
 	 * </p>
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	private static class S2ParameterizedClassDesc implements
 			ParameterizedClassDesc {
