@@ -4,13 +4,12 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link rel="stylesheet" type="text/css" href="${contextPath}/style/style.css" />
-<link rel="stylesheet" type="text/css" href="${contextPath}/style/niftyCorners.css" />
 <c:forTokens var="file" items="${param.cssFiles}" delims=",">
 	<link rel="stylesheet" type="text/css" href="${contextPath}/style/${file}.css" />
 </c:forTokens>
 <link rel="shortcut icon" href="${contextPath}/image/favicon.ico"> 
-<script type="text/javascript" src="${contextPath}/script/niftycube.js"></script>
-<script type="text/javascript" src="${contextPath}/script/prototype-1.6.0.2.js"></script>
+<script type="text/javascript" src="${contextPath}/script/prototype.js"></script>
+<script type="text/javascript" src="${contextPath}/script/rico.js"></script>
 <c:forTokens var="file" items="${param.jsFiles}" delims=",">
 	<script type="text/javascript" src="${contextPath}/script/${file}"></script>
 </c:forTokens>
