@@ -101,8 +101,18 @@
     <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</developerConnection>
     <url>https://www.seasar.org/svn/cubby/branches/1.1.x/cubby-project/</url>
   </scm>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
