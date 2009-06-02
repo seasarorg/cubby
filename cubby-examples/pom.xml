@@ -84,7 +84,6 @@ line.separator=\n
           </container>
         </configuration>
         <executions>
-          <!--
           <execution>
             <id>tomcat-start</id>
             <phase>pre-integration-test</phase>
@@ -102,7 +101,6 @@ line.separator=\n
               <goal>stop</goal>
             </goals>
           </execution>
-          -->
         </executions>
       </plugin>
 	  <plugin>
@@ -110,7 +108,6 @@ line.separator=\n
 	    <artifactId>selenium-maven-plugin</artifactId>
         <version>1.0-beta-3</version>
 	    <executions>
-          <!-- 
 	      <execution>
 	        <id>selenese-firefox</id>
 	          <phase>integration-test</phase>
@@ -121,7 +118,6 @@ line.separator=\n
 	            <browser>*firefox</browser>
 	          </configuration>
 	        </execution>
-	        -->
 	      </executions>
 	      <configuration>
 	      	<background>true</background>
