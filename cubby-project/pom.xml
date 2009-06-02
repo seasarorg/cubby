@@ -5,7 +5,7 @@
   <artifactId>cubby-project</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Project</name>
-  <version>1.1.7-SNAPSHOT</version>
+  <version>1.1.6-SNAPSHOT</version>
   <description>Cubby Simple Web Application Framework</description>
   <url>http://cubby.seasar.org/11x/</url>
   <inceptionYear>2006</inceptionYear>
