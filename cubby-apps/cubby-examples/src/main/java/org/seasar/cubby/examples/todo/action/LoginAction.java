@@ -19,6 +19,9 @@ import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
 
 import java.util.Map;
 
+import net.sf.oval.constraint.NotEmpty;
+import net.sf.oval.constraint.NotNull;
+
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
@@ -29,11 +32,12 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.UserDao;
 import org.seasar.cubby.examples.todo.entity.User;
+import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.cubby.validator.validators.RequiredValidator;
 import org.seasar.framework.aop.annotation.InvalidateSession;
 
 /**
@@ -50,9 +54,11 @@ public class LoginAction {
 	public ValidationRules loginValidation = new DefaultValidationRules(
 			"login.") {
 		@Override
-		public void initialize() {
-			add("userId", new RequiredValidator());
-			add("password", new RequiredValidator());
+		public void initialize(String resourceKeyPrefix) {
+			// add("userId", new RequiredValidator());
+			// add("password", new RequiredValidator());
+			add(new ConversionValidationRule(resourceKeyPrefix));
+			add(new OvalValidationRule(resourceKeyPrefix));
 			add(DATA_CONSTRAINT, new UserValidationRule());
 		}
 	};
@@ -65,9 +71,13 @@ public class LoginAction {
 
 	// ----------------------------------------------[Attribute]
 
+	@NotNull
+	@NotEmpty
 	@RequestParameter
 	public String userId;
 
+	@NotNull
+	@NotEmpty
 	@RequestParameter
 	public String password;
 

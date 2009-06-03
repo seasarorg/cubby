@@ -30,9 +30,10 @@ import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
 import org.seasar.cubby.examples.todo.dto.TodoConditionDto;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
+import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.cubby.validator.validators.DateFormatValidator;
 
 /**
  * 一覧画面
@@ -45,10 +46,12 @@ public class TodoListAction {
 
 	// ----------------------------------------------[Validation]
 
-	public ValidationRules validation = new DefaultValidationRules() {
+	public ValidationRules validation = new DefaultValidationRules("todo.") {
 		@Override
-		public void initialize() {
-			add("limitDate", new DateFormatValidator());
+		public void initialize(String resourceKeyPrefix) {
+			// add("limitDate", new DateFormatValidator());
+			add(new ConversionValidationRule(resourceKeyPrefix));
+			add(new OvalValidationRule(resourceKeyPrefix));
 		}
 	};
 
