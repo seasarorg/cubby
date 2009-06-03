@@ -5,7 +5,7 @@
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Applications</name>
-  <version>1.1.7-SNAPSHOT</version>
+  <version>1.1.6-SNAPSHOT</version>
   <description>Cubby Sample Applications</description>
   <url>http://cubby.seasar.org/11x/cubby-apps</url>
   <inceptionYear>2006</inceptionYear>
