@@ -79,8 +79,8 @@ public class LoginActionTest extends CubbyTestCase {
 		assertEquals(2, errors.getFields().size());
 		assertEquals(1, errors.getFields().get("userId").size());
 		assertEquals(1, errors.getFields().get("password").size());
-		assertEquals("ユーザ名は必須です。", errors.getFields().get("userId").get(0));
-		assertEquals("パスワードは必須です。", errors.getFields().get("password").get(0));
+		assertEquals("ユーザ名はヌル値ではいけません。", errors.getFields().get("userId").get(0));
+		assertEquals("パスワードはヌル値ではいけません。", errors.getFields().get("password").get(0));
 		assertNull(action.sessionScope.get("user"));
 	}
 }
