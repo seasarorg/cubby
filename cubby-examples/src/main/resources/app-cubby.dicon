@@ -35,4 +35,7 @@
 		<property name="baseName">"messages"</property>
 	</component>
 
+	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver"/>
+	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleOvalContextRenderer"/>
+
 </components>

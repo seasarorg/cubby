@@ -20,6 +20,10 @@ import static org.seasar.cubby.util.ActionUtils.flash;
 
 import java.util.List;
 
+import net.sf.oval.constraint.MaxLength;
+import net.sf.oval.constraint.NotEmpty;
+import net.sf.oval.constraint.NotNull;
+
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
@@ -32,11 +36,10 @@ import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
 import org.seasar.cubby.examples.todo.dxo.TodoDxo;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
+import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
-import org.seasar.cubby.validator.validators.DateFormatValidator;
-import org.seasar.cubby.validator.validators.MaxLengthValidator;
-import org.seasar.cubby.validator.validators.RequiredValidator;
 
 /**
  * 詳細・追加・編集・確認・保存
@@ -47,13 +50,16 @@ public class TodoAction {
 
 	// ----------------------------------------------[Validation]
 
-	public ValidationRules validation = new DefaultValidationRules() {
+	public ValidationRules validation = new DefaultValidationRules("todo.") {
 		@Override
-		public void initialize() {
-			add("text", new RequiredValidator(), new MaxLengthValidator(10));
-			add("memo", new RequiredValidator(), new MaxLengthValidator(100));
-			add("typeId", "type", new RequiredValidator());
-			add("limitDate", new DateFormatValidator());
+		public void initialize(String resourceKeyPrefix) {
+			// add("text", new RequiredValidator(), new MaxLengthValidator(10));
+			// add("memo", new RequiredValidator(), new
+			// MaxLengthValidator(100));
+			// add("typeId", "type", new RequiredValidator());
+			// add("limitDate", new DateFormatValidator());
+			add(new ConversionValidationRule(resourceKeyPrefix));
+			add(new OvalValidationRule(resourceKeyPrefix));
 		}
 	};
 
@@ -71,12 +77,19 @@ public class TodoAction {
 	public Integer id;
 
 	@RequestParameter
+	@NotNull
+	@NotEmpty
+	@MaxLength(10)
 	public String text;
 
 	@RequestParameter
+	@NotNull
+	@NotEmpty
+	@MaxLength(100)
 	public String memo;
 
 	@RequestParameter
+	@NotNull
 	public Integer typeId;
 
 	@RequestParameter
