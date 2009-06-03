@@ -3,7 +3,7 @@
   <parent>
     <artifactId>cubby-project</artifactId>
     <groupId>org.seasar.cubby</groupId>
-	<version>2.0.0-beta3-SNAPSHOT</version>
+	<version>2.0.0-beta3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby-guice</artifactId>
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>2.0.0-beta3-SNAPSHOT</version>
+      <version>2.0.0-beta3</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.guice</groupId>
