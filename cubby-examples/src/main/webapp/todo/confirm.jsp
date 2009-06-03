@@ -21,7 +21,7 @@
 <t:input type="hidden" name="id"/>
 <t:input type="hidden" name="text"/>
 <t:input type="hidden" name="typeId"/>
-<t:input type="hidden" name="limitDate" value="${limitDate}"/>
+<t:input type="hidden" name="limitDate" value="${f:dateFormat(limitDate, 'yyyy-MM-dd')}"/>
 <t:input type="hidden" name="memo"/>
 <table border="1">
   <tr>
@@ -34,7 +34,7 @@
   </tr>
   <tr>
     <th>期限日</th>
-    <td>${f:out(limitDate)}</td>
+    <td>${f:dateFormat(limitDate, 'yyyy-MM-dd')}</td>
   </tr>
   <tr>
     <th>メモ</th>

@@ -38,7 +38,7 @@ function doDelete(name, id) {
   </tr>
   <tr>
     <th>期限日</th>
-    <td>${f:out(limitDate)}</td>
+    <td>${f:dateFormat(limitDate, 'yyyy-MM-dd')}</td>
   </tr>
   <tr>
   <th>メモ</th>

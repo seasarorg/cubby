@@ -18,6 +18,7 @@ package org.seasar.cubby.examples.todo.action;
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
 import static org.seasar.cubby.util.ActionUtils.flash;
 
+import java.util.Date;
 import java.util.List;
 
 import net.sf.oval.constraint.MaxLength;
@@ -93,7 +94,7 @@ public class TodoAction {
 	public Integer typeId;
 
 	@RequestParameter
-	public String limitDate;
+	public Date limitDate;
 
 	public TodoType todoType;
 
