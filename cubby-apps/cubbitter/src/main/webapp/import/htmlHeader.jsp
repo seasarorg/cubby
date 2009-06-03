@@ -10,6 +10,7 @@
 <link rel="shortcut icon" href="${contextPath}/image/favicon.ico"> 
 <script type="text/javascript" src="${contextPath}/script/prototype.js"></script>
 <script type="text/javascript" src="${contextPath}/script/rico.js"></script>
+<script type="text/javascript" src="${contextPath}/script/ricoStyles.js"></script>
 <c:forTokens var="file" items="${param.jsFiles}" delims=",">
 	<script type="text/javascript" src="${contextPath}/script/${file}"></script>
 </c:forTokens>
