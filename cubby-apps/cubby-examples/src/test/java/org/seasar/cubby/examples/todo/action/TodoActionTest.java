@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
+import java.util.Calendar;
+
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.examples.H2ScriptRunner;
@@ -54,6 +56,11 @@ public class TodoActionTest extends CubbyTestCase {
 		assertEquals("todo1 memo", action.memo);
 		assertEquals(new Integer(1), action.todoType.getId());
 		assertEquals("type1", action.todoType.getName());
-		assertEquals("2008-01-01", action.limitDate);
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.setTime(action.limitDate);
+		assertEquals(2008, calendar.get(Calendar.YEAR));
+		assertEquals(Calendar.JANUARY, calendar.get(Calendar.MONTH));
+		assertEquals(1, calendar.get(Calendar.DATE));
 	}
 }
