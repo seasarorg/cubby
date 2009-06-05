@@ -92,13 +92,14 @@ line.separator=\n
   </build>
   <repositories>
     <repository>
-      <id>local</id>
-      <url>file:\${basedir}/m2repo</url>
-    </repository>
-    <repository>
       <id>maven.seasar.org</id>
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    <repository>
+      <id>google-maven-repository</id>
+      <name>Google Maven Repository</name>
+      <url>http://google-maven-repository.googlecode.com/svn/repository/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -146,17 +147,15 @@ line.separator=\n
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.code.guice</groupId>
+      <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice-version}</version>
     </dependency>
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
     <dependency>
-      <groupId>com.google.code.guice</groupId>
+      <groupId>com.google.inject.integration</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice-version}</version>
     </dependency>
-#end
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
