@@ -24,9 +24,6 @@
     <requiredProperty key="guice-version">
       <defaultValue>1.0</defaultValue>
     </requiredProperty>
-    <requiredProperty key="use-guice-servlet">
-      <defaultValue>true</defaultValue>
-    </requiredProperty>
   </requiredProperties>
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">

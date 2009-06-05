@@ -20,11 +20,9 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
 
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import com.google.inject.servlet.RequestScoped;
 
 @RequestScoped
-#end
 @Path("/")
 public class IndexAction extends Action {
 

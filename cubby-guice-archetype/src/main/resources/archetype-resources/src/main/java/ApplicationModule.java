@@ -17,14 +17,12 @@ package ${package};
 
 import javax.servlet.http.HttpServletRequest;
 
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
-#end
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
@@ -35,10 +33,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
-#end
 
 import ${package}.action.HelloAction;
 import ${package}.action.IndexAction;
@@ -60,13 +56,10 @@ public class ApplicationModule extends AbstractModule {
 			}
 
 		});
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 		install(new ServletModule());
 
 		configureFileUpload();
-#end
 	}
-#if ($use-guice-servlet.matches("(?i)y|yes|true|on"))
 
 	protected void configureFileUpload() {
 		// "org.apache.commons.fileupload.disk.DiskFileItemFactory" uses the local file system temporary.
@@ -109,6 +102,5 @@ public class ApplicationModule extends AbstractModule {
 		}
 
 	}
-#end
 
 }
