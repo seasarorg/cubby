@@ -30,6 +30,14 @@ import org.seasar.cubby.spi.container.LookupException;
 
 public class OvalPlugin extends AbstractPlugin {
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * {@link LoggerFactorySLF4JImpl} を引数に {link
+	 * {@link Validator#setLoggerFactory(net.sf.oval.logging.LoggerFactory)}
+	 * を実行して、ロガーに SLF4J を使用するように設定します。
+	 * </p>
+	 */
 	public void initialize(final ServletConfig config) {
 		Validator.setLoggerFactory(new LoggerFactorySLF4JImpl());
 	}
@@ -53,13 +61,19 @@ public class OvalPlugin extends AbstractPlugin {
 		}
 	}
 
-	// /**
-	// * {@inheritDoc}
-	// */
-	// public <S extends Provider> S getProvider(final Class<S> service) {
-	// return null;
-	// }
-
+	/**
+	 * {@link MessageResolver} を生成します。
+	 * <p>
+	 * 指定されたコンテナから {@link MessageResolver} のインスタンスを取得しますが、コンテナに登録されていない場合は
+	 * <code>null</code> を返します。その場合は
+	 * {@link Validator#setMessageResolver(MessageResolver)} を実行しないので Oval
+	 * デフォルトの動作になります。
+	 * </p>
+	 * 
+	 * @param container
+	 *            コンテナ
+	 * @return {@link MessageResolver}
+	 */
 	protected MessageResolver buildMessageResolver(final Container container) {
 		try {
 			return container.lookup(MessageResolver.class);
@@ -68,6 +82,19 @@ public class OvalPlugin extends AbstractPlugin {
 		}
 	}
 
+	/**
+	 * {@link OValContextRenderer} を生成します。
+	 * <p>
+	 * 指定されたコンテナから {@link OValContextRenderer} のインスタンスを取得しますが、コンテナに登録されていない場合は
+	 * <code>null</code> を返します。その場合は
+	 * {@link Validator#setContextRenderer(OValContextRenderer)} を実行しないので Oval
+	 * デフォルトの動作になります。
+	 * </p>
+	 * 
+	 * @param container
+	 *            コンテナ
+	 * @return {@link MessageResolver}
+	 */
 	protected OValContextRenderer buildOvalContextRenderer(
 			final Container container) {
 		try {
@@ -75,10 +102,6 @@ public class OvalPlugin extends AbstractPlugin {
 		} catch (final LookupException e) {
 			return null;
 		}
-	}
-
-	public static class Context {
-
 	}
 
 }

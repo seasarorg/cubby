@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.action.impl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -23,63 +23,108 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-class FlashMap<K, V> implements Map<K, V> {
+import org.seasar.cubby.action.FlashMap;
 
-	private static final String ATTRIBUTE_NAME = FlashMap.class.getName()
+/**
+ * フラッシュメッセージをセッションに格納するための {@link Map} です。
+ * <p>
+ * 実際に値が設定されるまではセッションを使用しません。
+ * </p>
+ * 
+ * @author baba
+ */
+public class FlashMapImpl implements FlashMap {
+
+	/** セッションに格納するキー。 */
+	private static final String ATTRIBUTE_NAME = FlashMapImpl.class.getName()
 			+ ".MAP";
 
+	/** 要求。 */
 	private final HttpServletRequest request;
 
-	private final Map<K, V> map;
+	/** 実際に値を格納する {@link Map}。 */
+	private final Map<String, Object> map;
 
-	FlashMap(final HttpServletRequest request) {
+	/**
+	 * インスタンス化します。
+	 * 
+	 * @param request
+	 *            要求
+	 */
+	public FlashMapImpl(final HttpServletRequest request) {
 		this.request = request;
 		this.map = buildMap(request);
 	}
 
-	private Map<K, V> buildMap(final HttpServletRequest request) {
+	private Map<String, Object> buildMap(final HttpServletRequest request) {
 		final HttpSession session = request.getSession(false);
 		if (session != null) {
-			final Map<K, V> map = getAttribute(session, ATTRIBUTE_NAME);
+			final Map<String, Object> map = getAttribute(session,
+					ATTRIBUTE_NAME);
 			if (map != null) {
 				return map;
 			}
 		}
-		return new ConcurrentHashMap<K, V>();
+		return createMap();
+	}
+
+	protected Map<String, Object> createMap() {
+		return new ConcurrentHashMap<String, Object>();
 	}
 
 	private void export(final HttpSession session) {
 		session.setAttribute(ATTRIBUTE_NAME, this.map);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int size() {
 		return map.size();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean containsKey(final Object key) {
 		return map.containsKey(key);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean containsValue(final Object value) {
 		return map.containsValue(value);
 	}
 
-	public V get(final Object key) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object get(final Object key) {
 		return map.get(key);
 	}
 
-	public V put(final K key, final V value) {
-		final V previousValue = map.put(key, value);
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object put(final String key, final Object value) {
+		final Object previousValue = map.put(key, value);
 		export(request.getSession());
 		return previousValue;
 	}
 
-	public V remove(final Object key) {
-		final V removedValue = map.remove(key);
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object remove(final Object key) {
+		final Object removedValue = map.remove(key);
 		final HttpSession session = request.getSession(false);
 		if (session != null) {
 			export(session);
@@ -87,11 +132,17 @@ class FlashMap<K, V> implements Map<K, V> {
 		return removedValue;
 	}
 
-	public void putAll(final Map<? extends K, ? extends V> t) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public void putAll(final Map<? extends String, ? extends Object> t) {
 		map.putAll(t);
 		export(request.getSession());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void clear() {
 		map.clear();
 		final HttpSession session = request.getSession(false);
@@ -100,15 +151,24 @@ class FlashMap<K, V> implements Map<K, V> {
 		}
 	}
 
-	public Set<K> keySet() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<String> keySet() {
 		return map.keySet();
 	}
 
-	public Collection<V> values() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<Object> values() {
 		return map.values();
 	}
 
-	public Set<Entry<K, V>> entrySet() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Set<Entry<String, Object>> entrySet() {
 		return map.entrySet();
 	}
 

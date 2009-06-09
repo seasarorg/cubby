@@ -20,7 +20,7 @@ package org.seasar.cubby.plugins.guice;
  * 
  * @author baba
  */
-public class IllegalModuleException extends RuntimeException {
+public class IllegalModuleException extends Exception {
 
 	/** シリアルバージョン UID。 */
 	private static final long serialVersionUID = 1L;

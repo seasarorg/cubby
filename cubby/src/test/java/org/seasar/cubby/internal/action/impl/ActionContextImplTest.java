@@ -39,6 +39,7 @@ import org.seasar.cubby.action.InitializeMethod;
 import org.seasar.cubby.action.PostRenderMethod;
 import org.seasar.cubby.action.PreRenderMethod;
 import org.seasar.cubby.action.RequestParameterBindingType;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.BeanDescProvider;

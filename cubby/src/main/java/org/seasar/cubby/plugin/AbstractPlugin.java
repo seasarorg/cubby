@@ -58,7 +58,8 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void initialize(final ServletContext servletContext) {
+	public void initialize(final ServletContext servletContext)
+			throws Exception {
 	}
 
 	/**
@@ -78,7 +79,7 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void ready() {
+	public void ready() throws Exception {
 	}
 
 	/**

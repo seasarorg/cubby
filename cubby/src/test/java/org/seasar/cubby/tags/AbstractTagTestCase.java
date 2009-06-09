@@ -41,7 +41,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
-import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;

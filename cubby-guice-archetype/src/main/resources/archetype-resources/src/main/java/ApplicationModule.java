@@ -44,6 +44,7 @@ public class ApplicationModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new ServletModule());
 		install(new AbstractCubbyModule() {
 
 			@Override
@@ -56,7 +57,6 @@ public class ApplicationModule extends AbstractModule {
 			}
 
 		});
-		install(new ServletModule());
 
 		configureFileUpload();
 	}

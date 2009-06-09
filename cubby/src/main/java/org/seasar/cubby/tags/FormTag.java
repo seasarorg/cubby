@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.tags;
 
-import static org.seasar.cubby.internal.util.LogMessages.format;
 import static org.seasar.cubby.tags.TagUtils.getContextPath;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -36,8 +35,6 @@ import org.seasar.cubby.internal.controller.FormWrapper;
 import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 import org.seasar.cubby.util.LinkBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * フォームを出力するタグライブラリ。
@@ -54,9 +51,6 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 
 	/** シリアルバージョン UID */
 	private static final long serialVersionUID = 1L;
-
-	/** ロガー。 */
-	private static final Logger logger = LoggerFactory.getLogger(FormTag.class);
 
 	/** DynamicAttributes */
 	private final Map<String, Object> dynamicAttributes = new HashMap<String, Object>();
@@ -171,11 +165,6 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		if (this.value == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(format("ECUB1006"));
-			}
-		}
 		final FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
 		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;

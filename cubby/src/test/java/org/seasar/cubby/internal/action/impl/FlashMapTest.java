@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.internal.action.impl;
 
 import static org.easymock.EasyMock.anyBoolean;
 import static org.easymock.EasyMock.createMock;
@@ -37,6 +37,7 @@ import javax.servlet.http.HttpSession;
 
 import org.easymock.IAnswer;
 import org.junit.Test;
+import org.seasar.cubby.action.impl.FlashMapImpl;
 
 /**
  * 
@@ -83,9 +84,9 @@ public class FlashMapTest {
 			}
 
 		});
-		expect(session.getAttribute(FlashMap.class.getName() + ".MAP"))
+		expect(session.getAttribute(FlashMapImpl.class.getName() + ".MAP"))
 				.andStubReturn(mapInSession);
-		session.setAttribute(eq(FlashMap.class.getName() + ".MAP"),
+		session.setAttribute(eq(FlashMapImpl.class.getName() + ".MAP"),
 				isA(Map.class));
 		expectLastCall().andAnswer(new IAnswer<Object>() {
 
@@ -130,7 +131,7 @@ public class FlashMapTest {
 		});
 		replay(request, session);
 
-		Map<String, Object> map = new FlashMap<String, Object>(request);
+		Map<String, Object> map = new FlashMapImpl(request);
 		assertEquals(0, map.size());
 		assertTrue(map.isEmpty());
 		assertTrue(map.keySet().isEmpty());
