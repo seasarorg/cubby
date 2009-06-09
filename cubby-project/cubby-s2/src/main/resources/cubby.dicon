@@ -38,4 +38,8 @@
 	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider" />
 	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider" />
 
+	<!-- request -->
+	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
+	<component class="org.seasar.cubby.action.impl.FlashMapImpl" instance="request" />
+
 </components>

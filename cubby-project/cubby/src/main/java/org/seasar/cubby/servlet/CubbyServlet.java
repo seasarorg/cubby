@@ -57,7 +57,11 @@ public class CubbyServlet extends GenericServlet {
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
 		pluginManager = buildPluginManager();
-		pluginManager.init(config.getServletContext());
+		try {
+			pluginManager.init(config.getServletContext());
+		} catch (final Exception e) {
+			throw new ServletException(e);
+		}
 	}
 
 	/**

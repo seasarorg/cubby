@@ -35,13 +35,18 @@ public interface Plugin {
 	// プラグインのライフサイクル
 
 	/**
+	 * このプラグインを初期化します。
+	 * <p>
 	 * <code>CubbyFilter</code> がサービスを提供できるようになった時に実行されます。
+	 * </p>
 	 * 
 	 * @param servletContext
 	 *            呼び出し元が現在実行している {@link ServletContext} への参照
+	 * @throws Exception
+	 *             プラグインの初期化に失敗した場合
 	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
 	 */
-	void initialize(ServletContext servletContext);
+	void initialize(ServletContext servletContext) throws Exception;
 
 	/**
 	 * このプラグインが提供するサービスプロバイダを取得します。
@@ -65,12 +70,21 @@ public interface Plugin {
 	Set<Class<? extends Provider>> getSupportedServices();
 
 	/**
+	 * このプラグインを準備します。
+	 * <p>
 	 * プラグインの準備が完了した時に実行されます。
+	 * </p>
+	 * 
+	 * @throws Exception
+	 *             プラグインの準備に失敗した場合
 	 */
-	void ready();
+	void ready() throws Exception;
 
 	/**
-	 * <code>CubbyFilter</code> がサービス提供を 停止するときに実行されます。
+	 * このプラグインを破棄します。
+	 * <p>
+	 * <code>CubbyFilter</code> がサービスの提供を停止するときに実行されます。
+	 * </p>
 	 * 
 	 * @see javax.servlet.Filter#destroy()
 	 */

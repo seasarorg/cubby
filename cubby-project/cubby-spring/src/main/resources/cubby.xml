@@ -56,5 +56,12 @@
 		scope="singleton">
 	</bean>
 
+	<bean id="actionErrors" class="org.seasar.cubby.action.impl.ActionErrorsImpl"
+		scope="request">
+	</bean>
+
+	<bean id="flashMap" class="org.seasar.cubby.action.impl.FlashMapImpl"
+		scope="request">
+	</bean>
 
 </beans>

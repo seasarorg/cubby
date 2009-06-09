@@ -88,7 +88,9 @@ public class S2ContainerPlugin extends AbstractPlugin {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initialize(final ServletContext servletContext) {
+	public void initialize(final ServletContext servletContext)
+			throws Exception {
+		super.initialize(servletContext);
 		this.servletContext = servletContext;
 	}
 

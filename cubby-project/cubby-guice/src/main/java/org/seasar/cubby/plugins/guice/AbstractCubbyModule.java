@@ -22,6 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.FlashMap;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.FlashMapImpl;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.RequestParser;
@@ -66,6 +72,7 @@ import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import com.google.inject.servlet.RequestScoped;
 
 /**
  * Cubby の設定を行う {@link Module} の抽象クラスです。
@@ -124,6 +131,9 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 
 		configureMessagesBehaviour();
 		configureFormatPattern();
+
+		configureActionErrors();
+		configureFlashMap();
 	}
 
 	/**
@@ -238,6 +248,67 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	protected void configureFormatPattern() {
 		bind(FormatPattern.class).to(DefaultFormatPattern.class).in(
 				Singleton.class);
+	}
+
+	/**
+	 * {@link ActionErrors} を構成します。
+	 * <p>
+	 * {@link ActionErrors} を {@link ActionErrorsImpl} にバインドします。
+	 * </p>
+	 */
+	protected void configureActionErrors() {
+		bind(ActionErrors.class).to(ActionErrorsImpl.class).in(
+				RequestScoped.class);
+	}
+
+	/**
+	 * {@link FlashMap} を構成します。
+	 * <p>
+	 * {@link FlashMap} を {@link FlashMapImpl} にバインドします。
+	 * </p>
+	 */
+	protected void configureFlashMap() {
+		bind(FlashMap.class).toProvider(new Provider<FlashMap>() {
+
+			@Inject
+			private HttpServletRequest request;
+
+			public FlashMap get() {
+				return new FlashMapImpl(request);
+			}
+
+		}).in(RequestScoped.class);
+	}
+
+	/**
+	 * {@link FlashMap} のプロバイダ
+	 * 
+	 * @author baba
+	 * 
+	 */
+	static class FlashMapProvider implements Provider<FlashMap> {
+
+		/** 要求 */
+		private HttpServletRequest request;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param request
+		 *            要求
+		 */
+		@Inject
+		public FlashMapProvider(final HttpServletRequest request) {
+			this.request = request;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public FlashMap get() {
+			return new FlashMapImpl(request);
+		}
+
 	}
 
 }

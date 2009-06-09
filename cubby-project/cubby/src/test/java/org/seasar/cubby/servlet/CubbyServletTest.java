@@ -113,17 +113,20 @@ public class CubbyServletTest {
 		}
 
 		@Override
-		public void initialize(ServletContext servletContext) {
+		public void initialize(ServletContext servletContext) throws Exception {
+			super.initialize(servletContext);
 			initialized = true;
 		}
 
 		@Override
-		public void ready() {
+		public void ready() throws Exception {
+			super.ready();
 			ready = true;
 		}
 
 		@Override
 		public void destroy() {
+			super.destroy();
 			destroyed = true;
 		}
 

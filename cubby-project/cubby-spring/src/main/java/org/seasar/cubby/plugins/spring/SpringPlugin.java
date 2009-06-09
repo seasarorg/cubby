@@ -80,7 +80,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  *      ApplicationContext instantiation for web applications</a>
  * 
  * @since 2.0.0
- * 
  */
 public class SpringPlugin extends AbstractPlugin {
 
@@ -94,18 +93,25 @@ public class SpringPlugin extends AbstractPlugin {
 		support(ConverterProvider.class);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void initialize(final ServletContext servletContext) {
+	public void initialize(final ServletContext servletContext)
+			throws Exception {
 		super.initialize(servletContext);
 		this.applicationContext = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(servletContext);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public <S extends Provider> S getProvider(Class<S> service) {
+	public <S extends Provider> S getProvider(final Class<S> service) {
 
 		if (this.isSupport(service)) {
-			String[] names = BeanFactoryUtils
+			final String[] names = BeanFactoryUtils
 					.beanNamesForTypeIncludingAncestors(applicationContext,
 							service);
 			return service.cast(applicationContext.getBean(names[0]));

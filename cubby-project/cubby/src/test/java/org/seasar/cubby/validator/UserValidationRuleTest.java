@@ -35,7 +35,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.BeanDescProvider;

@@ -58,8 +58,10 @@ public class PluginManager {
 	 * 
 	 * @param servletContext
 	 *            サーブレットコンテキスト
+	 * @throws Exception
+	 *             プラグインの初期化や準備に失敗した場合
 	 */
-	public void init(final ServletContext servletContext) {
+	public void init(final ServletContext servletContext) throws Exception {
 		final Collection<Plugin> plugins = loadPlugins();
 		initializePlugins(servletContext, plugins);
 		registerPlugins(pluginRegistry, plugins);
@@ -95,9 +97,11 @@ public class PluginManager {
 	 *            呼び出し元が現在実行している {@link ServletContext} への参照
 	 * @param plugins
 	 *            プラグインのコレクション
+	 * @throws Exception
+	 *             プラグインの初期化に失敗した場合
 	 */
 	protected void initializePlugins(final ServletContext servletContext,
-			final Collection<Plugin> plugins) {
+			final Collection<Plugin> plugins) throws Exception {
 		for (final Plugin plugin : plugins) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(format("DCUB0019", plugin));
@@ -135,8 +139,11 @@ public class PluginManager {
 	 * 
 	 * @param plugins
 	 *            プラグインのコレクション
+	 * @throws Exception
+	 *             プラグインの準備に失敗した場合
 	 */
-	private void readyPlugins(final Collection<Plugin> plugins) {
+	private void readyPlugins(final Collection<Plugin> plugins)
+			throws Exception {
 		for (final Plugin plugin : plugins) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(format("DCUB0021", plugin));

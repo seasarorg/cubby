@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 
 public class ActionTest {
 

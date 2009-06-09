@@ -28,7 +28,7 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.internal.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
