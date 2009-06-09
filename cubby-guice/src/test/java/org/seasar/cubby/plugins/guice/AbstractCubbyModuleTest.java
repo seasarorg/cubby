@@ -22,9 +22,17 @@ import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.replay;
 
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,17 +47,20 @@ import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.servlet.GuiceFilter;
+import com.google.inject.servlet.ServletModule;
 
 public class AbstractCubbyModuleTest {
 
 	@Test
 	public void configure() throws Exception {
-		HttpServletRequest request = createNiceMock(HttpServletRequest.class);
-		HttpServletResponse response = createNiceMock(HttpServletResponse.class);
-		ServletContext servletContext = createNiceMock(ServletContext.class);
+		final HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		final HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		final ServletContext servletContext = createNiceMock(ServletContext.class);
 		expect(servletContext.getInitParameter("cubby.guice.module"))
 				.andStubReturn(TestModule.class.getName());
 		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
@@ -73,32 +84,80 @@ public class AbstractCubbyModuleTest {
 		});
 		replay(servletContext);
 
-		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-		GuicePlugin guicePlugin = new GuicePlugin();
-		guicePlugin.initialize(servletContext);
-		pluginRegistry.register(guicePlugin);
+		GuiceFilter guiceFilter = new GuiceFilter();
+		guiceFilter.init(new FilterConfig() {
 
-		Injector injector = Guice.createInjector(new TestModule());
-		System.out.println(injector);
-		Foo foo = injector.getInstance(Foo.class);
-		System.out.println(foo.pathResolver);
-		ThreadContext.runInContext(request, response, new Command() {
+			public String getFilterName() {
+				return "guice";
+			}
 
-			public void execute(HttpServletRequest request,
-					HttpServletResponse response) throws Exception {
-				ConverterProvider converterProvider = ProviderFactory
-						.get(ConverterProvider.class);
-				System.out.println(converterProvider);
+			public String getInitParameter(String name) {
+				return null;
+			}
+
+			@SuppressWarnings("unchecked")
+			public Enumeration getInitParameterNames() {
+				return new Vector<String>().elements();
+			}
+
+			public ServletContext getServletContext() {
+				return servletContext;
 			}
 
 		});
+
+		FilterChain chain = new FilterChain() {
+
+			public void doFilter(ServletRequest request,
+					ServletResponse response) throws IOException,
+					ServletException {
+				PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+				GuicePlugin guicePlugin = new GuicePlugin();
+				try {
+					guicePlugin.initialize(servletContext);
+					guicePlugin.ready();
+					pluginRegistry.register(guicePlugin);
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
+
+				Injector injector = Guice.createInjector(new TestModule());
+				System.out.println(injector);
+				Foo foo = injector.getInstance(Foo.class);
+				System.out.println(foo.pathResolver);
+				try {
+					ThreadContext.runInContext((HttpServletRequest) request,
+							(HttpServletResponse) response, new Command() {
+
+								public void execute(HttpServletRequest request,
+										HttpServletResponse response)
+										throws Exception {
+									ConverterProvider converterProvider = ProviderFactory
+											.get(ConverterProvider.class);
+									System.out.println(converterProvider);
+								}
+
+							});
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
+			}
+
+		};
+		guiceFilter.doFilter(request, response, chain);
 	}
 
-	public static class TestModule extends AbstractCubbyModule {
+	public static class TestModule extends AbstractModule {
 
 		@Override
-		protected PathResolver getPathResolver() {
-			return new PathResolverImpl(new PathTemplateParserImpl());
+		protected void configure() {
+			install(new ServletModule());
+			install(new AbstractCubbyModule() {
+				@Override
+				protected PathResolver getPathResolver() {
+					return new PathResolverImpl(new PathTemplateParserImpl());
+				}
+			});
 		}
 
 	}
