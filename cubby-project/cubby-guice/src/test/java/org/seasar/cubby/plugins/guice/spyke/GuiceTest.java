@@ -16,12 +16,12 @@
 package org.seasar.cubby.plugins.guice.spyke;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
+import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -35,7 +35,8 @@ public class GuiceTest {
 		try {
 			injector.getInstance(Foo.class);
 		} catch (RuntimeException e) {
-			if (e.getClass().getName().equals("com.google.inject.ConfigurationException")) {
+			if (e.getClass().getName().equals(
+					"com.google.inject.ConfigurationException")) {
 				System.out.println(e);
 			} else {
 				throw e;
@@ -43,11 +44,11 @@ public class GuiceTest {
 		}
 	}
 
-	@Test
+	@Test(expected = ConfigurationException.class)
 	public void getBinding1() {
 		Key<Foo> key = Key.get(Foo.class);
-		Binding<Foo> binding = injector.getBinding(key);
-		assertNull(binding);
+		injector.getBinding(key);
+		// assertNull(binding);
 	}
 
 	@Test
@@ -61,7 +62,8 @@ public class GuiceTest {
 	public void getBinding3() {
 		Key<Baz> key = Key.get(Baz.class);
 		Binding<Baz> binding = injector.getBinding(key);
-		assertNull(binding);
+		// assertNull(binding);
+		assertNotNull(binding);
 	}
 
 	private static class GuiceTestModule extends AbstractModule {
