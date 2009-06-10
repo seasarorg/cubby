@@ -29,6 +29,7 @@ public class ApplicationModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		install(new ServletModule());
 		install(new AbstractCubbyModule() {
 
 			@Override
@@ -42,7 +43,6 @@ public class ApplicationModule extends AbstractModule {
 			}
 
 		});
-		install(new ServletModule());
 
 		bind(HelloService.class).to(HelloServiceImpl.class).in(Singleton.class);
 
