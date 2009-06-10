@@ -22,8 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
@@ -268,47 +266,7 @@ public abstract class AbstractCubbyModule extends AbstractModule {
 	 * </p>
 	 */
 	protected void configureFlashMap() {
-		bind(FlashMap.class).toProvider(new Provider<FlashMap>() {
-
-			@Inject
-			private HttpServletRequest request;
-
-			public FlashMap get() {
-				return new FlashMapImpl(request);
-			}
-
-		}).in(RequestScoped.class);
-	}
-
-	/**
-	 * {@link FlashMap} のプロバイダ
-	 * 
-	 * @author baba
-	 * 
-	 */
-	static class FlashMapProvider implements Provider<FlashMap> {
-
-		/** 要求 */
-		private HttpServletRequest request;
-
-		/**
-		 * インスタンス化します。
-		 * 
-		 * @param request
-		 *            要求
-		 */
-		@Inject
-		public FlashMapProvider(final HttpServletRequest request) {
-			this.request = request;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		public FlashMap get() {
-			return new FlashMapImpl(request);
-		}
-
+		bind(FlashMap.class).to(FlashMapImpl.class).in(RequestScoped.class);
 	}
 
 }

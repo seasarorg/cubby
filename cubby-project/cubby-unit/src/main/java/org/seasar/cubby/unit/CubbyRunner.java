@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -102,18 +103,30 @@ public class CubbyRunner {
 			final HttpServletResponse response, final Filter... filters)
 			throws Exception {
 
-		final CubbyRunnerPlugin cubbyRunnerPlugin = new CubbyRunnerPlugin();
-		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-		pluginRegistry.register(cubbyRunnerPlugin);
+		final FilterConfig filterConfig = new MockFilterConfig(servletContext);
+		for (final Filter filter : filters) {
+			filter.init(filterConfig);
+		}
 
-		pluginManager.init(servletContext);
-		final ActionInvokeFilterChain chain = new ActionInvokeFilterChain(
-				filters);
-		chain.doFilter(request, response);
-		pluginManager.destroy();
+		try {
+			final CubbyRunnerPlugin cubbyRunnerPlugin = new CubbyRunnerPlugin();
+			final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+			pluginRegistry.register(cubbyRunnerPlugin);
 
-		final ActionResult actionResult = cubbyRunnerPlugin.getActionResult();
-		return actionResult;
+			pluginManager.init(servletContext);
+			final ActionInvokeFilterChain chain = new ActionInvokeFilterChain(
+					filters);
+			chain.doFilter(request, response);
+			pluginManager.destroy();
+
+			final ActionResult actionResult = cubbyRunnerPlugin
+					.getActionResult();
+			return actionResult;
+		} finally {
+			for (final Filter filter : filters) {
+				filter.destroy();
+			}
+		}
 	}
 
 	static class ActionInvokeFilterChain implements FilterChain {

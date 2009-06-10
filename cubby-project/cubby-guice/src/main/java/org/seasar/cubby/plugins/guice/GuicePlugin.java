@@ -112,10 +112,20 @@ public class GuicePlugin extends AbstractPlugin {
 		this.modules = Collections.unmodifiableList(modules);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
+	// /**
+	// * インジェクタを取得します。
+	// */
+	// private Injector injector() {
+	// if (this.injector == null) {
+	// synchronized (this) {
+	// if (this.injector == null) {
+	// this.injector = Guice.createInjector(modules);
+	// }
+	// }
+	// }
+	// return this.injector;
+	// }
+
 	public void ready() {
 		this.injector = Guice.createInjector(modules);
 	}

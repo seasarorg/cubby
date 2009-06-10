@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.seasar.cubby.action.FlashMap;
+import org.seasar.cubby.internal.controller.ThreadContext;
 
 /**
  * フラッシュメッセージをセッションに格納するための {@link Map} です。
@@ -44,6 +45,16 @@ public class FlashMapImpl implements FlashMap {
 
 	/** 実際に値を格納する {@link Map}。 */
 	private final Map<String, Object> map;
+
+	/**
+	 * インスタンス化します。
+	 * <p>
+	 * 内部で使用する要求は {@link ThreadContext} から取得します。
+	 * </p>
+	 */
+	public FlashMapImpl() {
+		this(ThreadContext.getRequest());
+	}
 
 	/**
 	 * インスタンス化します。
