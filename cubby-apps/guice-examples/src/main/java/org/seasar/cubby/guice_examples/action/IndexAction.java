@@ -13,4 +13,5 @@ public class IndexAction {
 	public ActionResult index() {
 		return new Forward("index.jsp");
 	}
+
 }

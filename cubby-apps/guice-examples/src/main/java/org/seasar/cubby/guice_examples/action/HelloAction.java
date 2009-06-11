@@ -30,6 +30,7 @@ public class HelloAction {
 	@Inject
 	private FlashMap flashMap;
 
+	@RequestParameter
 	private String name;
 
 	private String message;
@@ -42,17 +43,8 @@ public class HelloAction {
 		return name;
 	}
 
-	@RequestParameter
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getMessage() {
 		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public ActionResult index() {
@@ -67,7 +59,7 @@ public class HelloAction {
 
 	public ActionResult back() {
 		flashMap.put("notice", "Redirect OK!(this message is flash message)");
-		return new Redirect("/hello/");
+		return new Redirect(HelloAction.class);
 	}
 
 }
