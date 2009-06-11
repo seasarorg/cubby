@@ -17,7 +17,7 @@ import com.google.inject.servlet.RequestScoped;
 @RequestScoped
 public class HelloAction {
 
-	private ValidationRules validation = new DefaultValidationRules() {
+	ValidationRules validation = new DefaultValidationRules() {
 		@Override
 		public void initialize() {
 			add("name", new RequiredValidator());
@@ -34,10 +34,6 @@ public class HelloAction {
 	private String name;
 
 	private String message;
-
-	public ValidationRules getValidation() {
-		return validation;
-	}
 
 	public String getName() {
 		return name;
