@@ -16,7 +16,6 @@
 package org.seasar.cubby.plugins.guice;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -73,9 +72,6 @@ public class GuicePlugin extends AbstractPlugin {
 	/** モジュールの WEB 配備記述子の初期化パラメータ名 */
 	public static final String MODULE_INIT_PARAM_NAME = "cubby.guice.module";
 
-	/** モジュール。 */
-	private Iterable<Module> modules;
-
 	/** インジェクタ。 */
 	private Injector injector;
 
@@ -109,24 +105,6 @@ public class GuicePlugin extends AbstractPlugin {
 			final Module module = createModule(moduleClassName.trim());
 			modules.add(module);
 		}
-		this.modules = Collections.unmodifiableList(modules);
-	}
-
-	// /**
-	// * インジェクタを取得します。
-	// */
-	// private Injector injector() {
-	// if (this.injector == null) {
-	// synchronized (this) {
-	// if (this.injector == null) {
-	// this.injector = Guice.createInjector(modules);
-	// }
-	// }
-	// }
-	// return this.injector;
-	// }
-
-	public void ready() {
 		this.injector = Guice.createInjector(modules);
 	}
 
