@@ -7,10 +7,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.sf.oval.localization.context.OValContextRenderer;
+import net.sf.oval.localization.message.MessageResolver;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
+import org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver;
+import org.seasar.cubby.plugins.oval.validation.RequestLocaleOvalContextRenderer;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
 import org.seasar.cubby.routing.impl.PathResolverImpl;
@@ -34,6 +39,11 @@ public class ApplicationModule extends AbstractModule {
 		install(new ServletModule());
 		install(new JpaModule());
 		install(new ApplicationCubbyModule());
+
+		bind(MessageResolver.class).to(RequestLocaleMessageResolver.class);
+		bind(OValContextRenderer.class).to(
+				RequestLocaleOvalContextRenderer.class);
+
 		bindInterceptor(anyConcreteClass(), anyActionMethod(),
 				new LoggingInterceptor());
 	}
