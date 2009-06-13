@@ -93,6 +93,12 @@ line.separator=\n</content>
 			<version>4.5</version>
 			<scope>test</scope>
 		</dependency>
+    <dependency>
+		<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
