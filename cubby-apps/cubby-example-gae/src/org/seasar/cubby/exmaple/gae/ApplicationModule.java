@@ -1,11 +1,16 @@
 package org.seasar.cubby.exmaple.gae;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.seasar.cubby.action.FlashMap;
+import org.seasar.cubby.action.impl.FlashMapImpl;
 import org.seasar.cubby.exmaple.gae.action.FileuploadAction;
 import org.seasar.cubby.exmaple.gae.action.HelloAction;
 import org.seasar.cubby.exmaple.gae.action.IndexAction;
@@ -40,6 +45,12 @@ public class ApplicationModule extends AbstractModule {
 				return pathResolver;
 			}
 
+			@Override
+			protected void configureFlashMap() {
+				bind(FlashMap.class).toProvider(FlashMapProvider.class).in(
+						RequestScoped.class);
+			}
+
 		});
 
 		install(new ServletModule());
@@ -50,7 +61,7 @@ public class ApplicationModule extends AbstractModule {
 				RequestScoped.class);
 	}
 
-	class RequestContextProvider implements Provider<RequestContext> {
+	static class RequestContextProvider implements Provider<RequestContext> {
 
 		private RequestContext requestContext;
 
@@ -62,6 +73,26 @@ public class ApplicationModule extends AbstractModule {
 		public RequestContext get() {
 			return requestContext;
 		}
+	}
+
+	static class FlashMapProvider implements Provider<FlashMap> {
+
+		private HttpServletRequest request;
+
+		@Inject
+		public FlashMapProvider(final HttpServletRequest request) {
+			this.request = request;
+		}
+
+		public FlashMap get() {
+			return new FlashMapImpl(request) {
+				@Override
+				protected Map<String, Object> createMap() {
+					return new HashMap<String, Object>();
+				}
+			};
+		}
+
 	}
 
 }

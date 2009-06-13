@@ -8,13 +8,6 @@
 		<param-value>org.seasar.cubby.exmaple.gae.ApplicationModule</param-value>
 	</context-param>
 
-<!-- 
-	<listener>
-		<listener-class>
-			org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
-	</listener>
- -->
-
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
@@ -40,7 +33,7 @@
 
 	<filter>
 		<filter-name>cubbyFilter</filter-name>
-		<filter-class>org.seasar.cubby.gae.filter.GaeCubbyFilter</filter-class>
+		<filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
 		<init-param>
 			<param-name>ignorePathPattern</param-name>
 			<param-value>/css/.*,/js/.*,/img/.*</param-value>
