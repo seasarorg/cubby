@@ -231,8 +231,9 @@ public class Forward implements ActionResult {
 		}
 
 		action.invokePostRenderMethod(method);
-
-		action.getFlash().clear();
+		if (action.getFlash() != null) {
+			action.getFlash().clear();
+		}
 	}
 
 	/**
