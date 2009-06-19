@@ -15,14 +15,11 @@
  */
 package org.seasar.cubby.plugins.guice.spi;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
+import com.google.inject.ConfigurationException;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -30,17 +27,8 @@ import com.google.inject.Injector;
  * Guice の {@link Injector} による {@link Container} の実装を提供します。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class GuiceContainerProvider implements ContainerProvider {
-
-	/** ルックアップに失敗したことを表す例外クラス名。 */
-	private static final Set<String> LOOKUP_FAILURE_EXCEPTION_CLASS_NAMES;
-	static {
-		final Set<String> set = new HashSet<String>();
-		set.add("com.google.inject.ConfigurationException");
-		LOOKUP_FAILURE_EXCEPTION_CLASS_NAMES = Collections.unmodifiableSet(set);
-	}
 
 	/** {@link Container} */
 	private final Container container;
@@ -87,13 +75,8 @@ public class GuiceContainerProvider implements ContainerProvider {
 		public <T> T lookup(final Class<T> type) throws LookupException {
 			try {
 				return injector.getInstance(type);
-			} catch (final RuntimeException e) {
-				if (LOOKUP_FAILURE_EXCEPTION_CLASS_NAMES.contains(e.getClass()
-						.getName())) {
-					throw new LookupException(e);
-				} else {
-					throw e;
-				}
+			} catch (final ConfigurationException e) {
+				throw new LookupException(e);
 			}
 		}
 

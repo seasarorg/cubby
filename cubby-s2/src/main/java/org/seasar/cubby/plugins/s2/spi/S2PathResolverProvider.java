@@ -23,6 +23,7 @@ import org.seasar.cubby.plugins.s2.detector.ClassDetector;
 import org.seasar.cubby.plugins.s2.detector.DetectClassProcessor;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.util.ActionUtils;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.Disposable;
@@ -136,6 +137,9 @@ public class S2PathResolverProvider implements PathResolverProvider,
 			return;
 		}
 		if (Modifier.isAbstract(clazz.getModifiers())) {
+			return;
+		}
+		if (!ActionUtils.isActionClass(clazz)) {
 			return;
 		}
 		actionClasses.add(clazz);

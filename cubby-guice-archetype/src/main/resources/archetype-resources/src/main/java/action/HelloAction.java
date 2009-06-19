@@ -15,8 +15,9 @@
  */
 package ${package}.action;
 
-import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
@@ -31,9 +32,10 @@ import com.google.inject.servlet.RequestScoped;
 import ${package}.service.HelloService;
 
 @RequestScoped
-public class HelloAction extends Action {
+@ActionClass
+public class HelloAction {
 
-	private ValidationRules validation = new DefaultValidationRules() {
+	ValidationRules validation = new DefaultValidationRules() {
 		@Override
 		public void initialize() {
 			add("name", new RequiredValidator());
@@ -43,29 +45,20 @@ public class HelloAction extends Action {
 	@Inject
 	private HelloService helloService;
 
+	@Inject
+	private FlashMap flashMap;
+
+	@RequestParameter
 	private String name;
 
 	private String message;
-
-	public ValidationRules getValidation() {
-		return validation;
-	}
 
 	public String getName() {
 		return name;
 	}
 
-	@RequestParameter
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getMessage() {
 		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public ActionResult index() {
@@ -79,7 +72,7 @@ public class HelloAction extends Action {
 	}
 
 	public ActionResult back() {
-		flash.put("notice", "Redirect OK!(this message is flash message)");
+		flashMap.put("notice", "Redirect OK!(this message is flash message)");
 		return new Redirect("/hello/");
 	}
 
