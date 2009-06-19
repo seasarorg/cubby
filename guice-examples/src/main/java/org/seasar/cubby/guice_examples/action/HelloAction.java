@@ -1,5 +1,6 @@
 package org.seasar.cubby.guice_examples.action;
 
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.Forward;
@@ -15,6 +16,7 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 
 @RequestScoped
+@ActionClass
 public class HelloAction {
 
 	ValidationRules validation = new DefaultValidationRules() {

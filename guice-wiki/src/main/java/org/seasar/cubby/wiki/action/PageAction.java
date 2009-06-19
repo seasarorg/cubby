@@ -12,6 +12,7 @@ import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
 
 import org.seasar.cubby.action.Accept;
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.FlashMap;
@@ -36,7 +37,7 @@ import com.google.inject.servlet.RequestScoped;
 
 @RequestScoped
 @Path("/")
-public class PageAction {
+public class PageAction extends Action {
 
 	@Inject
 	private PageService pageService;
