@@ -24,6 +24,8 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
@@ -33,7 +35,6 @@ import org.seasar.cubby.internal.controller.ThreadContext;
  * アクションのユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ActionUtils {
 
@@ -104,6 +105,31 @@ public class ActionUtils {
 	 */
 	public static Map<String, Object> flash(final ServletRequest request) {
 		return actionContext(request).getFlashMap();
+	}
+
+	/**
+	 * 指定されたクラスがアクションクラスかを示します。
+	 * <p>
+	 * アクションクラスは以下のいずれかの条件を満たす必要があります。
+	 * </p>
+	 * <ul>
+	 * <li>{@link Action} を実装している</li>
+	 * <li>{@link ActionClass} で修飾されている</li>
+	 * </ul>
+	 * 
+	 * @param clazz
+	 *            クラス
+	 * @return 指定されたクラスがアクションクラスの場合は <code>true</code>、そうでない場合は
+	 *         <code>false</code>
+	 */
+	public static boolean isActionClass(final Class<?> clazz) {
+		if (Action.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		if (clazz.isAnnotationPresent(ActionClass.class)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

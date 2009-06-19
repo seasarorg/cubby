@@ -248,7 +248,9 @@ public class ActionContextImpl implements ActionContext {
 	 * {@inheritDoc}
 	 */
 	public void clearFlash() {
-		flashMap.clear();
+		if (flashMap != null) {
+			flashMap.clear();
+		}
 	}
 
 	/**

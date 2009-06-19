@@ -17,23 +17,10 @@ package ${package};
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUpload;
-import org.apache.commons.fileupload.RequestContext;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.servlet.ServletRequestContext;
-import org.seasar.cubby.plugins.guice.AbstractCubbyModule;
-import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.PathTemplateParser;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
-import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
+import org.seasar.cubby.plugins.guice.CubbyModule;
+import org.seasar.cubby.plugins.guice.FileUploadModule;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
 
 import ${package}.action.HelloAction;
@@ -45,62 +32,11 @@ public class ApplicationModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		install(new ServletModule());
-		install(new AbstractCubbyModule() {
+		install(new CubbyModule());
+		install(new FileUploadModule());
 
-			@Override
-			protected PathResolver getPathResolver() {
-				final PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
-				final PathResolver pathResolver = new PathResolverImpl(pathTemplateParser);
-				pathResolver.add(IndexAction.class);
-				pathResolver.add(HelloAction.class);
-				return pathResolver;
-			}
-
-		});
-
-		configureFileUpload();
-	}
-
-	protected void configureFileUpload() {
-		// "org.apache.commons.fileupload.disk.DiskFileItemFactory" uses the local file system temporary.
-		// When there is a limitation in writing in the filesystem like Goolgle App Engine,
-		// please try not DiskFileItemFactory but "org.seasar.cubby.fileupload.StreamFileItemFactory".
-		// This processes multipart-data on memory without using temporary. 
-
-		final FileItemFactory fileItemFactory = new DiskFileItemFactory();
-		bind(FileUpload.class).toInstance(
-				new ServletFileUpload(fileItemFactory));
-		bind(RequestContext.class).toProvider(RequestContextProvider.class).in(
-				RequestScoped.class);
-	}
-
-	/**
-	 * {@link RequestContext} provider
-	 */
-	private static class RequestContextProvider implements
-			Provider<RequestContext> {
-
-		/** {@link RequestContext} */
-		private RequestContext requestContext;
-
-		/**
-		 * Instantiate.
-		 * 
-		 * @param request
-		 *            Request
-		 */
-		@Inject
-		public RequestContextProvider(final HttpServletRequest request) {
-			this.requestContext = new ServletRequestContext(request);
-		}
-
-		/**
-		 * Get {@link RequestContext}
-		 */
-		public RequestContext get() {
-			return requestContext;
-		}
-
+		bind(IndexAction.class);
+		bind(HelloAction.class);
 	}
 
 }

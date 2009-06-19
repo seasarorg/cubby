@@ -21,6 +21,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -36,25 +38,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileUpload;
 import org.easymock.IAnswer;
 import org.junit.Test;
+import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.ActionClass;
+import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
-import org.seasar.cubby.routing.impl.PathResolverImpl;
-import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
+import org.seasar.cubby.routing.PathTemplateParser;
+import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ConverterProvider;
+import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.ProviderFactory;
+import org.seasar.cubby.spi.container.Container;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
+import com.google.inject.ConfigurationException;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceFilter;
+import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
+import com.google.inject.util.Modules;
 
-public class AbstractCubbyModuleTest {
+public class CubbyModuleTest {
 
 	@Test
 	public void configure() throws Exception {
@@ -121,10 +132,36 @@ public class AbstractCubbyModuleTest {
 					throw new ServletException(e);
 				}
 
-				Injector injector = Guice.createInjector(new TestModule());
+				final Injector injector = guicePlugin.getInjector();
 				System.out.println(injector);
-				Foo foo = injector.getInstance(Foo.class);
+
+				PathResolverProvider pathResolverProvider = ProviderFactory
+						.get(PathResolverProvider.class);
+				PathResolver pathResolver = pathResolverProvider
+						.getPathResolver();
+				System.out.println(pathResolver);
+
+				PathTemplateParser pathTemplateParser = injector
+						.getInstance(PathTemplateParser.class);
+				System.out.println(pathTemplateParser);
+				assertTrue(pathTemplateParser instanceof MyPathTemplateParser);
+
+				ContainerProvider containerProvider = ProviderFactory
+						.get(ContainerProvider.class);
+				Container container = containerProvider.getContainer();
+				Foo foo = container.lookup(Foo.class);
+				System.out.println(foo);
 				System.out.println(foo.pathResolver);
+
+				assertSame(pathResolver, foo.pathResolver);
+
+				try {
+					Baz baz = injector.getInstance(Baz.class);
+					System.out.println(baz);
+					fail();
+				} catch (ConfigurationException e) {
+					// ok
+				}
 				try {
 					ThreadContext.runInContext((HttpServletRequest) request,
 							(HttpServletResponse) response, new Command() {
@@ -135,6 +172,26 @@ public class AbstractCubbyModuleTest {
 									ConverterProvider converterProvider = ProviderFactory
 											.get(ConverterProvider.class);
 									System.out.println(converterProvider);
+									System.out
+											.println(converterProvider
+													.getConverter(BigDecimalConverter.class));
+
+									FileUpload fileUpload1 = injector
+											.getInstance(FileUpload.class);
+									System.out.println(fileUpload1);
+									System.out.println(fileUpload1
+											.getFileItemFactory());
+
+									FileUpload fileUpload2 = injector
+											.getInstance(FileUpload.class);
+									System.out.println(fileUpload2);
+									System.out.println(fileUpload2
+											.getFileItemFactory());
+
+									assertNotSame(fileUpload1, fileUpload2);
+									assertNotSame(fileUpload1
+											.getFileItemFactory(), fileUpload2
+											.getFileItemFactory());
 								}
 
 							});
@@ -152,12 +209,34 @@ public class AbstractCubbyModuleTest {
 		@Override
 		protected void configure() {
 			install(new ServletModule());
-			install(new AbstractCubbyModule() {
-				@Override
-				protected PathResolver getPathResolver() {
-					return new PathResolverImpl(new PathTemplateParserImpl());
-				}
-			});
+			// install(new AbstractCubbyModule());
+			install(Modules.override(new CubbyModule(), new FileUploadModule())
+					.with(new AbstractModule() {
+
+						@Override
+						protected void configure() {
+							bind(PathTemplateParser.class).to(
+									MyPathTemplateParser.class).in(
+									Singleton.class);
+						}
+
+					}));
+			bind(BarAction.class);
+
+			// {
+			// @Override
+			// protected PathResolver getPathResolver() {
+			// return new PathResolverImpl(new PathTemplateParserImpl());
+			// }
+			// });
+		}
+
+	}
+
+	public static class MyPathTemplateParser implements PathTemplateParser {
+
+		public String parse(String template, Handler handler) {
+			return "mytemplateparser";
 		}
 
 	}
@@ -167,4 +246,15 @@ public class AbstractCubbyModuleTest {
 		public PathResolver pathResolver;
 	}
 
+	@ActionClass
+	@RequestScoped
+	public static class BarAction {
+		public ActionResult index() {
+			return null;
+		}
+	}
+
+	public interface Baz {
+
+	}
 }

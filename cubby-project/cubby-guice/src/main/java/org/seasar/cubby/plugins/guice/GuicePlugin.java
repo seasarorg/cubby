@@ -145,4 +145,13 @@ public class GuicePlugin extends AbstractPlugin {
 		}
 	}
 
+	/**
+	 * インジェクタを取得します。
+	 * 
+	 * @return インジェクタ
+	 */
+	public Injector getInjector() {
+		return injector;
+	}
+
 }

@@ -13,21 +13,19 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package ${package}.action;
+package org.seasar.cubby.action;
 
-import org.seasar.cubby.action.ActionClass;
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Path;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.google.inject.servlet.RequestScoped;
-
-@RequestScoped
-@ActionClass
-@Path("/")
-public class IndexAction {
-
-	public ActionResult index() {
-		return new Forward("index.jsp");
-	}
+/**
+ * アクションクラスであることを示します。
+ * 
+ * @author baba
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE })
+public @interface ActionClass {
 }
