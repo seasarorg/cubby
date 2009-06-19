@@ -22,6 +22,7 @@ import java.util.Map;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
 
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
@@ -46,6 +47,7 @@ import org.seasar.framework.aop.annotation.InvalidateSession;
  * @author agata
  * @author baba
  */
+@ActionClass
 @Path("todo/login")
 public class LoginAction {
 

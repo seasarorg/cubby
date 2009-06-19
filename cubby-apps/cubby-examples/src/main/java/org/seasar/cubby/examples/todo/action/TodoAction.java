@@ -25,6 +25,7 @@ import net.sf.oval.constraint.MaxLength;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
 
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
@@ -47,6 +48,7 @@ import org.seasar.cubby.validator.ValidationRules;
  * 
  * @author agata
  */
+@ActionClass
 public class TodoAction {
 
 	// ----------------------------------------------[Validation]

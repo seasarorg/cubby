@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.Forward;
@@ -41,6 +42,7 @@ import org.seasar.cubby.validator.ValidationRules;
  * @author agata
  * @author baba
  */
+@ActionClass
 @Path("todo")
 public class TodoListAction {
 
