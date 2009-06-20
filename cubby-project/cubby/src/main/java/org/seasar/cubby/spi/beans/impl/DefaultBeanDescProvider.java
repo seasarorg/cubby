@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -626,6 +627,9 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		/** フィールド。 */
 		private final Field field;
 
+		/** この属性が書き込み可能か。 */
+		private final boolean writable;
+
 		/** パラメタ化されたクラスの記述。 */
 		private final ParameterizedClassDesc parameterizedClassDesc;
 
@@ -639,10 +643,8 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 */
 		public FieldAttribute(final Class<?> clazz, final Field field) {
 			this.clazz = clazz;
-			if (!field.isAccessible()) {
-				field.setAccessible(true);
-			}
 			this.field = field;
+			this.writable = (field.getModifiers() & Modifier.FINAL) == 0;
 			this.parameterizedClassDesc = createParameterizedClassDesc(field
 					.getGenericType());
 		}
@@ -666,7 +668,15 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 */
 		public Object getValue(final Object target) {
 			try {
-				return field.get(target);
+				if (this.isReadable() && !field.isAccessible()) {
+					field.setAccessible(true);
+					final Object value = field.get(target);
+					field.setAccessible(false);
+					return value;
+				} else {
+					final Object value = field.get(target);
+					return value;
+				}
 			} catch (final IllegalAccessException e) {
 				throw new IllegalAttributeException(clazz, field.getName(), e);
 			}
@@ -677,7 +687,13 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 */
 		public void setValue(final Object target, final Object value) {
 			try {
-				field.set(target, value);
+				if (this.isWritable() && !field.isAccessible()) {
+					field.setAccessible(true);
+					field.set(target, value);
+					field.setAccessible(false);
+				} else {
+					field.set(target, value);
+				}
 			} catch (final IllegalAccessException e) {
 				throw new IllegalAttributeException(clazz, field.getName(), e);
 			}
@@ -694,7 +710,7 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 * {@inheritDoc}
 		 */
 		public boolean isWritable() {
-			return true;
+			return writable;
 		}
 
 		/**
