@@ -19,7 +19,6 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.internal.util.RequestUtils.getAttribute;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionContext;
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ThreadContext;
 
@@ -65,46 +63,6 @@ public class ActionUtils {
 		final ActionContext actionContext = getAttribute(request,
 				ATTR_ACTION_CONTEXT);
 		return actionContext;
-	}
-
-	/**
-	 * アクションエラーを取得します。
-	 * 
-	 * @return アクションエラー
-	 */
-	public static ActionErrors errors() {
-		return actionContext().getActionErrors();
-	}
-
-	/**
-	 * アクションエラーを取得します。
-	 * 
-	 * @param request
-	 *            要求
-	 * @return アクションエラー
-	 */
-	public static ActionErrors errors(final ServletRequest request) {
-		return actionContext(request).getActionErrors();
-	}
-
-	/**
-	 * 揮発性メッセージを取得します。
-	 * 
-	 * @return 揮発性メッセージ
-	 */
-	public static Map<String, Object> flash() {
-		return actionContext().getFlashMap();
-	}
-
-	/**
-	 * 揮発性メッセージを取得します。
-	 * 
-	 * @param request
-	 *            要求
-	 * @return 揮発性メッセージ
-	 */
-	public static Map<String, Object> flash(final ServletRequest request) {
-		return actionContext(request).getFlashMap();
 	}
 
 	/**

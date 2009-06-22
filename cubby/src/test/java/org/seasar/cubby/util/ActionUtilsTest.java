@@ -106,7 +106,7 @@ public class ActionUtilsTest {
 		replay(actionContext, actionErrors, request, response);
 
 		try {
-			ActionUtils.errors();
+			ActionUtils.actionContext().getActionErrors();
 			fail();
 		} catch (IllegalStateException e) {
 			// ok
@@ -126,7 +126,8 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, actionErrors, request, response);
 
-		assertSame(actionErrors, ActionUtils.errors(request));
+		assertSame(actionErrors, ActionUtils.actionContext(request)
+				.getActionErrors());
 
 		verify(actionContext, actionErrors, request, response);
 	}
@@ -140,7 +141,7 @@ public class ActionUtilsTest {
 		replay(actionContext, actionErrors, request, response);
 
 		try {
-			ActionUtils.errors();
+			ActionUtils.actionContext().getActionErrors();
 			fail();
 		} catch (IllegalStateException e) {
 			// ok
@@ -164,7 +165,7 @@ public class ActionUtilsTest {
 
 			public void execute(final HttpServletRequest request,
 					final HttpServletResponse response) throws Exception {
-				assertSame(flashMap, ActionUtils.flash());
+				assertSame(flashMap, ActionUtils.actionContext().getFlashMap());
 			}
 		});
 
@@ -182,7 +183,7 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
-		assertSame(flashMap, ActionUtils.flash(request));
+		assertSame(flashMap, ActionUtils.actionContext(request).getFlashMap());
 
 		verify(actionContext, request, response);
 	}
@@ -195,7 +196,7 @@ public class ActionUtilsTest {
 		replay(actionContext, request, response);
 
 		try {
-			ActionUtils.flash();
+			ActionUtils.actionContext().getFlashMap();
 			fail();
 		} catch (IllegalStateException e) {
 			// ok

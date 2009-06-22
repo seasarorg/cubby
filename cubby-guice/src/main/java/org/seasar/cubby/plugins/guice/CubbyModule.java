@@ -21,8 +21,12 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.FlashMap;
+import org.seasar.cubby.action.impl.ActionContextImpl;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.action.impl.FlashMapImpl;
 import org.seasar.cubby.controller.FormatPattern;
@@ -196,8 +200,6 @@ public class CubbyModule extends AbstractModule {
 	 * <ul>
 	 * <li>{@link MessagesBehaviour}</li>
 	 * <li>{@link FormatPattern}</li>
-	 * <li>{@link ActionErrors}</li>
-	 * <li>{@link FlashMap}</li>
 	 * </ul>
 	 */
 	private void configureComponents() {
@@ -205,9 +207,6 @@ public class CubbyModule extends AbstractModule {
 				.asEagerSingleton();
 		bind(FormatPattern.class).to(DefaultFormatPattern.class)
 				.asEagerSingleton();
-		bind(ActionErrors.class).to(ActionErrorsImpl.class).in(
-				RequestScoped.class);
-		bind(FlashMap.class).to(FlashMapImpl.class).in(RequestScoped.class);
 	}
 
 	/**
@@ -318,6 +317,27 @@ public class CubbyModule extends AbstractModule {
 			pathResolver.add(actionClass);
 		}
 		return pathResolver;
+	}
+
+	@Provides
+	@RequestScoped
+	ActionErrors provideActionErrors() {
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		return actionErrors;
+	}
+
+	@Provides
+	@RequestScoped
+	FlashMap privideFlashMap(final HttpServletRequest request) {
+		final FlashMap flashMap = new FlashMapImpl(request);
+		return flashMap;
+	}
+
+	@Provides
+	@RequestScoped
+	ActionContext provideActionContext() {
+		final ActionContext actionContext = new ActionContextImpl();
+		return actionContext;
 	}
 
 	private static <T> Key<T> key(final TypeLiteral<?> typeLiteral) {

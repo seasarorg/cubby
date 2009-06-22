@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.action.impl;
+package org.seasar.cubby.action.impl;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
 import static org.seasar.cubby.internal.util.LogMessages.format;
@@ -43,35 +43,24 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
 public class ActionContextImpl implements ActionContext {
 
 	/** アクション。 */
-	private final Object action;
+	private Object action;
 
 	/** アクションクラス。 */
-	private final Class<?> actionClass;
+	private Class<?> actionClass;
 
 	/** アクションメソッド。 */
-	private final Method actionMethod;
+	private Method actionMethod;
 
 	/** アクションエラー。 */
-	private final ActionErrors actionErrors;
+	private ActionErrors actionErrors;
 
 	/** 揮発性メッセージ。 */
-	private final Map<String, Object> flashMap;
+	private Map<String, Object> flashMap;
 
 	/**
-	 * インスタンス化します。
-	 * 
-	 * @param action
-	 *            アクション
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param actionMethod
-	 *            アクションメソッド
-	 * @param actionErrors
-	 *            アクションエラー
-	 * @param flashMap
-	 *            揮発性メッセージ
+	 * {@inheritDoc}
 	 */
-	public ActionContextImpl(final Object action, final Class<?> actionClass,
+	public void initialize(final Object action, final Class<?> actionClass,
 			final Method actionMethod, final ActionErrors actionErrors,
 			final Map<String, Object> flashMap) {
 		this.action = action;
@@ -79,15 +68,6 @@ public class ActionContextImpl implements ActionContext {
 		this.actionMethod = actionMethod;
 		this.actionErrors = actionErrors;
 		this.flashMap = flashMap;
-		if (action instanceof Action) {
-			initialize((Action) action, actionErrors, flashMap);
-		}
-	}
-
-	private void initialize(final Action action,
-			final ActionErrors actionErrors, final Map<String, Object> flashMap) {
-		action.setErrors(actionErrors);
-		action.setFlash(flashMap);
 	}
 
 	/**

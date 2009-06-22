@@ -41,5 +41,6 @@
 	<!-- request -->
 	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
 	<component class="org.seasar.cubby.action.impl.FlashMapImpl" instance="request" />
+	<component class="org.seasar.cubby.action.impl.ActionContextImpl" instance="request" />
 
 </components>

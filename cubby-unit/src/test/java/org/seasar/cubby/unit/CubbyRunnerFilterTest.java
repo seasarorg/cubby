@@ -52,6 +52,7 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.RequestParameter;
+import org.seasar.cubby.action.impl.ActionContextImpl;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
@@ -98,6 +99,7 @@ public class CubbyRunnerFilterTest {
 
 		final ActionErrors actionErrors = new ActionErrorsImpl();
 		final FlashMap flashMap = new MockFlashMap();
+		final ActionContext actionContext = new ActionContextImpl();
 
 		BinderPlugin binderPlugin = new BinderPlugin();
 		binderPlugin.bind(RequestParserProvider.class).toInstance(
@@ -122,6 +124,9 @@ public class CubbyRunnerFilterTest {
 						}
 						if (FlashMap.class.equals(type)) {
 							return type.cast(flashMap);
+						}
+						if (ActionContext.class.equals(type)) {
+							return type.cast(actionContext);
 						}
 						throw new LookupException("type:" + type);
 					}

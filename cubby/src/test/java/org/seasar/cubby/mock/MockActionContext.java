@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
@@ -36,28 +35,40 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
 
 public class MockActionContext implements ActionContext {
 
-	private final Action action;
+	private Object action;
 
-	private final Class<? extends Action> actionClass;
+	private Class<?> actionClass;
 
-	private final Method actionMethod;
+	private Method actionMethod;
 
-	private final ActionErrors actionErrors = new ActionErrorsImpl();
+	private ActionErrors actionErrors = new ActionErrorsImpl();
 
-	private final Map<String, Object> flashMap = new HashMap<String, Object>();
+	private Map<String, Object> flashMap = new HashMap<String, Object>();
 
-	public MockActionContext(Action action,
-			Class<? extends Action> actionClass, Method actionMethod) {
+	public MockActionContext(Object action, Class<?> actionClass,
+			Method actionMethod) {
+		this.initialize(action, actionClass, actionMethod,
+				new ActionErrorsImpl(), new HashMap<String, Object>());
+	}
+
+	public MockActionContext() {
+	}
+
+	public void initialize(Object action, Class<?> actionClass,
+			Method actionMethod, ActionErrors actionErrors,
+			Map<String, Object> flashMap) {
 		this.action = action;
 		this.actionClass = actionClass;
 		this.actionMethod = actionMethod;
+		this.actionErrors = actionErrors;
+		this.flashMap = flashMap;
 	}
 
-	public Action getAction() {
+	public Object getAction() {
 		return action;
 	}
 
-	public Class<? extends Action> getActionClass() {
+	public Class<?> getActionClass() {
 		return actionClass;
 	}
 

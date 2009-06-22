@@ -23,16 +23,17 @@ import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.FlashMap;
-import org.seasar.cubby.internal.action.impl.ActionContextImpl;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.plugin.ActionInvocation;
@@ -49,7 +50,6 @@ import org.slf4j.LoggerFactory;
  * リクエストのパスを元にアクションメソッドを決定して実行するクラスの実装です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class ActionProcessorImpl implements ActionProcessor {
 
@@ -84,9 +84,15 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final FlashMap flashMap = container.lookup(FlashMap.class);
 		request.setAttribute(ATTR_FLASH, flashMap);
 
-		final ActionContext actionContext = new ActionContextImpl(action,
-				actionClass, actionMethod, actionErrors, flashMap);
+		final ActionContext actionContext = container
+				.lookup(ActionContext.class);
+		actionContext.initialize(action, actionClass, actionMethod,
+				actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
+
+		if (action instanceof Action) {
+			initializeAction((Action) action, actionErrors, flashMap);
+		}
 
 		actionContext.invokeInitializeMethod();
 
@@ -100,6 +106,12 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
 				actionResult, actionContext);
 		return actionResultWrapper;
+	}
+
+	private void initializeAction(final Action action,
+			final ActionErrors actionErrors, final Map<String, Object> flashMap) {
+		action.setErrors(actionErrors);
+		action.setFlash(flashMap);
 	}
 
 	/**
