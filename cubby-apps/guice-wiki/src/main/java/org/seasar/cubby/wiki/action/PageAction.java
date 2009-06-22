@@ -13,9 +13,9 @@ import net.sf.oval.constraint.NotNull;
 
 import org.seasar.cubby.action.Accept;
 import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
@@ -49,7 +49,7 @@ public class PageAction extends Action {
 	private HttpServletRequest request;
 
 	@Inject
-	private FlashMap flashMap;
+	private ActionContext actionContext;
 
 	@RequestParameter
 	private Page page;
@@ -139,7 +139,8 @@ public class PageAction extends Action {
 		page.setName(this.name);
 		page.setContent(this.content);
 		pageService.save(page);
-		flashMap.put("notice", Messages.getText("msg.updated"));
+		actionContext.getFlashMap().put("notice",
+				Messages.getText("msg.updated"));
 		return new Redirect(PageAction.class, "show").param("page", page
 				.getName());
 	}
