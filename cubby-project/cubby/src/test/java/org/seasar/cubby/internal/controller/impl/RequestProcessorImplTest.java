@@ -40,6 +40,7 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.action.FlashMap;
+import org.seasar.cubby.action.impl.ActionContextImpl;
 import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.action.impl.FlashMapImpl;
 import org.seasar.cubby.controller.RequestParser;
@@ -65,6 +66,8 @@ public class RequestProcessorImplTest {
 	private FlashMap flashMap;
 
 	private ActionErrors actionErrors;
+
+	private ActionContext actionContext;
 
 	@Before
 	public void setupProvider() {
@@ -93,6 +96,9 @@ public class RequestProcessorImplTest {
 						}
 						if (FlashMap.class.equals(type)) {
 							return type.cast(flashMap);
+						}
+						if (ActionContext.class.equals(type)) {
+							return type.cast(actionContext);
 						}
 						throw new LookupException();
 					}
@@ -137,6 +143,8 @@ public class RequestProcessorImplTest {
 
 		this.actionErrors = new ActionErrorsImpl();
 		this.flashMap = new FlashMapImpl(request);
+		this.actionContext = new ActionContextImpl();
+		actionContext.initialize(null, null, null, actionErrors, flashMap);
 
 		requestProcessor.process(request, response, pathInfo);
 
