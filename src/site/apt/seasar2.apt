@@ -134,8 +134,8 @@ Define value for package: :
 +------------------------------------------------------+
 Confirm properties configuration:
 cubby-version: 2.0.0
-s2container-version: 2.4.34
-s2dao-version: 1.0.49
+s2container-version: 2.4.38
+s2dao-version: 1.0.50
 use-s2dao: false
 use-s2jdbc: true
 groupId: com.example.foo
@@ -183,7 +183,7 @@ package: com.example.foo.barapp
 *-----------*-------------*
 | Cubby     | Seasar2     |
 *-----------*-------------*
-| 2.0.0     | 2.4.34以上  |
+| 2.0.0     | 2.4.38以上  |
 *-----------*-------------*
 Cubby と Seasar2 のバージョンの推奨の組み合わせ
 
