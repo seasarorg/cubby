@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.examples.todo.interceptor;
 
-import static org.seasar.cubby.util.ActionUtils.flash;
+import static org.seasar.cubby.util.ActionUtils.actionContext;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class AuthActionInterceptor implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		final User user = (User) sessionScope.get("user");
 		if (user == null) {
-			flash().put("notice", "ログインしていません。");
+			actionContext().getFlashMap().put("notice", "ログインしていません。");
 			return new Redirect("/todo/login/");
 		}
 		return invocation.proceed();

@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.examples.todo.action;
 
-import static org.seasar.cubby.util.ActionUtils.errors;
+import static org.seasar.cubby.util.ActionUtils.actionContext;
 
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.Forward;
@@ -59,7 +59,7 @@ public class LoginActionTest extends CubbyTestCase {
 	public void testLogin_authError() throws Exception {
 		assertPathEquals(Forward.class, "/todo/login.jsp",
 				processAction("/todo/login/process"));
-		ActionErrors errors = errors(getRequest());
+		ActionErrors errors = actionContext(getRequest()).getActionErrors();
 		assertEquals(0, errors.getOthers().size());
 		assertEquals(2, errors.getFields().size());
 		assertEquals(1, errors.getFields().get("userId").size());
@@ -74,7 +74,7 @@ public class LoginActionTest extends CubbyTestCase {
 	public void testLogin_validationError() throws Exception {
 		assertPathEquals(Forward.class, "/todo/login.jsp",
 				processAction("/todo/login/process"));
-		ActionErrors errors = errors(getRequest());
+		ActionErrors errors = actionContext(getRequest()).getActionErrors();
 		assertEquals(0, errors.getOthers().size());
 		assertEquals(2, errors.getFields().size());
 		assertEquals(1, errors.getFields().get("userId").size());
