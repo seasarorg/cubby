@@ -22,7 +22,7 @@
       <defaultValue>2.0.0-beta3</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2container-version">
-      <defaultValue>2.4.34</defaultValue>
+      <defaultValue>2.4.38</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2dao-version">
       <defaultValue>1.0.50</defaultValue>

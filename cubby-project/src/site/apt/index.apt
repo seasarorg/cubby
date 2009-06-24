@@ -94,4 +94,10 @@
 
  *Servlet 2.5 / JSP 2.1 以降 (Java EE 5) をサポートするサーブレットコンテナ
 
- *Seasar 2.4.34 以降か Guice 1.0 以降
+ *対応コンテナ
+
+  *S2Cotainer 2.4.38 以降
+
+  *Spring Framework 2.5.6 以降
+
+  *Guice 2.0 以降
