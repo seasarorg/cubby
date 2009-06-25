@@ -14,6 +14,8 @@
 	<context:component-scan base-package="org.seasar.cubby.spring_examples.action">
 		<context:include-filter type="assignable"
 			expression="org.seasar.cubby.action.Action" />
+		<context:include-filter type="annotation"
+			expression="org.seasar.cubby.action.ActionClass" />
 	</context:component-scan>
 
 	<bean id="helloService" class="org.seasar.cubby.spring_examples.service.impl.HelloServiceImpl" />
