@@ -15,11 +15,15 @@
  */
 package mock.action;
 
-import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.springframework.context.annotation.Scope;
+import org.springframework.web.context.WebApplicationContext;
 
-public class MockAction2 extends Action {
+@ActionClass
+@Scope(WebApplicationContext.SCOPE_REQUEST)
+public class MockAction2 {
 	public ActionResult index() throws Exception {
 		return new Forward("index.jsp");
 	}

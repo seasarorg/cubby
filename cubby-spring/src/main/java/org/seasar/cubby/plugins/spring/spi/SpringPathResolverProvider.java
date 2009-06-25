@@ -15,11 +15,10 @@
  */
 package org.seasar.cubby.plugins.spring.spi;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
+import org.seasar.cubby.util.ActionUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -39,8 +38,6 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 
 	private ApplicationContext applicationContext;
 
-	private Class<Action> actionClass = Action.class;
-
 	private boolean initialized = false;
 
 	public void setApplicationContext(
@@ -56,12 +53,16 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 		if (initialized) {
 			return;
 		}
-		String[] names = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
-				applicationContext, actionClass);
-		for (String name : names) {
-			pathResolver.add(applicationContext.getType(name));
+
+		for (final String beanDefinitionName : applicationContext
+				.getBeanDefinitionNames()) {
+			final Class<?> type = applicationContext
+					.getType(beanDefinitionName);
+			if (ActionUtils.isActionClass(type)) {
+				pathResolver.add(type);
+			}
 		}
+
 		initialized = true;
 	}
-
 }
