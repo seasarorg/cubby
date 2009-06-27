@@ -19,6 +19,7 @@ import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.util.ActionUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -54,8 +55,9 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 			return;
 		}
 
-		for (final String beanDefinitionName : applicationContext
-				.getBeanDefinitionNames()) {
+		final String[] names = BeanFactoryUtils
+				.beanNamesIncludingAncestors(applicationContext);
+		for (final String beanDefinitionName : names) {
 			final Class<?> type = applicationContext
 					.getType(beanDefinitionName);
 			if (ActionUtils.isActionClass(type)) {
