@@ -55,7 +55,7 @@
   agata
   baba
   --------
-  2008-08-24
+  2009-06-29
   --------
 
 {目次}
@@ -91,7 +91,7 @@
 
  バリデーションの定義は Java コードで記述します。以下のように、アクションメソッドに対してバリデーションのルールを定義します。
 
- [[1]]アクションに{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}ValidationRules}}型のプロパティを用意し、
+ [[1]]アクションに{{{cubby/apidocs/org/seasar/cubby/validator/ValidationRules.html}ValidationRules}}型のプロパティを用意し、
       定義したバリデーションのルールを取得できるようにします。
 
       以下のように{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html}DefaultValidationRules}}を継承して、
@@ -119,7 +119,7 @@ public class LoginAction extends Action {
 
  [[2]]アクションメソッドにアノテーション{{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}を定義し、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#rules()}rules}}でアクションメソッドと[[1]]で定義したバリデーションルールのプロパティを関連付けます。
 
-      入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたページに遷移します。
+      入力検証でエラーを検出した場合は、アクションのプロパティ{{{cubby/apidocs/org/seasar/cubby/action/Action.html#errors}errors}}にメッセージが設定され、{{{cubby/apidocs/org/seasar/cubby/action/Validation.html#errorPage()}errorPage}}で指定されたエラーページへフォワードで遷移します。
 
 +------------------------------------------------------+
   // プロパティ「validationRules」をバリデーションのルールとして使用します。
@@ -185,6 +185,8 @@ public class LoginAction extends Action {
  * DefaultValidationRules のコンストラクタでキーの項目名のメッセージキーのプリフィックスを指定することができます。
 
  * 各バリデーションのコンストラクタでメッセージキーを指定することで検証時のエラーメッセージを切り替えることもできます。
+
+[]
 
 +------------------------------------------------------+
 public class LoginAction extends Action {
@@ -261,6 +263,33 @@ public class LoginAction extends Action {
 }
 +------------------------------------------------------+
 
+*{アクションメソッドからエラーページへの遷移}
+
+ アクションメソッドでエラーを検出した場合は
+ {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#ValidationException}ValidationException}}
+ をスローすることで、処理を中断してエラーページへ遷移させることができます。
+
+*{エラー発生時の挙動}
+
+ DefaultValidationRules はバリデーションエラーが検出された場合にエラーページへフォワードします。
+ この挙動は{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#fail(java.lang.String)}}メソッドに定義されています。
+ これをオーバーライドすることでエラー発生時の挙動を変更することができます。
+
++------------------------------------------------------+
+  public ValidationRules validationRules = new DefaultValidationRules() {
+    @Override
+    public void initialize() {
+      ...
+    }
+
+    @Override
+    public void fail(String errorPage) {
+      // クライアントに 404 Not Found を返す
+      return new SendError(404);
+    }
+  };
++------------------------------------------------------+
+
 {独自バリデーションの定義}
 
 *{リクエストパラメータのバリデーション}
@@ -319,9 +348,3 @@ public class LoginAction extends Action {
   }
 
 +------------------------------------------------------+
-
-*{アクションメソッドからエラーページへの遷移}
-
- アクションメソッドでエラーを検出した場合は
- {{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#ValidationException}ValidationException}}
- をスローすることで、処理を中断してエラーページへ遷移させることができます。
