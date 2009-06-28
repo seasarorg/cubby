@@ -15,7 +15,8 @@
  */
 package ${package}.action;
 
-import org.seasar.cubby.action.Action;
+import org.seasar.cubby.action.ActionClass;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
@@ -27,10 +28,13 @@ import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+@Component
 @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class HelloAction extends Action {
+@ActionClass
+public class HelloAction {
 
 	private ValidationRules validation = new DefaultValidationRules() {
 		@Override
@@ -41,6 +45,9 @@ public class HelloAction extends Action {
 
 	@Autowired
 	private HelloService helloService;
+
+	@Autowired
+	private ActionContext actionContext;
 
 	private String name;
 
@@ -78,7 +85,8 @@ public class HelloAction extends Action {
 	}
 
 	public ActionResult back() {
-		flash.put("notice", "Redirect OK!(this message is flash message)");
+		actionContext.getFlashMap().put("notice",
+				"Redirect OK!(this message is flash message)");
 		return new Redirect("/hello/");
 	}
 }
