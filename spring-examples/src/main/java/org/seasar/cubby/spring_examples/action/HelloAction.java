@@ -12,8 +12,10 @@ import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+@Component
 @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class HelloAction extends Action {
 
