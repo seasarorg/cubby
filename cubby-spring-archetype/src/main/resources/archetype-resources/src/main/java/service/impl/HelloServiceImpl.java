@@ -16,7 +16,9 @@
 package ${package}.service.impl;
 
 import ${package}.service.HelloService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class HelloServiceImpl implements HelloService {
 
 	public String getMessage() {
