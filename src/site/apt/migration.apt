@@ -96,7 +96,7 @@
 
 []
 
- 詳しくは{{{seasar2.html}セットアップの Seasar2 統合}}の項を参照してください。
+ 詳しくは{{{s2container.html}セットアップの Seasar2 統合}}の項を参照してください。
 
 **{JSP から public フィールドへのアクセス}
 
@@ -107,7 +107,7 @@
 **app-cubby.dicon の変更
 
  app-cubby.dicon が変更になっています。
- 詳しくは{{{seasar2.html}セットアップの Seasar2 統合}}の項を参照してください。
+ 詳しくは{{{s2container.html}セットアップの Seasar2 統合}}の項を参照してください。
 
 **{JSON シリアライザ、デシリアライザの変更}
 

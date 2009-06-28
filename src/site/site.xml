@@ -71,12 +71,17 @@
 			<item name="セットアップ" href="/setup.html" collapse="true">
 				<item name="前提" href="/setup.html#前提" />
 				<item name="プロジェクトの作成" href="/setup.html#プロジェクトの作成" />
-				<item name="Seasar2 統合" href="/seasar2.html" collapse="true">
-					<item name="前提" href="/seasar2.html#前提" />
-					<item name="プロジェクトの作成" href="/seasar2.html#プロジェクトの作成" />
-					<item name="各種ファイル" href="/seasar2.html#各種ファイル" />
+				<item name="S2Container 統合" href="/s2container.html" collapse="true">
+					<item name="前提" href="/s2container.html#前提" />
+					<item name="プロジェクトの作成" href="/s2container.html#プロジェクトの作成" />
+					<item name="各種ファイル" href="/s2container.html#各種ファイル" />
 				</item>
-				<item name="Guice 統合" href="/guice.html" collapse="true">
+				<item name="Spring Framework 統合" href="/spring.html" collapse="true">
+					<item name="前提" href="/spring.html#前提" />
+					<item name="プロジェクトの作成" href="/spring.html#プロジェクトの作成" />
+					<item name="各種ファイル" href="/spring.html#各種ファイル" />
+				</item>
+				<item name="Google Guice 統合" href="/guice.html" collapse="true">
 					<item name="前提" href="/guice.html#前提" />
 					<item name="プロジェクトの作成" href="/guice.html#プロジェクトの作成" />
 					<item name="各種ファイル" href="/guice.html#各種ファイル" />

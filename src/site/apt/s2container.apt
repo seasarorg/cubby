@@ -50,7 +50,7 @@
 ~~ governing permissions and limitations under the License.
 ~~
   --------
-  Seasar2 統合
+  S2Container 統合
   --------
   baba
   --------
@@ -77,7 +77,7 @@
 
 {前提}
 
- Seasar2 に統合する場合は S2Container2.4 の {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy}SMART Deploy}} 環境下で動作させることを前提としています。
+ S2Container に統合する場合は S2Container2.4 の {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeploy}SMART Deploy}} 環境下で動作させることを前提としています。
  ソースコードのパッケージ構成は {{{http://s2container.seasar.org/2.4/ja/DIContainer.html#SMARTdeployPackage}SMART Deploy 推奨のパッケージ構成}} に従ってください。\
 
 []
@@ -99,13 +99,14 @@ mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org/
 
 +------------------------------------------------------+
 Choose archetype:
-1: remote -> cubby-s2-archetype (Cubby 2.0.0 Seasar2 Integration)
+1: remote -> cubby-s2-archetype (Cubby 2.0.0 S2Container Integration)
 2: remote -> cubby-guice-archetype (Cubby 2.0.0 Guice Integration)
-3: remote -> cubby-archetype (Cubby 1.1.4)
-Choose a number:  (1/2/3): 
+3: remote -> cubby-guice-archetype (Cubby 2.0.0 Spring Integration)
+4: remote -> cubby-archetype (Cubby 1.1.6)
+Choose a number:  (1/2/3/4): 
 +------------------------------------------------------+
 
-   1を入力して、cubby-s2-archetype (Cubby 2.0.0 Seasar2 Integration) を選んでください。
+   1を入力して、cubby-s2-archetype (Cubby 2.0.0 S2Container Integration) を選んでください。
 
 +------------------------------------------------------+
 Define value for groupId: :
@@ -150,6 +151,14 @@ package: com.example.foo.barapp
    再設定の際に全てのオプションが設定可能です。（プロジェクトのアーティファクト名、パッケージ名は再入力する必要があります。）\
    デフォルトでは上記のように S2JDBC を使用する、S2Dao を使用しない設定になっています。
 
+   また、ここで作成された pom.xml に含まれる production プロファイルにはリリース向けの log4j.properties と env.txt が含まれます。
+   以下のようにプロファイルを指定して (-Pproduction) war ファイルを作成した場合、Cool Deploy での動作となります。
+   (参考：{{{http://s2container.seasar.org/2.4/ja/DIContainer.html#Env}Seasar2のevn.txtについての説明}})
+
++------------------------------------------------------+
+mvn clean package -Pproduction
++------------------------------------------------------+
+
 {各種ファイル}
 
  ディレクトリに配備する必要があるファイルを説明します。
@@ -165,27 +174,29 @@ package: com.example.foo.barapp
 *--------------------------*--------------------------*------*
 | cubby-*.jar              | Cubby 本体               | 必須 |
 *--------------------------*--------------------------*------*
-| cubby-s2-*.jar           | Seasar2 統合             | 必須 |
+| cubby-s2-*.jar           | S2Container 統合         | 必須 |
 *--------------------------*--------------------------*------*
 | cubby-unit-*.jar         | 単体テストサポート       | 必須 |
 *--------------------------*--------------------------*------*
 | cubby-gson-*.jar         | JSON サポート            | 任意 |
 *--------------------------*--------------------------*------*
-| s2-framework-*.jar       | Seasar2                  | 必須 |
+| s2-framework-*.jar       | S2Container              | 必須 |
 | s2-extension-*.jar       |                          |      |
 | s2-tiger-*.jar           |                          |      |
 *--------------------------*--------------------------*------*
-| commons-fileupload-*.jar | ファイルアップロード機能 | 任意 |
+| slf4j-api.jar            | ログ出力                 | 必須 |
+*--------------------------*--------------------------*------*
+| commons-fileupload-*.jar | ファイルアップロード機能 | 必須 |
 | commons-io-*.jar         |                          |      |
 *--------------------------*--------------------------*------*
 主な依存ライブラリ
 
 *-----------*-------------*
-| Cubby     | Seasar2     |
+| Cubby     | S2Container |
 *-----------*-------------*
-| 2.0.0     | 2.4.38以上  |
+| 2.0.0     | 2.4.38+     |
 *-----------*-------------*
-Cubby と Seasar2 のバージョンの推奨の組み合わせ
+Cubby と S2Container のバージョンの推奨の組み合わせ
 
 *{デプロイメント記述子 (WEB-INF/web.xml)}
 
