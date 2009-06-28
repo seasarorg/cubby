@@ -54,7 +54,7 @@
   --------
   baba
   --------
-  2009-03-14
+  2009-06-28
   --------
 
 {目次}
@@ -71,19 +71,9 @@
 
   *{{{#NetBeans_を使った開発}NetBeans を使った開発}}
 
- *{{{#各種ファイル}各種ファイル}}
-
-  *{{{#必要なライブラリ_WEB-INFlib}必要なライブラリ (WEB-INF/lib)}}
-
-  *{{{#デプロイメント記述子_WEB-INFweb.xml}デプロイメント記述子 (WEB-INF/web.xml)}}
-
-  *{{{#diconファイル_WEB-INFclasses}diconファイル (WEB-INF/classes)}}
-
-  *{{{#プロパティファイル_WEB-INFclasses}プロパティファイル (WEB-INF/classes)}}
-
 {前提}
 
- Cubby は Seasar2 / Guice / Spring Framework に統合して動作させることを前提としています。
+ Cubby は S2Container / Google Guice / Spring Framework に統合して動作させることを前提としています。
 
 {プロジェクトの作成}
 
@@ -95,11 +85,11 @@
 
  具体的な作成方法やプロジェクトに必要なファイルは使用するコンテナに応じたページを参照してください。
 
- {{{seasar2.html}Seasar2 統合}}
+ {{{s2container.html}S2container 統合}}
 
  {{{guice.html}Guice 統合}}
  
- {{{spring.html}Spring Framework 統合}}
+ {{{spring.html}Spring 統合}}
 
 
 *{Tomcat の起動}
@@ -119,9 +109,8 @@ mvn war:inplace
 +------------------------------------------------------+
 
  作成されたpom.xmlには、リリース時に設定ファイル等を置き換えてWARを作成するプロファイルが含まれています。\
- プロジェクトのディレクトリで以下のプロファイルを指定して(-Pproduction)実行すると、「src/production/resources」にあるファイルが「src/main/resources」のファイルより優先されてWARが作成されます。
- 初期設定ではリリース向けのlog4j.propertiesとenv.txt(productが設定)WARが作成されるため、Seasar2でHotDeployのままWARを作成する心配がありません。同じ方法でJDBCの接続設定なども切り替えると便利です。\
-  (参考：{{{http://maven.apache.org/guides/introduction/introduction-to-profiles.html}Maven2のプロファイル解説}}、{{{http://s2container.seasar.org/2.4/ja/DIContainer.html#Env}Seasar2のevn.txtについての説明}})
+ プロジェクトのディレクトリで以下のプロファイルを指定して(-Pproduction)実行すると、「src/production/resources」にあるファイルが「src/main/resources」のファイルより優先されて war ファイルが作成されます。
+  (参考：{{{http://maven.apache.org/guides/introduction/introduction-to-profiles.html}Maven2のプロファイル解説}})
 
 +------------------------------------------------------+
 mvn clean package -Pproduction
@@ -140,7 +129,7 @@ mvn clean package -Pproduction
       この作業はワークスペースごとに１度行えば、次回からは必要ありません。
 
 +------------------------------------------------------+
-mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディレクトリ 例 "C:/eclipse/workspace")
+mvn eclipse:configure-workspace -Declipse.workspace=(ワークスペースのディレクトリ 例 "C:/eclipse/workspace")
 +------------------------------------------------------+
 
  [[2]]プロジェクト設定ファイル
@@ -149,12 +138,10 @@ mvn eclipse:add-maven-repo -Declipse.workspace=(ワークスペースのディ�
       プロジェクトのディレクトリに移動して以下のコマンドを実行してください。
 
 +------------------------------------------------------+
-mvn eclipse:eclipse -DdownloadSources=true
+mvn eclipse:eclipse
 +------------------------------------------------------+
 
-      Cubby や Seasar2 など、プロジェクトに必要な jar ファイルがダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。\
-      「-DdownloadSources=true」を付けることで、jar ファイルと一緒にソースコードの jar ファイルがダウンロードされます。\
-      eclipse:eclipseの際に、ソースのjarがあれば、自動的にEclipse上でアタッチされた設定になるので便利です。
+      プロジェクトに必要な jar ファイルがローカルリポジトリにダウンロードされ、WTP でサーバーアプリケーションを実行するための準備が整います。
 
  [[3]]プロジェクトのインポート
 
@@ -201,11 +188,6 @@ mvn eclipse:eclipse -DdownloadSources=true
       []
 
       Tomcatが起動して、ログがコンソールに出力されます。
-
- [[6]]WTP環境でHotDeployの設定を有効にする。 
-
-      {{{http://d.hatena.ne.jp/uriyuri/20080328/1206694040}http://d.hatena.ne.jp/uriyuri/20080328/1206694040}}の設定を行うことで、
-      WTP環境でワーキングフォルダをPublishingせずに、HotDeployで開発できます。
 
 []
 
