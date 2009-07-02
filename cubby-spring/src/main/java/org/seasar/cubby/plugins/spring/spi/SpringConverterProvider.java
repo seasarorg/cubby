@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -32,7 +31,6 @@ import org.springframework.context.ApplicationContextAware;
  * 
  * @author suzuki-kei
  * @author someda
- * @since 2.0.0
  */
 public class SpringConverterProvider extends AbstractCachedConverterProvider
 		implements ApplicationContextAware {
@@ -45,11 +43,20 @@ public class SpringConverterProvider extends AbstractCachedConverterProvider
 
 	private final Set<Converter> converters = new LinkedHashSet<Converter>();
 
+	/**
+	 * アプリケーションコンテキストを設定します。
+	 * 
+	 * @param applicationContext
+	 *            アプリケーションコンテキスト
+	 */
 	public void setApplicationContext(
-			final ApplicationContext applicationContext) throws BeansException {
+			final ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
+	/**
+	 * このオブジェクトを初期化します。
+	 */
 	public void initialize() {
 		if (initialized) {
 			return;

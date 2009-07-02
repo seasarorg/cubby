@@ -85,6 +85,9 @@ public class SpringPlugin extends AbstractPlugin {
 
 	private ApplicationContext applicationContext;
 
+	/**
+	 * インスタンス化します。
+	 */
 	public SpringPlugin() {
 		support(BeanDescProvider.class);
 		support(ContainerProvider.class);

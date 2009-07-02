@@ -18,7 +18,6 @@ package org.seasar.cubby.plugins.spring.spi;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,19 +27,28 @@ import org.springframework.context.ApplicationContextAware;
  * 
  * @author suzuki-kei
  * @author someda
- * @since 2.0.0
  */
 public class SpringContainerProvider implements ContainerProvider,
 		ApplicationContextAware {
 
+	/** コンテナ。 */
 	private Container container;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Container getContainer() {
 		return container;
 	}
 
+	/**
+	 * アプリケーションコンテキストを設定します。
+	 * 
+	 * @param applicationContext
+	 *            アプリケーションコンテキスト
+	 */
 	public void setApplicationContext(
-			final ApplicationContext applicationContext) throws BeansException {
+			final ApplicationContext applicationContext) {
 		this.container = new SpringContainerImpl(applicationContext);
 	}
 

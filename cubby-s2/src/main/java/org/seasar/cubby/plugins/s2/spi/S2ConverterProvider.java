@@ -35,7 +35,6 @@ import org.seasar.framework.util.DisposableUtil;
  * コンバータプロバイダの実装クラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class S2ConverterProvider extends AbstractCachedConverterProvider
 		implements DetectClassProcessor, Disposable {
