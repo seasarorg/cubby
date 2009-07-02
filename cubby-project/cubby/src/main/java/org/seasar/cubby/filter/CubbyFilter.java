@@ -132,7 +132,7 @@ public class CubbyFilter implements Filter {
 	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
 	 * @see RequestProcessor#process(HttpServletRequest, HttpServletResponse,
-	 *      PathInfo, CommandFactory)
+	 *      PathInfo)
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {

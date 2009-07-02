@@ -22,8 +22,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContextEvent;
-
 import org.seasar.cubby.spi.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,9 +53,9 @@ public class PluginRegistry {
 	}
 
 	/**
-	 * {@link Plugins} のシングルトンを取得します。
+	 * {@link PluginRegistry} のシングルトンを取得します。
 	 * 
-	 * @return {@link Plugins} のシングルトン
+	 * @return {@link PluginRegistry} のシングルトン
 	 */
 	public static PluginRegistry getInstance() {
 		return INSTANCE;
@@ -96,20 +94,20 @@ public class PluginRegistry {
 	 * @param service
 	 *            サービス
 	 * @return プロバイダ
+	 * @throws IllegalArgumentException
+	 *             <code>service</code> を提供するプラグインが登録されていない場合
 	 * @throws IllegalStateException
-	 *             {@link #initialize(ServletContextEvent)} で初期化される前に呼び出された場合
+	 *             {@link Plugin#getSupportedServices()} が <code>service</code>
+	 *             を返すプラグインから取得したサービスプロバイダが <code>null</code> の場合
 	 */
 	public <S extends Provider> S getProvider(final Class<S> service) {
-		if (this.serviceToPlugins == null) {
-			throw new IllegalStateException(format("ECUB0053"));
-		}
 		final Plugin plugin = this.serviceToPlugins.get(service);
 		if (plugin == null) {
 			throw new IllegalArgumentException(format("ECUB0054", service));
 		}
 		final S provider = service.cast(plugin.getProvider(service));
 		if (provider == null) {
-			throw new NullPointerException("provider");
+			throw new IllegalStateException(format("ECUB0053", plugin, service));
 		}
 		return provider;
 	}

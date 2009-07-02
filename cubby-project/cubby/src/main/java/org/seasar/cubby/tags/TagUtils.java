@@ -249,7 +249,7 @@ class TagUtils {
 	/**
 	 * 指定された {@link Map} を HTML タグの属性へ変換します。
 	 * <p>
-	 * map 中の値が {@link #REMOVE_ATTRIBUTE} の場合、その属性は結果から除外します。
+	 * map 中の値が属性を出力しないことを示すオブジェクトの場合、その属性は結果から除外します。
 	 * </p>
 	 * 
 	 * @param map

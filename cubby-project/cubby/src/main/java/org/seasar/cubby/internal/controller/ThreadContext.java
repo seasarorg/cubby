@@ -150,8 +150,6 @@ public class ThreadContext {
 	/**
 	 * 指定されたコマンドを新しいコンテキスト内で実行します。
 	 * 
-	 * @param <T>
-	 *            コマンドの戻り値
 	 * @param request
 	 *            要求
 	 * @param response
@@ -192,8 +190,6 @@ public class ThreadContext {
 	 * コンテキスト内で実行するコマンドのインターフェイスです。
 	 * 
 	 * @author baba
-	 * @param <T>
-	 *            コマンドの戻り値
 	 */
 	public interface Command {
 

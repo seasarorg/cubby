@@ -49,6 +49,12 @@ public class ValidationPlugin extends AbstractPlugin {
 	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
 	private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * アクションの実行前に入力値を検証します。
+	 * </p>
+	 */
 	@Override
 	public ActionResult invokeAction(final ActionInvocation invocation)
 			throws Exception {

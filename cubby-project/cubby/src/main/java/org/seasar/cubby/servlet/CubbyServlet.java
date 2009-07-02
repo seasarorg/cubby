@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -70,7 +69,7 @@ public class CubbyServlet extends GenericServlet {
 	 * プラグインの破棄を行います。
 	 * </p>
 	 * 
-	 * @see Plugins#destroy(ServletContextEvent)
+	 * @see PluginManager#destroy()
 	 */
 	@Override
 	public void destroy() {

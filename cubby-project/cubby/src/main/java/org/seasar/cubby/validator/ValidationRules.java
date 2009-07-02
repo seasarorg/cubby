@@ -35,9 +35,9 @@ public interface ValidationRules {
 	 * 
 	 * @param params
 	 *            リクエストパラメータ
-	 * @param form
+	 * @param formBean
 	 *            フォームオブジェクト
-	 * @param errors
+	 * @param actionErrors
 	 *            アクションのエラー
 	 */
 	void validate(Map<String, Object[]> params, Object formBean,
@@ -50,7 +50,6 @@ public interface ValidationRules {
 	 *            エラーページ
 	 * @return アクションメソッド実行後の処理
 	 * @see org.seasar.cubby.action.Validation#errorPage()
-	 * @since 1.0.2
 	 */
 	ActionResult fail(String errorPage);
 
@@ -58,7 +57,6 @@ public interface ValidationRules {
 	 * 入力検証のフェーズの一覧を実行順に並べた{@link Collection}として取得します。
 	 * 
 	 * @return 入力検証のフェーズ
-	 * @since 1.1.0
 	 */
 	Collection<ValidationPhase> getValidationPhases();
 
@@ -68,7 +66,6 @@ public interface ValidationRules {
 	 * @param validationPhase
 	 *            入力検証フェーズ
 	 * @return 指定された入力検証フェーズに対応する入力検証ルールの{@link Collection}
-	 * @since 1.1.0
 	 */
 	Collection<ValidationRule> getPhaseValidationRules(
 			ValidationPhase validationPhase);
