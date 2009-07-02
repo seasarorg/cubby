@@ -18,7 +18,6 @@ package org.seasar.cubby.plugins.spring.spi;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.util.ActionUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -41,15 +40,20 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 
 	private boolean initialized = false;
 
+	/**
+	 * アプリケーションコンテキストを設定します。
+	 * 
+	 * @param applicationContext
+	 *            アプリケーションコンテキスト
+	 */
 	public void setApplicationContext(
-			final ApplicationContext applicationContext) throws BeansException {
+			final ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
-	public PathResolver getPathResolver() {
-		return pathResolver;
-	}
-
+	/**
+	 * このオブジェクトを初期化します。
+	 */
 	public void initialize() {
 		if (initialized) {
 			return;
@@ -67,4 +71,12 @@ public class SpringPathResolverProvider implements PathResolverProvider,
 
 		initialized = true;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public PathResolver getPathResolver() {
+		return pathResolver;
+	}
+
 }

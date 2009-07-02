@@ -62,9 +62,6 @@ import com.google.inject.Module;
  * </p>
  * 
  * @see <a href="http://code.google.com/p/google-guice/">Google&nbsp;Guice</a>
- * @see <a
- *      href="http://docs.google.com/Doc?id=dd2fhx4z_5df5hw8">User's&nbsp;Guide<
- *      / a >
  * @author baba
  */
 public class GuicePlugin extends AbstractPlugin {

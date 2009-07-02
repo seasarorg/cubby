@@ -21,6 +21,11 @@ import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 import org.seasar.framework.container.S2Container;
 
+/**
+ * リクエストパーサプロバイダの実装クラスです。
+ * 
+ * @author baba
+ */
 public class S2RequestParserProvider extends AbstractRequestParserProvider {
 
 	public static final String s2Container_BINDING = "bindingType=must";

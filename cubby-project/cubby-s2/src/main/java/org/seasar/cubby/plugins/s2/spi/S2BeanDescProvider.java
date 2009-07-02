@@ -208,13 +208,6 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 		/**
 		 * {@inheritDoc}
 		 */
-		public boolean isParameterized() {
-			return s2PropertyDesc.isParameterized();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
 		public ParameterizedClassDesc getParameterizedClassDesc() {
 			return parameterizedClassDesc;
 		}

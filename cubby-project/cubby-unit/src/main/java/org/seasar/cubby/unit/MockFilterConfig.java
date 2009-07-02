@@ -28,7 +28,7 @@ import org.junit.Assert;
  * 
  * @author baba
  */
-public class MockFilterConfig implements FilterConfig {
+class MockFilterConfig implements FilterConfig {
 
 	private final ServletContext servletContext;
 
@@ -60,24 +60,31 @@ public class MockFilterConfig implements FilterConfig {
 		this.filterName = filterName;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getFilterName() {
 		return filterName;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public ServletContext getServletContext() {
 		return servletContext;
 	}
 
-	public void addInitParameter(String name, String value) {
-		Assert.assertNotNull(name, "Parameter name must not be null");
-		this.initParameters.setProperty(name, value);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getInitParameter(String name) {
 		Assert.assertNotNull(name, "Parameter name must not be null");
 		return this.initParameters.getProperty(name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public Enumeration getInitParameterNames() {
 		return this.initParameters.keys();

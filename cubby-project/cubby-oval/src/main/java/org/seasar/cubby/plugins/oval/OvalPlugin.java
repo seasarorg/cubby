@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.plugins.oval;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 import net.sf.oval.Validator;
 import net.sf.oval.localization.context.OValContextRenderer;
@@ -28,6 +28,11 @@ import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
+/**
+ * Oval によるアノテーションベースの入力検証を追加するプラグインです。
+ * 
+ * @author baba
+ */
 public class OvalPlugin extends AbstractPlugin {
 
 	/**
@@ -38,7 +43,9 @@ public class OvalPlugin extends AbstractPlugin {
 	 * を実行して、ロガーに SLF4J を使用するように設定します。
 	 * </p>
 	 */
-	public void initialize(final ServletConfig config) {
+	@Override
+	public void initialize(final ServletContext servletContext)
+			throws Exception {
 		Validator.setLoggerFactory(new LoggerFactorySLF4JImpl());
 	}
 
