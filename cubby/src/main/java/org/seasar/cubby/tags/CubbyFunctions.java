@@ -152,17 +152,29 @@ public class CubbyFunctions {
 	}
 
 	/**
-	 * 第1引数の条件が true のときは第2引数を属性の値として出力し、第1引数の条件が false のときは属性自体を出力しません。
+	 * 指定された条件によって属性を出力するかしないかを制御します。
 	 * <p>
+	 * <code>condition</code> が <code>true</code> のときは <code>value</code>
+	 * を属性の値として出力し、 <code>condition</code> が <code>false</code> のときは属性自体を出力しません。
 	 * 条件によって disabled や checked などの属性の出力する・しないを制御したい場合に使用します。
 	 * 出力する・しないの制御はカスタムタグで行うので、t:input/t:select/t:textarea と組み合わせて使用してください。
+	 * </p>
+	 * <p>
+	 * 
+	 * <pre>
+	 * &lt;t:input name=&quot;foo&quot; disabled=&quot;${f:render(cond == true, \&quot;disabled\&quot;)} /&gt;
+	 * </pre>
+	 * 
+	 * 上記の例では、<code>cond == true</code> の場合には input
+	 * タグの属性に「disabled="disabled"」が出力され、 <code>cond == false</code> の場合には
+	 * disabled 属性が出力されません。
 	 * </p>
 	 * 
 	 * @param condition
 	 *            属性を出力する条件
 	 * @param value
-	 * @return condition が <code>true</code> の場合は value、そうでない場合は
-	 *         {@link TagUtils#REMOVE_ATTRIBUTE}
+	 * @return condition が <code>true</code> の場合は
+	 *         value、そうでない場合は属性を出力しないことを示すオブジェクト
 	 */
 	public static Object ifrender(final Boolean condition, final Object value) {
 		if (condition) {

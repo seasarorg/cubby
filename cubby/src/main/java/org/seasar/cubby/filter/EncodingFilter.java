@@ -80,19 +80,19 @@ public class EncodingFilter implements Filter {
 			+ ".FILTERED";
 
 	/** エンコーディングのキー。 */
-	private static final String ENCODING = "encoding";
+	public static final String ENCODING = "encoding";
 
 	/** 強制エンコーディング設定のキー。 */
-	private static final String FORCE_ENCODING = "forceEncoding";
+	public static final String FORCE_ENCODING = "forceEncoding";
 
 	/** URI エンコーディングのキー。 */
-	private static final String URI_ENCODING = "URIEncoding";
+	public static final String URI_ENCODING = "URIEncoding";
 
 	/** URI バイト列のエンコーディングのキー。 */
-	private static final String URI_BYTES_ENCODING = "URIBytesEncoding";
+	public static final String URI_BYTES_ENCODING = "URIBytesEncoding";
 
 	/** URI バイト列のエンコーディングのデフォルト値。 */
-	private static final String DEFAULT_URI_BYTE_ENCODING = "ISO-8859-1";
+	public static final String DEFAULT_URI_BYTE_ENCODING = "ISO-8859-1";
 
 	/** エンコーディング。 */
 	private String encoding;

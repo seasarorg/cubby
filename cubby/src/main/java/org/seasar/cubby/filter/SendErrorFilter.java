@@ -42,10 +42,10 @@ import org.seasar.cubby.internal.util.StringUtils;
 public class SendErrorFilter implements Filter {
 
 	/** レスポンスの HTTP ステータスコードの初期パラメータ名。 */
-	private static final String STATUS_CODE = "statusCode";
+	public static final String STATUS_CODE = "statusCode";
 
 	/** 対象外とするパスの初期パラメータ名。 */
-	private static final String IGNORE_PATH_PATTERN = "ignorePathPattern";
+	public static final String IGNORE_PATH_PATTERN = "ignorePathPattern";
 
 	/** レスポンスの HTTP ステータスコード (デフォルトは 403 Forbidden)。 */
 	private int statusCode = HttpServletResponse.SC_FORBIDDEN;
@@ -57,11 +57,13 @@ public class SendErrorFilter implements Filter {
 	 * このフィルタを初期化します。
 	 * <p>
 	 * <table>
-	 * <caption>使用可能な初期化パラメータ</caption> <thead>
+	 * <caption>使用可能な初期化パラメータ</caption>
+	 * <thead>
 	 * <th>初期化パラメータ名</th>
 	 * <th>初期化パラメータの値</th>
 	 * <th>例</th>
-	 * </thead> <thead>
+	 * </thead>
+	 * <thead>
 	 * <tr>
 	 * <td>{@link #STATUS_CODE}</td>
 	 * <td>レスポンスの HTTP ステータスコードを指定します。指定しなかった場合は

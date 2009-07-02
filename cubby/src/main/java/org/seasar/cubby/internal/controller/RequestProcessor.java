@@ -31,8 +31,6 @@ public interface RequestProcessor {
 	/**
 	 * 指定された {@link PathInfo} に対する処理を行います。
 	 * 
-	 * @param <T>
-	 *            戻り値の型
 	 * @param request
 	 *            要求
 	 * @param response

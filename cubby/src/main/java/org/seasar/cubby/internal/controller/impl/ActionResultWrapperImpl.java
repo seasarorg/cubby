@@ -106,8 +106,6 @@ class ActionResultWrapperImpl implements ActionResultWrapper {
 		 *            アクションのコンテキスト
 		 * @param actionResult
 		 *            アクションの実行結果
-		 * @param plugins
-		 *            プラグインのコレクション
 		 */
 		public ActionResultInvocationImpl(final HttpServletRequest request,
 				final HttpServletResponse response,

@@ -27,16 +27,13 @@ import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.internal.controller.ThreadContext;
 
 /**
- * フラッシュメッセージをセッションに格納するための {@link Map} です。
- * <p>
- * 実際に値が設定されるまではセッションを使用しません。
- * </p>
+ * {@link FlashMap} の実装です。
  * 
  * @author baba
  */
 public class FlashMapImpl implements FlashMap {
 
-	/** セッションに格納するキー。 */
+	/** セッションの属性に格納する {@link Map} のキー。 */
 	private static final String ATTRIBUTE_NAME = FlashMapImpl.class.getName()
 			+ ".MAP";
 

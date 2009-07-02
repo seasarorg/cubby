@@ -20,13 +20,16 @@ import java.util.Map;
 
 import org.seasar.cubby.action.ActionErrors;
 
+/**
+ * 入力検証ルールの抽象Kクラスです。
+ * 
+ * @author baba
+ */
 public abstract class AbstractValidationRules implements ValidationRules {
 
 	/**
 	 * すべてのフェーズに対する入力検証を実行します。
 	 * 
-	 * @param validationRules
-	 *            入力検証ルールの集合
 	 * @param params
 	 *            リクエストパラメータ
 	 * @param form

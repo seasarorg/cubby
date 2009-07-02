@@ -88,7 +88,6 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
  * </p>
  * 
  * @author baba
- * @since 1.0.0
  */
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 

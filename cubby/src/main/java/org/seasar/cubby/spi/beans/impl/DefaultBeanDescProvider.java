@@ -404,14 +404,6 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		/**
 		 * {@inheritDoc}
 		 */
-		public boolean isParameterized() {
-			return parameterizedClassDesc != null
-					&& parameterizedClassDesc.isParameterizedClass();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
 		public ParameterizedClassDesc getParameterizedClassDesc() {
 			return parameterizedClassDesc;
 		}
@@ -421,8 +413,8 @@ public class DefaultBeanDescProvider implements BeanDescProvider {
 		 * <p>
 		 * 以下の順序でプロパティのメソッドの定義を検索し、最初に見つかったアノテーションを返します。
 		 * <ol>
-		 * <li>プロパティ値の読み込みに使用するメソッド {@link #getReadMethod()}</li>
-		 * <li>プロパティ値の書き込みに使用するメソッド {@link #getWriteMethod()}</li>
+		 * <li>プロパティ値の読み込みに使用するメソッド</li>
+		 * <li>プロパティ値の書き込みに使用するメソッド</li>
 		 * </ol>
 		 * </p>
 		 * <p>

@@ -58,7 +58,7 @@ public interface Attribute {
 	 * @param target
 	 *            値を取得するオブジェクト
 	 * @return 属性の値
-	 * @throws IllegalPropertyException
+	 * @throws IllegalAttributeException
 	 *             値の取得に失敗した場合。
 	 */
 	Object getValue(Object target);

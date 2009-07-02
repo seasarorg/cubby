@@ -87,6 +87,8 @@ public class RequestProcessorImpl implements RequestProcessor {
 		 *            要求
 		 * @param response
 		 *            応答
+		 * @param pathInfo
+		 *            パスから取得した情報
 		 */
 		public RequestProcessingInvocationImpl(
 				final HttpServletRequest request,
