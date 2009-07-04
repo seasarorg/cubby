@@ -15,8 +15,9 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.*;
+import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
+import static org.seasar.cubby.CubbyConstants.ATTR_FORM_WRAPPER_FACTORY;
 import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 
 import java.util.ArrayList;
@@ -174,6 +175,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		attributeNames.add(ATTR_CONTEXT_PATH);
 		attributeNames.add(ATTR_ACTION);
 		attributeNames.add(ATTR_MESSAGES);
+		attributeNames.add(ATTR_FORM_WRAPPER_FACTORY);
 
 		final Object action = super.getAttribute(ATTR_ACTION);
 		if (action != null) {
