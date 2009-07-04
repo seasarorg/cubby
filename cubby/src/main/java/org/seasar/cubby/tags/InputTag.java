@@ -36,7 +36,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapper;
 
 /**
  * <code>&lt;input&gt;</code> タグを出力します。
@@ -65,7 +65,6 @@ import org.seasar.cubby.internal.controller.FormWrapper;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class InputTag extends DynamicAttributesSimpleTagSupport {
 

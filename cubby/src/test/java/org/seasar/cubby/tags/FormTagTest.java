@@ -31,6 +31,7 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.RequestMethod;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;
+import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
 import org.seasar.cubby.mock.MockPathResolverProvider;
@@ -86,6 +87,8 @@ public class FormTagTest extends AbstractStandardTagTestCase {
 		setupErrors(context);
 		context.setAttribute(CubbyConstants.ATTR_CONTEXT_PATH, "/brabra",
 				PageContext.REQUEST_SCOPE);
+		context.setAttribute(CubbyConstants.ATTR_FORM_WRAPPER_FACTORY,
+				new FormWrapperFactoryImpl(), PageContext.REQUEST_SCOPE);
 	}
 
 	@Test

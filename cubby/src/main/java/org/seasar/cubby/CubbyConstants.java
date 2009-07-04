@@ -16,13 +16,14 @@
 package org.seasar.cubby;
 
 /**
- * Cubbyフレームワークで使用する定数クラスです。
+ * フレームワークで使用する定数クラスです。
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class CubbyConstants {
+
+	// request --------------------------------------------------------
 
 	/**
 	 * アクションオブジェクトの要求の属性名。
@@ -68,6 +69,13 @@ public class CubbyConstants {
 	 * バリデーションエラーを表すオブジェクトの要求の属性名。
 	 */
 	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
+
+	/**
+	 * フォームオブジェクトのラッパーファクトリの要求の属性名。
+	 */
+	public static final String ATTR_FORM_WRAPPER_FACTORY = "org.seasar.cubby.formWrapperFactory";
+
+	// session --------------------------------------------------------
 
 	/**
 	 * フラッシュメッセージのセッションの属性名。

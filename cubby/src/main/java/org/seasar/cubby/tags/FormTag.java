@@ -15,6 +15,7 @@
  */
 package org.seasar.cubby.tags;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_FORM_WRAPPER_FACTORY;
 import static org.seasar.cubby.tags.TagUtils.getContextPath;
 import static org.seasar.cubby.tags.TagUtils.toAttr;
 
@@ -31,9 +32,8 @@ import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.DynamicAttributes;
 
-import org.seasar.cubby.internal.controller.FormWrapper;
-import org.seasar.cubby.internal.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
+import org.seasar.cubby.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.util.LinkBuilder;
 
 /**
@@ -44,7 +44,6 @@ import org.seasar.cubby.util.LinkBuilder;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class FormTag extends BodyTagSupport implements DynamicAttributes,
 		ParamParent {
@@ -165,7 +164,8 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	 */
 	@Override
 	public int doStartTag() throws JspException {
-		final FormWrapperFactory formWrapperFactory = new FormWrapperFactoryImpl();
+		final FormWrapperFactory formWrapperFactory = (FormWrapperFactory) pageContext
+				.findAttribute(ATTR_FORM_WRAPPER_FACTORY);
 		this.formWrapper = formWrapperFactory.create(this.value);
 		return EVAL_BODY_BUFFERED;
 	}

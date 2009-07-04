@@ -19,11 +19,11 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 
 import org.seasar.cubby.action.RequestParameter;
+import org.seasar.cubby.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.converter.impl.ConversionHelperImpl;
-import org.seasar.cubby.internal.controller.FormWrapper;
-import org.seasar.cubby.internal.controller.FormWrapperFactory;
 import org.seasar.cubby.spi.ConverterProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.Attribute;

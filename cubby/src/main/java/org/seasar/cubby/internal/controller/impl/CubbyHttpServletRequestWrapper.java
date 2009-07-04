@@ -15,7 +15,7 @@
  */
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
+import static org.seasar.cubby.CubbyConstants.*;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
 
@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.IteratorEnumeration;
 import org.seasar.cubby.spi.beans.Attribute;
@@ -70,6 +71,11 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
  * <td>{@link java.util.Map}</td>
  * </tr>
  * <tr>
+ * <td>{@link CubbyConstants#ATTR_FORM_WRAPPER_FACTORY}</td>
+ * <td>フォームオブジェクトのラッパーファクトリ</td>
+ * <td>{@link FormWrapperFactory}</td>
+ * </tr>
+ * <tr>
  * <td>アクションのプロパティ名</td>
  * <td>アクションのプロパティ値</td>
  * <td>任意</td>
@@ -93,6 +99,9 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	/** URI パラメータの {@link Map} です。 */
 	private final Map<String, String[]> uriParameters;
+
+	/** フォームオブジェクトのラッパーファクトリです。 */
+	private FormWrapperFactory formWrapperFactory;
 
 	/**
 	 * 指定された要求をラップした要求オブジェクトを構築します。
@@ -123,6 +132,11 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 			value = this.getContextPath();
 		} else if (ATTR_MESSAGES.equals(name)) {
 			value = ThreadContext.getMessagesMap();
+		} else if (ATTR_FORM_WRAPPER_FACTORY.equals(name)) {
+			if (this.formWrapperFactory == null) {
+				this.formWrapperFactory = new FormWrapperFactoryImpl();
+			}
+			value = this.formWrapperFactory;
 		} else {
 			final Object action = super.getAttribute(ATTR_ACTION);
 			if (action != null) {
