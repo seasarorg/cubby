@@ -17,7 +17,7 @@ package org.seasar.cubby.tags;
 
 import java.util.Map;
 
-import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapper;
 
 public class MockFormTag extends FormTag {
 

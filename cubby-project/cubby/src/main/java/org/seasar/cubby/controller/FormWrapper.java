@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller;
+package org.seasar.cubby.controller;
 
 /**
  * フォームオブジェクトのラッパーです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface FormWrapper {
 

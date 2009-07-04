@@ -29,14 +29,13 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapper;
 
 /**
  * <code>&lt;textarea&gt;</code> タグを出力します。
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class TextareaTag extends DynamicAttributesSimpleTagSupport {
 

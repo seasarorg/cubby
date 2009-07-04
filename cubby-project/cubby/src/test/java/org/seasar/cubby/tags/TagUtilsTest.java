@@ -32,7 +32,7 @@ import javax.servlet.jsp.PageContext;
 import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.internal.controller.FormWrapper;
+import org.seasar.cubby.controller.FormWrapper;
 
 public class TagUtilsTest {
 
