@@ -15,14 +15,18 @@
  */
 package org.seasar.cubby.plugins.s2.spi;
 
+import static org.seasar.cubby.internal.util.ReflectionUtils.findAllDeclaredField;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
@@ -91,6 +95,9 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 	 */
 	private static class S2BeanDescImpl extends BeanDescImpl {
 
+		/** プロパティとして認識されたフィールド。 */
+		private Set<Field> recognizedAsPropertyFields;
+
 		/**
 		 * インスタンス化します。
 		 * 
@@ -101,9 +108,13 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 			super(clazz);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		protected Map<String, Attribute> collectPropertyAttributeMap(
 				final Class<?> clazz) {
+			this.recognizedAsPropertyFields = new HashSet<Field>();
 			final org.seasar.framework.beans.BeanDesc s2BeanDesc = org.seasar.framework.beans.factory.BeanDescFactory
 					.getBeanDesc(clazz);
 			final Map<String, Attribute> attributes = new LinkedHashMap<String, Attribute>();
@@ -112,9 +123,41 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 						.getPropertyDesc(i);
 				final Attribute attribute = new S2PropertyAttribute(
 						propertyDesc);
+				if (!propertyDesc.hasReadMethod()
+						&& !propertyDesc.hasWriteMethod()) {
+					Field field = propertyDesc.getField();
+					if (field != null) {
+						recognizedAsPropertyFields.add(field);
+					}
+				}
 				attributes.put(propertyDesc.getPropertyName(), attribute);
 			}
 			return attributes;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected Map<String, List<Attribute>> collectFieldAttributesMap(
+				Class<?> clazz) {
+			final Map<String, List<Attribute>> fieldAttributes = new LinkedHashMap<String, List<Attribute>>();
+			for (final Field field : findAllDeclaredField(clazz)) {
+				if (recognizedAsPropertyFields.contains(field)) {
+					continue;
+				}
+				final String fieldName = field.getName();
+				List<Attribute> fieldDescs;
+				if (!fieldAttributes.containsKey(fieldName)) {
+					fieldDescs = new ArrayList<Attribute>();
+					fieldAttributes.put(fieldName, fieldDescs);
+				} else {
+					fieldDescs = fieldAttributes.get(fieldName);
+				}
+				final Attribute attributes = new FieldAttribute(clazz, field);
+				fieldDescs.add(attributes);
+			}
+			return fieldAttributes;
 		}
 
 	}
