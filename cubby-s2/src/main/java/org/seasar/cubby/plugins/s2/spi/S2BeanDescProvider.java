@@ -125,7 +125,7 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 						propertyDesc);
 				if (!propertyDesc.hasReadMethod()
 						&& !propertyDesc.hasWriteMethod()) {
-					Field field = propertyDesc.getField();
+					final Field field = propertyDesc.getField();
 					if (field != null) {
 						recognizedAsPropertyFields.add(field);
 					}
@@ -140,7 +140,7 @@ public class S2BeanDescProvider extends DefaultBeanDescProvider {
 		 */
 		@Override
 		protected Map<String, List<Attribute>> collectFieldAttributesMap(
-				Class<?> clazz) {
+				final Class<?> clazz) {
 			final Map<String, List<Attribute>> fieldAttributes = new LinkedHashMap<String, List<Attribute>>();
 			for (final Field field : findAllDeclaredField(clazz)) {
 				if (recognizedAsPropertyFields.contains(field)) {

@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * S2Container の AOP に関する機能を提供します。
+ * S2Container の SMART deploy で自動登録されるクラスを走査するためのクラスの実装を提供します。
  */
-package org.seasar.cubby.plugins.s2.aop;
+package org.seasar.cubby.plugins.s2.detector.impl;
 

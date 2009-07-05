@@ -27,7 +27,6 @@ import org.seasar.framework.container.TooManyRegistrationRuntimeException;
  * {@link S2Container} による {@link Container} の実装を提供します。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class S2ContainerProvider implements ContainerProvider {
 
@@ -60,7 +59,6 @@ public class S2ContainerProvider implements ContainerProvider {
 	 * {@link S2Container} による {@link Container} の実装です。
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	private class S2ContainerImpl implements Container {
 

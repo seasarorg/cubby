@@ -14,7 +14,8 @@
  * governing permissions and limitations under the License.
  */
 /**
- * S2Container の AOP に関する機能を提供します。
+ * Cubby を <a href="http://s2container.seasar.org/2.4/ja/">S2Container</a>
+ * に統合するためのプラグインを提供します。
  */
-package org.seasar.cubby.plugins.s2.aop;
+package org.seasar.cubby.plugins.s2;
 

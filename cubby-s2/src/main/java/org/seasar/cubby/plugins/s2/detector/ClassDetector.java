@@ -22,7 +22,6 @@ package org.seasar.cubby.plugins.s2.detector;
  * </p>
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface ClassDetector {
 

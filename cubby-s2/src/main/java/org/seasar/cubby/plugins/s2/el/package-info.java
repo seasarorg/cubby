@@ -14,7 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * S2Container の AOP に関する機能を提供します。
+ * S2Container 向けの {@link javax.el.ELResolver} の実装を提供します。
  */
-package org.seasar.cubby.plugins.s2.aop;
+package org.seasar.cubby.plugins.s2.el;
 

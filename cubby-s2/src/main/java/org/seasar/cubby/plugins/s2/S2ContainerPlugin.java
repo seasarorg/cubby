@@ -120,6 +120,7 @@ public class S2ContainerPlugin extends AbstractPlugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <S extends Provider> S getProvider(final Class<S> service) {
 		if (this.isSupport(service)) {
 			final S2Container container = SingletonS2ContainerFactory

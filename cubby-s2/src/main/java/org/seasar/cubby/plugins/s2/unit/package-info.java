@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * Cubbyの単体テストをサポートするクラスを提供します。
- * @since 1.0.0
+ * S2Container 向けに Cubby の単体テストをサポートするクラスを提供します。
  */
 package org.seasar.cubby.plugins.s2.unit;
 
