@@ -70,6 +70,10 @@
 
   *{{{#バリデーションルールのコピー}バリデーションルールのコピー}}
 
+  *{{{#アクションメソッドからエラーページへの遷移}アクションメソッドからエラーページへの遷移}}
+
+  *{{{#エラー発生時の挙動}エラー発生時の挙動}}
+
  *{{{#独自バリデーションの定義}独自バリデーションの定義}}
 
   *{{{#リクエストパラメータのバリデーション}リクエストパラメータのバリデーション}}
@@ -272,7 +276,7 @@ public class LoginAction extends Action {
 *{エラー発生時の挙動}
 
  DefaultValidationRules はバリデーションエラーが検出された場合にエラーページへフォワードします。
- この挙動は{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#fail(java.lang.String)}}メソッドに定義されています。
+ この挙動は{{{cubby/apidocs/org/seasar/cubby/validator/DefaultValidationRules.html#fail(java.lang.String)}DefaultValidationRules.html#fail(java.lang.String)}}メソッドに定義されています。
  これをオーバーライドすることでエラー発生時の挙動を変更することができます。
 
 +------------------------------------------------------+
