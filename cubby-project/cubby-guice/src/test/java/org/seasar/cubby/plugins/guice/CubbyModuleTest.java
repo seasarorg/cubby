@@ -21,8 +21,10 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -41,8 +43,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileUpload;
 import org.easymock.IAnswer;
 import org.junit.Test;
-import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.ActionClass;
+import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
@@ -95,14 +97,14 @@ public class CubbyModuleTest {
 		});
 		replay(servletContext);
 
-		GuiceFilter guiceFilter = new GuiceFilter();
+		final GuiceFilter guiceFilter = new GuiceFilter();
 		guiceFilter.init(new FilterConfig() {
 
 			public String getFilterName() {
 				return "guice";
 			}
 
-			public String getInitParameter(String name) {
+			public String getInitParameter(final String name) {
 				return null;
 			}
 
@@ -117,72 +119,74 @@ public class CubbyModuleTest {
 
 		});
 
-		FilterChain chain = new FilterChain() {
+		final FilterChain chain = new FilterChain() {
 
-			public void doFilter(ServletRequest request,
-					ServletResponse response) throws IOException,
+			public void doFilter(final ServletRequest request,
+					final ServletResponse response) throws IOException,
 					ServletException {
-				PluginRegistry pluginRegistry = PluginRegistry.getInstance();
-				GuicePlugin guicePlugin = new GuicePlugin();
+				final PluginRegistry pluginRegistry = PluginRegistry
+						.getInstance();
+				final GuicePlugin guicePlugin = new GuicePlugin();
 				try {
 					guicePlugin.initialize(servletContext);
 					guicePlugin.ready();
 					pluginRegistry.register(guicePlugin);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new ServletException(e);
 				}
 
 				final Injector injector = guicePlugin.getInjector();
 				System.out.println(injector);
 
-				PathResolverProvider pathResolverProvider = ProviderFactory
+				final PathResolverProvider pathResolverProvider = ProviderFactory
 						.get(PathResolverProvider.class);
-				PathResolver pathResolver = pathResolverProvider
+				final PathResolver pathResolver = pathResolverProvider
 						.getPathResolver();
 				System.out.println(pathResolver);
 
-				PathTemplateParser pathTemplateParser = injector
+				final PathTemplateParser pathTemplateParser = injector
 						.getInstance(PathTemplateParser.class);
 				System.out.println(pathTemplateParser);
 				assertTrue(pathTemplateParser instanceof MyPathTemplateParser);
 
-				ContainerProvider containerProvider = ProviderFactory
+				final ContainerProvider containerProvider = ProviderFactory
 						.get(ContainerProvider.class);
-				Container container = containerProvider.getContainer();
-				Foo foo = container.lookup(Foo.class);
+				final Container container = containerProvider.getContainer();
+				final Foo foo = container.lookup(Foo.class);
 				System.out.println(foo);
 				System.out.println(foo.pathResolver);
 
 				assertSame(pathResolver, foo.pathResolver);
 
 				try {
-					Baz baz = injector.getInstance(Baz.class);
+					final Baz baz = injector.getInstance(Baz.class);
 					System.out.println(baz);
 					fail();
-				} catch (ConfigurationException e) {
+				} catch (final ConfigurationException e) {
 					// ok
 				}
 				try {
 					ThreadContext.runInContext((HttpServletRequest) request,
 							(HttpServletResponse) response, new Command() {
 
-								public void execute(HttpServletRequest request,
-										HttpServletResponse response)
+								public void execute(
+										final HttpServletRequest request,
+										final HttpServletResponse response)
 										throws Exception {
-									ConverterProvider converterProvider = ProviderFactory
+									final ConverterProvider converterProvider = ProviderFactory
 											.get(ConverterProvider.class);
 									System.out.println(converterProvider);
 									System.out
 											.println(converterProvider
 													.getConverter(BigDecimalConverter.class));
 
-									FileUpload fileUpload1 = injector
+									final FileUpload fileUpload1 = injector
 											.getInstance(FileUpload.class);
 									System.out.println(fileUpload1);
 									System.out.println(fileUpload1
 											.getFileItemFactory());
 
-									FileUpload fileUpload2 = injector
+									final FileUpload fileUpload2 = injector
 											.getInstance(FileUpload.class);
 									System.out.println(fileUpload2);
 									System.out.println(fileUpload2
@@ -195,7 +199,7 @@ public class CubbyModuleTest {
 								}
 
 							});
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new ServletException(e);
 				}
 			}
@@ -235,7 +239,7 @@ public class CubbyModuleTest {
 
 	public static class MyPathTemplateParser implements PathTemplateParser {
 
-		public String parse(String template, Handler handler) {
+		public String parse(final String template, final Handler handler) {
 			return "mytemplateparser";
 		}
 

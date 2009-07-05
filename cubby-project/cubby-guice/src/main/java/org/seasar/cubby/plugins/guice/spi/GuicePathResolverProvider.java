@@ -20,15 +20,30 @@ import org.seasar.cubby.spi.PathResolverProvider;
 
 import com.google.inject.Inject;
 
+/**
+ * Guice 向けの {@link PathResolver} のプロバイダです。
+ * 
+ * @author baba
+ */
 public class GuicePathResolverProvider implements PathResolverProvider {
 
+	/** パスに対応するアクションメソッドを解決するためのクラスです。 */
 	private final PathResolver pathResolver;
 
+	/**
+	 * パスに対応するアクションメソッドを解決するためのクラスを設定します。
+	 * 
+	 * @param pathResolver
+	 *            パスに対応するアクションメソッドを解決するためのクラス
+	 */
 	@Inject
 	public GuicePathResolverProvider(final PathResolver pathResolver) {
 		this.pathResolver = pathResolver;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public PathResolver getPathResolver() {
 		return pathResolver;
 	}

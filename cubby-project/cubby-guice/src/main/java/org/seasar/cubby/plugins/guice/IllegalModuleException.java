@@ -16,7 +16,7 @@
 package org.seasar.cubby.plugins.guice;
 
 /**
- * 不正なモジュールがしていされたことを示すためにスローされます。
+ * 不正なモジュールが指定されたことを示すためにスローされます。
  * 
  * @author baba
  */

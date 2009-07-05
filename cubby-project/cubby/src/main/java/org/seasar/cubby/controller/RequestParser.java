@@ -20,31 +20,29 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * リクエスト解析器です。
+ * 要求解析器です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface RequestParser {
 
 	/**
-	 * 指定されたリクエストのリクエストパラメータ等から、アクションにバインドするパラメータを取得します。
+	 * 指定された要求のパラメータ等から、アクションにバインドするパラメータを取得します。
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @return アクションにバインドするパラメータの {@link Map}
 	 * @throws RequestParseException
-	 *             リクエストの解析に失敗した場合
+	 *             要求の解析に失敗した場合
 	 */
 	Map<String, Object[]> getParameterMap(HttpServletRequest request);
 
 	/**
-	 * このリクエスト解析器が解析可能なリクエストかを示します。
+	 * このオブジェクトが解析可能な要求かを示します。
 	 * 
 	 * @param request
-	 *            リクエスト
-	 * @return 解析可能なリクエストの場合は <code>true</code>、そうでない場合は <code>false</code>
-	 * @since 1.1.0
+	 *            要求
+	 * @return 解析可能な要求の場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
 	boolean isParsable(HttpServletRequest request);
 

@@ -30,7 +30,10 @@ import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
 /**
+ * S2Container 向けの {@link PathResolver} のプロバイダです。
+ * <p>
  * クラスパスを走査しアクションクラスを登録します。
+ * </p>
  * 
  * @author baba
  */

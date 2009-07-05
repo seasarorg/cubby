@@ -28,13 +28,14 @@ import com.google.inject.Key;
 
 public class GuiceTest {
 
-	private Injector injector = Guice.createInjector(new GuiceTestModule());
+	private final Injector injector = Guice
+			.createInjector(new GuiceTestModule());
 
 	@Test
 	public void getInstance() {
 		try {
 			injector.getInstance(Foo.class);
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			if (e.getClass().getName().equals(
 					"com.google.inject.ConfigurationException")) {
 				System.out.println(e);
@@ -46,22 +47,22 @@ public class GuiceTest {
 
 	@Test(expected = ConfigurationException.class)
 	public void getBinding1() {
-		Key<Foo> key = Key.get(Foo.class);
+		final Key<Foo> key = Key.get(Foo.class);
 		injector.getBinding(key);
 		// assertNull(binding);
 	}
 
 	@Test
 	public void getBinding2() {
-		Key<Bar> key = Key.get(Bar.class);
-		Binding<Bar> binding = injector.getBinding(key);
+		final Key<Bar> key = Key.get(Bar.class);
+		final Binding<Bar> binding = injector.getBinding(key);
 		assertNotNull(binding);
 	}
 
 	@Test
 	public void getBinding3() {
-		Key<Baz> key = Key.get(Baz.class);
-		Binding<Baz> binding = injector.getBinding(key);
+		final Key<Baz> key = Key.get(Baz.class);
+		final Binding<Baz> binding = injector.getBinding(key);
 		// assertNull(binding);
 		assertNotNull(binding);
 	}
