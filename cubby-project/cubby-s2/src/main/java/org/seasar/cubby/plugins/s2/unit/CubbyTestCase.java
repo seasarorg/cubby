@@ -102,7 +102,6 @@ import org.seasar.framework.unit.S2TigerTestCase;
  * 
  * @author agata
  * @author baba
- * @since 2.0.0
  */
 public abstract class CubbyTestCase extends S2TigerTestCase {
 
@@ -182,8 +181,10 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	/**
 	 * アクションメソッドを実行します。
 	 * 
-	 * @param originalPath
-	 *            オリジナルパス
+	 * @param request
+	 *            要求
+	 * @param response
+	 *            応答
 	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
 	 * @throws Exception
 	 *             アクションメソッドの実行時に例外が発生した場合

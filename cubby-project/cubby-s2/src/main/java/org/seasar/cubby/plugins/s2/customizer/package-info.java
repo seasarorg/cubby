@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * Sesaar2 のコンポーネント定義をカスタマイズするコンポーネントカスタマイザを提供します。
- * @since 2.0.0
+ * S2Container のコンポーネント定義をカスタマイズするコンポーネントカスタマイザを提供します。
  */
 package org.seasar.cubby.plugins.s2.customizer;
 

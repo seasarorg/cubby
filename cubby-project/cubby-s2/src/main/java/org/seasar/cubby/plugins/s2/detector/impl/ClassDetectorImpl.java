@@ -33,7 +33,6 @@ import org.seasar.framework.util.DisposableUtil;
  * </p>
  * 
  * @author baba
- * @since 1.1.0
  */
 public class ClassDetectorImpl extends CoolComponentAutoRegister implements
 		ClassDetector, Disposable {

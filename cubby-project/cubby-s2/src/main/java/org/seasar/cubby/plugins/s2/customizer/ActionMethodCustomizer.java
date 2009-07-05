@@ -35,7 +35,6 @@ import org.seasar.framework.util.StringUtil;
  * </p>
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ActionMethodCustomizer extends AspectCustomizer {
 

@@ -33,7 +33,6 @@ import org.seasar.framework.util.DisposableUtil;
  * クラスパスを走査しアクションクラスを登録します。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class S2PathResolverProvider implements PathResolverProvider,
 		DetectClassProcessor, Disposable {

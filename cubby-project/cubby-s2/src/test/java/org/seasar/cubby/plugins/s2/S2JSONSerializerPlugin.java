@@ -28,15 +28,16 @@ import org.seasar.framework.util.JSONSerializer;
 @SuppressWarnings("deprecation")
 public class S2JSONSerializerPlugin extends AbstractPlugin {
 
-	private JsonProvider jsonProvider = new JsonProvider() {
+	private final JsonProvider jsonProvider = new JsonProvider() {
 
-		public String toJson(Object o) {
+		public String toJson(final Object o) {
 			return JSONSerializer.serialize(o);
 		}
 
 	};
 
-	public <S extends Provider> S getProvider(Class<S> service) {
+	@Override
+	public <S extends Provider> S getProvider(final Class<S> service) {
 		if (JsonProvider.class.equals(service)) {
 			return service.cast(jsonProvider);
 		}

@@ -15,7 +15,6 @@
  */
 package org.seasar.cubby.plugins.s2.unit;
 
-
 public class CubbyTestCaseTest extends CubbyTestCase {
 
 	/**
@@ -24,18 +23,18 @@ public class CubbyTestCaseTest extends CubbyTestCase {
 	 * @throws Exception
 	 */
 	public void testSetupThreadContext() throws Exception {
-//		ThreadContext.remove();
-//		try {
-//			ThreadContext.getRequest();
-//			fail();
-//		} catch (IllegalStateException e) {
-//		}
-//		setupThreadContext(getRequest());
-//		assertNotNull(ThreadContext.getRequest());
-//		
-//		TokenValidator v = new TokenValidator();
-//		ValidationContext context = new ValidationContext();
-//		v.validate(context, new String[] { "1" });
-//		assertTrue("上記のvalidateメソッドの呼び出しでNPEが発生しないこと", true);
+		// ThreadContext.remove();
+		// try {
+		// ThreadContext.getRequest();
+		// fail();
+		// } catch (IllegalStateException e) {
+		// }
+		// setupThreadContext(getRequest());
+		// assertNotNull(ThreadContext.getRequest());
+		//		
+		// TokenValidator v = new TokenValidator();
+		// ValidationContext context = new ValidationContext();
+		// v.validate(context, new String[] { "1" });
+		// assertTrue("上記のvalidateメソッドの呼び出しでNPEが発生しないこと", true);
 	}
 }

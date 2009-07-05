@@ -27,7 +27,6 @@ import org.seasar.framework.exception.EmptyRuntimeException;
  * アクションメソッドに適用される {@link Pointcut}。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ActionMethodPointcutImpl extends PointcutImpl implements
 		Serializable {
@@ -68,6 +67,7 @@ public class ActionMethodPointcutImpl extends PointcutImpl implements
 	 * そうでない場合はスーパークラスに処理を移譲します。
 	 * </p>
 	 */
+	@Override
 	public boolean isApplied(final Method targetMethod) {
 		if (!ActionUtils.isActionMethod(targetMethod)) {
 			return false;

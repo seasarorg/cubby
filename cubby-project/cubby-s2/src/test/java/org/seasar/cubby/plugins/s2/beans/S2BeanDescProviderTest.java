@@ -31,7 +31,7 @@ public class S2BeanDescProviderTest {
 
 	@Test
 	public void propertyDesc() throws Exception {
-		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
+		final BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean.class);
 		assertEquals(5, beanDesc.findtPropertyAttributes().size());
 		Attribute propDesc = beanDesc.getPropertyAttribute("aaa");
 		assertEquals("aaa", propDesc.getName());
@@ -61,7 +61,7 @@ public class S2BeanDescProviderTest {
 
 	@Test
 	public void invalidProperty() throws Exception {
-		BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean2.class);
+		final BeanDesc beanDesc = beanDescProvider.getBeanDesc(MyBean2.class);
 		assertEquals("1", false, beanDesc.hasPropertyAttribute("aaa"));
 	}
 
@@ -112,7 +112,7 @@ public class S2BeanDescProviderTest {
 		 * @param a
 		 * @return
 		 */
-		public String getBbb(Object a) {
+		public String getBbb(final Object a) {
 			return null;
 		}
 
@@ -140,7 +140,7 @@ public class S2BeanDescProviderTest {
 		/**
 		 * @param eee
 		 */
-		public void setEee(String eee) {
+		public void setEee(final String eee) {
 			this.eee = eee;
 		}
 
@@ -155,7 +155,7 @@ public class S2BeanDescProviderTest {
 		 * @param hhh
 		 * @return
 		 */
-		public MyBean setHhh(String hhh) {
+		public MyBean setHhh(final String hhh) {
 			return this;
 		}
 
@@ -170,7 +170,7 @@ public class S2BeanDescProviderTest {
 		 * @param arg2
 		 * @return
 		 */
-		public Number add(Number arg1, Number arg2) {
+		public Number add(final Number arg1, final Number arg2) {
 			return Integer.valueOf(3);
 		}
 
@@ -179,7 +179,7 @@ public class S2BeanDescProviderTest {
 		 * @param arg2
 		 * @return
 		 */
-		public int add2(int arg1, int arg2) {
+		public int add2(final int arg1, final int arg2) {
 			return arg1 + arg2;
 		}
 
@@ -187,7 +187,7 @@ public class S2BeanDescProviderTest {
 		 * @param arg
 		 * @return
 		 */
-		public Integer echo(Integer arg) {
+		public Integer echo(final Integer arg) {
 			return arg;
 		}
 
@@ -215,19 +215,20 @@ public class S2BeanDescProviderTest {
 		 * @param bean1
 		 * @param bean2
 		 */
-		public MyBean2(int num, String text, MyBean bean1, MyBean2 bean2) {
+		public MyBean2(final int num, final String text, final MyBean bean1,
+				final MyBean2 bean2) {
 		}
 
 		/**
 		 * @param i
 		 */
-		public void setAaa(int i) {
+		public void setAaa(final int i) {
 		}
 
 		/**
 		 * @param s
 		 */
-		public void setAaa(String s) {
+		public void setAaa(final String s) {
 		}
 	}
 
