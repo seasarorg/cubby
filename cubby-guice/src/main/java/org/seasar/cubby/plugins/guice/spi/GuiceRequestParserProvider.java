@@ -22,16 +22,31 @@ import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
 import com.google.inject.Inject;
 
+/**
+ * Guice 向けの {@link RequestParser} のプロバイダです。
+ * 
+ * @author baba
+ */
 public class GuiceRequestParserProvider extends AbstractRequestParserProvider {
 
+	/** 要求解析器 */
 	private final Collection<RequestParser> requestParsers;
 
+	/**
+	 * インスタンス化します。
+	 * 
+	 * @param requestParsers
+	 *            要求解析器のコレクション
+	 */
 	@Inject
 	public GuiceRequestParserProvider(
 			final Collection<RequestParser> requestParsers) {
 		this.requestParsers = requestParsers;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Collection<RequestParser> getRequestParsers() {
 		return requestParsers;

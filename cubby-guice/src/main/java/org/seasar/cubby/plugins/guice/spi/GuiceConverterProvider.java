@@ -22,10 +22,22 @@ import org.seasar.cubby.spi.impl.AbstractCachedConverterProvider;
 
 import com.google.inject.Inject;
 
+/**
+ * Guice 向けの {@link Converter} のプロバイダです。
+ * 
+ * @author baba
+ */
 public class GuiceConverterProvider extends AbstractCachedConverterProvider {
 
+	/** コンバータのコレクション。 */
 	private final Collection<Converter> converters;
 
+	/**
+	 * コンバータのコレクションを設定します。
+	 * 
+	 * @param converters
+	 *            コンバータのコレクション
+	 */
 	@Inject
 	public GuiceConverterProvider(final Collection<Converter> converters) {
 		this.converters = converters;

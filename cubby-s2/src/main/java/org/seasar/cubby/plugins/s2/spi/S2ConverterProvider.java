@@ -32,7 +32,7 @@ import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
 /**
- * コンバータプロバイダの実装クラスです。
+ * S2Container 向けの {@link Converter} のプロバイダです。
  * 
  * @author baba
  */

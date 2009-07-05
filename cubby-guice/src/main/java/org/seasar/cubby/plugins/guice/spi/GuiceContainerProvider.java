@@ -35,6 +35,9 @@ public class GuiceContainerProvider implements ContainerProvider {
 
 	/**
 	 * インスタンス化します。
+	 * 
+	 * @param injector
+	 *            インジェクタ
 	 */
 	@Inject
 	public GuiceContainerProvider(final Injector injector) {
@@ -52,7 +55,6 @@ public class GuiceContainerProvider implements ContainerProvider {
 	 * {@link Injector} による {@link Container} の実装です。
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	private static class GuiceContainerImpl implements Container {
 

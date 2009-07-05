@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.IllegalAttributeException;
@@ -39,13 +40,13 @@ import org.seasar.framework.util.Disposable;
 import org.seasar.framework.util.DisposableUtil;
 
 /**
- * {@link BeanDesc} の Seasar2 向け実装を提供します。
+ * S2Container 向けの {@link BeanDescProvider} の実装クラスです。
  * <p>
  * getter/setter メソッドだけではなく、public フィールドもプロパティとして認識します。
  * </p>
  * <p>
- * Seasar2 の {@link org.seasar.framework.beans.factory.BeanDescFactory}
- * によって生成されるメタ情報を元に {@link BeanDesc} を構築します。
+ * {@link org.seasar.framework.beans.factory.BeanDescFactory} によって生成されるメタ情報を元に
+ * {@link BeanDesc} を構築します。
  * </p>
  * 
  * @author baba

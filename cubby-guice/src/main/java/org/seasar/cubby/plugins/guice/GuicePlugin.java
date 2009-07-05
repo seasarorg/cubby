@@ -108,6 +108,7 @@ public class GuicePlugin extends AbstractPlugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <S extends Provider> S getProvider(final Class<S> service) {
 		if (this.isSupport(service)) {
 			return service.cast(injector.getInstance(service));

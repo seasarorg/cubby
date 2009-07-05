@@ -22,7 +22,7 @@ import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 import org.seasar.framework.container.S2Container;
 
 /**
- * リクエストパーサプロバイダの実装クラスです。
+ * S2Container 向けの {@link RequestParser} のプロバイダです。
  * 
  * @author baba
  */
