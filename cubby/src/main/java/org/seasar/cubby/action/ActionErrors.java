@@ -23,7 +23,6 @@ import java.util.Map;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public interface ActionErrors {
 	/**

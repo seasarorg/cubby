@@ -22,15 +22,14 @@ import javax.servlet.http.HttpServletRequest;
  * サーブレット要求をに対するユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class RequestUtils {
 
 	/**
-	 * リクエストの URI からコンテキストパスを除いたパスを返します。
+	 * 要求の URI からコンテキストパスを除いたパスを返します。
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @return コンテキストパスを除いたパス
 	 */
 	public static String getPath(final HttpServletRequest request) {
@@ -44,7 +43,7 @@ public class RequestUtils {
 	}
 
 	/**
-	 * リクエストから属性を取得します。
+	 * 要求から属性を取得します。
 	 * 
 	 * @param <T>
 	 *            取得する属性の型
@@ -53,7 +52,6 @@ public class RequestUtils {
 	 * @param name
 	 *            属性名
 	 * @return 属性
-	 * @since 1.1.0
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getAttribute(final ServletRequest request,

@@ -14,14 +14,11 @@
  * governing permissions and limitations under the License.
  */
 /**
- * 置き換え可能な拡張ポイントとなる Service Provider Interface を提供します。
+ * 置き換え可能な拡張ポイントとなるサービスプロバイダインターフェイス (Service Provider Interface) を提供します。
  * <p>
  * {@link Provider} は各種サービスを提供するクラスであることをあらわすマーカインタフェイスで、そのサブインターフェイスが拡張ポイントを表します。
  * それらは {@link ProviderFactory#get(Class)} によってインスタンスを取得します。
- * 拡張ポイントとなるインターフェイスとその実装クラスの関連付けは、クラスパス上の <code>META-INF/cubby</code> ディレクトリによって行われます。
- * 上記ディレクトリにインターフェイスの FQCN をファイル名とし、ファイル中に実装クラスの FQCN を記述することでインターフェイスと実装クラスが関連付けられます。
  * </p>
- * @since 2.0.0
  */
 package org.seasar.cubby.spi;
 

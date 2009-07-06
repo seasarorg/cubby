@@ -27,7 +27,6 @@ import org.seasar.cubby.routing.Routing;
  * ルーティングの実装。
  * 
  * @author baba
- * @since 1.1.0
  */
 class RoutingImpl implements Routing {
 
@@ -46,7 +45,7 @@ class RoutingImpl implements Routing {
 	/** 正規表現パターン。 */
 	private final Pattern pattern;
 
-	/** リクエストメソッド。 */
+	/** 要求メソッド。 */
 	private final RequestMethod requestMethod;
 
 	/** このルーティングを使用することを判断するためのパラメータ名。 */
@@ -69,7 +68,7 @@ class RoutingImpl implements Routing {
 	 * @param pattern
 	 *            正規表現パターン
 	 * @param requestMethod
-	 *            リクエストメソッド
+	 *            要求メソッド
 	 * @param onSubmit
 	 *            このルーティングを使用することを判断するためのパラメータ名
 	 * @param priority

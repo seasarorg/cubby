@@ -28,10 +28,9 @@ import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.URLBodyEncoder;
 
 /**
- * Cubby の JSP functions を提供します。
+ * JSP functions を提供します。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class CubbyFunctions {
 

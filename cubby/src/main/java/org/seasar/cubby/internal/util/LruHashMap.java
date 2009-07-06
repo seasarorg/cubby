@@ -30,7 +30,6 @@ import java.util.Map;
  * @param <V>
  *            値の型
  * @author baba
- * @since 2.0.0
  */
 public class LruHashMap<K, V> extends LinkedHashMap<K, V> {
 

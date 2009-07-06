@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * リクエストパラメータの型変換機能を提供します。
- * @since 1.1.0
+ * 要求パラメータの型変換機能を提供します。
  */
 package org.seasar.cubby.converter;
 

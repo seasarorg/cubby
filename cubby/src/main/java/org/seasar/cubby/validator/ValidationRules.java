@@ -26,7 +26,6 @@ import org.seasar.cubby.action.ActionResult;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public interface ValidationRules {
 
@@ -34,7 +33,7 @@ public interface ValidationRules {
 	 * すべてのフェーズに対する入力検証を実行します。
 	 * 
 	 * @param params
-	 *            リクエストパラメータ
+	 *            要求パラメータ
 	 * @param formBean
 	 *            フォームオブジェクト
 	 * @param actionErrors

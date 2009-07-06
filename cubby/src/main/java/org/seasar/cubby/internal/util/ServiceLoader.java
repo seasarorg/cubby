@@ -46,7 +46,6 @@ import org.slf4j.LoggerFactory;
  * @param <S>
  *            このローダーによってロードされるサービスの型
  * @author baba
- * @since 2.0.0
  */
 public class ServiceLoader<S> implements Iterable<S> {
 
@@ -200,7 +199,6 @@ public class ServiceLoader<S> implements Iterable<S> {
 	 * プロバイダの {@link Iterator}
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	private class ProviderIterator implements Iterator<S> {
 

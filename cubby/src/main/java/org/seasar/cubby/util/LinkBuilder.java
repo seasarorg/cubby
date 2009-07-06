@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
  * 要求の URL をベースとしたリンク文字列を構築します。
  * 
  * @author baba
- * @since 1.1.4
  */
 public class LinkBuilder implements Serializable {
 

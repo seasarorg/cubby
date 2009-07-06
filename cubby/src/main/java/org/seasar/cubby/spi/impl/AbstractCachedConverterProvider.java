@@ -24,7 +24,6 @@ import org.seasar.cubby.converter.Converter;
  * コンバータのキャッシュを備えたコンバータプロバイダのスケルトン実装です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public abstract class AbstractCachedConverterProvider extends
 		AbstractConverterProvider {

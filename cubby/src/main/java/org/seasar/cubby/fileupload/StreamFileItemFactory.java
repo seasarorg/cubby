@@ -29,7 +29,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 /**
- * Streaming API によってマルチパートリクエストを処理するための {@link FileItemFactory} の実装です。
+ * Streaming API によってマルチパート要求を処理するための {@link FileItemFactory} の実装です。
  * <p>
  * ローカルファイルへの書き込みに制限がある環境で {@link DiskFileItemFactory} の代わりに使用してください。
  * </p>

@@ -26,7 +26,6 @@ import org.seasar.cubby.internal.util.ResourceBundleMap;
  * メッセージの振る舞いのデフォルト実装です。
  * 
  * @author baba
- * @since 1.0.3
  */
 public class DefaultMessagesBehaviour implements MessagesBehaviour {
 

@@ -26,8 +26,9 @@ public class OvalValidationContext {
 
 	};
 
+	private String resourceKeyPrefix;
+
 	private OvalValidationContext() {
-		
 	}
 
 	public static OvalValidationContext get() {
@@ -37,8 +38,6 @@ public class OvalValidationContext {
 	public static void remove() {
 		context.remove();
 	}
-
-	private String resourceKeyPrefix;
 
 	public String getResourceKeyPrefix() {
 		return resourceKeyPrefix;

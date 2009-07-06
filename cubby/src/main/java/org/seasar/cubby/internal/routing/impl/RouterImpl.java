@@ -41,7 +41,6 @@ import org.slf4j.LoggerFactory;
  * ルーターの実装です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class RouterImpl implements Router {
 

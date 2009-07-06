@@ -34,20 +34,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.internal.util.StringUtils;
 
 /**
- * 適用されたリクエストに対して、異常系の HTTP ステータスコードを返す {@link Filter} です。
+ * 適用された要求に対して、異常系の HTTP ステータスコードを返す {@link Filter} です。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class SendErrorFilter implements Filter {
 
-	/** レスポンスの HTTP ステータスコードの初期パラメータ名。 */
+	/** 応答の HTTP ステータスコードの初期パラメータ名。 */
 	public static final String STATUS_CODE = "statusCode";
 
 	/** 対象外とするパスの初期パラメータ名。 */
 	public static final String IGNORE_PATH_PATTERN = "ignorePathPattern";
 
-	/** レスポンスの HTTP ステータスコード (デフォルトは 403 Forbidden)。 */
+	/** 応答の HTTP ステータスコード (デフォルトは 403 Forbidden)。 */
 	private int statusCode = HttpServletResponse.SC_FORBIDDEN;
 
 	/** 対象外とするパスの正規表現パターンのリスト。 */
@@ -57,16 +56,14 @@ public class SendErrorFilter implements Filter {
 	 * このフィルタを初期化します。
 	 * <p>
 	 * <table>
-	 * <caption>使用可能な初期化パラメータ</caption>
-	 * <thead>
+	 * <caption>使用可能な初期化パラメータ</caption> <thead>
 	 * <th>初期化パラメータ名</th>
 	 * <th>初期化パラメータの値</th>
 	 * <th>例</th>
-	 * </thead>
-	 * <thead>
+	 * </thead> <thead>
 	 * <tr>
 	 * <td>{@link #STATUS_CODE}</td>
-	 * <td>レスポンスの HTTP ステータスコードを指定します。指定しなかった場合は
+	 * <td>応答の HTTP ステータスコードを指定します。指定しなかった場合は
 	 * {@link HttpServletResponse#SC_FORBIDDEN} を返します。</td>
 	 * <td></td>
 	 * <tr>
@@ -96,7 +93,7 @@ public class SendErrorFilter implements Filter {
 	 * &lt;/filter-mapping&gt;
 	 * </pre>
 	 * 
-	 * この例では、 /index.jsp を除く *.jsp にリクエストがあった場合に HTTP ステータスコード 404 (Not Found)
+	 * この例では、 /index.jsp を除く *.jsp に要求があった場合に HTTP ステータスコード 404 (Not Found)
 	 * を返します。</td>
 	 * </tr>
 	 * </thead>
@@ -159,11 +156,11 @@ public class SendErrorFilter implements Filter {
 	}
 
 	/**
-	 * 指定されたリクエストがこのフィルタの対象外であるかを示します。
+	 * 指定された要求がこのフィルタの対象外であるかを示します。
 	 * 
 	 * @param request
-	 *            リクエスト
-	 * @return 指定されたリクエストがこのフィルタの対象外である場合は <code>true</code>、そうでない場合は
+	 *            要求
+	 * @return 指定された要求がこのフィルタの対象外である場合は <code>true</code>、そうでない場合は
 	 *         <code>false</code>
 	 */
 	private boolean isIgnore(final HttpServletRequest request) {

@@ -25,7 +25,6 @@ import org.seasar.cubby.controller.RequestParser;
  * {@link RequestParser} のプロバイダです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface RequestParserProvider extends Provider {
 

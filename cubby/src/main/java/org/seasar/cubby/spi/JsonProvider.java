@@ -19,7 +19,6 @@ package org.seasar.cubby.spi;
  * JSON のプロバイダです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface JsonProvider extends Provider {
 

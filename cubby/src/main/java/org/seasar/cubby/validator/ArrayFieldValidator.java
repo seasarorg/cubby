@@ -19,7 +19,6 @@ package org.seasar.cubby.validator;
  * 複数の値をもつ入力フォームのフィールドに対する入力検証です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface ArrayFieldValidator extends Validator {
 

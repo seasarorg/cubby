@@ -21,7 +21,6 @@ import org.seasar.cubby.converter.Converter;
  * {@link Converter コンバータ}のプロバイダです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface ConverterProvider extends Provider {
 
@@ -41,7 +40,7 @@ public interface ConverterProvider extends Provider {
 	 * </p>
 	 * 
 	 * @param parameterType
-	 *            リクエストパラメータの型
+	 *            要求パラメータの型
 	 * @param objectType
 	 *            変換先のクラス
 	 * 

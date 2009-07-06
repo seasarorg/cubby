@@ -93,7 +93,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * @author baba
- * @since 1.0.0
  */
 public class Forward implements ActionResult {
 
@@ -139,7 +138,6 @@ public class Forward implements ActionResult {
 	 *            アクションメソッド名
 	 * @param parameters
 	 *            パラメータ
-	 * @since 1.1.0
 	 */
 	public Forward(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters) {
@@ -159,7 +157,6 @@ public class Forward implements ActionResult {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
-	 * @since 1.1.0
 	 */
 	public Forward(final Class<?> actionClass) {
 		this(actionClass, "index");
@@ -172,7 +169,6 @@ public class Forward implements ActionResult {
 	 *            アクションクラス
 	 * @param methodName
 	 *            アクションメソッド名
-	 * @since 1.1.0
 	 */
 	public Forward(final Class<?> actionClass, final String methodName) {
 		this(actionClass, methodName, EMPTY_PARAMETERS);
@@ -342,7 +338,6 @@ public class Forward implements ActionResult {
 	 * アクションメソッドへフォワードするためのルーティングです。
 	 * 
 	 * @author baba
-	 * @since 1.1.0
 	 */
 	private static class ForwardRouting implements Routing {
 

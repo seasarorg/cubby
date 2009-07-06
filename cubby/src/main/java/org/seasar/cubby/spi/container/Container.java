@@ -19,7 +19,6 @@ package org.seasar.cubby.spi.container;
  * オブジェクトを生成、管理するコンテナのインターフェイスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface Container {
 

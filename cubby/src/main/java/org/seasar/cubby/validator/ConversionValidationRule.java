@@ -30,7 +30,7 @@ import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.util.RequestUtils;
 
 /**
- * リクエストパラメータをフォームオブジェクトへのバインドする時の型変換エラーを検証する入力検証ルールです。
+ * 要求パラメータをフォームオブジェクトへのバインドする時の型変換エラーを検証する入力検証ルールです。
  * 
  * @author baba
  */

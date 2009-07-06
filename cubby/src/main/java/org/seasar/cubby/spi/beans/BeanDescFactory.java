@@ -22,7 +22,6 @@ import org.seasar.cubby.spi.ProviderFactory;
  * {@link BeanDesc} のファクトリです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class BeanDescFactory {
 

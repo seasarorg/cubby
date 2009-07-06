@@ -24,7 +24,6 @@ import org.seasar.cubby.action.ActionResult;
  * {@link org.seasar.cubby.action.ActionResult} のラッパです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface ActionResultWrapper {
 
@@ -32,9 +31,9 @@ public interface ActionResultWrapper {
 	 * ラップされた {@link org.seasar.cubby.action.ActionResult} を実行します。
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param response
-	 *            レスポンス
+	 *            応答
 	 * @throws Exception
 	 *             {@link org.seasar.cubby.action.ActionResult} の実行で例外が発生した場合
 	 */

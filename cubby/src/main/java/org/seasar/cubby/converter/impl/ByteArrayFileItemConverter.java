@@ -22,7 +22,6 @@ import org.seasar.cubby.converter.Converter;
  * {@link FileItem}から byte の配列へ変換する{@link Converter}です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class ByteArrayFileItemConverter extends AbstractFileItemConverter {
 

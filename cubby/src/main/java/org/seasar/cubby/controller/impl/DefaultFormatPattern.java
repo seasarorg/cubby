@@ -21,7 +21,6 @@ import org.seasar.cubby.controller.FormatPattern;
  * 日付や時刻のフォーマットパターンを保持するクラスの実装です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class DefaultFormatPattern implements FormatPattern {
 

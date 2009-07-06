@@ -52,7 +52,6 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 	 * フォームオブジェクトのラッパーの実装です。
 	 * 
 	 * @author baba
-	 * @since 1.1.0
 	 */
 	private class FormWrapperImpl implements FormWrapper {
 

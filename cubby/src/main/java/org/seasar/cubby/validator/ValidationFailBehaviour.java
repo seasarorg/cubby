@@ -22,7 +22,6 @@ import org.seasar.cubby.action.ActionResult;
  * 入力検証でエラーがあった場合の振る舞いです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface ValidationFailBehaviour {
 

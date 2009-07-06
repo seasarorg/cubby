@@ -23,7 +23,6 @@ import org.seasar.cubby.converter.ConversionHelper;
  * 列挙定数へ変換するコンバータです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class EnumConverter extends AbstractConverter {
 

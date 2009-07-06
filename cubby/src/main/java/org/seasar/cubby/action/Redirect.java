@@ -95,7 +95,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * @author baba
- * @since 1.0.0
  */
 public class Redirect implements ActionResult {
 
@@ -145,7 +144,6 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のパス
 	 * @param protocol
 	 *            リダイレクト先のプロトコル
-	 * @since 1.1.0
 	 */
 	public Redirect(final String path, final String protocol) {
 		this(path);
@@ -161,7 +159,6 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のプロトコル
 	 * @param port
 	 *            リダイレクト先のポート
-	 * @since 1.1.0
 	 */
 	public Redirect(final String path, final String protocol, final int port) {
 		this(path);
@@ -174,7 +171,6 @@ public class Redirect implements ActionResult {
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
-	 * @since 1.1.0
 	 */
 	public Redirect(final Class<?> actionClass) {
 		this(actionClass, "index");
@@ -187,7 +183,6 @@ public class Redirect implements ActionResult {
 	 *            アクションクラス
 	 * @param methodName
 	 *            メソッド名
-	 * @since 1.1.0
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName) {
 		this(actionClass, methodName, EMPTY_PARAMETERS);
@@ -202,7 +197,6 @@ public class Redirect implements ActionResult {
 	 *            メソッド名
 	 * @param parameters
 	 *            パラメータ
-	 * @since 1.1.0
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters) {
@@ -222,7 +216,6 @@ public class Redirect implements ActionResult {
 	 *            パラメータ
 	 * @param protocol
 	 *            リダイレクト先のプロトコル
-	 * @since 1.1.0
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters, final String protocol) {
@@ -243,7 +236,6 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のプロトコル
 	 * @param port
 	 *            リダイレクト先のポート
-	 * @since 1.1.0
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters, final String protocol,
@@ -313,7 +305,7 @@ public class Redirect implements ActionResult {
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @return URL
 	 */
 	protected String calculateRedirectURL(final String path,
@@ -336,7 +328,7 @@ public class Redirect implements ActionResult {
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @return URL
 	 */
 	private String calculateInternalRedirectURL(final String path,
@@ -390,7 +382,7 @@ public class Redirect implements ActionResult {
 	 * @param url
 	 *            URL
 	 * @param response
-	 *            レスポンス
+	 *            応答
 	 * @return エンコードされた URL
 	 * @see HttpServletResponse#encodeRedirectURL(String)
 	 */
@@ -411,7 +403,6 @@ public class Redirect implements ActionResult {
 	 * </p>
 	 * 
 	 * @return このオブジェクト
-	 * @since 1.1.0
 	 */
 	public Redirect noEncodeURL() {
 		this.encodeURL = false;
@@ -426,7 +417,6 @@ public class Redirect implements ActionResult {
 	 * @param paramValue
 	 *            パラメータの値。{@code Object#toString()}の結果が値として使用されます。
 	 * @return このオブジェクト
-	 * @since 1.1.0
 	 */
 	public Redirect param(final String paramName, final Object paramValue) {
 		return param(paramName, new String[] { paramValue.toString() });
@@ -440,7 +430,6 @@ public class Redirect implements ActionResult {
 	 * @param paramValues
 	 *            パラメータの値の配列。配列の要素の{@code Object#toString()}の結果がそれぞれの値として使用されます。
 	 * @return このオブジェクト
-	 * @since 1.1.0
 	 */
 	public Redirect param(final String paramName, final Object[] paramValues) {
 		return param(paramName, toStringArray(paramValues));
@@ -454,7 +443,6 @@ public class Redirect implements ActionResult {
 	 * @param paramValues
 	 *            パラメータの値
 	 * @return このオブジェクト
-	 * @since 1.1.0
 	 */
 	public Redirect param(final String paramName, final String[] paramValues) {
 		if (isReverseLookupRedirect()) {
@@ -494,7 +482,6 @@ public class Redirect implements ActionResult {
 	 * @param characterEncoding
 	 *            URI のエンコーディング
 	 * @return このオブジェクト
-	 * @since 1.1.1
 	 */
 	public Redirect characterEncoding(final String characterEncoding) {
 		this.characterEncoding = characterEncoding;

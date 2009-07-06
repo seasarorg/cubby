@@ -16,10 +16,9 @@
 package org.seasar.cubby.controller;
 
 /**
- * リクエストのパースに失敗した場合にスローされる実行時例外です。
+ * 要求の解析に失敗した場合にスローされる実行時例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class RequestParseException extends RuntimeException {
 

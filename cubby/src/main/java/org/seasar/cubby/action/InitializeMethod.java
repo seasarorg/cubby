@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
  * アクションメソッド実行前にアクションを初期化するためのメソッドを指定します。
  * 
  * @author baba
- * @since 1.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD })

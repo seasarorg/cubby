@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * アクションメソッドから直接レスポンスを返すことを示す {@link ActionResult} です。
+ * アクションメソッドから直接応答を返すことを示す {@link ActionResult} です。
  * <p>
- * アクションメソッドの戻り値としてこのインスタンスを指定すると、後続の処理はレスポンスに何も出力しません。
- * アクションメソッド中でレスポンスを出力してください。
+ * アクションメソッドの戻り値としてこのインスタンスを指定すると、後続の処理は応答に何も出力しません。 アクションメソッド中で応答を出力してください。
  * </p>
  * 
  * @author baba
- * @since 1.0.0
  */
 public class Direct implements ActionResult {
 

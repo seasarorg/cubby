@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * Cubbyフレームワークが使用するビューコントローラに関する機能を提供します。
- * @since 1.0.0
+ * フレームワーク内部のコントローラに関する機能を提供します。
  */
 package org.seasar.cubby.internal.controller;
 

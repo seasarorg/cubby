@@ -29,7 +29,6 @@ import org.seasar.cubby.converter.ConversionHelper;
  * </p>
  * 
  * @author baba
- * @since 1.1.0
  */
 public abstract class AbstractIntegerNumberConverter extends AbstractConverter {
 
@@ -75,7 +74,7 @@ public abstract class AbstractIntegerNumberConverter extends AbstractConverter {
 		final BigInteger integer;
 		try {
 			integer = decimal.toBigIntegerExact();
-		} catch (ArithmeticException e) {
+		} catch (final ArithmeticException e) {
 			final MessageInfo messageInfo = new MessageInfo();
 			messageInfo.setKey("valid.integer");
 			throw new ConversionException(messageInfo);

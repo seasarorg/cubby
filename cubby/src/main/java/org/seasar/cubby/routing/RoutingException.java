@@ -19,7 +19,6 @@ package org.seasar.cubby.routing;
  * アクションのルーティングに問題があることを表す例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class RoutingException extends RuntimeException {
 

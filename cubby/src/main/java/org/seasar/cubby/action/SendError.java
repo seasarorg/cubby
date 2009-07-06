@@ -19,13 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * エラーのレスポンスを返すことを示す {@link ActionResult} です。
+ * エラーの応答を返すことを示す {@link ActionResult} です。
  * <p>
- * アクションメソッドの戻り値としてこのインスタンスを指定すると、エラーのレスポンスを返します。
+ * アクションメソッドの戻り値としてこのインスタンスを指定すると、エラーの応答を返します。
  * </p>
  * 
  * @author baba
- * @since 1.1.0
  */
 public class SendError implements ActionResult {
 

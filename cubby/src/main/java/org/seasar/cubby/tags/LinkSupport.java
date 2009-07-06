@@ -32,7 +32,6 @@ import org.seasar.cubby.spi.ProviderFactory;
  * リンク用の補助クラスです。
  * 
  * @author baba
- * @since 1.1.0
  */
 class LinkSupport implements Serializable {
 
@@ -45,7 +44,7 @@ class LinkSupport implements Serializable {
 	/** アクションメソッド名。 */
 	private String actionMethodName;
 
-	/** リクエストパラメータの {@link Map} */
+	/** 要求パラメータの {@link Map} */
 	private final Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 
 	/**
@@ -69,7 +68,7 @@ class LinkSupport implements Serializable {
 	}
 
 	/**
-	 * リクエストパラメータを追加します。
+	 * 要求パラメータを追加します。
 	 * 
 	 * @param name
 	 *            パラメータ名
@@ -85,9 +84,9 @@ class LinkSupport implements Serializable {
 	}
 
 	/**
-	 * リクエストパラメータの {@link Map} を取得します。
+	 * 要求パラメータの {@link Map} を取得します。
 	 * 
-	 * @return リクエストパラメータの {@link Map}
+	 * @return 要求パラメータの {@link Map}
 	 */
 	public Map<String, String[]> getParameters() {
 		final Map<String, String[]> parameters = new HashMap<String, String[]>();

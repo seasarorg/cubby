@@ -27,7 +27,6 @@ import org.seasar.cubby.action.MessageInfo;
  * 入力フォームのフィールドに対する入力検証のルールです。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class FieldValidationRule implements ValidationRule {
 
@@ -91,10 +90,10 @@ public class FieldValidationRule implements ValidationRule {
 	}
 
 	/**
-	 * リクエストパラメータの{@link Map}から指定されたフィールド名に対する値を取得します。
+	 * 要求パラメータの{@link Map}から指定されたフィールド名に対する値を取得します。
 	 * 
 	 * @param params
-	 *            リクエストパラメータの{@link Map}
+	 *            要求パラメータの{@link Map}
 	 * @param fieldName
 	 *            フィールド名
 	 * @return フィールド名に対する値
@@ -151,7 +150,6 @@ public class FieldValidationRule implements ValidationRule {
 	 * 入力検証を呼び出すためのクラスです。
 	 * 
 	 * @author baba
-	 * @since 1.0.0
 	 */
 	private interface ValidationInvoker {
 
@@ -174,7 +172,6 @@ public class FieldValidationRule implements ValidationRule {
 	 * {@link ArrayFieldValidator}の入力検証を呼び出すためのクラスです。
 	 * 
 	 * @author baba
-	 * @since 1.0.0
 	 */
 	private static class ArrayFieldValidationInvoker implements
 			ValidationInvoker {
@@ -217,7 +214,6 @@ public class FieldValidationRule implements ValidationRule {
 	 * {@link ScalarFieldValidator}の入力検証を呼び出すためのクラスです。
 	 * 
 	 * @author baba
-	 * @since 1.0.0
 	 */
 	private static class ScalarFieldValidationInvoker implements
 			ValidationInvoker {

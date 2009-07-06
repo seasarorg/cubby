@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * ServletFilterに関する機能を提供します。
- * @since 1.0.0
+ * サーブレットフィルタに関する機能を提供します。
  */
 package org.seasar.cubby.filter;
 

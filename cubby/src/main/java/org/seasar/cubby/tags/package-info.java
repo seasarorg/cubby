@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * JSPカスタムタグを提供します。
- * @since 1.0.0
+ * JSP カスタムタグを提供します。
  */
 package org.seasar.cubby.tags;
 

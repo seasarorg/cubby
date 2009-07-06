@@ -72,7 +72,7 @@ public class URLBodyEncoder {
 	 *            array of bytes to convert to URL safe characters
 	 * @return array of bytes containing URL safe characters
 	 */
-	public static final byte[] encodeUrl(BitSet urlsafe, byte[] bytes) {
+	public static final byte[] encodeUrl(BitSet urlsafe, final byte[] bytes) {
 		if (bytes == null) {
 			return null;
 		}
@@ -80,23 +80,24 @@ public class URLBodyEncoder {
 			urlsafe = WWW_FORM_URL;
 		}
 
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		for (int i = 0; i < bytes.length; i++) {
-			int b = bytes[i];
-			if (b < 0) {
-				b = 256 + b;
+		final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		for (final byte b : bytes) {
+			final int b1 = b;
+			final int b2;
+			if (b1 < 0) {
+				b2 = b1 + 256;
+			} else {
+				b2 = b1;
 			}
-			if (urlsafe.get(b)) {
-				// if (b == ' ') {
-				// b = '+';
-				// }
-				buffer.write(b);
+
+			if (urlsafe.get(b2)) {
+				buffer.write(b2);
 			} else {
 				buffer.write('%');
-				char hex1 = Character.toUpperCase(Character.forDigit(
-						(b >> 4) & 0xF, 16));
-				char hex2 = Character.toUpperCase(Character.forDigit(b & 0xF,
-						16));
+				final char hex1 = Character.toUpperCase(Character.forDigit(
+						(b2 >> 4) & 0xF, 16));
+				final char hex2 = Character.toUpperCase(Character.forDigit(
+						b2 & 0xF, 16));
 				buffer.write(hex1);
 				buffer.write(hex2);
 			}
@@ -112,7 +113,7 @@ public class URLBodyEncoder {
 	 *            array of bytes to convert to URL safe characters
 	 * @return array of bytes containing URL safe characters
 	 */
-	public static byte[] encode(byte[] bytes) {
+	public static byte[] encode(final byte[] bytes) {
 		return encodeUrl(WWW_FORM_URL, bytes);
 	}
 
@@ -128,7 +129,7 @@ public class URLBodyEncoder {
 	 * @throws UnsupportedEncodingException
 	 *             Thrown if charset is not supported
 	 */
-	public static String encode(String pString, String charset)
+	public static String encode(final String pString, final String charset)
 			throws UnsupportedEncodingException {
 		if (pString == null) {
 			return null;

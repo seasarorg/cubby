@@ -21,7 +21,6 @@ import org.seasar.cubby.action.MessageInfo;
  * 型変換に失敗した場合にスローする例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ConversionException extends Exception {
 

@@ -37,7 +37,6 @@ import org.seasar.cubby.util.LinkBuilder;
  * 指定されたアクションクラス、アクションメソッドへリンクする URL を特定の属性にもつタグを出力するカスタムタグです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 		ParamParent {
@@ -143,7 +142,7 @@ public class LinkTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
-	 * リクエストパラメータを追加します。
+	 * 要求パラメータを追加します。
 	 * 
 	 * @param name
 	 *            パラメータ名

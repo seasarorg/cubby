@@ -20,7 +20,6 @@ package org.seasar.cubby.action;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public enum RequestMethod {
 	/** HTTP GET */

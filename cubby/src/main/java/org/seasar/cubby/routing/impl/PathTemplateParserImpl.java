@@ -24,7 +24,6 @@ import org.seasar.cubby.routing.PathTemplateParser;
  * パステンプレートのパーサーの実装です。
  * 
  * @author baba
- * @since 1.1.1
  */
 public class PathTemplateParserImpl implements PathTemplateParser {
 
@@ -44,7 +43,6 @@ public class PathTemplateParserImpl implements PathTemplateParser {
 	 * パース中の状態。
 	 * 
 	 * @author baba
-	 * @since 1.1.1
 	 */
 	private enum State {
 		NORMAL, PARAM_NAME, PARAM_REGEX, PARAM_REGEX_ESCAPE;

@@ -31,7 +31,6 @@ import org.seasar.cubby.plugin.PluginRegistry;
  * {@link org.seasar.cubby.action.ActionResult} のラッパの実装です。
  * 
  * @author baba
- * @since 1.1.0
  */
 class ActionResultWrapperImpl implements ActionResultWrapper {
 

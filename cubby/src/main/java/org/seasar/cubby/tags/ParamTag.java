@@ -27,7 +27,6 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  * パラメータを指定するためのカスタムタグです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class ParamTag extends SimpleTagSupport {
 

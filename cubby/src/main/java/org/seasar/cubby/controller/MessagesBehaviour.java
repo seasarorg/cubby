@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
  * メッセージの振る舞いです。
  * 
  * @author baba
- * @since 1.0.3
  */
 public interface MessagesBehaviour {
 
@@ -31,7 +30,7 @@ public interface MessagesBehaviour {
 	 * メッセージ表示用のリソースバンドルを取得します。
 	 * 
 	 * @param locale
-	 *            リクエストのロケール
+	 *            要求のロケール
 	 * @return メッセージ表示用のリソースバンドル
 	 */
 	ResourceBundle getBundle(Locale locale);

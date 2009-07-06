@@ -19,7 +19,6 @@ package org.seasar.cubby.routing;
  * パステンプレートのパーサーです。
  * 
  * @author baba
- * @since 1.1.1
  */
 public interface PathTemplateParser {
 
@@ -40,7 +39,6 @@ public interface PathTemplateParser {
 	 * プレースホルダのハンドラ。
 	 * 
 	 * @author baba
-	 * @since 1.1.1
 	 */
 	public interface Handler {
 

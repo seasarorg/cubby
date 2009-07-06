@@ -46,7 +46,7 @@ import org.seasar.cubby.validator.ValidationRules;
  */
 public class ValidationPlugin extends AbstractPlugin {
 
-	/** リクエストパラメータをオブジェクトへバインドするクラス。 */
+	/** 要求パラメータをオブジェクトへバインドするクラス。 */
 	private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
 
 	/**

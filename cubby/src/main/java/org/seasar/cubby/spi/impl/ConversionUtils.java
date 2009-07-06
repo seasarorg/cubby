@@ -22,7 +22,6 @@ import java.util.Map;
  * 型変換のためのユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 class ConversionUtils {
 

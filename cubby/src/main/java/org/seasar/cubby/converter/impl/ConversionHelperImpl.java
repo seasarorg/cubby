@@ -25,7 +25,6 @@ import org.seasar.cubby.spi.container.Container;
  * 変換のヘルパクラスの実装。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class ConversionHelperImpl implements ConversionHelper {
 

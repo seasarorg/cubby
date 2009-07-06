@@ -23,10 +23,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * アクションメソッド呼び出し時にリクエストパラメータがバインドされるオブジェクトや方法を指定します。
+ * アクションメソッド呼び出し時に要求パラメータがバインドされるオブジェクトや方法を指定します。
  * 
  * <p>
- * この注釈によって、どのようにリクエストパラメータがバインドされるかが変わります。
+ * この注釈によって、どのように要求パラメータがバインドされるかが変わります。
  * 
  * <pre>
  * import static org.seasar.cubby.action.RequestParameterBindingType.*;
@@ -51,25 +51,25 @@ import java.lang.annotation.Target;
  * 	public ActionResult m03() {
  * 	}
  * 
- * 	// -&gt; リクエストパラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
+ * 	// -&gt; 要求パラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
  *  // よく使用するパターンです。
  * 	&#064;Form(&quot;barDto&quot;)
  * 	public ActionResult m11() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の @RequestParameter で修飾されたプロパティとフィールドにバインドします。
+ * 	// 要求パラメータを barDto の @RequestParameter で修飾されたプロパティとフィールドにバインドします。
  * 	&#064;Form(&quot;barDto&quot;
  *             bindingType = ONLY_SPECIFIED_PROPERTIES)
  * 	public ActionResult m12() {
  * 	}
  * 
- * 	// リクエストパラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
+ * 	// 要求パラメータを barDto の全プロパティにバインドします。フィールドにはバインドしません。
  * 	&#064;Form(value = &quot;barDto&quot;,
  *             bindingType = ALL_PROPERTIES)
  * 	public ActionResult m13() {
  * 	}
  * 
- * 	// リクエストパラメータをバインドしません。
+ * 	// 要求パラメータをバインドしません。
  * 	&#064;Form(bindingType = NONE)
  * 	public ActionResult m21() {
  * 	}
@@ -90,12 +90,12 @@ import java.lang.annotation.Target;
  * 
  * 	public BazDto bazDto;
  * 
- * 	// リクエストパラメータを barDto のプロパティにバインドします (クラスでの指定が有効なため)。
+ * 	// 要求パラメータを barDto のプロパティにバインドします (クラスでの指定が有効なため)。
  * 	public ActionResult m01() {
  * 	}
  * 
  * 	&#064;Form(&quot;bazDto&quot;)
- * 	// リクエストパラメータを bazDto のプロパティにバインドします（アクションメソッドでの指定が優先されるため）。
+ * 	// 要求パラメータを bazDto のプロパティにバインドします（アクションメソッドでの指定が優先されるため）。
  * 	public ActionResult m02() {
  * 	}
  * }
@@ -110,21 +110,19 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
 public @interface Form {
-	/** アクションメソッド自身にリクエストパラメータがバインディングされることを表します */
+	/** アクションメソッド自身に要求パラメータがバインディングされることを表します */
 	public static final String THIS = "this";
 
 	/**
 	 * バインディングするオブジェクトのプロパティ名。
 	 * <p>
-	 * "this" が指定された場合は、アクションクラス自身にリクエストパラメータがバインディングされることを表します。
+	 * "this" が指定された場合は、アクションクラス自身に要求パラメータがバインディングされることを表します。
 	 * </p>
 	 */
 	String value() default THIS;
 
 	/**
-	 * リクエストパラメータからフォームオブジェクトへのバインディング方法を指定します。
-	 * 
-	 * @since 1.1.0
+	 * 要求パラメータからフォームオブジェクトへのバインディング方法を指定します。
 	 */
 	RequestParameterBindingType bindingType() default ALL_PROPERTIES;
 

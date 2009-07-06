@@ -30,7 +30,6 @@ import org.seasar.cubby.spi.container.Container;
  * 実行スレッドのコンテキスト情報です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class ThreadContext {
 

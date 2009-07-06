@@ -27,7 +27,6 @@ import java.util.Map;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public abstract class Action {
 
@@ -87,7 +86,6 @@ public abstract class Action {
 	 * 
 	 * @param actionMethod
 	 *            アクションメソッド
-	 * @since 1.1.0
 	 */
 	public void invokeInitializeMethod(final Method actionMethod) {
 		if (actionMethod.isAnnotationPresent(InitializeMethod.class)) {
@@ -119,7 +117,6 @@ public abstract class Action {
 	 * 
 	 * @param actionMethod
 	 *            アクションメソッド
-	 * @since 1.1.0
 	 */
 	public void invokePreRenderMethod(final Method actionMethod) {
 		if (actionMethod.isAnnotationPresent(PreRenderMethod.class)) {
@@ -151,7 +148,6 @@ public abstract class Action {
 	 * 
 	 * @param actionMethod
 	 *            アクションメソッド
-	 * @since 1.1.0
 	 */
 	public void invokePostRenderMethod(final Method actionMethod) {
 		if (actionMethod.isAnnotationPresent(PostRenderMethod.class)) {
@@ -176,7 +172,6 @@ public abstract class Action {
 	 * 
 	 * @param methodName
 	 *            メソッド名
-	 * @since 1.1.0
 	 */
 	protected void invoke(final String methodName) {
 		try {

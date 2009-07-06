@@ -25,7 +25,6 @@ import org.seasar.cubby.action.MessageInfo;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class ValidationContext {
 

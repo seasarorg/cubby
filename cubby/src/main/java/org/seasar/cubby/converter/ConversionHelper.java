@@ -21,7 +21,6 @@ import org.seasar.cubby.controller.FormatPattern;
  * 変換のヘルパクラス。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface ConversionHelper {
 

@@ -19,7 +19,6 @@ package org.seasar.cubby.spi.beans;
  * パラメタ化されたクラスを扱うためのインターフェースです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface ParameterizedClassDesc {
 
