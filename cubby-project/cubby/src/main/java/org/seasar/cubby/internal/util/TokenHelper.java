@@ -29,7 +29,6 @@ import javax.servlet.http.HttpSession;
  * @see org.seasar.cubby.tags.TokenTag
  * @see org.seasar.cubby.validator.validators.TokenValidator
  * @author agata
- * @since 1.0.0
  */
 public class TokenHelper {
 

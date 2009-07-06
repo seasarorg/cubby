@@ -22,7 +22,6 @@ import org.seasar.cubby.converter.ConversionHelper;
  * {@link FileItem}を他の型のオブジェクトに変換するクラスの抽象クラスです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public abstract class AbstractFileItemConverter extends AbstractConverter {
 

@@ -62,13 +62,13 @@ class TagUtils {
 	}
 
 	/**
-	 * 指定されたJSPコンテキストから指定されたパラメータ名に対応するリクエストパラメータを取得します。
+	 * 指定されたJSPコンテキストから指定されたパラメータ名に対応する要求パラメータを取得します。
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
 	 * @param name
 	 *            パラメータ名
-	 * @return リクエストパラメータ
+	 * @return 要求パラメータ
 	 */
 	@SuppressWarnings("unchecked")
 	private static Object[] paramValues(final JspContext context,

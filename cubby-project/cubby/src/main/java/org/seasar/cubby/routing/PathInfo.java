@@ -21,7 +21,6 @@ import java.util.Map;
  * パスから取得した情報です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface PathInfo {
 

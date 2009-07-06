@@ -25,7 +25,6 @@ import org.seasar.cubby.converter.ConversionHelper;
  * </p>
  * 
  * @author baba
- * @since 1.1.0
  */
 public class CharacterConverter extends AbstractConverter {
 

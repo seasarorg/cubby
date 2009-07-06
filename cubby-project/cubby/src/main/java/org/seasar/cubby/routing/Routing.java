@@ -25,7 +25,6 @@ import org.seasar.cubby.action.RequestMethod;
  * ルーティング。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface Routing {
 
@@ -65,9 +64,9 @@ public interface Routing {
 	Pattern getPattern();
 
 	/**
-	 * リクエストメソッドを取得します。
+	 * 要求メソッドを取得します。
 	 * 
-	 * @return リクエストメソッド
+	 * @return 要求メソッド
 	 */
 	RequestMethod getRequestMethod();
 
@@ -86,10 +85,10 @@ public interface Routing {
 	int getPriority();
 
 	/**
-	 * 指定されたリクエストメソッドがこのルーティングの対象かどうかを示します。
+	 * 指定された要求メソッドがこのルーティングの対象かどうかを示します。
 	 * 
 	 * @param requestMethod
-	 *            リクエストメソッド
+	 *            要求メソッド
 	 * @return 対象の場合は <code>true</code>、そうでない場合は <code>false</code>
 	 */
 	boolean isAcceptable(final String requestMethod);

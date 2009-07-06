@@ -34,7 +34,6 @@ import org.seasar.cubby.action.Forward;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public abstract class DefaultValidationRules extends AbstractValidationRules {
 
@@ -120,7 +119,6 @@ public abstract class DefaultValidationRules extends AbstractValidationRules {
 	 * @return {@link #DATA_TYPE}
 	 * @see #add(ValidationRule)
 	 * @see #add(String, Validator...)
-	 * @since 1.1.1
 	 */
 	protected ValidationPhase getDefaultValidationPhase() {
 		return DATA_TYPE;
@@ -191,7 +189,6 @@ public abstract class DefaultValidationRules extends AbstractValidationRules {
 	 * @param resourceKey
 	 *            リソースキー
 	 * @return プレフィックスが付加されたリソースキー
-	 * @since 1.1.1
 	 */
 	protected String addResourceKeyPrefixTo(final String resourceKey) {
 		if (this.resourceKeyPrefix == null) {

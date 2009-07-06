@@ -47,7 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * リクエストのパスを元にアクションメソッドを決定して実行するクラスの実装です。
+ * 要求のパスを元にアクションメソッドを決定して実行するクラスの実装です。
  * 
  * @author baba
  */

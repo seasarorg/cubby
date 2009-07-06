@@ -29,9 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
- * リクエストのエンコーディングを設定するためのフィルタです。
+ * 要求のエンコーディングを設定するためのフィルタです。
  * <p>
- * 初期化パラメータ {@value #ENCODING}、{@value #FORCE_ENCODING} でリクエストの文字エンコーディングを指定します。
+ * 初期化パラメータ {@value #ENCODING}、{@value #FORCE_ENCODING} で要求の文字エンコーディングを指定します。
  * </p>
  * <p>
  * 初期化パラメータ {@value #URI_ENCODING}、{@value #URI_BYTES_ENCODING} で
@@ -48,13 +48,12 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * <tbody>
  * <tr>
  * <td>{@value #ENCODING}</td>
- * <td>リクエストのエンコーディングを指定します。リクエストのエンコーディングが <code>null</code> か、
- * {@value #FORCE_ENCODING} に <code>true</code>
- * が指定された場合はこのエンコーディングがリクエストに設定されます。</td>
+ * <td>要求のエンコーディングを指定します。要求のエンコーディングが <code>null</code> か、
+ * {@value #FORCE_ENCODING} に <code>true</code> が指定された場合はこのエンコーディングが要求に設定されます。</td>
  * </tr>
  * <tr>
  * <td>{@value #FORCE_ENCODING}</td>
- * <td><code>true</code> を指定した場合は、リクエストにエンコーディングが設定されていても {@value #ENCODING}
+ * <td><code>true</code> を指定した場合は、要求にエンコーディングが設定されていても {@value #ENCODING}
  * で上書きします。
  * </tr>
  * <tr>
@@ -71,7 +70,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * </p>
  * 
  * @author baba
- * @since 1.1.1
  */
 public class EncodingFilter implements Filter {
 
@@ -191,7 +189,6 @@ public class EncodingFilter implements Filter {
 	 * 適切なエンコーディングで処理するための {@link HttpServletRequestWrapper} です。
 	 * 
 	 * @author baba
-	 * @since 1.1.1
 	 */
 	private static class EncodingHttpServletRequestWrapper extends
 			HttpServletRequestWrapper {
@@ -203,10 +200,10 @@ public class EncodingFilter implements Filter {
 		private final String uriBytesEncoding;
 
 		/**
-		 * 指定されたリクエストをラップします。
+		 * 指定された要求をラップします。
 		 * 
 		 * @param request
-		 *            リクエスト
+		 *            要求
 		 * @param uriEncoding
 		 *            URI エンコーディング
 		 * @param uriBytesEncoding

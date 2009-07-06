@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * Cubby 内部で使用するパッケージです。
- * @since 2.0.0
+ * フレームワーク内部の機能を提供します。
  */
 package org.seasar.cubby.internal;
 

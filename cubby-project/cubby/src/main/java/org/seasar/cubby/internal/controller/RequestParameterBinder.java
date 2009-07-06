@@ -21,20 +21,19 @@ import java.util.Map;
 import org.seasar.cubby.action.ActionContext;
 
 /**
- * リクエストパラメータをオブジェクトへバインドするクラスです。
+ * 要求パラメータをオブジェクトへバインドするクラスです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface RequestParameterBinder {
 
 	/**
-	 * リクエストパラメータを指定されたオブジェクトへバインドします。
+	 * 要求パラメータを指定されたオブジェクトへバインドします。
 	 * 
 	 * @param parameterMap
-	 *            リクエストパラメータの{@link Map}
+	 *            要求パラメータの{@link Map}
 	 * @param dest
-	 *            リクエストパラメータをバインドするオブジェクト
+	 *            要求パラメータをバインドするオブジェクト
 	 * @param actionContext
 	 *            アクションコンテキスト
 	 * @return 型変換失敗のリスト。すべて成功した場合は空のリストを返します。

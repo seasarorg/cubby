@@ -21,7 +21,6 @@ import org.seasar.cubby.routing.PathResolver;
  * {@link PathResolver} のプロバイダです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface PathResolverProvider extends Provider {
 

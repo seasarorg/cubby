@@ -27,14 +27,14 @@ import org.seasar.cubby.spi.JsonProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 
 /**
- * JSON 形式のレスポンスを返す {@link ActionResult} です。
+ * JSON 形式の応答を返す {@link ActionResult} です。
  * <p>
- * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP
- * 形式に変換してレスポンスを返します。 ブラウザの JavaScript から発行されたリクエストを処理する場合等に使用してください。 JavaBean/
- * {@link Map}/配列/{@link Collection}などがコンストラクタに渡すことができます。
+ * アクションメソッドの戻り値としてこのインスタンスを指定することで、指定された JavaBean を JSON/JSONP 形式に変換して応答を返します。
+ * ブラウザの JavaScript から発行された要求を処理する場合等に使用してください。 JavaBean/ {@link Map}/配列/
+ * {@link Collection}などがコンストラクタに渡すことができます。
  * </p>
  * <p>
- * 使用例1 : JSON 形式のレスポンスを返す
+ * 使用例1 : JSON 形式の応答を返す
  * 
  * <pre>
  * MyBean bean = ...;
@@ -43,7 +43,7 @@ import org.seasar.cubby.spi.ProviderFactory;
  * 
  * </p>
  * <p>
- * 使用例2 : コールバック関数名を指定して JSONP 形式のレスポンスを返す
+ * 使用例2 : コールバック関数名を指定して JSONP 形式の応答を返す
  * 
  * <pre>
  * MyBean bean = ...;
@@ -52,7 +52,7 @@ import org.seasar.cubby.spi.ProviderFactory;
  * 
  * </p>
  * <p>
- * 使用例3 : MIME タイプと文字コードを指定して JSON 形式のレスポンスを返す。<br>
+ * 使用例3 : MIME タイプと文字コードを指定して JSON 形式の応答を返す。<br>
  * 設定される MIME タイプは"text/javascript+json; charset=Shift_JIS"になります。
  * 
  * <pre>
@@ -69,7 +69,6 @@ import org.seasar.cubby.spi.ProviderFactory;
  * @see JsonProvider#toJson(Object)
  * @author baba
  * @author agata
- * @since 1.0.0
  */
 public class Json implements ActionResult {
 
@@ -92,7 +91,7 @@ public class Json implements ActionResult {
 	private boolean xjson = false;
 
 	/**
-	 * JSON 形式でレスポンスを返すインスタンスを生成します。
+	 * JSON 形式で応答を返すインスタンスを生成します。
 	 * 
 	 * @param bean
 	 *            JSON 形式に変換するオブジェクト
@@ -102,7 +101,7 @@ public class Json implements ActionResult {
 	}
 
 	/**
-	 * JSON 形式でレスポンスを返すインスタンスを生成します。
+	 * JSON 形式で応答を返すインスタンスを生成します。
 	 * 
 	 * @param bean
 	 *            JSON 形式に変換するオブジェクト
@@ -114,7 +113,7 @@ public class Json implements ActionResult {
 	}
 
 	/**
-	 * JSONP 形式でレスポンスを返すインスタンスを生成します。
+	 * JSONP 形式で応答を返すインスタンスを生成します。
 	 * 
 	 * @param bean
 	 *            JSONP 形式に変換するオブジェクト
@@ -126,7 +125,7 @@ public class Json implements ActionResult {
 	}
 
 	/**
-	 * JSONP 形式でレスポンスを返すインスタンスを生成します。
+	 * JSONP 形式で応答を返すインスタンスを生成します。
 	 * 
 	 * @param bean
 	 *            JSONP 形式に変換するオブジェクト

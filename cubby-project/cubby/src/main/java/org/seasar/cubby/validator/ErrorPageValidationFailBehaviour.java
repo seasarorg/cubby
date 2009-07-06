@@ -31,7 +31,6 @@ import org.seasar.cubby.action.Validation;
  * です。
  * 
  * @author baba
- * @since 1.1.0
  */
 class ErrorPageValidationFailBehaviour implements ValidationFailBehaviour,
 		Serializable {

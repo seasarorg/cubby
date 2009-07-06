@@ -19,7 +19,6 @@ package org.seasar.cubby.converter;
  * 変換元クラスのインスタンスを変換先クラスのインスタンスに変換するコンバータを表します。
  * 
  * @author baba
- * @since 1.1.0
  */
 public interface Converter {
 
@@ -31,17 +30,17 @@ public interface Converter {
 	Class<?> getObjectType();
 
 	/**
-	 * このコンバータが指定されたリクエストパラメータの型を指定された値の型に変換できるかを示します。
+	 * このコンバータが指定された要求パラメータの型を指定された値の型に変換できるかを示します。
 	 * <p>
 	 * <code>parameterType</code> に <code>null</code> が指定された場合は
 	 * <code>false</code> を返します。
 	 * </p>
 	 * 
 	 * @param parameterType
-	 *            リクエストパラメータの型
+	 *            要求パラメータの型
 	 * @param objectType
 	 *            値の型
-	 * @return このコンバータが指定されたリクエストパラメータの型を指定された値の型に変換できる場合は <code>true</code>
+	 * @return このコンバータが指定された要求パラメータの型を指定された値の型に変換できる場合は <code>true</code>
 	 *         、そうでない場合は <code>false</code>
 	 */
 	boolean canConvert(Class<?> parameterType, Class<?> objectType);

@@ -22,7 +22,6 @@ import org.seasar.cubby.action.ActionResult;
  * 指定された {@link ActionResult} を実行する {@link ValidationFailBehaviour} です。
  * 
  * @author baba
- * @since 1.1.0
  */
 class ActionResultValidationFailBehaviour implements ValidationFailBehaviour {
 

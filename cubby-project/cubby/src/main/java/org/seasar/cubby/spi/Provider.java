@@ -19,7 +19,6 @@ package org.seasar.cubby.spi;
  * サービスのプロバイダであることを表すマーカインターフェイスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface Provider {
 

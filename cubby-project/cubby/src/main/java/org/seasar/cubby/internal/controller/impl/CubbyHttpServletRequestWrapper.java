@@ -85,7 +85,7 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
  * これらの属性は通常の属性よりも優先されるのでご注意ください。
  * </p>
  * <p>
- * また、以下のリクエストパラメータに関するメソッドは、通常のリクエストパラメータに加え、URI パラメータも対象として処理します。
+ * また、以下の要求パラメータに関するメソッドは、通常の要求パラメータに加え、URI パラメータも対象として処理します。
  * <ul>
  * <li>{@link #getParameter(String)}</li>
  * <li>{@link #getParameterMap()}</li>
@@ -270,7 +270,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 *            要求
 	 * @param uriParameters
 	 *            URI パラメータの {@link Map}
-	 * @return URI パラメータを含むリクエストパラメータの {@link Map}
+	 * @return URI パラメータを含む要求パラメータの {@link Map}
 	 */
 	private Map<String, String[]> buildParameterMap(
 			final HttpServletRequest request,

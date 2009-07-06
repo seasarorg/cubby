@@ -51,7 +51,6 @@ import org.seasar.cubby.spi.container.LookupException;
  * 
  * @author baba
  * @see <a href="http://commons.apache.org/fileupload/">Commons FileUpload</a>
- * @since 1.0.0
  */
 public class MultipartRequestParser implements RequestParser {
 

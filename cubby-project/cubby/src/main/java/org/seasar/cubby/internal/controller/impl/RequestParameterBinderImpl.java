@@ -42,7 +42,7 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
 import org.seasar.cubby.spi.beans.ParameterizedClassDesc;
 
 /**
- * リクエストパラメータをオブジェクトへバインドするクラスの実装です。
+ * 要求パラメータをオブジェクトへバインドするクラスの実装です。
  * 
  * @author baba
  */
@@ -112,12 +112,12 @@ public class RequestParameterBinderImpl implements RequestParameterBinder {
 	}
 
 	/**
-	 * 指定されたリクエストパラメータの値を出力先のプロパティの型に変換します。
+	 * 指定された要求パラメータの値を出力先のプロパティの型に変換します。
 	 * 
 	 * @param converterProvider
 	 *            コンバータプロバイダ
 	 * @param values
-	 *            リクエストパラメータの値
+	 *            要求パラメータの値
 	 * @param type
 	 *            変換する型
 	 * @param parameterizedClassDesc

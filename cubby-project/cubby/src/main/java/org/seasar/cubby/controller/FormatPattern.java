@@ -19,7 +19,6 @@ package org.seasar.cubby.controller;
  * 日付や時刻のフォーマットパターンを保持するクラスです。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface FormatPattern {
 

@@ -22,7 +22,6 @@ import java.math.BigInteger;
  * {@link BigInteger}への変換を行うコンバータです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class BigIntegerConverter extends AbstractDecimalNumberConverter {
 

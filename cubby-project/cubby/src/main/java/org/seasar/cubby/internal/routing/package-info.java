@@ -14,8 +14,7 @@
  * governing permissions and limitations under the License.
  */
 /**
- * URIルーティング機能を提供します。
- * @since 1.0.0
+ * フレームワーク内部の URI ルーティング機能を提供します。
  */
 package org.seasar.cubby.internal.routing;
 

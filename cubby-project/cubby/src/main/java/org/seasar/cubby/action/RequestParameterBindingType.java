@@ -16,10 +16,9 @@
 package org.seasar.cubby.action;
 
 /**
- * リクエストパラメータからフォームオブジェクトへのバインディング方法を表します。
+ * 要求パラメータからフォームオブジェクトへのバインディング方法を表します。
  * 
  * @author baba
- * @since 1.1.0
  */
 public enum RequestParameterBindingType {
 

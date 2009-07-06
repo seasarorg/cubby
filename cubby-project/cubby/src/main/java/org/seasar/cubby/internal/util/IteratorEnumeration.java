@@ -25,7 +25,6 @@ import java.util.Iterator;
  * 
  * @param <E>
  *            要素の型
- * @since 1.1.0
  */
 public class IteratorEnumeration<E> implements Enumeration<E> {
 

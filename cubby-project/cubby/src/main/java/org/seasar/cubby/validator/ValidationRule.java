@@ -23,18 +23,17 @@ import org.seasar.cubby.action.ActionErrors;
  * 入力検証のルールです。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface ValidationRule {
 
 	/**
-	 * リクエストパラメータにこの入力検証ルールを適用します。
+	 * 要求パラメータにこの入力検証ルールを適用します。
 	 * <p>
 	 * 入力検証エラーの場合は指定された{@link ActionErrors}にメッセージを設定します。
 	 * </p>
 	 * 
 	 * @param params
-	 *            リクエストパラメータの{@link Map}
+	 *            要求パラメータの{@link Map}
 	 * @param form
 	 *            フォームオブジェクト
 	 * @param errors

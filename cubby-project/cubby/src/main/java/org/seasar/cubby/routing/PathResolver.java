@@ -24,7 +24,6 @@ import org.seasar.cubby.action.RequestMethod;
  * パスに対応するアクションメソッドを解決するためのクラスです。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface PathResolver {
 
@@ -82,7 +81,7 @@ public interface PathResolver {
 	 * @param actionMethodName
 	 *            アクションメソッド名
 	 * @param requestMethod
-	 *            リクエストメソッド
+	 *            要求メソッド
 	 * @param onSubmit
 	 *            アクションメソッドへ振り分けるための要求パラメータ名
 	 * @param priority
@@ -112,7 +111,6 @@ public interface PathResolver {
 	 * @return リダイレクト用のパス
 	 * @throws RoutingException
 	 *             ルーティング情報の逆引きに失敗した場合
-	 * @since 1.1.0
 	 */
 	String reverseLookup(Class<?> actionClass, String methodName,
 			Map<String, String[]> parameters, String characterEncoding);

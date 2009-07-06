@@ -26,7 +26,6 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  * 動的な属性を持つタグのサポートクラスです。
  * 
  * @author agata
- * @since 1.0.0
  */
 abstract class DynamicAttributesSimpleTagSupport extends SimpleTagSupport
 		implements DynamicAttributes {

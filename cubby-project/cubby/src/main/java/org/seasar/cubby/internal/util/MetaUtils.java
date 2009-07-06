@@ -26,7 +26,6 @@ import org.seasar.cubby.action.RequestMethod;
  * アクションのメタ情報を扱うためのユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class MetaUtils {
 
@@ -149,13 +148,13 @@ public class MetaUtils {
 	}
 
 	/**
-	 * 指定されたアクションメソッドが受付可能なリクエストメソッドを取得します。
+	 * 指定されたアクションメソッドが受付可能な要求メソッドを取得します。
 	 * 
 	 * @param actionClass
 	 *            アクションクラス
 	 * @param method
 	 *            アクションメソッド
-	 * @return 受付可能なリクエストメソッド
+	 * @return 受付可能な要求メソッド
 	 */
 	public static RequestMethod[] getAcceptableRequestMethods(
 			final Class<?> actionClass, final Method method) {

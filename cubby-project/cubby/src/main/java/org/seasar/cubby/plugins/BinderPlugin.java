@@ -34,13 +34,13 @@ import org.seasar.cubby.spi.Provider;
 public class BinderPlugin extends AbstractPlugin {
 
 	/** プロバイダ。 */
-	private Map<Class<? extends Provider>, Provider> providers = new HashMap<Class<? extends Provider>, Provider>();
+	private final Map<Class<? extends Provider>, Provider> providers = new HashMap<Class<? extends Provider>, Provider>();
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <S extends Provider> S getProvider(Class<S> service) {
+	public <S extends Provider> S getProvider(final Class<S> service) {
 		return service.cast(providers.get(service));
 	}
 

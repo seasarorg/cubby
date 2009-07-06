@@ -31,7 +31,7 @@ public abstract class AbstractValidationRules implements ValidationRules {
 	 * すべてのフェーズに対する入力検証を実行します。
 	 * 
 	 * @param params
-	 *            リクエストパラメータ
+	 *            要求パラメータ
 	 * @param form
 	 *            フォームオブジェクト
 	 * @param errors
@@ -54,7 +54,7 @@ public abstract class AbstractValidationRules implements ValidationRules {
 	 * @param errors
 	 *            アクションのエラー
 	 * @param params
-	 *            リクエストパラメータ
+	 *            要求パラメータ
 	 * @param form
 	 *            フォームオブジェクト
 	 */

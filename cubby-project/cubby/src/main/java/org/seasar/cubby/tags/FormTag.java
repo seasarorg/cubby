@@ -148,7 +148,7 @@ public class FormTag extends BodyTagSupport implements DynamicAttributes,
 	}
 
 	/**
-	 * リクエストパラメータを追加します。
+	 * 要求パラメータを追加します。
 	 * 
 	 * @param name
 	 *            パラメータ名

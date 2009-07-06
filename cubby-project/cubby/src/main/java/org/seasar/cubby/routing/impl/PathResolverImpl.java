@@ -48,7 +48,6 @@ import org.slf4j.LoggerFactory;
  * パスに対応するアクションメソッドを解決するためのクラスの実装です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class PathResolverImpl implements PathResolver {
 
@@ -60,7 +59,7 @@ public class PathResolverImpl implements PathResolver {
 	private final Map<RoutingKey, Routing> routings = new TreeMap<RoutingKey, Routing>();
 
 	/** パステンプレートのパーサー。 */
-	private PathTemplateParser pathTemplateParser;
+	private final PathTemplateParser pathTemplateParser;
 
 	/**
 	 * インスタンス化します。
@@ -142,7 +141,7 @@ public class PathResolverImpl implements PathResolver {
 	 * @param method
 	 *            アクションメソッド
 	 * @param requestMethods
-	 *            リクエストメソッド
+	 *            要求メソッド
 	 * @param onSubmit
 	 *            アクションメソッドへ振り分けるための要求パラメータ名
 	 * @param priority
@@ -335,7 +334,6 @@ public class PathResolverImpl implements PathResolver {
 	 * ルーティングのキーです。
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	static class RoutingKey implements Comparable<RoutingKey> {
 
@@ -484,14 +482,13 @@ public class PathResolverImpl implements PathResolver {
 	 * パスから取得した情報の実装です。
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	static class ResolvedPathInfo implements PathInfo {
 
 		/** URI から抽出したパラメータ。 */
 		private final Map<String, String[]> uriParameters;
 
-		/** リクエストパラメータ名と対応するルーティングのマッピング。 */
+		/** 要求パラメータ名と対応するルーティングのマッピング。 */
 		private final Map<String, Routing> routings;
 
 		/**
@@ -500,7 +497,7 @@ public class PathResolverImpl implements PathResolver {
 		 * @param uriParameters
 		 *            URI から抽出したパラメータ
 		 * @param routings
-		 *            リクエストパラメータ名とルーティングのマッピング
+		 *            要求パラメータ名とルーティングのマッピング
 		 */
 		public ResolvedPathInfo(final Map<String, String[]> uriParameters,
 				final Map<String, Routing> routings) {

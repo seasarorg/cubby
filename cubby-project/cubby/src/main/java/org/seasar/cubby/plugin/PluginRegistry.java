@@ -41,10 +41,10 @@ public class PluginRegistry {
 	private static final PluginRegistry INSTANCE = new PluginRegistry();
 
 	/** プラグインのセット。 */
-	private Set<Plugin> plugins = new HashSet<Plugin>();
+	private final Set<Plugin> plugins = new HashSet<Plugin>();
 
 	/** サービスとそのサービスを提供するプラグインとのマッピング。 */
-	private Map<Class<? extends Provider>, Plugin> serviceToPlugins = new HashMap<Class<? extends Provider>, Plugin>();
+	private final Map<Class<? extends Provider>, Plugin> serviceToPlugins = new HashMap<Class<? extends Provider>, Plugin>();
 
 	/**
 	 * インスタンス化を禁止するためのコンストラクタ。

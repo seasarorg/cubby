@@ -19,7 +19,6 @@ package org.seasar.cubby.spi.container;
  * 指定された型に代入可能なオブジェクトの取得に失敗したことを表す例外です。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class LookupException extends RuntimeException {
 

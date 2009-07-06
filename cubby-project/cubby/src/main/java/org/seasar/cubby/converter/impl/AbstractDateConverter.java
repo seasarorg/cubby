@@ -28,7 +28,6 @@ import org.seasar.cubby.converter.ConversionException;
  * 文字列を日付型のオブジェクトに変換するクラスの抽象クラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public abstract class AbstractDateConverter extends AbstractConverter {
 

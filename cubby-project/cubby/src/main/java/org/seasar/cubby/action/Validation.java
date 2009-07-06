@@ -32,7 +32,6 @@ import java.lang.annotation.Target;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

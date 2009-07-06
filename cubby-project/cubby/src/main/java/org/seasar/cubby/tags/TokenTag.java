@@ -39,7 +39,6 @@ import org.seasar.cubby.validator.validators.TokenValidator;
  * @see TokenValidator#validate(org.seasar.cubby.validator.ValidationContext,
  *      Object[])
  * @author agata
- * @since 1.0.0
  */
 public class TokenTag extends DynamicAttributesSimpleTagSupport {
 

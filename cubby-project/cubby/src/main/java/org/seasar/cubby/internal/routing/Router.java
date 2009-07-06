@@ -28,7 +28,6 @@ import org.seasar.cubby.routing.PathResolver;
  * ルーター。
  * 
  * @author baba
- * @since 1.0.0
  */
 public interface Router {
 
@@ -36,28 +35,27 @@ public interface Router {
 	 * 対象外パターンを指定せずにルーティング処理を行い、内部フォワード情報を返します。
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param response
-	 *            レスポンス
-	 * @return リクエスト URI に対応する内部フォワード情報、URI に対応する内部フォワード情報がない場合は
-	 *         <code>null</code>
+	 *            応答
+	 * @return 要求 URI に対応する内部フォワード情報、URI に対応する内部フォワード情報がない場合は <code>null</code>
 	 * @see #routing(HttpServletRequest, HttpServletResponse, List)
 	 */
 	PathInfo routing(HttpServletRequest request, HttpServletResponse response);
 
 	/**
-	 * リクエストのルーティング処理を行い、内部フォワード情報を返します。
+	 * 要求のルーティング処理を行い、内部フォワード情報を返します。
 	 * <p>
-	 * このメソッドはリクエスト URI とメソッドに対応するフォワード情報を{@link PathResolver} によって決定します。
+	 * このメソッドは要求 URI とメソッドに対応するフォワード情報を{@link PathResolver} によって決定します。
 	 * </p>
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param response
-	 *            レスポンス
+	 *            応答
 	 * @param ignorePathPatterns
 	 *            対象外とするパスのパターン
-	 * @return リクエストに対応する内部フォワード情報、URI とリクエストメソッドに対応する内部フォワード情報がない場合や URI
+	 * @return 要求に対応する内部フォワード情報、URI と要求メソッドに対応する内部フォワード情報がない場合や URI
 	 *         が対象外とするパスのパターンにマッチする場合は <code>null</code>
 	 * @see PathResolver#getPathInfo(String, String, String)
 	 * @see org.seasar.cubby.action.Path

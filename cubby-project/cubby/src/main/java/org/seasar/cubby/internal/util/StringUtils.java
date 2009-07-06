@@ -16,10 +16,9 @@
 package org.seasar.cubby.internal.util;
 
 /**
- * {@link String}用のユーティリティクラスです。
+ * 文字列操作を行うためのユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class StringUtils {
 

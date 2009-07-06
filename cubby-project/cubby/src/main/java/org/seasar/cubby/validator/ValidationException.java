@@ -21,7 +21,6 @@ import org.seasar.cubby.action.ActionResult;
  * 入力検証に失敗した場合に後続の入力検証を実行しないようにするためにスローする例外です。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class ValidationException extends RuntimeException {
 

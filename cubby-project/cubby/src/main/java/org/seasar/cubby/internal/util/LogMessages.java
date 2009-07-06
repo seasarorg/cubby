@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
  * ログに出力するメッセージのためのユーティリティクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class LogMessages {
 

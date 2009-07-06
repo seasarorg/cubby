@@ -21,7 +21,6 @@ import org.seasar.cubby.spi.beans.BeanDesc;
  * {@link BeanDesc} のプロバイダです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public interface BeanDescProvider extends Provider {
 

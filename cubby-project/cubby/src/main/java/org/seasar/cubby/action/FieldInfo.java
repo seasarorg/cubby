@@ -16,10 +16,9 @@
 package org.seasar.cubby.action;
 
 /**
- * HTMLフォームにおけるフィールドの情報です。
+ * HTML フォーム中のフィールドを表します。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class FieldInfo {
 
@@ -89,7 +88,7 @@ public class FieldInfo {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -99,7 +98,7 @@ public class FieldInfo {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		FieldInfo other = (FieldInfo) obj;
+		final FieldInfo other = (FieldInfo) obj;
 		if (index == null) {
 			if (other.index != null) {
 				return false;

@@ -22,10 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.seasar.cubby.controller.RequestParser;
 
 /**
- * リクエスト解析器のデフォルト実装です。
+ * 要求解析器のデフォルト実装です。
  * 
  * @author baba
- * @since 1.0.0
  */
 public class DefaultRequestParser implements RequestParser {
 

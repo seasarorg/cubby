@@ -24,7 +24,6 @@ import org.seasar.cubby.converter.Converter;
  * {@link Converter} の抽象クラスです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public abstract class AbstractConverter implements Converter {
 

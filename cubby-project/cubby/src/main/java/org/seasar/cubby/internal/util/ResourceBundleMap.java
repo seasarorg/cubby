@@ -26,7 +26,6 @@ import java.util.Set;
  * リソースバンドルをラップし、<code>Map</code> インターフェイスによって操作するクラスです。
  * 
  * @author baba
- * @since 2.0.0
  */
 public class ResourceBundleMap extends AbstractMap<String, Object> {
 
@@ -83,7 +82,6 @@ public class ResourceBundleMap extends AbstractMap<String, Object> {
 	 *            このエントリが保持する値の型
 	 * 
 	 * @author baba
-	 * @since 2.0.0
 	 */
 	private static class UnmodifiableEntry<K, V> implements Entry<K, V> {
 

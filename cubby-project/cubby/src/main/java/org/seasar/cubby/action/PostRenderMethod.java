@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
  * アクションメソッドからのフォワード後に実行するメソッドを指定します。
  * 
  * @author baba
- * @since 1.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD })

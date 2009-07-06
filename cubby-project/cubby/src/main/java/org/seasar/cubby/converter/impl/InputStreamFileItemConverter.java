@@ -25,7 +25,6 @@ import org.seasar.cubby.converter.Converter;
  * {@link FileItem}から{@link InputStream}へ変換する{@link Converter}です。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class InputStreamFileItemConverter extends AbstractFileItemConverter {
 

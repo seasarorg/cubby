@@ -21,7 +21,6 @@ import java.math.BigDecimal;
  * {@link Double}への変換を行うコンバータです。
  * 
  * @author baba
- * @since 1.1.0
  */
 public class DoubleConverter extends AbstractDecimalNumberConverter {
 

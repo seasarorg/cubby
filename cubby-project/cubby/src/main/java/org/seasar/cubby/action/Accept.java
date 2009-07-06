@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
  * アクションメソッドが対応するHTTPのメソッド。
  * 
  * @author baba
- * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })

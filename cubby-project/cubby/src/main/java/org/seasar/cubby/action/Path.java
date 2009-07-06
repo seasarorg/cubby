@@ -50,14 +50,14 @@ import java.lang.annotation.Target;
  * 	}
  * 
  * 	&#064;Path(&quot;/{id}/edit&quot;)
- * 	// {id}部分をリクエストパラメータに追加。
+ * 	// {id}部分を要求パラメータに追加。
  *  // {id}部分の正規表現は省略されているためデフォルトの「[0-9a-zA-Z]+」。
  *  //　priority(優先度)はデフォルト値の「Integer.MAX_VALUE」。
  * 	public ActionResult m4() {
  * 	}
  * 
  * 	&#064;Path(&quot;/{userId,[a-z]+}/edit&quot;, priprity=0)
- * 	// {userId}部分をリクエストパラメータに追加。
+ * 	// {userId}部分を要求パラメータに追加。
  *  // {userId}部分の正規表現は「[a-z]+」のため小文字アルファベットのみ。
  *  //　priority(優先度)は「0」のため、m4メソッドよりも先に適用される。
  * 	public ActionResult m5() {
@@ -90,7 +90,6 @@ import java.lang.annotation.Target;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE })
@@ -110,7 +109,7 @@ public @interface Path {
 	 * 正規表現は省略可能です。省略した場合「[a-zA-Z0-9]+」と同じ意味になります。
 	 * </p>
 	 * <p>
-	 * アクションメソッドのパスは「パスの正規表現+{@link Accept リクエストメソッド}」で一意に特定できなければいけません。
+	 * アクションメソッドのパスは「パスの正規表現+{@link Accept 要求メソッド}」で一意に特定できなければいけません。
 	 * 実行時に重複が発見されると例外が発生します。
 	 * </p>
 	 * 

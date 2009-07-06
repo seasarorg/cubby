@@ -22,30 +22,29 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.routing.Routing;
 
 /**
- * リクエストのパスを元にアクションメソッドを決定して実行するクラスです。
+ * 要求のパスを元にアクションメソッドを決定して実行するクラスです。
  * 
  * @author agata
- * @since 1.0.0
  */
 public interface ActionProcessor {
 
 	/**
-	 * リクエストを元にアクションメソッドを決定して実行します。
+	 * 要求を元にアクションメソッドを決定して実行します。
 	 * <p>
 	 * <ul>
-	 * <li>リクエストを元に実行するアクションとそのアクションメソッドを決定します。</li>
+	 * <li>要求を元に実行するアクションとそのアクションメソッドを決定します。</li>
 	 * <li>アクションメソッドを実行します。</li>
 	 * <li>アクションメソッドの実行結果である{@link ActionResult}を実行します。</li>
 	 * </ul>
 	 * </p>
 	 * 
 	 * @param request
-	 *            リクエスト
+	 *            要求
 	 * @param response
-	 *            レスポンス
+	 *            応答
 	 * @param routing
 	 *            ルーティング
-	 * @return アクションメソッドの戻り値。リクエストに応じたアクションメソッドが見つからなかった場合は <code>null</code>
+	 * @return アクションメソッドの戻り値。要求に応じたアクションメソッドが見つからなかった場合は <code>null</code>
 	 * @throws Exception
 	 *             アクションの実行時に例外が発生した場合
 	 */

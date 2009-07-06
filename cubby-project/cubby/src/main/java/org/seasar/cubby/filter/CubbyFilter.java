@@ -45,7 +45,6 @@ import org.seasar.cubby.routing.PathInfo;
  * 
  * @author agata
  * @author baba
- * @since 1.0.0
  */
 public class CubbyFilter implements Filter {
 
@@ -117,7 +116,7 @@ public class CubbyFilter implements Filter {
 	 * フィルター処理を行います。
 	 * <p>
 	 * 要求された URI に対応する情報が {@link Router} から取得できた場合は、 {@link RequestProcessor}
-	 * によってリクエストを処理します。URI に対応する情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を委譲します。
+	 * によって要求を処理します。URI に対応する情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を委譲します。
 	 * </p>
 	 * 
 	 * @param req

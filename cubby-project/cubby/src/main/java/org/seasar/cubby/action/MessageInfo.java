@@ -80,7 +80,7 @@ public class MessageInfo {
 	 *            フィールド名のリソースキー
 	 * @return メッセージ文字列
 	 */
-	public String toMessage(String fieldNameKey) {
+	public String toMessage(final String fieldNameKey) {
 		final Object[] args;
 		if (fieldNameKey != null) {
 			if (this.arguments != null) {
