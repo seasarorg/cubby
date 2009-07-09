@@ -328,7 +328,7 @@ public class CubbyModule extends AbstractModule {
 
 	@Provides
 	@RequestScoped
-	FlashMap privideFlashMap(final HttpServletRequest request) {
+	FlashMap provideFlashMap(final HttpServletRequest request) {
 		final FlashMap flashMap = new FlashMapImpl(request);
 		return flashMap;
 	}
