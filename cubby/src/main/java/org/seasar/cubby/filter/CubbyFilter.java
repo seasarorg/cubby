@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.filter;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_FILTER_CHAIN;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +142,7 @@ public class CubbyFilter implements Filter {
 		final PathInfo pathInfo = router.routing(request, response,
 				ignorePathPatterns);
 		if (pathInfo != null) {
+			request.setAttribute(ATTR_FILTER_CHAIN, chain);
 			try {
 				requestProcessor.process(request, response, pathInfo);
 			} catch (final Exception e) {
