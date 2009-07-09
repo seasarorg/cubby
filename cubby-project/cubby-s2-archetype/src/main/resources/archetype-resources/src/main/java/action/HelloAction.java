@@ -28,6 +28,7 @@ import org.seasar.cubby.validator.validators.RequiredValidator;
 
 import ${package}.service.HelloService;
 
+@ActionClass
 public class HelloAction {
 
 	public ValidationRules validation = new DefaultValidationRules() {
