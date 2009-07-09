@@ -75,6 +75,11 @@ public class CubbyConstants {
 	 */
 	public static final String ATTR_FORM_WRAPPER_FACTORY = "org.seasar.cubby.formWrapperFactory";
 
+	/**
+	 * フィルターチェインの要求の属性名。
+	 */
+	public static final String ATTR_FILTER_CHAIN = "org.seasar.cubby.filterChain";
+
 	// session --------------------------------------------------------
 
 	/**
