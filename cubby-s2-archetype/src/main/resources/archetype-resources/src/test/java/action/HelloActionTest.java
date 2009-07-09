@@ -15,6 +15,7 @@
  */
 package ${package}.action;
 
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.plugins.s2.unit.CubbyTestCase;
@@ -22,6 +23,8 @@ import org.seasar.cubby.plugins.s2.unit.CubbyTestCase;
 public class HelloActionTest extends CubbyTestCase {
 
 	public HelloAction action;
+
+	public ActionErrors actionErrors;
 
 	protected void setUp() throws Exception {
 		include("app.dicon");
@@ -47,10 +50,10 @@ public class HelloActionTest extends CubbyTestCase {
 		ActionResult result = processAction("/hello/message");
 		assertPathEquals(Forward.class, "index.jsp", result);
 		assertNull(action.name);
-		assertEquals(0, action.getErrors().getOthers().size());
-		assertEquals(1, action.getErrors().getFields().size());
-		assertEquals(1, action.getErrors().getFields().get("name").size());
-		assertEquals("あなたの名前は必須です。", action.getErrors().getFields().get("name").get(0));
+		assertEquals(0, actionErrors.getOthers().size());
+		assertEquals(1, actionErrors.getFields().size());
+		assertEquals(1, actionErrors.getFields().get("name").size());
+		assertEquals("あなたの名前は必須です。", actionErrors.getFields().get("name").get(0));
 		assertNull(action.name);
 		assertNull(action.message);
 	}
