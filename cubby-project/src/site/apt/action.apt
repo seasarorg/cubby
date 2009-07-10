@@ -70,8 +70,6 @@
 
   *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
 
-  *{{{#コンバータ}コンバータ}}
-
   *{{{#ActionResult}ActionResult}}
 
   *{{{#アノテーション}アノテーション}}
@@ -87,24 +85,20 @@
  アクションとは特定の URI へのリクエストに対応する処理で、Cubby のユーザーが実装する部分です。\
  URI に対応するメソッドをアクションメソッド、アクションメソッドが定義されたクラスをアクションクラスといいます。
 
+ コンテナからアクションクラスを検索して、そこに定義されたアクションメソッドと URI パターンの紐付けを内部に登録します。
+ クライアントからリクエストが送信されたときには、その登録された URI からリクエストされた URI パターンにマッチするアクションメソッドを検索、実行します。
+
 {アクションの定義}
 
 *{アクションクラス}
 
- {{{cubby/apidocs/org/seasar/cubby/action/Action.html}Action}} を継承し、〜Action という名前のクラスをアクションクラスとして認識します。
+ コンテナに登録されたクラスのうち、
+ {{{cubby/apidocs/org/seasar/cubby/action/Action.html}Action}} を継承しているか、
+ {{{cubby/apidocs/org/seasar/cubby/action/Action.html}ActionClass}} によって修飾されたクラスをアクションクラスとして認識します。
 
 *{アクションメソッド}
 
- アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。\
- このメソッドは AOP によってエンハンスされ、メソッド実行時に以下の処理が実行されるようになります。
-
- *アクションの初期化やリクエストパラメータからフォームオブジェクトへのバインド ({{{cubby/apidocs/org/seasar/cubby/interceptor/InitializeInterceptor.html}InitializeInterceptor}})
-
- *入力検証 ({{{cubby/apidocs/org/seasar/cubby/interceptor/ValidationInterceptor.html}ValidationInterceptor}})
-
-[]
-
- これらは AOP によってメソッド自体がエンハンスされるため、アクションメソッドの中から他のアクションメソッドを呼び出した場合も上記の処理が実行されます。
+ アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。
 
 *{リクエストパラメータのバインド}
 
@@ -141,93 +135,28 @@
 
   []
 
-  また、バインドされるプロパティの型によってはコンバータによる型変換を行います。
+  また、バインドされるプロパティの型によっては{{{converter.html}コンバータ}}による型変換を行います。
 
-*{コンバータ}
-
-  コンバータとは、リクエストパラメータをフォームオブジェクトへバインドする際に型変換を行う
-  {{{cubby/apidocs/org/seasar/cubby/converter/Converter.html}Converter}}
-  を実装したクラスです。
-
-  標準でサポートしているコンバータは{{{cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html}APIドキュメント}}をご覧下さい。
-
-  また、独自のコンバータを実装することによって、標準ではサポートしていない型へリクエストパラメータをバインドすることができます。
-
-  以下の BookConverter.java は ISBN を表す文字列からデータベースを参照して Book に変換するコンバータです。
-  変換結果は
-
-+------------------------------------------------------+
-		:
-	@RequestParameter
-	public Book book;
-		:
-+------------------------------------------------------+
-
-  というプロパティにバインドされます。
-
- <<BookConverter.java>>
-
-+------------------------------------------------------+
-package org.seasar.cubby.examples.other.web.converter;
-
-import org.seasar.cubby.converter.ConversionHelper;
-import org.seasar.cubby.converter.impl.AbstractConverter;
-
-/**
- * ISDN を表す文字列と Book を相互変換するコンバータです。
- */
-public class BookConverter extends AbstractConverter {
-
-	public BookDao bookDao;
-
-	/**
-	 * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
-	 */
-	public Class<?> getObjectType() {
-		return Book.class;
-	}
-
-	/**
-	 * リクエストパラメータ(ここではISBN)を Book へ変換します。
-	 */
-	public Object convertToObject(Object value, Class<?> objectType,
-			ConversionHelper helper) {
-		if (value == null) {
-			return null;
-		}
-		String isbn13 = value.toString();
-		Book book = bookDao.findByIsbn13(isbn13);
-		return book;
-	}
-
-	/**
-	 * Book から表示用の文字列(ISBN)へ変換します。
-	 */
-	public String convertToString(Object value, ConversionHelper helper) {
-		Book book = Book.class.cast(value);
-		return book.getIsbn13();
-	}
-
-}
-+------------------------------------------------------+
 
 *{ActionResult}
 
  以下のクラスは {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} を実装するクラスで、アクションメソッドの戻り値として使用できます。
 
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-|| クラス名                                                           || 説明                                                              |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Forward.html}Forward}}     | 指定されたパスにフォワードします。                                 |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Redirect.html}Redirect}}   | 指定されたパスにリダイレクトします。                               |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Direct.html}Direct}}       | 何も処理を行いません。アクションメソッド中でレスポンスに直接書き込みます。ファイルや画像をブラウザに返す時に使用します。                   |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/Json.html}Json}}           | 指定されたオブジェクトを Json 形式に変換してレスポンスを返します。 |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
-| {{{cubby/apidocs/org/seasar/cubby/action/SendError.html}SendError}} | 指定されたエラー系のステータスコードを返します。                   |
-*---------------------------------------------------------------------+--------------------------------------------------------------------+
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+|| クラス名                                                             || 説明                                                              |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Forward.html}Forward}}       | 指定されたパスにフォワードします。                                 |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Redirect.html}Redirect}}     | 指定されたパスにリダイレクトします。                               |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Direct.html}Direct}}         | 何も処理を行いません。アクションメソッド中でレスポンスに直接書き込みます。ファイルや画像をブラウザに返す時に使用します。                   |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Json.html}Json}}             | 指定されたオブジェクトを Json 形式に変換してレスポンスを返します。 |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/SendError.html}SendError}}   | 指定されたエラー系のステータスコードを返します。                   |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/SendError.html}PassThrough}} | FilterChain#doFilter で次のフィルタへチェインします。              |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
 
 []
 
