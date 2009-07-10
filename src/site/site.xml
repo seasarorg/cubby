@@ -92,6 +92,9 @@
 				<item name="アクションの定義" href="/action.html#アクションの定義" />
 				<item name="アクションのテスト" href="/action.html#アクションのテスト" />
 			</item>
+			<item name="コンバータ" href="/converter.html" collapse="true">
+				<item name="コンバータ" href="/converte.html#コンバータ" />
+			</item>
 			<item name="バリデーション" href="/validation.html"
 				collapse="true">
 				<item name="バリデーション" href="/validation.html#バリデーション" />
