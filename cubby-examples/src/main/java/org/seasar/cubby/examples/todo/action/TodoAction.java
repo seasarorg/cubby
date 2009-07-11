@@ -38,7 +38,7 @@ import org.seasar.cubby.examples.todo.dao.TodoTypeDao;
 import org.seasar.cubby.examples.todo.dxo.TodoDxo;
 import org.seasar.cubby.examples.todo.entity.Todo;
 import org.seasar.cubby.examples.todo.entity.TodoType;
-import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.plugins.oval.validation.OValValidationRule;
 import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
@@ -62,7 +62,7 @@ public class TodoAction {
 			// add("typeId", "type", new RequiredValidator());
 			// add("limitDate", new DateFormatValidator());
 			add(new ConversionValidationRule(resourceKeyPrefix));
-			add(new OvalValidationRule(resourceKeyPrefix));
+			add(new OValValidationRule(resourceKeyPrefix));
 		}
 	};
 
