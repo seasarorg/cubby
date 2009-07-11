@@ -33,7 +33,7 @@ import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.examples.todo.dao.UserDao;
 import org.seasar.cubby.examples.todo.entity.User;
-import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.plugins.oval.validation.OValValidationRule;
 import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationException;
@@ -60,7 +60,7 @@ public class LoginAction {
 			// add("userId", new RequiredValidator());
 			// add("password", new RequiredValidator());
 			add(new ConversionValidationRule(resourceKeyPrefix));
-			add(new OvalValidationRule(resourceKeyPrefix));
+			add(new OValValidationRule(resourceKeyPrefix));
 			add(DATA_CONSTRAINT, new UserValidationRule());
 		}
 	};

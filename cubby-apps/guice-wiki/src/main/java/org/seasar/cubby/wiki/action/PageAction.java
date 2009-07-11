@@ -21,7 +21,7 @@ import org.seasar.cubby.action.Path;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.plugins.oval.validation.OvalValidationRule;
+import org.seasar.cubby.plugins.oval.validation.OValValidationRule;
 import org.seasar.cubby.util.Messages;
 import org.seasar.cubby.validator.ConversionValidationRule;
 import org.seasar.cubby.validator.DefaultValidationRules;
@@ -68,7 +68,7 @@ public class PageAction extends Action {
 	final ValidationRules saveValidation = new DefaultValidationRules("page.") {
 		public void initialize(String resourceKeyPrefix) {
 			add(new ConversionValidationRule(resourceKeyPrefix));
-			add(new OvalValidationRule(resourceKeyPrefix));
+			add(new OValValidationRule(resourceKeyPrefix));
 			add(DATA_CONSTRAINT, new ExistPageNameValidator());
 		}
 

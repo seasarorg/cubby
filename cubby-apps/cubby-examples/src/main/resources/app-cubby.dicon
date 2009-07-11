@@ -36,6 +36,6 @@
 	</component>
 
 	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver"/>
-	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleOvalContextRenderer"/>
+	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleOValContextRenderer"/>
 
 </components>

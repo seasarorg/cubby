@@ -11,7 +11,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.cubby.plugins.guice.CubbyModule;
 import org.seasar.cubby.plugins.guice.FileUploadModule;
 import org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver;
-import org.seasar.cubby.plugins.oval.validation.RequestLocaleOvalContextRenderer;
+import org.seasar.cubby.plugins.oval.validation.RequestLocaleOValContextRenderer;
 import org.seasar.cubby.util.ActionUtils;
 import org.seasar.cubby.wiki.action.PageAction;
 import org.seasar.cubby.wiki.converter.PageConverter;
@@ -35,7 +35,7 @@ public class ApplicationModule extends AbstractModule {
 
 		bind(MessageResolver.class).to(RequestLocaleMessageResolver.class);
 		bind(OValContextRenderer.class).to(
-				RequestLocaleOvalContextRenderer.class);
+				RequestLocaleOValContextRenderer.class);
 
 		bind(PageConverter.class).in(Singleton.class);
 		bind(PageAction.class);
