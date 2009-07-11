@@ -16,6 +16,7 @@
 package org.seasar.cubby.plugins.oval.validation;
 
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import net.sf.oval.context.ClassContext;
 import net.sf.oval.context.ConstructorParameterContext;
@@ -29,7 +30,13 @@ import net.sf.oval.localization.context.OValContextRenderer;
 
 import org.seasar.cubby.util.Messages;
 
-public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
+/**
+ * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} からメッセージを翻訳する
+ * {@link OValContextRenderer} です。
+ * 
+ * @author baba
+ */
+public class RequestLocaleOValContextRenderer implements OValContextRenderer {
 
 	/**
 	 * {@inheritDoc}
@@ -50,7 +57,7 @@ public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
 			fieldName = ctx.getParameterName();
 		} else if (ovalContext instanceof MethodEntryContext) {
 			final MethodEntryContext ctx = (MethodEntryContext) ovalContext;
-			Method method = ctx.getMethod();
+			final Method method = ctx.getMethod();
 			if (isGetter(method)) {
 				fieldName = toPropertyName(method);
 			} else {
@@ -58,7 +65,7 @@ public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
 			}
 		} else if (ovalContext instanceof MethodExitContext) {
 			final MethodExitContext ctx = (MethodExitContext) ovalContext;
-			Method method = ctx.getMethod();
+			final Method method = ctx.getMethod();
 			if (isGetter(method)) {
 				fieldName = toPropertyName(method);
 			} else {
@@ -66,7 +73,7 @@ public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
 			}
 		} else if (ovalContext instanceof MethodReturnValueContext) {
 			final MethodReturnValueContext ctx = (MethodReturnValueContext) ovalContext;
-			Method method = ctx.getMethod();
+			final Method method = ctx.getMethod();
 			if (isGetter(method)) {
 				fieldName = toPropertyName(method);
 			} else {
@@ -78,21 +85,34 @@ public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
 
 		final String fieldNameKey;
 
-		OvalValidationContext context = OvalValidationContext.get();
-		String resourceKeyPrefix = context.getResourceKeyPrefix();
+		final OValValidationContext context = OValValidationContext.get();
+		final String resourceKeyPrefix = context.getResourceKeyPrefix();
 		if (resourceKeyPrefix == null) {
 			fieldNameKey = fieldName;
 		} else {
 			fieldNameKey = resourceKeyPrefix + fieldName;
 		}
 
-		String fieldNameMessage = Messages.getText(fieldNameKey);
+		final String fieldNameMessage = Messages.getText(fieldNameKey);
 		return fieldNameMessage;
 	}
 
-	protected boolean isGetter(Method method) {
-		if (!method.getName().startsWith("get")) {
-			return false;
+	/**
+	 * 指定されたメソッドが getter メソッドかどうかを示します。
+	 * 
+	 * @param method
+	 *            メソッド
+	 * @return getter メソッドの場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
+	protected boolean isGetter(final Method method) {
+		if (method.getReturnType().equals(boolean.class)) {
+			if (!method.getName().startsWith("is")) {
+				return false;
+			}
+		} else {
+			if (!method.getName().startsWith("get")) {
+				return false;
+			}
 		}
 		if (method.getParameterTypes().length > 0) {
 			return false;
@@ -103,10 +123,22 @@ public class RequestLocaleOvalContextRenderer implements OValContextRenderer {
 		return true;
 	}
 
-	protected String toPropertyName(Method method) {
-		String methodName = method.getName();
-		String str1 = methodName.substring(3);
-		String propertyName = Character.toUpperCase(str1.charAt(0))
+	/**
+	 * 指定された getter メソッドがアクセスするプロパティ名を取得します。
+	 * 
+	 * @param method
+	 *            メソッド
+	 * @return プロパティ名
+	 */
+	protected String toPropertyName(final Method method) {
+		final String methodName = method.getName();
+		final String str1;
+		if (method.getReturnType().equals(boolean.class)) {
+			str1 = methodName.substring(2);
+		} else {
+			str1 = methodName.substring(3);
+		}
+		final String propertyName = Character.toUpperCase(str1.charAt(0))
 				+ str1.substring(1);
 		return propertyName;
 	}

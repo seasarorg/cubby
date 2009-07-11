@@ -13,38 +13,8 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/**
+ * OVal による入力検証を提供します。
+ */
 package org.seasar.cubby.plugins.oval.validation;
 
-public class OvalValidationContext {
-
-	private static final ThreadLocal<OvalValidationContext> context = new ThreadLocal<OvalValidationContext>() {
-
-		@Override
-		protected OvalValidationContext initialValue() {
-			return new OvalValidationContext();
-		}
-
-	};
-
-	private String resourceKeyPrefix;
-
-	private OvalValidationContext() {
-	}
-
-	public static OvalValidationContext get() {
-		return context.get();
-	}
-
-	public static void remove() {
-		context.remove();
-	}
-
-	public String getResourceKeyPrefix() {
-		return resourceKeyPrefix;
-	}
-
-	public void setResourceKeyPrefix(String resourceKeyPrefix) {
-		this.resourceKeyPrefix = resourceKeyPrefix;
-	}
-
-}
