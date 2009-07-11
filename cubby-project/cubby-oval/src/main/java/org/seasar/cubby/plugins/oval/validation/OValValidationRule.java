@@ -38,7 +38,12 @@ import org.seasar.cubby.spi.container.LookupException;
 import org.seasar.cubby.validator.ValidationException;
 import org.seasar.cubby.validator.ValidationRule;
 
-public class OvalValidationRule implements ValidationRule {
+/**
+ * OVal によって入力を検証する {@link ValidationRule} です。
+ * 
+ * @author baba
+ */
+public class OValValidationRule implements ValidationRule {
 
 	/** リソースのキープレフィックス。 */
 	private final String resourceKeyPrefix;
@@ -46,7 +51,7 @@ public class OvalValidationRule implements ValidationRule {
 	/**
 	 * キーのプレフィックスなしでインスタンス化します。
 	 */
-	public OvalValidationRule() {
+	public OValValidationRule() {
 		this(null);
 	}
 
@@ -56,13 +61,16 @@ public class OvalValidationRule implements ValidationRule {
 	 * @param resourceKeyPrefix
 	 *            リソースのキープレフィックス
 	 */
-	public OvalValidationRule(final String resourceKeyPrefix) {
+	public OValValidationRule(final String resourceKeyPrefix) {
 		this.resourceKeyPrefix = resourceKeyPrefix;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void apply(final Map<String, Object[]> params, final Object form,
 			final ActionErrors errors) throws ValidationException {
-		OvalValidationContext context = OvalValidationContext.get();
+		final OValValidationContext context = OValValidationContext.get();
 		context.setResourceKeyPrefix(resourceKeyPrefix);
 		try {
 			final Validator validator = buildValidator();
@@ -70,10 +78,15 @@ public class OvalValidationRule implements ValidationRule {
 					.validate(form);
 			processViolations(violations, errors);
 		} finally {
-			OvalValidationContext.remove();
+			OValValidationContext.remove();
 		}
 	}
 
+	/**
+	 * バリデータを構築します。
+	 * 
+	 * @return バリデータ
+	 */
 	protected Validator buildValidator() {
 		final Container container = ProviderFactory
 				.get(ContainerProvider.class).getContainer();
@@ -84,11 +97,22 @@ public class OvalValidationRule implements ValidationRule {
 		}
 	}
 
+	/**
+	 * 入力検証で検出した制約違反を処理します。
+	 * <p>
+	 * <code>errors</code> に制約違反から抽出したメッセージを設定します。
+	 * </p>
+	 * 
+	 * @param violations
+	 *            制約違反のリスト
+	 * @param errors
+	 *            メッセージを設定するオブジェクト
+	 */
 	protected void processViolations(
 			final List<ConstraintViolation> violations,
 			final ActionErrors errors) {
 		for (final ConstraintViolation violation : violations) {
-			String message = violation.getMessage();
+			final String message = violation.getMessage();
 			final FieldInfo fieldInfo = createFieldInfo(violation.getContext());
 			if (fieldInfo != null) {
 				errors.add(message, fieldInfo);
@@ -98,7 +122,14 @@ public class OvalValidationRule implements ValidationRule {
 		}
 	}
 
-	private FieldInfo createFieldInfo(final OValContext ovalContext) {
+	/**
+	 * <code>ovalContext</code> から {@link FieldInfo} を生成します。
+	 * 
+	 * @param ovalContext
+	 *            OVal のコンテキスト
+	 * @return <code>ovalContext</code> から生成された {@link FieldInfo}
+	 */
+	protected FieldInfo createFieldInfo(final OValContext ovalContext) {
 		final FieldInfo fieldInfo;
 		if (ovalContext instanceof ClassContext) {
 			fieldInfo = null;

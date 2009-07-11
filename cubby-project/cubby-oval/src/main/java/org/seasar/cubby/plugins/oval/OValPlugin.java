@@ -29,11 +29,12 @@ import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 
 /**
- * Oval によるアノテーションベースの入力検証を追加するプラグインです。
+ * <a href="http://oval.sourceforge.net/">OVal</a>
+ * によるアノテーションベースの入力検証を追加するプラグインです。
  * 
  * @author baba
  */
-public class OvalPlugin extends AbstractPlugin {
+public class OValPlugin extends AbstractPlugin {
 
 	/**
 	 * {@inheritDoc}
@@ -62,7 +63,7 @@ public class OvalPlugin extends AbstractPlugin {
 			Validator.setMessageResolver(messageResolver);
 		}
 
-		final OValContextRenderer ovalContextRenderer = buildOvalContextRenderer(container);
+		final OValContextRenderer ovalContextRenderer = buildOValContextRenderer(container);
 		if (ovalContextRenderer != null) {
 			Validator.setContextRenderer(ovalContextRenderer);
 		}
@@ -73,7 +74,7 @@ public class OvalPlugin extends AbstractPlugin {
 	 * <p>
 	 * 指定されたコンテナから {@link MessageResolver} のインスタンスを取得しますが、コンテナに登録されていない場合は
 	 * <code>null</code> を返します。その場合は
-	 * {@link Validator#setMessageResolver(MessageResolver)} を実行しないので Oval
+	 * {@link Validator#setMessageResolver(MessageResolver)} を実行しないので OVal
 	 * デフォルトの動作になります。
 	 * </p>
 	 * 
@@ -94,7 +95,7 @@ public class OvalPlugin extends AbstractPlugin {
 	 * <p>
 	 * 指定されたコンテナから {@link OValContextRenderer} のインスタンスを取得しますが、コンテナに登録されていない場合は
 	 * <code>null</code> を返します。その場合は
-	 * {@link Validator#setContextRenderer(OValContextRenderer)} を実行しないので Oval
+	 * {@link Validator#setContextRenderer(OValContextRenderer)} を実行しないので OVal
 	 * デフォルトの動作になります。
 	 * </p>
 	 * 
@@ -102,7 +103,7 @@ public class OvalPlugin extends AbstractPlugin {
 	 *            コンテナ
 	 * @return {@link MessageResolver}
 	 */
-	protected OValContextRenderer buildOvalContextRenderer(
+	protected OValContextRenderer buildOValContextRenderer(
 			final Container container) {
 		try {
 			return container.lookup(OValContextRenderer.class);

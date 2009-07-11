@@ -21,10 +21,23 @@ import net.sf.oval.localization.message.MessageResolver;
 
 import org.seasar.cubby.internal.controller.ThreadContext;
 
+/**
+ * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} からメッセージを取得する
+ * {@link MessageResolver} です。
+ * 
+ * @author baba
+ */
 public class RequestLocaleMessageResolver implements MessageResolver {
 
+	/** このクラスのシングルトン。 */
 	public static RequestLocaleMessageResolver INSTANCE = new RequestLocaleMessageResolver();
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} からメッセージを取得します。
+	 * </p>
+	 */
 	public String getMessage(final String key) {
 		final ResourceBundle messagesResourceBundle = ThreadContext
 				.getMessagesResourceBundle();
