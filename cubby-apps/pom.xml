@@ -5,7 +5,7 @@
   <artifactId>cubby-apps</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Applications</name>
-  <version>2.0.0-rc2-SNAPSHOT</version>
+  <version>2.0.0-rc2</version>
   <description>Cubby Sample Applications</description>
   <url>http://cubby.seasar.org/20x/cubby-apps</url>
   <inceptionYear>2006</inceptionYear>
@@ -21,9 +21,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</connection>
-    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</developerConnection>
-    <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</url>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/tags/cubby-apps-2.0.0-rc2</connection>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/tags/cubby-apps-2.0.0-rc2</developerConnection>
+    <url>https://www.seasar.org/svn/cubby/tags/cubby-apps-2.0.0-rc2</url>
   </scm>
   <build>
     <plugins>
