@@ -79,23 +79,4 @@ public class ApplicationModule extends AbstractModule {
 		}
 	}
 
-	// private static class ApplicationCubbyModule extends AbstractCubbyModule {
-	//
-	// @Override
-	// protected PathResolver getPathResolver() {
-	// PathTemplateParser pathTemplateParser = new PathTemplateParserImpl();
-	// PathResolver pathResolver = new PathResolverImpl(pathTemplateParser);
-	// pathResolver.add(PageAction.class);
-	// return pathResolver;
-	// }
-	//
-	// @Override
-	// protected Collection<Converter> createConverters(Injector injector) {
-	// Set<Converter> converters = new HashSet<Converter>(super
-	// .createConverters(injector));
-	// converters.add(injector.getInstance(PageConverter.class));
-	// return Collections.unmodifiableCollection(converters);
-	// }
-	//
-	// }
 }
