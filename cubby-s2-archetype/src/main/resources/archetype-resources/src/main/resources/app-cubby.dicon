@@ -51,5 +51,11 @@
 	<component class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
 		<property name="baseName">"messages"</property>
 	</component>
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+
+	<!-- OVal -->
+	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver"/>
+	<component class="org.seasar.cubby.plugins.oval.validation.RequestLocaleOValContextRenderer"/>
+#end
 
 </components>

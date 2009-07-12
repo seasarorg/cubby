@@ -124,6 +124,13 @@ line.separator=\n
       <artifactId>cubby-gson</artifactId>
       <version>${cubby-version}</version>
     </dependency>
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+    <dependency>
+      <groupId>org.seasar.cubby</groupId>
+      <artifactId>cubby-oval</artifactId>
+      <version>${cubby-version}</version>
+    </dependency>
+#end
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-admin</artifactId>

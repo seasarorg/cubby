@@ -39,6 +39,9 @@
     <requiredProperty key="use-s2jdbc">
       <defaultValue>true</defaultValue>
     </requiredProperty>
+    <requiredProperty key="use-oval">
+      <defaultValue>true</defaultValue>
+    </requiredProperty>
   </requiredProperties>
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">

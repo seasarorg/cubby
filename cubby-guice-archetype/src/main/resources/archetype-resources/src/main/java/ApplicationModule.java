@@ -16,9 +16,18 @@
 package ${package};
 
 import javax.servlet.http.HttpServletRequest;
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+
+import net.sf.oval.localization.context.OValContextRenderer;
+import net.sf.oval.localization.message.MessageResolver;
+#end
 
 import org.seasar.cubby.plugins.guice.CubbyModule;
 import org.seasar.cubby.plugins.guice.FileUploadModule;
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+import org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver;
+import org.seasar.cubby.plugins.oval.validation.RequestLocaleOValContextRenderer;
+#end
 
 import com.google.inject.AbstractModule;
 import com.google.inject.servlet.ServletModule;
@@ -37,6 +46,18 @@ public class ApplicationModule extends AbstractModule {
 
 		bind(IndexAction.class);
 		bind(HelloAction.class);
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+
+		configureOVal();
+#end
 	}
+#if ($use-oval.matches("(?i)y|yes|true|on"))
+
+	protected void configureOVal() {
+		bind(MessageResolver.class).to(RequestLocaleMessageResolver.class);
+		bind(OValContextRenderer.class).to(
+				RequestLocaleOValContextRenderer.class);
+	}
+#end
 
 }
