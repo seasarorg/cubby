@@ -90,23 +90,23 @@ line.separator=\n
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>2.0.0-rc2-SNAPSHOT</version>
+      <version>2.0.0-rc2</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-unit</artifactId>
-      <version>2.0.0-rc2-SNAPSHOT</version>
+      <version>2.0.0-rc2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-spring</artifactId>
-      <version>2.0.0-rc2-SNAPSHOT</version>
+      <version>2.0.0-rc2</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-admin</artifactId>
-      <version>2.0.0-rc2-SNAPSHOT</version>
+      <version>2.0.0-rc2</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
