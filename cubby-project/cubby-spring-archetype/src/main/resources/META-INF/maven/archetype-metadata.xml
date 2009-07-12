@@ -28,7 +28,7 @@
       <defaultValue>2.0.0-rc1</defaultValue>
     </requiredProperty>
     <requiredProperty key="spring-version">
-      <defaultValue>2.5.6</defaultValue>
+      <defaultValue>2.5.6.SEC01</defaultValue>
     </requiredProperty>
     <requiredProperty key="use-oval">
       <defaultValue>true</defaultValue>
