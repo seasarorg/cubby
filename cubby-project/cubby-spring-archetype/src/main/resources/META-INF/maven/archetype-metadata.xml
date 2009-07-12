@@ -30,6 +30,9 @@
     <requiredProperty key="spring-version">
       <defaultValue>2.5.6</defaultValue>
     </requiredProperty>
+    <requiredProperty key="use-oval">
+      <defaultValue>true</defaultValue>
+    </requiredProperty>
   </requiredProperties>
   <fileSets>
     <fileSet filtered="true" packaged="true" encoding="UTF-8">
