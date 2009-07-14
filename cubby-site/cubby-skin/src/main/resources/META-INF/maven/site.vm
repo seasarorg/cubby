@@ -321,8 +321,11 @@
         #end
       #end
     #end
+    <link href="css/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="js/preprettify.js"></script>
+    <script type="text/javascript" src="js/prettify.js"></script>
   </head>
-  <body class="composite">
+  <body class="composite" onload="prePrettyPrint()">
     <div id="banner">
       #banner( $decoration.bannerLeft "bannerLeft" )
       #banner( $decoration.bannerRight "bannerRight" )
