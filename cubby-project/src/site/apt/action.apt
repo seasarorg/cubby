@@ -62,7 +62,7 @@
 
  *{{{#アクション}アクション}}
 
- *{{{#アクションの定義}アクションの定義}}
+  *{{{#リクエストからアクション実行までのフロー}リクエストからアクション実行までのフロー}}
 
   *{{{#アクションクラス}アクションクラス}}
 
@@ -76,9 +76,21 @@
 
   *{{{#事前処理事後処理}事前処理・事後処理}}
 
-  *{{{#リクエストからアクション実行までのフロー}リクエストからアクション実行までのフロー}}
+  *{{{#ファイルアップロード}ファイルアップロード}}
 
- *{{{#アクションのテスト}アクションのテスト}}
+ *{{{#コンバータ}コンバータ}}
+
+  *{{{#コンバータによるバリデーション}コンバータによるバリデーション}}
+
+  *{{{#独自のコンバータを作成する}独自のコンバータを作成する}}
+
+  *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
+
+  *{{{#特定のコンバータを指定する}特定のコンバータを指定する}}
+
+ *{{{#テスト}テスト}}
+
+  *{{{#アクションをテストする方法}アクションをテストする方法}}
 
 {アクション}
 
@@ -88,7 +100,13 @@
  コンテナからアクションクラスを検索して、そこに定義されたアクションメソッドと URI パターンの紐付けを内部に登録します。
  クライアントからリクエストが送信されたときには、その登録された URI からリクエストされた URI パターンにマッチするアクションメソッドを検索、実行します。
 
-{アクションの定義}
+*{リクエストからアクション実行までのフロー}
+
+ クライアントからのリクエストからアクションを実行するフローは以下のようになります。
+
+ <<リクエストからアクション実行までのフロー>>
+
+[images/action_sequence.png]リクエストからアクション実行までのフロー
 
 *{アクションクラス}
 
@@ -135,7 +153,7 @@
 
   []
 
-  また、バインドされるプロパティの型によっては{{{converter.html}コンバータ}}による型変換を行います。
+  また、バインドされるプロパティの型によっては{{{action.html}コンバータ}}による型変換を行います。
 
 
 *{ActionResult}
@@ -190,8 +208,10 @@
 
 *{事前処理・事後処理}
 
- アクションクラスにある以下のメソッドをオーバーライドすることで、アクションメソッド実行の前後にフック処理を記述することができます。\
- これらはアクションクラスごとの処理となるので、アクションメソッドごとに異なる処理をしたい場合は{{{#アノテーション}アノテーション}}(@InitializeMethod、@PreRenderMethod、@PostRenderMethod)でメソッドを指定してください。
+ Action を継承したアクションクラスでは、以下のメソッドをオーバーライドすることでアクションメソッド実行の前後にフック処理を記述することができます。
+ これらはアクションクラスごとの処理となります。
+
+ @ActionClass を指定したアクションクラスの場合や、アクションメソッドごとに異なる処理をしたい場合は{{{#アノテーション}アノテーション}}(@InitializeMethod、@PreRenderMethod、@PostRenderMethod)でメソッドを指定してください。
 
 *---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
 || メソッド名                                                                                 || 説明                                                                                                                                                      |
@@ -203,124 +223,234 @@
 | {{{cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()}Action#postrender}}       | フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。                                                                                     |
 *---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
- また、アクションメソッド実行の前後に処理を組み込みたい場合は、{{{http://s2container.seasar.org/2.4/ja/aop.html}Seasar の AOP}} を使用して処理をフックすることもできます。
-
 []
 
-{リクエストからアクション実行までのフロー}
+*{ファイルアップロード}
 
- ブラウザのリクエストからアクション実行までのフローは以下のようになります。
+ マルチパートのリクエストでアップロードされたファイルを処理するためには、フォームオブジェクトに org.apache.commons.fileupload.FileItem 型のリクエストパラメータを設定して下さい。\
+ 事前に、コンテナから org.apache.commons.fileupload.FileUpload と org.apache.commons.fileupload.RequestContext を取得できるように設定しおいてください。
 
- <<リクエストからアクション実行までのフロー>>
+ <<ファイルをアップロードするための JSP>>
 
-[images/action_sequence.png]リクエストからアクション実行までのフロー
-
-{アクションのテスト}
-
- アクションの単体テストは {{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html}CubbyTestCase}} を使用します。
- Seasar の S2Unit の機能を全て使用できるので
- {{{http://s2container.seasar.org/2.4/ja/S2Unit.html}SeasarのS2Unitのドキュメント}}も合わせてご覧ください。
-
- [[1]]CubbyTestCase を継承して、XXXXTest を作成します。 
-
- [[2]]テスト対象のアクションをフィールドに用意します。これはアクション実行後に結果を取得するためです。
-
- [[3]]setUpメソッドで app.dicon を読み込み、 Seasar2 で管理されるコンポーネント(テスト対象のアクションを含む)を初期化します。
-
- [[4]]アクションのメソッドごとにテストメソッドを書きます。メソッド名は test から始めます。
-
- [[5]]リクエストパラメータのセットなど、テストに必要な初期化処理は各テストメソッド用のセットアップメソッドで行います。メソッド名は setup から始めます。
-
- [[6]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#processAction(java.lang.String)}CubbyTestCase#processAction}} にリクエストのパスを指定して、アクションメソッドを実行します。CoolURI(パラメータ付きのURI)の場合、パスにパラメータを含んで実行します(TodoActionTest#)。
- 
- [[7]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyTestCase.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyTestCase#processAction}}で結果の ActionResult の型とパスをチェックします。パスのチェックは Forward と Redirect の場合のみ行われます。
-
- [[8]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
-
- <<HelloActionTest.java>>
- 
 +------------------------------------------------------+
-package org.seasar.cubby.examples.other.web.hello;
+<t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data"
+	value="${form}">
+<h1>ファイルアップロード</h1>
+拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
+...
+<label for="file">ファイル:</label>
+<t:input type="file" name="file"/><br/>
+<input type="submit" value="アップロード"/>
+</t:form>
++------------------------------------------------------+
+ 
+ <<アップロードを処理するアクションクラス>>
 
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.unit.CubbyTestCase;
++------------------------------------------------------+
+import org.apache.commons.fileupload.FileItem;
+...
+public class FileUploadAction extends Action {
 
-public class HelloActionTest extends CubbyTestCase {
+	ValidationRules validation = new DefaultValidationRules() {
+		public void initialize() {
+			add("file", new FileRegexpValidator(".+\\.(?i)(png|jpg)")); 
+		}
+	};
 
-	// 対象のアクション
-	private HelloAction action;
-	
-	// 初期化処理
-    protected void setUp() throws Exception {
-    	// diconファイルの読み込み
-        include("app.dicon");
-    }
-    
-	public void testIndex() throws Exception {
-		// アクションの実行
-		ActionResult result = processAction("/hello/");
-		// 結果のチェック
-		assertPathEquals(Forward.class, "input.jsp", result);
+	@RequestParameter
+	private FileItem file;
+
+	public FileItem getFile() {
+		reutrn file;
 	}
 
-	public void setupMessage() {
-	    // リクエストパラメータのセット
-		getRequest().addParameter("name", "name1");
-	}
-	
-	public void testMessage() throws Exception {
-		// アクションの実行
-		ActionResult result = processAction("/hello/message");
-		// 結果のチェック
-		assertPathEquals(Forward.class, "result.jsp", result);
-		// 実行後のアクションの状態を確認
-		assertEquals("name1", action.name);
+	@Validation(rules = "validation", errorPage = "fileupload.jsp")
+	public ActionResult upload() {
+		return new Forward("done.jsp");
 	}	
 }
 +------------------------------------------------------+
 
- <<TodoActionTest.java>>
+ <<アップロード結果を表示する JSP>>
 
 +------------------------------------------------------+
-package org.seasar.cubby.examples.todo.action;
+...
+<h2>ファイルアップロード結果</h2>
+<label for="file">File:</label>
+アップロード完了しました。<br/>
+ファイル名：${file.name}<br/>
+ファイルサイズ：${file.size}<br/>
+...
++------------------------------------------------------+
 
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Redirect;
-import org.seasar.cubby.examples.RunDdlServletRequestListener;
-import org.seasar.cubby.unit.CubbyTestCase;
+{コンバータ}
 
-public class TodoActionTest extends CubbyTestCase {
+  コンバータとは、String 型や FileItem 型のリクエストパラメータをフォームオブジェクトのプロパティの型へ変換するクラスです。
+  {{{cubby/apidocs/org/seasar/cubby/converter/Converter.html}Converter}} を実装します。
 
-	private TodoAction action;
-	
-    protected void setUp() throws Exception {
-        include("app.dicon");
-        RunDdlServletRequestListener listener = new RunDdlServletRequestListener();
-        listener.requestInitialized(null);
-    }
+  型変換に失敗した場合、フォームオブジェクトのプロパティには null が設定されます。
 
-    @Override
-    protected void setUpAfterBindFields() throws Throwable {
-    	super.setUpAfterBindFields();
-		getRequest().addParameter("userId", "test");
-		getRequest().addParameter("password", "test");
-		// 後続のテストを実行するためにログインアクションを実行
-		assertPathEquals(Redirect.class, "/todo/", processAction("/todo/login/process"));
-    }
-    
-	public void testShow() throws Exception {
-        this.readXlsAllReplaceDb("TodoActionTest_PREPARE.xls");
-        // CoolURIの場合のテスト
-		ActionResult result = processAction("/todo/1");
-		assertPathEquals(Forward.class, "show.jsp", result);
-		assertEquals(new Integer(1), action.id);
-		assertEquals("todo1", action.text);
-		assertEquals("todo1 memo", action.memo);
-		assertEquals(new Integer(1), action.todoType.getId());
-		assertEquals("type1", action.todoType.getName());
-		assertEquals("2008-01-01", action.limitDate);
+  標準で提供されるコンバータは{{{cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html}APIドキュメント}}をご覧下さい。
+
+*{コンバータによるバリデーション}
+
+  コンバータでの型変換に失敗したことをバリデーション時に検出することができます。
+
+  ValidationRules を定義するときに org.seasar.cubby.validator.ConversionValidationRule を追加してください。
+
++------------------------------------------------------+
+	public ValidationRules validation = new DefaultValidationRules("todo.") {
+		@Override
+		public void initialize(String resourceKeyPrefix) {
+			add(new ConversionValidationRule(resourceKeyPrefix));
+		}
+	};
++------------------------------------------------------+
+
+*{独自のコンバータを作成する}
+
+  独自のコンバータを作成することによって、標準ではサポートしていない型へリクエストパラメータをバインドすることができます。
+
+  以下の BookConverter.java は ISBN を表す文字列からデータベースを参照して Book に変換するコンバータです。
+  変換結果は
+
++------------------------------------------------------+
+		:
+	@RequestParameter
+	public Book book;
+		:
++------------------------------------------------------+
+
+  のような Book 型のプロパティにバインドされます。
+
+ <<BookConverter.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.examples.other.web.converter;
+
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.impl.AbstractConverter;
+
+/**
+ * ISDN を表す文字列と Book を相互変換するコンバータです。
+ */
+public class BookConverter extends AbstractConverter {
+
+	public BookDao bookDao;
+
+	/**
+	 * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
+	 */
+	public Class<?> getObjectType() {
+		return Book.class;
 	}
+
+	/**
+	 * リクエストパラメータ(ここではISBN)を Book へ変換します。
+	 */
+	public Object convertToObject(Object value, Class<?> objectType,
+			ConversionHelper helper) {
+		if (value == null) {
+			return null;
+		}
+		String isbn13 = value.toString();
+		Book book = bookDao.findByIsbn13(isbn13);
+		return book;
+	}
+
+	/**
+	 * Book から表示用の文字列(ISBN)へ変換します。
+	 */
+	public String convertToString(Object value, ConversionHelper helper) {
+		Book book = Book.class.cast(value);
+		return book.getIsbn13();
+	}
+
+}
++------------------------------------------------------+
+
+  作成したコンバータはコンテナから取得されます。
+  使用するコンテナに登録しておいてください。
+
+*{特定のコンバータを指定する}
+
+  通常は自動的にプロパティの型にマッチするコンバータが選択されますが、特定のコンバータを指定することもできます。
+
+  以下の例では address というフィールドにトリムされた文字列を設定します。
+
++------------------------------------------------------+
+		:
+	@RequestParameter(converter = TrimConverter.class)
+	public String address;
+		:
++------------------------------------------------------+
+
++------------------------------------------------------+
+public class TrimConverter extends AbstractConverter {
+	public Object convertToObject(Object value, Class<?> objectType, ConversionHelper helper) throws ConversionException {
+		if (value == null) {
+			return null;
+		}
+		return value.toString().trim();
+	}
+}
++------------------------------------------------------+
+
+{テスト}
+
+ Cubby では JUnit 等からアクションをテストするためのサポートクラスを用意しています。
+
+*{アクションをテストする方法}
+
+ テストケースからアクションの実行をエミュレートするための {{{cubby/apidocs/org/seasar/cubby/unit/CubbyRunner.html}CubbyRunner}} と、
+ その実行結果を検証するための {{{cubby/apidocs/org/seasar/cubby/unit/CubbyAssert.html}CubbyAssert}} を用意しています。
+ 
+ [[1]]ServletContext, HttpServletRequest, HttpServletResponse のモックオブジェクトを作成します。
+
+ [[2]]テスト対象のアクションを実行するために、作成した HttpServletRequest のモックに servletPath やパラメータを設定します。
+
+ [[3]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyRunner.html#processAction(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.Filter...)}CubbyRunner#processAction}}
+      を呼び出すと指定されたパスに対応するアクションが実行され、その実行結果を取得できます。
+ 
+ [[4]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyAssert.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyAssert#assertPathEquals}}で結果の ActionResult の型と遷移先のパスをチェックします。
+      パスのチェックは Forward と Redirect の場合のみ行われます。\
+
+ [[5]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
+
+ <<FooAction.java>>
+ 
++------------------------------------------------------+
+@ActionClass
+public class FooAction {
+
+	public ActionResult index() {
+		return new Forward("index.jsp");
+	}
+
+}
++------------------------------------------------------+
+
+ <<HelloActionTest.java>>
+
++------------------------------------------------------+
+public class FooActionTest {
+
+	@Test
+	public void index1() throws Exception {
+		// ServletContext, HttpServletRequest, HttpServletResponse などのモックオブジェクトを作成
+		MockServletContext servletContext = ...
+		MockHttpServletRequest request = ...
+		request.setMethod("GET");
+		request.setServletPath("/foo/"); // 実行するアクションのパスを設定
+		MockHttpServletResponse response = ...
+
+		// アクションを実行
+		ActionResult actualResult = CubbyRunner.processAction(servletContext,
+				request, response);
+
+		// アクションの実行結果を検証
+		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
+	}
+
 }
 +------------------------------------------------------+
