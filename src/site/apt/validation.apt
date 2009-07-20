@@ -80,6 +80,10 @@
 
   *{{{#ユーザー定義のロジックによるバリデーション}ユーザー定義のロジックによるバリデーション}}
 
+ *{{{#OVal_プラグイン}OVal プラグイン}}
+
+  *{{{#OVal_プラグインの使用方法}OVal プラグインの使用方法}}
+
 {バリデーション}
 
  Cubby ではフォームから入力された値をバリデーションする仕組みが用意されています。
@@ -352,3 +356,59 @@ public class LoginAction extends Action {
   }
 
 +------------------------------------------------------+
+
+{OVal プラグイン}
+
+ Cubby のバリデーションはリクエストパラメータの名前に対するものなので、基本的にタイプセーフではありません。
+ 入力項目が多い場合など、制約をフィールドやメソッドへのアノテーションで記述するほうが便利なことも多いので、
+ {{{http://oval.sourceforge.net/}OVal - the object validation framework}}
+ と連携してアノテーションベースのバリデーションを行う Cubby OVal Plug-in を用意しています。
+
+ このプラグインを使うと、リクエストパラメータがバインドされた後のフォームオブジェクトが OVal によって検証されます。
+
+*{OVal プラグインの使用方法}
+
+ [[1]]クラスパスに cubby-oval*.jar を追加してください。 
+
+ [[2]]コンテナから
+      {{{http://oval.sourceforge.net/api/net/sf/oval/localization/message/MessageResolver.html}net.sf.oval.localization.message.MessageResolver}} をキーに org.seasar.cubby.plugins.oval.validation.RequestLocaleMessageResolver を、
+      {{http://oval.sourceforge.net/api/net/sf/oval/localization/context/OValContextRenderer.html}net.sf.oval.localization.context.OValContextRenderer}} をキーに org.seasar.cubby.plugins.oval.validation.RequestLocaleOValContextRenderer を、それぞれ取得できるように設定してください。
+
+ [[3]]アクションクラスに ValidationRules を定義するとき org.seasar.cubby.plugins.oval.validation.OValValidationRule を追加してください。
+
+ [[4]]フォームオブジェクトとなるクラスに OVal のアノテーションで制約を記述してください。
+
++------------------------------------------------------+
+public class LoginAction extends Action {
+
+  // バリデーションのルール
+  public ValidationRules validationRules = new DefaultValidationRules() {
+    @Override
+    public void initialize(String resourceKeyPrefix) {
+      //// フィールド "userId" は必須入力で最大10文字まで
+      //add("userId", new RequiredValidator(), new MaxLengthValidator(10));
+      //// フィールド "password" は必須入力で最大10文字まで
+      //add("password", new RequiredValidator(), new MaxLengthValidator(10));
+      add(new OValValidationRule(resourcekeyPrefix));
+    }
+  };
+
+  @RequestParameter
+  @NotNull
+  @NotEmpty
+  @MaxLength(10)
+  private String userId;
+
+  @RequestParameter
+  @NotNull
+  @NotEmpty
+  @MaxLength(10);
+  private String password
+
+  @Validation(rules = "validationRules", errorPage = "confirm.jsp")
+  public ActionResult save1() {
+    ... 
+  }
++------------------------------------------------------+
+
+ 

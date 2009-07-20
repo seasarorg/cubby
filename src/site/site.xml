@@ -16,7 +16,9 @@
     governing permissions and limitations under the License.
 
 -->
-<project name="Cubby">
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
 	<skin>
 		<groupId>org.seasar.cubby</groupId>
 		<artifactId>cubby-skin</artifactId>
@@ -89,11 +91,8 @@
 			</item>
 			<item name="アクション" href="/action.html" collapse="true">
 				<item name="アクション" href="/action.html#アクション" />
-				<item name="アクションの定義" href="/action.html#アクションの定義" />
-				<item name="アクションのテスト" href="/action.html#アクションのテスト" />
-			</item>
-			<item name="コンバータ" href="/converter.html" collapse="true">
-				<item name="コンバータ" href="/converte.html#コンバータ" />
+				<item name="コンバータ" href="/action.html#コンバータ" />
+				<item name="テスト" href="/action.html#テスト" />
 			</item>
 			<item name="バリデーション" href="/validation.html"
 				collapse="true">
@@ -102,6 +101,8 @@
 					href="/validation.html#バリデーションの定義" />
 				<item name="独自バリデーションの定義"
 					href="/validation.html#独自バリデーションの定義" />
+				<item name="OVal プラグイン"
+					href="/validation.html#OVal_プラグイン" />
 			</item>
 			<item name="メッセージリソース" href="/messages.html"
 				collapse="true">
