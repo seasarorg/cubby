@@ -15,9 +15,6 @@
  */
 package org.seasar.cubby.plugins.guice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletContext;
 
 import org.seasar.cubby.plugin.AbstractPlugin;
@@ -28,27 +25,16 @@ import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.Provider;
 import org.seasar.cubby.spi.RequestParserProvider;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
+import com.google.inject.servlet.GuiceServletContextListener;
 
 /**
  * Cubby を <a href="http://code.google.com/p/google-guice/">Google Guice</a>
  * に統合するためのプラグインです。
  * <p>
- * アプリケーションが使用するモジュールのクラス名を WEB 配備記述子の初期化パラメータ {@value #MODULE_INIT_PARAM_NAME}
- * に指定してください。
- * </p>
- * <p>
- * 例
- * 
- * <pre>
- * &lt;context-param&gt;
- *   &lt;param-name&gt;{@value #MODULE_INIT_PARAM_NAME}&lt;/paanm-name&gt;
- *   &lt;param-value&gt;com.example.ApplicationModule&lt;/param-value&gt;
- * &lt;/context-param&gt;
- * </pre>
- * 
+ * {@link GuiceServletContextListener} のサブクラスを web.xml に登録して {@link Injector}
+ * を初期化して下さい。 Cubby では {@link CubbyGuiceServletContextListener}
+ * を提供しているのでこれを使用することができます。
  * </p>
  * <p>
  * このプラグインが提供するプロバイダは以下の通りです。
@@ -69,7 +55,7 @@ public class GuicePlugin extends AbstractPlugin {
 	/** モジュールの WEB 配備記述子の初期化パラメータ名 */
 	public static final String MODULE_INIT_PARAM_NAME = "cubby.guice.module";
 
-	/** インジェクタ。 */
+	/** インジェクタ */
 	private Injector injector;
 
 	/**
@@ -90,19 +76,22 @@ public class GuicePlugin extends AbstractPlugin {
 	public void initialize(final ServletContext servletContext)
 			throws Exception {
 		super.initialize(servletContext);
-		final String moduleClassNames = servletContext
-				.getInitParameter(MODULE_INIT_PARAM_NAME);
-		if (moduleClassNames == null) {
-			throw new IllegalModuleException("No context parameter \""
-					+ MODULE_INIT_PARAM_NAME + "\", please set Module FQCN");
-		}
 
-		final List<Module> modules = new ArrayList<Module>();
-		for (final String moduleClassName : moduleClassNames.split(",")) {
-			final Module module = createModule(moduleClassName.trim());
-			modules.add(module);
+		this.injector = (Injector) servletContext.getAttribute(Injector.class
+				.getName());
+		if (this.injector == null) {
+			throw new IllegalStateException(Injector.class.getName()
+					+ "is not confugured.");
 		}
-		this.injector = Guice.createInjector(modules);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void destroy() {
+		this.injector = null;
+		super.destroy();
 	}
 
 	/**
@@ -111,35 +100,9 @@ public class GuicePlugin extends AbstractPlugin {
 	@Override
 	public <S extends Provider> S getProvider(final Class<S> service) {
 		if (this.isSupport(service)) {
-			return service.cast(injector.getInstance(service));
+			return service.cast(this.injector.getInstance(service));
 		} else {
 			return null;
-		}
-	}
-
-	/**
-	 * 指定されたクラス名のモジュールを生成します。
-	 * 
-	 * @param moduleClassName
-	 *            モジュールのクラス名
-	 * @return インジェクタ
-	 */
-	protected Module createModule(final String moduleClassName) {
-		final ClassLoader loader = Thread.currentThread()
-				.getContextClassLoader();
-		try {
-			final Class<?> clazz = Class.forName(moduleClassName, true, loader);
-			final Module module = Module.class.cast(clazz.newInstance());
-			return module;
-		} catch (final ClassNotFoundException e) {
-			throw new IllegalArgumentException("Illegal module "
-					+ moduleClassName, e);
-		} catch (final InstantiationException e) {
-			throw new IllegalArgumentException("Illegal module "
-					+ moduleClassName, e);
-		} catch (final IllegalAccessException e) {
-			throw new IllegalArgumentException("Illegal module "
-					+ moduleClassName, e);
 		}
 	}
 

@@ -34,6 +34,7 @@ import java.util.Vector;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -96,6 +97,9 @@ public class CubbyModuleTest {
 
 		});
 		replay(servletContext);
+
+		final CubbyGuiceServletContextListener cubbyGuiceServletContextListener = new CubbyGuiceServletContextListener();
+		cubbyGuiceServletContextListener.contextInitialized(new ServletContextEvent(servletContext));
 
 		final GuiceFilter guiceFilter = new GuiceFilter();
 		guiceFilter.init(new FilterConfig() {
@@ -206,6 +210,7 @@ public class CubbyModuleTest {
 
 		};
 		guiceFilter.doFilter(request, response, chain);
+		cubbyGuiceServletContextListener.contextDestroyed(new ServletContextEvent(servletContext));
 	}
 
 	public static class TestModule extends AbstractModule {
