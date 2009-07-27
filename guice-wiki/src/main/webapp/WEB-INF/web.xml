@@ -30,6 +30,10 @@
 		<listener-class>org.h2.server.web.DbStarter</listener-class>
 	</listener>
 
+	<listener>
+		<listener-class>org.seasar.cubby.plugins.guice.CubbyGuiceServletContextListener</listener-class>
+	</listener>
+
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
