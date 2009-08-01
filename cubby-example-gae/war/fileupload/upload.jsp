@@ -12,12 +12,12 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
 <link href="${contextPath }/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-<title>Cuuby archetype sample app : index</title>
+<title>Cubby archetype sample app : index</title>
 </head>
 <body>
 <div id="banner"><img src="${contextPath }/img/logo.gif"
 	alt="Cubby" /></div>
-<h1>Cuuby archetype sample app : /fileupload/upload</h1>
+<h1>Cubby archetype sample app : /fileupload/upload</h1>
 ${message }
 <br/>
 <a href="${contextPath }/fileupload/">Back</a>

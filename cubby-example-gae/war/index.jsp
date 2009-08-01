@@ -29,7 +29,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="${contextPath }/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-  <title>Cuuby archetype sample app : index</title>
+  <title>Cubby archetype sample app : index</title>
 </head>
 <body>
 <div id="banner">

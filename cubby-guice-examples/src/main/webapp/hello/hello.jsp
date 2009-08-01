@@ -5,10 +5,10 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-  <title>Cuuby archetype sample app : /hello/message</title>
+  <title>Cubby archetype sample app : /hello/message</title>
 </head>
 <body>
-<h1>Cuuby archetype sample app : /hello/message</h1>
+<h1>Cubby archetype sample app : /hello/message</h1>
 ${messages['msg.dummy']}<br/>
 <c:import url="/common/errors.jsp"/>
 <c:import url="/common/notice.jsp"/>
