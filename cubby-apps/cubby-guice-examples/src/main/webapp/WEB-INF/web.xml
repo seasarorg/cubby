@@ -6,7 +6,7 @@
 
 	<context-param>
 		<param-name>cubby.guice.module</param-name>
-		<param-value>org.seasar.cubby.guice_examples.ApplicationModule</param-value>
+		<param-value>org.seasar.cubby.examples.guice.ApplicationModule</param-value>
 	</context-param>
 
 	<listener>
