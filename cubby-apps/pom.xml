@@ -98,10 +98,11 @@
      </site>
   </distributionManagement>
   <modules>
+    <module>cubby-s2-examples</module>
+    <module>cubby-guice-examples</module>
+    <module>cubby-spring-examples</module>
     <module>cubby-examples</module>
-    <module>guice-examples</module>
+    <module>cubby-wiki</module>
     <module>cubbitter</module>
-    <module>guice-wiki</module>
-    <module>spring-examples</module>
   </modules>
 </project>
