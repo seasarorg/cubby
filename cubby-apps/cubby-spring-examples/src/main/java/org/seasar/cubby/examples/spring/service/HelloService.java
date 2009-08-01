@@ -1,4 +1,4 @@
-package org.seasar.cubby.spring_examples.service;
+package org.seasar.cubby.examples.spring.service;
 
 public interface HelloService {
 
