@@ -7,7 +7,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.cubby</groupId>
-  <artifactId>guice-wiki</artifactId>
+  <artifactId>cubby-wiki</artifactId>
   <packaging>war</packaging>
   <name>Cubby Wiki</name>
   <build>
