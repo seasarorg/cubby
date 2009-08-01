@@ -12,7 +12,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/JavaScript" />
   <link href="${contextPath }/css/default.css" rel="stylesheet" type="text/css" media="screen,projection" charset="utf-8" />
-  <title>Cuuby archetype sample app : fileupload</title>
+  <title>Cubby archetype sample app : fileupload</title>
 </head>
 <body>
 <div id="banner">
@@ -21,7 +21,7 @@
 <c:import url="/common/errors.jsp"/>
 <c:import url="/common/notice.jsp"/>
 <t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data" value="${form}">
-<h1>Cuuby archetype sample app : /fileupload/</h1>
+<h1>Cubby archetype sample app : /fileupload/</h1>
 拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
 <label for="file">ファイル:</label>
 <t:input type="file" name="file"/><br/>
