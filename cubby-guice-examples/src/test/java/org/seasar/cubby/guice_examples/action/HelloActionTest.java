@@ -3,7 +3,7 @@ package org.seasar.cubby.guice_examples.action;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.guice_examples.ApplicationModule;
+import org.seasar.cubby.examples.guice.ApplicationModule;
 import org.seasar.cubby.plugins.guice.GuicePlugin;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;

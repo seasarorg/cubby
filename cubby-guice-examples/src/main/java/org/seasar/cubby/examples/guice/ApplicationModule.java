@@ -1,4 +1,4 @@
-package org.seasar.cubby.guice_examples;
+package org.seasar.cubby.examples.guice;
 
 import org.seasar.cubby.guice_examples.action.HelloAction;
 import org.seasar.cubby.guice_examples.action.IndexAction;
