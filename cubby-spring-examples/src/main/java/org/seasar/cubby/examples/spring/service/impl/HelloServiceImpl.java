@@ -1,6 +1,6 @@
-package org.seasar.cubby.spring_examples.service.impl;
+package org.seasar.cubby.examples.spring.service.impl;
 
-import org.seasar.cubby.spring_examples.service.HelloService;
+import org.seasar.cubby.examples.spring.service.HelloService;
 import org.springframework.stereotype.Component;
 
 @Component

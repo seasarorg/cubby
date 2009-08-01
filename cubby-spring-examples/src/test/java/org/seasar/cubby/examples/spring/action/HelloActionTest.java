@@ -1,9 +1,10 @@
-package org.seasar.cubby.spring_examples.action;
+package org.seasar.cubby.examples.spring.action;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
+import org.seasar.cubby.examples.spring.action.HelloAction;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
 import org.springframework.mock.web.MockHttpServletRequest;

@@ -1,4 +1,4 @@
-package org.seasar.cubby.spring_examples.action;
+package org.seasar.cubby.examples.spring.action;
 
 import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
