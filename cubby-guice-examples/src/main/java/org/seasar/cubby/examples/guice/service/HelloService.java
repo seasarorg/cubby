@@ -1,4 +1,4 @@
-package org.seasar.cubby.guice_examples.service;
+package org.seasar.cubby.examples.guice.service;
 
 public interface HelloService {
 

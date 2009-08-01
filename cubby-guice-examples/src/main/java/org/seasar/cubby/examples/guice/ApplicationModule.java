@@ -1,9 +1,9 @@
 package org.seasar.cubby.examples.guice;
 
-import org.seasar.cubby.guice_examples.action.HelloAction;
-import org.seasar.cubby.guice_examples.action.IndexAction;
-import org.seasar.cubby.guice_examples.service.HelloService;
-import org.seasar.cubby.guice_examples.service.impl.HelloServiceImpl;
+import org.seasar.cubby.examples.guice.action.HelloAction;
+import org.seasar.cubby.examples.guice.action.IndexAction;
+import org.seasar.cubby.examples.guice.service.HelloService;
+import org.seasar.cubby.examples.guice.service.impl.HelloServiceImpl;
 import org.seasar.cubby.plugins.guice.CubbyModule;
 import org.seasar.cubby.plugins.guice.FileUploadModule;
 
