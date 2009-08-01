@@ -8,5 +8,5 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
         ">
 	<import resource="app-cubby.xml" />
-	<context:component-scan base-package="org.seasar.cubby.spring_examples" />
+	<context:component-scan base-package="org.seasar.cubby.examples.spring" />
 </beans>
