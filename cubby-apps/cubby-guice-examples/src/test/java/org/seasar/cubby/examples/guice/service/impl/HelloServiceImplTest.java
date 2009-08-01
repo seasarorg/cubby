@@ -3,7 +3,7 @@ package org.seasar.cubby.examples.guice.service.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.seasar.cubby.guice_examples.service.impl.HelloServiceImpl;
+import org.seasar.cubby.examples.guice.service.impl.HelloServiceImpl;
 
 public class HelloServiceImplTest {
 

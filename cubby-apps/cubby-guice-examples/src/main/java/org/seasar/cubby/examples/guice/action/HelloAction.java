@@ -1,4 +1,4 @@
-package org.seasar.cubby.guice_examples.action;
+package org.seasar.cubby.examples.guice.action;
 
 import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionContext;
@@ -7,7 +7,7 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.guice_examples.service.HelloService;
+import org.seasar.cubby.examples.guice.service.HelloService;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
