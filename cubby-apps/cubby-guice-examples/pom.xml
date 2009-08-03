@@ -11,7 +11,7 @@
   <packaging>war</packaging>
   <name>Cubby Guice Examples</name>
   <build>
-    <finalName>guice-examples</finalName>
+    <finalName>cubby-guice-examples</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
