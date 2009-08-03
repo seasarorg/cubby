@@ -11,7 +11,7 @@
   <packaging>war</packaging>
   <name>Cubby Spring Examples</name>
   <build>
-    <finalName>spring-examples</finalName>
+    <finalName>cubby-spring-examples</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
