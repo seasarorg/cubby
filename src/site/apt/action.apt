@@ -326,7 +326,7 @@ public class FileUploadAction extends Action {
  <<BookConverter.java>>
 
 +------------------------------------------------------+
-package org.seasar.cubby.examples.other.web.converter;
+package org.seasar.cubby.showcase.other.web.converter;
 
 import org.seasar.cubby.converter.ConversionHelper;
 import org.seasar.cubby.converter.impl.AbstractConverter;
