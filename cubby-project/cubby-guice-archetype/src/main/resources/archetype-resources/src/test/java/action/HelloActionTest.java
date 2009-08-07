@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.plugins.guice.GuicePlugin;
 import org.seasar.cubby.unit.CubbyAssert;
 import org.seasar.cubby.unit.CubbyRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -28,6 +27,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceFilter;
 
 import ${package}.ApplicationModule;
@@ -37,8 +37,8 @@ public class HelloActionTest {
 	@Test
 	public void index1() throws Exception {
 		MockServletContext servletContext = new MockServletContext();
-		servletContext.addInitParameter(GuicePlugin.MODULE_INIT_PARAM_NAME,
-				ApplicationModule.class.getName());
+		Injector injector = Guice.createInjector(new ApplicationModule());
+		servletContext.setAttribute(Injector.class.getName(), injector);
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 		request.setServletPath("/hello/");
@@ -52,8 +52,8 @@ public class HelloActionTest {
 	@Test
 	public void message1() throws Exception {
 		MockServletContext servletContext = new MockServletContext();
-		servletContext.addInitParameter(GuicePlugin.MODULE_INIT_PARAM_NAME,
-				ApplicationModule.class.getName());
+		Injector injector = Guice.createInjector(new ApplicationModule());
+		servletContext.setAttribute(Injector.class.getName(), injector);
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 		request.setServletPath("/hello/message");
@@ -68,8 +68,8 @@ public class HelloActionTest {
 	@Test
 	public void message2() throws Exception {
 		MockServletContext servletContext = new MockServletContext();
-		servletContext.addInitParameter(GuicePlugin.MODULE_INIT_PARAM_NAME,
-				ApplicationModule.class.getName());
+		Injector injector = Guice.createInjector(new ApplicationModule());
+		servletContext.setAttribute(Injector.class.getName(), injector);
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
 		request.setServletPath("/hello/message");
