@@ -101,8 +101,8 @@ private clsss TodoAction extend BaseAction {
  のような URL を定義したとき、データベースにないリソースが指定された場合に 404(NOT FOUND)
  を返すような処理が簡潔に書けます。
 
- ここでは、cubby-examples に含まれるコンバータの例を解説します。
- ソースコードは cubby-examples のパッケージ org.seasar.cubby.examples.other.web.converter を参照してください。
+ ここでは、cubby-showcase に含まれるコンバータの例を解説します。
+ ソースコードは cubby-showcase のパッケージ org.seasar.cubby.showcase.other.web.converter を参照してください。
 
  * AbstractValidationRules.java
 
@@ -180,8 +180,8 @@ ${param.imageUrl}:<br/>
 +------------------------------------------------------+
 <%@page import="java.util.List"%>
 <%@page import="org.seasar.framework.container.SingletonS2Container"%>
-<%@page import="org.seasar.cubby.examples.todo.dao.TodoTypeDao"%>
-<%@page import="org.seasar.cubby.examples.todo.entity.TodoType"%>
+<%@page import="org.seasar.cubby.showcase.todo.dao.TodoTypeDao"%>
+<%@page import="org.seasar.cubby.showcase.todo.entity.TodoType"%>
 <%
 	TodoTypeDao todoTypeDao = SingletonS2Container
 			.getComponent(TodoTypeDao.class);

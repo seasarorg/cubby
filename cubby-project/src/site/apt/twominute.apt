@@ -73,7 +73,7 @@
 {Hello アプリケーションの概要}
 
  入力画面で入力値を受け取り、結果画面で値を表示するアプリケーションです。
- このチュートリアルはCubby のサンプル war の「Hello World」から実行できます。
+ このチュートリアルは Cubby Showcase の「Hello World」に、ほぼ同じ内容を収録しています。
 
  <<入力画面>>
 
@@ -97,40 +97,44 @@ mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org
 
 +------------------------------------------------------+
 Choose archetype:
-1: remote -> cubby-archetype (Cubby 1.0.0)
-Choose a number:  (1):
+1: remote -> cubby-s2-archetype (Cubby 2.0.0 S2Container Integration)
+2: remote -> cubby-guice-archetype (Cubby 2.0.0 Guice Integration)
+3: remote -> cubby-guice-archetype (Cubby 2.0.0 Spring Integration)
+4: remote -> cubby-archetype (Cubby 1.1.6)
+Choose a number:  (1/2/3/4): 
 +------------------------------------------------------+
 
-   1を入力して、cubby-archetype (Cubby 1.0.0) を選んでください。\
+   1を入力して、cubby-s2-archetype (Cubby 2.0.0 S2Container Integration) を選んでください。
+
    以下、groupId,artifactId,version,packageを入力します。
 
 +------------------------------------------------------+
-Define value for groupId: : org.seasar.cubby.examples
-Define value for artifactId: : cubby-examples-hello
+Define value for groupId: : org.seasar.cubby.hello
+Define value for artifactId: : cubby-hello
 Define value for version: : 1.0-SNAPSHOT
-Define value for package: : org.seasar.cubby.examples.hello
+Define value for package: : org.seasar.cubby.hello
 
 Confirm properties configuration:
-groupId: org.seasar.cubby.examples
-artifactId: cubby-examples-hello
+groupId: org.seasar.cubby.hello
+artifactId: cubby-hello
 version: 1.0-SNAPSHOT
-package: org.seasar.cubby.examples.hello
+package: org.seasar.cubby.hello
  Y: :
 +------------------------------------------------------+
 
    いままで入力した内容の確認を求められます。問題がなければ Y を入力してください。\
-   プロジェクトの雛形として「cubby-examples-hello」ディレクトリが作成されます。
+   プロジェクトの雛形として「cubby-hello」ディレクトリが作成されます。
 
 *{Eclipseへの取り込み}
 
- {{{setup.html#Eclipse_を使った開発}Eclipse を使った開発}}に従って、「cubby-examples-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。
+ {{{setup.html#Eclipse_を使った開発}Eclipse を使った開発}}に従って、「cubby-hello」プロジェクトのEclipseへの取り込みとWTPの設定を行います。
  設定が終わったらWTPからTomcatを起動します。\
- ブラウザで {{http://localhost:8080/cubby-examples-hello/}} にアクセスして、トップページが表示されることを確認してください。
+ ブラウザで {{http://localhost:8080/cubby-hello/}} にアクセスして、トップページが表示されることを確認してください。
  
 {アクションクラスの作成}
 
  アクションクラスは「org.seasar.cubby.action.Action」クラスを継承して作成します。
- ここでは  「org.seasar.cubby.examples.hello.HelloAction」 クラスを作成します。
+ ここでは  「org.seasar.cubby.hello.HelloAction」 クラスを作成します。
  (既に雛形で同名のクラスが作成されているので、いったん削除します)\
  このクラスには２つのアクションメソッド(index, message)があります。
  index は入力画面「input.jsp」の表示用、message は入力画面から名前を受け取り結果画面「result.jsp」を表示するためのアクションメソッドです。
@@ -160,7 +164,7 @@ package: org.seasar.cubby.examples.hello
  <<HelloAction.java>>
 
 +------------------------------------------------------+
-package org.seasar.cubby.examples.hello.action;
+package org.seasar.cubby.hello.action;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
@@ -233,4 +237,4 @@ public class HelloAction extends Action {
  
 {ブラウザで確認する}
 
- ブラウザで {{http://localhost:8080/cubby-examples-hello/hello/}} にアクセスします。
+ ブラウザで {{http://localhost:8080/cubby-hello/hello/}} にアクセスします。

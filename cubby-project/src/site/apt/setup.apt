@@ -173,7 +173,7 @@ mvn eclipse:eclipse
 
       [[5]]Tomcat installation directoryでTomcatのルートディレクトリを選択 → Nextを選択。
 
-      [[6]]「cubby-examples-hello」プロジェクトをConfigred ProjectにAdd。
+      [[6]]作成したプロジェクトをConfigred ProjectにAdd。
       
       [[7]]Finishを選択。
       
