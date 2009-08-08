@@ -8,6 +8,10 @@
 		<param-value>org.seasar.cubby.exmaple.gae.ApplicationModule</param-value>
 	</context-param>
 
+	<listener>
+		<listener-class>org.seasar.cubby.plugins.guice.CubbyGuiceServletContextListener</listener-class>
+	</listener>
+
 	<filter>
 		<filter-name>sendErrorFilter</filter-name>
 		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
