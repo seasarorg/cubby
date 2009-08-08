@@ -1,0 +1,49 @@
+/*
+ * Copyright 2004-2009 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.seasar.cubby.controller;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * 要求解析器です。
+ * 
+ * @author baba
+ */
+public interface RequestParser {
+
+	/**
+	 * 指定された要求のパラメータ等から、アクションにバインドするパラメータを取得します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @return アクションにバインドするパラメータの {@link Map}
+	 * @throws RequestParseException
+	 *             要求の解析に失敗した場合
+	 */
+	Map<String, Object[]> getParameterMap(HttpServletRequest request);
+
+	/**
+	 * このオブジェクトが解析可能な要求かを示します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @return 解析可能な要求の場合は <code>true</code>、そうでない場合は <code>false</code>
+	 */
+	boolean isParsable(HttpServletRequest request);
+
+}

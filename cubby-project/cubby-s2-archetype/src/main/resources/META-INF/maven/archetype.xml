@@ -1,0 +1,56 @@
+<!--
+
+    Copyright 2004-2009 the Seasar Foundation and the Others.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+    either express or implied. See the License for the specific language
+    governing permissions and limitations under the License.
+
+-->
+<archetype>
+	<id>cubby-s2-archetype</id>
+	<sources>
+		<source>src/main/java/action/HelloAction.java</source>
+		<source>src/main/java/service/HelloService.java</source>
+	</sources>
+	<resources>
+		<resource>src/main/resources/app.dicon</resource>
+		<resource>src/main/resources/app-cubby.dicon</resource>
+		<resource>src/main/resources/convention.dicon</resource>
+		<resource>src/main/resources/creator.dicon</resource>
+		<resource>src/main/resources/customizer.dicon</resource>
+		<resource>src/main/resources/dbsession.dicon</resource>
+		<resource>src/main/resources/env_ut.txt</resource>
+		<resource>src/main/resources/env.txt</resource>
+		<resource>src/main/resources/jdbc.dicon</resource>
+		<resource>src/main/resources/log4j.properties</resource>
+		<resource>src/main/resources/messages.properties</resource>
+		<resource>src/main/resources/s2container.dicon</resource>
+		<resource>src/main/webapp/common/header.jsp</resource>
+		<resource>src/main/webapp/common/notice.jsp</resource>
+		<resource>src/main/webapp/common/errors.jsp</resource>
+		<resource>src/main/webapp/css/default.css</resource>
+		<resource>src/main/webapp/js/common.js</resource>
+		<resource>src/main/webapp/img/logo.gif</resource>
+		<resource>src/main/webapp/index.jsp</resource>
+		<resource>src/main/webapp/hello/hello.jsp</resource>
+		<resource>src/main/webapp/hello/index.jsp</resource>
+		<resource>src/main/webapp/WEB-INF/web.xml</resource>
+		<resource>src/production/resources/env.txt</resource>
+		<resource>src/production/resources/log4j.properties</resource>
+	</resources>
+	<testSources>
+		<source>src/test/java/action/HelloActionTest.java</source>
+		<source>src/test/java/service/HelloServiceTest.java</source>
+	</testSources>
+	<testResources>
+	</testResources>
+</archetype>

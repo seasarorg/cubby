@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2004-2009 the Seasar Foundation and the Others.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+    either express or implied. See the License for the specific language
+    governing permissions and limitations under the License.
+
+-->
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="cubby">
+	<include path="convention.dicon" />
+
+	<component class="org.seasar.cubby.plugins.s2.detector.impl.ClassDetectorImpl" />
+	<component class="org.seasar.cubby.routing.impl.PathResolverImpl">
+		<arg>
+			<component class="org.seasar.cubby.routing.impl.PathTemplateParserImpl" />
+		</arg>
+	</component>
+
+	<!-- ELResolver -->
+	<component class="org.seasar.cubby.plugins.s2.el.S2BeanELResolver" />
+
+	<!-- spi -->
+	<component class="org.seasar.cubby.plugins.s2.spi.S2BeanDescProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ContainerProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2RequestParserProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2PathResolverProvider" />
+	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider" />
+
+	<!-- request -->
+	<component class="org.seasar.cubby.action.impl.ActionErrorsImpl" instance="request" />
+	<component class="org.seasar.cubby.action.impl.FlashMapImpl" instance="request" />
+	<component class="org.seasar.cubby.action.impl.ActionContextImpl" instance="request" />
+
+</components>

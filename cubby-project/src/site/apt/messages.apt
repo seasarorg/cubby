@@ -1,0 +1,130 @@
+~~
+~~ Copyright 2004-2009 the Seasar Foundation and the Others.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+  --------
+  メッセージリソース
+  --------
+  agata
+  baba
+  --------
+  2009-03-13
+  --------
+
+{目次}
+
+ *{{{#メッセージリソース用のプロパティファイル}メッセージリソース用のプロパティファイル}}
+
+ *{{{#Java_コード中でメッセージを取得する}Java コード中でメッセージを取得する}}
+
+ *{{{#JSP_中でメッセージを取得する}JSP 中でメッセージを取得する}}
+
+{メッセージリソース用のプロパティファイル}
+
+ 入力検証のエラーメッセージや org.seasar.cubby.util.Messages から取得するアプリケーションのメッセージを定義します。
+ デフォルトではクラスパスのクラスルート上のリソース「messages」が使用されます。
+ app-cubby.dicon に org.seasar.controller.MessagesBehaviour を実装したクラスを定義することで、リソースバンドルの取得方法などを変更することができます。
+
+ archetype でプロジェクトの雛形を作成すると、リソースディレクトリに入力検証で出力するエラーメッセージが設定されプロパティファイルが作成されます。
+ これにアプリケーションで使用するメッセージを追記したり入力検証のエラーメッセージを変更したりしてください。
+
+ <<messages_ja.properties>>
+
++------------------------------------------------------+
+# 入力検証エラーメッセージ
+valid.required={0}は必須です。
+valid.maxLength={0}は{1}文字以下で入力してください。
+...
+valid.email={0}のメールアドレスの形式が正しくありません。
+
+# アプリケーションで使用するメッセージ
+text=タイトル
+type=優先度
+memo=メモ
+limitDate=期限日
+...
++------------------------------------------------------+
+
+{Java コード中でメッセージを取得する}
+
+ {{{cubby/apidocs/org/seasar/cubby/util/Messages.html#getText(java.lang.String)}Messages#getText}}メソッドでメッセージを取得することができます。
+
++------------------------------------------------------+
+import org.seasar.cubby.util.Messages;
+
+public class MessageTestServiceImpl implments MessageTestService {
+...
+  public void getMessageSample() {
+    // 置換文字なし
+    String message1 = Messages.getText("msg.sample1");
+    // 置換文字なし
+    String message2 = Messages.getText("msg.sample2", "foo", "bar");
+    ...
+  }
+...
+}
++------------------------------------------------------+
+
+{JSP 中でメッセージを取得する}
+
+ プロパティファイルを Map に変換した暗黙オブジェクト「messages」リクエストスコープの属性にセットされています。
+ EL 式では${messages['キー']}でメッセージを取得することができます。
+ EL 式ではメソッド呼び出しができないため、置換文字を引数として渡すことができません。
+
++------------------------------------------------------+
+<span>${messages['msg.sample1']}</span>
++------------------------------------------------------+
+
+ エスケープして出力する場合は以下のように記述します。
+ 
++------------------------------------------------------+
+<span>${f:out(messages['msg.sample1'])}</span>
++------------------------------------------------------+
+ 

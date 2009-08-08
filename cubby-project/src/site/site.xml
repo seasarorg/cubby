@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2004-2009 the Seasar Foundation and the Others.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+    either express or implied. See the License for the specific language
+    governing permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+	<skin>
+		<groupId>org.seasar.cubby</groupId>
+		<artifactId>cubby-skin</artifactId>
+	</skin>
+	<bannerLeft>
+		<name>Cubby</name>
+		<href>./index.html</href>
+		<src>./images/logo.gif</src>
+		<alt>Cubby</alt>
+	</bannerLeft>
+	<version position="right" />
+	<publishDate format="yyyy-MM-dd" position="right" />
+	<body>
+		<breadcrumbs>
+			<item name="The Seasar Project"
+				href="http://www.seasar.org/" />
+			<item name="Cubby Project" href="http://cubby.seasar.org" />
+			<item name="Cubby 2.0" href="/index.html" />
+		</breadcrumbs>
+
+		<menu name="Cubby 2.0">
+			<item name="ホーム" href="/index.html" />
+		</menu>
+
+		<menu name="スタートアップガイド">
+			<item name="2分間チュートリアル" href="/twominute.html"
+				collapse="true">
+				<item name="Hello アプリケーションの概要"
+					href="/twominute.html#Hello_アプリケーションの概要" />
+				<item name="アクションクラスの作成"
+					href="/twominute.html#アクションクラスの作成" />
+				<item name="JSP の作成" href="/twominute.html#JSP_の作成" />
+				<item name="ブラウザで確認する" href="/twominute.html#ブラウザで確認する" />
+			</item>
+			<item name="5分間チュートリアル" href="/fiveminute.html"
+				collapse="true">
+				<item name="Todo アプリケーションの概要"
+					href="/fiveminute.html#Todo_アプリケーションの概要" />
+				<item name="ログイン画面の作成"
+					href="/fiveminute.html#ログイン画面の作成" />
+				<item name="一覧画面の作成" href="/fiveminute.html#一覧画面の作成" />
+				<item name="詳細画面の作成" href="/fiveminute.html#詳細画面の作成" />
+				<item name="ログイン画面の作成"
+					href="/fiveminute.html#ログイン画面の作成" />
+				<item name="追加・編集画面の作成"
+					href="/fiveminute.html#追加編集画面の作成" />
+				<item name="確認画面の作成" href="/fiveminute.html#確認画面の作成" />
+			</item>
+		</menu>
+
+		<menu name="リファレンス">
+			<item name="セットアップ" href="/setup.html" collapse="true">
+				<item name="前提" href="/setup.html#前提" />
+				<item name="プロジェクトの作成" href="/setup.html#プロジェクトの作成" />
+				<item name="S2Container 統合" href="/s2container.html" collapse="true">
+					<item name="前提" href="/s2container.html#前提" />
+					<item name="プロジェクトの作成" href="/s2container.html#プロジェクトの作成" />
+					<item name="各種ファイル" href="/s2container.html#各種ファイル" />
+				</item>
+				<item name="Spring Framework 統合" href="/spring.html" collapse="true">
+					<item name="前提" href="/spring.html#前提" />
+					<item name="プロジェクトの作成" href="/spring.html#プロジェクトの作成" />
+					<item name="各種ファイル" href="/spring.html#各種ファイル" />
+				</item>
+				<item name="Google Guice 統合" href="/guice.html" collapse="true">
+					<item name="前提" href="/guice.html#前提" />
+					<item name="プロジェクトの作成" href="/guice.html#プロジェクトの作成" />
+					<item name="各種ファイル" href="/guice.html#各種ファイル" />
+				</item>
+			</item>
+			<item name="アクション" href="/action.html" collapse="true">
+				<item name="アクション" href="/action.html#アクション" />
+				<item name="コンバータ" href="/action.html#コンバータ" />
+				<item name="テスト" href="/action.html#テスト" />
+			</item>
+			<item name="バリデーション" href="/validation.html"
+				collapse="true">
+				<item name="バリデーション" href="/validation.html#バリデーション" />
+				<item name="バリデーションの定義"
+					href="/validation.html#バリデーションの定義" />
+				<item name="独自バリデーションの定義"
+					href="/validation.html#独自バリデーションの定義" />
+				<item name="OVal プラグイン"
+					href="/validation.html#OVal_プラグイン" />
+			</item>
+			<item name="メッセージリソース" href="/messages.html"
+				collapse="true">
+				<item name="メッセージリソース用のプロパティファイル"
+					href="/messages.html#メッセージリソース用のプロパティファイル" />
+				<item name="Java コード中でメッセージを取得する"
+					href="/messages.html#Java_コード中でメッセージを取得する" />
+				<item name="JSP 中でメッセージを取得する"
+					href="/messages.html#JSP_中でメッセージを取得する" />
+			</item>
+			<item name="JSP" href="/jsp.html" collapse="true">
+				<item name="JSP" href="/jsp.html#JSP" />
+				<item name="暗黙オブジェクト" href="/jsp.html#暗黙オブジェクト" />
+				<item name="カスタムタグ" href="/jsp.html#カスタムタグ">
+					<item name="タグリファレンス" href="/cubby/tagreference.html" />
+				</item>
+				<item name="ファンクション" href="/jsp.html#ファンクション" />
+				<item name="JSP 共通ヘッダー" href="/jsp.html#SP_共通ヘッダー" />
+			</item>
+			<item name="Mayaa" href="/mayaa.html" collapse="true">
+				<item name="Mayaa" href="/mayaa.html#Mayaa" />
+				<item name="Mayaa と連携するための設定"
+					href="/mayaa.html#Mayaa_と連携するための設定" />
+				<item name="Cubby と Mayaa の使い分け"
+					href="/mayaa.html#Cubby_と_Mayaa_の使い分け" />
+			</item>
+			<item name="カスタマイズ" href="/customize.html"
+				collapse="true">
+				<item name="リクエストのパース" href="/customize.html#リクエストのパース" />
+			</item>
+			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
+			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
+			<item name="Tips集" href="/tips.html" collapse="true">
+				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
+				<item name="共通アクション" href="/tips.html#共通アクション" />
+				<item name="画面部品のインポート" href="/tips.html#画面部品のインポート" />
+				<item name="管理ツールの利用" href="/tips.html#管理ツールの利用" />
+			</item>
+			<item name="移行ガイド" href="/migration.html" />
+		</menu>
+
+		<menu ref="reports" />
+
+		<menu ref="modules" />
+
+	</body>
+</project>

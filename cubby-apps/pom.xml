@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.cubby</groupId>
+  <artifactId>cubby-apps</artifactId>
+  <packaging>pom</packaging>
+  <name>Cubby Applications</name>
+  <version>2.0.1-SNAPSHOT</version>
+  <description>Cubby Sample Applications</description>
+  <url>http://cubby.seasar.org/20x/cubby-apps</url>
+  <inceptionYear>2006</inceptionYear>
+  <organization>
+    <name>The Seasar Foundation</name>
+    <url>http://www.seasar.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</connection>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</developerConnection>
+    <url>https://www.seasar.org/svn/cubby/branches/2.0.x/cubby-apps/</url>
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://www.seasar.org/svn/cubby/tags/</tagBase>
+          <goals>clean deploy</goals>
+          <releaseProfiles>production</releaseProfiles>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.code.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.4.0</version>
+        <configuration>
+          <header>http://www.seasar.org/license/header.txt</header>
+          <includes>
+            <include>src/**</include>
+          </includes>
+          <excludes>
+            <exclude>**/env*.txt</exclude>
+          </excludes>
+          <mapping>
+            <tld>XML_STYLE</tld>
+            <dicon>XML_STYLE</dicon>
+          </mapping>
+          <encoding>UTF-8</encoding>
+          <headerDefinitions>
+            <headerDefinition>http://www.seasar.org/license/header-definition.xml</headerDefinition>
+          </headerDefinitions>
+        </configuration>
+      </plugin>
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+  </build>
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    <repository>
+      <id>maven-snapshot.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>http://maven.seasar.org/maven2-snapshot</url>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>maven.seasar.org</id>
+      <url>dav:https://www.seasar.org/site/cubby/20x/cubby-apps</url>
+     </site>
+  </distributionManagement>
+  <modules>
+    <module>cubby-s2-examples</module>
+    <module>cubby-guice-examples</module>
+    <module>cubby-spring-examples</module>
+    <module>cubby-showcase</module>
+    <module>cubby-wiki</module>
+    <module>cubbitter</module>
+  </modules>
+</project>

@@ -1,0 +1,16 @@
+# maven-release-plugin によるリリース手順
+
+1.リリース情報をクリーンアップする
+> mvn release:clean
+
+2.SVN へのリリースタグ付け、pom のバージョン変更
+> mvn release:prepare
+* ここで BUILD FAILED になってもめげずに、 svn update してから再度 mvn:release:prepare
+
+3.Maven リポジトリへデプロイ、サイトのデプロイ
+> mvn release:perform
+
+4.アーカイブのアップロード
+https://www.seasar.org/svn/cubby/trunk/archives/ へ、cubby-dist の成果物をコミット
+
+* サンプルアプリ(cubby-apps)も同様にリリースすること

@@ -1,0 +1,456 @@
+~~
+~~ Copyright 2004-2009 the Seasar Foundation and the Others.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+  --------
+  アクション
+  --------
+  agata
+  baba
+  --------
+  2008-09-03
+  --------
+
+{目次}
+
+ *{{{#アクション}アクション}}
+
+  *{{{#リクエストからアクション実行までのフロー}リクエストからアクション実行までのフロー}}
+
+  *{{{#アクションクラス}アクションクラス}}
+
+  *{{{#アクションメソッド}アクションメソッド}}
+
+  *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
+
+  *{{{#ActionResult}ActionResult}}
+
+  *{{{#アノテーション}アノテーション}}
+
+  *{{{#事前処理事後処理}事前処理・事後処理}}
+
+  *{{{#ファイルアップロード}ファイルアップロード}}
+
+ *{{{#コンバータ}コンバータ}}
+
+  *{{{#コンバータによるバリデーション}コンバータによるバリデーション}}
+
+  *{{{#独自のコンバータを作成する}独自のコンバータを作成する}}
+
+  *{{{#リクエストパラメータのバインド}リクエストパラメータのバインド}}
+
+  *{{{#特定のコンバータを指定する}特定のコンバータを指定する}}
+
+ *{{{#テスト}テスト}}
+
+  *{{{#アクションをテストする方法}アクションをテストする方法}}
+
+{アクション}
+
+ アクションとは特定の URI へのリクエストに対応する処理で、Cubby のユーザーが実装する部分です。\
+ URI に対応するメソッドをアクションメソッド、アクションメソッドが定義されたクラスをアクションクラスといいます。
+
+ コンテナからアクションクラスを検索して、そこに定義されたアクションメソッドと URI パターンの紐付けを内部に登録します。
+ クライアントからリクエストが送信されたときには、その登録された URI からリクエストされた URI パターンにマッチするアクションメソッドを検索、実行します。
+
+*{リクエストからアクション実行までのフロー}
+
+ クライアントからのリクエストからアクションを実行するフローは以下のようになります。
+
+ <<リクエストからアクション実行までのフロー>>
+
+[images/action_sequence.png]リクエストからアクション実行までのフロー
+
+*{アクションクラス}
+
+ コンテナに登録されたクラスのうち、
+ {{{cubby/apidocs/org/seasar/cubby/action/Action.html}Action}} を継承しているか、
+ {{{cubby/apidocs/org/seasar/cubby/action/Action.html}ActionClass}} によって修飾されたクラスをアクションクラスとして認識します。
+
+*{アクションメソッド}
+
+ アクションクラスに定義されたメソッドのうち、アクセス修飾子が public で戻り値が {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} のメソッドをアクションメソッドとして認識します。
+
+*{リクエストパラメータのバインド}
+
+  クライアントから送信されたリクエストのパラメータはフォームオブジェクトへバインドされます。
+
+  フォームオブジェクトはアクションメソッドごとに指定することが可能で、
+  アクション自身かアクションのプロパティから取得するオブジェクトのいずれかを使用できます。
+  デフォルトではアクション自身をフォームオブジェクトとして使用しますが、
+  {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}}
+  でアクションのプロパティ名を指定することによって、
+  そのプロパティから取得できるオブジェクトをフォームオブジェクトとして使用します。
+
+  クライアントから送信されたリクエストパラメータは、まず Map\<String, Object[]\> に変換します。\
+  サーブレット API 上ではリクエストパラメータの値は String だけですが、
+  ファイルアップロード等に対応するため、この Map には String 以外の型も格納されます。\
+  ファイルアップロードで使用する multipart のリクエストを受けた場合には、アップロードされたファイルを表す
+  {{{http://commons.apache.org/fileupload/apidocs/org/apache/commons/fileupload/FileItem.html}FileItem}}
+  のインスタンスが格納されます。
+
+  そして、上記の Map をフォームオブジェクトへバインドします。\
+  デフォルトではアクションのプロパティのうち、
+  {{{cubby/apidocs/org/seasar/cubby/action/RequestParameter}@RequestParameter}}
+  がついたプロパティに同名のリクエストパラメータをバインドします。\
+  {{{cubby/apidocs/org/seasar/cubby/action/Form.html#bindingType()}@Form#bindingType}}
+  でバインディングの方法を指定することで、以下の挙動から選択することができます。
+
+  * 全プロパティをバインド対象とする ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#ALL_PROPERTIES}ALL_PROPERTIES)}})
+
+  * {{{cubby/apidocs/org/seasar/cubby/action/RequestParameter}@RequestParameter}} がついたプロパティをバインド対象とする ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#ONLY_SPECIFIED_PROPERTIES}ONLY_SPECIFIED_PROPERTIES)}})
+
+  * バインドしない ({{{cubby/apidocs/org/seasar/cubby/action/RequestParameterBindingType#NONE}NONE)}})
+
+  * {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}} で修飾して bindingType を指定しない場合は ALL_PROPERTIES と同様に全プロパティをバインド対象とする
+
+  []
+
+  また、バインドされるプロパティの型によっては{{{action.html}コンバータ}}による型変換を行います。
+
+
+*{ActionResult}
+
+ 以下のクラスは {{{cubby/apidocs/org/seasar/cubby/action/ActionResult.html}ActionResult}} を実装するクラスで、アクションメソッドの戻り値として使用できます。
+
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+|| クラス名                                                             || 説明                                                              |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Forward.html}Forward}}       | 指定されたパスにフォワードします。                                 |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Redirect.html}Redirect}}     | 指定されたパスにリダイレクトします。                               |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Direct.html}Direct}}         | 何も処理を行いません。アクションメソッド中でレスポンスに直接書き込みます。ファイルや画像をブラウザに返す時に使用します。                   |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Json.html}Json}}             | 指定されたオブジェクトを Json 形式に変換してレスポンスを返します。 |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/SendError.html}SendError}}   | 指定されたエラー系のステータスコードを返します。                   |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/SendError.html}PassThrough}} | FilterChain#doFilter で次のフィルタへチェインします。              |
+*-----------------------------------------------------------------------+--------------------------------------------------------------------+
+
+[]
+
+*{アノテーション}
+
+ アクションクラスやアクションメソッドに以下のアノテーションを指定することで、アクションのメタ情報を設定することができます。
+
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+|| アノテーション名                                                                  || 説明                                                                    || 省略した場合                                                                                        |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Path.html}@Path}}                         | アクションメソッドに対応する URI を指定します。                          | XxxAction#yyyy() の場合は /xxx/yyyy になります。                                                     |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/OnSubmit.html}@OnSubmit}}                 | アクションメソッドへ振り分けるためのリクエストパラメータ名を指定します。 | リクエストパラメータによる振り分けを行いません。                                                     |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Accept.html}@Accept}}                     | アクションメソッドが受け付ける HTTP メソッドを指定します。               | GET と POST に対応するメソッドになります。                                                           |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Form.html}@Form}}                         | リクエストパラメータをバインドするオブジェクトを指定します。             | アクションクラスのインスタンスにリクエストパラメータをバインドします。                               |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/RequestParameter}@RequestParameter}}      | リクエストパラメータのバインド対象とするプロパティを指定します。         | リクエストパラメータのバインド対象としません。                                                       |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/InitializeMethod.html}@InitializeMethod}} | アクションメソッド実行前に実行する初期化メソッドを指定します。           | {{{cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()}Action#initialize}} を実行します。 |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/InitializeMethod.html}@PreRenderMethod}}  | フォワード直前に実行するメソッドを指定します。                           | {{{cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()}Action#prerender}} を実行します。   |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/InitializeMethod.html}@PostRenderMethod}} | フォワード直後に実行するメソッドを指定します。                           | {{{cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()}Action#postrender}} を実行します。 |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Validation.html}@Validation}}             | 入力検証を定義したプロパティを指定します。                               | 入力検証を行いません。                                                                               |
+*------------------------------------------------------------------------------------+--------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+
+[]
+
+*{事前処理・事後処理}
+
+ Action を継承したアクションクラスでは、以下のメソッドをオーバーライドすることでアクションメソッド実行の前後にフック処理を記述することができます。
+ これらはアクションクラスごとの処理となります。
+
+ @ActionClass を指定したアクションクラスの場合や、アクションメソッドごとに異なる処理をしたい場合は{{{#アノテーション}アノテーション}}(@InitializeMethod、@PreRenderMethod、@PostRenderMethod)でメソッドを指定してください。
+
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|| メソッド名                                                                                 || 説明                                                                                                                                                      |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#initialize()}Action#initialize}}       | アクションメソッドの実行前に呼ばれます。パラメータのバインディング前に呼ばれるので、パラメータを使用したい場合はリクエストから直接取得する必要があります。 |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#prerender()}Action#prerender}}         | フォーワードの直前で呼ばれます。対象のActionクラスのフォワード先で必ず使用する共通のデータなどを取得する目的で使用します。                                 |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {{{cubby/apidocs/org/seasar/cubby/action/Action.html#postrender()}Action#postrender}}       | フォワードの直後で呼ばれます。通常はあまり使用することはないでしょう。                                                                                     |
+*---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+[]
+
+*{ファイルアップロード}
+
+ マルチパートのリクエストでアップロードされたファイルを処理するためには、フォームオブジェクトに org.apache.commons.fileupload.FileItem 型のリクエストパラメータを設定して下さい。\
+ 事前に、コンテナから org.apache.commons.fileupload.FileUpload と org.apache.commons.fileupload.RequestContext を取得できるように設定しおいてください。
+
+ <<ファイルをアップロードするための JSP>>
+
++------------------------------------------------------+
+<t:form method="post" action="${contextPath}/fileupload/upload" enctype="multipart/form-data"
+	value="${form}">
+<h1>ファイルアップロード</h1>
+拡張子が「png」「jpg」のファイルのみアップロードできます。<br/>
+...
+<label for="file">ファイル:</label>
+<t:input type="file" name="file"/><br/>
+<input type="submit" value="アップロード"/>
+</t:form>
++------------------------------------------------------+
+ 
+ <<アップロードを処理するアクションクラス>>
+
++------------------------------------------------------+
+import org.apache.commons.fileupload.FileItem;
+...
+public class FileUploadAction extends Action {
+
+	ValidationRules validation = new DefaultValidationRules() {
+		public void initialize() {
+			add("file", new FileRegexpValidator(".+\\.(?i)(png|jpg)")); 
+		}
+	};
+
+	@RequestParameter
+	private FileItem file;
+
+	public FileItem getFile() {
+		reutrn file;
+	}
+
+	@Validation(rules = "validation", errorPage = "fileupload.jsp")
+	public ActionResult upload() {
+		return new Forward("done.jsp");
+	}	
+}
++------------------------------------------------------+
+
+ <<アップロード結果を表示する JSP>>
+
++------------------------------------------------------+
+...
+<h2>ファイルアップロード結果</h2>
+<label for="file">File:</label>
+アップロード完了しました。<br/>
+ファイル名：${file.name}<br/>
+ファイルサイズ：${file.size}<br/>
+...
++------------------------------------------------------+
+
+{コンバータ}
+
+  コンバータとは、String 型や FileItem 型のリクエストパラメータをフォームオブジェクトのプロパティの型へ変換するクラスです。
+  {{{cubby/apidocs/org/seasar/cubby/converter/Converter.html}Converter}} を実装します。
+
+  型変換に失敗した場合、フォームオブジェクトのプロパティには null が設定されます。
+
+  標準で提供されるコンバータは{{{cubby/apidocs/index.html?org/seasar/cubby/converter/impl/package-summary.html}APIドキュメント}}をご覧下さい。
+
+*{コンバータによるバリデーション}
+
+  コンバータでの型変換に失敗したことをバリデーション時に検出することができます。
+
+  ValidationRules を定義するときに org.seasar.cubby.validator.ConversionValidationRule を追加してください。
+
++------------------------------------------------------+
+	public ValidationRules validation = new DefaultValidationRules("todo.") {
+		@Override
+		public void initialize(String resourceKeyPrefix) {
+			add(new ConversionValidationRule(resourceKeyPrefix));
+		}
+	};
++------------------------------------------------------+
+
+*{独自のコンバータを作成する}
+
+  独自のコンバータを作成することによって、標準ではサポートしていない型へリクエストパラメータをバインドすることができます。
+
+  以下の BookConverter.java は ISBN を表す文字列からデータベースを参照して Book に変換するコンバータです。
+  変換結果は
+
++------------------------------------------------------+
+		:
+	@RequestParameter
+	public Book book;
+		:
++------------------------------------------------------+
+
+  のような Book 型のプロパティにバインドされます。
+
+ <<BookConverter.java>>
+
++------------------------------------------------------+
+package org.seasar.cubby.showcase.other.web.converter;
+
+import org.seasar.cubby.converter.ConversionHelper;
+import org.seasar.cubby.converter.impl.AbstractConverter;
+
+/**
+ * ISDN を表す文字列と Book を相互変換するコンバータです。
+ */
+public class BookConverter extends AbstractConverter {
+
+	public BookDao bookDao;
+
+	/**
+	 * Book.class を返すことで、このコンバータが任意の値を Book へ変換できることを示します。
+	 */
+	public Class<?> getObjectType() {
+		return Book.class;
+	}
+
+	/**
+	 * リクエストパラメータ(ここではISBN)を Book へ変換します。
+	 */
+	public Object convertToObject(Object value, Class<?> objectType,
+			ConversionHelper helper) {
+		if (value == null) {
+			return null;
+		}
+		String isbn13 = value.toString();
+		Book book = bookDao.findByIsbn13(isbn13);
+		return book;
+	}
+
+	/**
+	 * Book から表示用の文字列(ISBN)へ変換します。
+	 */
+	public String convertToString(Object value, ConversionHelper helper) {
+		Book book = Book.class.cast(value);
+		return book.getIsbn13();
+	}
+
+}
++------------------------------------------------------+
+
+  作成したコンバータはコンテナから取得されます。
+  使用するコンテナに登録しておいてください。
+
+*{特定のコンバータを指定する}
+
+  通常は自動的にプロパティの型にマッチするコンバータが選択されますが、特定のコンバータを指定することもできます。
+
+  以下の例では address というフィールドにトリムされた文字列を設定します。
+
++------------------------------------------------------+
+		:
+	@RequestParameter(converter = TrimConverter.class)
+	public String address;
+		:
++------------------------------------------------------+
+
++------------------------------------------------------+
+public class TrimConverter extends AbstractConverter {
+	public Object convertToObject(Object value, Class<?> objectType, ConversionHelper helper) throws ConversionException {
+		if (value == null) {
+			return null;
+		}
+		return value.toString().trim();
+	}
+}
++------------------------------------------------------+
+
+{テスト}
+
+ Cubby では JUnit 等からアクションをテストするためのサポートクラスを用意しています。
+
+*{アクションをテストする方法}
+
+ テストケースからアクションの実行をエミュレートするための {{{cubby/apidocs/org/seasar/cubby/unit/CubbyRunner.html}CubbyRunner}} と、
+ その実行結果を検証するための {{{cubby/apidocs/org/seasar/cubby/unit/CubbyAssert.html}CubbyAssert}} を用意しています。
+ 
+ [[1]]ServletContext, HttpServletRequest, HttpServletResponse のモックオブジェクトを作成します。
+
+ [[2]]テスト対象のアクションを実行するために、作成した HttpServletRequest のモックに servletPath やパラメータを設定します。
+
+ [[3]]{{{cubby/apidocs/org/seasar/cubby/unit/CubbyRunner.html#processAction(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.Filter...)}CubbyRunner#processAction}}
+      を呼び出すと指定されたパスに対応するアクションが実行され、その実行結果を取得できます。
+ 
+ [[4]]戻り値を{{{cubby/apidocs/org/seasar/cubby/unit/CubbyAssert.html#assertPathEquals(java.lang.Class,java.lang.String,org.seasar.cubby.action.ActionResult)}CubbyAssert#assertPathEquals}}で結果の ActionResult の型と遷移先のパスをチェックします。
+      パスのチェックは Forward と Redirect の場合のみ行われます。\
+
+ [[5]]必要に応じてアクションクラスのフィールドやリクエストやセッションの値をチェックします。
+
+ <<FooAction.java>>
+ 
++------------------------------------------------------+
+@ActionClass
+public class FooAction {
+
+	public ActionResult index() {
+		return new Forward("index.jsp");
+	}
+
+}
++------------------------------------------------------+
+
+ <<HelloActionTest.java>>
+
++------------------------------------------------------+
+public class FooActionTest {
+
+	@Test
+	public void index1() throws Exception {
+		// ServletContext, HttpServletRequest, HttpServletResponse などのモックオブジェクトを作成
+		MockServletContext servletContext = ...
+		MockHttpServletRequest request = ...
+		request.setMethod("GET");
+		request.setServletPath("/foo/"); // 実行するアクションのパスを設定
+		MockHttpServletResponse response = ...
+
+		// アクションを実行
+		ActionResult actualResult = CubbyRunner.processAction(servletContext,
+				request, response);
+
+		// アクションの実行結果を検証
+		CubbyAssert.assertPathEquals(Forward.class, "index.jsp", actualResult);
+	}
+
+}
++------------------------------------------------------+

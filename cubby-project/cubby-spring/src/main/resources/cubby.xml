@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2004-2009 the Seasar Foundation and the Others.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+    either express or implied. See the License for the specific language
+    governing permissions and limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context    
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:annotation-config />
+
+	<bean id="pathResolver" class="org.seasar.cubby.routing.impl.PathResolverImpl">
+		<constructor-arg>
+			<bean id="pathTemplateParser" class="org.seasar.cubby.routing.impl.PathTemplateParserImpl" />
+		</constructor-arg>
+	</bean>
+
+	<!-- spi -->
+	<bean id="containerProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringContainerProvider"
+		scope="singleton">
+	</bean>
+
+	<bean id="converterProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringConverterProvider"
+		scope="singleton" init-method="initialize">
+	</bean>
+
+	<bean id="pathResolverProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringPathResolverProvider"
+		scope="singleton" init-method="initialize">
+	</bean>
+
+	<bean id="requestParserProvider"
+		class="org.seasar.cubby.plugins.spring.spi.SpringRequestParserProvider"
+		scope="singleton">
+	</bean>
+
+	<bean id="beanDescProvider" class="org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider"
+		scope="singleton">
+	</bean>
+
+	<bean class="org.seasar.cubby.action.impl.ActionErrorsImpl"
+		scope="request">
+	</bean>
+
+	<bean class="org.seasar.cubby.action.impl.FlashMapImpl"
+		scope="request" autowire="constructor">
+	</bean>
+
+	<bean class="org.seasar.cubby.action.impl.ActionContextImpl"
+		scope="request">
+	</bean>
+
+</beans>

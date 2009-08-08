@@ -1,0 +1,103 @@
+~~
+~~ Copyright 2004-2009 the Seasar Foundation and the Others.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+  --------
+  Cubby 2.0
+  --------
+  agata
+  baba
+  --------
+  2009-04-16
+  --------
+
+{Cubby とは何ですか ?}
+
+ Cubby (カビー)は Java / Servlet / JSP をベースにした、Web アプリケーションのためのシンプルなフレームワークです。
+
+ *シンプルで小さい（薄い）フレームワークです。
+
+ *設定ファイルはほとんど使用しません。
+
+ *REST っぽい URI をサポートします。 (/username/todo/1001、拡張子が付かない URI など)
+
+ *直感的な名前のカスタムタグライブラリ
+
+ *HTMLテンプレートエンジン「{{{http://mayaa.seasar.org}Mayaa}}」と連携することができます。
+
+{Cubby のゴール}
+
+ *Servlet / JSP / Java を知っていれば使いこなせる。
+
+ *美しい URL を持つ Web アプリケーションをさくさく作成できる。
+
+ *アクションクラスを見れば何をやっているのかわかる。
+
+ *トラブルに遭遇したときに、わかりやすいメッセージで原因解決がすぐにできる。
+
+{初めて利用される方へ}
+
+ Cubby を初めて利用される方は、リファレンスを参照しながら {{{twominute.html}2 分間チュートリアル}}、{{{fiveminute.html}5 分間チュートリアル}}を進めてみてください。
+
+ チュートリアルで作成するアプリケーションはサンプルに含まれているので、war ファイルを{{{../downloads.html}ダウンロード}}して動かしてみてください。
+
+{動作環境}
+
+ *Java 5 以降
+
+ *Servlet 2.5 / JSP 2.1 以降 (Java EE 5) をサポートするサーブレットコンテナ
+
+ *対応コンテナ
+
+  *S2Cotainer 2.4.38 以降
+
+  *Spring Framework 2.5.6 以降
+
+  *Guice 2.0 以降

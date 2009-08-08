@@ -1,0 +1,152 @@
+~~
+~~ Copyright 2004-2009 the Seasar Foundation and the Others.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~     http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+~~ either express or implied. See the License for the specific language
+~~ governing permissions and limitations under the License.
+~~
+  --------
+  移行ガイド (1.1.x -> 2.0.x)
+  --------
+  baba
+  --------
+  2009-04-16
+  --------
+
+{目次}
+
+ *{{{#1.1.x_から_2.0.x_への移行}1.1.x から 2.0.x への移行}}
+
+  *{{{#互換性のない変更点}互換性のない変更点}}
+
+{1.1.x から 2.0.x への移行}
+
+ バージョン 1.1.x から 2.0.x へ移行する際に注意すべき点を解説します。
+
+*{互換性のない変更点}
+
+**{J2SE 1.4 から JavaEE 5 への移行}
+
+ 動作環境を J2SE 1.4 (Servlet 2.4 / JSP 2.0) から JavaEE 5 (Servlet 2.5 / JSP 2.1) へ変更しています。
+ サーブレットコンテナには上記バージョンを満たすもの (Tomcat であれば 6 以降、Jetty であれば 6 以降) を使用してください。
+
+**{公開クラスとフレームワーク内部クラスの分離}
+
+ アクションクラスを作成するために参照するクラスとフレームワーク内部で使用するクラスを明確にするためにパッケージを分離しています。
+ フレームワーク内部で使用するクラスは org.seasar.cubby.internal へ移動しています。
+
+**{モジュール分割}
+
+ このバージョンからは機能毎に jar ファイルを分割しています。
+ 以前と同様の機能を実現するには以下の jar ファイルをクラスパスに含めてください。
+
+ * cubby-2.0.x.jar
+
+ * cubby-unit-2.0.x.jar
+
+ * cubby-s2-2.0.x.jar
+
+ * cubby-gson-2.0.x.jar
+
+ * jcl-over-slf4j-1.5.6.jar
+
+[]
+
+ 詳しくは{{{s2container.html}セットアップの Seasar2 統合}}の項を参照してください。
+
+**{JSP から public フィールドへのアクセス}
+
+ 以前のバージョンでは PropertyInterType によって JSP からアクションの public フィールドへアクセスしていましたが、
+ 2.0 からはカスタム ELResolver によって public フィールドへアクセスできるようになっています。
+ customizer.dicon などから PropertyInterType の設定を除去してください。
+
+**app-cubby.dicon の変更
+
+ app-cubby.dicon が変更になっています。
+ 詳しくは{{{s2container.html}セットアップの Seasar2 統合}}の項を参照してください。
+
+**{JSON シリアライザ、デシリアライザの変更}
+
+ Json クラスで使用する JSON へのシリアライザを Seasar2 の JSONSerializer クラスから GSON へ変更しています。
+
+ 以前と同様に org.seasar.framework.JSONSerializer を使用したい場合は、以下のようにしてください。
+ 
+ [[1]] JSONSerializer による JsonProvider を提供するプラグインを作成
+
++------------------------------------------------------+
+package com.example;
+
+import org.seasar.cubby.plugin.AbstractPlugin;
+import org.seasar.cubby.spi.JsonProvider;
+import org.seasar.cubby.spi.Provider;
+import org.seasar.framework.util.JSONSerializer;
+
+public class S2JSONSerializerPlugin extends AbstractPlugin {
+
+	private JsonProvider jsonProvider = new JsonProvider() {
+		
+		public String toJson(Object o) {
+			return JSONSerializer.serialize(o);
+		}
+
+	};
+
+	public <S extends Provider> S getProvider(Class<S> service) {
+		if (JsonProvider.class.equals(service)) {
+			return service.cast(jsonProvider);
+		}
+		return null;
+	}
+
+}
++------------------------------------------------------+
+
+ [[2]] META-INF/services に org.seasar.cubby.plugin.Plugin ファイルを作成して上記クラスを登録
+
++------------------------------------------------------+
+com.example.S2JSONSerializerPlugin
++------------------------------------------------------+
