@@ -24,8 +24,8 @@
 		</menu>
 
 		<menu name="ドキュメント">
-			<item name="Cubby 1.1 (安定版)" href="/11x/index.html" />
-			<item name="Cubby 2.0 (開発版)" href="/20x/index.html" />
+			<item name="Cubby 2.0" href="/20x/index.html" />
+			<item name="Cubby 1.1" href="/11x/index.html" />
 		</menu>
 
 		<menu name="サポート">
