@@ -132,7 +132,7 @@ class TagUtils {
 	 * 
 	 * @param context
 	 *            JSPコンテキスト
-	 * @param outputValuesMap
+	 * @param outputValues
 	 *            フォームへ出力する値
 	 * @param name
 	 *            フィールド名
@@ -277,7 +277,7 @@ class TagUtils {
 	 *         <code>false</code>
 	 */
 	public static boolean contains(final Object obj, final String str) {
-		if (obj instanceof Collection) {
+		if (obj instanceof Collection<?>) {
 			return ((Collection<?>) obj).contains(str);
 		} else if (obj.getClass().isArray()) {
 			for (final Object value : (Object[]) obj) {
@@ -331,7 +331,7 @@ class TagUtils {
 	}
 
 	/**
-	 * 指定されたタグの親の {@ilnk FormTag} を検索し、そこから指定されたフィールド名の値を取得します。
+	 * 指定されたタグの親の {@link FormTag} を検索し、そこから指定されたフィールド名の値を取得します。
 	 * 
 	 * @param tag
 	 *            タグ
