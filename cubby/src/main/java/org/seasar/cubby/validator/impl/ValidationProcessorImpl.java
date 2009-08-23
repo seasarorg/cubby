@@ -104,13 +104,11 @@ public class ValidationProcessorImpl implements ValidationProcessor {
 			final ActionErrors errors) {
 		final Collection<ValidationRule> phaseValidationRules = validationRules
 				.getPhaseValidationRules(validationPhase);
-		if (validationRules != null) {
-			for (final ValidationRule validationRule : phaseValidationRules) {
-				validationRule.apply(params, form, errors);
-			}
-			if (!errors.isEmpty()) {
-				throw new ValidationException();
-			}
+		for (final ValidationRule validationRule : phaseValidationRules) {
+			validationRule.apply(params, form, errors);
+		}
+		if (!errors.isEmpty()) {
+			throw new ValidationException();
 		}
 	}
 

@@ -25,8 +25,8 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
 
-class ErrorPageValidationFailBehaviour implements
-		ValidationFailBehaviour, Serializable {
+class ErrorPageValidationFailBehaviour implements ValidationFailBehaviour,
+		Serializable {
 
 	/** シリアルバージョンUID。 */
 	private static final long serialVersionUID = 1L;
@@ -65,14 +65,8 @@ class ErrorPageValidationFailBehaviour implements
 		if (errorMessage != null && errorMessage.length() > 0) {
 			action.getErrors().add(errorMessage, fieldNames);
 		}
-		final String errorPage;
 		final Validation validation = getValidation(method);
-		if (validation == null) {
-			errorPage = null;
-		} else {
-			errorPage = validation.errorPage();
-		}
-
+		final String errorPage = validation.errorPage();
 		final ValidationRules validationRules = getValidationRules(action,
 				validation.rules());
 		return validationRules.fail(errorPage);
