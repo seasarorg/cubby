@@ -171,10 +171,10 @@ public class SelectTag extends DynamicAttributesSimpleTagSupport {
 		} else {
 			final OptionWriter optionWriter;
 			final Collection<?> collection;
-			if (items instanceof Collection) {
+			if (items instanceof Collection<?>) {
 				optionWriter = new OptionWriter(new BeanItemAdaptor());
 				collection = (Collection<?>) items;
-			} else if (items instanceof Map) {
+			} else if (items instanceof Map<?, ?>) {
 				optionWriter = new OptionWriter(new EntryItemAdaptor());
 				collection = ((Map<?, ?>) items).entrySet();
 			} else {
