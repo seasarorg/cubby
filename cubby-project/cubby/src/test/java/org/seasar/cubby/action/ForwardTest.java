@@ -224,6 +224,9 @@ public class ForwardTest {
 		replay(request, requestDispatcher, response);
 
 		final Forward forward = new Forward(MockAction.class);
+		PluginRegistry.getInstance().clear();
+
+		assertEquals("/mock/", forward.getPath("UTF-8"));
 		forward.execute(actionContext, request, response);
 	}
 
@@ -257,6 +260,9 @@ public class ForwardTest {
 
 		final Forward forward = new Forward(MockAction.class, "dummy2").param(
 				"value1", "123").param("value2", "456");
+		PluginRegistry.getInstance().clear();
+
+		assertEquals("/mock/dummy2/123/456", forward.getPath("UTF-8"));
 		forward.execute(actionContext, request, response);
 	}
 
@@ -264,7 +270,8 @@ public class ForwardTest {
 		void assertDispatchPath(String path);
 	}
 
-	static class RequestDispatcherAssertionWrapper extends HttpServletRequestWrapper {
+	static class RequestDispatcherAssertionWrapper extends
+			HttpServletRequestWrapper {
 
 		private final Asserter asserter;
 

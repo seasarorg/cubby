@@ -103,6 +103,9 @@ public class Forward implements ActionResult {
 	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
 			.emptyMap();
 
+	/** {@link PathResolver} のプロバイダ。 */
+	private final PathResolverProvider pathResolverProvider;
+
 	/** フォワード先のパス。 */
 	private String path;
 
@@ -125,6 +128,7 @@ public class Forward implements ActionResult {
 	 *            フォワード先のパス
 	 */
 	public Forward(final String path) {
+		this.pathResolverProvider = null;
 		this.path = path;
 		this.routing = null;
 	}
@@ -141,6 +145,8 @@ public class Forward implements ActionResult {
 	 */
 	public Forward(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters) {
+		this.pathResolverProvider = ProviderFactory
+				.get(PathResolverProvider.class);
 		this.actionClass = actionClass;
 		this.methodName = methodName;
 		this.parameters = parameters;
@@ -183,9 +189,7 @@ public class Forward implements ActionResult {
 	 */
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
-			final PathResolverProvider pathResolverProvider = ProviderFactory
-					.get(PathResolverProvider.class);
-			final PathResolver pathResolver = pathResolverProvider
+			final PathResolver pathResolver = this.pathResolverProvider
 					.getPathResolver();
 			final String forwardPath = pathResolver.reverseLookup(actionClass,
 					methodName, parameters, characterEncoding);
