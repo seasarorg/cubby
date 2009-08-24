@@ -17,7 +17,6 @@ package org.seasar.cubby.spi.impl;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,13 +29,6 @@ import org.seasar.cubby.spi.ConverterProvider;
  * @author baba
  */
 public abstract class AbstractConverterProvider implements ConverterProvider {
-
-	/**
-	 * コンバータの一覧を返します。
-	 * 
-	 * @return コンバータの一覧
-	 */
-	protected abstract Collection<Converter> getConverters();
 
 	/**
 	 * {@inheritDoc}

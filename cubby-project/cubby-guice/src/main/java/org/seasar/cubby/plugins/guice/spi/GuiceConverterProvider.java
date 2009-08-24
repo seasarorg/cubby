@@ -43,8 +43,10 @@ public class GuiceConverterProvider extends AbstractCachedConverterProvider {
 		this.converters = converters;
 	}
 
-	@Override
-	protected Collection<Converter> getConverters() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<Converter> getConverters() {
 		return converters;
 	}
 

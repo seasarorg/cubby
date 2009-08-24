@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.spi;
 
+import java.util.Collection;
+
 import org.seasar.cubby.converter.Converter;
 
 /**
@@ -47,5 +49,12 @@ public interface ConverterProvider extends Provider {
 	 * @return コンバータ
 	 */
 	Converter getConverter(Class<?> parameterType, Class<?> objectType);
+
+	/**
+	 * コンバータの一覧を返します。
+	 * 
+	 * @return コンバータの一覧
+	 */
+	Collection<Converter> getConverters();
 
 }

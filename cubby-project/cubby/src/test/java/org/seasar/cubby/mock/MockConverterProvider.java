@@ -72,8 +72,7 @@ public class MockConverterProvider extends AbstractCachedConverterProvider {
 		this.converters = converters;
 	}
 
-	@Override
-	protected Collection<Converter> getConverters() {
+	public Collection<Converter> getConverters() {
 		return converters;
 	}
 

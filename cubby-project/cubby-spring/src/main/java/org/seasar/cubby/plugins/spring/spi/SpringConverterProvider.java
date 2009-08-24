@@ -71,8 +71,10 @@ public class SpringConverterProvider extends AbstractCachedConverterProvider
 		initialized = true;
 	}
 
-	@Override
-	protected Collection<Converter> getConverters() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<Converter> getConverters() {
 		return Collections.unmodifiableCollection(this.converters);
 	}
 

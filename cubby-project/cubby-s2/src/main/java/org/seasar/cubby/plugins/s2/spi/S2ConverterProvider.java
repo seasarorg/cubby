@@ -90,8 +90,10 @@ public class S2ConverterProvider extends AbstractCachedConverterProvider
 		this.classDetector = classDetector;
 	}
 
-	@Override
-	protected Collection<Converter> getConverters() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Collection<Converter> getConverters() {
 		return converters;
 	}
 
