@@ -319,6 +319,8 @@ public class RedirectTest {
 	@Test
 	public void redirectByClassAndMethod1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1");
+		PluginRegistry.getInstance().clear();
+
 		assertEquals("/mock/dummy1", redirect.getPath("UTF-8"));
 	}
 
@@ -330,6 +332,8 @@ public class RedirectTest {
 
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				values);
+		PluginRegistry.getInstance().clear();
+
 		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
@@ -341,6 +345,8 @@ public class RedirectTest {
 		values.put("value2", new String[] { "456" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
+		PluginRegistry.getInstance().clear();
+
 		assertEquals("/mock/dummy2/123/456", redirect.getPath("UTF-8"));
 	}
 
@@ -352,6 +358,8 @@ public class RedirectTest {
 		values.put("value3", new String[] { "789" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy2",
 				values);
+		PluginRegistry.getInstance().clear();
+
 		assertEquals("/mock/dummy2/123/456?value3=789", redirect
 				.getPath("UTF-8"));
 	}
@@ -359,8 +367,11 @@ public class RedirectTest {
 	@Test
 	public void redirectByClassAndMethod5() throws Exception {
 		final Redirect redirect1 = new Redirect(MockAction.class, "index");
-		assertEquals("/mock/", redirect1.getPath("UTF-8"));
 		final Redirect redirect2 = new Redirect(MockAction.class);
+
+		PluginRegistry.getInstance().clear();
+
+		assertEquals("/mock/", redirect1.getPath("UTF-8"));
 		assertEquals("/mock/", redirect2.getPath("UTF-8"));
 	}
 
@@ -401,6 +412,7 @@ public class RedirectTest {
 	@Test
 	public void getPath() throws Exception {
 		final Redirect redirect = new Redirect("/absolute/redirect");
+		PluginRegistry.getInstance().clear();
 		assertEquals("/absolute/redirect", redirect.getPath("UTF-8"));
 	}
 
@@ -408,6 +420,7 @@ public class RedirectTest {
 	public void param1() throws Exception {
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1")
 				.param("value1", "123").param("value2", "456");
+		PluginRegistry.getInstance().clear();
 		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
@@ -418,6 +431,7 @@ public class RedirectTest {
 		params.put("value1", new String[] { "123" });
 		final Redirect redirect = new Redirect(MockAction.class, "dummy1",
 				params).param("value2", "456");
+		PluginRegistry.getInstance().clear();
 		assertEquals("/mock/dummy1?value1=123&value2=456", redirect
 				.getPath("UTF-8"));
 	}
@@ -426,6 +440,7 @@ public class RedirectTest {
 	public void param3() throws Exception {
 		final Redirect redirect = new Redirect("hoge").param("value1", "123")
 				.param("value2", "456");
+		PluginRegistry.getInstance().clear();
 		assertEquals("hoge?value1=123&value2=456", redirect.getPath("UTF-8"));
 	}
 
@@ -433,7 +448,8 @@ public class RedirectTest {
 		void assertDispatchPath(String path);
 	}
 
-	static class RequestDispatcherAssertionWrapper extends HttpServletResponseWrapper {
+	static class RequestDispatcherAssertionWrapper extends
+			HttpServletResponseWrapper {
 
 		private final Asserter asserter;
 

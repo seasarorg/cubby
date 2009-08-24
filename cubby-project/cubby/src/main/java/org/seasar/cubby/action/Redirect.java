@@ -106,6 +106,9 @@ public class Redirect implements ActionResult {
 	private static final Map<String, String[]> EMPTY_PARAMETERS = Collections
 			.emptyMap();
 
+	/** {@link PathResolver} のプロバイダ。 */
+	private final PathResolverProvider pathResolverProvider;
+
 	/** リンクビルダ。 */
 	private final LinkBuilder linkBuilder = new LinkBuilder();
 
@@ -134,6 +137,7 @@ public class Redirect implements ActionResult {
 	 *            リダイレクト先のパス
 	 */
 	public Redirect(final String path) {
+		this.pathResolverProvider = null;
 		this.path = path;
 	}
 
@@ -200,6 +204,8 @@ public class Redirect implements ActionResult {
 	 */
 	public Redirect(final Class<?> actionClass, final String methodName,
 			final Map<String, String[]> parameters) {
+		this.pathResolverProvider = ProviderFactory
+				.get(PathResolverProvider.class);
 		this.actionClass = actionClass;
 		this.methodName = methodName;
 		this.parameters = parameters;
@@ -254,9 +260,7 @@ public class Redirect implements ActionResult {
 	 */
 	public String getPath(final String characterEncoding) {
 		if (isReverseLookupRedirect()) {
-			final PathResolverProvider pathResolverProvider = ProviderFactory
-					.get(PathResolverProvider.class);
-			final PathResolver pathResolver = pathResolverProvider
+			final PathResolver pathResolver = this.pathResolverProvider
 					.getPathResolver();
 			final String redirectPath = pathResolver.reverseLookup(actionClass,
 					methodName, parameters, characterEncoding);
