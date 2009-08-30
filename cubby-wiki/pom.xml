@@ -69,11 +69,6 @@ line.separator=\n
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>
     </repository>
-    <repository>
-      <id>google-maven-repository</id>
-      <name>Google Maven Repository</name>
-      <url>http://google-maven-repository.googlecode.com/svn/repository/</url>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>
