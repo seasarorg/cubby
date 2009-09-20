@@ -107,14 +107,14 @@ mvn archetype:generate -DarchetypeCatalog=http://cubby.seasar.org
 
 +------------------------------------------------------+
 Choose archetype:
-1: remote -> cubby-s2-archetype (Cubby 2.0.0 S2Container Integration)
-2: remote -> cubby-guice-archetype (Cubby 2.0.0 Guice Integration)
-3: remote -> cubby-guice-archetype (Cubby 2.0.0 Spring Integration)
-4: remote -> cubby-archetype (Cubby 1.1.6)
+1: remote -> cubby-s2-archetype (Cubby 2.0.1 S2Container Integration)
+2: remote -> cubby-guice-archetype (Cubby 2.0.1 Guice Integration)
+3: remote -> cubby-guice-archetype (Cubby 2.0.1 Spring Integration)
+4: remote -> cubby-archetype (Cubby 1.1.7)
 Choose a number:  (1/2/3/4): 
 +------------------------------------------------------+
 
-   1を入力して、cubby-s2-archetype (Cubby 2.0.0 S2Container Integration) を選んでください。
+   1を入力して、cubby-s2-archetype (Cubby 2.0.1 S2Container Integration) を選んでください。
 
    以下、groupId,artifactId,version,packageを入力します。
 
