@@ -72,4 +72,24 @@ public class SendError implements ActionResult {
 		}
 	}
 
+	/**
+	 * ステータスコードを取得します。
+	 * 
+	 * @return ステータスコード
+	 * @since 2.0.2
+	 */
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	/**
+	 * メッセージを取得します。
+	 * 
+	 * @return メッセージ
+	 * @since 2.0.2
+	 */
+	public String getMessage() {
+		return message;
+	}
+
 }
