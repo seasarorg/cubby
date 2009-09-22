@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action.impl;
+package org.seasar.cubby.internal.controller.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import org.seasar.cubby.action.FieldInfo;
  * @author agata
  * @author baba
  */
-public class ActionErrorsImpl implements ActionErrors {
+class ActionErrorsImpl implements ActionErrors {
 
 	/**
 	 * 全てのエラーの一覧。

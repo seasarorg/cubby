@@ -62,7 +62,6 @@ import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.MessageInfo;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultFormatPattern;

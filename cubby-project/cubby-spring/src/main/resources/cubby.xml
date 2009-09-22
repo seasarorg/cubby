@@ -56,16 +56,16 @@
 		scope="singleton">
 	</bean>
 
-	<bean class="org.seasar.cubby.action.impl.ActionErrorsImpl"
-		scope="request">
-	</bean>
-
-	<bean class="org.seasar.cubby.action.impl.FlashMapImpl"
+	<bean class="org.seasar.cubby.action.impl.ActionErrorsProxy"
 		scope="request" autowire="constructor">
 	</bean>
 
-	<bean class="org.seasar.cubby.action.impl.ActionContextImpl"
-		scope="request">
+	<bean class="org.seasar.cubby.action.impl.FlashMapProxy"
+		scope="request" autowire="constructor">
+	</bean>
+
+	<bean class="org.seasar.cubby.action.impl.ActionContextProxy"
+		scope="request" autowire="constructor">
 	</bean>
 
 </beans>

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action.impl;
+package org.seasar.cubby.internal.controller.impl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,7 +31,7 @@ import org.seasar.cubby.internal.controller.ThreadContext;
  * 
  * @author baba
  */
-public class FlashMapImpl implements FlashMap {
+class FlashMapImpl implements FlashMap {
 
 	/** セッションの属性に格納する {@link Map} のキー。 */
 	private static final String ATTRIBUTE_NAME = FlashMapImpl.class.getName()
