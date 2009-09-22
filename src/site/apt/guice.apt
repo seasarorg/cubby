@@ -54,7 +54,7 @@
   --------
   baba
   --------
-  2009-03-13
+  2009-09-22
   --------
 
 {目次}
@@ -188,11 +188,10 @@ Cubby と Guice のバージョンの推奨の組み合わせ
  web.xml にサーブレットフィルタとフィルタマッピングを追加します。
  登録する際は以下の順序で登録してください。
 
+ [[1]]CubbyGuiceServletContextListener (任意)
 
- [[1]]コンテキストパラメータ cubby.guice.module (必須)
-
-      Guice 初期化のために使用する Module のクラス名をコンテキストパラメータに指定します。\
-      ここで指定する Module は AbstractCubbyModule を継承したクラスとしてください。
+      サーブレットコンテキストの初期化時に Guice の Module をインスタンス化するサーブレットコンテキストリスナです。
+      コンテキストパラメータ cubby.guice.module にインスタンス化するモジュールのクラス名を指定してください。
 
 +------------------------------------------------------+
 	<context-param>
@@ -201,13 +200,9 @@ Cubby と Guice のバージョンの推奨の組み合わせ
 	</context-param>
 +------------------------------------------------------+
 
- [[2]]CubbyGuiceListener (必須)
-
-      サーブレットコンテキストの初期化時に Module を初期化するサーブレットコンテキストリスナです。
-
 +------------------------------------------------------+
 	<listener>
-		<listener-class>org.seasar.cubby.plugins.guice.servlet.CubbyGuiceListener</listener-class>
+		<listener-class>org.seasar.cubby.plugins.guice.CubbyGuiceServletContextListener</listener-class>
 	</listener>
 +------------------------------------------------------+
 
