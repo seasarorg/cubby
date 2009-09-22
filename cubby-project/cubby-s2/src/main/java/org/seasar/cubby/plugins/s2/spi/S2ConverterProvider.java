@@ -94,6 +94,7 @@ public class S2ConverterProvider extends AbstractCachedConverterProvider
 	 * {@inheritDoc}
 	 */
 	public Collection<Converter> getConverters() {
+		initialize();
 		return converters;
 	}
 
