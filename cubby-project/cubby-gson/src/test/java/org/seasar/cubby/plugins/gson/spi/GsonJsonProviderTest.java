@@ -34,13 +34,11 @@ import com.google.gson.GsonBuilder;
 
 public class GsonJsonProviderTest {
 
-	private JsonProvider jsonProvider = new GsonJsonProvider();
-
 	private abstract class MockContainerProvider implements ContainerProvider {
 		public Container getContainer() {
 			return new Container() {
 
-				public <T> T lookup(Class<T> type) throws LookupException {
+				public <T> T lookup(final Class<T> type) throws LookupException {
 					if (Gson.class.equals(type)) {
 						return type.cast(createGson());
 					}
@@ -55,7 +53,7 @@ public class GsonJsonProviderTest {
 
 	@Test
 	public void execute() throws Exception {
-		BinderPlugin binderPlugin = new BinderPlugin();
+		final BinderPlugin binderPlugin = new BinderPlugin();
 		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider() {
 
@@ -64,22 +62,23 @@ public class GsonJsonProviderTest {
 						throw new LookupException();
 					}
 				});
-		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		pluginRegistry.register(binderPlugin);
 
-		Foo bean = new Foo();
+		final Foo bean = new Foo();
 		bean.setName("\u30ab\u30d3\u30fc"); // unicode
 		bean.setAge(30);
 		bean.field = "field";
-		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
+		final Calendar calendar = Calendar.getInstance(Locale.JAPAN);
 		calendar.clear();
 		calendar.set(2009, Calendar.FEBRUARY, 2);
 		bean.setDate(new Date(calendar.getTimeInMillis()));
 
-		String json = jsonProvider.toJson(bean);
+		final JsonProvider jsonProvider = new GsonJsonProvider();
+		final String json = jsonProvider.toJson(bean);
 		System.out.println(json);
-		Gson gson = new Gson();
-		Foo result = gson.fromJson(json, Foo.class);
+		final Gson gson = new Gson();
+		final Foo result = gson.fromJson(json, Foo.class);
 
 		assertEquals("\u30ab\u30d3\u30fc", result.getName());
 		assertEquals(Integer.valueOf(30), result.getAge());
@@ -91,33 +90,35 @@ public class GsonJsonProviderTest {
 
 	@Test
 	public void executeByCustomizedGson() throws Exception {
-		BinderPlugin binderPlugin = new BinderPlugin();
+		final BinderPlugin binderPlugin = new BinderPlugin();
 		binderPlugin.bind(ContainerProvider.class).toInstance(
 				new MockContainerProvider() {
 
 					@Override
 					protected Gson createGson() {
-						Gson gson = new GsonBuilder().setDateFormat(
+						final Gson gson = new GsonBuilder().setDateFormat(
 								"yyyy-MM-dd").create();
 						return gson;
 					}
 				});
-		PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+		final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 		pluginRegistry.register(binderPlugin);
 
-		Foo bean = new Foo();
+		final Foo bean = new Foo();
 		bean.setName("\u30ab\u30d3\u30fc"); // unicode
 		bean.setAge(30);
 		bean.field = "field";
-		Calendar calendar = Calendar.getInstance(Locale.JAPAN);
+		final Calendar calendar = Calendar.getInstance(Locale.JAPAN);
 		calendar.clear();
 		calendar.set(2009, Calendar.FEBRUARY, 2);
 		bean.setDate(new Date(calendar.getTimeInMillis()));
 
-		String json = jsonProvider.toJson(bean);
+		final JsonProvider jsonProvider = new GsonJsonProvider();
+		final String json = jsonProvider.toJson(bean);
 		System.out.println(json);
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		Foo result = gson.fromJson(json, Foo.class);
+		final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+				.create();
+		final Foo result = gson.fromJson(json, Foo.class);
 
 		assertEquals("\u30ab\u30d3\u30fc", result.getName());
 		assertEquals(Integer.valueOf(30), result.getAge());
@@ -137,7 +138,7 @@ public class GsonJsonProviderTest {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -145,7 +146,7 @@ public class GsonJsonProviderTest {
 			return age;
 		}
 
-		public void setAge(Integer age) {
+		public void setAge(final Integer age) {
 			this.age = age;
 		}
 
@@ -153,7 +154,7 @@ public class GsonJsonProviderTest {
 			return date;
 		}
 
-		public void setDate(Date date) {
+		public void setDate(final Date date) {
 			this.date = date;
 		}
 
