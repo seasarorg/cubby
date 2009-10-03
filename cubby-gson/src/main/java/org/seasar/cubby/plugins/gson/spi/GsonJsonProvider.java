@@ -38,12 +38,17 @@ import com.google.gson.Gson;
  */
 public class GsonJsonProvider implements JsonProvider {
 
+	/** GSON */
+	private Gson gson;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String toJson(final Object o) {
-		final Gson gson = buildGson();
-		return gson.toJson(o);
+		if (this.gson == null) {
+			this.gson = createGson();
+		}
+		return this.gson.toJson(o);
 	}
 
 	/**
@@ -55,7 +60,7 @@ public class GsonJsonProvider implements JsonProvider {
 	 * 
 	 * @return {@link Gson} のインスタンス
 	 */
-	private Gson buildGson() {
+	private Gson createGson() {
 		final Container container = ProviderFactory
 				.get(ContainerProvider.class).getContainer();
 		try {
