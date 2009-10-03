@@ -38,95 +38,97 @@ public class CubbyAssert {
 	private static final String DEFAULT_CHARACTER_ENCODING = "UTF-8";
 
 	/**
-	 * 指定された {@link ActionResult} の型とパスをチェックします。
+	 * 指定された {@link ActionResult} の型とパスを検証します。
 	 * 
-	 * @param resultClass
-	 *            ActionResultの型
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
 	 * @param expectedPath
-	 *            期待されるパス
-	 * @param actualResult
-	 *            チェックするActionResult
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
 	 */
 	public static void assertPathEquals(
-			final Class<? extends ActionResult> resultClass,
-			final String expectedPath, final ActionResult actualResult) {
-		assertPathEquals(resultClass, expectedPath, actualResult,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual) {
+		assertPathEquals(expectedType, expectedPath, actual,
 				DEFAULT_CHARACTER_ENCODING);
 	}
 
 	/**
-	 * 指定された {@link ActionResult} の型とパスをチェックします。
+	 * 指定された {@link ActionResult} の型とパスを検証します。
 	 * 
 	 * @param message
 	 *            メッセージ
-	 * @param resultClass
-	 *            ActionResultの型
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
 	 * @param expectedPath
-	 *            期待されるパス
-	 * @param actualResult
-	 *            チェックするActionResult
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
+	 * @since 2.0.2
 	 */
 	public static void assertPathEquals(final String message,
-			final Class<? extends ActionResult> resultClass,
-			final String expectedPath, final ActionResult actualResult) {
-		assertPathEquals(message, resultClass, expectedPath, actualResult,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual) {
+		assertPathEquals(message, expectedType, expectedPath, actual,
 				DEFAULT_CHARACTER_ENCODING);
 	}
 
 	/**
-	 * ActionResultの型とパスをチェックします。
+	 * 指定された {@link ActionResult} の型とパスを検証します。
 	 * 
-	 * @param resultClass
-	 *            ActionResultの型
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
 	 * @param expectedPath
-	 *            期待されるパス
-	 * @param actualResult
-	 *            チェックするActionResult
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
 	 * @param characterEncoding
 	 *            URI のエンコーディング
 	 */
 	public static void assertPathEquals(
-			final Class<? extends ActionResult> resultClass,
-			final String expectedPath, final ActionResult actualResult,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual,
 			final String characterEncoding) {
 
-		assertPathEquals(null, resultClass, expectedPath, actualResult,
+		assertPathEquals(null, expectedType, expectedPath, actual,
 				characterEncoding);
 	}
 
 	/**
-	 * ActionResultの型とパスをチェックします。
+	 * 指定された {@link ActionResult} の型とパスを検証します。
 	 * 
 	 * @param message
 	 *            メッセージ
-	 * @param resultClass
-	 *            ActionResultの型
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
 	 * @param expectedPath
-	 *            期待されるパス
-	 * @param actualResult
-	 *            チェックするActionResult
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
 	 * @param characterEncoding
 	 *            URI のエンコーディング
+	 * @since 2.0.2
 	 */
 	public static void assertPathEquals(final String message,
-			final Class<? extends ActionResult> resultClass,
-			final String expectedPath, final ActionResult actualResult,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual,
 			final String characterEncoding) {
 
 		final List<ActionResultAssert<?, String>> asserters = new ArrayList<ActionResultAssert<?, String>>();
 		asserters.add(new ForwardAssert());
 		asserters.add(new RedirectAssert());
-		assertActionResult(message, resultClass, actualResult, asserters,
+		assertActionResult(message, expectedType, actual, asserters,
 				expectedPath, characterEncoding);
 	}
 
 	protected static <E> void assertActionResult(final String message,
-			final Class<? extends ActionResult> resultClass,
+			final Class<? extends ActionResult> expectedType,
 			final ActionResult actualResult,
 			final List<ActionResultAssert<?, E>> asserters, final E expected,
 			final Object... args) {
 		Assert.assertNotNull(message, actualResult);
-		Assert.assertEquals(message, resultClass, actualResult.getClass());
+		Assert.assertEquals(message, expectedType, actualResult.getClass());
 		for (final ActionResultAssert<?, E> asserter : asserters) {
 			asserter.assertType(message, actualResult, expected, args);
 		}
