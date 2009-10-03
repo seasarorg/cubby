@@ -27,8 +27,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.RequestProcessor;
 import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
@@ -102,7 +105,89 @@ public class CubbyRunner {
 			final HttpServletRequest request,
 			final HttpServletResponse response, final Filter... filters)
 			throws Exception {
+		return doProcess(false, servletContext, request, response, filters);
+	}
 
+	/**
+	 * リクエストに応じたアクションを実行し、その結果の {@link ActionResult} も実行します。
+	 * <p>
+	 * <code>filters</code> が指定された場合はアクションを実行する前後に
+	 * {@link Filter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+	 * を実行します。
+	 * </p>
+	 * 
+	 * @param request
+	 *            テスト用の要求
+	 * @param response
+	 *            テスト用の応答
+	 * @param filters
+	 *            実行するサーブレットフィルタ
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
+	 * @since 2.0.2
+	 */
+	public static ActionResult processActionAndExecuteActionResult(
+			final HttpServletRequest request,
+			final HttpServletResponse response, final Filter... filters)
+			throws Exception {
+		final ServletContext servletContext = new MockServletContext();
+		return processActionAndExecuteActionResult(servletContext, request,
+				response, filters);
+	}
+
+	/**
+	 * リクエストに応じたアクションを実行し、その結果の {@link ActionResult} も実行します。
+	 * <p>
+	 * <code>filters</code> が指定された場合はアクションを実行する前後に
+	 * {@link Filter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+	 * を実行します。
+	 * </p>
+	 * 
+	 * @param servletContext
+	 *            サーブレットコンテキスト
+	 * @param request
+	 *            テスト用の要求
+	 * @param response
+	 *            テスト用の応答
+	 * @param filters
+	 *            実行するサーブレットフィルタ
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
+	 * @since 2.0.2
+	 */
+	public static ActionResult processActionAndExecuteActionResult(
+			final ServletContext servletContext,
+			final HttpServletRequest request,
+			final HttpServletResponse response, final Filter... filters)
+			throws Exception {
+		return doProcess(true, servletContext, request, response, filters);
+	}
+
+	/**
+	 * リクエストに応じたアクションを実行します。
+	 * 
+	 * @param executeActionResult
+	 *            {@link ActionResult} を実行する場合は <code>true</code>、そうでない場合は
+	 *            <code>false</code>
+	 * @param servletContext
+	 *            サーブレットコンテキスト
+	 * @param request
+	 *            テスト用の要求
+	 * @param response
+	 *            テスト用の応答
+	 * @param filters
+	 *            実行するサーブレットフィルタ
+	 * @return アクションメソッドの実行結果。アクションメソッドが見つからなかったり結果がない場合は <code>null</code>
+	 * @throws Exception
+	 *             アクションメソッドの実行時に例外が発生した場合
+	 */
+	private static ActionResult doProcess(final boolean executeActionResult,
+			final ServletContext servletContext,
+			final HttpServletRequest request,
+			final HttpServletResponse response, final Filter... filters)
+			throws Exception {
 		final FilterConfig filterConfig = new MockFilterConfig(servletContext);
 		for (final Filter filter : filters) {
 			filter.init(filterConfig);
@@ -114,15 +199,22 @@ public class CubbyRunner {
 			pluginRegistry.register(cubbyRunnerPlugin);
 
 			pluginManager.init(servletContext);
+			CubbyRunnerHttpServletRequestWrapper requestWrapper = new CubbyRunnerHttpServletRequestWrapper(
+					request);
 			final ActionInvokeFilterChain chain = new ActionInvokeFilterChain(
 					filters);
-			chain.doFilter(request, response);
-			pluginManager.destroy();
+			chain.doFilter(requestWrapper, response);
 
 			final ActionResult actionResult = cubbyRunnerPlugin
 					.getActionResult();
+			if (executeActionResult) {
+				final ActionContext actionContext = requestWrapper
+						.getActionContext();
+				actionResult.execute(actionContext, requestWrapper, response);
+			}
 			return actionResult;
 		} finally {
+			pluginManager.destroy();
 			for (final Filter filter : filters) {
 				filter.destroy();
 			}
@@ -179,6 +271,29 @@ public class CubbyRunner {
 
 		public ActionResult getActionResult() {
 			return actionResult;
+		}
+
+	}
+
+	static class CubbyRunnerHttpServletRequestWrapper extends
+			HttpServletRequestWrapper {
+
+		private ActionContext actionContext;
+
+		public CubbyRunnerHttpServletRequestWrapper(HttpServletRequest request) {
+			super(request);
+		}
+
+		@Override
+		public void setAttribute(String name, Object o) {
+			if (CubbyConstants.ATTR_ACTION_CONTEXT.equals(name)) {
+				this.actionContext = (ActionContext) o;
+			}
+			super.setAttribute(name, o);
+		}
+
+		public ActionContext getActionContext() {
+			return actionContext;
 		}
 
 	}
