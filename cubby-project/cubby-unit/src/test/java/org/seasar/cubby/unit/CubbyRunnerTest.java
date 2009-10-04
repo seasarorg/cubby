@@ -70,15 +70,6 @@ public class CubbyRunnerTest {
 
 	private MockAction mockAction = new MockAction();
 
-	private static ActionResult expectActionResult = new ActionResult() {
-
-		public void execute(ActionContext actionContext,
-				HttpServletRequest request, HttpServletResponse response)
-				throws Exception {
-		}
-
-	};
-
 	@Before
 	public void before() {
 		PathResolver pathResolver = new PathResolverImpl(
@@ -159,17 +150,20 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
-		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
-		replay(request, response);
+		ActionResult actionResult = createMock(ActionResult.class);
+		replay(request, response, actionResult);
 
-		ActionResult result = CubbyRunner.processAction(request, response);
-		assertSame(expectActionResult, result);
+		mockAction.setActionResult(actionResult);
+		ActionResult actual = CubbyRunner.processAction(request, response);
+		assertSame(actionResult, actual);
 		assertEquals("abcdefg", mockAction.getName());
+
+		verify(request, response, actionResult);
 	}
 
 	@Test
-	public void processAction2() throws Exception {
+	public void processActionWithServletContext() throws Exception {
 		parameterMap.put("name", new String[]{"abcdefg"});
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
@@ -209,18 +203,131 @@ public class CubbyRunnerTest {
 		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ServletContext servletContext = createMock(ServletContext.class);
-		replay(request, response, servletContext);
+		ActionResult actionResult = createMock(ActionResult.class);
+		replay(request, response, servletContext, actionResult);
 
-		ActionResult result = CubbyRunner.processAction(servletContext,
+		mockAction.setActionResult(actionResult);
+		ActionResult actual = CubbyRunner.processAction(servletContext,
 				request, response);
-		assertSame(expectActionResult, result);
+		assertSame(actionResult, actual);
 		assertEquals("abcdefg", mockAction.getName());
 
-		verify(request, response, servletContext);
+		verify(request, response, servletContext, actionResult);
+	}
+
+	@Test
+	public void processActionAndExecuteActionResult() throws Exception {
+		parameterMap.put("name", new String[] { "abcdefg" });
+
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		request.setAttribute(isA(String.class), anyObject());
+		expectLastCall().andStubAnswer(new IAnswer<Void>() {
+
+			public Void answer() throws Throwable {
+				attributes.put((String) getCurrentArguments()[0],
+						getCurrentArguments()[1]);
+				return null;
+			}
+
+		});
+		expect(request.getAttribute(isA(String.class))).andStubAnswer(
+				new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		request.removeAttribute(isA(String.class));
+		expectLastCall().andStubAnswer(new IAnswer<Void>() {
+
+			public Void answer() throws Throwable {
+				attributes.remove(getCurrentArguments()[0]);
+				return null;
+			}
+
+		});
+		expect(request.getServletPath()).andReturn("/mock/execute");
+		expect(request.getPathInfo()).andReturn(null);
+		expect(request.getParameterMap()).andReturn(parameterMap);
+		expect(request.getRequestURI()).andReturn("/context/mock/execute");
+		expect(request.getMethod()).andReturn("GET");
+		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		HttpServletResponse response = createMock(HttpServletResponse.class);
+		ActionResult actionResult = createMock(ActionResult.class);
+		actionResult.execute(isA(ActionContext.class),
+				isA(HttpServletRequest.class), isA(HttpServletResponse.class));
+		replay(request, response, actionResult);
+
+		mockAction.setActionResult(actionResult);
+		ActionResult actual = CubbyRunner.processActionAndExecuteActionResult(
+				request, response);
+
+		assertSame(actionResult, actual);
+		assertEquals("abcdefg", mockAction.getName());
+
+		verify(request, response, actionResult);
+	}
+
+	@Test
+	public void processActionAndExecuteActionResultWithServletContext()
+			throws Exception {
+		parameterMap.put("name", new String[] { "abcdefg" });
+
+		HttpServletRequest request = createMock(HttpServletRequest.class);
+		request.setAttribute(isA(String.class), anyObject());
+		expectLastCall().andStubAnswer(new IAnswer<Void>() {
+
+			public Void answer() throws Throwable {
+				attributes.put((String) getCurrentArguments()[0],
+						getCurrentArguments()[1]);
+				return null;
+			}
+
+		});
+		expect(request.getAttribute(isA(String.class))).andStubAnswer(
+				new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		request.removeAttribute(isA(String.class));
+		expectLastCall().andStubAnswer(new IAnswer<Void>() {
+
+			public Void answer() throws Throwable {
+				attributes.remove(getCurrentArguments()[0]);
+				return null;
+			}
+
+		});
+		expect(request.getServletPath()).andReturn("/mock/execute");
+		expect(request.getPathInfo()).andReturn(null);
+		expect(request.getParameterMap()).andReturn(parameterMap);
+		expect(request.getRequestURI()).andReturn("/context/mock/execute");
+		expect(request.getMethod()).andReturn("GET");
+		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		HttpServletResponse response = createMock(HttpServletResponse.class);
+		ServletContext servletContext = createMock(ServletContext.class);
+		ActionResult actionResult = createMock(ActionResult.class);
+		actionResult.execute(isA(ActionContext.class),
+				isA(HttpServletRequest.class), isA(HttpServletResponse.class));
+		replay(request, response, servletContext, actionResult);
+
+		mockAction.setActionResult(actionResult);
+		ActionResult actual = CubbyRunner.processActionAndExecuteActionResult(
+				servletContext, request, response);
+		assertSame(actionResult, actual);
+		assertEquals("abcdefg", mockAction.getName());
+
+		verify(request, response, servletContext, actionResult);
 	}
 
 	public static class MockAction {
 		private String name;
+
+		private ActionResult actionResult;
 
 		@RequestParameter
 		public void setName(String name) {
@@ -231,8 +338,12 @@ public class CubbyRunnerTest {
 			return name;
 		}
 
+		public void setActionResult(ActionResult actionResult) {
+			this.actionResult = actionResult;
+		}
+
 		public ActionResult execute() {
-			return expectActionResult;
+			return actionResult;
 		}
 	}
 
