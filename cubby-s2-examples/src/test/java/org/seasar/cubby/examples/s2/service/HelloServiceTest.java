@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.s2_examples.service;
+package org.seasar.cubby.examples.s2.service;
 
-import org.seasar.cubby.s2_examples.service.HelloService;
+import org.seasar.cubby.examples.s2.service.HelloService;
 
 import junit.framework.TestCase;
 

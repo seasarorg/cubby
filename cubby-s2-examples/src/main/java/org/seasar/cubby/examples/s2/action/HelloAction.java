@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.s2_examples.action;
+package org.seasar.cubby.examples.s2.action;
 
 import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionContext;
@@ -22,11 +22,11 @@ import org.seasar.cubby.action.Forward;
 import org.seasar.cubby.action.Redirect;
 import org.seasar.cubby.action.RequestParameter;
 import org.seasar.cubby.action.Validation;
+import org.seasar.cubby.examples.s2.service.HelloService;
 import org.seasar.cubby.validator.DefaultValidationRules;
 import org.seasar.cubby.validator.ValidationRules;
 import org.seasar.cubby.validator.validators.RequiredValidator;
 
-import org.seasar.cubby.s2_examples.service.HelloService;
 
 @ActionClass
 public class HelloAction {
