@@ -142,23 +142,46 @@ public abstract class CubbyTestCase extends S2TigerTestCase {
 	}
 
 	/**
-	 * ActionResultの型とパスをチェックします。
+	 * 指定された {@link ActionResult} の型とパスを検証します。
 	 * 
-	 * @param resultClass
-	 *            ActionResultの型
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
 	 * @param expectedPath
-	 *            期待されるパス
-	 * @param actualResult
-	 *            チェックするActionResult
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
 	 * @param characterEncoding
 	 *            URI のエンコーディング
 	 */
 	public static void assertPathEquals(
-			final Class<? extends ActionResult> resultClass,
-			final String expectedPath, final ActionResult actualResult,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual,
 			final String characterEncoding) {
-		CubbyAssert.assertPathEquals(resultClass, expectedPath, actualResult,
+		CubbyAssert.assertPathEquals(expectedType, expectedPath, actual,
 				characterEncoding);
+	}
+
+	/**
+	 * 指定された {@link ActionResult} の型とパスを検証します。
+	 * 
+	 * @param message
+	 *            メッセージ
+	 * @param expectedType
+	 *            期待する <code>ActionResult</code> の型
+	 * @param expectedPath
+	 *            期待する <code>ActionResult</code> のパス
+	 * @param actual
+	 *            実際の <code>ActionResult</code>
+	 * @param characterEncoding
+	 *            URI のエンコーディング
+	 * @since 2.0.2
+	 */
+	public static void assertPathEquals(final String message,
+			final Class<? extends ActionResult> expectedType,
+			final String expectedPath, final ActionResult actual,
+			final String characterEncoding) {
+		CubbyAssert.assertPathEquals(message, expectedType, expectedPath,
+				actual, characterEncoding);
 	}
 
 	/**
