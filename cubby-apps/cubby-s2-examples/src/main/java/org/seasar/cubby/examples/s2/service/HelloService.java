@@ -13,18 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.s2_examples.action;
+package org.seasar.cubby.examples.s2.service;
 
-import org.seasar.cubby.action.ActionClass;
-import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.Forward;
-import org.seasar.cubby.action.Path;
+public class HelloService {
 
-@ActionClass
-@Path("/")
-public class IndexAction {
-
-	public ActionResult index() {
-		return new Forward("index.jsp");
+	public String getMessage() {
+		return "Hello!";
 	}
+
 }

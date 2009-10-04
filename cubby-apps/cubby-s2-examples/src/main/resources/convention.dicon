@@ -21,7 +21,7 @@
 <components>
 	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
 		<initMethod name="addRootPackageName">
-			<arg>"org.seasar.cubby.s2_examples"</arg>
+			<arg>"org.seasar.cubby.examples.s2"</arg>
 		</initMethod>
 	</component>
 	<component class="org.seasar.framework.convention.impl.PersistenceConventionImpl"/>
