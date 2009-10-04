@@ -133,7 +133,15 @@
 				collapse="true">
 				<item name="リクエストのパース" href="/customize.html#リクエストのパース" />
 			</item>
-			<item name="JavaDoc" href="/cubby/apidocs/index.html" />
+			<item name="JavaDocs" href="/javadocs.html" collapse="true">
+				<item name="cubby" href="/cubby/apidocs/index.html" />
+				<item name="cubby-unit" href="/cubby-unit/apidocs/index.html" />
+				<item name="cubby-s2" href="/cubby-s2/apidocs/index.html" />
+				<item name="cubby-spring" href="/cubby-spring/apidocs/index.html" />
+				<item name="cubby-guice" href="/cubby-guice/apidocs/index.html" />
+				<item name="cubby-gson" href="/cubby-gson/apidocs/index.html" />
+				<item name="cubby-oval" href="/cubby-oval/apidocs/index.html" />
+			</item>
 			<item name="TLDDoc" href="/cubby/tlddoc/index.html" />
 			<item name="Tips集" href="/tips.html" collapse="true">
 				<item name="ファイルアップロード" href="/tips.html#ファイルアップロード" />
