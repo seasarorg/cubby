@@ -65,11 +65,6 @@ line.separator=\n
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>
     </repository>
-    <repository>
-      <id>google-maven-repository</id>
-      <name>Google Maven Repository</name>
-      <url>http://google-maven-repository.googlecode.com/svn/repository/</url>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -92,23 +87,23 @@ line.separator=\n
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>2.0.0</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-unit</artifactId>
-      <version>2.0.0</version>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-guice</artifactId>
-      <version>2.0.0</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-admin</artifactId>
-      <version>2.0.0</version>
+      <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
