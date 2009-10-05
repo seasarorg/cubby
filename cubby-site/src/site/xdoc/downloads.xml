@@ -11,13 +11,13 @@
 	<body>
 		<section name="ダウンロード" id="download">
 			<subsection name="最新のリリース" id="latest">
-				<h4>Cubby 2.0.1 (2009-08-31)</h4>
-				<p>リリース 2.0.1 です。(<a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=10993">リリースノート</a>）</p>
+				<h4>Cubby 2.0.2 (2009-10-06)</h4>
+				<p><a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=11013">リリースノート</a></p>
 				<ul>
-					<li>Cubby 本体とドキュメント <a href="https://www.seasar.org/svn/cubby/trunk/archives/cubby-2.0.1.zip">ダウンロード</a></li>
-					<li>サンプル war <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubby-showcase/2.0.1/cubby-showcase-2.0.1.war">ダウンロード</a></li>
-					<li>サンプルアプリ(Cubbitter) war <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/2.0.1/cubbitter-2.0.1.war">ダウンロード</a></li>
-					<li>プロジェクト <a href="https://www.seasar.org/svn/cubby/tags/cubby-project-2.0.1/">ソースコードリポジトリ</a>からチェックアウトして下さい</li>
+					<li>Cubby 本体とドキュメント <a href="https://www.seasar.org/svn/cubby/trunk/archives/cubby-2.0.2.zip">cubby-2.0.2.zip</a></li>
+					<li>サンプル <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubby-showcase/2.0.2/cubby-showcase-2.0.2.war">cubby-showcase-2.0.2.war</a></li>
+					<li>サンプルアプリケーション(Cubbitter) <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/2.0.2/cubbitter-2.0.2.war">cubbitter-2.0.2.war</a></li>
+					<li>ソースコードリポジトリ <a href="https://www.seasar.org/svn/cubby/tags/cubby-project-2.0.2/">https://www.seasar.org/svn/cubby/tags/cubby-project-2.0.2/</a></li>
 				</ul>
 				<p>以前のバージョンからの移行する際の注意点</p>
 				<ul>
@@ -27,19 +27,29 @@
 						<a href="https://www.seasar.org/issues/browse/CUBBY-247">https://www.seasar.org/issues/browse/CUBBY-247</a> をご覧下さい。
 					</li>
 				</ul>
-				<h4>Cubby 1.1.7 (2009-08-31)</h4>
-				<p>リリース 1.1.7 です。(<a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=10951">リリースノート</a>）</p>
-				<ul>
-					<li>Cubby 本体とドキュメント <a href="https://www.seasar.org/svn/cubby/trunk/archives/cubby-1.1.7.zip">ダウンロード</a></li>
-					<li>サンプル war <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubby-examples/1.1.7/cubby-examples-1.1.7.war">ダウンロード</a></li>
-					<li>サンプルアプリ(Cubbitter) war <a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/1.1.7/cubbitter-1.1.7.war">ダウンロード</a></li>
-					<li>プロジェクト <a href="https://www.seasar.org/svn/cubby/tags/cubby-project-1.1.7/">ソースコードリポジトリ</a>からチェックアウトして下さい</li>
-				</ul>
 			</subsection>
 			<a name="過去のリリース" />
 			<subsection name="過去のリリース">
 				<table>
 					<tbody>
+						<tr>
+							<td>2009-08-31</td>
+							<td><a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=10993">リリースノート</a></td>
+							<td><a href="https://www.seasar.org/svn/cubby/trunk/archives/cubby-2.0.1.zip">cubby-2.0.1.zip</a></td>
+							<td>
+								<a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubby-showcase/2.0.1/cubby-showcase-2.0.1.war">cubby-showcase-2.0.1.war</a><br />
+								<a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/2.0.1/cubbitter-2.0.1.war">cubbitter-2.0.1.war</a>
+							</td>
+						</tr>
+						<tr>
+							<td>2009-08-31</td>
+							<td><a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=10951">リリースノート</a></td>
+							<td><a href="https://www.seasar.org/svn/cubby/trunk/archives/cubby-1.1.7.zip">cubby-1.1.7.zip</a></td>
+							<td>
+								<a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubby-examples/1.1.7/cubby-examples-1.1.7.war">cubby-examples-1.1.7.war</a><br />
+								<a href="http://maven.seasar.org/maven2/org/seasar/cubby/cubbitter/1.1.7/cubbitter-1.1.7.war">cubbitter-1.1.7.war</a>
+							</td>
+						</tr>
 						<tr>
 							<td>2009-08-08</td>
 							<td><a href="https://www.seasar.org/issues/secure/ReleaseNote.jspa?projectId=10122&amp;styleName=Text&amp;version=10961">リリースノート</a></td>
