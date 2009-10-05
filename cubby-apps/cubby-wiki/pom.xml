@@ -101,17 +101,17 @@ line.separator=\n
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>${project.version}</version>
+      <version>2.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-guice</artifactId>
-      <version>${project.version}</version>
+      <version>2.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-oval</artifactId>
-      <version>${project.version}</version>
+      <version>2.0.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
