@@ -21,23 +21,23 @@
     <archetype>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-s2-archetype</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.2</version>
       <repository>http://maven.seasar.org/maven2/</repository>
-      <description>Cubby 2.0.1 S2Container Integration</description>
+      <description>Cubby 2.0.2 S2Container Integration</description>
     </archetype>
     <archetype>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-guice-archetype</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.2</version>
       <repository>http://maven.seasar.org/maven2/</repository>
-      <description>Cubby 2.0.1 Guice Integration</description>
+      <description>Cubby 2.0.2 Guice Integration</description>
     </archetype>
     <archetype>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby-spring-archetype</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.2</version>
       <repository>http://maven.seasar.org/maven2/</repository>
-      <description>Cubby 2.0.1 Spring Integration</description>
+      <description>Cubby 2.0.2 Spring Integration</description>
     </archetype>
     <archetype>
       <groupId>org.seasar.cubby</groupId>
