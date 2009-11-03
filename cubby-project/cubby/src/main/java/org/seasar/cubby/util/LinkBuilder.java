@@ -38,7 +38,7 @@ public class LinkBuilder implements Serializable {
 	private String host;
 
 	/** ホスト上でのポート番号。 */
-	private int port;
+	private Integer port;
 
 	/** ホスト上のファイル。 */
 	private String file;
@@ -56,7 +56,7 @@ public class LinkBuilder implements Serializable {
 	public void clear() {
 		this.protocol = null;
 		this.host = null;
-		this.port = -1;
+		this.port = null;
 		this.file = null;
 	}
 
@@ -119,16 +119,14 @@ public class LinkBuilder implements Serializable {
 
 	/**
 	 * ホスト上のポート番号を設定します。
+	 * <p>
+	 * <code>port</code> に -1 を指定した場合は、プロトコルのデフォルトポートを使用します。
+	 * </p>
 	 * 
 	 * @param port
 	 *            ホスト上のポート番号
-	 * @throws IllegalArgumentException
-	 *             ポート番号が負の値の場合
 	 */
 	public void setPort(final int port) {
-		if (port < 0) {
-			throw new IllegalArgumentException("Invalid port number :" + port);
-		}
 		this.port = port;
 	}
 
@@ -167,14 +165,35 @@ public class LinkBuilder implements Serializable {
 	public String toLink(final HttpServletRequest request)
 			throws MalformedURLException {
 		final URL requestURL = new URL(request.getRequestURL().toString());
-		final URL newURL = new URL(getNewProtocol(requestURL.getProtocol()),
-				getNewHost(requestURL.getHost()), getNewPort(requestURL
-						.getPort()), getNewFile(requestURL.getFile()));
+		final String newProtocol = getNewProtocol(requestURL.getProtocol());
+		final String newHost = getNewHost(requestURL.getHost());
+		final int newPort = getNewPort(requestURL.getPort());
+		final String newFile = getNewFile(requestURL.getFile());
+		final URL newURL = correctDefaultPort(new URL(newProtocol, newHost,
+				newPort, newFile));
 		if (isRelativeLink(requestURL, newURL)) {
 			return newURL.getFile();
 		} else {
 			return newURL.toExternalForm();
 		}
+	}
+
+	/**
+	 * 指定された URL に設定されたポートが、プロトコルのデフォルトポートだった場合はポートに -1 を指定した URL を返します。
+	 * 
+	 * @param url
+	 *            URL
+	 * @return URL
+	 * @throws MalformedURLException
+	 *             未知のプロトコルとして指定された場合
+	 */
+	private URL correctDefaultPort(URL url) throws MalformedURLException {
+		if (url.getPort() == url.getDefaultPort()) {
+			final URL correctedURL = new URL(url.getProtocol(), url.getHost(),
+					-1, url.getFile());
+			return correctedURL;
+		}
+		return url;
 	}
 
 	/**
@@ -238,7 +257,7 @@ public class LinkBuilder implements Serializable {
 	 * @return 新しい URL のホスト上のポート番号
 	 */
 	private int getNewPort(final int requestPort) {
-		if (this.port < 0) {
+		if (this.port == null) {
 			return requestPort;
 		} else {
 			return this.port;
