@@ -23,25 +23,6 @@
         </component>
       </arg>
     </initMethod>
-    <initMethod name="addCustomizer">
-      <arg>
-        <component class="org.seasar.cubby.plugins.s2.customizer.ActionMethodCustomizer">
-          <initMethod name="addInterceptorName">
-            <arg>"authActionInterceptor"</arg>
-          </initMethod>
-          <initMethod name="addClassPattern">
-            <arg>"org.seasar.cubby.showcase.todo"</arg>
-            <arg>".*"</arg>
-          </initMethod>
-          <initMethod name="addIgnoreClassPattern">
-            <arg>"org.seasar.cubby.showcase.todo"</arg>
-            <arg>"^LoginAction$"</arg>
-          </initMethod>
-          <property name="pointcut">".*"</property>
-          <property name="useLookupAdapter">true</property>
-        </component>
-      </arg>
-    </initMethod>
   </component>
   <component name="serviceCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
     <initMethod name="addCustomizer">
