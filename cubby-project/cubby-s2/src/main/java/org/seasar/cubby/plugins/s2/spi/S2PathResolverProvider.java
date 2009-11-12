@@ -96,14 +96,16 @@ public class S2PathResolverProvider implements PathResolverProvider,
 	 * 初期化します。
 	 */
 	public void initialize() {
-		if (initialized) {
-			return;
-		}
-		classDetector.detect();
-		pathResolver.addAll(actionClasses);
+		synchronized (pathResolver) {
+			if (initialized) {
+				return;
+			}
+			classDetector.detect();
+			pathResolver.addAll(actionClasses);
 
-		DisposableUtil.add(this);
-		initialized = true;
+			DisposableUtil.add(this);
+			initialized = true;
+		}
 	}
 
 	/**
