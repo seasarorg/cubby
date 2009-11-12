@@ -32,11 +32,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.internal.controller.RequestProcessor;
-import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
+import org.seasar.cubby.internal.controller.impl.RequestProcessingInvocationImpl;
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.internal.util.StringUtils;
+import org.seasar.cubby.plugin.RequestProcessingInvocation;
 import org.seasar.cubby.routing.PathInfo;
 
 /**
@@ -58,9 +58,6 @@ public class CubbyFilter implements Filter {
 
 	/** ルーター。 */
 	private final Router router = new RouterImpl();
-
-	/** 要求を処理します。 */
-	private final RequestProcessor requestProcessor = new RequestProcessorImpl();
 
 	/**
 	 * このフィルタを初期化します。
@@ -117,7 +114,7 @@ public class CubbyFilter implements Filter {
 	/**
 	 * フィルター処理を行います。
 	 * <p>
-	 * 要求された URI に対応する情報が {@link Router} から取得できた場合は、 {@link RequestProcessor}
+	 * 要求された URI に対応する情報が {@link Router} から取得できた場合は、 {@link RequestProcessingInvocationImpl}
 	 * によって要求を処理します。URI に対応する情報が取得できなかった場合はフィルタチェインで次のフィルタに処理を委譲します。
 	 * </p>
 	 * 
@@ -132,8 +129,7 @@ public class CubbyFilter implements Filter {
 	 * @throws ServletException
 	 *             要求の転送や要求のチェーンがこの例外をスローする場合
 	 * @see Router#routing(HttpServletRequest, HttpServletResponse, List)
-	 * @see RequestProcessor#process(HttpServletRequest, HttpServletResponse,
-	 *      PathInfo)
+	 * @see RequestProcessingInvocationImpl
 	 */
 	public void doFilter(final ServletRequest req, final ServletResponse res,
 			final FilterChain chain) throws IOException, ServletException {
@@ -144,7 +140,11 @@ public class CubbyFilter implements Filter {
 		if (pathInfo != null) {
 			request.setAttribute(ATTR_FILTER_CHAIN, chain);
 			try {
-				requestProcessor.process(request, response, pathInfo);
+				final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+						request, pathInfo.getURIParameters());
+				final RequestProcessingInvocation invocation = new RequestProcessingInvocationImpl(
+						wrappedRequest, response, pathInfo);
+				invocation.proceed();
 			} catch (final Exception e) {
 				if (e instanceof IOException) {
 					throw (IOException) e;

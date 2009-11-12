@@ -15,16 +15,8 @@
  */
 package org.seasar.cubby.internal.controller;
 
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.seasar.cubby.controller.MessagesBehaviour;
-import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
-import org.seasar.cubby.spi.container.Container;
 
 /**
  * 実行スレッドのコンテキスト情報です。
@@ -36,20 +28,13 @@ public class ThreadContext {
 	/** ThreadContext を保存するスレッドローカル。 */
 	private static final ThreadLocal<ThreadContext> THREAD_LOCAL = new ThreadLocal<ThreadContext>();
 
+	private static final ThreadLocal<ThreadContext> PREVIOUS = new ThreadLocal<ThreadContext>();
+
 	/** 要求。 */
 	private final HttpServletRequest request;
 
 	/** 応答 */
 	private final HttpServletResponse response;
-
-	/** メッセージのリソースバンドル。 */
-	private ResourceBundle messagesResourceBundle = null;
-
-	/** メッセージの {@link Map} */
-	private Map<String, Object> messages = null;
-
-	/** メッセージ表示用リソースバンドルの振る舞い。 */
-	private MessagesBehaviour messagesBehaviour;
 
 	/**
 	 * インスタンス化します。
@@ -70,7 +55,7 @@ public class ThreadContext {
 	 * 
 	 * @return コンテキスト
 	 */
-	private static ThreadContext getContext() {
+	public static ThreadContext getCurrentContext() {
 		final ThreadContext context = THREAD_LOCAL.get();
 		if (context == null) {
 			throw new IllegalStateException(
@@ -84,8 +69,8 @@ public class ThreadContext {
 	 * 
 	 * @return 要求
 	 */
-	public static HttpServletRequest getRequest() {
-		return getContext().request;
+	public HttpServletRequest getRequest() {
+		return request;
 	}
 
 	/**
@@ -93,118 +78,50 @@ public class ThreadContext {
 	 * 
 	 * @return 応答
 	 */
-	public static HttpServletResponse getResponse() {
-		return getContext().response;
+	public HttpServletResponse getResponse() {
+		return response;
 	}
 
 	/**
-	 * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} を取得します。
-	 * 
-	 * @return リソースバンドル
-	 */
-	public static ResourceBundle getMessagesResourceBundle() {
-		final ThreadContext context = getContext();
-		if (context.messagesResourceBundle == null) {
-			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
-			context.messagesResourceBundle = messagesBehaviour
-					.getBundle(context.request.getLocale());
-		}
-		return context.messagesResourceBundle;
-	}
-
-	/**
-	 * {@link #getMessagesResourceBundle()} で取得できる {@link ResourceBundle} を変換した
-	 * {@link Map} を取得します。
-	 * 
-	 * @return メッセージの {@link Map}
-	 */
-	public static Map<String, Object> getMessagesMap() {
-		final ThreadContext context = getContext();
-		if (context.messages == null) {
-			final ResourceBundle bundle = getMessagesResourceBundle();
-			final MessagesBehaviour messagesBehaviour = getMessagesBehaviour(context);
-			context.messages = messagesBehaviour.toMap(bundle);
-		}
-		return context.messages;
-	}
-
-	/**
-	 * メッセージ表示用リソースバンドルの振る舞いを取得します。
-	 * 
-	 * @param context
-	 *            実行スレッドのコンテキスト情報
-	 * @return メッセージ表示用リソースバンドルの振る舞い
-	 */
-	private static MessagesBehaviour getMessagesBehaviour(
-			final ThreadContext context) {
-		if (context.messagesBehaviour == null) {
-			final Container container = ProviderFactory.get(
-					ContainerProvider.class).getContainer();
-			context.messagesBehaviour = container
-					.lookup(MessagesBehaviour.class);
-		}
-		return context.messagesBehaviour;
-	}
-
-	/**
-	 * 指定されたコマンドを新しいコンテキスト内で実行します。
+	 * コンテキストに入ります。
 	 * 
 	 * @param request
 	 *            要求
 	 * @param response
 	 *            応答
-	 * @param command
-	 *            コンテキスト内で実行するコマンド
-	 * @throws Exception
-	 *             コマンドの実行中に例外が発生した場合
 	 */
-	public static void runInContext(final HttpServletRequest request,
-			final HttpServletResponse response, final Command command)
-			throws Exception {
+	public static void enter(final HttpServletRequest request,
+			final HttpServletResponse response) {
 		if (request == null) {
 			throw new NullPointerException("request");
 		}
 		if (response == null) {
 			throw new NullPointerException("response");
 		}
-		if (command == null) {
-			throw new NullPointerException("command");
-		}
 
 		final ThreadContext previous = THREAD_LOCAL.get();
+		if (previous != null) {
+			PREVIOUS.set(previous);
+		}
 		final ThreadContext context = new ThreadContext(request, response);
 		THREAD_LOCAL.set(context);
-		try {
-			command.execute(request, response);
-		} finally {
-			if (previous == null) {
-				THREAD_LOCAL.remove();
-			} else {
-				THREAD_LOCAL.set(previous);
-			}
+	}
+
+	/**
+	 * コンテキストを抜けます。
+	 */
+	public static void exit() {
+		final ThreadContext previous = PREVIOUS.get();
+		if (previous != null) {
+			THREAD_LOCAL.set(previous);
 		}
 	}
 
 	/**
-	 * コンテキスト内で実行するコマンドのインターフェイスです。
-	 * 
-	 * @author baba
+	 * コンテキストを削除します。
 	 */
-	public interface Command {
-
-		/**
-		 * コマンドを実行します。
-		 * 
-		 * @param request
-		 *            要求
-		 * @param response
-		 *            応答
-		 * @throws Exception
-		 *             コマンドの実行中に例外が発生した場合
-		 */
-		void execute(HttpServletRequest request, HttpServletResponse response)
-				throws Exception;
-
+	public static void remove() {
+		THREAD_LOCAL.remove();
 	}
 
 }

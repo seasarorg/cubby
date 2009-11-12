@@ -15,9 +15,13 @@
  */
 package org.seasar.cubby.util;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE;
+
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.servlet.ServletRequest;
 
 import org.seasar.cubby.internal.controller.ThreadContext;
 
@@ -67,8 +71,11 @@ public class Messages {
 	 * @return 置換処理後のメッセージ
 	 */
 	public static String getText(final String key, final Object... args) {
-		final ResourceBundle messagesResourceBundle = ThreadContext
-				.getMessagesResourceBundle();
-		return getText(messagesResourceBundle, key, args);
+		final ThreadContext currentContext = ThreadContext.getCurrentContext();
+		final ServletRequest request = currentContext.getRequest();
+		final ResourceBundle bundle = (ResourceBundle) request
+				.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE);
+		return getText(bundle, key, args);
 	}
+
 }

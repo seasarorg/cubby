@@ -15,7 +15,11 @@
  */
 package org.seasar.cubby.plugins.oval.validation;
 
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE;
+
 import java.util.ResourceBundle;
+
+import javax.servlet.ServletRequest;
 
 import net.sf.oval.localization.message.MessageResolver;
 
@@ -39,9 +43,12 @@ public class RequestLocaleMessageResolver implements MessageResolver {
 	 * </p>
 	 */
 	public String getMessage(final String key) {
-		final ResourceBundle messagesResourceBundle = ThreadContext
-				.getMessagesResourceBundle();
-		return messagesResourceBundle.getString(key);
+		final ThreadContext currentContext = ThreadContext.getCurrentContext();
+		final ServletRequest request = currentContext.getRequest();
+		final ResourceBundle bundle = (ResourceBundle) request
+				.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE);
+		final String message = bundle.getString(key);
+		return message;
 	}
 
 }

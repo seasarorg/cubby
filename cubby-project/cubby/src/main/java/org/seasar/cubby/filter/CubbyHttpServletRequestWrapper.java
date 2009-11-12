@@ -13,12 +13,13 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.filter;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_CONTEXT_PATH;
 import static org.seasar.cubby.CubbyConstants.ATTR_FORM_WRAPPER_FACTORY;
 import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES;
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -26,19 +27,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.controller.FormWrapperFactory;
-import org.seasar.cubby.internal.controller.ThreadContext;
+import org.seasar.cubby.controller.MessagesBehaviour;
+import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 import org.seasar.cubby.internal.util.IteratorEnumeration;
+import org.seasar.cubby.spi.ContainerProvider;
+import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
+import org.seasar.cubby.spi.container.Container;
 
 /**
  * 特別な属性を取得するためにサーブレットへの要求をラップします。
@@ -68,8 +75,13 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
  * </tr>
  * <tr>
  * <td>{@link CubbyConstants#ATTR_MESSAGES}</td>
- * <td>メッセージリソース</td>
+ * <td>メッセージリソースの <code>Map</code></td>
  * <td>{@link java.util.Map}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link CubbyConstants#ATTR_MESSAGES_RESOURCE_BUNDLE}</td>
+ * <td>メッセージリソースの <code>ResourceBundle</code></td>
+ * <td>{@link java.util.ResourceBundle}</td>
  * </tr>
  * <tr>
  * <td>{@link CubbyConstants#ATTR_FORM_WRAPPER_FACTORY}</td>
@@ -104,6 +116,9 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	/** フォームオブジェクトのラッパーファクトリです。 */
 	private FormWrapperFactory formWrapperFactory;
 
+	/** メッセージ表示用リソースバンドルの振る舞い */
+	private MessagesBehaviour messagesBehaviour;
+
 	/**
 	 * 指定された要求をラップした要求オブジェクトを構築します。
 	 * 
@@ -132,7 +147,11 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if (ATTR_CONTEXT_PATH.equals(name)) {
 			value = this.getContextPath();
 		} else if (ATTR_MESSAGES.equals(name)) {
-			value = ThreadContext.getMessagesMap();
+			value = getMessagesAsMap(this.getRequest(), this
+					.getMessagesBehaviour());
+		} else if (ATTR_MESSAGES_RESOURCE_BUNDLE.equals(name)) {
+			value = getMessagesAsResourceBundle(this.getRequest(), this
+					.getMessagesBehaviour());
 		} else if (ATTR_FORM_WRAPPER_FACTORY.equals(name)) {
 			if (this.formWrapperFactory == null) {
 				this.formWrapperFactory = new FormWrapperFactoryImpl();
@@ -175,6 +194,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		attributeNames.add(ATTR_CONTEXT_PATH);
 		attributeNames.add(ATTR_ACTION);
 		attributeNames.add(ATTR_MESSAGES);
+		attributeNames.add(ATTR_MESSAGES_RESOURCE_BUNDLE);
 		attributeNames.add(ATTR_FORM_WRAPPER_FACTORY);
 
 		final Object action = super.getAttribute(ATTR_ACTION);
@@ -309,6 +329,65 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 					new String[0]));
 		}
 		return parameterMap;
+	}
+
+	/**
+	 * 現在の実行スレッドに関連付けられた要求に対応するメッセージ用の {@link ResourceBundle} を取得します。
+	 * 
+	 * @return リソースバンドル
+	 */
+	private static ResourceBundle getMessagesAsResourceBundle(
+			final ServletRequest request,
+			final MessagesBehaviour messagesBehaviour) {
+		final ResourceBundle bundle = (ResourceBundle) request
+				.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE);
+		if (bundle != null) {
+			return bundle;
+		}
+
+		final ResourceBundle newBundle = messagesBehaviour.getBundle(request
+				.getLocale());
+		request.setAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE, newBundle);
+		return newBundle;
+	}
+
+	/**
+	 * {@link #getMessagesResourceBundle()} で取得できる {@link ResourceBundle} を変換した
+	 * {@link Map} を取得します。
+	 * 
+	 * @return メッセージの {@link Map}
+	 */
+	private static Map<String, Object> getMessagesAsMap(
+			final ServletRequest request,
+			final MessagesBehaviour messagesBehaviour) {
+		@SuppressWarnings("unchecked")
+		final Map<String, Object> messages = (Map<String, Object>) request
+				.getAttribute(ATTR_MESSAGES);
+		if (messages != null) {
+			return messages;
+		}
+
+		final ResourceBundle bundle = getMessagesAsResourceBundle(request,
+				messagesBehaviour);
+		final Map<String, Object> newMessages = messagesBehaviour.toMap(bundle);
+		request.setAttribute(ATTR_MESSAGES, newMessages);
+		return newMessages;
+	}
+
+	/**
+	 * メッセージ表示用リソースバンドルの振る舞いを取得します。
+	 * 
+	 * @param context
+	 *            実行スレッドのコンテキスト情報
+	 * @return メッセージ表示用リソースバンドルの振る舞い
+	 */
+	private MessagesBehaviour getMessagesBehaviour() {
+		if (this.messagesBehaviour == null) {
+			final Container container = ProviderFactory.get(
+					ContainerProvider.class).getContainer();
+			this.messagesBehaviour = container.lookup(MessagesBehaviour.class);
+		}
+		return this.messagesBehaviour;
 	}
 
 }

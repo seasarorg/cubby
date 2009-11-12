@@ -13,18 +13,21 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.filter;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.getCurrentArguments;
 import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +38,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +53,8 @@ import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
+import org.seasar.cubby.filter.CubbyHttpServletRequestWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
@@ -208,47 +213,44 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	@Test
 	public void getAttribute() throws Exception {
-		ThreadContext.runInContext(request, response, new Command() {
+		ThreadContext.enter(request, response);
+		try {
+			CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
+					request, new HashMap<String, String[]>());
 
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-						request, new HashMap<String, String[]>());
+			assertEquals("/context", wrapper
+					.getAttribute(CubbyConstants.ATTR_CONTEXT_PATH));
+			assertNotNull(wrapper.getAttribute(CubbyConstants.ATTR_MESSAGES));
 
-				assertEquals("/context", wrapper
-						.getAttribute(CubbyConstants.ATTR_CONTEXT_PATH));
-				assertEquals(ThreadContext.getMessagesMap(), wrapper
-						.getAttribute(CubbyConstants.ATTR_MESSAGES));
-
-				assertNull(wrapper.getAttribute("name"));
-				Action action = new MockAction();
-				wrapper.setAttribute(CubbyConstants.ATTR_ACTION, action);
-				assertSame(action, wrapper
-						.getAttribute(CubbyConstants.ATTR_ACTION));
-				assertEquals("expect name", wrapper.getAttribute("name"));
-				assertNull(wrapper.getAttribute("value"));
-				assertNull(wrapper.getAttribute("noprop"));
-			}
-
-		});
+			assertNull(wrapper.getAttribute("name"));
+			Action action = new MockAction();
+			wrapper.setAttribute(CubbyConstants.ATTR_ACTION, action);
+			assertSame(action, wrapper.getAttribute(CubbyConstants.ATTR_ACTION));
+			assertEquals("expect name", wrapper.getAttribute("name"));
+			assertNull(wrapper.getAttribute("value"));
+			assertNull(wrapper.getAttribute("noprop"));
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 	}
 
 	@Test
 	public void parameter() {
-		parameters.put("abc", new String[] { "value1" });
-		parameters.put("def", new String[] { "value2" });
+		parameters.put("abc", new String[]{"value1"});
+		parameters.put("def", new String[]{"value2"});
 
 		Map<String, String[]> uriParameterMap = new HashMap<String, String[]>();
-		uriParameterMap.put("abc", new String[] { "value3" });
-		uriParameterMap.put("ghi", new String[] { "value4" });
+		uriParameterMap.put("abc", new String[]{"value3"});
+		uriParameterMap.put("ghi", new String[]{"value4"});
 
 		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
 				request, uriParameterMap);
 
 		Hashtable<String, String[]> expects = new Hashtable<String, String[]>();
-		expects.put("abc", new String[] { "value1", "value3" });
-		expects.put("def", new String[] { "value2" });
-		expects.put("ghi", new String[] { "value4" });
+		expects.put("abc", new String[]{"value1", "value3"});
+		expects.put("def", new String[]{"value2"});
+		expects.put("ghi", new String[]{"value4"});
 
 		@SuppressWarnings("unchecked")
 		Enumeration parameterNames = wrapper.getParameterNames();
@@ -267,10 +269,10 @@ public class CubbyHttpServletRequestWrapperTest {
 		@SuppressWarnings("unchecked")
 		Map<String, String[]> parameterMap = wrapper.getParameterMap();
 		assertEquals(3, parameterMap.size());
-		assertArrayEquals(new String[] { "value1", "value3" }, parameterMap
+		assertArrayEquals(new String[]{"value1", "value3"}, parameterMap
 				.get("abc"));
-		assertArrayEquals(new String[] { "value2" }, parameterMap.get("def"));
-		assertArrayEquals(new String[] { "value4" }, parameterMap.get("ghi"));
+		assertArrayEquals(new String[]{"value2"}, parameterMap.get("def"));
+		assertArrayEquals(new String[]{"value4"}, parameterMap.get("ghi"));
 
 	}
 
@@ -281,6 +283,112 @@ public class CubbyHttpServletRequestWrapperTest {
 
 		public void setValue(String value) {
 		}
+	}
+
+	@Test
+	public void getMessagesMap_ja() throws Exception {
+		final HttpServletRequest request = createMockRequest();
+		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
+		final HttpServletResponse response = createNiceMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+				request, null);
+		final Map<?, ?> result = (Map<?, ?>) wrappedRequest
+				.getAttribute(CubbyConstants.ATTR_MESSAGES);
+		assertEquals("result.size()", 16, result.size());
+		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
+				"{0}は{1}以下選択してください。", result.get("valid.arrayMaxSize"));
+
+		verify(request, response);
+	}
+
+	@Test
+	public void getMessagesMap_en() throws Exception {
+		final HttpServletRequest request = createMockRequest();
+		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+				request, null);
+		final Map<?, ?> result = (Map<?, ?>) wrappedRequest
+				.getAttribute(CubbyConstants.ATTR_MESSAGES);
+		assertEquals("result.size()", 16, result.size());
+		assertEquals("(HashMap) result.get(\"valid.arrayMaxSize\")",
+				"{0} : selects <= {1}.", result.get("valid.arrayMaxSize"));
+
+		verify(request, response);
+	}
+
+	@Test
+	public void getMessagesResourceBundle_ja() throws Exception {
+		final HttpServletRequest request = createMockRequest();
+		expect(request.getLocale()).andStubReturn(Locale.JAPANESE);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+				request, null);
+		final ResourceBundle result = (ResourceBundle) wrappedRequest
+				.getAttribute(CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE);
+		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
+				.hasMoreElements());
+
+		verify(request, response);
+	}
+
+	@Test
+	public void getMessagesResourceBundle_en() throws Exception {
+		final HttpServletRequest request = createMockRequest();
+		expect(request.getLocale()).andStubReturn(Locale.ENGLISH);
+		final HttpServletResponse response = createMock(HttpServletResponse.class);
+		replay(request, response);
+
+		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
+				request, null);
+		final ResourceBundle result = (ResourceBundle) wrappedRequest
+				.getAttribute(CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE);
+		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
+				.hasMoreElements());
+
+		verify(request, response);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static HttpServletRequest createMockRequest() {
+		final Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+
+		final HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		expect(request.getAttribute(String.class.cast(anyObject())))
+				.andStubAnswer(new IAnswer<Object>() {
+
+					public Object answer() throws Throwable {
+						return attributes.get(getCurrentArguments()[0]);
+					}
+
+				});
+		request.setAttribute(String.class.cast(anyObject()), anyObject());
+		expectLastCall().andStubAnswer(new IAnswer<Object>() {
+
+			public Object answer() throws Throwable {
+				attributes.put(String.class.cast(getCurrentArguments()[0]),
+						getCurrentArguments()[1]);
+				return null;
+			}
+
+		});
+		expect(request.getAttributeNames()).andStubAnswer(
+				new IAnswer<Enumeration>() {
+
+					public Enumeration answer() throws Throwable {
+						return attributes.keys();
+					}
+
+				});
+		expect(request.getParameterMap()).andStubReturn(attributes);
+
+		return request;
 	}
 
 }

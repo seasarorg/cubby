@@ -150,6 +150,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ActionResult actionResult = createMock(ActionResult.class);
 		replay(request, response, actionResult);
@@ -253,6 +254,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ActionResult actionResult = createMock(ActionResult.class);
 		actionResult.execute(isA(ActionContext.class),
@@ -308,6 +310,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ServletContext servletContext = createMock(ServletContext.class);
 		ActionResult actionResult = createMock(ActionResult.class);

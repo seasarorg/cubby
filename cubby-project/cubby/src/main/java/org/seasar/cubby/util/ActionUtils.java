@@ -45,7 +45,8 @@ public class ActionUtils {
 	 * @return アクションコンテキスト
 	 */
 	public static ActionContext actionContext() {
-		final HttpServletRequest request = ThreadContext.getRequest();
+		final ThreadContext currentContext = ThreadContext.getCurrentContext();
+		final HttpServletRequest request = currentContext.getRequest();
 		return actionContext(request);
 	}
 

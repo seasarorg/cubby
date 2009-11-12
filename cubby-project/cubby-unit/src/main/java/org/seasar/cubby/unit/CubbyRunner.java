@@ -33,15 +33,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.internal.controller.RequestProcessor;
-import org.seasar.cubby.internal.controller.impl.RequestProcessorImpl;
+import org.seasar.cubby.filter.CubbyFilter;
 import org.seasar.cubby.internal.plugin.PluginManager;
-import org.seasar.cubby.internal.routing.Router;
-import org.seasar.cubby.internal.routing.impl.RouterImpl;
 import org.seasar.cubby.plugin.AbstractPlugin;
 import org.seasar.cubby.plugin.ActionResultInvocation;
 import org.seasar.cubby.plugin.PluginRegistry;
-import org.seasar.cubby.routing.PathInfo;
 
 /**
  * アクションを実行するためのクラスです。
@@ -247,14 +243,8 @@ public class CubbyRunner {
 
 		private void invoke(final HttpServletRequest request,
 				final HttpServletResponse response) throws Exception {
-			final Router router = new RouterImpl();
-			final PathInfo pathInfo = router.routing(request, response);
-			if (pathInfo == null) {
-				return;
-			}
-
-			final RequestProcessor requestProcessor = new RequestProcessorImpl();
-			requestProcessor.process(request, response, pathInfo);
+			final CubbyFilter cubbyFilter = new CubbyFilter();
+			cubbyFilter.doFilter(request, response, this);
 		}
 
 	}

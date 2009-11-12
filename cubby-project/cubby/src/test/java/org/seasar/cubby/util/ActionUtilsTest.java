@@ -37,7 +37,6 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 
 /**
  * 
@@ -54,14 +53,13 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				assertSame(actionContext, ActionUtils.actionContext());
-			}
-
-		});
+		ThreadContext.enter(request, response);
+		try {
+			assertSame(actionContext, ActionUtils.actionContext());
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		verify(actionContext, request, response);
 	}
@@ -88,7 +86,7 @@ public class ActionUtilsTest {
 		replay(actionContext, request, response);
 
 		try {
-			ActionUtils.actionContext();
+			System.out.println("****" + ActionUtils.actionContext());
 			fail();
 		} catch (IllegalStateException e) {
 			// ok
@@ -161,13 +159,13 @@ public class ActionUtilsTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(actionContext, request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				assertSame(flashMap, ActionUtils.actionContext().getFlashMap());
-			}
-		});
+		ThreadContext.enter(request, response);
+		try {
+			assertSame(flashMap, ActionUtils.actionContext().getFlashMap());
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		verify(actionContext, request, response);
 	}
