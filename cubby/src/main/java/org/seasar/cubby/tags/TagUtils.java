@@ -286,7 +286,7 @@ class TagUtils {
 	 *         <code>false</code>
 	 */
 	public static boolean contains(final Object obj, final String str) {
-		if (obj instanceof Collection) {
+		if (obj instanceof Collection<?>) {
 			return ((Collection<?>) obj).contains(str);
 		} else if (obj.getClass().isArray()) {
 			for (final Object value : (Object[]) obj) {
