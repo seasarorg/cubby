@@ -45,7 +45,7 @@ public class CubbyFunctions {
 	 *         <code>false</code>
 	 */
 	public static Boolean contains(final Object collection, final Object obj) {
-		if (collection instanceof Collection) {
+		if (collection instanceof Collection<?>) {
 			return _contains((Collection<?>) collection, obj);
 		} else if (collection != null && collection.getClass().isArray()) {
 			return _contains(Arrays.asList((Object[]) collection), obj);

@@ -126,7 +126,7 @@ public class FormWrapperFactoryImpl implements FormWrapperFactory {
 						Array.set(array, i, converted);
 					}
 					return array;
-				} else if (value instanceof Collection) {
+				} else if (value instanceof Collection<?>) {
 					final Collection<?> collection = (Collection<?>) value;
 					final String[] array = (String[]) Array.newInstance(
 							String.class, collection.size());
