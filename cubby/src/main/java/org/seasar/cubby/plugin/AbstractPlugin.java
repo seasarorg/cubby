@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.spi.Provider;
 
 /**
@@ -86,6 +87,14 @@ public abstract class AbstractPlugin implements Plugin {
 	 * {@inheritDoc}
 	 */
 	public void destroy() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public PathInfo invokeRouting(final RoutingInvocation invocation)
+			throws Exception {
+		return invocation.proceed();
 	}
 
 	/**
