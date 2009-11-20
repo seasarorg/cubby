@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.spi.Provider;
 
 /**
@@ -91,6 +92,23 @@ public interface Plugin {
 	void destroy();
 
 	// サーブレット要求の処理
+
+	/**
+	 * ルーティングを実行して要求されたパスの情報を取得します。
+	 * <p>
+	 * このメソッドをオーバーライドすることで、ルーティングの実行をインターセプトすることができます。
+	 * </p>
+	 * <p>
+	 * このメソッド内で {@link RoutingInvocation#proceed()} メソッドを実行することで、別のプラグインの
+	 * {@link #invokeRouting(RoutingInvocation)} またはルーティングが実行されます。
+	 * </p>
+	 * 
+	 * @param invocation
+	 *            ルーティングの実行情報
+	 * @throws Exception
+	 *             ルーティングの実行時に例外が発生した場合
+	 */
+	PathInfo invokeRouting(RoutingInvocation invocation) throws Exception;
 
 	/**
 	 * 要求に対する処理を実行します。

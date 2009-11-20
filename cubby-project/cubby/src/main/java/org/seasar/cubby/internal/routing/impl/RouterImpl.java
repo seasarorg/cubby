@@ -19,6 +19,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ROUTING;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -29,6 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.internal.routing.Router;
 import org.seasar.cubby.internal.util.RequestUtils;
+import org.seasar.cubby.plugin.Plugin;
+import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugin.RoutingInvocation;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
@@ -87,9 +91,105 @@ public class RouterImpl implements Router {
 				.get(PathResolverProvider.class);
 		final PathResolver pathResolver = pathResolverProvider
 				.getPathResolver();
-		final PathInfo pathInfo = pathResolver.getPathInfo(path, request
-				.getMethod(), request.getCharacterEncoding());
-		return pathInfo;
+		final RoutingInvocation routingInvocation = new RoutingInvocationImpl(
+				path, pathResolver, request, response);
+		try {
+			return routingInvocation.proceed();
+		} catch (final Exception e) {
+			logger.warn("routing failed.", e);
+			return null;
+		}
+	}
+
+	/**
+	 * 要求処理の実行情報の実装です。
+	 * 
+	 * @author baba
+	 */
+	static class RoutingInvocationImpl implements RoutingInvocation {
+
+		/** パス。 */
+		private final String path;
+
+		/** パスのリゾルバ。 */
+		private final PathResolver pathResolver;
+
+		/** 要求。 */
+		private final HttpServletRequest request;
+
+		/** 応答。 */
+		private final HttpServletResponse response;
+
+		/** プラグインのイテレータ。 */
+		private final Iterator<Plugin> pluginsIterator;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param path
+		 *            パス
+		 * @param pathResolver
+		 *            パスのリゾルバ
+		 * @param request
+		 *            要求
+		 * @param response
+		 *            応答
+		 */
+		public RoutingInvocationImpl(final String path,
+				final PathResolver pathResolver,
+				final HttpServletRequest request,
+				final HttpServletResponse response) {
+			this.path = path;
+			this.pathResolver = pathResolver;
+			this.request = request;
+			this.response = response;
+
+			final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+			this.pluginsIterator = pluginRegistry.getPlugins().iterator();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public PathInfo proceed() throws Exception {
+			if (pluginsIterator.hasNext()) {
+				final Plugin plugin = pluginsIterator.next();
+				return plugin.invokeRouting(this);
+			} else {
+				final PathInfo pathInfo = pathResolver.getPathInfo(path,
+						request.getMethod(), request.getCharacterEncoding());
+				return pathInfo;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public String getPath() {
+			return path;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public PathResolver getPathResolver() {
+			return pathResolver;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletRequest getRequest() {
+			return request;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletResponse getResponse() {
+			return response;
+		}
+
 	}
 
 	/**
