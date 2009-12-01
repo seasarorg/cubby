@@ -35,7 +35,7 @@ import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Validation;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.mock.MockActionErrors;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.spi.BeanDescProvider;
@@ -72,7 +72,7 @@ public class UserValidationRuleTest {
 		expect(request.getAttribute(ATTR_PARAMS)).andReturn(params).anyTimes();
 		replay(request);
 
-		ActionErrors actionErrors = new ActionErrorsImpl();
+		ActionErrors actionErrors = new MockActionErrors();
 
 		Validation validation = ValidationUtils.getValidation(method);
 		ValidationRules rules = ValidationUtils.getValidationRules(action,

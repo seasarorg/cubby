@@ -39,10 +39,6 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
-import org.seasar.cubby.action.FlashMap;
-import org.seasar.cubby.action.impl.ActionContextImpl;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.action.impl.FlashMapImpl;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.internal.controller.RequestProcessor;
@@ -62,12 +58,6 @@ public class RequestProcessorImplTest {
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	private RequestProcessor requestProcessor = new RequestProcessorImpl();
-
-	private FlashMap flashMap;
-
-	private ActionErrors actionErrors;
-
-	private ActionContext actionContext;
 
 	@Before
 	public void setupProvider() {
@@ -91,15 +81,15 @@ public class RequestProcessorImplTest {
 						if (MockAction.class.equals(type)) {
 							return type.cast(new MockAction());
 						}
-						if (ActionErrors.class.equals(type)) {
-							return type.cast(actionErrors);
-						}
-						if (FlashMap.class.equals(type)) {
-							return type.cast(flashMap);
-						}
-						if (ActionContext.class.equals(type)) {
-							return type.cast(actionContext);
-						}
+						// if (ActionErrors.class.equals(type)) {
+						// return type.cast(actionErrors);
+						// }
+						// if (FlashMap.class.equals(type)) {
+						// return type.cast(flashMap);
+						// }
+						// if (ActionContext.class.equals(type)) {
+						// return type.cast(actionContext);
+						// }
 						throw new LookupException();
 					}
 
@@ -140,11 +130,6 @@ public class RequestProcessorImplTest {
 		expect(pathInfo.getURIParameters()).andReturn(
 				new HashMap<String, String[]>());
 		replay(routing, request, response, pathInfo);
-
-		this.actionErrors = new ActionErrorsImpl();
-		this.flashMap = new FlashMapImpl(request);
-		this.actionContext = new ActionContextImpl();
-		actionContext.initialize(null, null, null, actionErrors, flashMap);
 
 		requestProcessor.process(request, response, pathInfo);
 

@@ -26,23 +26,6 @@ import java.util.Map;
 public interface ActionContext {
 
 	/**
-	 * このコンテキストを初期化します。
-	 * 
-	 * @param action
-	 *            アクション
-	 * @param actionClass
-	 *            アクションクラス
-	 * @param actionMethod
-	 *            アクションメソッド
-	 * @param actionErrors
-	 *            アクションエラー
-	 * @param flashMap
-	 *            揮発性メッセージ
-	 */
-	void initialize(Object action, Class<?> actionClass, Method actionMethod,
-			ActionErrors actionErrors, Map<String, Object> flashMap);
-
-	/**
 	 * アクションを取得します。
 	 * 
 	 * @return アクション

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action.impl;
+package org.seasar.cubby.internal.controller.impl;
 
 import static org.seasar.cubby.action.RequestParameterBindingType.NONE;
 import static org.seasar.cubby.internal.util.LogMessages.format;
@@ -21,6 +21,8 @@ import static org.seasar.cubby.internal.util.LogMessages.format;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
@@ -40,34 +42,64 @@ import org.seasar.cubby.spi.beans.BeanDescFactory;
  * 
  * @author baba
  */
-public class ActionContextImpl implements ActionContext {
+class ActionContextImpl implements ActionContext {
 
 	/** アクション。 */
-	private Object action;
+	private final Object action;
 
 	/** アクションクラス。 */
-	private Class<?> actionClass;
+	private final Class<?> actionClass;
 
 	/** アクションメソッド。 */
-	private Method actionMethod;
+	private final Method actionMethod;
 
 	/** アクションエラー。 */
-	private ActionErrors actionErrors;
+	private final ActionErrors actionErrors;
 
 	/** 揮発性メッセージ。 */
-	private Map<String, Object> flashMap;
+	private final Map<String, Object> flashMap;
 
 	/**
-	 * {@inheritDoc}
+	 * インスタンス化します。
+	 * 
+	 * @param request
+	 *            要求
+	 * @param action
+	 *            アクション
+	 * @param actionClass
+	 *            アクションクラス
+	 * @param actionMethod
+	 *            アクションメソッド
 	 */
-	public void initialize(final Object action, final Class<?> actionClass,
-			final Method actionMethod, final ActionErrors actionErrors,
-			final Map<String, Object> flashMap) {
+	public ActionContextImpl(final HttpServletRequest request,
+			final Object action, final Class<?> actionClass,
+			final Method actionMethod) {
 		this.action = action;
 		this.actionClass = actionClass;
 		this.actionMethod = actionMethod;
-		this.actionErrors = actionErrors;
-		this.flashMap = flashMap;
+
+		this.actionErrors = new ActionErrorsImpl();
+		this.flashMap = new FlashMapImpl(request);
+
+		if (action instanceof Action) {
+			initializeAction((Action) action, actionErrors, flashMap);
+		}
+	}
+
+	/**
+	 * アクションを初期化します。
+	 * 
+	 * @param action
+	 *            アクション
+	 * @param actionErrors
+	 *            アクションエラー
+	 * @param flashMap
+	 *            揮発性マップ
+	 */
+	private void initializeAction(final Action action,
+			final ActionErrors actionErrors, final Map<String, Object> flashMap) {
+		action.setErrors(actionErrors);
+		action.setFlash(flashMap);
 	}
 
 	/**
@@ -159,12 +191,12 @@ public class ActionContextImpl implements ActionContext {
 
 		final RequestParameterBindingType type = form.bindingType();
 		switch (type) {
-		case ALL_PROPERTIES:
-			return true;
-		case ONLY_SPECIFIED_PROPERTIES:
-			return false;
-		default:
-			throw new IllegalStateException(type.toString());
+			case ALL_PROPERTIES :
+				return true;
+			case ONLY_SPECIFIED_PROPERTIES :
+				return false;
+			default :
+				throw new IllegalStateException(type.toString());
 		}
 	}
 

@@ -27,7 +27,6 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.Form;
 import org.seasar.cubby.action.RequestParameterBindingType;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
@@ -41,14 +40,14 @@ public class MockActionContext implements ActionContext {
 
 	private Method actionMethod;
 
-	private ActionErrors actionErrors = new ActionErrorsImpl();
+	private ActionErrors actionErrors = new MockActionErrors();
 
 	private Map<String, Object> flashMap = new HashMap<String, Object>();
 
 	public MockActionContext(Object action, Class<?> actionClass,
 			Method actionMethod) {
 		this.initialize(action, actionClass, actionMethod,
-				new ActionErrorsImpl(), new HashMap<String, Object>());
+				new MockActionErrors(), new HashMap<String, Object>());
 	}
 
 	public MockActionContext() {

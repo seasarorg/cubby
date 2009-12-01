@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.action.impl;
+package org.seasar.cubby.internal.controller.impl;
 
 import static org.easymock.EasyMock.anyBoolean;
 import static org.easymock.EasyMock.createMock;
@@ -37,7 +37,7 @@ import javax.servlet.http.HttpSession;
 
 import org.easymock.IAnswer;
 import org.junit.Test;
-import org.seasar.cubby.action.impl.FlashMapImpl;
+import org.seasar.cubby.internal.controller.impl.FlashMapImpl;
 
 /**
  * 

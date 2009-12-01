@@ -24,11 +24,11 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionContextProxy;
 import org.seasar.cubby.action.ActionErrors;
+import org.seasar.cubby.action.ActionErrorsProxy;
 import org.seasar.cubby.action.FlashMap;
-import org.seasar.cubby.action.impl.ActionContextImpl;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
-import org.seasar.cubby.action.impl.FlashMapImpl;
+import org.seasar.cubby.action.FlashMapProxy;
 import org.seasar.cubby.controller.FormatPattern;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.RequestParser;
@@ -321,22 +321,22 @@ public class CubbyModule extends AbstractModule {
 
 	@Provides
 	@RequestScoped
-	ActionErrors provideActionErrors() {
-		final ActionErrors actionErrors = new ActionErrorsImpl();
+	ActionErrors provideActionErrors(final HttpServletRequest request) {
+		final ActionErrors actionErrors = new ActionErrorsProxy(request);
 		return actionErrors;
 	}
 
 	@Provides
 	@RequestScoped
 	FlashMap provideFlashMap(final HttpServletRequest request) {
-		final FlashMap flashMap = new FlashMapImpl(request);
+		final FlashMap flashMap = new FlashMapProxy(request);
 		return flashMap;
 	}
 
 	@Provides
 	@RequestScoped
-	ActionContext provideActionContext() {
-		final ActionContext actionContext = new ActionContextImpl();
+	ActionContext provideActionContext(final HttpServletRequest request) {
+		final ActionContext actionContext = new ActionContextProxy(request);
 		return actionContext;
 	}
 
