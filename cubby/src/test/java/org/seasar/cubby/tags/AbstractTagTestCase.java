@@ -41,7 +41,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.mock.MockActionErrors;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
@@ -146,7 +146,7 @@ public abstract class AbstractTagTestCase {
 	}
 
 	protected void setupErrors(JspContext context) {
-		ActionErrorsImpl errors = new ActionErrorsImpl();
+		MockActionErrors errors = new MockActionErrors();
 		context.setAttribute("errors", errors, PageContext.REQUEST_SCOPE);
 	}
 

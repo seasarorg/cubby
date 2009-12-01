@@ -33,11 +33,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionErrors;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.controller.ThreadContext;
 import org.seasar.cubby.internal.controller.ThreadContext.Command;
+import org.seasar.cubby.mock.MockActionErrors;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
@@ -50,7 +50,7 @@ public class FieldValidationRuleTest {
 
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
-	private ActionErrors errors = new ActionErrorsImpl();
+	private ActionErrors errors = new MockActionErrors();
 
 	@Before
 	public void setup() {

@@ -41,12 +41,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.ActionContext;
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.action.RequestParameter;
-import org.seasar.cubby.action.impl.ActionContextImpl;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
 import org.seasar.cubby.plugin.PluginRegistry;
@@ -80,10 +76,6 @@ public class CubbyRunnerTest {
 				new PathTemplateParserImpl());
 		pathResolver.add(MockAction.class);
 
-		final ActionErrors actionErrors = new ActionErrorsImpl();
-		final FlashMap flashMap = new MockFlashMap();
-		final ActionContext actionContext = new ActionContextImpl();
-
 		BinderPlugin binderPlugin = new BinderPlugin();
 		binderPlugin.bind(RequestParserProvider.class).toInstance(
 				new AbstractRequestParserProvider() {
@@ -91,7 +83,7 @@ public class CubbyRunnerTest {
 					@Override
 					protected Collection<RequestParser> getRequestParsers() {
 						return Arrays
-								.asList(new RequestParser[] { new DefaultRequestParser() });
+								.asList(new RequestParser[]{new DefaultRequestParser()});
 					}
 
 				});
@@ -101,15 +93,6 @@ public class CubbyRunnerTest {
 					public <T> T lookup(Class<T> type) throws LookupException {
 						if (MockAction.class.equals(type)) {
 							return type.cast(mockAction);
-						}
-						if (ActionErrors.class.equals(type)) {
-							return type.cast(actionErrors);
-						}
-						if (FlashMap.class.equals(type)) {
-							return type.cast(flashMap);
-						}
-						if (ActionContext.class.equals(type)) {
-							return type.cast(actionContext);
 						}
 						throw new LookupException("type:" + type);
 					}
@@ -131,7 +114,7 @@ public class CubbyRunnerTest {
 
 	@Test
 	public void processAction() throws Exception {
-		parameterMap.put("name", new String[] { "abcdefg" });
+		parameterMap.put("name", new String[]{"abcdefg"});
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		request.setAttribute(isA(String.class), anyObject());
@@ -167,6 +150,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ActionResult actionResult = createMock(ActionResult.class);
 		replay(request, response, actionResult);
@@ -181,7 +165,7 @@ public class CubbyRunnerTest {
 
 	@Test
 	public void processActionWithServletContext() throws Exception {
-		parameterMap.put("name", new String[] { "abcdefg" });
+		parameterMap.put("name", new String[]{"abcdefg"});
 
 		HttpServletRequest request = createMock(HttpServletRequest.class);
 		request.setAttribute(isA(String.class), anyObject());
@@ -217,6 +201,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ServletContext servletContext = createMock(ServletContext.class);
 		ActionResult actionResult = createMock(ActionResult.class);
@@ -269,6 +254,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ActionResult actionResult = createMock(ActionResult.class);
 		actionResult.execute(isA(ActionContext.class),
@@ -324,6 +310,7 @@ public class CubbyRunnerTest {
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		expect(request.getMethod()).andReturn("GET");
 		expect(request.getCharacterEncoding()).andReturn("UTF-8");
+		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		ServletContext servletContext = createMock(ServletContext.class);
 		ActionResult actionResult = createMock(ActionResult.class);

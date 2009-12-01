@@ -23,17 +23,13 @@ import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
-import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
-import org.seasar.cubby.action.FlashMap;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.plugin.ActionInvocation;
@@ -78,21 +74,11 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final Object action = container.lookup(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 
-		final ActionErrors actionErrors = container.lookup(ActionErrors.class);
-		request.setAttribute(ATTR_ERRORS, actionErrors);
-
-		final FlashMap flashMap = container.lookup(FlashMap.class);
-		request.setAttribute(ATTR_FLASH, flashMap);
-
-		final ActionContext actionContext = container
-				.lookup(ActionContext.class);
-		actionContext.initialize(action, actionClass, actionMethod,
-				actionErrors, flashMap);
+		final ActionContext actionContext = new ActionContextImpl(request,
+				action, actionClass, actionMethod);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
-
-		if (action instanceof Action) {
-			initializeAction((Action) action, actionErrors, flashMap);
-		}
+		request.setAttribute(ATTR_ERRORS, actionContext.getActionErrors());
+		request.setAttribute(ATTR_FLASH, actionContext.getFlashMap());
 
 		actionContext.invokeInitializeMethod();
 
@@ -106,12 +92,6 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
 				actionResult, actionContext);
 		return actionResultWrapper;
-	}
-
-	private void initializeAction(final Action action,
-			final ActionErrors actionErrors, final Map<String, Object> flashMap) {
-		action.setErrors(actionErrors);
-		action.setFlash(flashMap);
 	}
 
 	/**

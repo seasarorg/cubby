@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.seasar.cubby.action.impl.ActionErrorsImpl;
+import org.seasar.cubby.mock.MockActionErrors;
 
 public class ActionTest {
 
@@ -32,7 +32,7 @@ public class ActionTest {
 
 	@Test
 	public void errors() {
-		ActionErrors errors = new ActionErrorsImpl();
+		ActionErrors errors = new MockActionErrors();
 		action.setErrors(errors);
 		assertSame(errors, action.errors);
 		assertSame(errors, action.getErrors());
