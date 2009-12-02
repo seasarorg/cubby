@@ -886,7 +886,7 @@ public class RequestParameterBinderImplTest {
 		}
 	}
 
-	private class MockAction extends Action {
+	class MockAction extends Action {
 		@Form(bindingType = RequestParameterBindingType.ALL_PROPERTIES)
 		public ActionResult all() {
 			return null;
@@ -908,7 +908,7 @@ public class RequestParameterBinderImplTest {
 	}
 
 	@Form(bindingType = RequestParameterBindingType.ALL_PROPERTIES)
-	private class MockAction2 extends Action {
+	class MockAction2 extends Action {
 		@Form(bindingType = RequestParameterBindingType.ONLY_SPECIFIED_PROPERTIES)
 		public ActionResult specified() {
 			return null;
