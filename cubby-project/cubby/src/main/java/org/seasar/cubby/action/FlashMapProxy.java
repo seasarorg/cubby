@@ -24,7 +24,7 @@ import javax.servlet.ServletRequest;
 /**
  * 揮発性メッセージへアクセスするプロキシです。
  * 
- * @since 2.1.0
+ * @since 2.0.5
  * @author baba
  */
 public class FlashMapProxy implements FlashMap {

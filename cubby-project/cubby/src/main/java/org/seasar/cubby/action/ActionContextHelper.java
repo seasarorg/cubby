@@ -22,8 +22,8 @@ import org.seasar.cubby.CubbyConstants;
 /**
  * 要求の属性に設定されたアクションコンテキストへアクセスするためのヘルパークラスです。
  * 
+ * @since 2.0.5
  * @author baba
- * @since 2.1.0
  */
 class ActionContextHelper {
 

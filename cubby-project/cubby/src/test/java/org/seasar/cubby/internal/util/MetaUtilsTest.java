@@ -68,7 +68,7 @@ public class MetaUtilsTest {
 		assertEquals(0, MetaUtils.getPriority(method));
 	}
 
-	public static class TestGetPriprity {
+	static class TestGetPriprity {
 		public void m1() {
 		}
 

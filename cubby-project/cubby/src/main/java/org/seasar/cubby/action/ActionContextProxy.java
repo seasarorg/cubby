@@ -23,7 +23,7 @@ import javax.servlet.ServletRequest;
 /**
  * アクションコンテキストへアクセスするプロキシです。
  * 
- * @since 2.1.0
+ * @since 2.0.5
  * @author baba
  */
 public class ActionContextProxy implements ActionContext {
