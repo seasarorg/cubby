@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.routing.impl;
+package org.seasar.cubby.filter;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -25,6 +25,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -37,7 +38,7 @@ import org.junit.Test;
 import org.seasar.cubby.CubbyConstants;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Path;
-import org.seasar.cubby.internal.routing.Router;
+import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.mock.MockPathResolverProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
@@ -48,11 +49,12 @@ import org.seasar.cubby.routing.impl.PathResolverImpl;
 import org.seasar.cubby.routing.impl.PathTemplateParserImpl;
 import org.seasar.cubby.spi.PathResolverProvider;
 
-public class RouterImplTest {
+public class CubbyFlterRoutingTest {
 
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
-	private Router router = new RouterImpl();
+	// private Router router = new RouterImpl();
+	private CubbyFilter cubbyFilter = new CubbyFilter();
 
 	@Before
 	public void setupProvider() {
@@ -82,7 +84,10 @@ public class RouterImplTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		PathInfo pathInfo = router.routing(request, response);
+		String path = RequestUtils.getPath(request);
+		List<Pattern> emptyList = Collections.emptyList();
+		PathInfo pathInfo = cubbyFilter.findPathInfo(request, response, path,
+				emptyList);
 		Map<String, Object[]> parameterMap = Collections.emptyMap();
 		Routing routing = pathInfo.dispatch(parameterMap);
 		assertNotNull(routing);
@@ -103,7 +108,10 @@ public class RouterImplTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(routing, request, response);
 
-		PathInfo pathInfo = router.routing(request, response);
+		String path = RequestUtils.getPath(request);
+		List<Pattern> emptyList = Collections.emptyList();
+		PathInfo pathInfo = cubbyFilter.findPathInfo(request, response, path,
+				emptyList);
 		Map<String, Object[]> parameterMap = Collections.emptyMap();
 		assertSame(routing, pathInfo.dispatch(parameterMap));
 
@@ -121,8 +129,9 @@ public class RouterImplTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		PathInfo pathInfo = router.routing(request, response, Arrays
-				.asList(new Pattern[] { Pattern.compile("/js/.*") }));
+		String path = RequestUtils.getPath(request);
+		PathInfo pathInfo = cubbyFilter.findPathInfo(request, response, path,
+				Arrays.asList(new Pattern[] { Pattern.compile("/js/.*") }));
 		assertNull(pathInfo);
 
 		verify(request, response);
