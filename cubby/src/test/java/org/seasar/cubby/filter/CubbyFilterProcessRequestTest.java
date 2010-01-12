@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.cubby.internal.controller.impl;
+package org.seasar.cubby.filter;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.eq;
@@ -41,7 +41,6 @@ import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Direct;
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.controller.impl.DefaultRequestParser;
-import org.seasar.cubby.internal.controller.RequestProcessor;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
@@ -53,11 +52,11 @@ import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 
-public class RequestProcessorImplTest {
+public class CubbyFilterProcessRequestTest {
 
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
-	private RequestProcessor requestProcessor = new RequestProcessorImpl();
+	private CubbyFilter cubbyFilter = new CubbyFilter();
 
 	@Before
 	public void setupProvider() {
@@ -81,15 +80,6 @@ public class RequestProcessorImplTest {
 						if (MockAction.class.equals(type)) {
 							return type.cast(new MockAction());
 						}
-						// if (ActionErrors.class.equals(type)) {
-						// return type.cast(actionErrors);
-						// }
-						// if (FlashMap.class.equals(type)) {
-						// return type.cast(flashMap);
-						// }
-						// if (ActionContext.class.equals(type)) {
-						// return type.cast(actionContext);
-						// }
 						throw new LookupException();
 					}
 
@@ -131,7 +121,7 @@ public class RequestProcessorImplTest {
 				new HashMap<String, String[]>());
 		replay(routing, request, response, pathInfo);
 
-		requestProcessor.process(request, response, pathInfo);
+		cubbyFilter.processRequest(request, response, pathInfo);
 
 		verify(routing, request, response, pathInfo);
 	}
