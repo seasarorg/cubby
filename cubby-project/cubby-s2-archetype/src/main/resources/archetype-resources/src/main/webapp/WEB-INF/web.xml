@@ -57,7 +57,7 @@
 
     <!--
     <filter>
-        <filter-name>requestDumpFilter</filter-name>
+        <filter-name>requestdump</filter-name>
         <filter-class>org.seasar.extension.filter.RequestDumpFilter</filter-class>
     </filter>
     -->
