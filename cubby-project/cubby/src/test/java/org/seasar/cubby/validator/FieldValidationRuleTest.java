@@ -21,9 +21,11 @@ import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +38,6 @@ import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.controller.impl.DefaultMessagesBehaviour;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockActionErrors;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.plugin.PluginRegistry;
@@ -80,69 +81,74 @@ public class FieldValidationRuleTest {
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
+		ThreadContext.enter(request, response);
+		try {
+			Map<String, Object[]> params = new HashMap<String, Object[]>();
+			params.put("name", new Object[]{"aa"});
 
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				Map<String, Object[]> params = new HashMap<String, Object[]>();
-				params.put("name", new Object[] { "aa" });
-
-				ValidationRule rule = new FieldValidationRule("name",
-						new RequiredValidator(), new ArrayMaxSizeValidator(1));
-				rule.apply(params, null, errors);
-				assertTrue(errors.isEmpty());
-			}
-		});
+			ValidationRule rule = new FieldValidationRule("name",
+					new RequiredValidator(), new ArrayMaxSizeValidator(1));
+			rule.apply(params, null, errors);
+			assertTrue(errors.isEmpty());
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 	}
 
 	@Test
 	public void apply2() throws Exception {
 		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(null);
+		final ResourceBundle resourceBundle = new DefaultMessagesBehaviour()
+				.getBundle(null);
+		expect(request.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE))
+				.andStubReturn(resourceBundle);
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
+		ThreadContext.enter(request, response);
+		try {
+			Map<String, Object[]> params = new HashMap<String, Object[]>();
+			params.put("name", new Object[]{"aa", "bb"});
 
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-
-				Map<String, Object[]> params = new HashMap<String, Object[]>();
-				params.put("name", new Object[] { "aa", "bb" });
-
-				ValidationRule rule = new FieldValidationRule("name",
-						new RequiredValidator(), new ArrayMaxSizeValidator(1));
-				rule.apply(params, null, errors);
-				assertFalse(errors.isEmpty());
-				assertFalse(errors.getFields().get("name").isEmpty());
-				assertTrue(errors.getIndexedFields().get("name").get(0)
-						.isEmpty());
-			}
-		});
+			ValidationRule rule = new FieldValidationRule("name",
+					new RequiredValidator(), new ArrayMaxSizeValidator(1));
+			rule.apply(params, null, errors);
+			assertFalse(errors.isEmpty());
+			assertFalse(errors.getFields().get("name").isEmpty());
+			assertTrue(errors.getIndexedFields().get("name").get(0).isEmpty());
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 	}
 
 	@Test
 	public void apply3() throws Exception {
 		final HttpServletRequest request = createMock(HttpServletRequest.class);
 		expect(request.getLocale()).andStubReturn(null);
+		final ResourceBundle resourceBundle = new DefaultMessagesBehaviour()
+				.getBundle(null);
+		expect(request.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE))
+				.andStubReturn(resourceBundle);
 		final HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
+		ThreadContext.enter(request, response);
+		try {
+			Map<String, Object[]> params = new HashMap<String, Object[]>();
 
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				Map<String, Object[]> params = new HashMap<String, Object[]>();
-
-				ValidationRule rule = new FieldValidationRule("name",
-						new RequiredValidator(), new ArrayMaxSizeValidator(1));
-				rule.apply(params, null, errors);
-				assertFalse(errors.isEmpty());
-				assertFalse(errors.getFields().get("name").isEmpty());
-				assertEquals(1, errors.getIndexedFields().get("name").get(0)
-						.size());
-			}
-		});
+			ValidationRule rule = new FieldValidationRule("name",
+					new RequiredValidator(), new ArrayMaxSizeValidator(1));
+			rule.apply(params, null, errors);
+			assertFalse(errors.isEmpty());
+			assertFalse(errors.getFields().get("name").isEmpty());
+			assertEquals(1, errors.getIndexedFields().get("name").get(0).size());
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 	}
 
 	public static class MockAction extends Action {

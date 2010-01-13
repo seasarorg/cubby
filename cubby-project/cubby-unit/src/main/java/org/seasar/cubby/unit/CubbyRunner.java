@@ -244,23 +244,7 @@ public class CubbyRunner {
 		private void invoke(final HttpServletRequest request,
 				final HttpServletResponse response) throws Exception {
 			final CubbyFilter cubbyFilter = new CubbyFilter();
-			final FilterChain chain = new FilterChain() {
-				
-				public void doFilter(ServletRequest request, ServletResponse response)
-						throws IOException, ServletException {
-				}
-
-			};
-			cubbyFilter.doFilter(request, response, chain);
-
-//			final Router router = new RouterImpl();
-//			final PathInfo pathInfo = router.routing(request, response);
-//			if (pathInfo == null) {
-//				return;
-//			}
-//
-//			final RequestProcessor requestProcessor = new RequestProcessorImpl();
-//			requestProcessor.process(request, response, pathInfo);
+			cubbyFilter.doFilter(request, response, this);
 		}
 
 	}

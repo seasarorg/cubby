@@ -50,7 +50,7 @@ class FlashMapImpl implements FlashMap {
 	 * </p>
 	 */
 	public FlashMapImpl() {
-		this(ThreadContext.getRequest());
+		this(ThreadContext.getCurrentContext().getRequest());
 	}
 
 	/**

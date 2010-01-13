@@ -15,6 +15,8 @@
  */
 package org.seasar.cubby.action;
 
+import java.util.Arrays;
+
 import org.seasar.cubby.util.Messages;
 
 /**
@@ -90,12 +92,27 @@ public class MessageInfo {
 				System.arraycopy(this.arguments, 0, args, 1,
 						this.arguments.length);
 			} else {
-				args = new Object[] { Messages.getText(fieldNameKey) };
+				args = new Object[]{Messages.getText(fieldNameKey)};
 			}
 		} else {
 			args = this.arguments;
 		}
 		return Messages.getText(key, args);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(super.toString());
+		builder.append("[key=");
+		builder.append(key);
+		builder.append(",arguments=");
+		builder.append(Arrays.deepToString(arguments));
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

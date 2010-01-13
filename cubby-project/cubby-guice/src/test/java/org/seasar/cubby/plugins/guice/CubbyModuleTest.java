@@ -48,7 +48,6 @@ import org.seasar.cubby.action.ActionClass;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.converter.impl.BigDecimalConverter;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.PathTemplateParser;
@@ -99,7 +98,8 @@ public class CubbyModuleTest {
 		replay(servletContext);
 
 		final CubbyGuiceServletContextListener cubbyGuiceServletContextListener = new CubbyGuiceServletContextListener();
-		cubbyGuiceServletContextListener.contextInitialized(new ServletContextEvent(servletContext));
+		cubbyGuiceServletContextListener
+				.contextInitialized(new ServletContextEvent(servletContext));
 
 		final GuiceFilter guiceFilter = new GuiceFilter();
 		guiceFilter.init(new FilterConfig() {
@@ -169,48 +169,33 @@ public class CubbyModuleTest {
 				} catch (final ConfigurationException e) {
 					// ok
 				}
-				try {
-					ThreadContext.runInContext((HttpServletRequest) request,
-							(HttpServletResponse) response, new Command() {
 
-								public void execute(
-										final HttpServletRequest request,
-										final HttpServletResponse response)
-										throws Exception {
-									final ConverterProvider converterProvider = ProviderFactory
-											.get(ConverterProvider.class);
-									System.out.println(converterProvider);
-									System.out
-											.println(converterProvider
-													.getConverter(BigDecimalConverter.class));
+				final ConverterProvider converterProvider = ProviderFactory
+						.get(ConverterProvider.class);
+				System.out.println(converterProvider);
+				System.out.println(converterProvider
+						.getConverter(BigDecimalConverter.class));
 
-									final FileUpload fileUpload1 = injector
-											.getInstance(FileUpload.class);
-									System.out.println(fileUpload1);
-									System.out.println(fileUpload1
-											.getFileItemFactory());
+				final FileUpload fileUpload1 = injector
+						.getInstance(FileUpload.class);
+				System.out.println(fileUpload1);
+				System.out.println(fileUpload1.getFileItemFactory());
 
-									final FileUpload fileUpload2 = injector
-											.getInstance(FileUpload.class);
-									System.out.println(fileUpload2);
-									System.out.println(fileUpload2
-											.getFileItemFactory());
+				final FileUpload fileUpload2 = injector
+						.getInstance(FileUpload.class);
+				System.out.println(fileUpload2);
+				System.out.println(fileUpload2.getFileItemFactory());
 
-									assertNotSame(fileUpload1, fileUpload2);
-									assertNotSame(fileUpload1
-											.getFileItemFactory(), fileUpload2
-											.getFileItemFactory());
-								}
-
-							});
-				} catch (final Exception e) {
-					throw new ServletException(e);
-				}
+				assertNotSame(fileUpload1, fileUpload2);
+				assertNotSame(fileUpload1.getFileItemFactory(), fileUpload2
+						.getFileItemFactory());
 			}
 
 		};
 		guiceFilter.doFilter(request, response, chain);
-		cubbyGuiceServletContextListener.contextDestroyed(new ServletContextEvent(servletContext));
+		cubbyGuiceServletContextListener
+				.contextDestroyed(new ServletContextEvent(servletContext));
+		ThreadContext.remove();
 	}
 
 	public static class TestModule extends AbstractModule {

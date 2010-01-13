@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 
 public class CubbyFunctionsTest {
 
@@ -52,9 +51,8 @@ public class CubbyFunctionsTest {
 
 	@Test
 	public void containsInArray() {
-		String[] array1 = { "unvalidate", "validateRecord", "branch" };
-		String[] array2 = { "unvalidate", "validateRecord", "branch",
-				"validate" };
+		String[] array1 = {"unvalidate", "validateRecord", "branch"};
+		String[] array2 = {"unvalidate", "validateRecord", "branch", "validate"};
 		assertFalse(CubbyFunctions.contains(array1, "validate"));
 		assertTrue(CubbyFunctions.contains(array2, "validate"));
 	}
@@ -120,16 +118,15 @@ public class CubbyFunctionsTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86",
-						CubbyFunctions.url("abc あいう"));
-				assertEquals("", CubbyFunctions.url(null));
-			}
-
-		});
+		ThreadContext.enter(request, response);
+		try {
+			assertEquals("abc%20%E3%81%82%E3%81%84%E3%81%86", CubbyFunctions
+					.url("abc あいう"));
+			assertEquals("", CubbyFunctions.url(null));
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		verify(request, response);
 	}
@@ -141,16 +138,15 @@ public class CubbyFunctionsTest {
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		replay(request, response);
 
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				assertEquals("abc%20%82%A0%82%A2%82%A4", CubbyFunctions
-						.url("abc あいう"));
-				assertEquals("", CubbyFunctions.url(null));
-			}
-
-		});
+		ThreadContext.enter(request, response);
+		try {
+			assertEquals("abc%20%82%A0%82%A2%82%A4", CubbyFunctions
+					.url("abc あいう"));
+			assertEquals("", CubbyFunctions.url(null));
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		verify(request, response);
 	}

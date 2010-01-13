@@ -42,7 +42,8 @@ import org.seasar.cubby.validator.ValidationContext;
  * <td>
  * <ol start="0">
  * <li>フィールド名</li>
- * </ol></td>
+ * </ol>
+ * </td>
  * </tr>
  * </tbody>
  * </table>
@@ -85,7 +86,9 @@ public class TokenValidator implements ArrayFieldValidator {
 
 		if (values.length == 1) {
 			final String token = (String) values[0];
-			final HttpServletRequest request = ThreadContext.getRequest();
+			final ThreadContext currentContext = ThreadContext
+					.getCurrentContext();
+			final HttpServletRequest request = currentContext.getRequest();
 			final HttpSession session = request.getSession(false);
 			if (session == null) {
 				return;

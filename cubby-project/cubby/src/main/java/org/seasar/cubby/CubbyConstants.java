@@ -23,73 +23,54 @@ package org.seasar.cubby;
  */
 public class CubbyConstants {
 
+	/** プレフィックス */
+	private static final String PREFIX = "org.seasar.cubby.";
+
 	// request --------------------------------------------------------
 
-	/**
-	 * アクションオブジェクトの要求の属性名。
-	 */
+	/** アクションオブジェクトの要求の属性名 */
 	public static final String ATTR_ACTION = "action";
 
-	/**
-	 * メッセージリソースを <code>Map</code> に変換したオブジェクトの要求の属性名。
-	 */
+	/** メッセージリソースを <code>Map</code> に変換したオブジェクトの要求の属性名 */
 	public static final String ATTR_MESSAGES = "messages";
 
-	/**
-	 * アクションエラーの要求の属性名。
-	 */
+	/** アクションエラーの要求の属性名 */
 	public static final String ATTR_ERRORS = "errors";
 
-	/**
-	 * コンテキストパスの要求の属性名。
-	 */
+	/** コンテキストパスの要求の属性名 */
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
 
-	/**
-	 * パラメータオブジェクトの要求の属性名。
-	 */
-	public static final String ATTR_PARAMS = "org.seasar.cubby.params";
 
-	/**
-	 * 内部フォワード時にルーティング情報を引き渡すための要求の属性名。
-	 */
-	public static final String ATTR_ROUTING = "org.seasar.cubby.routing";
+	/** パラメータオブジェクトの要求の属性名 */
+	public static final String ATTR_PARAMS = PREFIX + "params";
 
-	/**
-	 * アクションコンテキストの要求の属性名。
-	 */
-	public static final String ATTR_ACTION_CONTEXT = "org.seasar.cubby.actionContext";
+	/** 内部フォワード時にルーティング情報を引き渡すための要求の属性名 */
+	public static final String ATTR_ROUTING = PREFIX + "routing";
 
-	/**
-	 * 型変換失敗の要求の属性名。
-	 */
-	public static final String ATTR_CONVERSION_FAILURES = "org.seasar.cubby.conversionFailures";
+	/** アクションコンテキストの要求の属性名 */
+	public static final String ATTR_ACTION_CONTEXT = PREFIX + "actionContext";
 
-	/**
-	 * バリデーションエラーを表すオブジェクトの要求の属性名。
-	 */
-	public static final String ATTR_VALIDATION_FAIL = "org.seasar.cubby.validationFail";
+	/** 型変換失敗の要求の属性名 */
+	public static final String ATTR_CONVERSION_FAILURES = PREFIX + "conversionFailures";
 
-	/**
-	 * フォームオブジェクトのラッパーファクトリの要求の属性名。
-	 */
-	public static final String ATTR_FORM_WRAPPER_FACTORY = "org.seasar.cubby.formWrapperFactory";
+	/** バリデーションエラーを表すオブジェクトの要求の属性名 */
+	public static final String ATTR_VALIDATION_FAIL = PREFIX + "validationFail";
 
-	/**
-	 * フィルターチェインの要求の属性名。
-	 */
-	public static final String ATTR_FILTER_CHAIN = "org.seasar.cubby.filterChain";
+	/** フォームオブジェクトのラッパーファクトリの要求の属性名 */
+	public static final String ATTR_FORM_WRAPPER_FACTORY = PREFIX + "formWrapperFactory";
+
+	/** フィルターチェインの要求の属性名 */
+	public static final String ATTR_FILTER_CHAIN = PREFIX + "filterChain";
+
+	/** メッセージリソースの属性名 */
+	public static final String ATTR_MESSAGES_RESOURCE_BUNDLE = PREFIX + "messagesResourceBundle";
 
 	// session --------------------------------------------------------
 
-	/**
-	 * フラッシュメッセージのセッションの属性名。
-	 */
+	/** フラッシュメッセージのセッションの属性名 */
 	public static final String ATTR_FLASH = "flash";
 
-	/**
-	 * セッショントークンの <code>Map</code> のセッションの属性名。
-	 */
-	public static final String ATTR_TOKEN = "org.seasar.cubby.token";
+	/** セッショントークンの <code>Map</code> のセッションの属性名 */
+	public static final String ATTR_TOKEN = PREFIX + "token";
 
 }

@@ -193,7 +193,8 @@ public class CubbyRunnerFilterTest {
 		}
 
 		public ActionResult execute() {
-			HttpServletRequest request = ThreadContext.getRequest();
+			HttpServletRequest request = ThreadContext.getCurrentContext()
+					.getRequest();
 			assertTrue((Boolean) request.getAttribute("filtered"));
 			return expectActionResult;
 		}
