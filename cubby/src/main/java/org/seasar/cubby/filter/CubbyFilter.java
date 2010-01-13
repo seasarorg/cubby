@@ -40,10 +40,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.CubbyConstants;
+import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.internal.controller.impl.ActionProcessorImpl;
 import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.internal.util.StringUtils;
@@ -54,9 +54,11 @@ import org.seasar.cubby.plugin.RoutingInvocation;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.PathResolver;
 import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.PathResolverProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.RequestParserProvider;
+import org.seasar.cubby.spi.container.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,7 +92,7 @@ public class CubbyFilter implements Filter {
 	 * <th>初期化パラメータ名</th>
 	 * <th>初期化パラメータの値</th>
 	 * <th>例</th>
-	 * </thead> <thead>
+	 * </thead> <tbody>
 	 * <tr>
 	 * <td>{@link #IGNORE_PATH_PATTERN}</td>
 	 * <td>ルーティングの対象外とするパスの正規表現をカンマ区切りで指定します。 HotDeploy
@@ -105,7 +107,7 @@ public class CubbyFilter implements Filter {
 	 * 
 	 * この例では /img と /js 以下のパスをルーティングの対象外にします。</td>
 	 * </tr>
-	 * </thead>
+	 * </tbody>
 	 * </p>
 	 * 
 	 * @param config
@@ -382,7 +384,7 @@ public class CubbyFilter implements Filter {
 			final HttpServletResponse response, final PathInfo pathInfo)
 			throws Exception {
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request, pathInfo.getURIParameters());
+				this, request, pathInfo.getURIParameters());
 		final RequestProcessingInvocation invocation = new RequestProcessingInvocationImpl(
 				this, wrappedRequest, response, pathInfo);
 		invocation.proceed();
@@ -464,20 +466,16 @@ public class CubbyFilter implements Filter {
 						.parseRequest(request);
 				request.setAttribute(ATTR_PARAMS, parameterMap);
 				final Routing routing = pathInfo.dispatch(parameterMap);
-				final Command command = new Command() {
-
-					public void execute(final HttpServletRequest request,
-							final HttpServletResponse response)
-							throws Exception {
-						final ActionProcessor actionProcessor = cubbyFilter
-								.createActionProcessor();
-						final ActionResultWrapper actionResultWrapper = actionProcessor
-								.process(request, response, routing);
-						actionResultWrapper.execute(request, response);
-					}
-
-				};
-				ThreadContext.runInContext(request, response, command);
+				ThreadContext.enter(request, response);
+				try {
+					final ActionProcessor actionProcessor = cubbyFilter
+							.createActionProcessor();
+					final ActionResultWrapper actionResultWrapper = actionProcessor
+							.process(request, response, routing);
+					actionResultWrapper.execute(request, response);
+				} finally {
+					ThreadContext.exit();
+				}
 			}
 			return null;
 		}
@@ -529,11 +527,24 @@ public class CubbyFilter implements Filter {
 	}
 
 	/**
+	 * {@link MessagesBehaviour} を生成します。
+	 * 
+	 * @return {@link MessagesBehaviour}
+	 */
+	protected MessagesBehaviour createMessagesBehaviour() {
+		final Container container = ProviderFactory
+				.get(ContainerProvider.class).getContainer();
+		final MessagesBehaviour messagesBehaviour = container
+				.lookup(MessagesBehaviour.class);
+		return messagesBehaviour;
+	}
+
+	/**
 	 * アクションからフォワードされてきたときに使用する {@link PathInfo} です。
 	 * 
 	 * @author baba
 	 */
-	class ForwardFromActionPathInfo implements PathInfo {
+	static class ForwardFromActionPathInfo implements PathInfo {
 
 		private final Routing routing;
 

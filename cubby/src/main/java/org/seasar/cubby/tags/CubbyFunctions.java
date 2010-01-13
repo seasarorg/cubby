@@ -205,7 +205,8 @@ public class CubbyFunctions {
 		if (str == null) {
 			return "";
 		}
-		final String characterEncoding = ThreadContext.getRequest()
+		final ThreadContext currentContext = ThreadContext.getCurrentContext();
+		final String characterEncoding = currentContext.getRequest()
 				.getCharacterEncoding();
 		return URLBodyEncoder.encode(str.toString(), characterEncoding);
 	}

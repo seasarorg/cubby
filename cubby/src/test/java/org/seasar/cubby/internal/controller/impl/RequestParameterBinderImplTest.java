@@ -16,6 +16,7 @@
 package org.seasar.cubby.internal.controller.impl;
 
 import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.seasar.cubby.CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +46,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +74,6 @@ import org.seasar.cubby.converter.Converter;
 import org.seasar.cubby.internal.controller.ConversionFailure;
 import org.seasar.cubby.internal.controller.RequestParameterBinder;
 import org.seasar.cubby.internal.controller.ThreadContext;
-import org.seasar.cubby.internal.controller.ThreadContext.Command;
 import org.seasar.cubby.mock.MockActionContext;
 import org.seasar.cubby.mock.MockContainerProvider;
 import org.seasar.cubby.mock.MockConverterProvider;
@@ -140,7 +142,7 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("date", new Object[] { "2006-01-01" });
+		map.put("date", new Object[]{"2006-01-01"});
 
 		final FormDto dto = new FormDto();
 
@@ -158,9 +160,9 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean_OneValue() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num1", new Object[] { "1" });
-		map.put("num2", new Object[] { "2" });
-		map.put("num3", new Object[] { "def" });
+		map.put("num1", new Object[]{"1"});
+		map.put("num2", new Object[]{"2"});
+		map.put("num3", new Object[]{"def"});
 
 		final FormDto dto = new FormDto();
 
@@ -182,8 +184,8 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean_MultiValue() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num2", new Object[] { "1", "2" });
-		map.put("num3", new Object[] { "abc", "def" });
+		map.put("num2", new Object[]{"1", "2"});
+		map.put("num3", new Object[]{"abc", "def"});
 
 		final FormDto dto = new FormDto();
 
@@ -205,7 +207,7 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean_MultiValueIncludesEmptyValue() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num2", new String[] { "1", "", "2" });
+		map.put("num2", new String[]{"1", "", "2"});
 
 		final FormDto dto = new FormDto();
 
@@ -223,7 +225,7 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean_MultiValueIncludesNullValue() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("num3", new String[] { "zzz", null, "xxx" });
+		map.put("num3", new String[]{"zzz", null, "xxx"});
 
 		final FormDto dto = new FormDto();
 
@@ -241,12 +243,12 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void mapToBean_annotated() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("normal", new Object[] { "abcd" });
-		map.put("specifiedName", new Object[] { "efgh" });
-		map.put("foo", new Object[] { "ijkl" });
-		map.put("specifiedConverter", new Object[] { "mnop" });
-		map.put("specifiedNameAndConverter", new Object[] { "qrst" });
-		map.put("bar", new Object[] { "uvwx" });
+		map.put("normal", new Object[]{"abcd"});
+		map.put("specifiedName", new Object[]{"efgh"});
+		map.put("foo", new Object[]{"ijkl"});
+		map.put("specifiedConverter", new Object[]{"mnop"});
+		map.put("specifiedNameAndConverter", new Object[]{"qrst"});
+		map.put("bar", new Object[]{"uvwx"});
 
 		final AnnotatedDto dto = new AnnotatedDto();
 
@@ -264,53 +266,53 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void converters() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("decimal", new Object[] { "12.3" });
-		map.put("decimals", new Object[] { "45.6", "78.9" });
-		map.put("bigint", new Object[] { "9876" });
-		map.put("bigints", new Object[] { "5432", "10" });
-		map.put("bool1", new Object[] { "true" });
-		map.put("bools1", new Object[] { "true", "false" });
-		map.put("bool2", new Object[] { "false" });
-		map.put("bools2", new Object[] { "false", "true", "false" });
-		map.put("byte1", new Object[] { "12" });
-		map.put("bytes1", new Object[] { "34", "56" });
-		map.put("byte2", new Object[] { "98" });
-		map.put("bytes2", new Object[] { "76", "54" });
-		map.put("char1", new Object[] { "a" });
-		map.put("chars1", new Object[] { "b", "c" });
-		map.put("char2", new Object[] { "d" });
-		map.put("chars2", new Object[] { "e", "f" });
-		map.put("date", new Object[] { "2008-7-28" });
-		map.put("dates", new Object[] { "2008-8-14", "2008-10-30" });
-		map.put("double1", new Object[] { "1.2" });
-		map.put("doubles1", new Object[] { "3.4", "5.6" });
-		map.put("double2", new Object[] { "9.8" });
-		map.put("doubles2", new Object[] { "7.6", "5.4" });
-		map.put("en", new Object[] { "VALUE1" });
-		map.put("ens", new Object[] { "VALUE2", "VALUE3" });
-		map.put("float1", new Object[] { "1.2" });
-		map.put("floats1", new Object[] { "3.4", "5.6" });
-		map.put("float2", new Object[] { "9.8" });
-		map.put("floats2", new Object[] { "7.6", "5.4" });
-		map.put("int1", new Object[] { "12" });
-		map.put("ints1", new Object[] { "34", "56" });
-		map.put("int2", new Object[] { "98" });
-		map.put("ints2", new Object[] { "76", "54" });
-		map.put("long1", new Object[] { "12" });
-		map.put("longs1", new Object[] { "34", "56" });
-		map.put("long2", new Object[] { "98" });
-		map.put("longs2", new Object[] { "76", "54" });
-		map.put("short1", new Object[] { "12" });
-		map.put("shorts1", new Object[] { "34", "56" });
-		map.put("short2", new Object[] { "98" });
-		map.put("shorts2", new Object[] { "76", "54" });
-		map.put("sqldate", new Object[] { "2008-7-28" });
-		map.put("sqldates", new Object[] { "2008-8-14", "2008-10-30" });
-		map.put("sqltime", new Object[] { "12:34:56" });
-		map.put("sqltimes", new Object[] { "13:45:24", "23:44:00" });
-		map.put("sqltimestamp", new Object[] { "2008-7-28 12:34:56" });
-		map.put("sqltimestamps", new Object[] { "2008-8-14 13:45:24",
-				"2008-10-30 23:44:00" });
+		map.put("decimal", new Object[]{"12.3"});
+		map.put("decimals", new Object[]{"45.6", "78.9"});
+		map.put("bigint", new Object[]{"9876"});
+		map.put("bigints", new Object[]{"5432", "10"});
+		map.put("bool1", new Object[]{"true"});
+		map.put("bools1", new Object[]{"true", "false"});
+		map.put("bool2", new Object[]{"false"});
+		map.put("bools2", new Object[]{"false", "true", "false"});
+		map.put("byte1", new Object[]{"12"});
+		map.put("bytes1", new Object[]{"34", "56"});
+		map.put("byte2", new Object[]{"98"});
+		map.put("bytes2", new Object[]{"76", "54"});
+		map.put("char1", new Object[]{"a"});
+		map.put("chars1", new Object[]{"b", "c"});
+		map.put("char2", new Object[]{"d"});
+		map.put("chars2", new Object[]{"e", "f"});
+		map.put("date", new Object[]{"2008-7-28"});
+		map.put("dates", new Object[]{"2008-8-14", "2008-10-30"});
+		map.put("double1", new Object[]{"1.2"});
+		map.put("doubles1", new Object[]{"3.4", "5.6"});
+		map.put("double2", new Object[]{"9.8"});
+		map.put("doubles2", new Object[]{"7.6", "5.4"});
+		map.put("en", new Object[]{"VALUE1"});
+		map.put("ens", new Object[]{"VALUE2", "VALUE3"});
+		map.put("float1", new Object[]{"1.2"});
+		map.put("floats1", new Object[]{"3.4", "5.6"});
+		map.put("float2", new Object[]{"9.8"});
+		map.put("floats2", new Object[]{"7.6", "5.4"});
+		map.put("int1", new Object[]{"12"});
+		map.put("ints1", new Object[]{"34", "56"});
+		map.put("int2", new Object[]{"98"});
+		map.put("ints2", new Object[]{"76", "54"});
+		map.put("long1", new Object[]{"12"});
+		map.put("longs1", new Object[]{"34", "56"});
+		map.put("long2", new Object[]{"98"});
+		map.put("longs2", new Object[]{"76", "54"});
+		map.put("short1", new Object[]{"12"});
+		map.put("shorts1", new Object[]{"34", "56"});
+		map.put("short2", new Object[]{"98"});
+		map.put("shorts2", new Object[]{"76", "54"});
+		map.put("sqldate", new Object[]{"2008-7-28"});
+		map.put("sqldates", new Object[]{"2008-8-14", "2008-10-30"});
+		map.put("sqltime", new Object[]{"12:34:56"});
+		map.put("sqltimes", new Object[]{"13:45:24", "23:44:00"});
+		map.put("sqltimestamp", new Object[]{"2008-7-28 12:34:56"});
+		map.put("sqltimestamps", new Object[]{"2008-8-14 13:45:24",
+				"2008-10-30 23:44:00"});
 
 		final ConvertersDto dto = new ConvertersDto();
 
@@ -514,49 +516,53 @@ public class RequestParameterBinderImplTest {
 	@Test
 	public void convertersWithError() throws Exception {
 		final HttpServletRequest request = createNiceMock(HttpServletRequest.class);
+		final ResourceBundle resourceBundle = new DefaultMessagesBehaviour()
+				.getBundle(null);
+		expect(request.getAttribute(ATTR_MESSAGES_RESOURCE_BUNDLE))
+				.andStubReturn(resourceBundle);
 		final HttpServletResponse response = createNiceMock(HttpServletResponse.class);
 		replay(request, response);
 
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("decimal", new Object[] { "a" });
-		map.put("decimals", new Object[] { "45.6", "b" });
-		map.put("bigint", new Object[] { "c" });
-		map.put("bigints", new Object[] { "d", "10" });
-		map.put("byte1", new Object[] { "12a" });
-		map.put("bytes1", new Object[] { "3324234456789", "56" });
-		map.put("byte2", new Object[] { "98o" });
-		map.put("bytes2", new Object[] { "76p", "54" });
-		map.put("date", new Object[] { "2009-2-29" });
-		map.put("dates", new Object[] { "2008-8-14", "2008/10/30" });
-		map.put("double1", new Object[] { "1.2a" });
-		map.put("doubles1", new Object[] { "3.4", "5.6b" });
-		map.put("double2", new Object[] { "9.8c" });
-		map.put("doubles2", new Object[] { "7.6d", "5.4" });
-		map.put("en", new Object[] { "VALUE4" });
-		map.put("ens", new Object[] { "VALUE2", "VALUE5" });
-		map.put("float1", new Object[] { "1.2a" });
-		map.put("floats1", new Object[] { "3.4b", "5.6" });
-		map.put("float2", new Object[] { "9.8c" });
-		map.put("floats2", new Object[] { "7.6d", "5.4" });
-		map.put("int1", new Object[] { "12.1" });
-		map.put("ints1", new Object[] { "34f", "56" });
-		map.put("int2", new Object[] { "98g" });
-		map.put("ints2", new Object[] { "76", "54h" });
-		map.put("long1", new Object[] { "12i" });
-		map.put("longs1", new Object[] { "34j", "56" });
-		map.put("long2", new Object[] { "98k" });
-		map.put("longs2", new Object[] { "76l", "54" });
-		map.put("short1", new Object[] { "12m" });
-		map.put("shorts1", new Object[] { "34n", "56" });
-		map.put("short2", new Object[] { "98o" });
-		map.put("shorts2", new Object[] { "76p", "54" });
-		map.put("sqldate", new Object[] { "2008-7-280" });
-		map.put("sqldates", new Object[] { "2008-8-14-", "2008-10-30" });
-		map.put("sqltime", new Object[] { "25:34:56" });
-		map.put("sqltimes", new Object[] { "13:45:99", "23:44:00" });
-		map.put("sqltimestamp", new Object[] { "2008-7-28-12:34:56" });
-		map.put("sqltimestamps", new Object[] { "2008-8-32 13:45:24",
-				"2008-10-30 23:44:00" });
+		map.put("decimal", new Object[]{"a"});
+		map.put("decimals", new Object[]{"45.6", "b"});
+		map.put("bigint", new Object[]{"c"});
+		map.put("bigints", new Object[]{"d", "10"});
+		map.put("byte1", new Object[]{"12a"});
+		map.put("bytes1", new Object[]{"3324234456789", "56"});
+		map.put("byte2", new Object[]{"98o"});
+		map.put("bytes2", new Object[]{"76p", "54"});
+		map.put("date", new Object[]{"2009-2-29"});
+		map.put("dates", new Object[]{"2008-8-14", "2008/10/30"});
+		map.put("double1", new Object[]{"1.2a"});
+		map.put("doubles1", new Object[]{"3.4", "5.6b"});
+		map.put("double2", new Object[]{"9.8c"});
+		map.put("doubles2", new Object[]{"7.6d", "5.4"});
+		map.put("en", new Object[]{"VALUE4"});
+		map.put("ens", new Object[]{"VALUE2", "VALUE5"});
+		map.put("float1", new Object[]{"1.2a"});
+		map.put("floats1", new Object[]{"3.4b", "5.6"});
+		map.put("float2", new Object[]{"9.8c"});
+		map.put("floats2", new Object[]{"7.6d", "5.4"});
+		map.put("int1", new Object[]{"12.1"});
+		map.put("ints1", new Object[]{"34f", "56"});
+		map.put("int2", new Object[]{"98g"});
+		map.put("ints2", new Object[]{"76", "54h"});
+		map.put("long1", new Object[]{"12i"});
+		map.put("longs1", new Object[]{"34j", "56"});
+		map.put("long2", new Object[]{"98k"});
+		map.put("longs2", new Object[]{"76l", "54"});
+		map.put("short1", new Object[]{"12m"});
+		map.put("shorts1", new Object[]{"34n", "56"});
+		map.put("short2", new Object[]{"98o"});
+		map.put("shorts2", new Object[]{"76p", "54"});
+		map.put("sqldate", new Object[]{"2008-7-280"});
+		map.put("sqldates", new Object[]{"2008-8-14-", "2008-10-30"});
+		map.put("sqltime", new Object[]{"25:34:56"});
+		map.put("sqltimes", new Object[]{"13:45:99", "23:44:00"});
+		map.put("sqltimestamp", new Object[]{"2008-7-28-12:34:56"});
+		map.put("sqltimestamps", new Object[]{"2008-8-32 13:45:24",
+				"2008-10-30 23:44:00"});
 
 		final ConvertersDto dto = new ConvertersDto();
 
@@ -566,25 +572,24 @@ public class RequestParameterBinderImplTest {
 
 		final ActionErrors errors = new ActionErrorsImpl();
 
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				final List<ConversionFailure> conversionFailures = requestParameterBinder
-						.bind(map, dto, actionContext);
-				for (final ConversionFailure conversionFailure : conversionFailures) {
-					final MessageInfo messageInfo = conversionFailure
-							.getMessageInfo();
-					final FieldInfo[] fieldInfos = conversionFailure
-							.getFieldInfos();
-					final String message = messageInfo
-							.toMessage(conversionFailure.getFieldName());
-					errors.add(message, fieldInfos);
-				}
-
+		ThreadContext.enter(request, response);
+		try {
+			final List<ConversionFailure> conversionFailures = requestParameterBinder
+					.bind(map, dto, actionContext);
+			for (final ConversionFailure conversionFailure : conversionFailures) {
+				final MessageInfo messageInfo = conversionFailure
+						.getMessageInfo();
+				final FieldInfo[] fieldInfos = conversionFailure
+						.getFieldInfos();
+				final String message = messageInfo.toMessage(conversionFailure
+						.getFieldName());
+				errors.add(message, fieldInfos);
 			}
 
-		});
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		assertFalse(errors.isEmpty());
 
@@ -733,35 +738,34 @@ public class RequestParameterBinderImplTest {
 		replay(request, response);
 
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("file", new FileItem[] { new MockFileItem("123") });
-		map.put("bytefile", new FileItem[] { new MockFileItem("456") });
-		map.put("bytefiles", new FileItem[] { new MockFileItem("abc"),
-				new MockFileItem("def") });
-		map.put("bytefilelist", new FileItem[] { new MockFileItem("GHI"),
-				new MockFileItem("JKL") });
-		map.put("input", new FileItem[] { new MockFileItem("QQ") });
+		map.put("file", new FileItem[]{new MockFileItem("123")});
+		map.put("bytefile", new FileItem[]{new MockFileItem("456")});
+		map.put("bytefiles", new FileItem[]{new MockFileItem("abc"),
+				new MockFileItem("def")});
+		map.put("bytefilelist", new FileItem[]{new MockFileItem("GHI"),
+				new MockFileItem("JKL")});
+		map.put("input", new FileItem[]{new MockFileItem("QQ")});
 
 		final FileItemDto dto = new FileItemDto();
 
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
 		final ActionErrors errors = new ActionErrorsImpl();
-		ThreadContext.runInContext(request, response, new Command() {
-
-			public void execute(final HttpServletRequest request,
-					final HttpServletResponse response) throws Exception {
-				final List<ConversionFailure> conversionFailures = requestParameterBinder
-						.bind(map, dto, actionContext);
-				for (final ConversionFailure conversionFailure : conversionFailures) {
-					final MessageInfo messageInfo = conversionFailure
-							.getMessageInfo();
-					final String message = messageInfo
-							.toMessage(conversionFailure.getFieldName());
-					errors.add(message);
-				}
+		ThreadContext.enter(request, response);
+		try {
+			final List<ConversionFailure> conversionFailures = requestParameterBinder
+					.bind(map, dto, actionContext);
+			for (final ConversionFailure conversionFailure : conversionFailures) {
+				final MessageInfo messageInfo = conversionFailure
+						.getMessageInfo();
+				final String message = messageInfo.toMessage(conversionFailure
+						.getFieldName());
+				errors.add(message);
 			}
-
-		});
+		} finally {
+			ThreadContext.exit();
+		}
+		ThreadContext.remove();
 
 		final String encoding = "UTF-8";
 		assertNotNull(dto.getFile());
@@ -784,8 +788,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeNoAnnotated() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "noAnnotated"));
@@ -799,8 +803,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeNoBindingType() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class,
@@ -816,8 +820,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeAllProperties() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "all"));
@@ -832,8 +836,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeOnlySpecifiedProperties() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction.class, actionMethod(MockAction.class, "specified"));
@@ -847,8 +851,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeNoAnnotatedOnClass() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class,
@@ -864,8 +868,8 @@ public class RequestParameterBinderImplTest {
 
 	public void testBindTypeOnlySpecifiedPropertiesOnClass() {
 		final Map<String, Object[]> map = new HashMap<String, Object[]>();
-		map.put("hasRequestParameter", new Object[] { "abc" });
-		map.put("noRequestParameter", new Object[] { "def" });
+		map.put("hasRequestParameter", new Object[]{"abc"});
+		map.put("noRequestParameter", new Object[]{"def"});
 		final FormDto2 dto = new FormDto2();
 		final ActionContext actionContext = new MockActionContext(null,
 				MockAction2.class, actionMethod(MockAction2.class, "specified"));

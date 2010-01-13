@@ -61,7 +61,8 @@ public class ConversionValidationRule implements ValidationRule {
 	 */
 	public void apply(final Map<String, Object[]> params, final Object form,
 			final ActionErrors errors) throws ValidationException {
-		final HttpServletRequest request = ThreadContext.getRequest();
+		final ThreadContext currentContext = ThreadContext.getCurrentContext();
+		final HttpServletRequest request = currentContext.getRequest();
 		final List<ConversionFailure> conversionFailures = RequestUtils
 				.getAttribute(request, ATTR_CONVERSION_FAILURES);
 		if (conversionFailures != null && !conversionFailures.isEmpty()) {
