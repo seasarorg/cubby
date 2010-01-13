@@ -24,10 +24,15 @@ import org.seasar.cubby.action.RequestMethod;
 @Path("foo/{id}")
 public class MockPathAction extends Action {
 
-	public ActionResult update() {
+	@Path("/")
+	public ActionResult index1() {
 		return null;
 	}
 
+	public ActionResult update() {
+		return null;
+	}
+	
 	@Path("create")
 	public ActionResult insert() {
 		return null;
