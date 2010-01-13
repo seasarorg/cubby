@@ -23,6 +23,11 @@ import org.seasar.cubby.action.RequestMethod;
 
 public class MockAction extends Action {
 
+	@Path("/")
+	public ActionResult index1() {
+		return null;
+	}
+
 	public ActionResult update() {
 		return null;
 	}

@@ -64,7 +64,7 @@ public class PathResolverImplTest {
 	public void testGetRoutings() {
 		List<Routing> routings = new ArrayList<Routing>(pathResolver
 				.getRoutings());
-		assertEquals(24, routings.size());
+		assertEquals(28, routings.size());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class PathResolverImplTest {
 
 		List<Routing> routings = new ArrayList<Routing>(pathResolver
 				.getRoutings());
-		assertEquals(28, routings.size());
+		assertEquals(32, routings.size());
 
 		Iterator<Routing> iterator = routings.iterator();
 
@@ -219,6 +219,22 @@ public class PathResolverImplTest {
 	}
 
 	@Test
+	public void testDefault6() throws Exception {
+		PathInfo info = pathResolver
+				.getPathInfo("/mock/", "GET", "UTF-8");
+		assertNotNull(info);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
+		assertEquals(MockAction.class, routing.getActionClass());
+		assertEquals(MockAction.class.getMethod("index1"), routing
+				.getActionMethod());
+		assertEquals(0, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(0, uriParameters.size());
+	}
+
+	@Test
 	public void testPath1() throws Exception {
 		PathInfo info = pathResolver.getPathInfo("/foo/4/update", "GET",
 				"UTF-8");
@@ -284,7 +300,7 @@ public class PathResolverImplTest {
 				"UTF-8");
 		assertNull(info);
 	}
-
+	
 	@Test
 	public void testPath5() throws Exception {
 		PathInfo info = pathResolver
@@ -305,6 +321,24 @@ public class PathResolverImplTest {
 		String[] value = uriParameters.get("name");
 		assertEquals(1, value.length);
 		assertEquals("cubby", value[0]);
+	}
+
+	@Test
+	public void testPath6() throws Exception {
+		PathInfo info = pathResolver.getPathInfo("/foo/4/", "GET", "UTF-8");
+		assertNotNull(info);
+		Map<String, Object[]> parameterMap = Collections.emptyMap();
+		Routing routing = info.dispatch(parameterMap);
+		assertEquals(MockPathAction.class, routing.getActionClass());
+		assertEquals(MockPathAction.class.getMethod("index1"), routing
+				.getActionMethod());
+		assertEquals(1, routing.getUriParameterNames().size());
+
+		Map<String, String[]> uriParameters = info.getURIParameters();
+		assertEquals(1, uriParameters.size());
+		String[] value = uriParameters.get("id");
+		assertEquals(1, value.length);
+		assertEquals("4", value[0]);
 	}
 
 	// @Test
