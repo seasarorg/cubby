@@ -45,7 +45,7 @@
     <dependency>
       <groupId>net.sf.oval</groupId>
       <artifactId>oval</artifactId>
-      <version>1.32</version>
+      <version>1.40</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
