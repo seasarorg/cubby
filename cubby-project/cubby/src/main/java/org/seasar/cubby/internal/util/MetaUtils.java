@@ -135,7 +135,11 @@ public class MetaUtils {
 		final String actionName;
 		final Path path = method.getAnnotation(Path.class);
 		if (path != null && !StringUtils.isEmpty(path.value())) {
-			actionName = path.value();
+			if ("/".equals(path.value())) {
+				actionName = "";
+			} else {
+				actionName = path.value();
+			}
 		} else {
 			final String methodName = method.getName();
 			if (INDEX_METHOD_NAME.equals(methodName)) {

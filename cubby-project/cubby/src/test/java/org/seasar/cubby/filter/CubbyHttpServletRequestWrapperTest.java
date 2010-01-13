@@ -72,6 +72,8 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
+	private final CubbyFilter cubbyFilter = new CubbyFilter();
+
 	private HttpServletRequest request;
 
 	private HttpServletResponse response;
@@ -187,7 +189,7 @@ public class CubbyHttpServletRequestWrapperTest {
 				.contains(CubbyConstants.ATTR_ACTION));
 
 		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-				request, new HashMap<String, String[]>());
+				cubbyFilter, request, new HashMap<String, String[]>());
 		Action action = new MockAction();
 		wrapper.setAttribute(CubbyConstants.ATTR_ACTION, action);
 
@@ -216,7 +218,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		ThreadContext.enter(request, response);
 		try {
 			CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-					request, new HashMap<String, String[]>());
+					cubbyFilter, request, new HashMap<String, String[]>());
 
 			assertEquals("/context", wrapper
 					.getAttribute(CubbyConstants.ATTR_CONTEXT_PATH));
@@ -237,20 +239,20 @@ public class CubbyHttpServletRequestWrapperTest {
 
 	@Test
 	public void parameter() {
-		parameters.put("abc", new String[]{"value1"});
-		parameters.put("def", new String[]{"value2"});
+		parameters.put("abc", new String[] { "value1" });
+		parameters.put("def", new String[] { "value2" });
 
 		Map<String, String[]> uriParameterMap = new HashMap<String, String[]>();
-		uriParameterMap.put("abc", new String[]{"value3"});
-		uriParameterMap.put("ghi", new String[]{"value4"});
+		uriParameterMap.put("abc", new String[] { "value3" });
+		uriParameterMap.put("ghi", new String[] { "value4" });
 
 		CubbyHttpServletRequestWrapper wrapper = new CubbyHttpServletRequestWrapper(
-				request, uriParameterMap);
+				cubbyFilter, request, uriParameterMap);
 
 		Hashtable<String, String[]> expects = new Hashtable<String, String[]>();
-		expects.put("abc", new String[]{"value1", "value3"});
-		expects.put("def", new String[]{"value2"});
-		expects.put("ghi", new String[]{"value4"});
+		expects.put("abc", new String[] { "value1", "value3" });
+		expects.put("def", new String[] { "value2" });
+		expects.put("ghi", new String[] { "value4" });
 
 		@SuppressWarnings("unchecked")
 		Enumeration parameterNames = wrapper.getParameterNames();
@@ -269,10 +271,10 @@ public class CubbyHttpServletRequestWrapperTest {
 		@SuppressWarnings("unchecked")
 		Map<String, String[]> parameterMap = wrapper.getParameterMap();
 		assertEquals(3, parameterMap.size());
-		assertArrayEquals(new String[]{"value1", "value3"}, parameterMap
+		assertArrayEquals(new String[] { "value1", "value3" }, parameterMap
 				.get("abc"));
-		assertArrayEquals(new String[]{"value2"}, parameterMap.get("def"));
-		assertArrayEquals(new String[]{"value4"}, parameterMap.get("ghi"));
+		assertArrayEquals(new String[] { "value2" }, parameterMap.get("def"));
+		assertArrayEquals(new String[] { "value4" }, parameterMap.get("ghi"));
 
 	}
 
@@ -293,7 +295,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		replay(request, response);
 
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request, null);
+				cubbyFilter, request, null);
 		final Map<?, ?> result = (Map<?, ?>) wrappedRequest
 				.getAttribute(CubbyConstants.ATTR_MESSAGES);
 		assertEquals("result.size()", 16, result.size());
@@ -311,7 +313,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		replay(request, response);
 
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request, null);
+				cubbyFilter, request, null);
 		final Map<?, ?> result = (Map<?, ?>) wrappedRequest
 				.getAttribute(CubbyConstants.ATTR_MESSAGES);
 		assertEquals("result.size()", 16, result.size());
@@ -329,7 +331,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		replay(request, response);
 
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request, null);
+				cubbyFilter, request, null);
 		final ResourceBundle result = (ResourceBundle) wrappedRequest
 				.getAttribute(CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE);
 		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()
@@ -346,7 +348,7 @@ public class CubbyHttpServletRequestWrapperTest {
 		replay(request, response);
 
 		final HttpServletRequest wrappedRequest = new CubbyHttpServletRequestWrapper(
-				request, null);
+				cubbyFilter, request, null);
 		final ResourceBundle result = (ResourceBundle) wrappedRequest
 				.getAttribute(CubbyConstants.ATTR_MESSAGES_RESOURCE_BUNDLE);
 		assertTrue("result.getKeys().hasMoreElements()", result.getKeys()

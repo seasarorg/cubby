@@ -40,12 +40,9 @@ import org.seasar.cubby.controller.FormWrapperFactory;
 import org.seasar.cubby.controller.MessagesBehaviour;
 import org.seasar.cubby.internal.controller.impl.FormWrapperFactoryImpl;
 import org.seasar.cubby.internal.util.IteratorEnumeration;
-import org.seasar.cubby.spi.ContainerProvider;
-import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.beans.Attribute;
 import org.seasar.cubby.spi.beans.BeanDesc;
 import org.seasar.cubby.spi.beans.BeanDescFactory;
-import org.seasar.cubby.spi.container.Container;
 
 /**
  * 特別な属性を取得するためにサーブレットへの要求をラップします。
@@ -110,6 +107,9 @@ import org.seasar.cubby.spi.container.Container;
  */
 class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
+	/** Cubby フィルタです。 */
+	private final CubbyFilter cubbyFilter;
+
 	/** URI パラメータの {@link Map} です。 */
 	private final Map<String, String[]> uriParameters;
 
@@ -122,14 +122,18 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	/**
 	 * 指定された要求をラップした要求オブジェクトを構築します。
 	 * 
+	 * @param cubbyFilter
+	 *            Cubby フィルタ
 	 * @param request
 	 *            要求
 	 * @param uriParameters
 	 *            URI パラメータの {@link Map}
 	 */
-	public CubbyHttpServletRequestWrapper(final HttpServletRequest request,
+	CubbyHttpServletRequestWrapper(final CubbyFilter cubbyFilter,
+			final HttpServletRequest request,
 			final Map<String, String[]> uriParameters) {
 		super(request);
+		this.cubbyFilter = cubbyFilter;
 		this.uriParameters = uriParameters;
 	}
 
@@ -383,9 +387,7 @@ class CubbyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	 */
 	private MessagesBehaviour getMessagesBehaviour() {
 		if (this.messagesBehaviour == null) {
-			final Container container = ProviderFactory.get(
-					ContainerProvider.class).getContainer();
-			this.messagesBehaviour = container.lookup(MessagesBehaviour.class);
+			this.messagesBehaviour = cubbyFilter.createMessagesBehaviour();
 		}
 		return this.messagesBehaviour;
 	}
