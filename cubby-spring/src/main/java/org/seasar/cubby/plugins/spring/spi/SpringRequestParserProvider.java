@@ -16,10 +16,12 @@
 package org.seasar.cubby.plugins.spring.spi;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.seasar.cubby.controller.RequestParser;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 /**
  * リクエストパーサプロバイダの実装クラスです。
@@ -30,12 +32,21 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SpringRequestParserProvider extends AbstractRequestParserProvider {
 
-	@Autowired
 	private Collection<RequestParser> requestParsers;
 
 	@Override
 	protected Collection<RequestParser> getRequestParsers() {
 		return requestParsers;
+	}
+
+	@Autowired
+	public SpringRequestParserProvider(
+			final ApplicationContext applicationContext) {
+		@SuppressWarnings("unchecked")
+		final Collection<RequestParser> requestParsers = (Collection<RequestParser>) applicationContext
+				.getBean("requestParsers");
+		this.requestParsers = Collections
+				.unmodifiableCollection(requestParsers);
 	}
 
 }
