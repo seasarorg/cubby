@@ -92,7 +92,7 @@ line.separator=\n</content>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
