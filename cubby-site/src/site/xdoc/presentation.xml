@@ -14,9 +14,11 @@
 			<ul>
 				<li><a href="発表資料">発表資料</a></li>
 				<ul>
-					<li><a href="#a2008-09-06">2008-09-06 SeasarCon 2008 Autumn</a></li>
+					<li><a href="#a2009-06-13">2009-06-13 Seasar Conference 2009 Spring</a></li>
+					<li><a href="#a2009-03-14">2009-03-14 Seasar Conference 2009 White</a></li>
+					<li><a href="#a2008-09-06">2008-09-06 Seasar Conference 2008 Autumn</a></li>
 					<li><a href="#a2008-01-15">2008-01-15 技術発表会資料</a></li>
-					<li><a href="#a2007-12-08">2007-12-08 SeasarCon 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料</a></li>
+					<li><a href="#a2007-12-08">2007-12-08 Seasar Conference 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料</a></li>
 					<li><a href="#a2006-08-23">2006-08-23 ヌーラボ臨海学校発表資料</a></li>
 				</ul>
 			</ul>
@@ -25,11 +27,43 @@
 		<a name="発表資料"/>
 		<section name="発表資料">
 
-			<a name="a2008-09-06"/>
-			<subsection name="2008-09-06 SeasarCon 2008 Autumn">
+			<a name="a2009-06-13"/>
+			<subsection name="2009-06-13 Seasar Conference 2009 Spring">
 				<p>
-					SeasarCon 2008 Autumnで使用した資料です。
-				<div style="width:425px;text-align:left" id="__ss_609002"><a style="font:14px Helvetica,Arial,Sans-serif;display:block;margin:12px 0 3px 0;text-decoration:underline;" href="http://www.slideshare.net/agattino/cubby-20080906-presentation-609002?type=powerpoint" title="Cubby 2008-09-06">Cubby 2008-09-06</a><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080906-1221930041317842-9&amp;stripped_title=cubby-20080906-presentation-609002" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080906-1221930041317842-9&amp;stripped_title=cubby-20080906-presentation-609002" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View SlideShare <a style="text-decoration:underline;" href="http://www.slideshare.net/agattino/cubby-20080906-presentation-609002?type=powerpoint" title="View Cubby 2008-09-06 on SlideShare">presentation</a> or <a style="text-decoration:underline;" href="http://www.slideshare.net/upload?type=powerpoint">Upload</a> your own.</div></div>
+					<a href="http://event.seasarfoundation.org/sc2009spring/Session#S6032">Seasar Conference 2009 Spring</a> で使用した資料です。
+					<div>
+				<iframe src="http://docs.google.com/viewer?url=http%3A%2F%2Fevent.seasarfoundation.org%2Fsc2009spring%2FviewAttachment.do%3F_pageName_%3DSession%26_fileName_%3Dsc2009spring_s603_2_cubby_in_action.pdf&amp;embedded=true" width="425" height="340" style="border: none;"></iframe>
+				</div>
+				<ul>
+					<li>
+						<a href="http://event.seasarfoundation.org/sc2009spring/viewAttachment.do?_pageName_=Session&amp;_fileName_=sc2009spring_s603_2_cubby_in_action.pdf">sc2009spring_s603_2_cubby_in_action.pdf</a>
+					</li>
+				</ul>
+				</p>
+			</subsection>
+
+			<a name="a2009-03-14"/>
+			<subsection name="2009-03-14 Seasar Conference 2009 White">
+				<p>
+					<a href="http://event.seasarfoundation.org/sc2009white/Session#S4051">Seasar Conference 2009 White</a> で使用した資料です。
+					<div>
+				<iframe src="http://docs.google.com/viewer?url=http%3A%2F%2Fevent.seasarfoundation.org%2Fsc2009white%2FviewAttachment.do%3F_pageName_%3DSession%26_fileName_%3Dsc2009white_s405_1_cubby.pdf&amp;embedded=true" width="425" height="320" style="border: none;"></iframe>
+				</div>
+				<ul>
+					<li>
+						<a href="http://event.seasarfoundation.org/sc2009white/viewAttachment.do?_pageName_=Session&amp;_fileName_=sc2009white_s405_1_cubby.pdf">sc2009white_s405_1_cubby.pdf</a>
+					</li>
+				</ul>
+				</p>
+			</subsection>
+
+			<a name="a2008-09-06"/>
+			<subsection name="2008-09-06 Seasar Conference 2008 Autumn">
+				<p>
+					<a href="http://event.seasarfoundation.org/sc2008autumn/Session#b2">Seasar Conference 2008 Autumn</a> で使用した資料です。
+				<div>
+					<object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080906-1221930041317842-9&amp;stripped_title=cubby-20080906-presentation-609002" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080906-1221930041317842-9&amp;stripped_title=cubby-20080906-presentation-609002" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object>
+				</div>
 				<ul>
 					<li>
 						<a href="./presentations/20080906/Cubby-20080906.pdf">Cubby-20080906.pdf</a>
@@ -45,7 +79,9 @@
 			<subsection name="2008-01-15 技術発表会資料">
 				<p>
 					<a href="http://www.opentone.co.jp/study/index.html">技術交流会</a>で使用した資料です。
-				<div style="width:425px;text-align:left" id="__ss_242938"><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;"><a href="http://www.slideshare.net/?src=embed"><img src="http://static.slideshare.net/swf/logo_embd.png" style="border:0px none;margin-bottom:-5px" alt="SlideShare"/></a> | <a href="http://www.slideshare.net/agattino/cubby20080115-ot?src=embed" title="View 'Cubby-2008-01-15 OT' on SlideShare">View</a> | <a href="http://www.slideshare.net/upload?src=embed">Upload your own</a></div></div>
+				<div>
+					<object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby20080115-ot-1201441725375658-4" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object>
+				</div>
 				<ul>
 					<li>
 						<a href="./presentations/20080115/Cubby-20080115OT.pdf">Cubby-20080115OT.pdf</a>
@@ -59,9 +95,9 @@
 
 			<a name="a2007-12-08"/>
 			<subsection
-				name="2007-12-08 SeasarCon 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料">
+				name="2007-12-08 Seasar Conference 2007 Fukuoka（オープンソースカンファレンス2007福岡前夜祭）発表資料">
 				<p>
-					SeasarCon 2007 Fukuokaで使用した資料です。現在の仕様(Cubby-1.0)とは仕様が一部異なります。
+					Seasar Conference 2007 Fukuokaで使用した資料です。リリース版(Cubby-1.0)とは仕様が一部異なります。
 				</p>
 				<ul>
 					<li>
@@ -72,8 +108,10 @@
 
 			<a name="a2006-08-23"/>
 			<subsection name="2006-08-23 ヌーラボ臨海学校発表資料">
-				<p>Cubbyコンセプトの資料です。現在の仕様(Cubby-1.0)とは仕様がかなり異なります。</p>
-				<div style="width:425px;text-align:left" id="__ss_242945"><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;"><a href="http://www.slideshare.net/?src=embed"><img src="http://static.slideshare.net/swf/logo_embd.png" style="border:0px none;margin-bottom:-5px" alt="SlideShare"/></a> | <a href="http://www.slideshare.net/agattino/cubby-20060823?src=embed" title="View 'Cubby 2006-08-23' on SlideShare">View</a> | <a href="http://www.slideshare.net/upload?src=embed">Upload your own</a></div></div>
+				<p>Cubbyコンセプトの資料です。リリース版(Cubby-1.0)とは仕様がかなり異なります。</p>
+				<div>
+					<object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2"/><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slideshare.net/swf/ssplayer2.swf?doc=cubby-20060823-1201443446717407-2" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object>
+				</div>
 				<ul>
 					<li>
 						<a href="./presentations/20060823/cubby-20060823.pdf">cubby-20060823.pdf</a>
