@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2004-2009 the Seasar Foundation and the Others.
+    Copyright 2004-2010 the Seasar Foundation and the Others.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
     governing permissions and limitations under the License.
 
 --%>
+
 #set($dollar = '$')
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
