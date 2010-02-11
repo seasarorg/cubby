@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2004-2009 the Seasar Foundation and the Others.
+    Copyright 2004-2010 the Seasar Foundation and the Others.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
     governing permissions and limitations under the License.
 
 --%>
+
 #set($dollar = '$')
 <c:if test="${dollar}{f:containsKey(flash, 'notice')}">
 <div id="notice" class="notice">${dollar}{f:out(flash['notice'])}</div>

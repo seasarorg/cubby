@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2004-2009 the Seasar Foundation and the Others.
+    Copyright 2004-2010 the Seasar Foundation and the Others.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
     governing permissions and limitations under the License.
 
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
