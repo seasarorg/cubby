@@ -22,6 +22,7 @@ import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 import static org.seasar.cubby.validator.ValidationUtils.getValidation;
 import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,15 @@ public class ValidationPlugin extends AbstractPlugin {
 				validationRules.validate(parameterMap, formBean, actionContext
 						.getActionErrors());
 			}
-			return invocation.proceed();
+			try {
+				return invocation.proceed();
+			} catch (final InvocationTargetException e) {
+				final Throwable cause = e.getCause();
+				if (cause instanceof ValidationException) {
+					throw (ValidationException) cause;
+				}
+				throw e;
+			}
 		} catch (final ValidationException e) {
 			request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
 			final ValidationFailBehaviour behaviour = e.getBehaviour();

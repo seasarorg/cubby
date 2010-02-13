@@ -41,11 +41,9 @@
 	</bean>
 
 	<!-- request parsers -->
-	<bean id="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
-	<bean id="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
 	<util:list id="requestParsers">
-		<ref bean="multipartRequestParser" />
-		<ref bean="defaultRequestParser" />
+		<bean class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+		<bean class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
 	</util:list>
 
 	<!-- file upload -->
