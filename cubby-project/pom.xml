@@ -55,8 +55,8 @@
     </developer>
     <developer>
       <id>sakamoto</id>
-      <name>SAKAMOTO Takashi</name>
-      <email>sakamoto_at_nulab.co.jp</email>
+      <name>SAKAMOTO Tadashi</name>
+      <email />
       <timezone>+9</timezone>
     </developer>
     <developer>
@@ -250,7 +250,6 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
       </plugin>
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.0.1</version>
         <configuration>
           <locales>ja</locales>
           <encoding>UTF-8</encoding>
@@ -278,11 +277,10 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
+        <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
         <configuration>
-          <header>http://www.seasar.org/license/header.txt</header>
+          <header>src/etc/header.txt</header>
           <includes>
             <include>src/**</include>
           </includes>
@@ -295,7 +293,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
           </mapping>
           <encoding>UTF-8</encoding>
           <headerDefinitions>
-            <headerDefinition>http://www.seasar.org/license/header-definition.xml</headerDefinition>
+            <headerDefinition>src/etc/header-definition.xml</headerDefinition>
           </headerDefinitions>
         </configuration>
       </plugin>
