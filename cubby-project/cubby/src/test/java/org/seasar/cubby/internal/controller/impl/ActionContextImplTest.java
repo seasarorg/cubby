@@ -43,6 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.seasar.cubby.action.Action;
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.action.Form;
@@ -82,13 +83,15 @@ public class ActionContextImplTest {
 		final Action action = new NormalAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = action.getClass().getMethod("method1");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 		assertSame(action, actionContext.getAction());
 		assertEquals(actionClass, actionContext.getActionClass());
 		assertEquals(method, actionContext.getActionMethod());
-		assertNotNull(actionContext.getActionErrors());
-		assertNotNull(actionContext.getFlashMap());
+		assertNotNull(actionErrors);
+		assertNotNull(flashMap);
 
 		System.out.println(actionContext);
 		verify(request);
@@ -102,8 +105,10 @@ public class ActionContextImplTest {
 		final NormalAction action = new NormalAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = action.getClass().getMethod("method1");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertFalse(action.isInitialized());
 		assertFalse(action.isPrerendered());
@@ -135,13 +140,15 @@ public class ActionContextImplTest {
 		final PojoAction action = new PojoAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = action.getClass().getMethod("method1");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 		assertSame(action, actionContext.getAction());
 		assertEquals(actionClass, actionContext.getActionClass());
 		assertEquals(method, actionContext.getActionMethod());
-		assertNotNull(actionContext.getActionErrors());
-		assertNotNull(actionContext.getFlashMap());
+		assertSame(actionErrors, actionContext.getActionErrors());
+		assertSame(flashMap, actionContext.getFlashMap());
 
 		System.out.println(actionContext);
 		verify(request);
@@ -155,8 +162,10 @@ public class ActionContextImplTest {
 		final PojoAction action = new PojoAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = action.getClass().getMethod("method2");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertFalse(action.isInitialized());
 		assertFalse(action.isPrerendered());
@@ -188,8 +197,10 @@ public class ActionContextImplTest {
 		final FormAction action = new FormAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class.getMethod("noAnnotate");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertSame(action, actionContext.getFormBean());
 		assertFalse(actionContext.isBindRequestParameterToAllProperties());
@@ -206,8 +217,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateValidFormName");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertSame(action.getMyForm(), actionContext.getFormBean());
 		assertTrue(actionContext.isBindRequestParameterToAllProperties());
@@ -223,8 +236,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateAllPropertiesBindingType");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertSame(action, actionContext.getFormBean());
 		assertTrue(actionContext.isBindRequestParameterToAllProperties());
@@ -241,8 +256,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateOnlySpecifiedPropertiesBindingType");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertSame(action.getMyForm(), actionContext.getFormBean());
 		assertFalse(actionContext.isBindRequestParameterToAllProperties());
@@ -257,8 +274,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateNoneBindingType");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertNull(actionContext.getFormBean());
 		try {
@@ -280,8 +299,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateNullFormName");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		try {
 			assertNull(actionContext.getFormBean());
@@ -302,8 +323,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateNotExistFormName");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		try {
 			assertNull(actionContext.getFormBean());
@@ -324,8 +347,10 @@ public class ActionContextImplTest {
 		final Class<?> actionClass = action.getClass();
 		final Method method = FormAction.class
 				.getMethod("annotateThisFormName");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
 		assertSame(action, actionContext.getFormBean());
 		assertTrue(actionContext.isBindRequestParameterToAllProperties());
@@ -347,10 +372,11 @@ public class ActionContextImplTest {
 		final Object action = new NormalAction();
 		final Class<?> actionClass = action.getClass();
 		final Method method = action.getClass().getMethod("method1");
+		final ActionErrors actionErrors = new ActionErrorsImpl();
+		final Map<String, Object> flashMap = new FlashMapImpl(request);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, method);
+				action, actionClass, method, actionErrors, flashMap);
 
-		final Map<String, Object> flashMap = actionContext.getFlashMap();
 		flashMap.put("key", "value");
 		assertFalse(flashMap.isEmpty());
 		actionContext.clearFlash();

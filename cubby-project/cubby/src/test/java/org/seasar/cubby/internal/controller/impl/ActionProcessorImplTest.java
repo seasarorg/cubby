@@ -81,8 +81,11 @@ public class ActionProcessorImplTest {
 		request.setAttribute(eq(CubbyConstants.ATTR_ACTION), eq(action));
 		request.setAttribute(eq(CubbyConstants.ATTR_ACTION_CONTEXT),
 				isA(ActionContext.class));
+		expect(request.getAttribute(CubbyConstants.ATTR_ERRORS))
+				.andReturn(null);
 		request.setAttribute(eq(CubbyConstants.ATTR_ERRORS),
 				isA(ActionErrors.class));
+		expect(request.getAttribute(CubbyConstants.ATTR_FLASH)).andReturn(null);
 		request
 				.setAttribute(eq(CubbyConstants.ATTR_FLASH),
 						isA(FlashMap.class));
