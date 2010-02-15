@@ -47,8 +47,10 @@ import org.seasar.cubby.plugin.PluginRegistry;
 import org.seasar.cubby.plugins.BinderPlugin;
 import org.seasar.cubby.routing.PathInfo;
 import org.seasar.cubby.routing.Routing;
+import org.seasar.cubby.spi.BeanDescProvider;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.RequestParserProvider;
+import org.seasar.cubby.spi.beans.impl.DefaultBeanDescProvider;
 import org.seasar.cubby.spi.container.Container;
 import org.seasar.cubby.spi.container.LookupException;
 import org.seasar.cubby.spi.impl.AbstractRequestParserProvider;
@@ -58,6 +60,8 @@ public class CubbyFilterProcessRequestTest {
 	private final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
 
 	private CubbyFilter cubbyFilter = new CubbyFilter();
+
+	private Object action = new MockAction();
 
 	@Before
 	public void setupProvider() {
@@ -79,12 +83,14 @@ public class CubbyFilterProcessRequestTest {
 
 					public <T> T lookup(Class<T> type) throws LookupException {
 						if (MockAction.class.equals(type)) {
-							return type.cast(new MockAction());
+							return type.cast(action);
 						}
 						throw new LookupException();
 					}
 
 				}));
+		binderPlugin.bind(BeanDescProvider.class).toInstance(
+				new DefaultBeanDescProvider());
 
 		pluginRegistry.register(binderPlugin);
 	}
@@ -107,11 +113,15 @@ public class CubbyFilterProcessRequestTest {
 		expect(request.getParameterMap()).andReturn(parameterMap);
 		expect(request.getRequestURI()).andReturn("/context/mock/execute");
 		request.setAttribute(CubbyConstants.ATTR_PARAMS, parameterMap);
+		expect(request.getAttribute(CubbyConstants.ATTR_ERRORS))
+				.andReturn(null);
 		request.setAttribute(eq(CubbyConstants.ATTR_ERRORS),
 				isA(ActionErrors.class));
+		expect(request.getAttribute(CubbyConstants.ATTR_FLASH)).andReturn(null);
 		request.setAttribute(eq(CubbyConstants.ATTR_FLASH), isA(Map.class));
-		request.setAttribute(eq(CubbyConstants.ATTR_ACTION),
-				isA(MockAction.class));
+		expect(request.getAttribute(CubbyConstants.ATTR_ACTION)).andStubReturn(
+				action);
+		request.setAttribute(CubbyConstants.ATTR_ACTION, action);
 		request.setAttribute(eq(CubbyConstants.ATTR_ACTION_CONTEXT),
 				isA(ActionContext.class));
 		expect(request.getSession(false)).andReturn(null);
