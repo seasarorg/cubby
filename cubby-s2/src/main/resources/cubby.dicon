@@ -40,8 +40,8 @@
 	<component class="org.seasar.cubby.plugins.s2.spi.S2ConverterProvider" />
 
 	<!-- request -->
-	<component class="org.seasar.cubby.action.ActionErrorsProxy" instance="request" />
-	<component class="org.seasar.cubby.action.FlashMapProxy" instance="request" />
+	<!--component class="org.seasar.cubby.action.ActionErrorsProxy" instance="request" /-->
+	<!--component class="org.seasar.cubby.action.FlashMapProxy" instance="request" /-->
 	<component class="org.seasar.cubby.action.ActionContextProxy" instance="request" />
 
 </components>
