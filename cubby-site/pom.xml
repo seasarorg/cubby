@@ -54,7 +54,7 @@
     <developer>
       <id>sakamoto</id>
       <name>SAKAMOTO Takashi</name>
-      <email>sakamoto_at_nulab.co.jp</email>
+      <email />
       <timezone>+9</timezone>
     </developer>
     <developer>
@@ -141,6 +141,30 @@
           <encoding>UTF-8</encoding>
           <inputEncoding>UTF-8</inputEncoding>
           <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>src/etc/header.txt</header>
+          <includes>
+            <include>src/**</include>
+          </includes>
+          <excludes>
+            <exclude>**/env*.txt</exclude>
+            <exclude>**/*.html</exclude>
+            <exclude>**/*.css</exclude>
+            <exclude>**/*.js</exclude>
+          </excludes>
+          <mapping>
+            <tld>XML_STYLE</tld>
+            <dicon>XML_STYLE</dicon>
+          </mapping>
+          <encoding>UTF-8</encoding>
+          <headerDefinitions>
+            <headerDefinition>src/etc/header-definition.xml</headerDefinition>
+          </headerDefinitions>
         </configuration>
       </plugin>
     </plugins>
