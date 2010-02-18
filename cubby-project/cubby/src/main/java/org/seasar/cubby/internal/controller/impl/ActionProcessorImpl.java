@@ -16,7 +16,7 @@
 
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
+import static org.seasar.cubby.CubbyConstants.*;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
@@ -26,7 +26,9 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionContext;
@@ -77,8 +79,10 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final Object action = container.lookup(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 
-		final ActionErrors actionErrors = setupActionErrors(request);
-		final Map<String, Object> flashMap = setupFlashMap(request);
+		final HttpServletRequest wrapeeRequest = (HttpServletRequest) ((HttpServletRequestWrapper) request)
+				.getRequest();
+		final ActionErrors actionErrors = setupActionErrors(wrapeeRequest);
+		final Map<String, Object> flashMap = setupFlashMap(wrapeeRequest);
 		final ActionContext actionContext = new ActionContextImpl(request,
 				action, actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
@@ -97,7 +101,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		return actionResultWrapper;
 	}
 
-	private ActionErrors setupActionErrors(final HttpServletRequest request) {
+	private ActionErrors setupActionErrors(final ServletRequest request) {
 		final ActionErrors actionErrors = (ActionErrors) request
 				.getAttribute(ATTR_ERRORS);
 		if (actionErrors != null) {
@@ -109,7 +113,7 @@ public class ActionProcessorImpl implements ActionProcessor {
 		return newActionErrors;
 	}
 
-	private Map<String, Object> setupFlashMap(final HttpServletRequest request) {
+	private Map<String, Object> setupFlashMap(final ServletRequest request) {
 		@SuppressWarnings("unchecked")
 		final Map<String, Object> flashMap = (Map<String, Object>) request
 				.getAttribute(ATTR_FLASH);
@@ -117,7 +121,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 			return flashMap;
 		}
 
-		final Map<String, Object> newFlashMap = new FlashMapImpl(request);
+		final Map<String, Object> newFlashMap = new FlashMapImpl(
+				(HttpServletRequest) request);
 		request.setAttribute(ATTR_FLASH, newFlashMap);
 		return newFlashMap;
 	}
