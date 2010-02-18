@@ -26,6 +26,7 @@ import static org.easymock.EasyMock.verify;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
@@ -98,8 +99,9 @@ public class ActionProcessorImplTest {
 		replay(request, response, routing);
 
 		ActionProcessor actionProcessor = new ActionProcessorImpl();
+		HttpServletRequest wrapper = new HttpServletRequestWrapper(request);
 		ActionResultWrapper actionResultWrapper = actionProcessor.process(
-				request, response, routing);
+				wrapper, response, routing);
 		actionResultWrapper.execute(request, response);
 
 		verify(request, response, routing);
