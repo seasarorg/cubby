@@ -124,6 +124,8 @@ public class CubbyFilterProcessRequestTest {
 		request.setAttribute(CubbyConstants.ATTR_ACTION, action);
 		request.setAttribute(eq(CubbyConstants.ATTR_ACTION_CONTEXT),
 				isA(ActionContext.class));
+		expect(request.getAttribute(CubbyConstants.ATTR_WRAPEE_REQUEST))
+				.andReturn(request);
 		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		PathInfo pathInfo = createMock(PathInfo.class);
