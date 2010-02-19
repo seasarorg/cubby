@@ -41,7 +41,6 @@ public class CubbyConstants {
 	/** コンテキストパスの要求の属性名 */
 	public static final String ATTR_CONTEXT_PATH = "contextPath";
 
-
 	/** パラメータオブジェクトの要求の属性名 */
 	public static final String ATTR_PARAMS = PREFIX + "params";
 
@@ -52,19 +51,24 @@ public class CubbyConstants {
 	public static final String ATTR_ACTION_CONTEXT = PREFIX + "actionContext";
 
 	/** 型変換失敗の要求の属性名 */
-	public static final String ATTR_CONVERSION_FAILURES = PREFIX + "conversionFailures";
+	public static final String ATTR_CONVERSION_FAILURES = PREFIX
+			+ "conversionFailures";
 
 	/** バリデーションエラーを表すオブジェクトの要求の属性名 */
 	public static final String ATTR_VALIDATION_FAIL = PREFIX + "validationFail";
 
 	/** フォームオブジェクトのラッパーファクトリの要求の属性名 */
-	public static final String ATTR_FORM_WRAPPER_FACTORY = PREFIX + "formWrapperFactory";
+	public static final String ATTR_FORM_WRAPPER_FACTORY = PREFIX
+			+ "formWrapperFactory";
 
 	/** フィルターチェインの要求の属性名 */
 	public static final String ATTR_FILTER_CHAIN = PREFIX + "filterChain";
 
 	/** メッセージリソースの属性名 */
-	public static final String ATTR_MESSAGES_RESOURCE_BUNDLE = PREFIX + "messagesResourceBundle";
+	public static final String ATTR_MESSAGES_RESOURCE_BUNDLE = PREFIX
+			+ "messagesResourceBundle";
+
+	public static final String ATTR_WRAPEE_REQUEST = PREFIX + "wrapeeRequest";
 
 	// session --------------------------------------------------------
 

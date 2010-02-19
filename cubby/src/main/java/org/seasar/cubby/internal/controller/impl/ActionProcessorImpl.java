@@ -16,10 +16,11 @@
 
 package org.seasar.cubby.internal.controller.impl;
 
-import static org.seasar.cubby.CubbyConstants.*;
+import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
+import static org.seasar.cubby.CubbyConstants.ATTR_WRAPEE_REQUEST;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
@@ -28,7 +29,6 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionContext;
@@ -79,8 +79,8 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final Object action = container.lookup(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 
-		final HttpServletRequest wrapeeRequest = (HttpServletRequest) ((HttpServletRequestWrapper) request)
-				.getRequest();
+		final HttpServletRequest wrapeeRequest = (HttpServletRequest) request
+				.getAttribute(ATTR_WRAPEE_REQUEST);
 		final ActionErrors actionErrors = setupActionErrors(wrapeeRequest);
 		final Map<String, Object> flashMap = setupFlashMap(wrapeeRequest);
 		final ActionContext actionContext = new ActionContextImpl(request,
