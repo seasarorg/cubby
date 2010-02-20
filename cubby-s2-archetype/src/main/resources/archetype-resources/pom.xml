@@ -60,6 +60,7 @@ line.separator=\n
           </container>
         </configuration>
         <executions>
+          <!--
           <execution>
             <id>tomcat-start</id>
             <phase>pre-integration-test</phase>
@@ -78,6 +79,7 @@ line.separator=\n
               <goal>stop</goal>
             </goals>
           </execution>
+          -->
         </executions>
       </plugin>
       <plugin>
