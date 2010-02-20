@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<import resource="classpath*:cubby.xml" />
+	<import resource="classpath*:cubby-converters.xml" />
+
+	<!-- 日付フォーマットの設定 -->
+	<bean id="defaultFormatPattern" class="org.seasar.cubby.controller.impl.DefaultFormatPattern">
+		<property name="datePattern">
+			<value>yyyy-MM-dd</value>
+		</property>
+		<property name="timePattern">
+			<value>HH:mm:ss</value>
+		</property>
+		<property name="timestampPattern">
+			<value>yyyy-MM-dd HH:mm:ss</value>
+		</property>
+	</bean>
+
+	<!-- リクエストパーサー -->
+	<bean id="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<bean id="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
+	<util:list id="requestParsers">
+		<ref bean="multipartRequestParser" />
+		<ref bean="defaultRequestParser" />
+	</util:list>
+
+	<!-- ファイルアップロードの設定 -->
+	<bean id="servletFileUpload" class="org.apache.commons.fileupload.servlet.ServletFileUpload"
+		scope="prototype">
+		<property name="fileItemFactory">
+			<bean id="diskItemFactory"
+				class="org.apache.commons.fileupload.disk.DiskFileItemFactory">
+				<property name="sizeThreshold">
+					<value>4096</value>
+				</property>
+			</bean>
+		</property>
+		<property name="fileSizeMax">
+			<value>10000000</value>
+		</property>
+	</bean>
+	<bean class="org.apache.commons.fileupload.servlet.ServletRequestContext"
+		scope="prototype" autowire="constructor" />
+
+	<!-- メッセージの振る舞い -->
+	<bean id="messagesBehavior"
+		class="org.seasar.cubby.controller.impl.DefaultMessagesBehaviour">
+		<property name="baseName">
+			<value>messages</value>
+		</property>
+	</bean>
+
+</beans>
