@@ -26,7 +26,7 @@
       <defaultValue>1.6</defaultValue>
     </requiredProperty>
     <requiredProperty key="cubby-version">
-      <defaultValue>2.0.7</defaultValue>
+      <defaultValue>2.0.8</defaultValue>
     </requiredProperty>
     <requiredProperty key="s2container-version">
       <defaultValue>2.4.40</defaultValue>
