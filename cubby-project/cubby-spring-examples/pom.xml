@@ -27,6 +27,7 @@
           <wtpversion>2.0</wtpversion>
           <downloadSources>true</downloadSources>
           <downloadJavadocs>true</downloadJavadocs>
+          <useProjectReferences>false</useProjectReferences>
           <additionalConfig>
             <file>
               <name>.settings/org.eclipse.core.resources.prefs
