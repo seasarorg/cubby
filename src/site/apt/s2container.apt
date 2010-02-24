@@ -364,7 +364,6 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="app-cubby">
-	<include path="cubby-handlers.dicon"/>
 	<include path="cubby-converters.dicon"/>
 
 	<!-- date and time format patterns -->
@@ -375,8 +374,11 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
 	</component>
 
 	<!-- request parsers -->
-	<component class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
-	<component class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="multipartRequestParser" class="org.seasar.cubby.controller.impl.MultipartRequestParser" />
+	<component name="defaultRequestParser" class="org.seasar.cubby.controller.impl.DefaultRequestParser" />
+	<component name="requestParsers">
+		{ multipartRequestParser, defaultRequestParser }
+	</component>
 
 	<!-- file upload -->
 	<component class="org.apache.commons.fileupload.servlet.ServletFileUpload" instance="prototype">
