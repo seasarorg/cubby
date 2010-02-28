@@ -5,7 +5,7 @@
   <artifactId>cubby-site</artifactId>
   <packaging>pom</packaging>
   <name>Cubby Site</name>
-  <version>20</version>
+  <version>21-SNAPSHOT</version>
   <description>Cubby Site</description>
   <url>http://cubby.seasar.org/</url>
   <inceptionYear>2006</inceptionYear>
@@ -103,8 +103,8 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn:https://www.seasar.org/svn/cubby/tags/cubby-site-20</connection>
-    <url>https://www.seasar.org/svn/cubby/tags/cubby-site-20</url>
+    <connection>scm:svn:https://www.seasar.org/svn/cubby/trunk/cubby-site/</connection>
+    <url>https://www.seasar.org/svn/cubby/trunk/cubby-site/</url>
   </scm>
   <distributionManagement>
     <repository>
