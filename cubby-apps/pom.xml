@@ -98,9 +98,6 @@
      </site>
   </distributionManagement>
   <modules>
-    <module>cubby-s2-examples</module>
-    <module>cubby-guice-examples</module>
-    <module>cubby-spring-examples</module>
     <module>cubby-showcase</module>
     <module>cubby-wiki</module>
     <module>cubbitter</module>
