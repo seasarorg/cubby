@@ -20,15 +20,19 @@ import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
+import static org.seasar.cubby.CubbyConstants.ATTR_WRAPEE_REQUEST;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.seasar.cubby.action.ActionContext;
+import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
 import org.seasar.cubby.internal.controller.ActionProcessor;
@@ -75,11 +79,13 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final Object action = container.lookup(actionClass);
 		request.setAttribute(ATTR_ACTION, action);
 
+		final HttpServletRequest wrapeeRequest = (HttpServletRequest) request
+				.getAttribute(ATTR_WRAPEE_REQUEST);
+		final ActionErrors actionErrors = setupActionErrors(wrapeeRequest);
+		final Map<String, Object> flashMap = setupFlashMap(wrapeeRequest);
 		final ActionContext actionContext = new ActionContextImpl(request,
-				action, actionClass, actionMethod);
+				action, actionClass, actionMethod, actionErrors, flashMap);
 		request.setAttribute(ATTR_ACTION_CONTEXT, actionContext);
-		request.setAttribute(ATTR_ERRORS, actionContext.getActionErrors());
-		request.setAttribute(ATTR_FLASH, actionContext.getFlashMap());
 
 		actionContext.invokeInitializeMethod();
 
@@ -93,6 +99,32 @@ public class ActionProcessorImpl implements ActionProcessor {
 		final ActionResultWrapper actionResultWrapper = new ActionResultWrapperImpl(
 				actionResult, actionContext);
 		return actionResultWrapper;
+	}
+
+	private ActionErrors setupActionErrors(final ServletRequest request) {
+		final ActionErrors actionErrors = (ActionErrors) request
+				.getAttribute(ATTR_ERRORS);
+		if (actionErrors != null) {
+			return actionErrors;
+		}
+
+		final ActionErrors newActionErrors = new ActionErrorsImpl();
+		request.setAttribute(ATTR_ERRORS, newActionErrors);
+		return newActionErrors;
+	}
+
+	private Map<String, Object> setupFlashMap(final ServletRequest request) {
+		@SuppressWarnings("unchecked")
+		final Map<String, Object> flashMap = (Map<String, Object>) request
+				.getAttribute(ATTR_FLASH);
+		if (flashMap != null) {
+			return flashMap;
+		}
+
+		final Map<String, Object> newFlashMap = new FlashMapImpl(
+				(HttpServletRequest) request);
+		request.setAttribute(ATTR_FLASH, newFlashMap);
+		return newFlashMap;
 	}
 
 	/**

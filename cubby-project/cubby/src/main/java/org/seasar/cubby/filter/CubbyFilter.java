@@ -17,7 +17,7 @@
 package org.seasar.cubby.filter;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_FILTER_CHAIN;
-import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.CubbyConstants.*;
 import static org.seasar.cubby.CubbyConstants.ATTR_ROUTING;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
@@ -171,6 +171,7 @@ public class CubbyFilter implements Filter {
 				ignorePathPatterns);
 
 		if (pathInfo != null) {
+			setupWrapeeRequest(request);
 			request.setAttribute(ATTR_FILTER_CHAIN, chain);
 			try {
 				processRequest(request, response, pathInfo);
@@ -185,6 +186,14 @@ public class CubbyFilter implements Filter {
 			}
 		} else {
 			chain.doFilter(request, response);
+		}
+	}
+
+	private void setupWrapeeRequest(final HttpServletRequest request) {
+		final HttpServletRequest wrapeeRequest = (HttpServletRequest) request
+				.getAttribute(ATTR_WRAPEE_REQUEST);
+		if (wrapeeRequest == null) {
+			request.setAttribute(ATTR_WRAPEE_REQUEST, request);
 		}
 	}
 

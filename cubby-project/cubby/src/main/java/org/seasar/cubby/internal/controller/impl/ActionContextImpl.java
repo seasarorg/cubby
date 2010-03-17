@@ -71,16 +71,21 @@ class ActionContextImpl implements ActionContext {
 	 *            アクションクラス
 	 * @param actionMethod
 	 *            アクションメソッド
+	 * @param actionErrors
+	 *            アクションエラー
+	 * @param flashMap
+	 *            揮発性メッセージ
 	 */
 	public ActionContextImpl(final HttpServletRequest request,
 			final Object action, final Class<?> actionClass,
-			final Method actionMethod) {
+			final Method actionMethod, final ActionErrors actionErrors,
+			final Map<String, Object> flashMap) {
 		this.action = action;
 		this.actionClass = actionClass;
 		this.actionMethod = actionMethod;
 
-		this.actionErrors = new ActionErrorsImpl();
-		this.flashMap = new FlashMapImpl(request);
+		this.actionErrors = actionErrors;
+		this.flashMap = flashMap;
 
 		if (action instanceof Action) {
 			initializeAction((Action) action, actionErrors, flashMap);
@@ -192,12 +197,12 @@ class ActionContextImpl implements ActionContext {
 
 		final RequestParameterBindingType type = form.bindingType();
 		switch (type) {
-			case ALL_PROPERTIES :
-				return true;
-			case ONLY_SPECIFIED_PROPERTIES :
-				return false;
-			default :
-				throw new IllegalStateException(type.toString());
+		case ALL_PROPERTIES:
+			return true;
+		case ONLY_SPECIFIED_PROPERTIES:
+			return false;
+		default:
+			throw new IllegalStateException(type.toString());
 		}
 	}
 

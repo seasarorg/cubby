@@ -19,7 +19,7 @@
   --------
   baba
   --------
-  2009-03-13
+  2010-02-25
   --------
 
 {目次}
@@ -141,9 +141,9 @@ mvn clean package -Pproduction
 *--------------------------*--------------------------*------*
 | cubby-s2-*.jar           | S2Container 統合         | 必須 |
 *--------------------------*--------------------------*------*
-| cubby-unit-*.jar         | 単体テストサポート       | 必須 |
+| cubby-unit-*.jar         | 単体テストサポート         | 必須 |
 *--------------------------*--------------------------*------*
-| cubby-gson-*.jar         | JSON サポート            | 任意 |
+| cubby-gson-*.jar         | JSON サポート             | 任意 |
 *--------------------------*--------------------------*------*
 | s2-framework-*.jar       | S2Container              | 必須 |
 | s2-extension-*.jar       |                          |      |
@@ -166,7 +166,7 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
 *{デプロイメント記述子 (WEB-INF/web.xml)}
 
  Cubby はサーブレットフィルタとして動作します。
- web.xml にサーブレットフィルタとフィルタマッピングを追加します。
+ web.xml にサーブレットフィルター、フィルターマッピング、サーブレットフィルタ、サーブレットマッピングを追加します。
  登録する際は以下の順序で登録してください。
 
  [[1]]{{{cubby/apidocs/org/seasar/cubby/filter/SendErrorFilter}SendErrorFilter}} (任意)
@@ -175,22 +175,22 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
       この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>sendErrorFilter</filter-name>
-        <filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
-        <init-param>
-            <param-name>statusCode</param-name>
-            <param-value>404</param-value>
-        </init-param>
-    </filter>
+	<filter>
+		<filter-name>senderror</filter-name>
+		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
+		<init-param>
+			<param-name>statusCode</param-name>
+			<param-value>404</param-value>
+		</init-param>
+	</filter>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>sendErrorFilter</filter-name>
-        <url-pattern>*.jsp</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>senderror</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
 +------------------------------------------------------+
 
  [[2]]{{{cubby/apidocs/org/seasar/cubby/filter/EncodingFilter}EncodingFilter}} (任意)
@@ -199,7 +199,7 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
 
 +------------------------------------------------------+
 	<filter>
-		<filter-name>encodingFilter</filter-name>
+		<filter-name>encoding</filter-name>
 		<filter-class>org.seasar.cubby.filter.EncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
@@ -210,30 +210,30 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
 
 +------------------------------------------------------+
 	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
+		<filter-name>encoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 +------------------------------------------------------+
 
  [[3]]S2ContainerFilter (必須)
 
-      Cubby 内部では{{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
+      {{{http://s2container.seasar.org/ja/DIContainer.html#request}リクエストの自動バインディング}}を使用するので、S2ContainerFilter を定義します。
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>s2Filter</filter-name>
-        <filter-class>org.seasar.framework.container.filter.S2ContainerFilter</filter-class>
-    </filter>
+	<filter>
+		<filter-name>s2container</filter-name>
+		<filter-class>org.seasar.framework.container.filter.S2ContainerFilter</filter-class>
+	</filter>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>s2Filter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>s2container</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
 +------------------------------------------------------+
 
  [[4]]HotdeployFilter
@@ -241,20 +241,20 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
       {{{http://s2container.seasar.org/ja/S2.4SmartDeploy.html#HotDeploy}Hot deploy}} を使用する場合は HotdeployFilter を定義します。
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>hotdeployFilter</filter-name>
-        <filter-class>org.seasar.framework.container.hotdeploy.HotdeployFilter</filter-class>
-    </filter>
+	<filter>
+		<filter-name>hotdeploy</filter-name>
+		<filter-class>org.seasar.framework.container.hotdeploy.HotdeployFilter</filter-class>
+	</filter>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>hotdeployFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>hotdeploy</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
 +------------------------------------------------------+
 
  [[5]]{{{cubby/apidocs/org/seasar/cubby/filter/CubbyFilter}CubbyFilter}} (必須)
@@ -267,25 +267,64 @@ Cubby と S2Container のバージョンの推奨の組み合わせ
       Hot deploy の場合はすべてのパスを対象としてしまうとクラスパスを走査する回数が増えるので、イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
       対象外にするパスを正規表現のカンマ区切りで指定してください。
 
++------------------------------------------------------+
+	<filter>
+		<filter-name>cubby</filter-name>
+		<filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
+		<init-param>
+			<param-name>ignorePathPattern</param-name>
+			<param-value>/css/.*,/js/.*,/img/.*</param-value>
+		</init-param>
+	</filter>
++------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>cubbyFilter</filter-name>
-        <filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
-        <init-param>
-            <param-name>ignorePathPattern</param-name>
-            <param-value>/css/.*,/js/.*,/img/.*</param-value>
-        </init-param>
-    </filter>
+	<filter-mapping>
+		<filter-name>cubby</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
++------------------------------------------------------+
+
+ [[6]]S2ContainerServlet (必須)
+
+      S2Container のサーブレットです。
+
++------------------------------------------------------+
+	<servlet>
+		<servlet-name>s2container</servlet-name>
+		<servlet-class>org.seasar.framework.container.servlet.S2ContainerServlet</servlet-class>
+		<init-param>
+			<param-name>configPath</param-name>
+			<param-value>app.dicon</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>cubbyFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>s2container</servlet-name>
+        <url-pattern>/s2container/*</url-pattern>
+    </servlet-mapping>
++------------------------------------------------------+
+
+ [[7]]{{{cubby/apidocs/org/seasar/cubby/servlet/CubbyServlet}CubbyServlet}} (必須)
+
+      Cubby のプラグインの初期化を行うサーブレットです。
+
++------------------------------------------------------+
+	<servlet>
+		<servlet-name>cubby</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 +------------------------------------------------------+
 
 *{diconファイル (WEB-INF/classes)}

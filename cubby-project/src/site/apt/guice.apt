@@ -19,7 +19,7 @@
   --------
   baba
   --------
-  2009-09-22
+  2010-02-25
   --------
 
 {目次}
@@ -177,22 +177,22 @@ Cubby と Guice のバージョンの推奨の組み合わせ
       この例ではブラウザ等から *.jsp へアクセスがあった場合に NotFound (404) を返します。
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>sendErrorFilter</filter-name>
-        <filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
-        <init-param>
-            <param-name>statusCode</param-name>
-            <param-value>404</param-value>
-        </init-param>
-    </filter>
+	<filter>
+		<filter-name>senderror</filter-name>
+		<filter-class>org.seasar.cubby.filter.SendErrorFilter</filter-class>
+		<init-param>
+			<param-name>statusCode</param-name>
+			<param-value>404</param-value>
+		</init-param>
+	</filter>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>sendErrorFilter</filter-name>
-        <url-pattern>*.jsp</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>senderror</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
 +------------------------------------------------------+
 
  [[3]]{{{cubby/apidocs/org/seasar/cubby/filter/EncodingFilter}EncodingFilter}} (任意)
@@ -201,7 +201,7 @@ Cubby と Guice のバージョンの推奨の組み合わせ
 
 +------------------------------------------------------+
 	<filter>
-		<filter-name>encodingFilter</filter-name>
+		<filter-name>encoding</filter-name>
 		<filter-class>org.seasar.cubby.filter.EncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
@@ -212,7 +212,7 @@ Cubby と Guice のバージョンの推奨の組み合わせ
 
 +------------------------------------------------------+
 	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
+		<filter-name>encoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 +------------------------------------------------------+
@@ -223,14 +223,14 @@ Cubby と Guice のバージョンの推奨の組み合わせ
 
 +------------------------------------------------------+
 	<filter>
-		<filter-name>guiceFilter</filter-name>
+		<filter-name>guice</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
 	</filter>
 +------------------------------------------------------+
 
 +------------------------------------------------------+
 	<filter-mapping>
-		<filter-name>guiceFilter</filter-name>
+		<filter-name>guice</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 +------------------------------------------------------+
@@ -245,25 +245,37 @@ Cubby と Guice のバージョンの推奨の組み合わせ
       イメージのフォルダなどはここで指定して処理対象外とすることでパフォーマンスの低下を防ぐことができます。
       対象外にするパスを正規表現のカンマ区切りで指定してください。
 
++------------------------------------------------------+
+	<filter>
+		<filter-name>cubby</filter-name>
+		<filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
+		<init-param>
+			<param-name>ignorePathPattern</param-name>
+			<param-value>/css/.*,/js/.*,/img/.*</param-value>
+		</init-param>
+	</filter>
++------------------------------------------------------+
 
 +------------------------------------------------------+
-    <filter>
-        <filter-name>cubbyFilter</filter-name>
-        <filter-class>org.seasar.cubby.filter.CubbyFilter</filter-class>
-        <init-param>
-            <param-name>ignorePathPattern</param-name>
-            <param-value>/css/.*,/js/.*,/img/.*</param-value>
-        </init-param>
-    </filter>
+	<filter-mapping>
+		<filter-name>cubby</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
 +------------------------------------------------------+
 
+ [[6]]{{{cubby/apidocs/org/seasar/cubby/servlet/CubbyServlet}CubbyServlet}} (必須)
+
+      Cubby のプラグインの初期化を行うサーブレットです。
+
 +------------------------------------------------------+
-    <filter-mapping>
-        <filter-name>cubbyFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
+	<servlet>
+		<servlet-name>cubby</servlet-name>
+		<servlet-class>org.seasar.cubby.servlet.CubbyServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 +------------------------------------------------------+
 
 *{プロパティファイル (WEB-INF/classes)}
