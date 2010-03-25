@@ -24,6 +24,8 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -92,6 +94,10 @@ public class ActionProcessorImplTest {
 						isA(FlashMap.class));
 		expect(request.getAttribute(CubbyConstants.ATTR_WRAPEE_REQUEST))
 				.andReturn(request);
+		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andReturn(
+				Collections.emptyMap());
+		request.setAttribute(eq(CubbyConstants.ATTR_CONVERSION_FAILURES),
+				isA(List.class));
 		request.setAttribute("assert", "ok");
 		expect(request.getSession(false)).andReturn(null);
 		HttpServletResponse response = createMock(HttpServletResponse.class);

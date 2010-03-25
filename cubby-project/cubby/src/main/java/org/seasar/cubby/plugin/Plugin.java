@@ -150,6 +150,26 @@ public interface Plugin {
 	ActionResult invokeAction(ActionInvocation invocation) throws Exception;
 
 	/**
+	 * 入力検証を実行します。
+	 * <p>
+	 * このメソッドをオーバーライドすることで、入力検証の実行をインターセプトすることができます。
+	 * </p>
+	 * <p>
+	 * このメソッド内で {@link ValidationInvocation#proceed()} メソッドを実行することで、別のプラグインの
+	 * {@link #invokeValidation(ValidationInvocation)} または入力検証が実行されます。
+	 * </p>
+	 * 
+	 * @param invocation
+	 *            入力検証の実行情報
+	 * @return 入力検証の実行結果
+	 * @throws Exception
+	 *             入力検証の実行時に例外が発生した場合
+	 * @since 2.0.9
+	 */
+	ActionResult invokeValidation(ValidationInvocation invocation)
+			throws Exception;
+
+	/**
 	 * アクションの実行結果を実行します。
 	 * <p>
 	 * このメソッドをオーバーライドすることで、アクションの実行結果の実行をインターセプトすることができます。

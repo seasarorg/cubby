@@ -19,7 +19,7 @@ package org.seasar.cubby.internal.plugin;
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -84,7 +84,7 @@ public class PluginManager {
 	 * @return ロードしたプラグインのコレクション
 	 */
 	protected Collection<Plugin> loadPlugins() {
-		final Set<Plugin> plugins = new HashSet<Plugin>();
+		final Set<Plugin> plugins = new LinkedHashSet<Plugin>();
 		for (final Plugin plugin : ServiceLoader.load(Plugin.class)) {
 			plugins.add(plugin);
 		}
