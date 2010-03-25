@@ -117,6 +117,14 @@ public abstract class AbstractPlugin implements Plugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	public ActionResult invokeValidation(final ValidationInvocation invocation)
+			throws Exception {
+		return invocation.proceed();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public void invokeActionResult(final ActionResultInvocation invocation)
 			throws Exception {
 		invocation.proceed();

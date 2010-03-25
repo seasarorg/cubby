@@ -18,8 +18,8 @@ package org.seasar.cubby.plugin;
 
 import static org.seasar.cubby.internal.util.LogMessages.format;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,7 +45,7 @@ public class PluginRegistry {
 	private final Set<Plugin> plugins = new HashSet<Plugin>();
 
 	/** サービスとそのサービスを提供するプラグインとのマッピング。 */
-	private final Map<Class<? extends Provider>, Plugin> serviceToPlugins = new HashMap<Class<? extends Provider>, Plugin>();
+	private final Map<Class<? extends Provider>, Plugin> serviceToPlugins = new LinkedHashMap<Class<? extends Provider>, Plugin>();
 
 	/**
 	 * インスタンス化を禁止するためのコンストラクタ。

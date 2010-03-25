@@ -68,6 +68,7 @@ public class CubbyConstants {
 	public static final String ATTR_MESSAGES_RESOURCE_BUNDLE = PREFIX
 			+ "messagesResourceBundle";
 
+	/** ラップされる前の要求の属性名 */
 	public static final String ATTR_WRAPEE_REQUEST = PREFIX + "wrapeeRequest";
 
 	// session --------------------------------------------------------
