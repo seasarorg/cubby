@@ -3,7 +3,7 @@
   <parent>
     <artifactId>cubby-project</artifactId>
     <groupId>org.seasar.cubby</groupId>
-	<version>2.0.9</version>
+	<version>2.0.10-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cubby-admin</artifactId>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>org.seasar.cubby</groupId>
       <artifactId>cubby</artifactId>
-      <version>2.0.9</version>
+      <version>2.0.10-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
