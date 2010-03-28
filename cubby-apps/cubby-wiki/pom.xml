@@ -11,7 +11,7 @@
   <packaging>war</packaging>
   <name>Cubby Wiki</name>
   <properties>
-    <org.seasar.cubby.version>2.0.8</org.seasar.cubby.version>
+    <org.seasar.cubby.version>2.0.9</org.seasar.cubby.version>
   </properties>
   <build>
     <finalName>guice-wiki</finalName>
