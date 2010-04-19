@@ -25,6 +25,7 @@ import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,10 @@ public class CubbyFilterProcessRequestTest {
 		expect(request.getAttribute(CubbyConstants.ATTR_WRAPEE_REQUEST))
 				.andReturn(request);
 		expect(request.getSession(false)).andReturn(null);
+		expect(request.getAttribute(CubbyConstants.ATTR_PARAMS)).andReturn(
+				Collections.emptyMap());
+		request.setAttribute(eq(CubbyConstants.ATTR_CONVERSION_FAILURES),
+				isA(List.class));
 		HttpServletResponse response = createMock(HttpServletResponse.class);
 		PathInfo pathInfo = createMock(PathInfo.class);
 		expect(pathInfo.dispatch(parameterMap)).andReturn(routing);

@@ -18,13 +18,20 @@ package org.seasar.cubby.internal.controller.impl;
 
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION;
 import static org.seasar.cubby.CubbyConstants.ATTR_ACTION_CONTEXT;
+import static org.seasar.cubby.CubbyConstants.ATTR_CONVERSION_FAILURES;
 import static org.seasar.cubby.CubbyConstants.ATTR_ERRORS;
 import static org.seasar.cubby.CubbyConstants.ATTR_FLASH;
+import static org.seasar.cubby.CubbyConstants.ATTR_PARAMS;
+import static org.seasar.cubby.CubbyConstants.ATTR_VALIDATION_FAIL;
 import static org.seasar.cubby.CubbyConstants.ATTR_WRAPEE_REQUEST;
 import static org.seasar.cubby.internal.util.LogMessages.format;
+import static org.seasar.cubby.validator.ValidationUtils.getValidation;
+import static org.seasar.cubby.validator.ValidationUtils.getValidationRules;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -35,15 +42,23 @@ import org.seasar.cubby.action.ActionContext;
 import org.seasar.cubby.action.ActionErrors;
 import org.seasar.cubby.action.ActionException;
 import org.seasar.cubby.action.ActionResult;
+import org.seasar.cubby.action.Validation;
 import org.seasar.cubby.internal.controller.ActionProcessor;
 import org.seasar.cubby.internal.controller.ActionResultWrapper;
+import org.seasar.cubby.internal.controller.ConversionFailure;
+import org.seasar.cubby.internal.controller.RequestParameterBinder;
+import org.seasar.cubby.internal.util.RequestUtils;
 import org.seasar.cubby.plugin.ActionInvocation;
 import org.seasar.cubby.plugin.Plugin;
 import org.seasar.cubby.plugin.PluginRegistry;
+import org.seasar.cubby.plugin.ValidationInvocation;
 import org.seasar.cubby.routing.Routing;
 import org.seasar.cubby.spi.ContainerProvider;
 import org.seasar.cubby.spi.ProviderFactory;
 import org.seasar.cubby.spi.container.Container;
+import org.seasar.cubby.validator.ValidationException;
+import org.seasar.cubby.validator.ValidationFailBehaviour;
+import org.seasar.cubby.validator.ValidationRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -176,10 +191,127 @@ public class ActionProcessorImpl implements ActionProcessor {
 				final Plugin plugin = pluginsIterator.next();
 				actionResult = plugin.invokeAction(this);
 			} else {
-				final ActionContext actionContext = getActionContext();
-				final Object action = actionContext.getAction();
-				final Method actionMethod = actionContext.getActionMethod();
-				actionResult = (ActionResult) actionMethod.invoke(action);
+				final ValidationInvocation validationInvocation = new ValidationInvocationImpl(
+						request, response, actionContext);
+				return validationInvocation.proceed();
+			}
+			return actionResult;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletRequest getRequest() {
+			return request;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public HttpServletResponse getResponse() {
+			return response;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionContext getActionContext() {
+			return actionContext;
+		}
+
+	}
+
+	/**
+	 * 入力検証の実行情報の実装です。
+	 * 
+	 * @author baba
+	 */
+	static class ValidationInvocationImpl implements ValidationInvocation {
+
+		/** 要求パラメータをオブジェクトへバインドするクラス。 */
+		private final RequestParameterBinder requestParameterBinder = new RequestParameterBinderImpl();
+
+		/** 要求。 */
+		private final HttpServletRequest request;
+
+		/** 応答。 */
+		private final HttpServletResponse response;
+
+		/** アクションのコンテキスト。 */
+		private final ActionContext actionContext;
+
+		/** プラグインのイテレータ。 */
+		private final Iterator<Plugin> pluginsIterator;
+
+		/**
+		 * インスタンス化します。
+		 * 
+		 * @param request
+		 *            要求
+		 * @param response
+		 *            応答
+		 * @param actionContext
+		 *            アクションのコンテキスト
+		 */
+		public ValidationInvocationImpl(final HttpServletRequest request,
+				final HttpServletResponse response,
+				final ActionContext actionContext) {
+			this.request = request;
+			this.response = response;
+			this.actionContext = actionContext;
+
+			final PluginRegistry pluginRegistry = PluginRegistry.getInstance();
+			this.pluginsIterator = pluginRegistry.getPlugins().iterator();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public ActionResult proceed() throws Exception {
+			final ActionResult actionResult;
+			if (pluginsIterator.hasNext()) {
+				final Plugin plugin = pluginsIterator.next();
+				actionResult = plugin.invokeValidation(this);
+			} else {
+				final Map<String, Object[]> parameterMap = RequestUtils
+						.getAttribute(request, ATTR_PARAMS);
+				final Object formBean = actionContext.getFormBean();
+
+				if (formBean != null) {
+					final List<ConversionFailure> conversionFailures = requestParameterBinder
+							.bind(parameterMap, formBean, actionContext);
+					request.setAttribute(ATTR_CONVERSION_FAILURES,
+							conversionFailures);
+				}
+
+				try {
+					final Validation validation = getValidation(actionContext
+							.getActionMethod());
+					if (validation != null) {
+						final ValidationRules validationRules = getValidationRules(
+								actionContext.getAction(), validation.rules());
+						validationRules.validate(parameterMap, formBean,
+								actionContext.getActionErrors());
+					}
+					try {
+						final Object action = actionContext.getAction();
+						final Method actionMethod = actionContext
+								.getActionMethod();
+						actionResult = (ActionResult) actionMethod
+								.invoke(action);
+					} catch (final InvocationTargetException e) {
+						final Throwable cause = e.getCause();
+						if (cause instanceof ValidationException) {
+							throw (ValidationException) cause;
+						}
+						throw e;
+					}
+				} catch (final ValidationException e) {
+					request.setAttribute(ATTR_VALIDATION_FAIL, Boolean.TRUE);
+					final ValidationFailBehaviour behaviour = e.getBehaviour();
+					return behaviour
+							.getValidationErrorActionResult(actionContext);
+				}
 			}
 			return actionResult;
 		}
